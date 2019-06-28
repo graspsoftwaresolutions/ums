@@ -44,7 +44,6 @@ class MemberController extends Controller
             'email' => 'required|email',
         ]);
 		
-		
 		$member_role = Role::where('slug', 'member')->first();
 		$status = 0;
 		$new_user = new User();
