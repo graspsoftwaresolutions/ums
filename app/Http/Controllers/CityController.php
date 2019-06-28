@@ -30,9 +30,12 @@ class CityController extends Controller
     }
     public function addCity()
     {
-        $countries['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        return view('city.add-city')->with('data',$countries);
-        return view('city.add-city',compact('data',$data));
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->select('id','country_id','state_name')->where('status','=','1')->get();
+        return view('city.add-city', [
+            'country_view'=>$data['country_view'],
+            'state_view'=>$data['state_view']
+        ]);
     }
     public function getStateorderList(Request $request)
     {
