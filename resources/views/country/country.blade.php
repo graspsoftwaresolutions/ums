@@ -91,4 +91,9 @@
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script>
+	$("#masters_sidebars_id").addClass('active');
+	$("#country_sidebar_li_id").addClass('active');
+	$("#country_sidebar_a_id").addClass('active');
+</script>
 @endsection

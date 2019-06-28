@@ -70,6 +70,6 @@ class CountryController extends Controller
     public function delete($id)
 	{
 		$data = DB::table('country')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('country')->with('country','Country Deleted Succesfully');
+		return redirect('country')->with('message','Country Deleted Succesfully');
 	} 
 }
