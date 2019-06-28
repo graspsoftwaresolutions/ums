@@ -49,7 +49,7 @@
 													<tr>
 														<th>Country Name</th>
 														<th>Status</th>
-														<th> Action</th>
+														<th style="text-align:center"> Action</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -63,7 +63,7 @@
 													 ?>
 														<td>{{$value->country_name}}</td>
 														<td>Active</td>
-														<td><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
+														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
 														<a class="btn-small waves-effect waves-light cyan" href="{{url('country-edit/').'/'.$parameter}}">Edit</a>
 														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('country-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
 												  </tr>
