@@ -86,3 +86,20 @@ Route::get('reason-edit/{parameter}','ReasonController@edit');
 Route::post('reason_update','ReasonController@update');
 Route::get('reason-delete/{id}','ReasonController@delete');
 
+//branch
+Route::get('branch','BranchController@index');
+Route::get('add-branch','BranchController@addBranch');
+Route::post('branch_save','BranchController@save');
+Route::get('branch-view/{parameter}','BranchController@view');
+Route::get('branch-edit/{parameter}','BranchController@edit');
+Route::post('branch_update','BranchController@update');
+Route::get('branch-delete/{id}','BranchController@delete');
+
+//Union Branch
+Route::get('unionbranch','UnionBranchController@index');
+Route::get('add-unionbranch','UnionBranchController@addUnionBranch');
+Route::post('unionbranch_save','UnionBranchController@save');
+Route::get('unionbranch-view/{parameter}','UnionBranchController@view');
+Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
+Route::post('unionbranch_update','UnionBranchController@update');
+Route::get('unionbranch-delete/{id}','UnionBranchController@delete');

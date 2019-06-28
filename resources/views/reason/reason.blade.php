@@ -61,7 +61,7 @@
                                                             ];
                                                             $parameter = Crypt::encrypt($parameter);    
                                                         ?>
-														<td>{{$value->fee_name}}</td>
+														<td>{{$value->reason_name}}</td>
 														<td>Active</td>
 														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
 														<a class="btn-small waves-effect waves-light cyan" href="{{url('reason-edit/').'/'.$parameter}}">Edit</a>

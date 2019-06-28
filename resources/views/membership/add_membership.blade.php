@@ -1,11 +1,10 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+
 @endsection
 @section('headSecondSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+
 @endsection
 @section('main-content')
 <div id="main">
@@ -233,15 +232,16 @@
 </div>
 @endsection
 @section('footerSection')
-<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
+<script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script>
 
 $(document).ready(function(){
       $('tabs').tabs();
+     
       $('#old_mumber_number').hide();
 
       //state
@@ -255,10 +255,16 @@ $(document).ready(function(){
             url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
             success:function(res){               
                 if(res){
-                    
+                    $("#state").parent().find(".select-dropdown").remove();
+                    $("#state").parent().find("svg.caret").remove();
                     $("#state").empty();
                     $.each(res,function(key,entry){
+                      
                         $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+                       // var select = $("#state");
+                       // select.material_select('destroy');
+                        //select.empty();
+                        $('#state').material_select();
                     });
                 }else{
                 $("#state").empty();
