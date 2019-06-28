@@ -19,6 +19,8 @@
             </ul>
           </div>
         </li>
+		<li class="bold"><a class="waves-effect waves-cyan " href=""><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
+        </li>
         @endrole
       
        
