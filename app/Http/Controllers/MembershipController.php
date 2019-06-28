@@ -55,11 +55,12 @@ class MembershipController extends Controller
     }
     public function addMember()
     {
-        // $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        // $data['branch_view'] = DB::table('branch')->where('status','=','1')->get();
+         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+    
          $data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
-        // $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
-        // $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+         $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
+         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
        
         return view('membership.add_membership')->with('data',$data);  
         
@@ -73,6 +74,7 @@ class MembershipController extends Controller
                     ['country_id','=',$id],
                     ['status','=','1']
                 ])->get();
+        //print_r($res); exit;
                 return response()->json($res);
     }
     public function getCitiesList(Request $request){
