@@ -89,6 +89,19 @@ class MembershipController extends Controller
        
         return response()->json($res);
     }
+    
+    public function getBranchList(Request $request){
+        // print_r($request);die;
+         $id = $request->company_id;
+         $res = DB::table('branch')
+         ->select('id','branch_name')
+         ->where([
+             ['company_id','=',$id],
+             ['status','=','1']
+         ])->get();
+        //print_r($res); exit;
+         return response()->json($res);
+     }
     public function Save(Request $request)
     {
         $request->validate([
