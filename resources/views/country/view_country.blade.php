@@ -69,8 +69,8 @@
 </div>
 @endsection
 @section('footerSection')
-<script src="{{ asset('assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 @endsection

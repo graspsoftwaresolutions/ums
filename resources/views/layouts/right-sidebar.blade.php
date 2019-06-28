@@ -36,7 +36,7 @@
                   <input class="header-search-input mt-4 mb-2" type="text" name="Search" placeholder="Search Messages">
                   <ul class="collection p-0">
                      <li class="collection-item sidenav-trigger display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-                        <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+                        <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                            <i></i>
                         </span>
                         <div class="user-content">
@@ -46,7 +46,7 @@
                         <span class="secondary-content medium-small">5.00 AM</span>
                      </li>
                      <li class="collection-item sidenav-trigger display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-                        <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+                        <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                            <i></i>
                         </span>
                         <div class="user-content">
@@ -274,7 +274,7 @@
       <li class="chat-body">
          <ul class="collection">
             <li class="collection-item display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                </span>
                <div class="user-content speech-bubble">
                   <p class="medium-small">hello!</p>
@@ -286,7 +286,7 @@
                </div>
             </li>
             <li class="collection-item display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                </span>
                <div class="user-content speech-bubble">
                   <p class="medium-small">I am looking for the best admin template.?</p>
@@ -303,7 +303,7 @@
             </li>
 
             <li class="collection-item display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                </span>
                <div class="user-content speech-bubble">
                   <p class="medium-small">Ohh! very nice</p>
@@ -315,7 +315,7 @@
                </div>
             </li>
             <li class="collection-item display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                </span>
                <div class="user-content speech-bubble">
                   <p class="medium-small">How can I purchase it?</p>
@@ -337,14 +337,14 @@
                </div>
             </li>
             <li class="collection-item display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                </span>
                <div class="user-content speech-bubble">
                   <p class="medium-small">Ohh! Thank you.</p>
                </div>
             </li>
             <li class="collection-item display-flex avatar pl-5 pb-0" data-target="slide-out-chat">
-               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="avatar">
+               <span class="avatar-status avatar-online avatar-50"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar">
                </span>
                <div class="user-content speech-bubble">
                   <p class="medium-small">I will purchase it for sure.</p>

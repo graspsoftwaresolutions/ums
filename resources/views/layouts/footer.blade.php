@@ -8,7 +8,7 @@
 
     <!-- END: Footer-->
     <!-- BEGIN VENDOR JS-->
-    <script src="{{ asset('assets/js/vendors.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/vendors.min.js') }}" type="text/javascript"></script>
 	<script>
 		var base_url = '{{ URL::to("/") }}';
 	</script>
@@ -25,7 +25,7 @@
     <script src="{{ asset('public/assets/js/scripts/ui-alerts.js') }}" type="text/javascript"></script>
     <!-- END THEME  JS-->
     <!-- BEGIN PAGE LEVEL JS-->
-    <!--script src="{{ asset('assets/js/scripts/intro.js') }}" type="text/javascript"></script-->
+    <!--script src="{{ asset('public/assets/js/scripts/intro.js') }}" type="text/javascript"></script-->
     <!-- END PAGE LEVEL JS-->
 	
 	@section('footerSecondSection')

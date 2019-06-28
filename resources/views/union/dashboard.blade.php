@@ -70,19 +70,19 @@
             <p class="medium-small pt-2">Today</p>
             <ul class="collection mb-0">
                <li class="collection-item avatar">
-                  <img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="" class="circle">
+                  <img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="" class="circle">
                   <p class="font-weight-600">John Doe</p>
                   <p class="medium-small">18, January 2019</p>
                   <a href="#!" class="secondary-content"><i class="material-icons">star_border</i></a>
                </li>
                <li class="collection-item avatar">
-                  <img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="" class="circle">
+                  <img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="" class="circle">
                   <p class="font-weight-600">Adam Garza</p>
                   <p class="medium-small">20, January 2019</p>
                   <a href="#!" class="secondary-content"><i class="material-icons">star_border</i></a>
                </li>
                <li class="collection-item avatar">
-                  <img src="{{ asset('assets/images/avatar/avatar-7.png') }}" alt="" class="circle">
+                  <img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="" class="circle">
                   <p class="font-weight-600">Jennifer Rice</p>
                   <p class="medium-small">25, January 2019</p>
                   <a href="#!" class="secondary-content"><i class="material-icons">star_border</i></a>

@@ -82,7 +82,7 @@
             @yield('content')
         </main>
     </div>
-	<script src="{{ asset('assets/js/vendors.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('public/assets/js/vendors.min.js') }}" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN PAGE VENDOR JS-->
     <!-- END PAGE VENDOR JS-->
