@@ -9,8 +9,12 @@ $(function () {
         minlength: 5
       },
       country_name: {
-        required: true
+        required: true,
       },
+	  state_name: {
+        required: true,
+      },
+	  country_id: "required",
       cemail: {
         required: true,
         email: true
@@ -43,6 +47,9 @@ $(function () {
       },
       country_name: {
          required: "Enter a Country Name",
+      },
+	  state_name: {
+         required: "Enter a State Name",
       },
       curl: "Enter your website",
     },

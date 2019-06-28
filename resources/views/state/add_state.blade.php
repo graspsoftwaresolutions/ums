@@ -44,40 +44,28 @@
                                         @csrf
                                     
                                         <div class="row">
-                                            <div class="input-field col s6">
-                                            <i class="material-icons prefix">account_circle</i>
-                                            <input id="icon_prefix" type="text" class="validate">
-                                            <label for="icon_prefix">Country Name</label>
+                                            <div class="input-field col s12 m6">
+                                                <i class="material-icons prefix">map</i>
+                                                <select class="error validate" id="country_id" name="country_id"  data-error=".errorTxt6">
+                                                    <option value="" disabled="" selected="">Select country</option>
+                                                    @foreach($data as $value)
+                                                        <option value="{{$value->id}}">{{$value->country_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                    <div class="errorTxt6"></div>
+                                                </div>
                                             </div>
-                                            <div class="input-field col s6">
-                                            <i class="material-icons prefix">phone</i>
-                                            <input id="icon_telephone" type="tel" class="validate">
-                                            <label for="icon_telephone">Telephone</label>
+                                            <div class="input-field col s12 m6">
+                                            <i class="material-icons prefix">room</i>
+                                            <input id="state_name" name="state_name" type="text" data-error=".errorTxt1">
+                                             <div class="errorTxt1" style="margin: 0 45px;"></div>
+                                            <label for="icon_room">State Name</label>
                                             </div>
                                         </div>
 
-                                      <div class="row">
-                                        <div class="col s12 m6 ">
-                                            <label for="role">Country Name</label>
-                                            <select class="error validate" id="country_id" name="country_id" aria-required="true" required="">
-                                                <option value="" disabled="" selected="">Select country</option>
-                                                @foreach($data as $value)
-                                                    <option value="{{$value->id}}">{{$value->country_name}}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="input-field">
-                                            </div>
-                                        </div>
-                                        </div>
                                         <div class="row">
-                                        <div class="input-field col s12 m6">
-                                          <label for="state_name">State Name*</label>
-                                          <input id="state_name" name="state_name" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
-                                        </div>
-                                        </div>
-                                        <div class="row">
-                                        <div class="input-field col s12 m6">
+                                        <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
                                           </button>
@@ -103,4 +91,9 @@
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
+<script>
+	$("#masters_sidebars_id").addClass('active');
+	$("#state_sidebar_li_id").addClass('active');
+	$("#state_sidebar_a_id").addClass('active');
+</script>
 @endsection

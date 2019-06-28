@@ -33,6 +33,9 @@ Route::post('country_edit','CountryController@update');
 Route::get('country-delete/{id}','CountryController@delete');
 
 //Membership
+Route::get('get-state-list','MembershipController@getStateList');
+Route::get('get-cities-list','MembershipController@getCitiesList');
+
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
 Route::post('membership_save','MembershipController@Save');
@@ -74,3 +77,4 @@ Route::get('reason-view/{parameter}','ReasonController@view');
 Route::get('reason-edit/{parameter}','ReasonController@edit');
 Route::post('reason_update','ReasonController@update');
 Route::get('reason-delete/{id}','ReasonController@delete');
+
