@@ -15,6 +15,10 @@
               <li id="country_sidebar_li_id" class=""><a id="country_sidebar_a_id" class="collapsible-body " href="{{url('country')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Country Details</span></a></li>
               <li id="state_sidebar_li_id" class=""><a id="state_sidebar_a_id" class="collapsible-body" href="{{url('state')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>State Details</span></a></li>
               <li id="state_sidebar_li_id" class=""><a id="state_sidebar_a_id" class="collapsible-body" href="{{url('status')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Status Details</span></a></li>
+              <li id="city_sidebar_li_id" class=""><a id="city_sidebar_a_id" class="collapsible-body" href="{{url('city')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>City Details</span></a></li>
+              <li id="race_sidebar_li_id" class=""><a id="race_sidebar_a_id" class="collapsible-body" href="{{url('race')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Race Details</span></a></li>
+              <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{url('fee')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Fee Details</span></a></li>
+              <li id="reason_sidebar_li_id" class=""><a id="reason_sidebar_a_id" class="collapsible-body" href="{{url('reason')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Reason Details</span></a></li>
             </ul>
           </div>
         </li>
