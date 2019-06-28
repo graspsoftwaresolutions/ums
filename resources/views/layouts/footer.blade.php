@@ -19,10 +19,10 @@
     @show
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN THEME  JS-->
-    <script src="{{ asset('assets/js/plugins.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/custom/custom-script.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/scripts/ui-alerts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/plugins.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/custom/custom-script.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/scripts/ui-alerts.js') }}" type="text/javascript"></script>
     <!-- END THEME  JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <!--script src="{{ asset('assets/js/scripts/intro.js') }}" type="text/javascript"></script-->

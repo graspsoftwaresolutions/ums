@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 @section('headSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 @endsection
 @section('headSecondSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 @endsection
 @section('main-content')
 <div id="main">
@@ -85,10 +85,10 @@
 </div>
 @endsection
 @section('footerSection')
-<script src="{{ asset('assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 @endsection

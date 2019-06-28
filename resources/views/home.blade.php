@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 @section('headSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/chartist-js/chartist.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/chartist-js/chartist-plugin-tooltip.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages/dashboard-modern.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages/intro.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/chartist-js/chartist.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/chartist-js/chartist-plugin-tooltip.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/dashboard-modern.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/intro.css') }}">
 @endsection
 
 @section('main-content')
@@ -31,9 +31,9 @@
 @endsection
 		
 @section('footerSection')
-<script src="{{ asset('assets/vendors/chartjs/chart.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/vendors/chartist-js/chartist.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/vendors/chartist-js/chartist-plugin-tooltip.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/vendors/chartist-js/chartist-plugin-fill-donut.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/js/scripts/dashboard-modern.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/chartjs/chart.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/chartist-js/chartist.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/chartist-js/chartist-plugin-tooltip.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/chartist-js/chartist-plugin-fill-donut.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/dashboard-modern.js') }}" type="text/javascript"></script>
 @endsection

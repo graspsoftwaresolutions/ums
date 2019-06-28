@@ -11,17 +11,17 @@
 <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon/favicon-32x32.png') }}">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- BEGIN: VENDOR CSS-->
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/vendors.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/animate-css/animate.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/vendors.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/animate-css/animate.css') }}">
 @section('headSection')
     @show
 <!-- END: VENDOR CSS-->
 <!-- BEGIN: Page Level CSS-->
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/themes/vertical-modern-menu-template/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
 <!-- END: Page Level CSS-->
 <!-- BEGIN: Custom CSS-->
 @section('headSecondSection')
     @show
 
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom/custom.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/custom/custom.css') }}">

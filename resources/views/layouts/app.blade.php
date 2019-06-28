@@ -14,15 +14,15 @@
     <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/favicon/favicon-32x32.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- BEGIN: VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/vendors.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/vendors.min.css') }}">
     <!-- END: VENDOR CSS-->
     <!-- BEGIN: Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/themes/vertical-modern-menu-template/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/login.css') }}">
     <!-- END: Page Level CSS-->
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom/custom.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/custom/custom.css') }}">
 
 </head>
   <body class="vertical-layout vertical-menu-collapsible page-header-dark vertical-modern-menu 1-column login-bg  blank-page blank-page" data-open="click" data-menu="vertical-modern-menu" data-col="1-column">
@@ -87,7 +87,7 @@
     <!-- BEGIN PAGE VENDOR JS-->
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN THEME  JS-->
-    <script src="{{ asset('assets/js/plugins.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/custom/custom-script.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/plugins.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/custom/custom-script.js') }}" type="text/javascript"></script>
 </body>
 </html>
