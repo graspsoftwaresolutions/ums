@@ -32,3 +32,10 @@ Route::get('country-edit/{parameter}','CountryController@edit');
 Route::post('country_edit','CountryController@update');
 Route::get('country-delete/{id}','CountryController@delete');
 
+//State Details 
+Route::get('state','StateController@index');
+Route::get('add-state','StateController@addState');
+Route::post('state_save','StateController@save');
+Route::get('state-edit/{parameter}','StateController@edit');
+Route::post('state_edit','StateController@update');
+Route::get('state-delete/{id}','StateController@delete');

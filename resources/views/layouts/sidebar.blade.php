@@ -14,7 +14,7 @@
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
               <li class="active"><a class="collapsible-body" href="{{url('country')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Country Details</span></a></li>
-			 
+              <li class="active"><a class="collapsible-body" href="{{url('state')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>State Details</span></a></li>
              
             </ul>
           </div>
