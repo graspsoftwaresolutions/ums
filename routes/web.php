@@ -35,6 +35,7 @@ Route::get('country-delete/{id}','CountryController@delete');
 //Membership
 Route::get('get-state-list','MembershipController@getStateList');
 Route::get('get-cities-list','MembershipController@getCitiesList');
+Route::get('get-branch-list','MembershipController@getBranchList');
 
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
@@ -50,3 +51,10 @@ Route::post('state_save','StateController@save');
 Route::get('state-edit/{parameter}','StateController@edit');
 Route::post('state_edit','StateController@update');
 Route::get('state-delete/{id}','StateController@delete');
+//Status Master
+Route::get('status','StatusController@index');
+Route::get('add-status','StatusController@addStatus');
+Route::post('status_save','StatusController@save');
+Route::get('status-edit/{parameter}','StatusController@edit');
+Route::post('status_update','StatusController@update');
+Route::get('status-delete/{id}','StatusController@delete');

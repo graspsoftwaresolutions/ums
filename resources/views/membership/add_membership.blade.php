@@ -110,7 +110,7 @@
                                             <label>
                                                 <input type="checkbox" id="rejoined"/>
                                                 <span>Rejoined</span>
-                                                <input id="text" name="old_mumber_number" id="old_mumber_number" type="text">
+                                                <span> <input name="old_mumber_number" id="old_mumber_number" type="text"></span>
                                             </label>
                                             </p>
                                             </div>
@@ -209,11 +209,16 @@
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <select name="branch_id" id="branch_id">
+                                                <select name="branch_id" id="branch">
                                                         </select>
                                                         <label>Branch Name*</label>
                                                 <div class="errorTxt1"></div>
                                             </div>
+                                            <div class="input-field col s12">
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
+                                            <i class="material-icons right">send</i>
+                                          </button>
+                                        </div>
                                       </div>
                                     </form>
                                   </div>
@@ -243,7 +248,11 @@
 $(document).ready(function(){
       $('tabs').tabs();
       $('#old_mumber_number').hide();
+      $('#rejoined').click(function(){
+        $('#old_mumber_number').toggle();
+        $('#rejoined').hide();
 
+    });
       //state
       $('#country').change(function(){
         var countryID = $(this).val();   
@@ -255,7 +264,6 @@ $(document).ready(function(){
             url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
             success:function(res){               
                 if(res){
-                    
                     $("#state").empty();
                     $.each(res,function(key,entry){
                         $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
@@ -294,6 +302,33 @@ $(document).ready(function(){
                     $('#city').empty();
                 }
                // console.log(res);
+            }
+         });
+       }else{
+           $('#city').empty();
+       }
+   });
+   $('#company').change(function(){
+       var CompanyID = $(this).val();
+      
+       if(CompanyID!='' && CompanyID!='undefined')
+       {
+         $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-branch-list') }}?company_id="+CompanyID,
+            success:function(res){
+                //console.log(res);
+                if(res)
+                {
+                    $('#branch').empty();
+                    $.each(res,function(key,entry){
+                        $('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+                    });
+                }else{
+                    $('#branch').empty();
+                }
+                console.log(res);
             }
          });
        }else{

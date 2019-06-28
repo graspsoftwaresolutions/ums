@@ -15,4 +15,5 @@ class state extends Model
         $id = DB::table('state')->insertGetId($state);
         return $id;
     }
+    public $timestamps = true;
 }
