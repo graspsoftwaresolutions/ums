@@ -71,23 +71,32 @@
                                         </div>
                                         
                                         <div class="input-field col s12 m6">
-                                        <div class="col s12">
-                                                <p>Gender</p>
-                                                <p>
+                                        <div class="col s12 row">
+                                                <div class="col s12 m4">
+                                                    <p>Gender</p>
+                                                </div>
+                                                <div class="col s12 m4">
                                                     <label>
-                                                    <input class="validate" required="" aria-required="true" name="gender" type="radio" checked="">
-                                                    <span>Male</span>
-                                                    </label>
-                                                </p>
+                                                        <input class="validate" required="" aria-required="true" name="gender" type="radio">
+                                                        <span>Female</span>
+                                                    </label>  
+                                                </div>
+                                                <div class="col s12 m4">
+                                                    <p>
+                                                        <label>
+                                                        <input class="validate" required="" aria-required="true" name="gender" type="radio" checked="">
+                                                        <span>Male</span>
+                                                        </label>
+                                                    </p>
+                                                </div>
+                                                
 
-                                                <label>
-                                                    <input class="validate" required="" aria-required="true" name="gender" type="radio">
-                                                    <span>Female</span>
-                                                </label>
+                                                
                                                 <div class="input-field">
                                                 </div>
                                                 </div>
                                         </div> 
+                                        <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                           <label for="phone">Mobile Number *</label>
                                           <input id="phone" name="phone" type="text" data-error=".errorTxt1">
@@ -104,15 +113,22 @@
                                             <label for="doe">Date of Emp</label>
                                           <div class="errorTxt1"></div>
                                         </div>
-                                        <div class="input-field col s12 m6">
-                                        <p>
-                                            <label>
-                                                <input type="checkbox" id="rejoined"/>
-                                                <span>Rejoined</span>
-                                                <span> <input name="old_mumber_number" id="old_mumber_number" type="text"></span>
-                                            </label>
-                                            </p>
+                                            <div class="col s12 m6">
+                                                 <div class="input-field col s12 m6">
+                                                    <p>
+                                                    <label>
+                                                        <input type="checkbox" id="rejoined"/>
+                                                        <span>Rejoined</span>
+                                                        
+                                                    </label>
+                                                    </p>
+                                                 </div>
+                                                 <div class="input-field col s12 m6">
+                                                 <span> <input name="old_mumber_number" id="old_mumber_number" type="text"></span>
+                                                 </div>
                                             </div>
+                                            <div class="clearfix" style="clear:both"></div>
+
                                             <div class="input-field col s12 m6">
                                                 <select name="designation" id="designation">
                                                     @foreach($data['designation_view'] as $key=>$value)
@@ -142,10 +158,11 @@
                                             </div>
                                             <div class="input-field col s12 m6">
                                                 <select name="state_id" id="state">
-                                                        </select>
+                                                 </select>
                                                         <label>State Name*</label>
                                                 <div class="errorTxt1"></div>
                                             </div>
+                                            <div class="clearfix" style="clear:both"></div>
                                             <div class="input-field col s12 m6">
                                                 <select name="city_id" id="city">
                                                         </select>
@@ -250,7 +267,7 @@ $(document).ready(function(){
       $('#old_mumber_number').hide();
       $('#rejoined').click(function(){
         $('#old_mumber_number').toggle();
-        $('#rejoined').hide();
+        //$('#rejoined').hide();
 
     });
       //state
@@ -267,14 +284,17 @@ $(document).ready(function(){
                     $("#state").parent().find(".select-dropdown").remove();
                     $("#state").parent().find("svg.caret").remove();
                     $("#state").empty();
+                    $('#state').append($('<option></option>').attr('value','0').text('Select'));
+                    //console.log('hi test');
                     $.each(res,function(key,entry){
                       
                         $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
                        // var select = $("#state");
                        // select.material_select('destroy');
                         //select.empty();
-                        $('#state').material_select();
+                        
                     });
+                    $('#state').material_select();
                 }else{
                 $("#state").empty();
                 }
