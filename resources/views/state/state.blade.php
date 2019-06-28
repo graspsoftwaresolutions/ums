@@ -21,17 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">Country List</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">State List</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+											<li class="breadcrumb-item"><a href="#">Dashboard</a>
 											</li>
-											<li class="breadcrumb-item active"><a href="#">Country</a>
+											<li class="breadcrumb-item active">State
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-country')}}">Add New Country</a>
+										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-state')}}">Add New State</a>
 										
 									</div>
 								</div>
@@ -40,7 +40,7 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">Country List</h4>
+									<h4 class="card-title">State List</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
@@ -48,12 +48,12 @@
 												<thead>
 													<tr>
 														<th>Country Name</th>
-														<th>Status</th>
+														<th>State Name</th>
 														<th style="text-align:center"> Action</th>
 													</tr>
 												</thead>
 												<tbody>
-													 @foreach($data['country_view'] as $key=>$value)
+													 @foreach($data as $value)
 													<tr>
 													<?php
 													$parameter =[
@@ -62,10 +62,10 @@
 													 $parameter = Crypt::encrypt($parameter);  
 													 ?>
 														<td>{{$value->country_name}}</td>
-														<td>Active</td>
-														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
-														<a class="btn-small waves-effect waves-light cyan" href="{{url('country-edit/').'/'.$parameter}}">Edit</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('country-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+														<td>{{$value->state_name}}</td>
+														<td style="text-align:center">
+														<a class="btn-small waves-effect waves-light cyan" href="{{url('state-edit/').'/'.$parameter}}">Edit</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('state-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
 												  </tr>
 												  @endforeach
 												</tbody>
@@ -91,9 +91,4 @@
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
-<script>
-	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
-</script>
 @endsection

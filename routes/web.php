@@ -40,3 +40,10 @@ Route::get('membership-view/{parameter}','MembershipController@view');
 Route::get('membership-edit/{parameter}','MembershipController@edit');
 Route::post('membership_update','MembershipController@update');
 Route::get('membership-delete/{id}','MembershipController@delete');
+//State Details 
+Route::get('state','StateController@index');
+Route::get('add-state','StateController@addState');
+Route::post('state_save','StateController@save');
+Route::get('state-edit/{parameter}','StateController@edit');
+Route::post('state_edit','StateController@update');
+Route::get('state-delete/{id}','StateController@delete');
