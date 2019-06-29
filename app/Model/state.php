@@ -15,5 +15,9 @@ class state extends Model
         $id = DB::table('state')->insertGetId($state);
         return $id;
     }
+    public function country()
+    {
+        return $this->belongsTo('App\Model\Country');
+    }
     public $timestamps = true;
 }

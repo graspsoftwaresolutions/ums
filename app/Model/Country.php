@@ -16,5 +16,9 @@ class Country extends Model
         $id = DB::table('country')->insertGetId($country);
         return $id;
     }
+    public function state()
+    {
+        return $this->hasMany('App\Model\state');
+    }
     
 }

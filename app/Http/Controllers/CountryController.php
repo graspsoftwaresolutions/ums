@@ -71,5 +71,6 @@ class CountryController extends Controller
 	{
 		$data = DB::table('country')->where('id','=',$id)->update(['status'=>'0']);
 		return redirect('country')->with('message','Country Deleted Succesfully');
-	} 
+    }
+    
 }

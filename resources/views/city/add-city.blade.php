@@ -40,7 +40,7 @@
                                     <h4 class="card-title">Add State</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('state_save') }}">
+                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('city_save') }}">
                                         @csrf
                                     
                                         <div class="row">
@@ -68,7 +68,7 @@
                                             <div class="input-field col s12 m12">
                                                  <i class="material-icons prefix">room</i>
                                                
-                                                <input id="city" name="city_name" type="text" data-error=".errorTxt1">
+                                                <input id="city_name" name="city_name" type="text" data-error=".errorTxt1">
                                                 <div class="errorTxt1" style="margin: 0 45px;"></div>
                                                  <label for="city_name">City Name*</label>
                                             </div>
@@ -106,29 +106,23 @@
 	$("#city_sidebar_li_id").addClass('active');
 	$("#city_sidebar_a_id").addClass('active');
 </script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#country').change(function(){
-        var countryID = $(this).val();    
-        if(countryID){
-            $.ajax({
-            type:"GET",
-            url:"{{url('get-state-order-list')}}?country_id="+countryID,
-            success:function(res){               
-                if(res){
-                    $("#state").empty();
-                    $.each(res,function(key,entry){
-                        $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
-                    });
-                }else{
-                $("#state").empty();
-                }
-            }
+<script>
+    $(function() {
+        $('select[name=country_id]').change(function() {
+
+            var url = "{{ url('get-state-order-list') }}" + '/' + $(this).val();
+
+            $.get(url, function(data) {
+                var select = $('form select[name= state_id]');
+
+                select.empty();
+
+                $.each(data,function(key, value) {
+                    select.append('<option value=' + value.id + '>' + value.state_name + '</option>');
+                });
             });
-        }else{
-            $("#state").empty();
-        }      
-    });
+        });
     });
 </script>
+
 @endsection
