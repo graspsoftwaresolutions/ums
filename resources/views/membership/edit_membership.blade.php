@@ -20,7 +20,7 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">New Membership</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">Edit Membership</h5>
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
 											</li>
@@ -35,23 +35,26 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">New Membership</h4>
+									<h4 class="card-title">Edit Membership</h4>
 									@include('includes.messages')
 									<div class="row">
                                         <div class="col s12">
                                             <ul class="tabs">
                                             <li class="tab col m3"><a class="active"  href="#test1">Membership details</a></li>
+                                            <li class="tab col m3"><a href="#test2">Nominee Details</a></li>
+                                            <li class="tab col m3"><a href="#test4">Guardian Details</a></li>
                                             </ul>
                                         </div>
                                         <div id="view-validations">
                                     <form class="formValidate" id="formValidate" method="post" action="{{ url('membership_save') }}">
+                                    @foreach($data['member_view'] as $key=>$values)
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
                                           <select name="member_title" id="member_title">
                                                 <option value="" disabled selected>Choose your option</option>
                                                 @foreach($data['title_view'] as $key=>$value)
-                                            <option value="{{$value->id}}">{{$value->person_title}}</option>
+                                            <option value="{{$value->id}}" <?php if($value->id == $values->member_title_id) { echo "selected";} ?>>{{$value->person_title}}</option>
                                             @endforeach
                                                 </select>
                                                 <label>Member Title*</label>
@@ -59,12 +62,12 @@
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="member_number">Member Number *</label>
-                                          <input id="member_number" name="member_number" type="text" data-error=".errorTxt1">
+                                          <input id="member_number" name="member_number" value="{{$values->member_number}}"  type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="name">Member Name *</label>
-                                          <input id="name" name="name" type="text" data-error=".errorTxt1">
+                                          <input id="name" name="name" value="{{$values->name}}" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         
@@ -75,14 +78,14 @@
                                                 </div>
                                                 <div class="col s12 m4">
                                                     <label>
-                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="female">
+                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="female" {{ $values->gender == 'female' ? 'checked' : '' }}>
                                                         <span>Female</span>
                                                     </label>  
                                                 </div>
                                                 <div class="col s12 m4">
                                                     <p>
                                                         <label>
-                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="male">
+                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="male" {{ $values->gender == 'male' ? 'checked' : '' }}>
                                                         <span>Male</span>
                                                         </label>
                                                     </p>
@@ -94,17 +97,17 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                           <label for="phone">Mobile Number *</label>
-                                          <input id="phone" name="phone" type="text" data-error=".errorTxt1">
+                                          <input id="phone" name="phone" value="{{$values->phone}}" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="email">Email *</label>
-                                          <input id="email" name="email" type="text" data-error=".errorTxt1">
+                                          <input id="email" name="email" type="text" value="{{$values->email}}" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           
-                                          <input type="text" class="datepicker" id="doe" name="doe">
+                                          <input type="text" value="{{$values->doe}}"  class="datepicker" id="doe" name="doe">
                                             <label for="doe">Date of Emp</label>
                                           <div class="errorTxt1"></div>
                                         </div>
@@ -131,7 +134,7 @@
                                             <div class="input-field col s12 m6">
                                                 <select name="designation" id="designation">
                                                     @foreach($data['designation_view'] as $key=>$value)
-                                                        <option value="{{$value->id}}">{{$value->designation_name}}</option>
+                                                        <option value="{{$value->id}}" <?php if($value->id == $values->designation_id) { echo "selected";} ?>>{{$value->designation_name}}</option>
                                                     @endforeach
                                                         </select>
                                                         <label>Designation*</label>
@@ -140,7 +143,7 @@
                                             <div class="input-field col s12 m6">
                                                 <select name="race" id="race">
                                                 @foreach($data['race_view'] as $key=>$value)
-                                                    <option value="{{$value->id}}">{{$value->race_name}}</option>
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->race_id) { echo "selected";} ?>>{{$value->race_name}}</option>
                                                     @endforeach
                                                         </select>
                                                         <label>Race*</label>
@@ -149,7 +152,7 @@
                                             <div class="input-field col s12 m6">
                                                 <select name="country_id" id="country">
                                                     @foreach($data['country_view'] as $value)
-                                                    <option value="{{$value->id}}">{{$value->country_name}}</option>
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->country_id) { echo "selected";} ?>>{{$value->country_name}}</option>
                                                     @endforeach
                                                         </select>
                                                         <label>Country Name*</label>
@@ -157,6 +160,9 @@
                                             </div>
                                             <div class="input-field col s12 m6">
                                                 <select name="state_id" id="state">
+                                                @foreach($data['state_view'] as $key=>$value)
+                                                <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
+                                                @endforeach
                                                  </select>
                                                         <label>State Name*</label>
                                                 <div class="errorTxt1"></div>
@@ -164,54 +170,57 @@
                                             <div class="clearfix" style="clear:both"></div>
                                             <div class="input-field col s12 m6">
                                                 <select name="city_id" id="city">
+                                                @foreach($data['city_view'] as $key=>$value)
+                                                <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
+                                                @endforeach
                                                         </select>
                                                         <label>City Name*</label>
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="postal_code">Postal Code *</label>
-                                                <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt1">
+                                                <input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="address_one">Address Line 1*</label>
-                                                <input id="address_one" name="address_one" type="text" data-error=".errorTxt1">
+                                                <input id="address_one" name="address_one" type="text" value="{{$values->address_one}}" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="address_two">Address Line 2*</label>
-                                                <input id="address_two" name="address_two" type="text" data-error=".errorTxt1">
+                                                <input id="address_two" name="address_two" type="text" value="{{$values->address_two}}" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="address_three">Address Line 3*</label>
-                                                <input id="address_three" name="address_three" type="text" data-error=".errorTxt1">
+                                                <input id="address_three" name="address_three" type="text" value="{{$values->address_three}}" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <input type="text" class="datepicker" id="dob" name="dob">
+                                                <input type="text" class="datepicker" id="dob" value="{{$values->dob}}" name="dob">
                                                     <label for="dob">Date of Birth</label>
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <input type="text" class="datepicker" id="doj" name="doj">
+                                                <input type="text" class="datepicker" id="doj" value="{{$values->doj}}" name="doj">
                                                     <label for="doj">Date of Joining</label>
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             
                                             <div class="input-field col s12 m6">
                                             <label for="salary">Salary</label>
-                                                <input id="salary" name="salary" type="text" data-error=".errorTxt1">
+                                                <input id="salary" name="salary" value="{{$values->salary}}" type="text" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="salary">Old IC Number</label>
-                                                <input id="old_ic" name="old_ic" type="text" data-error=".errorTxt1">
+                                                <input id="old_ic" name="old_ic" value="{{$values->old_ic}}" type="text" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="new_ic">New IC Number</label>
-                                                <input id="new_ic" name="new_ic" type="text" data-error=".errorTxt1">
+                                                <input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt1">
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
@@ -232,7 +241,7 @@
                                             <div class="input-field col s12 m6">
                                                 <select name="status_id" id="status_id">
                                                 @foreach($data['status_view'] as $key=>$value)
-                                                       <option value="{{$value->id}}">{{$value->status_name}}</option>
+                                                       <option value="{{$value->id}}" <?php if($value->id == $values->status_id) { echo "selected";} ?>>{{$value->status_name}}</option>
                                                 @endforeach
                                                 </select>
                                                         <label>Status*</label>
@@ -244,9 +253,13 @@
                                           </button>
                                         </div>
                                       </div>
+                                      @endforeach
                                     </form>
                                   </div>
-                                       
+                                        </div>
+                                        <div id="test2" class="col s12">Test 2</div>
+                                        <div id="test4" class="col s12">Test 4</div>
+                                        </div>
 								</div>
 							</div>
 						</div>

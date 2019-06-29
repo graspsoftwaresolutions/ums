@@ -48,12 +48,26 @@
 												<thead>
 													<tr>
 														<th>Member Name</th>
-														<th>Status</th>
-														<th> Action</th>
+														<th>Email</th>
+														<th style="text-align:center"> Action</th>
 													</tr>
 												</thead>
 												<tbody>
+													@foreach($data['member_view'] as $key=>$value)
+													<tr>
+													<?php
+													$parameter =[
+														'id' =>$value->id,
+													];
+													 $parameter = Crypt::encrypt($parameter);  
+													 ?>
 													
+														<td>{{$value->name}}</td>
+														<td>{{$value->email}}</td>
+													<td>	<a class="btn-small waves-effect waves-light cyan" href="{{url('membership-edit/').'/'.$parameter}}">Edit</a></td>
+													<td>	<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+													</tr>
+													@endforeach
 												</tbody>
 												
 											</table>
