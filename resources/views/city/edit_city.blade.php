@@ -1,138 +1,105 @@
-@extends('layouts.layout')
-@section('content')
-@if(session('message'))
-<div class="alert alert-success" id="id">
-{{session('message')}}
-</div>
-@endif
-@if(session('errors'))
-<div class="alert alert-danger" id="id">
-{{session('errors')}}
-</div>
-@endif
-<script src="http://www.codermen.com/js/jquery.js"></script>
-<div class="row">
-        	<div class="customer-header">
-        	<div class="col-md-8">
-        	<h5><strong> View City Details</strong></h5>
-        	</div>
-	        <div class="col-md-4">
-	        	<a class="cust" href="{{url('city')}}">Back</a>
-	        </div>
-	    	</div>
-        	<div class="widget">
-        	<div class="activity-sec">
-                 
+@extends('layouts.admin')
+@section('headSection')
+@endsection
+@section('headSecondSection')
+@endsection
+@section('main-content')
+<div id="main">
+    <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+        <div class="col s12">
+            <div class="container">
+                <div class="section section-data-tables">
+                    <!-- BEGIN: Page Main-->
                     <div class="row">
-                        <form method="post" action="{{url('city_update')}}">
-                       
-                        @foreach($data['city_view'] as $value)
-                        @csrf
-                        <input type="hidden" name="id" value="{{$value->id}}">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                 <label for="Name" class="control-label col-md-4">Country Name <span style="color:red">*<span></label>
-                                 <div class="col-md-7">
-                                 <select name="country_id" id="country" class="form-control">
-                                 @foreach($data['country_view'] as $values)
-                                        <option value="{{$values->id}}"<?php if($values->id == $value->country_id) { echo "selected";}?>>{{$values->country_name}}</option>
-                                        @endforeach
-                                        </select>
-                                 </div>
-                                 </div>
-                                 <div class="form-group">
-                                 <label for="Name" class="control-label col-md-4">State Name <span style="color:red">*<span></label>
-                                 <div class="col-md-7"> 
+                        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+                            <!-- Search for small screen-->
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col s10 m6 l6">
+                                        <h5 class="breadcrumbs-title mt-0 mb-0"> Edit City Details</h5>
+                                        <ol class="breadcrumbs mb-0">
+                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            </li>
+                                            <li class="breadcrumb-item active">City
+                                            </li>
+                                            
+                                        </ol>
+                                    </div>
+                                    <div class="col s2 m6 l6 ">
+                                        <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('city')}}">City List</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <h4 class="card-title">Edit City</h4>
+                                    
+                                   <div id="view-validations">
+                                    <form class="formValidate" id="formValidate" method="post" action="{{url('city_update')}}">
+                                       <?php $row = $data['city_view'][0]; ?>
+										@csrf
+										<input type="hidden" name="id" value="{{$row->id}}">
+                                      <div class="row">
+                                        <div class="input-field col s12 m12">
+                                            <i class="material-icons prefix">map</i>
+                                            <select class="error validate" id="country" name="country_id"  data-error=".errorTxt6">
+                                                <option value="" disabled="" selected="">Select country</option>
+                                                @foreach($data['country_view'] as $values)
+                                                    <option value="{{$values->id}}" <?php if($values->id == $row->country_id) { echo "selected";} ?>>{{$values->country_name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="input-field">
+                                                <div class="errorTxt6"></div>
+                                            </div>
+                                        </div>
+                                         <div class="input-field col s12 m12">
+                                            <i class="material-icons prefix">room</i>
+                                            <select class="error validate" id="state" name="state_id"  data-error=".errorTxt7">
+                                                 @foreach ($data['state_view'] as $state)
+                                                    <option value="{{ $state->id }}" <?php if($state->id == $row->state_id) { echo "selected";}?>>{{ $state->state_name }}</option>
+                                                @endforeach
+                                            </select>
+                                             <div class="errorTxt7" style="margin: 0 45px;"></div>
+                                        </div>
+                                        <div class="input-field col s12 m12">
+                                                <i class="material-icons prefix">room</i>
+                                            
+                                            <input name="city_name" id="city_name" type="text" data-error=".errorTxt1" value="{{$row->city_name}}">
+                                            <div class="errorTxt1" style="margin: 0 45px;"></div>
+                                                <label for="city_name">City Name*</label>
+                                        </div>
 
-                                 <select name="state_id" id="state" class="form-control">
-                                 @foreach($data['state_view'] as $values)
-                                        <option value="{{$values->id}}"<?php if($values->id == $value->state_id) { echo "selected";}?>>{{$values->state_name}}</option>
-                                        @endforeach
-                                        </select>
-                                 </div>
-                                 </div>
-                            </div>
-                        </div><br>        
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                 <label for="Name" class="control-label col-md-4">City Name <span style="color:red">*<span></label>
-                                 <div class="col-md-7"> 
-                                   <input type="textbox" class="form-control" name="city_name" value="{{$value->city_name}}">
-                                 </div>
-                                 </div>
+                                        <div class="input-field col s12">
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
+                                            <i class="material-icons right">send</i>
+                                          </button>
+                                        </div>
+                                      </div>
+									 
+                                    </form>
+                                  </div>
+                                </div>
                             </div>
                         </div>
-                        @endforeach
-                        <br> 
-                        <br>
-                        <div class="row">
-                            <div class="wrapper">            
-                                    <input type="submit" name="submit" value="Update" class="btn btn-success">
-                                    <input type="submit" name="Cancel" value="Cancel" class="btn btn-danger">
-                                                                                 </div>
-                        </div>
-                    </form>
                     </div>
+                    <!-- END: Page Main-->
+                </div>
             </div>
         </div>
-        </div>
-        <script type="text/javascript">
-$(document).ready(function(){
-    $('#country').change(function(){
-    var countryID = $(this).val();    
-    if(countryID){
-        $.ajax({
-           type:"GET",
-           url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
-           success:function(res){               
-            if(res){
-                $("#state").empty();
-                console.log(res);
-                $.each(res,function(key,entry){
-                    $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
-                });
-            }else{
-               $("#state").empty();
-            }
-            //console.log(res);
-           }
-        });
-    }else{
-        $("#state").empty();
-        $("#city").empty();
-    }      
-   });
-   $('#state').change(function(){
-       var StateId = $(this).val();
-      
-       if(StateId!='' && StateId!='undefined')
-       {
-         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
-            success:function(res){
-                console.log(res);
-                if(res)
-                {
-                    $('#city').empty();
-                    $.each(res,function(key,entry){
-                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
-                        
-                    });
-                }else{
-                    $('#city').empty();
-                }
-               // console.log(res);
-            }
-         });
-       }else{
-           $('#city').empty();
-       }
-   });
-   $("#country").trigger('change');
-});
+    </div>
+</div>
+@endsection
+@section('footerSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+@endsection
+@section('footerSecondSection')
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
+<script>
+	$("#masters_sidebars_id").addClass('active');
+	$("#state_sidebar_li_id").addClass('active');
+	$("#state_sidebar_a_id").addClass('active');
 </script>
-@stop
+@endsection

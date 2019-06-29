@@ -78,6 +78,12 @@ $(function () {
         required: true,
         email: true
       },
+	  city_name : {
+		required: true,
+	  },
+	  designation_name : {
+		required: true,
+	  },
       password: {
         required: true,
         minlength: 5
@@ -161,6 +167,12 @@ $(function () {
       },
 	  state_name: {
          required: "Enter a State Name",
+      },
+	  city_name: {
+         required: "Enter a City Name",
+      },
+	  designation_name: {
+         required: "Enter a Designation Name",
       },
       curl: "Enter your website",
     },

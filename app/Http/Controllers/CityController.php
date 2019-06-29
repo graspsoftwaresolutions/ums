@@ -48,6 +48,12 @@ class CityController extends Controller
                 ])->get();
                 return response()->json($res);
     }
+
+    public function getStates($id)
+    {
+        return DB::table('state')->select('id', 'state_name')->where('country_id','=',$id)->get();
+    }
+    
     public function save(Request $request)
     {
         $request->validate([
@@ -63,6 +69,7 @@ class CityController extends Controller
        
         $city['state_id'] = $request->input('state_id');
         $city['city_name'] = $request->input('city_name');
+        $city['country_id'] = $request->input('country_id');
         $data_exists = DB::table('country')
                     ->join('state','country.id','=','state.country_id')
                     ->join('city','city.state_id','=','state.id')
@@ -81,18 +88,7 @@ class CityController extends Controller
             return redirect('city')->with('message','City Name Added Succesfully');
         }
     }
-    public function view($id)
-    {
-        $id = Crypt::decrypt($id);
-        $data['city_view'] =  DB::table('country')
-        ->join('state','country.id','=','state.country_id')
-        ->join('city','city.state_id','=','state.id')
-        ->where([
-            ['city.id','=',$id],
-            ['city.status','=','1']
-        ])->get();
-        return view('city.view_city')->with('data',$data);
-    }
+    
     public function edit($id)
     {
         $id = Crypt::decrypt($id);

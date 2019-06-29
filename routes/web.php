@@ -59,14 +59,24 @@ Route::post('status_save','StatusController@save');
 Route::get('status-edit/{parameter}','StatusController@edit');
 Route::post('status_update','StatusController@update');
 Route::get('status-delete/{id}','StatusController@delete');
+
 //City Details 
 Route::get('city','CityController@index');
 Route::get('add-city','CityController@addCity');
-Route::get('get-state-order-list','CityController@getStateorderList');
+//Route::get('get-state-order-list','CityController@getStateorderList');
+Route::get('get-state-order-list/{country}','CityController@getStates');
 Route::post('city_save','CityController@save');
 Route::get('city-edit/{parameter}','CityController@edit');
 Route::post('city_update','CityController@update');
 Route::get('city-delete/{id}','CityController@delete');
+
+//Designation
+Route::get('designation','DesignationController@index');
+Route::get('add-designation','DesignationController@addDesignation');
+Route::post('designation_save','DesignationController@save');
+Route::get('designation-edit/{parameter}','DesignationController@edit');
+Route::post('update_designation','DesignationController@update');
+Route::get('designation-delete/{id}','DesignationController@delete');
 
 //Race 
 Route::get('race','RaceController@index');
