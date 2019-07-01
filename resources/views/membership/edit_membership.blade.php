@@ -392,7 +392,7 @@
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="col s12 m12">
-                                                <button class="btn waves-effect waves-light right submit" type="button" name="action">Add Nominee
+                                                <button class="btn waves-effect waves-light right submit" id="add_nominee" type="button" name="add_nominee">Add Nominee
                                                 <i class="material-icons right">send</i>
                                             </button>
                                             </div>
@@ -446,10 +446,13 @@
 </div>
 @endsection
 @section('footerSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 @endsection
+
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 
 $(document).ready(function(){
@@ -746,6 +749,56 @@ $(document).ready(function(){
     });
     $('.datepicker').datepicker({
         format: 'yyyy-mm-dd'
+    });
+    $('#add_nominee').click(function(){
+        var auto_id =   $("#auto_id").val();
+        var nominee_name =   $("#nominee_name").val();
+        var nominee_years =   $("#years").val();
+        var nominee_sex =   $("#sex").val();
+        var nominee_relationship =   $("#relationship").val();
+        var nric_n =   $("#nric_n").val();
+        var nric_o =   $("#nric_o").val();
+        var nominee_address_one =   $("#nominee_address_one").val();
+        var nominee_country_id =   $("#nominee_country_id").val();
+        var nominee_state_id =   $("#nominee_state_id").val();
+        var nominee_address_two =   $("#nominee_address_two").val();
+        var nominee_city_id =   $("#nominee_city_id").val();
+        var nominee_postal_code =   $("#nominee_postal_code").val();
+        var nominee_address_three =   $("#nominee_address_three").val();
+        var nominee_mobile =   $("#nominee_mobile").val();
+        var nominee_phone =   $("#nominee_phone").val();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url : "{{ URL::to('/add-nominee') }}?auto_id="+auto_id,
+            data : [{
+                        'nominee_name' : nominee_name,
+                        'nominee_years' : nominee_years,
+                        'nominee_sex' : nominee_sex,
+                        'nominee_relationship' : nominee_relationship,
+                        'nric_n' : nric_n,
+                        'nric_o' : nric_o,
+                        'nominee_address_one' : nominee_address_one,
+                        'nominee_country_id' : nominee_country_id,
+                        'nominee_state_id' : nominee_state_id,
+                        'nominee_address_two' : nominee_address_two,
+                        'nominee_city_id' : nominee_city_id,
+                        'nominee_postal_code' : nominee_postal_code,
+                        'nominee_address_three' : nominee_address_three,
+                        'nominee_mobile' : nominee_mobile,
+                        'nominee_phone' : nominee_phone,
+                    }],
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                   
+                }else{
+                    
+                }
+                
+            }
+         });
     });
 </script>
 @endsection

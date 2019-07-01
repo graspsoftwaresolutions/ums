@@ -341,5 +341,8 @@ class MembershipController extends Controller
 	{
 		$data = DB::table('membership')->where('id','=',$id)->update(['status'=>'0']);
 		return redirect('membership')->with('message','Member Deleted Succesfully');
-	}
+    }
+    public function addNominee(Request $request){
+        echo 'hi';
+    }
 }
