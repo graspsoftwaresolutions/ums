@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
-use App\Company;
+use App\Model\Company;
 use DB;
 use View;
 
@@ -55,13 +55,13 @@ class CompanyController extends Controller
         
         if($data_exists > 0 && $data_exists !='' && $data_exists != 'NULL')
         {
-            return redirect('add-company')->with('message','Company Name Already Exists');
+            return redirect('add-company')->with('Warning','Company Name Already Exists');
         }
         else{
             $id = $this->Company->StoreCompany($company);
         return redirect('company')->with('message','Company Name Added Succesfully');
         }
-    } 
+    }
     public function view($id)
     {
         $id = Crypt::decrypt($id);

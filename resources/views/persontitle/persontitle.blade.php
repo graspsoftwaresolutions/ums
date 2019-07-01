@@ -21,17 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">Membership List</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">Person Title List</h5>
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
 											</li>
-											<li class="breadcrumb-item active"><a href="#">Member</a>
+											<li class="breadcrumb-item active"><a href="#">Person Title</a>
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('membership_register')}}">Add New Membership</a>
+										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-title')}}">Add New Title</a>
 										
 									</div>
 								</div>
@@ -40,34 +40,35 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">Membership List</h4>
+									<h4 class="card-title">Person Title List</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>Member Name</th>
-														<th>Email</th>
+                                                        <th>Title Name</th>
+														<th>Status</th>
 														<th style="text-align:center"> Action</th>
 													</tr>
 												</thead>
 												<tbody>
-													@foreach($data['member_view'] as $key=>$value)
-													<tr>
+													 @foreach($data['title_view'] as $key=>$value)
+													
 													<?php
 													$parameter =[
 														'id' =>$value->id,
 													];
-													 $parameter = Crypt::encrypt($parameter);  
+													 $parameter = Crypt::encrypt($person_title);  
 													 ?>
-													
-														<td>{{$value->name}}</td>
-														<td>{{$value->email}}</td>
-													<td>	<a class="btn-small waves-effect waves-light cyan" href="{{url('membership-edit/').'/'.$parameter}}">Edit</a></td>
-													<td>	<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
-													</tr>
-													@endforeach
+													 <tr>
+														<td>{{$value->country_name}}</td>
+														<td>Active</td>
+														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
+														<td><a class="btn-small waves-effect waves-light cyan" href="{{url('persontitle-edit/').'/'.$parameter}}">Edit</a> </td>
+														<td><a class="btn-small waves-effect waves-light amber darken-4" href="{{url('persontitle-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+												  </tr>
+												  @endforeach
 												</tbody>
 												
 											</table>
@@ -78,7 +79,6 @@
 						</div>
 					</div>
 					<!-- END: Page Main-->
-					@include('layouts.right-sidebar')
 				</div>
 			</div>
 		</div>
@@ -92,4 +92,9 @@
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script>
+	$("#masters_sidebars_id").addClass('active');
+	$("#country_sidebar_li_id").addClass('active');
+	$("#country_sidebar_a_id").addClass('active');
+</script>
 @endsection

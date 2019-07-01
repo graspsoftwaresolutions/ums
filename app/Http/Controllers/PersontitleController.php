@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Crypt;
 
 use Illuminate\Http\Request;
-use App\Persontitle;
+use App\Modal\Persontitle;
 use DB;
 use View;
 

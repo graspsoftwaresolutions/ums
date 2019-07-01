@@ -78,12 +78,13 @@ $(function () {
         required: true,
         email: true
       },
-	  city_name : {
-		required: true,
-	  },
-	  designation_name : {
-		required: true,
-	  },
+      city_name : {
+      required: true,
+      },
+      designation_name : {
+      required: true,
+      },
+      
       password: {
         required: true,
         minlength: 5
@@ -131,6 +132,7 @@ $(function () {
       designation: {
           required: "Please choose  your Designation",
       },
+      
       race: {
           required: "Please Choose your Race ",
       },
