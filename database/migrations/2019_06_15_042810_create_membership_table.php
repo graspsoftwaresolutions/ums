@@ -25,6 +25,7 @@ class CreateMembershipTable extends Migration
             $table->biginteger('phone');
             $table->integer('country_id');
             $table->integer('state_id');
+            $table->string('postal_code');
             $table->integer('city_id');
             $table->string('address_one');
             $table->string('address_two')->nullable();

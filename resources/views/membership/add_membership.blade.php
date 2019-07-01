@@ -44,29 +44,31 @@
                                             </ul>
                                         </div>
                                         <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('membership_save') }}">
+                                    <form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_save') }}">
                                         @csrf
                                         
                                       <div class="row">
-                                        <div class="input-field col s12 m6">
-                                          <select name="member_title" id="member_title">
+                                        <div class="col s12 m6">
+                                        <label>Member Title*</label>
+                                          <select name="member_title" id="member_title" data-error=".errorTxt1" class="error browser-default">
                                                 <option value="" disabled selected>Choose your option</option>
                                                 @foreach($data['title_view'] as $key=>$value)
                                             <option value="{{$value->id}}">{{$value->person_title}}</option>
                                             @endforeach
                                                 </select>
-                                                <label>Member Title*</label>
+                                               
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="member_number">Member Number *</label>
-                                          <input id="member_number" name="member_number" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="member_number" name="member_number" type="text" data-error=".errorTxt2">
+                                          <div class="errorTxt2"></div>
                                         </div>
+                                        <div class="clearfix" ></div>
                                         <div class="input-field col s12 m6">
                                           <label for="name">Member Name *</label>
-                                          <input id="name" name="name" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="name" name="name" type="text" data-error=".errorTxt3">
+                                          <div class="errorTxt3"></div>
                                         </div>
                                         
                                         <div class="input-field col s12 m6">
@@ -95,19 +97,20 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                           <label for="phone">Mobile Number *</label>
-                                          <input id="phone" name="phone" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="phone" name="phone" type="text" data-error=".errorTxt5">
+                                          <div class="errorTxt5"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="email">Email *</label>
-                                          <input id="email" name="email" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="email" name="email" type="text" data-error=".errorTxt6">
+                                          <div class="errorTxt6"></div>
                                         </div>
+                                        <div class="clearfix" ></div>
                                         <div class="input-field col s12 m6">
                                           
                                           <input type="text" class="datepicker" id="doe" name="doe">
                                             <label for="doe">Date of Emp</label>
-                                          <div class="errorTxt1"></div>
+                                          <div class="errorTxt7"></div>
                                         </div>
                                             <div class="col s12 m6">
                                                  <div class="input-field col s12 m6">
@@ -129,33 +132,37 @@
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
 
-                                            <div class="input-field col s12 m6">
-                                                <select name="designation" id="designation">
+                                            <div class="col s12 m6">
+                                            <label>Designation*</label>
+                                                <select name="designation" id="designation" class="error browser-default">
                                                     @foreach($data['designation_view'] as $key=>$value)
                                                         <option value="{{$value->id}}">{{$value->designation_name}}</option>
                                                     @endforeach
                                                         </select>
-                                                        <label>Designation*</label>
-                                                <div class="errorTxt1"></div>
+                                                       
+                                                <div class="errorTxt8"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                                <select name="race" id="race">
+                                            <div class="col s12 m6">
+                                                <label>Race*</label>
+                                                <select name="race" id="race" class="error browser-default">
                                                 @foreach($data['race_view'] as $key=>$value)
                                                     <option value="{{$value->id}}">{{$value->race_name}}</option>
                                                     @endforeach
                                                         </select>
-                                                        <label>Race*</label>
-                                                <div class="errorTxt1"></div>
+                                                       
+                                                <div class="errorTxt9"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                                <select name="country_id" id="country">
+                                            <div class="clearfix" ></div>
+                                            <div class="col s12 m6">
+                                               <label>Country Name*</label>
+                                                <select name="country_id" id="country" class="error browser-default">
                                                 <option value="">Select Country</option>
                                                     @foreach($data['country_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->country_name}}</option>
                                                     @endforeach
                                                         </select>
-                                                        <label>Country Name*</label>
-                                                <div class="errorTxt1"></div>
+                                                       
+                                                <div class="errorTxt10"></div>
                                             </div>
                                             <div class="col s12 m6">
                                                <label>State Name*</label>
@@ -163,7 +170,7 @@
                                                     <option value="" selected>State Name</option>
                                                 </select>
                                                
-                                                <div class="errorTxt1"></div>
+                                                <div class="errorTxt11"></div>
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
                                             <div class="col s12 m6">
@@ -172,77 +179,88 @@
                                                 <option value="">Select City</option>
                                                         </select>
                                                        
-                                                <div class="errorTxt1"></div>
+                                                <div class="errorTxt12"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="postal_code">Postal Code *</label>
-                                                <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt13">
+                                                <div class="errorTxt13"></div>
                                             </div>
+                                            <div class="clearfix" ></div>
                                             <div class="input-field col s12 m6">
                                             <label for="address_one">Address Line 1*</label>
-                                                <input id="address_one" name="address_one" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="address_one" name="address_one" type="text" data-error=".errorTxt14">
+                                                <div class="errorTxt14"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="address_two">Address Line 2*</label>
-                                                <input id="address_two" name="address_two" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="address_two" name="address_two" type="text" data-error=".errorTxt15">
+                                                <div class="errorTxt15"></div>
                                             </div>
+                                            <div class="clearfix" ></div>
                                             <div class="input-field col s12 m6">
                                             <label for="address_three">Address Line 3*</label>
-                                                <input id="address_three" name="address_three" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="address_three" name="address_three" type="text" data-error=".errorTxt16">
+                                                <div class="errorTxt16"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                                 <input type="text" class="datepicker" id="dob" name="dob">
                                                     <label for="dob">Date of Birth</label>
-                                                <div class="errorTxt1"></div>
+                                                <div class="errorTxt17"></div>
                                             </div>
+                                            <div class="clearfix" ></div>
                                             <div class="input-field col s12 m6">
                                                 <input type="text" class="datepicker" id="doj" name="doj">
                                                     <label for="doj">Date of Joining</label>
-                                                <div class="errorTxt1"></div>
+                                                <div class="errorTxt18"></div>
                                             </div>
                                             
                                             <div class="input-field col s12 m6">
                                             <label for="salary">Salary</label>
-                                                <input id="salary" name="salary" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="salary" name="salary" type="text" data-error=".errorTxt19">
+                                                <div class="errorTxt19"></div>
                                             </div>
+                                            <div class="clearfix" ></div>
                                             <div class="input-field col s12 m6">
                                             <label for="salary">Old IC Number</label>
-                                                <input id="old_ic" name="old_ic" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="old_ic" name="old_ic" type="text" data-error=".errorTxt20">
+                                                <div class="errorTxt20"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="new_ic">New IC Number</label>
-                                                <input id="new_ic" name="new_ic" type="text" data-error=".errorTxt1">
-                                                <div class="errorTxt1"></div>
+                                                <input id="new_ic" name="new_ic" type="text" data-error=".errorTxt21">
+                                                <div class="errorTxt21"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                                <select name="company_id" id="company">
+                                            <div class="clearfix" ></div>
+                                            <div class=" col s12 m6">
+                                            <label>Company Name*</label>
+                                                <select name="company_id" id="company" class="error browser-default">
+                                                <option value="">Select Company</option>
                                                     @foreach($data['company_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->company_name}}</option>
                                                     @endforeach
                                                         </select>
-                                                        <label>Company Name*</label>
-                                                <div class="errorTxt1"></div>
+                                                      
+                                                <div class="errorTxt22"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                                <select name="branch_id" id="branch">
+                                            <div class="col s12 m6">
+                                             <label>Branch Name*</label>
+                                                <select name="branch_id" id="branch" class="error browser-default">
+                                                <option value="">Select Branch</option>
                                                         </select>
-                                                        <label>Branch Name*</label>
-                                                <div class="errorTxt1"></div>
+                                                       
+                                                <div class="errorTxt23"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                                <select name="status_id" id="status_id">
+                                            <div class="clearfix" style="clear:both"></div>
+                                            <div class=" col s12 m6 hide">
+                                            <label>Status*</label>
+                                                <select name="status_id" id="status_id" class="error browser-default">
                                                 @foreach($data['status_view'] as $key=>$value)
-                                                       <option value="{{$value->id}}">{{$value->status_name}}</option>
+                                                       <option <?php echo $value->id ==1 ? 'selected': ''; ?> value="{{$value->id}}">{{$value->status_name}}</option>
                                                 @endforeach
                                                 </select>
-                                                        <label>Status*</label>
-                                                <div class="errorTxt1"></div>
+                                                       
+                                                <div class="errorTxt24"></div>
                                             </div>
                                             <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
@@ -257,7 +275,7 @@
 							</div>
 						</div>
 					</div>
-                    <div class="row">
+                    <div class="row hide">
 <div class="input-field col s6">
 <input id="country_test" type="text" name="country_test" class="validate">
 <label for="country_test">Search Country here</label>
@@ -273,12 +291,13 @@
 @endsection
 @section('footerSection')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <!--script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script-->
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 
 
 @endsection
@@ -415,6 +434,171 @@ $(document).ready(function(){
 </script>
 <script>
 	$("#membership_sidebar_a_id").addClass('active');
+    $("#member_formValidate").validate({
+        rules: {
+            member_title:{
+                required: true,
+            },
+            member_number: {
+                required: true,
+            },
+            name: {
+                required: true,
+            },
+            gender: {
+                required: true,
+            },
+            name: {
+                required: true,
+            },
+            phone: {
+                required: true,
+            },
+            email: {
+                required: true,
+            },
+            doe: {
+                required: true,
+            },
+            designation: {
+                required: true,
+            },
+            race: {
+                required: true,
+            },
+            country: {
+                required: true,
+            },
+            state: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            postal_code: {
+                required: true,
+            },
+            address_one: {
+                required:true,
+            },
+            dob: {
+                required:true,
+            },
+            new_ic: {
+                required:true,
+                minlength: 3,
+                maxlength: 20,
+            },
+            salary: {
+                required: true,
+            },
+            branch: {
+                required: true,
+            },
+            uname: {
+                required: true,
+                minlength: 5
+            },
+            country_name: {
+                required: true,
+            },
+            state_name: {
+                required: true,
+            },
+            country_id: "required",
+            cemail: {
+                required: true,
+                email: true
+            },
+            city_name : {
+            required: true,
+            },
+            designation_name : {
+            required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            member_title: {
+                required: "Please Enter Your Title ",
+                
+            },
+            member_number: {
+                required: "Please Enter Member NUmber",
+                
+            },
+            name: {
+                required: "Please Enter Your Name",
+                
+            },
+            gender: {
+                required: "Please choose Gender",
+            },
+            phone: {
+                required: "Please Enter your Number",
+                
+            },
+            email: {
+                required: "Please enter valid email",
+                },
+            designation: {
+                required: "Please choose  your Designation",
+            },
+            
+            race: {
+                required: "Please Choose your Race ",
+            },
+            country: {
+                required:"Please choose  your Country",
+            },
+            state: {
+                required:"Please choose  your State",
+            },
+            city: {
+                required:"Please choose  your city",
+            },
+            address_one: {
+                required:"Please Enter your Address",
+            },
+            dob: {
+                required:"Please choose DOB",
+            },
+            new_ic: {
+                required:"Please Enter New Ic Number",
+            },
+            salary: {
+                required:"Please Enter salary Name",
+            },
+            branch: {
+                required:"Please Choose Company Name",
+            },
+            uname: {
+                required: "Enter a username",
+                minlength: "Enter at least 5 characters"
+            },
+            country_name: {
+                required: "Enter a Country Name",
+            },
+            state_name: {
+                required: "Enter a State Name",
+            },
+            city_name: {
+                required: "Enter a City Name",
+            },
+            designation_name: {
+                required: "Enter a Designation Name",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 //     document.addEventListener('DOMContentLoaded', function() {
 //     var elems = document.querySelectorAll('.autocomplete');
 //     var instances = M.Autocomplete.init(elems, options);

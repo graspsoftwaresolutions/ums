@@ -281,7 +281,7 @@
 
 $(document).ready(function(){
       $('tabs').tabs();
-     
+      $("#membership_sidebar_a_id").addClass('active');
       $('#member_old_div').hide();
       $('#rejoined').click(function(){
         $('#member_old_div').toggle();

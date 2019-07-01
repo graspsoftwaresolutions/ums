@@ -12,6 +12,11 @@ use App\Model\Company;
 use DB;
 use View;
 use Mail;
+use App\Role;
+use App\User;
+use App\Helpers\CommonHelper;
+use App\Mail\SendMemberMailable;
+use URL;
 
 class MembershipController extends Controller
 {
@@ -157,55 +162,92 @@ class MembershipController extends Controller
 
         ]);
 
-        $member['member_title_id'] = $request->input('member_title');
-        $member['member_number'] = $request->input('member_number');
-        $member['name'] = $request->input('name');
-        $member['gender'] = $request->input('gender');
-        $member['phone'] = $request->input('phone');
-        $member['email'] = $request->input('email');
-        $member['designation_id'] = $request->input('designation');
-        $member['old_member_number'] = $request->input('old_mumber_number');
-        $member['salary'] = $request->input('salary');
-        $member['postal_code'] = $request->input('postal_code');
-        $member['race_id'] = $request->input('race');
-        $member['country_id'] = $request->input('country_id');
-        $member['state_id'] = $request->input('state_id');
-        $member['city_id'] = $request->input('city_id');
-        $member['address_one'] = $request->input('address_one');
-        $member['address_two'] = $request->input('address_two');
-        $member['address_three'] = $request->input('address_three');
+        $member_name = $request->input('name');
+        $member_email = $request->input('email');
 
-        $fm_date = explode("/",$request->input('dob'));         							
-        $dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
-        $dob = date('Y-m-d', strtotime($dob1));
-        $member['dob'] = $dob;
-        $fmm_date = explode("/",$request->input('doe'));           							
-        $doe1 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
-        $doe = date('Y-m-d', strtotime($doe1));
-        $member['doe'] = $doe;
-        $fmmm_date = explode("/",$request->input('doj'));           							
-        $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-        $doe = date('Y-m-d', strtotime($doj1));
-        $member['doj'] = $doe;
-        $member['old_ic'] = $request->input('old_ic');
-        $member['new_ic'] = $request->input('new_ic');
-        $member['branch_id'] = $request->input('branch_id');
+        if($member_name!="" &&  $member_email!=""){
+            $member_role = Role::where('slug', 'member')->first();
+            $randompass = CommonHelper::random_password(5,true);
 
-        $email_exists = DB::table('membership')->where([
-                        ['email','=',$member['email']],
-                        ['status','=','1']
-                        ])->count();
-                        
-        if($email_exists > 0)
-        {
-            return redirect()->back()->with('message','Email already Exists');
+            $member_user = new User();
+            $member_user->name = $member_name;
+            $member_user->email = $member_email;
+            $member_user->password = bcrypt($randompass);
+            $member_user->save();
+            $member_user->roles()->attach($member_role);
+           // return $member_user;die;
+
+            $member['member_title_id'] = $request->input('member_title');
+            $member['member_number'] = $request->input('member_number');
+            $member['name'] = $request->input('name');
+            $member['gender'] = $request->input('gender');
+            $member['phone'] = $request->input('phone');
+            $member['email'] = $request->input('email');
+            $member['designation_id'] = $request->input('designation');
+            $member['old_member_number'] = $request->input('old_mumber_number');
+            $member['salary'] = $request->input('salary');
+            $member['postal_code'] = $request->input('postal_code');
+            $member['race_id'] = $request->input('race');
+            $member['country_id'] = $request->input('country_id');
+            $member['state_id'] = $request->input('state_id');
+            $member['city_id'] = $request->input('city_id');
+            $member['address_one'] = $request->input('address_one');
+            $member['address_two'] = $request->input('address_two');
+            $member['address_three'] = $request->input('address_three');
+            $member['status_id'] = $request->input('status_id');
+            $member['user_id'] = $member_user->id;
+            $member['status'] = 1;
+
+            $fm_date = explode("/",$request->input('dob'));         							
+            $dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
+            $dob = date('Y-m-d', strtotime($dob1));
+            $member['dob'] = $dob;
+            $fmm_date = explode("/",$request->input('doe'));           							
+            $doe1 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
+            $doe = date('Y-m-d', strtotime($doe1));
+            $member['doe'] = $doe;
+            $fmmm_date = explode("/",$request->input('doj'));           							
+            $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+            $doe = date('Y-m-d', strtotime($doj1));
+            $member['doj'] = $doe;
+            $member['old_ic'] = $request->input('old_ic');
+            $member['new_ic'] = $request->input('new_ic');
+            $member['branch_id'] = $request->input('branch_id');
+
+            $email_exists = DB::table('membership')->where([
+                            ['email','=',$member['email']],
+                            ['status','=','1']
+                            ])->count();
+                            
+            if($email_exists > 0)
+            {
+                return redirect()->back()->with('message','Email already Exists');
+            }
+            else{
+              $id = $this->Membership->StoreMembership($member);
+              if(!empty($member_user)){
+                    $mail_data = array(
+                        'name' => $member_name,
+                        'email' => $member_email,
+                        'password' => $randompass,
+                        'site_url' => URL::to("/"),
+                    );
+                    $status = Mail::to($member_email)->send(new SendMemberMailable($mail_data));
+               }
+               if( count(Mail::failures()) > 0 ) {
+                   return redirect('membership')->with('message','Member Account created successfully, Failed to send mail');
+               }else{
+                   return redirect('membership')->with('message','Member Account created successfully, password sent to mail');
+               }
+                //Save
+               
+                return redirect('membership')->with('message','Registration Successfull');
+            }
+        }else{
+            return redirect('membership')->with('error','Name and email is invalid');
         }
-        else{
-           
-            //Save
-            $id = $this->Membership->StoreMembership($member);
-            return redirect('membership')->with('message','Registration Successfull');
-        }
+
+        
     }
     public function edit($id)
     {
