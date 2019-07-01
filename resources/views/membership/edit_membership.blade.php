@@ -423,7 +423,117 @@
                                         </div>
                                     </div>
                                     <div id="test4" class="col s12">
-                                        
+                                    <div class="row">
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_name">Guardian name* </label>
+                                                <input id="guardian_name" name="guardian_name" value=""  type="text" >
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="years">Years *</label>
+                                                <input id="years" name="years" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="sex">SEX *</label>
+                                                <input id="sex" name="sex" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="col s12 m4">
+                                                 <label>Relationship*</label>
+                                                    <select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+                                                        @foreach($data['relationship_view'] as $key=>$value)
+                                                            <option value="{{$value->id}}" >{{$value->relation_name}}</option>
+                                                        @endforeach
+                                                   </select>
+                                                       
+                                                   <div class="input-field">
+                                                     <div class="errorTxt31"></div>
+                                                   </div>   
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nric_n_guardian">NRIC-N *</label>
+                                                <input id="nric_n_guardian" name="nric_n_guardian" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nric_o_guardian">NRIC-O *</label>
+                                                <input id="nric_o_guardian" name="nric_o_guardian" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_address_one">Address Line 1*</label>
+                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="col s12 m4">
+                                                 <label>Country Name*</label>
+                                                <select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
+                                                    @foreach($data['country_view'] as $value)
+                                                        <option value="{{$value->id}}" >{{$value->country_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt35"></div>
+                                                </div>       
+                                                
+                                            </div>
+                                            <div class="col s12 m4">
+                                                 <label>State Name*</label>
+                                                <select name="guardian_state_id" id="guardian_state_id"  class="error browser-default">
+                                                    @foreach($data['state_view'] as $key=>$value)
+                                                        <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt36"></div>
+                                                </div>       
+                                                
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_address_two">Address Line 2*</label>
+                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="col s12 m4">
+                                                 <label>City Name*</label>
+                                                <select name="guardiancity_id" id="guardian_city_id"  class="error browser-default">
+                                                    @foreach($data['city_view'] as $key=>$value)
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt36"></div>
+                                                </div>       
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_postal_code">Postal code*</label>
+                                                <input id="guardian_postal_code" name="guardian_postal_code" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_address_three">Address Line 2*</label>
+                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_mobile">Mobile No*</label>
+                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_phone">Phone No</label>
+                                                <input id="guardian_phone" name="guardian_phone" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            </div>
                                     </div>
                                     </div>
                                    
