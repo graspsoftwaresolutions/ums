@@ -13,6 +13,7 @@ class FeeController extends Controller
     public function __construct()
     {
         $this->middleware('auth'); 
+		$this->middleware('role:union');
         $this->Fee = new Fee;
     }
     public function index()

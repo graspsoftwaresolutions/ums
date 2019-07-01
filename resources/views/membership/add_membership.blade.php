@@ -156,8 +156,9 @@
                                                 <div class="errorTxt1"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <select name="state_id" id="state">
-                                                 </select>
+                                            <select class="error validate" id="state_id" name="state_id" aria-required="true" required>
+                                                <option value="" selected>State Name</option>
+                                            </select>
                                                         <label>State Name*</label>
                                                 <div class="errorTxt1"></div>
                                             </div>
@@ -259,7 +260,7 @@
 </div>
 @endsection
 @section('footerSection')
-<script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script>
+<!--script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script-->
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 @endsection

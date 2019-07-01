@@ -11,9 +11,7 @@
 |
 */
 /* Authentication */
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'Auth\LoginController@custom_login');
 
 Auth::routes();
 

@@ -18,6 +18,7 @@ class MembershipController extends Controller
     public function __construct()
     {
         $this->middleware('auth'); 
+		$this->middleware('role:union|branch');
         $this->Membership = new Membership;
        
     }
