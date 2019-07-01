@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Crypt;
 
 use Illuminate\Http\Request;
-use App\Modal\Persontitle;
+use App\Model\Persontitle;
 use DB;
 use View;
 
@@ -59,7 +59,7 @@ class PersontitleController extends Controller
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
-        $data['title_view'] = DB::table('persontitle')->where([
+        $data['title_edit'] = DB::table('persontitle')->where([
             ['status','=','1'],
             ['id','=',$id]
         ])->get();

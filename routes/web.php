@@ -136,3 +136,11 @@ Route::post('persontitle_save','PersontitleController@save');
 Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
 Route::post('persontitle_update','PersontitleController@update');
 Route::get('persontitle-delete/{id}','PersontitleController@delete');
+
+//Member Relation Setup
+Route::get('relation','RelationController@index');
+Route::get('add-relation','RelationController@addRelation');
+Route::post('relation_save','RelationController@save');
+Route::get('relation-edit/{parameter}','RelationController@edit');
+Route::post('relation_update','RelationController@update');
+Route::get('relation-delete/{id}','RelationController@delete');
