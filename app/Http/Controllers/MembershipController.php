@@ -202,10 +202,12 @@ class MembershipController extends Controller
             $dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
             $dob = date('Y-m-d', strtotime($dob1));
             $member['dob'] = $dob;
+
             $fmm_date = explode("/",$request->input('doe'));           							
             $doe1 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
             $doe = date('Y-m-d', strtotime($doe1));
             $member['doe'] = $doe;
+
             $fmmm_date = explode("/",$request->input('doj'));           							
             $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $doe = date('Y-m-d', strtotime($doj1));
@@ -251,35 +253,37 @@ class MembershipController extends Controller
     }
     public function edit($id)
     {
-         $id = Crypt::decrypt($id);
+       
+        $dec_id = Crypt::decrypt($id);
+       // print_r($dec_id['id']) ;
+        $id =  $dec_id['id'];
+        //print_r($id) ;
+         DB::connection()->enableQueryLog();
          $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.phone',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
-                                        'city.id','city.city_name','city.status','branch.id','branch.branch_name','branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status')
-                                ->join('country','membership.country_id','=','country.id')
-                                ->join('state','membership.state_id','=','state.id')
-                                ->join('city','membership.city_id','=','city.id')
-                                ->join('branch','membership.branch_id','=','branch.id')
-                                ->join('persontitle','membership.member_title_id','=','persontitle.id')
-                                ->join('race','membership.race_id','=','race.id')
-                                ->join('designation','membership.designation_id','=','designation.id')
+                                        'city.id','city.city_name','city.status','branch.id','branch.branch_name','branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number')
+                                ->leftjoin('country','membership.country_id','=','country.id')
+                                ->leftjoin('state','membership.state_id','=','state.id')
+                                ->leftjoin('city','membership.city_id','=','city.id')
+                                ->leftjoin('branch','membership.branch_id','=','branch.id')
+                                ->leftjoin('persontitle','membership.member_title_id','=','persontitle.id')
+                                ->leftjoin('race','membership.race_id','=','race.id')
+                                ->leftjoin('designation','membership.designation_id','=','designation.id')
                                 ->where([
-                                    ['country.status','=','1'],
-                                    ['state.status','=','1'],
-                                    ['city.status','=','1'],
-                                    ['branch.status','=','1'],
-                                    ['persontitle.status','=','1'],
-                                    ['race.status','=','1'],
-                                    ['designation.status','=','1'],
-                                    ['membership.status','=','1'],
-                                    ['membership.id','=',$id]
+                                   ['membership.id','=',$id]
                                 ])->get();
-        
+
+                                $queries = DB::getQueryLog();
+                              // dd($queries);
+
         $country_id = $data['member_view'][0]->country_id;
+      
         $state_id = $data['member_view'][0]->state_id;
         $city_id = $data['member_view'][0]->city_id;
+        //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -293,30 +297,44 @@ class MembershipController extends Controller
     }
     public function update(Request $request)
     {
-        $id = $request->input('id');
+        $id = $request->input('auto_id');
+        
+         $fm_date = explode("/",$request->input('dob'));         							
+         $dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
+         $dob = date('Y-m-d', strtotime($dob1));
+
+         $fmm_date = explode("/",$request->input('doe'));           							
+         $doe1 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
+         $doe = date('Y-m-d', strtotime($doe1));
+         $member['doe'] = $doe;
+
+         $fmmm_date = explode("/",$request->input('doj'));           							
+         $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+         $doe = date('Y-m-d', strtotime($doj1));
        
         $member['member_title_id'] = $request->input('member_title');
         $member['member_number'] = $request->input('member_number');
         $member['name'] = $request->input('name');
         $member['gender'] = $request->input('gender');
         $member['phone'] = $request->input('phone');
-        $member['email'] = $request->input('email');
+        //$member['email'] = $request->input('email');
         $member['designation_id'] = $request->input('designation');
-        $member['race_id'] = $request->input('race_name');
+       // $member['race_id'] = 1;
         $member['country_id'] = $request->input('country_id');
         $member['state_id'] = $request->input('state_id');
         $member['city_id'] = $request->input('city_id');
         $member['address_one'] = $request->input('address_one');
         $member['address_two'] = $request->input('address_two');
         $member['address_three'] = $request->input('address_three');
-        $member['dob'] = $request->input('dob');
-        $member['doj'] = $request->input('doj');
+        $member['dob'] = $dob;
         $member['old_ic'] = $request->input('old_ic');
         $member['new_ic'] = $request->input('new_ic');
         $member['branch_id'] = $request->input('branch_id');
+        //$member['race_id'] = 1;
+        //return $member;
 
         $id = DB::table('membership')->where('id','=',$id)->update($member);
-        return redirect('membership')->with('message','Member Details Edited Successfull');
+        return redirect('membership')->with('message','Member Details Updated Successfull');
     }
     public function delete($id)
 	{
