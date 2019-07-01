@@ -75,7 +75,7 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
+	$("#status_sidebar_li_id").addClass('active');
+	$("#status_sidebar_a_id").addClass('active');
 </script>
 @endsection

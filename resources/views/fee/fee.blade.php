@@ -31,7 +31,7 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-fee')}}">Add New Fee</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-fee')}}">Add New Fee</a>
 										
 									</div>
 								</div>
@@ -78,6 +78,7 @@
 						</div>
 					</div>
 					<!-- END: Page Main-->
+					@include('layouts.right-sidebar')
 				</div>
 			</div>
 		</div>

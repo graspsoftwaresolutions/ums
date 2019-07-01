@@ -31,7 +31,7 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-status')}}">Add New Status</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-status')}}">Add New Status</a>
 										
 									</div>
 								</div>
@@ -78,6 +78,7 @@
 						</div>
 					</div>
 					<!-- END: Page Main-->
+					@include('layouts.right-sidebar')
 				</div>
 			</div>
 		</div>
@@ -93,7 +94,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
+	$("#status_sidebar_li_id").addClass('active');
+	$("#status_sidebar_a_id").addClass('active');
 </script>
 @endsection
