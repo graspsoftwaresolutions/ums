@@ -9,7 +9,7 @@
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
             <div class="container">
-                <div class="section section-data-tables">
+                <div class="section ">
                     <!-- BEGIN: Page Main-->
                     <div class="row">
                         <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
@@ -17,18 +17,16 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Country List</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">Add Union Branch Details</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Country</a>
+                                            <li class="breadcrumb-item active"><a href="#">Union Branch</a>
                                             </li>
-                                            
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-country')}}">Add New Country</a>
-                                        
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('unionbranch')}}">Union Branch List</a>
                                     </div>
                                 </div>
                             </div>
@@ -36,17 +34,25 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Country</h4>
+                                    <h4 class="card-title">Add Union Branch</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('country_save') }}">
+                                    <form class="formValidate" id="unionbranch_formValidate" method="post" action="{{url('unionbranch_save')}}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="country_name">Country Name*</label>
-                                          <input id="country_name" name="country_name" type="text" data-error=".errorTxt1">
+                                          <label for="branch_name">Union Branch Name*</label>
+                                          <input id="branch_name" name="branch_name" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
+                                        <div class="input-field col s12 m6">
+                                          
+                                        <p>
+                                        <label>
+                                            <input type="checkbox" name="is_head" id="is_head" value="1"  />
+                                            <span>Head</span>
+                                        </label>
+                                        </p>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
@@ -73,7 +79,29 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
+	$("#relation_sidebar_li_id").addClass('active');
+	$("#unionbranch_sidebar_a_id").addClass('active');
+    $("#unionbranch_formValidate").validate({
+        rules: {
+            branch_name: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            branch_name: {
+                required: "Enter the Union Branch Name",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 </script>
 @endsection

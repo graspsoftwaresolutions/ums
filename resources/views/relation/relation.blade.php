@@ -63,9 +63,9 @@
 													 <tr>
 														<td>{{$value->relation_name}}</td>
 														<td>Active</td>
-														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
-														<td><a class="btn-small waves-effect waves-light cyan" href="{{url('relation-edit/').'/'.$parameter}}">Edit</a> </td>
-														<td><a class="btn-small waves-effect waves-light amber darken-4" href="{{url('relation-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+														
+														<td><a class="btn-small waves-effect waves-light cyan" href="{{url('relation-edit/').'/'.$parameter}}">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('relation-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a> </td>
+														
 												  </tr>
 												  @endforeach
 												</tbody>
@@ -77,6 +77,7 @@
 						</div>
 					</div>
 					<!-- END: Page Main-->
+					@include('layouts.right-sidebar')
 				</div>
 			</div>
 		</div>

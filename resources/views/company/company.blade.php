@@ -39,7 +39,7 @@
     <div class="col s12">
       <div class="card">
         <div class="card-content">
-          <h4 class="card-title">Country List</h4>
+          <h4 class="card-title">Company List</h4>
           @include('includes.messages')
           <div class="row">
             <div class="col s12">
@@ -66,8 +66,8 @@
                         <td> {{$value->owner_name}}</td>
                         <td> {{$value->phone}}</td>
                         <td> {{$value->email}}</td>
-                        <td> <a class="btn-small waves-effect waves-light cyan" href="{{url('company-edit/').'/'.$parameter}}">Edit</a></td>
-                        <td><a class="btn-small waves-effect waves-light amber darken-4" href="{{url('company-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td> 
+                        <td> <a class="btn-small waves-effect waves-light cyan" href="{{url('company-edit/').'/'.$parameter}}">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('company-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+                        <td></td> 
                         
                 </tr>
                 @endforeach

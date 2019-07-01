@@ -35,6 +35,7 @@ Route::get('get-state-list','MembershipController@getStateList');
 Route::get('get-cities-list','MembershipController@getCitiesList');
 Route::get('get-branch-list','MembershipController@getBranchList');
 Route::get('get-oldmember-list','MembershipController@getoldMemberList');
+Route::post('add-nominee','MembershipController@addNominee');
 
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
@@ -143,3 +144,11 @@ Route::post('relation_save','RelationController@save');
 Route::get('relation-edit/{parameter}','RelationController@edit');
 Route::post('relation_update','RelationController@update');
 Route::get('relation-delete/{id}','RelationController@delete');
+
+//Union Branch
+Route::get('unionbranch','UnionBranchController@index');
+Route::get('add-unionbranch','UnionBranchController@addUnionBranch');
+Route::post('unionbranch_save','UnionBranchController@save');
+Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
+Route::post('unionbranch_update','UnionBranchController@update');
+Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
