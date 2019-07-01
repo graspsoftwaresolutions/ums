@@ -46,7 +46,17 @@
                                         <div id="view-validations">
                                     <form class="formValidate" id="formValidate" method="post" action="{{ url('membership_save') }}">
                                         @csrf
-                                        
+                                        <div class="row">
+                                            <div class="col s12">
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                <i class="material-icons prefix">textsms</i>
+                                                <input type="text" id="autocomplete-input" class="autocomplete">
+                                                <label for="autocomplete-input">Autocomplete</label>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
                                       <div class="row">
                                         <div class="input-field col s12 m6">
                                           <select name="member_title" id="member_title">
@@ -119,11 +129,11 @@
                                                     </label>
                                                     </p>
                                                  </div>
-                                                 <div class="input-field col s12 m6" id="member_old_div">
-                                                    <input type="text" name="old_mumber_number" id="old_mumber_number" class="autocomplete">
-                                                    <label for="old_mumber_number">Old Number</label>
+                                                 <div class="col s12 m6" id="member_old_div">
                                                  <span> 
-                                                    
+                                                 <select class="error browser-default" name="old_mumber_number" id="old_mumber_number">
+                                                 </select>
+                                                        
                                                  </span>
                                                  </div>
                                             </div>
@@ -149,7 +159,6 @@
                                             </div>
                                             <div class="input-field col s12 m6">
                                                 <select name="country_id" id="country">
-                                                <option value="">Select Country</option>
                                                     @foreach($data['country_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->country_name}}</option>
                                                     @endforeach
@@ -169,7 +178,6 @@
                                             <div class="col s12 m6">
                                                  <label>City Name*</label>
                                                 <select name="city_id" id="city" class="error browser-default">
-                                                <option value="">Select City</option>
                                                         </select>
                                                        
                                                 <div class="errorTxt1"></div>
@@ -257,14 +265,7 @@
 							</div>
 						</div>
 					</div>
-                    <div class="row">
-<div class="input-field col s6">
-<input id="country_test" type="text" name="country_test" class="validate">
-<label for="country_test">Search Country here</label>
-</div>
-</div>
 					<!-- END: Page Main-->
-                    @include('layouts.right-sidebar')
 				</div>
 			</div>
 		</div>
@@ -272,21 +273,15 @@
 </div>
 @endsection
 @section('footerSection')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <!--script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script-->
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-
-
 @endsection
 @section('footerSecondSection')
 <script>
 
 $(document).ready(function(){
-      //$('tabs').tabs();
+      $('tabs').tabs();
      
       $('#member_old_div').hide();
       $('#rejoined').click(function(){
@@ -329,7 +324,6 @@ $(document).ready(function(){
                    // console.log(res);
                     //console.log('hi test');
                     $("#state_id").empty();
-                    $("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
                     $.each(res,function(key,entry){
                         
                         $("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
@@ -349,8 +343,7 @@ $(document).ready(function(){
             $("#city").empty();
         }      
     });
-    //$("#country").trigger('change');
-   // $("#state_id").trigger('change');
+    $("#country").trigger('change');
     $('#state_id').change(function(){
        var StateId = $(this).val();
       
@@ -365,7 +358,7 @@ $(document).ready(function(){
                 if(res)
                 {
                     $('#city').empty();
-                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
+                   
                     $.each(res,function(key,entry){
                         $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
                         
@@ -415,58 +408,37 @@ $(document).ready(function(){
 </script>
 <script>
 	$("#membership_sidebar_a_id").addClass('active');
-//     document.addEventListener('DOMContentLoaded', function() {
-//     var elems = document.querySelectorAll('.autocomplete');
-//     var instances = M.Autocomplete.init(elems, options);
-//   });
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.autocomplete');
+    var instances = M.Autocomplete.init(elems, options);
+  });
 
 
   // Or with jQuery
 
   
 
-  
-$(function() {
-    // var options = {
-    //     url: function(phrase) {
-    //         return "https://restcountries.eu/rest/v2/all?fields=name";
-    //     },
-
-    //     getValue: "name"
-    // };
-
-        //$("#old_mumber_number").autocomplete(options);
-        // $('#old_mumber_number').keyup(function(){
-        //     var searchkey = $(this).val();
-        //         $.ajax({
-        //         type: 'GET',
-        //         url: 'https://restcountries.eu/rest/v2/all?fields=name',
-        //        // url: "{{ URL::to('/get-oldmember-list') }}?number="+searchkey,
-        //         success: function(response) {
-        //             var countryArray = response;
-        //             var dataCountry = {};
-        //             for (var i = 0; i < countryArray.length; i++) {
-        //             //console.log(countryArray[i].name);
-        //             dataCountry[countryArray[i].name] = countryArray[i].flag; //countryArray[i].flag or null
-        //             }
-        //             $('input#old_mumber_number').autocomplete({
-        //                 data: dataCountry,
-        //                 limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
-        //             });
-        //         }
-        //         });
-        //     });
+  $(document).ready(function() {
+  //Autocomplete
+  $(function() {
+    $.ajax({
+      type: 'GET',
+      url: 'https://restcountries.eu/rest/v2/all?fields=name',
+      success: function(response) {
+        var countryArray = response;
+        var dataCountry = {};
+        for (var i = 0; i < countryArray.length; i++) {
+          //console.log(countryArray[i].name);
+          dataCountry[countryArray[i].name] = countryArray[i].flag; //countryArray[i].flag or null
+        }
+        $('input.autocomplete').autocomplete({
+          data: dataCountry,
+          limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
+        });
+      }
     });
-    $("#country_test").devbridgeAutocomplete({
-        //lookup: countries,
-        serviceUrl: "{{ URL::to('/get-oldmember-list') }}?key=1",
-        type:'GET',
-        //callback just to show it's working
-        onSelect: function (suggestion) {
-             console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
-        },
-        showNoSuggestionNotice: true,
-        noSuggestionNotice: 'Sorry, no matching results',
-    });
+  });
+});
+       
 </script>
 @endsection

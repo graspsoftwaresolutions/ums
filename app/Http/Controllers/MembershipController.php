@@ -65,12 +65,16 @@ class MembershipController extends Controller
     }
     public function getoldMemberList()
     {
+        
         $res = DB::table('membership')
             ->join('status','membership.status_id','=','status.id')        
         ->where([
             ['status.status_name','=','inactive']
         ])->get();
+        $res['suggestions'] = [ array('value' => 'United States', 'data' => 'us') ];
+        echo json_encode($res); die;
         return response()->json($res);
+        
     }
     public function getStateList(Request $request)
     {
