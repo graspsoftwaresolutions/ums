@@ -45,10 +45,12 @@
                                             <li class="tab col m3"><a href="#test4">Guardian Details</a></li>
                                             </ul>
                                         </div>
+                                        <form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_update') }}">
+                                          @foreach($data['member_view'] as $key=>$values)
+                                          @csrf
+										<div id="test1" class="col s12">
                                         <div id="view-validations">
-                                    <form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_update') }}">
-                                    @foreach($data['member_view'] as $key=>$values)
-                                        @csrf
+                                   
                                       <div class="row">
                                         <div class="col s12 m6">
                                         <input id="auto_id" name="auto_id" value="{{$values->mid}}"  type="text" class="hide">
@@ -272,19 +274,166 @@
                                                     <div class="errorTxt16"></div>
                                                 </div>
                                             </div>
-                                            <div class="input-field col s12">
+                                          
+                                      </div>
+                                     
+                                    
+                                  </div>
+                                    </div>
+                                    <div id="test2" class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_name">Nominee name* </label>
+                                                <input id="nominee_name" name="nominee_name" value=""  type="text" >
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="years">Years *</label>
+                                                <input id="years" name="years" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="sex">SEX *</label>
+                                                <input id="sex" name="sex" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="col s12 m4">
+                                                 <label>Relationship*</label>
+                                                    <select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+                                                        @foreach($data['relationship_view'] as $key=>$value)
+                                                            <option value="{{$value->id}}" >{{$value->relation_name}}</option>
+                                                        @endforeach
+                                                   </select>
+                                                       
+                                                   <div class="input-field">
+                                                     <div class="errorTxt31"></div>
+                                                   </div>   
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nric_n">NRIC-N *</label>
+                                                <input id="nric_n" name="nric_n" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nric_o">NRIC-O *</label>
+                                                <input id="nric_o" name="nric_o" value=""  type="text">
+                                                
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_address_one">Address Line 1*</label>
+                                                <input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="col s12 m4">
+                                                 <label>Country Name*</label>
+                                                <select name="nominee_country_id" id="nominee_country_id"  class="error browser-default">
+                                                    @foreach($data['country_view'] as $value)
+                                                        <option value="{{$value->id}}" >{{$value->country_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt35"></div>
+                                                </div>       
+                                                
+                                            </div>
+                                            <div class="col s12 m4">
+                                                 <label>State Name*</label>
+                                                <select name="nominee_state_id" id="nominee_state_id"  class="error browser-default">
+                                                    @foreach($data['state_view'] as $key=>$value)
+                                                        <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt36"></div>
+                                                </div>       
+                                                
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_address_two">Address Line 2*</label>
+                                                <input id="nominee_address_two" name="nominee_address_two" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="col s12 m4">
+                                                 <label>City Name*</label>
+                                                <select name="nominee_city_id" id="nominee_city_id"  class="error browser-default">
+                                                    @foreach($data['city_view'] as $key=>$value)
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt36"></div>
+                                                </div>       
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_postal_code">Postal code*</label>
+                                                <input id="nominee_postal_code" name="nominee_postal_code" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_address_three">Address Line 2*</label>
+                                                <input id="nominee_address_three" name="nominee_address_three" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_mobile">Mobile No*</label>
+                                                <input id="nominee_mobile" name="nominee_mobile" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_phone">Phone No</label>
+                                                <input id="nominee_phone" name="nominee_phone" type="text" value="" >
+                                                 
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="col s12 m12">
+                                                <button class="btn waves-effect waves-light right submit" type="button" name="action">Add Nominee
+                                                <i class="material-icons right">send</i>
+                                            </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                        <th data-field="name">Name</th>
+                                                        <th data-field="age">Age</th>
+                                                        <th data-field="sex">Sex</th>
+                                                        <th data-field="relationship">Relationship</th>
+                                                        <th data-field="nric_n">NRIC-N</th>
+                                                        <th data-field="nric_o">NRIC-0</th>
+                                                        </tr>
+                                                    </thead>
+                                                <tbody>
+                                                    <!--tr>
+                                                        <td>Alvin</td>
+                                                        <td>Eclair</td>
+                                                        <td>$0.87</td>
+                                                    </tr-->
+                                                    
+                                                </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="test4" class="col s12">
+                                        
+                                    </div>
+                                    </div>
+                                   
+										<div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
                                           </button>
                                         </div>
-                                      </div>
-                                      @endforeach
+										 @endforeach
                                     </form>
-                                  </div>
-                                        </div>
-                                        <div id="test2" class="col s12">Test 2</div>
-                                        <div id="test4" class="col s12">Test 4</div>
-                                        </div>
 								</div>
 							</div>
 						</div>

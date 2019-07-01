@@ -64,8 +64,7 @@
 													
 														<td>{{$value->name}}</td>
 														<td>{{$value->email}}</td>
-													<td>	<a class="btn-small waves-effect waves-light cyan" href="{{url('membership-edit/').'/'.$parameter}}">Edit</a></td>
-													<td>	<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+													<td>	<a class="btn-small waves-effect waves-light cyan" href="{{url('membership-edit/').'/'.$parameter}}">Edit</a>	<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
 													</tr>
 													@endforeach
 												</tbody>
@@ -92,4 +91,7 @@
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script>
+ $("#membership_sidebar_a_id").addClass('active');
+ </script>
 @endsection

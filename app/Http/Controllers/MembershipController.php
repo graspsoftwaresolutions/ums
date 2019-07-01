@@ -291,6 +291,7 @@ class MembershipController extends Controller
         $data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
         $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
              
         return view('membership.edit_membership')->with('data',$data); 
    
