@@ -343,6 +343,6 @@ class MembershipController extends Controller
 		return redirect('membership')->with('message','Member Deleted Succesfully');
     }
     public function addNominee(Request $request){
-        echo 'hi';
+       return $request->all();
     }
 }

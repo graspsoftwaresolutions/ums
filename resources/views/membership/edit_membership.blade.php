@@ -66,13 +66,13 @@
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="member_number">Member Number *</label>
-                                          <input id="member_number" name="member_number" value="{{$values->member_number}}"  type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="member_number" name="member_number" value="{{$values->member_number}}"  type="text" data-error=".errorTxt29">
+                                          <div class="errorTxt29"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="name">Member Name *</label>
-                                          <input id="name" name="name" value="{{$values->name}}" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="name" name="name" value="{{$values->name}}" type="text" data-error=".errorTxt30">
+                                          <div class="errorTxt30"></div>
                                         </div>
                                         
                                         <div class="input-field col s12 m6">
@@ -101,19 +101,19 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                           <label for="phone">Mobile Number *</label>
-                                          <input id="phone" name="phone" value="{{$values->phone}}" type="text" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="phone" name="phone" value="{{$values->phone}}" type="text" data-error=".errorTxt24">
+                                          <div class="errorTxt24"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="email">Email *</label>
-                                          <input id="email" name="email" readonly type="text" value="{{$values->email}}" data-error=".errorTxt1">
-                                          <div class="errorTxt1"></div>
+                                          <input id="email" name="email" readonly type="text" value="{{$values->email}}" data-error=".errorTxt25">
+                                          <div class="errorTxt25"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
                                           
                                           <input type="text" value="{{ date('d/M/Y',strtotime($values->doe)) }}"  class="datepicker" id="doe" name="doe">
                                             <label for="doe">Date of Emp</label>
-                                          <div class="errorTxt1"></div>
+                                          <div class="errorTxt26"></div>
                                         </div>
                                             <div class="col s12 m6">
                                                  <div class="input-field col s12 m6">
@@ -877,38 +877,42 @@ $(document).ready(function(){
         var nominee_address_three =   $("#nominee_address_three").val();
         var nominee_mobile =   $("#nominee_mobile").val();
         var nominee_phone =   $("#nominee_phone").val();
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url : "{{ URL::to('/add-nominee') }}?auto_id="+auto_id,
-            data : [{
-                        'nominee_name' : nominee_name,
-                        'nominee_years' : nominee_years,
-                        'nominee_sex' : nominee_sex,
-                        'nominee_relationship' : nominee_relationship,
-                        'nric_n' : nric_n,
-                        'nric_o' : nric_o,
-                        'nominee_address_one' : nominee_address_one,
-                        'nominee_country_id' : nominee_country_id,
-                        'nominee_state_id' : nominee_state_id,
-                        'nominee_address_two' : nominee_address_two,
-                        'nominee_city_id' : nominee_city_id,
-                        'nominee_postal_code' : nominee_postal_code,
-                        'nominee_address_three' : nominee_address_three,
-                        'nominee_mobile' : nominee_mobile,
-                        'nominee_phone' : nominee_phone,
-                    }],
-            success:function(res){
-                console.log(res);
-                if(res)
-                {
-                   
-                }else{
-                    
+         $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-                
-            }
-         });
+            });
+            
+            $.ajax({
+                method: 'POST', // Type of response and matches what we said in the route
+                url: "{{ URL::to('/add-nominee') }}", // This is the url we gave in the route
+                data: { 
+                    'auto_id' : auto_id,
+                    'nominee_name' : nominee_name,
+                    'nominee_years' : nominee_years,
+                    'nominee_sex' : nominee_sex,
+                    'nominee_relationship' : nominee_relationship,
+                    'nric_n' : nric_n,
+                    'nric_o' : nric_o,
+                    'nominee_address_one' : nominee_address_one,
+                    'nominee_country_id' : nominee_country_id,
+                    'nominee_state_id' : nominee_state_id,
+                    'nominee_address_two' : nominee_address_two,
+                    'nominee_city_id' : nominee_city_id,
+                    'nominee_postal_code' : nominee_postal_code,
+                    'nominee_address_three' : nominee_address_three,
+                    'nominee_mobile' : nominee_mobile,
+                    'nominee_phone' : nominee_phone,
+                }, // a JSON object to send back
+                success: function(response){ // What to do if we succeed
+                    console.log(response); 
+                },
+                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+
     });
 </script>
 @endsection
