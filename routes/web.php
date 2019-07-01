@@ -120,3 +120,19 @@ Route::get('unionbranch-view/{parameter}','UnionBranchController@view');
 Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
 Route::post('unionbranch_update','UnionBranchController@update');
 Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
+
+//Company
+Route::get('/company','CompanyController@index');
+Route::get('/add-company','CompanyController@addCompany');
+Route::post('/company_save','CompanyController@save');
+Route::get('company-edit/{parameter}','CompanyController@edit');
+Route::post('company_edit','CompanyController@update');
+Route::get('company-delete/{id}','CompanyController@delete');
+
+//Person Tiltle Setup
+Route::get('persontitle','PersontitleController@index');
+Route::get('add-title','PersontitleController@addTitle');
+Route::post('persontitle_save','PersontitleController@save');
+Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
+Route::post('persontitle_update','PersontitleController@update');
+Route::get('persontitle-delete/{id}','PersontitleController@delete');
