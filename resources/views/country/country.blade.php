@@ -8,44 +8,44 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 @endsection
 @section('main-content')
-<div id="main">
-	<div class="row">
-		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
-		<div class="col s12">
-			<div class="container">
-				<div class="section section-data-tables">
-					<!-- BEGIN: Page Main-->
-					<div class="row">
-						<div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
-							<!-- Search for small screen-->
-							<div class="container">
-								<div class="row">
-									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">Country List</h5>
-										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
-											</li>
-											<li class="breadcrumb-item active"><a href="#">Country</a>
-											</li>
-											
-										</ol>
-									</div>
-									<div class="col s2 m6 l6 ">
-										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-country')}}">Add New Country</a>
-										
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col s12">
-							<div class="card">
-								<div class="card-content">
-									<h4 class="card-title">Country List</h4>
-									@include('includes.messages')
-									<div class="row">
-										<div class="col s12">
-											<table id="page-length-option" class="display">
-												<thead>
+    <div id="main">
+      <div class="row">
+        <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+          <!-- Search for small screen-->
+          <div class="container">
+            <div class="row">
+              <div class="col s10 m6 l6">
+                <h5 class="breadcrumbs-title mt-0 mb-0">Dashboard</h5>
+                <ol class="breadcrumbs mb-0">
+                  <li class="breadcrumb-item"><a href="index.html">Country</a>
+                  </li>
+                  <li class="breadcrumb-item"><a href="#">List</a>
+                  </li>
+                  </li>
+                </ol>
+              </div>
+              <div class="col s2 m6 l6">
+			 <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-country')}}">Add New Country</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12">
+          <div class="container">
+            <div class="section section-data-tables">
+  
+  
+  <!-- Page Length Options -->
+  <div class="row">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content">
+          <h4 class="card-title">Page Length Options</h4>
+          <div class="row">
+            <div class="col s12">
+              <table id="page-length-option" class="display">
+                <thead>
 													<tr>
 														<th>Country Name</th>
 														<th>Status</th>
@@ -54,36 +54,45 @@
 												</thead>
 												<tbody>
 													 @foreach($data['country_view'] as $key=>$value)
-													
+													<tr>
 													<?php
 													$parameter =[
 														'id' =>$value->id,
 													];
 													 $parameter = Crypt::encrypt($parameter);  
 													 ?>
-													 <tr>
 														<td>{{$value->country_name}}</td>
 														<td>Active</td>
 														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
-														<td><a class="btn-small waves-effect waves-light cyan" href="{{url('country-edit/').'/'.$parameter}}">Edit</a> </td>
-														<td><a class="btn-small waves-effect waves-light amber darken-4" href="{{url('country-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+														<a class="btn-small waves-effect waves-light cyan" href="{{url('country-edit/').'/'.$parameter}}">Edit</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('country-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
 												  </tr>
 												  @endforeach
 												</tbody>
-												
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END: Page Main-->
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+                
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- Multi Select -->
+
+
+</div><!-- START RIGHT SIDEBAR NAV -->
+@include('layouts.right-sidebar')
+<!-- END RIGHT SIDEBAR NAV -->
+           
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END: Page Main-->
+
+    <!-- Theme Customizer -->
+
 @endsection
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
