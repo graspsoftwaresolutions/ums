@@ -22,7 +22,8 @@
               <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{url('fee')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Fee Details</span></a></li>
               <li id="reason_sidebar_li_id" class=""><a id="reason_sidebar_a_id" class="collapsible-body" href="{{url('reason')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Reason Details</span></a></li>
               <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{url('company')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Company Details</span></a></li>
-              <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{url('company')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Person Title Details</span></a></li>
+              <li id="title_sidebar_li_id" class=""><a id="title_sidebar_a_id" class="collapsible-body" href="{{url('persontitle')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Person Title Details</span></a></li>
+              <li id="relation_sidebar_li_id" class=""><a id="relation_sidebar_a_id" class="collapsible-body" href="{{url('relation')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Relation Setup Details</span></a></li>
             </ul>
           </div>
         </li>
