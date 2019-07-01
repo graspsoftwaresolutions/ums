@@ -1,47 +1,99 @@
-@extends('layouts.layout')
-@section('content')
-@if(session('message'))
-<div class="alert alert-success" id="id">
-{{session('message')}}
+@extends('layouts.admin')
+@section('headSection')
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+@endsection
+@section('headSecondSection')
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+@endsection
+@section('main-content')
+<div id="main">
+	<div class="row">
+		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+		<div class="col s12">
+			<div class="container">
+				<div class="section section-data-tables">
+					<!-- BEGIN: Page Main-->
+					<div class="row">
+						<div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+							<!-- Search for small screen-->
+							<div class="container">
+								<div class="row">
+									<div class="col s10 m6 l6">
+										<h5 class="breadcrumbs-title mt-0 mb-0">Branch List</h5>
+										<ol class="breadcrumbs mb-0">
+											<li class="breadcrumb-item"><a href="#">Dashboard</a>
+											</li>
+											<li class="breadcrumb-item active">Branch
+											</li>
+											
+										</ol>
+									</div>
+									<div class="col s2 m6 l6 ">
+										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-branch')}}">Add New Branch</a>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col s12">
+							<div class="card">
+								<div class="card-content">
+									<h4 class="card-title">Branch List</h4>
+									@include('includes.messages')
+									<div class="row">
+										<div class="col s12">
+											<table id="page-length-option" class="display">
+												<thead>
+													<tr>
+														<th>Company Name</th>
+														<th>Branch Name</th>
+														<th style="text-align:center"> Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													 @foreach($data as $value)
+													<tr>
+													<?php
+													$parameter =[
+														'id' =>$value->id,
+													];
+													 $parameter = Crypt::encrypt($parameter);  
+													 ?>
+														<td>{{$value->company_name}}</td>
+														<td>{{$value->branch_name}}</td>
+														<td style="text-align:center">
+														<a class="btn-small waves-effect waves-light cyan" href="{{url('branch-edit/').'/'.$parameter}}">Edit</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('branch-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+												  </tr>
+												  @endforeach
+												</tbody>
+												
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END: Page Main-->
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-@endif
-@if(session('errors'))
-
-@endif
-<div class="row">
-        	<div class="customer-header">
-        	<div class="col-md-8">
-        	<h5><strong>Branch Details</strong></h5>
-        	</div>
-	        <div class="col-md-4">
-	        	<a class="cust" href="{{url('add-branch')}}">Add New branch</a>
-	        </div>
-	    	</div>
-        	<div class="widget">
-        	<div class="activity-sec">
-                    <table id="home-table2" class="table datatable">
-                    <thead>
-                        <tr>
-                           	<td>Company Name</td>
-                            <td>Branch Name</td>
-                            <td> Action</td>
-                         </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($data as $value)
-                        <tr>
-                        <?php
-                        $parameter = ['id'=>$value->id];
-                        $parameter = Crypt::encrypt($parameter);  
-                        ?>
-                            <td>{{$value->company_name}}</td>
-                            <td>{{$value->branch_name}}</td>
-                            <td><a href="{{url('branch-view/').'/'.$parameter}}">View </a>|<a href="{{url('branch-edit/').'/'.$parameter}}">Edit</a>|<a href="{{url('branch-delete/').'/'.$value->id}}">Delete</a></td>
-                         </tr>
-                         @endforeach
-                    </tbody>   
-                </table>
-            </div>
-        </div>
-        </div>
-@stop
+@endsection
+@section('footerSection')
+<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
+@endsection
+@section('footerSecondSection')
+<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script>
+	$("#masters_sidebars_id").addClass('active');
+	$("#branch_sidebar_li_id").addClass('active');
+	$("#branch_sidebar_a_id").addClass('active');
+</script>
+@endsection
