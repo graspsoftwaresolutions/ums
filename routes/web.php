@@ -107,7 +107,6 @@ Route::get('reason-delete/{id}','ReasonController@delete');
 Route::get('branch','BranchController@index');
 Route::get('add-branch','BranchController@addBranch');
 Route::post('branch_save','BranchController@save');
-Route::get('branch-view/{parameter}','BranchController@view');
 Route::get('branch-edit/{parameter}','BranchController@edit');
 Route::post('branch_update','BranchController@update');
 Route::get('branch-delete/{id}','BranchController@delete');
