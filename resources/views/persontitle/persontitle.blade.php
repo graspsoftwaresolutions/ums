@@ -27,11 +27,10 @@
 											</li>
 											<li class="breadcrumb-item active"><a href="#">Person Title</a>
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('add-title')}}">Add New Title</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-title')}}">Add New Title</a>
 										
 									</div>
 								</div>
@@ -59,10 +58,10 @@
 													$parameter =[
 														'id' =>$value->id,
 													];
-													 $parameter = Crypt::encrypt($person_title);  
+													 $parameter = Crypt::encrypt($parameter);  
 													 ?>
 													 <tr>
-														<td>{{$value->country_name}}</td>
+														<td>{{$value->person_title}}</td>
 														<td>Active</td>
 														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
 														<td><a class="btn-small waves-effect waves-light cyan" href="{{url('persontitle-edit/').'/'.$parameter}}">Edit</a> </td>
@@ -70,7 +69,6 @@
 												  </tr>
 												  @endforeach
 												</tbody>
-												
 											</table>
 										</div>
 									</div>
@@ -94,7 +92,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
+	$("#title_sidebar_li_id").addClass('active');
+	$("#title_sidebar_a_id").addClass('active');
 </script>
 @endsection

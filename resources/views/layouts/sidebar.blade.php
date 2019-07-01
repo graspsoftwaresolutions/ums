@@ -17,11 +17,14 @@
               <li id="state_sidebar_li_id" class=""><a id="state_sidebar_a_id" class="collapsible-body" href="{{url('status')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Status Details</span></a></li>
               <li id="city_sidebar_li_id" class=""><a id="city_sidebar_a_id" class="collapsible-body" href="{{url('city')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>City Details</span></a></li>
               <li id="designation_sidebar_li_id" class=""><a id="designation_sidebar_a_id" class="collapsible-body" href="{{url('designation')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Designation Details</span></a></li>
+              <li id="branch_sidebar_li_id" class=""><a id="branch_sidebar_a_id" class="collapsible-body" href="{{url('branch')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Details</span></a></li>
               <li id="race_sidebar_li_id" class=""><a id="race_sidebar_a_id" class="collapsible-body" href="{{url('race')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Race Details</span></a></li>
               <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{url('fee')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Fee Details</span></a></li>
               <li id="reason_sidebar_li_id" class=""><a id="reason_sidebar_a_id" class="collapsible-body" href="{{url('reason')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Reason Details</span></a></li>
               <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{url('company')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Company Details</span></a></li>
-              <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{url('company')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Person Title Details</span></a></li>
+              <li id="title_sidebar_li_id" class=""><a id="title_sidebar_a_id" class="collapsible-body" href="{{url('persontitle')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Person Title Details</span></a></li>
+              <li id="relation_sidebar_li_id" class=""><a id="relation_sidebar_a_id" class="collapsible-body" href="{{url('relation')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Relation Setup Details</span></a></li>
+              <li id="unionbranch_sidebar_li_id" class=""><a id="unionbranch_sidebar_a_id" class="collapsible-body" href="{{url('unionbranch')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Union Branch Details</span></a></li>
             </ul>
           </div>
         </li>

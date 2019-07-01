@@ -107,7 +107,6 @@ Route::get('reason-delete/{id}','ReasonController@delete');
 Route::get('branch','BranchController@index');
 Route::get('add-branch','BranchController@addBranch');
 Route::post('branch_save','BranchController@save');
-Route::get('branch-view/{parameter}','BranchController@view');
 Route::get('branch-edit/{parameter}','BranchController@edit');
 Route::post('branch_update','BranchController@update');
 Route::get('branch-delete/{id}','BranchController@delete');
@@ -136,3 +135,19 @@ Route::post('persontitle_save','PersontitleController@save');
 Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
 Route::post('persontitle_update','PersontitleController@update');
 Route::get('persontitle-delete/{id}','PersontitleController@delete');
+
+//Member Relation Setup
+Route::get('relation','RelationController@index');
+Route::get('add-relation','RelationController@addRelation');
+Route::post('relation_save','RelationController@save');
+Route::get('relation-edit/{parameter}','RelationController@edit');
+Route::post('relation_update','RelationController@update');
+Route::get('relation-delete/{id}','RelationController@delete');
+
+//Union Branch
+Route::get('unionbranch','UnionBranchController@index');
+Route::get('add-unionbranch','UnionBranchController@addUnionBranch');
+Route::post('unionbranch_save','UnionBranchController@save');
+Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
+Route::post('unionbranch_update','UnionBranchController@update');
+Route::get('unionbranch-delete/{id}','UnionBranchController@delete');

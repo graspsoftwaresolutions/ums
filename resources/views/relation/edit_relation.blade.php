@@ -9,7 +9,7 @@
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
             <div class="container">
-                <div class="section section-data-tables">
+                <div class="section ">
                     <!-- BEGIN: Page Main-->
                     <div class="row">
                         <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Branch</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">Edit Relation Details</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item active">Branch
+                                            <li class="breadcrumb-item active"><a href="#">Relation</a>
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('branch')}}">Branch List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('relation')}}">Relation List</a>
                                         
                                     </div>
                                 </div>
@@ -36,30 +36,18 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Branch</h4>
+                                    <h4 class="card-title">Edit Relation</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('branch_save') }}">
+                                    <form class="formValidate" id="relation_formValidate" method="post" action="{{url('relation_update')}}">
+                                        <?php $row = $data['relation_view'][0];?>
+                                        <input type="hidden" name="id" value="{{$row->id}}">
                                         @csrf
                                       <div class="row">
-                                        <div class="input-field col s12 m12">
-                                            <i class="material-icons prefix">map</i>
-                                            <select class="error validate" id="company_id" name="company_id"  data-error=".errorTxt6">
-                                                <option value="" disabled="" selected="">Select company</option>
-                                                @foreach($data as $value)
-                                                    <option value="{{$value->id}}">{{$value->company_name}}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="input-field">
-                                                <div class="errorTxt6"></div>
-                                            </div>
-                                        </div>
-                                        <div class="input-field col s12 m12">
-                                                <i class="material-icons prefix">room</i>
-                                            
-                                            <input id="branch_name" name="branch_name" type="text" data-error=".errorTxt1">
-                                            <div class="errorTxt1" style="margin: 0 45px;"></div>
-                                                <label for="branch_name">Branch Name*</label>
+                                        <div class="input-field col s12 m6">
+                                          <label for="relation_name">Relation Name*</label>
+                                          <input id="relation_name" name="relation_name" type="text" data-error=".errorTxt1" value="{{$row->relation_name}}">
+                                          <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
@@ -87,7 +75,29 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#designation_sidebar_li_id").addClass('active');
-	$("#designation_sidebar_a_id").addClass('active');
+	$("#relation_sidebar_li_id").addClass('active');
+	$("#relation_sidebar_a_id").addClass('active');
+    $("#relation_formValidate").validate({
+        rules: {
+            relation_name: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            relation_name: {
+                required: "Enter the Relation Name",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 </script>
 @endsection
