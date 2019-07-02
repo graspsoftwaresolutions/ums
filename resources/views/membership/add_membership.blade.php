@@ -237,9 +237,25 @@
                                                 <div class="errorTxt21"></div>
                                             </div>
                                             <div class="clearfix" ></div>
-                                            <div class=" col s12 m6 union-data">
+                                            <?php 
+                                                $auth_user = Auth::user();
+                                                
+                                                $check_union = $auth_user->hasRole('union');
+                                                if($check_union){
+                                                    $branch_requird = 'required';
+                                                    $branch_hide = '';
+                                                    $branch_id = '';
+                                                    $member_status = 2;
+                                                }else{
+                                                    $branch_requird = '';
+                                                    $branch_hide = 'hide';
+                                                    $branch_id = $auth_user->branch_id;
+                                                    $member_status = 1;
+                                                }
+                                            ?>
+                                            <div class=" col s12 m6 union-data {{ $branch_hide }}">
                                             <label>Company Name*</label>
-                                                <select name="company_id" id="company" class="error browser-default" required>
+                                                <select name="company_id" id="company" class="error browser-default" {{ $branch_requird }}>
                                                 <option value="">Select Company</option>
                                                     @foreach($data['company_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->company_name}}</option>
@@ -249,15 +265,17 @@
                                                     <div class="errorTxt22"></div>
                                                 </div>
                                             </div>
-                                            <?php 
-                                                $auth_user = Auth::user();
-                                               echo  $check_union = $auth_user->hasRole('union');
-                                            ?>
-                                            <div class="col s12 m6 union-data">
+                                            
+                                            <div class="col s12 m6 union-data {{ $branch_hide }}">
                                              <label>Branch Name*</label>
-                                                <select name="branch_id" id="branch" class="error browser-default" required>
-                                                <option value="">Select Branch</option>
-                                                        </select>
+                                                <select name="branch_id" id="branch" class="error browser-default" {{ $branch_requird }}>
+                                                    <option value="">Select Branch</option>
+                                                    <?php 
+                                                         if(!$check_union){
+                                                             echo '<option selected >'.$branch_id.'</option>';
+                                                         }
+                                                    ?>
+                                                </select>
                                                 <div class="input-field">      
                                                     <div class="errorTxt23"></div>
                                                 </div>       
@@ -267,7 +285,7 @@
                                             <label>Status*</label>
                                                 <select name="status_id" id="status_id" class="error browser-default">
                                                 @foreach($data['status_view'] as $key=>$value)
-                                                       <option <?php echo $value->id ==1 ? 'selected': ''; ?> value="{{$value->id}}">{{$value->status_name}}</option>
+                                                       <option <?php echo $value->id ==$member_status ? 'selected': ''; ?> value="{{$value->id}}">{{$value->status_name}}</option>
                                                 @endforeach
                                                 </select>
                                                        
