@@ -16,11 +16,8 @@ class CreateCompanyTable extends Migration
         Schema::create('company', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('company_name');
-            $table->string('owner_name');
-            $table->integer('phone');
-            $table->string('email');
-            $table->string('address_one')->nullable();
-            $table->string('address_two')->nullable();
+            $table->string('short_code');
+            $table->string('head_of_company');
              $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->integer('status')->default(1);     

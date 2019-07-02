@@ -18,9 +18,9 @@
               <div class="col s10 m6 l6">
                 <h5 class="breadcrumbs-title mt-0 mb-0">Dashboard</h5>
                 <ol class="breadcrumbs mb-0">
-                  <li class="breadcrumb-item"><a href="index.html">Company</a>
+                  <li class="breadcrumb-item"><a href="">Company</a>
                   </li>
-                  <li class="breadcrumb-item"><a href="#">List</a>
+                  <li class="breadcrumb-item">List
                   </li>
                   </li>
                 </ol>
@@ -47,9 +47,8 @@
                 <thead>
                     <tr>
                     <td>Company Name</td>
-                            <td>Owner Name</td>
-                            <td> Mobile No</td>
-                            <td> Email </td>
+                            <td>Short Name</td>
+                            <td> Head of company</td>
                         <th style="text-align:center"> Action</th>
                     </tr>
                 </thead>
@@ -63,9 +62,8 @@
                     $parameter = Crypt::encrypt($parameter);  
                     ?>
                         <td>{{$value->company_name}}</td>
-                        <td> {{$value->owner_name}}</td>
-                        <td> {{$value->phone}}</td>
-                        <td> {{$value->email}}</td>
+                        <td> {{$value->short_code}}</td>
+                        <td> {{$value->head_of_company}}</td>
                         <td> <a class="btn-small waves-effect waves-light cyan" href="{{url('company-edit/').'/'.$parameter}}">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('company-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
                         <td></td> 
                         
