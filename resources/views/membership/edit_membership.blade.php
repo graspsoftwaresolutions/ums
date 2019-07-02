@@ -893,7 +893,7 @@ $(document).ready(function(){
     $('#add_nominee').click(function(){
         var auto_id =   $("#auto_id").val();
         var nominee_name =   $("#nominee_name").val();
-        var nominee_years =   $("#years").val();
+        var nominee_dob =   $("#nominee_dob").val();
         var nominee_sex =   $("#sex").val();
         var nominee_relationship =   $("#relationship").val();
         var nric_n =   $("#nric_n").val();
@@ -912,7 +912,7 @@ $(document).ready(function(){
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        if(nominee_name!="" && nominee_years!="" && nominee_sex!="" && nominee_relationship!="" && 
+        if(nominee_name!="" && nominee_dob!="" && nominee_sex!="" && nominee_relationship!="" && 
         nric_n!="" && nric_o!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
         nominee_address_two!="" && nominee_city_id!="" && nominee_postal_code != "" && nominee_address_three!="" && nominee_mobile!=""){
            $("#add_nominee").attr('disabled',true);
@@ -922,7 +922,7 @@ $(document).ready(function(){
                 data: { 
                     'auto_id' : auto_id,
                     'nominee_name' : nominee_name,
-                    'nominee_years' : nominee_years,
+                    'nominee_dob' : nominee_dob,
                     'nominee_sex' : nominee_sex,
                     'nominee_relationship' : nominee_relationship,
                     'nric_n' : nric_n,
@@ -969,5 +969,67 @@ $(document).ready(function(){
            
 
     });
+    $('#nominee_country_id').change(function(){
+        var countryID = $(this).val();   
+        
+        if(countryID){
+            $.ajax({
+            type:"GET",
+            dataType: "json",
+            url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
+            success:function(res){               
+                if(res){
+                    $("#nominee_state_id").empty();
+                    //console.log('hi test');
+                    $.each(res,function(key,entry){
+                      
+                        $("#nominee_state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+                       // var select = $("#state");
+                       // select.material_select('destroy');
+                        //select.empty();
+                        
+                    });
+                    $('#nominee_state_id').trigger('change');
+                   // $('#state').material_select();
+                }else{
+                  $("#nominee_state_id").empty();
+                }
+                console.log(res);
+            }
+            });
+        }else{
+            $("#nominee_state_id").empty();
+            $("#nominee_city_id").empty();
+        }      
+    });
+    $('#nominee_state_id').change(function(){
+       var StateId = $(this).val();
+      
+       if(StateId!='' && StateId!='undefined')
+       {
+         $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                    $('#nominee_city_id').empty();
+                   
+                    $.each(res,function(key,entry){
+                        $('#nominee_city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+                        
+                    });
+                }else{
+                    $('#nominee_city_id').empty();
+                }
+               // console.log(res);
+            }
+         });
+       }else{
+           $('#nominee_city_id').empty();
+       }
+   });
 </script>
 @endsection
