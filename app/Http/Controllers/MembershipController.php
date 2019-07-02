@@ -421,12 +421,19 @@ class MembershipController extends Controller
        $nominee->address_one = $request->nominee_address_one;
        $nominee->address_two = $request->nominee_address_two;
        $nominee->address_three = $request->nominee_address_three;
-       $nominee->years = $request->nominee_years;
+       //$nominee->years = $request->nominee_years;
        $nominee->gender = $request->nominee_sex;
        $nominee->nric_n = $request->nric_n;
        $nominee->nric_o = $request->nric_o;
        $nominee->mobile = $request->nominee_mobile;
        $nominee->phone = $request->nominee_phone;
+
+       $fmmm_date = explode("/",$request->input('nominee_dob'));           							
+       $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+       $doe = date('Y-m-d', strtotime($doj1));
+       $nominee->dob =  $doe;
+      
+       $nominee->years =  CommonHelper::calculate_age($doe);
 
        $nominee->save();
        if($nominee){
@@ -453,4 +460,5 @@ class MembershipController extends Controller
 
         return view('membership.membership')->with('data',$data); 
     }
+    
 }
