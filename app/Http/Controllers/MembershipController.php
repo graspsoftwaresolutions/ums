@@ -15,9 +15,11 @@ use Mail;
 use App\Role;
 use App\User;
 use App\Model\MemberNominees;
+use App\Model\MemberGuardian;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
+
 
 class MembershipController extends Controller
 {
@@ -229,6 +231,28 @@ class MembershipController extends Controller
             else{
               $id = $this->Membership->StoreMembership($member);
               if(!empty($member_user)){
+                $member_guardian_id = $id;
+                $guardian['member_id'] = $member_guardian_id;
+                $guardian['guardian_name'] ='';
+                $guardian['years'] = '';
+                $guardian['gender'] = '';
+                $guardian['relationship_id'] = '';
+                $guardian['nric_n'] = '';
+                $guardian['nric_o'] = '';
+                $guardian['address_one'] = '';
+                $guardian['country_id'] = '';
+                $guardian['state_id'] = '';
+                $guardian['city_id'] = '';
+                $guardian['address_two'] = '';
+                $guardian['postal_code'] = '';
+                $guardian['address_three'] = '';
+                $guardian['mobile'] = '';
+                $guardian['phone'] = '';
+        
+               // return $guardian; 
+        
+                 $gaurdian_id = DB::table('member_guardian')->StoreMemberGaurdian($guardian);
+
                     $mail_data = array(
                         'name' => $member_name,
                         'email' => $member_email,
@@ -300,6 +324,7 @@ class MembershipController extends Controller
     }
     public function update(Request $request)
     {
+        //return $request->all();
         $id = $request->input('auto_id');
         
          $fm_date = explode("/",$request->input('dob'));         							
@@ -337,7 +362,32 @@ class MembershipController extends Controller
         //return $member;
 
         $id = DB::table('membership')->where('id','=',$id)->update($member);
-        return redirect('membership')->with('message','Member Details Updated Successfull');
+        //return redirect('membership')->with('message','Member Details Updated Successfull');
+
+        //Guardian Edit/Insert
+        $member_guardian_id = $id;
+        $guardian['member_id'] = $member_guardian_id;
+        $guardian['guardian_name'] = $request->input('guardian_name0');
+        $guardian['years'] = $request->input('years');
+        $guardian['gender'] = $request->input('sex');
+        $guardian['relationship_id'] = $request->input('relationship_id');
+        $guardian['nric_n'] = $request->input('nric_n_guardian');
+        $guardian['nric_o'] = $request->input('nric_o_guardian');
+        $guardian['address_one'] = $request->input('guardian_address_one');
+        $guardian['country_id'] = $request->input('guardian_country_id');
+        $guardian['state_id'] = $request->input('guardian_state_id');
+        $guardian['city_id'] = $request->input('guardiancity_id'); 
+        $guardian['address_two'] = $request->input('guardian_address_two');
+        $guardian['postal_code'] = $request->input('guardian_postal_code');
+        $guardian['address_three'] = $request->input('guardian_address_three');
+        $guardian['mobile'] = $request->input('guardian_mobile');
+        $guardian['phone'] = $request->input('guardian_phone');
+
+       // return $guardian; 
+
+        $id = DB::table('member_guardian')->where('member_id','=','$member_guardian_id')->update($guardian);
+        return redirect('membership')->with('message','Guardian Details Updated Succesfully');
+
     }
     public function delete($id)
 	{
