@@ -7,6 +7,7 @@
 
 @endsection
 @section('main-content')
+
 <div id="main">
 	<div class="row">
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
@@ -48,6 +49,7 @@
                                         <form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_update') }}">
                                           @foreach($data['member_view'] as $key=>$values)
                                           @csrf
+                                          
 										<div id="test1" class="col s12">
                                         <div id="view-validations">
                                       <div class="row">
@@ -239,9 +241,9 @@
                                                 <input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
                                                 <div class="errorTxt13"></div>
                                             </div>
-                                            <div class="col s12 m6">
+                                            <div class="col s12 m6 hide">
                                                 <label>Company Name*</label>
-                                                <select name="company_id" id="company" data-error=".errorTxt14" class="error browser-default">
+                                                <select name="company_id" id="company" class="error browser-default">
                                                     @foreach($data['company_view'] as $value)
                                                     <option <?php //if($value->id == $values->company_id) { echo "selected";} ?> value="{{$value->id}}">{{$value->company_name}}</option>
                                                     @endforeach
@@ -250,7 +252,23 @@
                                                     <div class="errorTxt14"></div>
                                                 </div>
                                             </div>
-                                            <div class=" col s12 m6">
+                                            
+                                            <?php 
+                                                $auth_user = Auth::user();
+                                                
+                                                $check_union = $auth_user->hasRole('union');
+                                                if($check_union){
+                                                    $branch_requird = 'required';
+                                                    $branch_hide = '';
+                                                    $branch_id = '';
+                                                }else{
+                                                    $branch_requird = '';
+                                                    $branch_hide = 'hide';
+                                                    $branch_id = $auth_user->branch_id;
+                                                }
+                                            ?>
+                                            
+                                            <div class=" col s12 m6 {{ $branch_hide }}">
                                                 <label>Branch Name*</label>
                                                 <select name="branch_id" id="branch" data-error=".errorTxt15" class="error browser-default">
                                                      @foreach($data['branch_view'] as $value)
@@ -287,8 +305,8 @@
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="years">Years *</label>
-                                                <input id="years" name="years" value=""  type="text">
+                                                <label for="nominee_dob">DOB *</label>
+                                                <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text">
                                                 
                                             </div>
                                             <div class="col s12 m4">
@@ -404,6 +422,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s12">
+                                                
                                                 <?php // print_r($data['nominee_view']); ?>
                                                 <table id="nominee_table">
                                                     <thead>
@@ -433,6 +452,7 @@
                                         </div>
                                     </div>
                                     <div id="test4" class="col s12">
+                                    
                                     <?php $row = $data['member_view'];?>
                                     <div class="row">
                                             <?php $gardian_row = $data['gardian_view'][0];  ?>

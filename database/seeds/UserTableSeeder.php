@@ -25,7 +25,8 @@ class UserTableSeeder extends Seeder
 	    $union_user = new User();
 	    $union_user->name = 'Union';
 	    $union_user->email = 'union@gmail.com';
-	    $union_user->password = bcrypt('12345678');
+		$union_user->password = bcrypt('12345678');
+		$union_user->branch_id = 1;
 	    $union_user->save();
 	    $union_user->roles()->attach($union_role);
 	    $union_user->permissions()->attach($union_permission);
