@@ -107,6 +107,9 @@ Route::get('reason-delete/{id}','ReasonController@delete');
 
 //branch
 Route::get('branch','BranchController@index');
+Route::get('get-state-list','BranchController@getStateList');
+Route::get('get-cities-list','BranchController@getCitiesList');
+
 Route::get('add-branch','BranchController@addBranch');
 Route::post('branch_save','BranchController@save');
 Route::get('branch-edit/{parameter}','BranchController@edit');
