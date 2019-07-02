@@ -405,7 +405,8 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s12">
-                                                <table>
+                                                <?php // print_r($data['nominee_view']); ?>
+                                                <table id="nominee_table">
                                                     <thead>
                                                         <tr>
                                                         <th data-field="name">Name</th>
@@ -417,12 +418,16 @@
                                                         </tr>
                                                     </thead>
                                                 <tbody>
-                                                    <!--tr>
-                                                        <td>Alvin</td>
-                                                        <td>Eclair</td>
-                                                        <td>$0.87</td>
-                                                    </tr-->
-                                                    
+                                                    @foreach($data['nominee_view'] as $key=>$value)
+                                                    <tr>
+                                                        <td>{{$value->nominee_name}}</td>
+                                                        <td>{{$value->years}}</td>
+                                                        <td>{{$value->gender}}</td>
+                                                        <td>Father</td>
+                                                        <td>{{$value->nric_n}}</td>
+                                                        <td>{{$value->nric_o}}</td>
+                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                                 </table>
                                             </div>
@@ -915,6 +920,19 @@ $(document).ready(function(){
                 }, // a JSON object to send back
                 success: function(response){ // What to do if we succeed
                     $("#add_nominee").attr('disabled',false);
+                    var new_row = '<tr>';
+                    new_row += '<td>'+nominee_name+'</td>';
+                    new_row += '<td>'+nominee_years+'</td>';
+                    new_row += '<td>'+nominee_sex+'</td>';
+                    new_row += '<td>'+nominee_relationship+'</td>';
+                    new_row += '<td>'+nric_n+'</td>';
+                    new_row += '<td>'+nric_o+'</td>';
+                    new_row += '</tr>';
+                    $('#test2').find('input:text').val('');    
+                    $('#nominee_table').append(new_row);
+                    if(response.status ==1){
+                        alert(response.message);
+                    }
                     console.log(response); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail

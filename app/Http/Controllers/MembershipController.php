@@ -293,6 +293,7 @@ class MembershipController extends Controller
         $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
+        $data['nominee_view'] = DB::table('member_nominees')->where('status','=','1')->where('member_id','=',$id)->get();
              
         return view('membership.edit_membership')->with('data',$data); 
    
@@ -345,6 +346,7 @@ class MembershipController extends Controller
     }
     public function addNominee(Request $request){
        $nominee = new MemberNominees();
+       $returndata = array('status' => 0, 'message' => '', 'data' => '');
 
        $nominee->member_id = $request->auto_id;
        $nominee->relation_id = $request->nominee_relationship;
@@ -364,7 +366,11 @@ class MembershipController extends Controller
        $nominee->phone = $request->nominee_phone;
 
        $nominee->save();
-       return $nominee;
-
+       if($nominee){
+            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => '');
+       }else{
+            $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
+       }
+       echo json_encode($returndata);
     }
 }
