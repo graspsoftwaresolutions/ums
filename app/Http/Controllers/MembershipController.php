@@ -14,6 +14,7 @@ use View;
 use Mail;
 use App\Role;
 use App\User;
+use App\Model\MemberNominees;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -343,6 +344,27 @@ class MembershipController extends Controller
 		return redirect('membership')->with('message','Member Deleted Succesfully');
     }
     public function addNominee(Request $request){
-       return $request->all();
+       $nominee = new MemberNominees();
+
+       $nominee->member_id = $request->auto_id;
+       $nominee->relation_id = $request->nominee_relationship;
+       $nominee->nominee_name = $request->nominee_name;
+       $nominee->country_id = $request->nominee_country_id;
+       $nominee->state_id = $request->nominee_state_id;
+       $nominee->postal_code = $request->nominee_postal_code;
+       $nominee->city_id = $request->nominee_city_id;
+       $nominee->address_one = $request->nominee_address_one;
+       $nominee->address_two = $request->nominee_address_two;
+       $nominee->address_three = $request->nominee_address_three;
+       $nominee->years = $request->nominee_years;
+       $nominee->gender = $request->nominee_sex;
+       $nominee->nric_n = $request->nric_n;
+       $nominee->nric_o = $request->nric_o;
+       $nominee->mobile = $request->nominee_mobile;
+       $nominee->phone = $request->nominee_phone;
+
+       $nominee->save();
+       return $nominee;
+
     }
 }
