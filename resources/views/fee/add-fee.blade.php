@@ -47,6 +47,11 @@
                                           <input id="fee_name" name="fee_name" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
+                                        <div class="input-field col s12 m6">
+                                          <label for="fee_amount">Fee Amount*</label>
+                                          <input id="fee_amount" name="fee_amount" type="text" data-error=".errorTxt2">
+                                          <div class="errorTxt2"></div>
+                                        </div>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
@@ -80,11 +85,20 @@
             fee_name: {
                 required: true,
             },
+            fee_amount: {
+                required: true,
+                digits: true,
+                
+            },
         },
         //For custom messages
         messages: {
             fee_name: {
-                required: "Enter a Fee Name",
+                required: "Enter a Fee Name"
+            },
+            fee_amount: {
+                required: "Enter a Fee Amount",
+                digits: "Enter Numbers only"
             },
         },
         errorElement: 'div',
