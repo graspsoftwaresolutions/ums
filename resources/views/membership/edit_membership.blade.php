@@ -435,17 +435,18 @@
                                     <div id="test4" class="col s12">
                                     <?php $row = $data['member_view'];?>
                                     <div class="row">
+                                            <?php $gardian_row = $data['gardian_view'][0];  ?>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_name">Guardian name* </label>
-                                                <input id="guardian_name" name="guardian_name" value=""  type="text" >
+                                                <input id="guardian_name" name="guardian_name" value="<?php echo $gardian_row->guardian_name; ?>"  type="text" >
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="years">Years *</label>
-                                                <input id="years" name="years" value=""  type="text">
+                                                <input id="years" name="years" value="<?php echo $gardian_row->years; ?>"  type="text">
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="sex">SEX *</label>
-                                                <input id="sex" name="sex" value=""  type="text">
+                                                <input id="sex" name="sex" value="<?php echo $gardian_row->gender; ?>"  type="text">
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
@@ -464,18 +465,18 @@
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="nric_n_guardian">NRIC-N *</label>
-                                                <input id="nric_n_guardian" name="nric_n_guardian" value=""  type="text">
+                                                <input id="nric_n_guardian" name="nric_n_guardian" value="<?php echo $gardian_row->nric_n; ?>"  type="text">
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="nric_o_guardian">NRIC-O *</label>
-                                                <input id="nric_o_guardian" name="nric_o_guardian" value=""  type="text">
+                                                <input id="nric_o_guardian" name="nric_o_guardian" value="<?php echo $gardian_row->nric_o; ?>"  type="text">
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_one">Address Line 1*</label>
-                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="" >
+                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="<?php echo $gardian_row->guardian_name; ?>" >
                                                  
                                             </div>
                                             <div class="col s12 m4">
@@ -505,7 +506,7 @@
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_two">Address Line 2*</label>
-                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="" >
+                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="<?php echo $gardian_row->address_two; ?>" >
                                                  
                                             </div>
                                             <div class="col s12 m4">
@@ -522,23 +523,23 @@
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_postal_code">Postal code*</label>
-                                                <input id="guardian_postal_code" name="guardian_postal_code" type="text" value="" >
+                                                <input id="guardian_postal_code" name="guardian_postal_code" type="text" value="<?php echo $gardian_row->postal_code; ?>" >
                                                  
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_three">Address Line 2*</label>
-                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="" >
+                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="<?php echo $gardian_row->address_two; ?>" >
                                                  
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_mobile">Mobile No*</label>
-                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="" >
+                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="<?php echo $gardian_row->mobile; ?>" >
                                                  
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_phone">Phone No</label>
-                                                <input id="guardian_phone" name="guardian_phone" type="text" value="" >
+                                                <input id="guardian_phone" name="guardian_phone" type="text" value="<?php echo $gardian_row->phone; ?>" >
                                                  
                                             </div>
                                             <div class="clearfix"> </div>

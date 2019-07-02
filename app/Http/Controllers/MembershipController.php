@@ -28,6 +28,7 @@ class MembershipController extends Controller
         $this->middleware('auth'); 
 		$this->middleware('role:union|branch');
         $this->Membership = new Membership;
+        $this->MemberGuardian = new MemberGuardian;
        
     }
     public function index()
@@ -236,13 +237,13 @@ class MembershipController extends Controller
                 $guardian['guardian_name'] ='';
                 $guardian['years'] = '';
                 $guardian['gender'] = '';
-                $guardian['relationship_id'] = '';
+                $guardian['relationship_id'] = 0;
                 $guardian['nric_n'] = '';
                 $guardian['nric_o'] = '';
                 $guardian['address_one'] = '';
-                $guardian['country_id'] = '';
-                $guardian['state_id'] = '';
-                $guardian['city_id'] = '';
+                $guardian['country_id'] = 0;
+                $guardian['state_id'] = 0;
+                $guardian['city_id'] = 0;
                 $guardian['address_two'] = '';
                 $guardian['postal_code'] = '';
                 $guardian['address_three'] = '';
@@ -251,7 +252,7 @@ class MembershipController extends Controller
         
                // return $guardian; 
         
-                 $gaurdian_id = DB::table('member_guardian')->StoreMemberGaurdian($guardian);
+                 $gaurdian_id = $this->MemberGuardian->StoreMemberGaurdian($guardian);
 
                     $mail_data = array(
                         'name' => $member_name,
@@ -318,6 +319,7 @@ class MembershipController extends Controller
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
         $data['nominee_view'] = DB::table('member_nominees')->where('status','=','1')->where('member_id','=',$id)->get();
+        $data['gardian_view'] = DB::table('member_guardian')->where('status','=','1')->where('member_id','=',$id)->get();
              
         return view('membership.edit_membership')->with('data',$data); 
    
@@ -361,13 +363,13 @@ class MembershipController extends Controller
         //$member['race_id'] = 1;
         //return $member;
 
-        $id = DB::table('membership')->where('id','=',$id)->update($member);
+        $up_id = DB::table('membership')->where('id','=',$id)->update($member);
         //return redirect('membership')->with('message','Member Details Updated Successfull');
 
         //Guardian Edit/Insert
         $member_guardian_id = $id;
         $guardian['member_id'] = $member_guardian_id;
-        $guardian['guardian_name'] = $request->input('guardian_name0');
+        $guardian['guardian_name'] = $request->input('guardian_name');
         $guardian['years'] = $request->input('years');
         $guardian['gender'] = $request->input('sex');
         $guardian['relationship_id'] = $request->input('relationship_id');
@@ -383,9 +385,9 @@ class MembershipController extends Controller
         $guardian['mobile'] = $request->input('guardian_mobile');
         $guardian['phone'] = $request->input('guardian_phone');
 
-       // return $guardian; 
+        //return $guardian; 
 
-        $id = DB::table('member_guardian')->where('member_id','=','$member_guardian_id')->update($guardian);
+        $id = $this->MemberGuardian->where('member_id','=',$member_guardian_id)->update($guardian);
         return redirect('membership')->with('message','Guardian Details Updated Succesfully');
 
     }
