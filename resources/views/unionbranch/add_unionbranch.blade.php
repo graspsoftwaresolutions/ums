@@ -35,6 +35,7 @@
                             <div class="card">
                                 <div class="card-content">
                                     <h4 class="card-title">Add Union Branch</h4>
+                                    @include('includes.messages')
                                     
                                    <div id="view-validations">
                                     <form class="formValidate" id="unionbranch_formValidate" method="post" action="{{url('unionbranch_save')}}">
@@ -46,13 +47,70 @@
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          
+                                                <select name="country_id" id="country" class="error browser-default">
+                                                <option value="">Select Country</option>
+                                                    @foreach($data['country_view'] as $value)
+                                                    <option value="{{$value->id}}">{{$value->country_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">        
+													<div class="errorTxt10"></div>
+												</div>
+                                            </div>
+                                            
+                                            <div class="col s12 m6">
+                                               <label>State Name*</label>
+                                                <select class="error browser-default" id="state_id" name="state_id" aria-required="true" required>
+                                               
+                                                </select>
+                                                <div class="input-field"> 
+													<div class="errorTxt11"></div>
+												</div>
+                                            </div>
+                                            
+                                            <div class="col s12 m6">
+                                                 <label>City Name*</label>
+                                                <select name="city_id" id="city" class="error browser-default" aria-required="true" required>
+                                               
+                                                        </select>
+                                                <div class="input-field">        
+													<div class="errorTxt12"></div>
+												</div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="phone">Mobile Number *</label>
+                                                <input id="phone" name="phone" type="text" data-error=".errorTxt5">
+                                                <div class="errorTxt5"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="email">Email *</label>
+                                                <input id="email" name="email" type="text" data-error=".errorTxt6">
+                                                <div class="errorTxt6"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="postal_code">Postal Code *</label>
+                                                <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt13">
+                                                <div class="errorTxt13"></div>
+                                            </div>
+                                            
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_one">Address Line 1*</label>
+                                                <input id="address_one" name="address_one" type="text" data-error=".errorTxt14">
+                                                <div class="errorTxt14"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_two">Address Line 2*</label>
+                                                <input id="address_two" name="address_two" type="text" data-error=".errorTxt15">
+                                                <div class="errorTxt15"></div>
+                                            </div>
+                                        <div class="input-field col s12 m6">
                                         <p>
                                         <label>
                                             <input type="checkbox" name="is_head" id="is_head" value="1"  />
                                             <span>Head</span>
                                         </label>
                                         </p>
+                                        </div>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
@@ -81,16 +139,129 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#relation_sidebar_li_id").addClass('active');
 	$("#unionbranch_sidebar_a_id").addClass('active');
+    $(document).ready(function(){
+        //state
+      $('#country').change(function(){
+        var countryID = $(this).val();   
+        
+        if(countryID){
+            $.ajax({
+            type:"GET",
+            dataType: "json",
+            url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
+            success:function(res){               
+                if(res){
+                   // console.log(res);
+                    //console.log('hi test');
+                    $("#state_id").empty();
+                    $("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
+                    $.each(res,function(key,entry){
+                        
+                        $("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+                       // var select = $("#state");
+                       // select.material_select('destroy');
+                        //select.empty();
+                        
+                    });
+                }else{
+                    $("#state_id").empty();
+                }
+                console.log(res);
+            }
+            });
+        }else{
+            $("#state").empty();
+            $("#city").empty();
+        }      
+    });
+    //$("#country").trigger('change');
+   // $("#state_id").trigger('change');
+    $('#state_id').change(function(){
+       var StateId = $(this).val();
+      
+       if(StateId!='' && StateId!='undefined')
+       {
+         $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                    $('#city').empty();
+                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
+                    $.each(res,function(key,entry){
+                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+                        
+                    });
+                }else{
+                    $('#city').empty();
+                }
+               // console.log(res);
+            }
+         });
+       }else{
+           $('#city').empty();
+       }
+   });
+
+    });
     $("#unionbranch_formValidate").validate({
         rules: {
             branch_name: {
                 required: true,
+            },
+            phone: {
+                required: true,
+                digits: true,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            country: {
+                required: true,
+            },
+            state_id: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            postal_code: {
+                required: true,
+                digits: true,
+            },
+            address_one: {
+                required:true,
             },
         },
         //For custom messages
         messages: {
             branch_name: {
                 required: "Enter the Union Branch Name",
+            },
+            phone: {
+                required: "Please Enter your Number",
+                digits: "Enter Numbers only",
+                
+            },
+            email: {
+                required: "Please enter valid email",
+                email : "Please Enter valid Email",
+                },
+            country: {
+                required:"Please choose  your Country",
+            },
+            state_id: {
+                required:"Please choose  your State",
+            },
+            city: {
+                required:"Please choose  your city",
+            },
+            address_one: {
+                required:"Please Enter your Address",
             },
         },
         errorElement: 'div',

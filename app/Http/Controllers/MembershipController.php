@@ -19,6 +19,7 @@ use App\Model\MemberGuardian;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
+use Auth;
 
 
 class MembershipController extends Controller
@@ -33,9 +34,19 @@ class MembershipController extends Controller
     }
     public function index()
     {
-         
-         $data['member_view'] = DB::table('membership')
-                                 ->where('membership.status','=','1')->get();
+        $auth_user = Auth::user();
+                                                
+        $check_union = $auth_user->hasRole('union');
+        $branch_id = $auth_user->branch_id;
+       
+        $data['member_type'] = 1;
+        if($check_union){
+            $data['member_view'] = DB::table('membership')
+            ->where('membership.status','=','1')->where('membership.status_id','!=','1')->get();
+        }else{
+            $data['member_view'] = DB::table('membership')
+            ->where('membership.status','=','1')->where('membership.status_id','!=','1')->where('branch_id','=',$branch_id)->get();
+        }
        
         return view('membership.membership')->with('data',$data); 
        
@@ -124,7 +135,7 @@ class MembershipController extends Controller
      }
     public function Save(Request $request)
     {
-        //return $request->all();
+       // return $request->input('branch_id');
         $request->validate([
             'member_title'=>'required',
             'member_number'=>'required',
@@ -143,7 +154,6 @@ class MembershipController extends Controller
             'dob'=>'required',
             'salary'=>'required',
             'new_ic'=>'required',
-            'branch_id'=>'required',
         ],
         [
             'member_title.required'=>'Please Enter Your Title',
@@ -163,7 +173,6 @@ class MembershipController extends Controller
             'dob.required'=>'Please choose DOB',
             'salary.required'=>'Enter your Salary',
             'new_ic.required'=>'Please Enter New Ic Number',
-            'branch_id.required'=>'Please Choose Branch Name',
 
         ]);
 
@@ -308,13 +317,14 @@ class MembershipController extends Controller
       
         $state_id = $data['member_view'][0]->state_id;
         $city_id = $data['member_view'][0]->city_id;
+        $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['branch_view'] = DB::table('branch')->where('status','=','1')->get();
+        $data['branch_view'] = DB::table('branch')->where('status','=','1')->where('company_id', $company_id)->get();
         $data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
         $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
@@ -425,5 +435,22 @@ class MembershipController extends Controller
             $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
        }
        echo json_encode($returndata);
+    }
+
+    public function new_members(){
+        $data['member_type'] = 0;
+        $auth_user = Auth::user();
+        $check_union = $auth_user->hasRole('union');
+        $branch_id = $auth_user->branch_id;
+        if($check_union){
+            $data['member_view'] = DB::table('membership')
+            ->where('membership.status','=','1')->where('membership.status_id','=','1')->get();
+        }else{
+            $data['member_view'] = DB::table('membership')
+            ->where('membership.status','=','1')->where('membership.status_id','=','1')->where('branch_id','=',$branch_id)->get();
+        }
+        
+
+        return view('membership.membership')->with('data',$data); 
     }
 }

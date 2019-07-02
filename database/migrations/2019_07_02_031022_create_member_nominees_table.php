@@ -26,11 +26,12 @@ class CreateMemberNomineesTable extends Migration
             $table->string('address_two')->nullable();
             $table->string('address_three')->nullable();
             $table->string('years');
+            $table->date('dob')->nullable();
             $table->string('gender');
             $table->string('nric_n');
             $table->string('nric_o');
             $table->string('mobile');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->integer('status')->default(1);

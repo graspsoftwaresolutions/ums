@@ -44,6 +44,7 @@ Route::get('membership-view/{parameter}','MembershipController@view');
 Route::get('membership-edit/{parameter}','MembershipController@edit');
 Route::post('membership_update','MembershipController@update');
 Route::get('membership-delete/{id}','MembershipController@delete');
+Route::get('membership_list','MembershipController@new_members');
 //State Details 
 Route::get('state','StateController@index');
 Route::get('add-state','StateController@addState');

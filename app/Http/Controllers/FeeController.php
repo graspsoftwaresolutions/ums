@@ -29,11 +29,14 @@ class FeeController extends Controller
     {
         $request->validate([
             'fee_name'=>'required',
+            'fee_amount'=>'required',
         ],
         [
             'fee_name.required'=>'please enter Fee name',
+            'fee_amount.required'=>'please enter Fee Amount'
         ]);
         $fee['fee_name'] = $request->input('fee_name');
+        $fee['fee_amount'] = $request->input('fee_amount');
         $data_exists = DB::table('fee')->where([
             ['fee_name','=',$fee['fee_name']],
             ['status','=','1']
@@ -71,11 +74,14 @@ class FeeController extends Controller
         $id = $request->input('id');
         $request->validate([
             'fee_name'=>'required',
+            'fee_amount'=>'required'
         ],
         [
             'fee_name.required'=>'please enter Fee name',
+            'fee_amount.required'=>'please enter Fee Amount'
         ]);
         $fee['fee_name'] = $request->input('fee_name');
+        $fee['fee_amount'] = $request->input('fee_amount');
         $data_exists = DB::table('fee')->where([
             ['fee_name','=',$fee['fee_name']],
             ['status','=','1']
