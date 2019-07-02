@@ -48,7 +48,7 @@
 												<thead>
 													<tr>
 														<th>Fee Name</th>
-														<th>Status</th>
+														<th>Fee Amount</th>
 														<th style="text-align:center"> Action</th>
 													</tr>
 												</thead>
@@ -62,7 +62,7 @@
                                                             $parameter = Crypt::encrypt($parameter);    
                                                         ?>
 														<td>{{$value->fee_name}}</td>
-														<td>Active</td>
+														<td>{{$value->fee_amount}}</td>
 														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
 														<a class="btn-small waves-effect waves-light cyan" href="{{url('fee-edit/').'/'.$parameter}}">Edit</a>
 														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('fee-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
