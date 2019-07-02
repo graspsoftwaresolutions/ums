@@ -124,6 +124,7 @@ class MembershipController extends Controller
      }
     public function Save(Request $request)
     {
+        //return $request->all();
         $request->validate([
             'member_title'=>'required',
             'member_number'=>'required',
