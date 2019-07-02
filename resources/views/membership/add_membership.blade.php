@@ -138,9 +138,10 @@
                                                     @foreach($data['designation_view'] as $key=>$value)
                                                         <option value="{{$value->id}}">{{$value->designation_name}}</option>
                                                     @endforeach
-                                                        </select>
-                                                       
-                                                <div class="errorTxt8"></div>
+                                                </select>
+                                                <div class="input-field">   
+													<div class="errorTxt8"></div>
+												</div>
                                             </div>
                                             <div class="col s12 m6">
                                                 <label>Race*</label>
@@ -148,9 +149,10 @@
                                                 @foreach($data['race_view'] as $key=>$value)
                                                     <option value="{{$value->id}}">{{$value->race_name}}</option>
                                                     @endforeach
-                                                        </select>
-                                                       
-                                                <div class="errorTxt9"></div>
+                                                </select>
+                                                <div class="input-field">         
+													<div class="errorTxt9"></div>
+												</div>
                                             </div>
                                             <div class="clearfix" ></div>
                                             <div class="col s12 m6">
@@ -160,26 +162,29 @@
                                                     @foreach($data['country_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->country_name}}</option>
                                                     @endforeach
-                                                        </select>
-                                                       
-                                                <div class="errorTxt10"></div>
+                                                </select>
+                                                <div class="input-field">        
+													<div class="errorTxt10"></div>
+												</div>
                                             </div>
                                             <div class="col s12 m6">
                                                <label>State Name*</label>
                                                 <select class="error browser-default" id="state_id" name="state_id" aria-required="true" required>
                                                     <option value="" selected>State Name</option>
                                                 </select>
-                                               
-                                                <div class="errorTxt11"></div>
+                                                <div class="input-field"> 
+													<div class="errorTxt11"></div>
+												</div>
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
                                             <div class="col s12 m6">
                                                  <label>City Name*</label>
-                                                <select name="city_id" id="city" class="error browser-default">
+                                                <select name="city_id" id="city" class="error browser-default" aria-required="true" required>
                                                 <option value="">Select City</option>
                                                         </select>
-                                                       
-                                                <div class="errorTxt12"></div>
+                                                <div class="input-field">        
+													<div class="errorTxt12"></div>
+												</div>
                                             </div>
                                             <div class="input-field col s12 m6">
                                             <label for="postal_code">Postal Code *</label>
@@ -204,19 +209,19 @@
                                                 <div class="errorTxt16"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <input type="text" class="datepicker" id="dob" name="dob">
-                                                    <label for="dob">Date of Birth</label>
+                                                <input type="text" class="datepicker" id="dob" name="dob" data-error=".errorTxt17">
+                                                    <label for="dob">Date of Birth*</label>
                                                 <div class="errorTxt17"></div>
                                             </div>
                                             <div class="clearfix" ></div>
                                             <div class="input-field col s12 m6">
-                                                <input type="text" class="datepicker" id="doj" name="doj">
-                                                    <label for="doj">Date of Joining</label>
+                                                <input type="text" class="datepicker" id="doj" name="doj" data-error=".errorTxt18">
+                                                    <label for="doj">Date of Joining*</label>
                                                 <div class="errorTxt18"></div>
                                             </div>
                                             
                                             <div class="input-field col s12 m6">
-                                            <label for="salary">Salary</label>
+                                            <label for="salary">Salary*</label>
                                                 <input id="salary" name="salary" type="text" data-error=".errorTxt19">
                                                 <div class="errorTxt19"></div>
                                             </div>
@@ -227,7 +232,7 @@
                                                 <div class="errorTxt20"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                            <label for="new_ic">New IC Number</label>
+                                            <label for="new_ic">New IC Number*</label>
                                                 <input id="new_ic" name="new_ic" type="text" data-error=".errorTxt21">
                                                 <div class="errorTxt21"></div>
                                             </div>
@@ -269,6 +274,7 @@
                                         </div>
                                       </div>
                                     </form>
+									</div>
                                   </div>
                                        
 								</div>
@@ -481,7 +487,16 @@ $(document).ready(function(){
             address_one: {
                 required:true,
             },
+			address_two: {
+                required:true,
+            },
+			address_three: {
+                required:true,
+            },
             dob: {
+                required:true,
+            }, 
+			doj: {
                 required:true,
             },
             new_ic: {

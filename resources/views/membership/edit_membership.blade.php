@@ -404,7 +404,8 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s12">
-                                                <table>
+                                                <?php // print_r($data['nominee_view']); ?>
+                                                <table id="nominee_table">
                                                     <thead>
                                                         <tr>
                                                         <th data-field="name">Name</th>
@@ -416,12 +417,16 @@
                                                         </tr>
                                                     </thead>
                                                 <tbody>
-                                                    <!--tr>
-                                                        <td>Alvin</td>
-                                                        <td>Eclair</td>
-                                                        <td>$0.87</td>
-                                                    </tr-->
-                                                    
+                                                    @foreach($data['nominee_view'] as $key=>$value)
+                                                    <tr>
+                                                        <td>{{$value->nominee_name}}</td>
+                                                        <td>{{$value->years}}</td>
+                                                        <td>{{$value->gender}}</td>
+                                                        <td>Father</td>
+                                                        <td>{{$value->nric_n}}</td>
+                                                        <td>{{$value->nric_o}}</td>
+                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                                 </table>
                                             </div>
@@ -430,17 +435,18 @@
                                     <div id="test4" class="col s12">
                                     <?php $row = $data['member_view'];?>
                                     <div class="row">
+                                            <?php $gardian_row = $data['gardian_view'][0];  ?>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_name">Guardian name* </label>
-                                                <input id="guardian_name" name="guardian_name" value=""  type="text" >
+                                                <input id="guardian_name" name="guardian_name" value="<?php echo $gardian_row->guardian_name; ?>"  type="text" >
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="years">Years *</label>
-                                                <input id="years" name="years" value=""  type="text">
+                                                <input id="years" name="years" value="<?php echo $gardian_row->years; ?>"  type="text">
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="sex">SEX *</label>
-                                                <input id="sex" name="gender" value=""  type="text">
+                                                <input id="sex" name="sex" value="<?php echo $gardian_row->gender; ?>"  type="text">
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
@@ -459,18 +465,18 @@
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="nric_n_guardian">NRIC-N *</label>
-                                                <input id="nric_n_guardian" name="nric_n_guardian" value=""  type="text">
+                                                <input id="nric_n_guardian" name="nric_n_guardian" value="<?php echo $gardian_row->nric_n; ?>"  type="text">
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="nric_o_guardian">NRIC-O *</label>
-                                                <input id="nric_o_guardian" name="nric_o_guardian" value=""  type="text">
+                                                <input id="nric_o_guardian" name="nric_o_guardian" value="<?php echo $gardian_row->nric_o; ?>"  type="text">
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_one">Address Line 1*</label>
-                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="" >
+                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="<?php echo $gardian_row->guardian_name; ?>" >
                                                  
                                             </div>
                                             <div class="col s12 m4">
@@ -500,7 +506,7 @@
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_two">Address Line 2*</label>
-                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="" >
+                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="<?php echo $gardian_row->address_two; ?>" >
                                                  
                                             </div>
                                             <div class="col s12 m4">
@@ -517,23 +523,23 @@
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_postal_code">Postal code*</label>
-                                                <input id="guardian_postal_code" name="guardian_postal_code" type="text" value="" >
+                                                <input id="guardian_postal_code" name="guardian_postal_code" type="text" value="<?php echo $gardian_row->postal_code; ?>" >
                                                  
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_three">Address Line 2*</label>
-                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="" >
+                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="<?php echo $gardian_row->address_two; ?>" >
                                                  
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_mobile">Mobile No*</label>
-                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="" >
+                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="<?php echo $gardian_row->mobile; ?>" >
                                                  
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_phone">Phone No</label>
-                                                <input id="guardian_phone" name="guardian_phone" type="text" value="" >
+                                                <input id="guardian_phone" name="guardian_phone" type="text" value="<?php echo $gardian_row->phone; ?>" >
                                                  
                                             </div>
                                             <div class="clearfix"> </div>
@@ -913,6 +919,19 @@ $(document).ready(function(){
                 }, // a JSON object to send back
                 success: function(response){ // What to do if we succeed
                     $("#add_nominee").attr('disabled',false);
+                    var new_row = '<tr>';
+                    new_row += '<td>'+nominee_name+'</td>';
+                    new_row += '<td>'+nominee_years+'</td>';
+                    new_row += '<td>'+nominee_sex+'</td>';
+                    new_row += '<td>'+nominee_relationship+'</td>';
+                    new_row += '<td>'+nric_n+'</td>';
+                    new_row += '<td>'+nric_o+'</td>';
+                    new_row += '</tr>';
+                    $('#test2').find('input:text').val('');    
+                    $('#nominee_table').append(new_row);
+                    if(response.status ==1){
+                        alert(response.message);
+                    }
                     console.log(response); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
