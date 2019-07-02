@@ -440,7 +440,7 @@
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="sex">SEX *</label>
-                                                <input id="sex" name="gender" value=""  type="text">
+                                                <input id="sex" name="sex" value=""  type="text">
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
