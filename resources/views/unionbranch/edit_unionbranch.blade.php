@@ -38,20 +38,81 @@
                                     
                                    <div id="view-validations">
                                     <form class="formValidate" id="unionbranch_formValidate" method="post" action="{{url('unionbranch_update')}}">
-                                    @foreach($data['union_branch'] as $key=>$value)
+                                    @foreach($data['union_branch'] as $key=>$values)
                                         @csrf
-                                        <input type="hidden" name="id" value="{{$value->id}}">
+                                        <input type="hidden" name="id" value="{{$values->id}}">
                                       <div class="row">
                                         <div class="input-field col s12 m6">
                                           <label for="branch_name">Union Branch Name*</label>
-                                          <input id="branch_name" name="branch_name" value="{{$value->union_branch}}" type="text" data-error=".errorTxt1">
+                                          <input id="branch_name" name="branch_name" value="{{$values->union_branch}}" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
+                                        <div class="input-field col s12 m6">
+                                                <select name="country_id" id="country" class="error browser-default">
+                                                <option value="">Select Country</option>
+                                                    @foreach($data['country_view'] as $value)
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->country_id) { echo "selected";} ?>>{{$value->country_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">        
+													<div class="errorTxt10"></div>
+												</div>
+                                            </div>
+                                            
+                                            <div class="col s12 m6">
+                                               <label>State Name*</label>
+                                                <select class="error browser-default" id="state_id" name="state_id" aria-required="true" required>
+                                                @foreach($data['state_view'] as $value)
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field"> 
+													<div class="errorTxt11"></div>
+												</div>
+                                            </div>
+                                            
+                                            <div class="col s12 m6">
+                                                 <label>City Name*</label>
+                                                <select name="city_id" id="city" class="error browser-default" aria-required="true" required>
+                                                @foreach($data['city_view'] as $value)
+                                                    <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$value->city_name}}</option>
+                                                    @endforeach
+                                                        </select>
+                                                <div class="input-field">        
+													<div class="errorTxt12"></div>
+												</div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="phone">Mobile Number *</label>
+                                                <input id="phone" name="phone" type="text" value="{{$values->phone}}" data-error=".errorTxt5">
+                                                <div class="errorTxt5"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="email">Email *</label>
+                                                <input id="email" name="email" type="text" value="{{$values->email}}" data-error=".errorTxt6">
+                                                <div class="errorTxt6"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="postal_code">Postal Code *</label>
+                                                <input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt13">
+                                                <div class="errorTxt13"></div>
+                                            </div>
+                                            
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_one">Address Line 1*</label>
+                                                <input id="address_one" name="address_one" value="{{$values->address_one}}" type="text" data-error=".errorTxt14">
+                                                <div class="errorTxt14"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_two">Address Line 2*</label>
+                                                <input id="address_two" name="address_two" value="{{$values->address_two}}" type="text" data-error=".errorTxt15">
+                                                <div class="errorTxt15"></div>
+                                            </div>
                                         <div class="input-field col s12 m6">
                                           
                                         <p>
                                         <label>
-                                            <input type="checkbox" name="is_head" id="is_head" value="1" {{ $value->is_head == '1' ? 'checked' : '' }} />
+                                            <input type="checkbox" name="is_head" id="is_head" value="1" {{ $values->is_head == '1' ? 'checked' : '' }} />
                                             <span>Head</span>
                                         </label>
                                         </p>
@@ -84,6 +145,74 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#relation_sidebar_li_id").addClass('active');
 	$("#unionbranch_sidebar_a_id").addClass('active');
+    $(document).ready(function(){
+        //state
+      $('#country').change(function(){
+        var countryID = $(this).val();   
+        
+        if(countryID){
+            $.ajax({
+            type:"GET",
+            dataType: "json",
+            url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
+            success:function(res){               
+                if(res){
+                   // console.log(res);
+                    //console.log('hi test');
+                    $("#state_id").empty();
+                    $("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
+                    $.each(res,function(key,entry){
+                        
+                        $("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+                       // var select = $("#state");
+                       // select.material_select('destroy');
+                        //select.empty();
+                        
+                    });
+                }else{
+                    $("#state_id").empty();
+                }
+                console.log(res);
+            }
+            });
+        }else{
+            $("#state").empty();
+            $("#city").empty();
+        }      
+    });
+    //$("#country").trigger('change');
+   // $("#state_id").trigger('change');
+    $('#state_id').change(function(){
+       var StateId = $(this).val();
+      
+       if(StateId!='' && StateId!='undefined')
+       {
+         $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                    $('#city').empty();
+                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
+                    $.each(res,function(key,entry){
+                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+                        
+                    });
+                }else{
+                    $('#city').empty();
+                }
+               // console.log(res);
+            }
+         });
+       }else{
+           $('#city').empty();
+       }
+   });
+
+    });
     $("#unionbranch_formValidate").validate({
         rules: {
             branch_name: {
