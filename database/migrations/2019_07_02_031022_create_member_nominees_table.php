@@ -16,6 +16,7 @@ class CreateMemberNomineesTable extends Migration
         Schema::create('member_nominees', function (Blueprint $table) {
             $table->bigIncrements('id');
 			$table->integer('member_id');
+			$table->integer('relation_id');
             $table->string('nominee_name');
             $table->integer('country_id');
             $table->integer('state_id');
