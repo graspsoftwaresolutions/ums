@@ -16,4 +16,9 @@ class Membership extends Model
         $id = DB::table('membership')->insertGetId($member);
         return $id;
     }
+    
+    /* one to many */
+	public function nominees(){
+		return $this->hasMany(MemberNominees::class, 'member_id');
+	}
 }

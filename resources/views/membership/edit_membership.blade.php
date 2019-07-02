@@ -292,10 +292,16 @@
                                                 <input id="years" name="years" value=""  type="text">
                                                 
                                             </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="sex">SEX *</label>
-                                                <input id="sex" name="sex" value=""  type="text">
-                                                
+                                            <div class="col s12 m4">
+                                               <label for="years">Sex *</label>
+                                                <select name="sex" id="sex" class="error browser-default">
+                                                    <option value="">Select</option>
+                                                    <option value="male" >Male</option>
+                                                    <option value="female" >Female</option>
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt50"></div>
+                                                </div>  
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="col s12 m4">
@@ -376,7 +382,7 @@
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="nominee_address_three">Address Line 2*</label>
+                                                <label for="nominee_address_three">Address Line 3*</label>
                                                 <input id="nominee_address_three" name="nominee_address_three" type="text" value="" >
                                                  
                                             </div>
@@ -877,12 +883,15 @@ $(document).ready(function(){
         var nominee_address_three =   $("#nominee_address_three").val();
         var nominee_mobile =   $("#nominee_mobile").val();
         var nominee_phone =   $("#nominee_phone").val();
-         $.ajaxSetup({
+        $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            
+        if(nominee_name!="" && nominee_years!="" && nominee_sex!="" && nominee_relationship!="" && 
+        nric_n!="" && nric_o!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
+        nominee_address_two!="" && nominee_city_id!="" && nominee_postal_code != "" && nominee_address_three!="" && nominee_mobile!=""){
+           $("#add_nominee").attr('disabled',true);
             $.ajax({
                 method: 'POST', // Type of response and matches what we said in the route
                 url: "{{ URL::to('/add-nominee') }}", // This is the url we gave in the route
@@ -905,6 +914,7 @@ $(document).ready(function(){
                     'nominee_phone' : nominee_phone,
                 }, // a JSON object to send back
                 success: function(response){ // What to do if we succeed
+                    $("#add_nominee").attr('disabled',false);
                     console.log(response); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
@@ -912,6 +922,14 @@ $(document).ready(function(){
                     console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 }
             });
+        }
+        else{
+            $("#add_nominee").attr('disabled',false);
+            alert("Please fill requierd fields");
+        }
+        
+            
+           
 
     });
 </script>
