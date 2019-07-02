@@ -528,8 +528,7 @@
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_mobile">Mobile No*</label>
-                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="" >
-                                                 
+                                                <input id="guardian_mobile" name="guardian_mobile" type="text" value="" > 
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_phone">Phone No</label>
