@@ -55,6 +55,7 @@ class UnionBranchController extends Controller
         $union['state_id'] = $request->input('state_id');
         $union['city_id'] = $request->input('city_id');
         $union['address_one'] = $request->input('address_one');
+        $union['address_two'] = $request->input('address_two');
         
         $union['is_head'] = $request->input('is_head');
         
@@ -156,6 +157,7 @@ class UnionBranchController extends Controller
         $union['city_id'] = $request->input('city_id');
         $union['address_one'] = $request->input('address_one');
         $union['is_head'] = $request->input('is_head');
+        $union['address_two'] = $request->input('address_two');
         
          //Data Exists
          $data_exists = DB::table('union_branch')->where([
