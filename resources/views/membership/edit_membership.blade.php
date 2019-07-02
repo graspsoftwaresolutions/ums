@@ -50,7 +50,6 @@
                                           @csrf
 										<div id="test1" class="col s12">
                                         <div id="view-validations">
-                                   
                                       <div class="row">
                                         <div class="col s12 m6">
                                         <input id="auto_id" name="auto_id" value="{{$values->mid}}"  type="text" class="hide">
@@ -429,26 +428,25 @@
                                         </div>
                                     </div>
                                     <div id="test4" class="col s12">
+                                    <?php $row = $data['member_view'];?>
                                     <div class="row">
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_name">Guardian name* </label>
                                                 <input id="guardian_name" name="guardian_name" value=""  type="text" >
-                                                
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="years">Years *</label>
                                                 <input id="years" name="years" value=""  type="text">
-                                                
                                             </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="sex">SEX *</label>
-                                                <input id="sex" name="sex" value=""  type="text">
+                                                <input id="sex" name="gender" value=""  type="text">
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="col s12 m4">
                                                  <label>Relationship*</label>
-                                                    <select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+                                                    <select name="relationship_id" id="relationship" data-error=".errorTxt31"  class="error browser-default">
                                                         @foreach($data['relationship_view'] as $key=>$value)
                                                             <option value="{{$value->id}}" >{{$value->relation_name}}</option>
                                                         @endforeach
