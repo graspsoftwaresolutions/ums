@@ -27,7 +27,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('state')}}">State List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('state')}}">State List</a>
                                         
                                     </div>
                                 </div>
