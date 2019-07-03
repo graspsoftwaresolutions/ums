@@ -91,12 +91,12 @@
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
                                             <div class="input-field col s12 m6">
-                                            <label for="address_two">Address Line 2*</label>
+                                            <label for="address_two">Address Line 2</label>
                                                 <input id="address_two" name="address_two" type="text" data-error=".errorTxt15">
                                                 <div class="errorTxt15"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                            <label for="address_three">Address Line 3*</label>
+                                            <label for="address_three">Address Line 3</label>
                                                 <input id="address_three" name="address_three" type="text" data-error=".errorTxt15">
                                                 <div class="errorTxt15"></div>
                                             </div>
