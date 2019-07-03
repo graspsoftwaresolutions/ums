@@ -117,12 +117,12 @@
                                         <div class="input-field col s12 m6">
                                             <input id="address_two" name="address_two" type="text" data-error=".errorTxt5">
                                             <div class="errorTxt5"></div>
-                                            <label for="address_two">Address Line 2*</label>
+                                            <label for="address_two">Address Line 2</label>
                                         </div>
                                         <div class="input-field col s12 m6">
                                             <input id="address_three" name="address_three" type="text" data-error=".errorTxt12">
                                             <div class="errorTxt12"></div>
-                                            <label for="address_three">Address Line 3*</label>
+                                            <label for="address_three">Address Line 3</label>
                                         </div>
                                     </div>
                                     <div class="row"> 
