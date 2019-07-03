@@ -450,7 +450,7 @@
                                                         <td id="nominee_nrico_{{$value->id}}">{{$value->nric_o}}</td>
                                                         <td>
                                                         <a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$value->id}}">Edit</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
+														<a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -1084,6 +1084,7 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function(response){ // What to do if we succeed
                     $("#add_nominee").attr('disabled',false);
+                    var alert_confirm = "confirm('Are you sure you want to delete?')";
                     console.log(response.data); 
                     if(response.status ==1){
                         var new_row = '<tr>';
@@ -1093,6 +1094,7 @@ $(document).ready(function(){
                         new_row += '<td>'+response.data.relationship+'</td>';
                         new_row += '<td>'+nric_n+'</td>';
                         new_row += '<td>'+nric_o+'</td>';
+                        new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+response.data.nominee_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="'+response.data.nominee_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
                         new_row += '</tr>';
                         $('#test2').find('input:text').val('');    
                         $('#nominee_table').append(new_row);
@@ -1183,7 +1185,9 @@ $(document).ready(function(){
        }
    });
    $('.modal').modal();
+   $(document.body).on('click', '.edit_nominee_row' ,function(){
     $('.edit_nominee_row').click(function(){
+        alert('ok');
         var nominee_id = $(this).data('id');
         $.ajax({
             type: "GET",
