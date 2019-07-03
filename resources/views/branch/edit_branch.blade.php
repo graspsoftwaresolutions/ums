@@ -96,7 +96,7 @@
                                         </div>
                                         <div class="col s12 m6">
                                             <label>State Name*</label>
-                                            <select name="state_id" id="state" data-error=".errorTxt7"  class="error browser-default">
+                                            <select name="state_id" id="state_id" data-error=".errorTxt7"  class="error browser-default">
                                                 @foreach($data['state_view'] as $key=>$value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $row->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
                                                 @endforeach
@@ -196,7 +196,7 @@ $(document).ready(function(){
             }
             });
         }else{
-            $("#state").empty();
+            $("#state_id").empty();
             $("#city").empty();
         }      
     });
