@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/member-register', 'MemberController@register')->name('member.register');
-
+Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
 /* Master */
 

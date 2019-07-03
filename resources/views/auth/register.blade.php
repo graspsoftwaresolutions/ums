@@ -21,8 +21,8 @@
 									@enderror
 								</div>
 								<div class="input-field col m6 s12">
-									<input id="mobile" name="mobile" type="text">
-									<label for="mobile">Mobile Number</label>
+									<input id="phone" name="phone" type="text">
+									<label for="phone">Mobile Number</label>
 									@error('mobile')
 										<span class="invalid-feedback" role="alert">
 											<strong>{{ $message }}</strong>
@@ -40,16 +40,33 @@
 										</span>
 									@enderror
 								</div>
-								<div class="input-field col m6 s12">
-									
-									    <select id="branch" name="branch">
-											<option value="" disabled="" selected="">Choose your Branch</option>
-											
-										</select>
-										<label>Select Branch</label>
-									  </div>
-								</div>
-							</div>
+								<div class=" col s12 m6 union-data">
+                                            <label>Company Name*</label>
+                                                <select name="company_id" id="company" class="error browser-default">
+                                                <option value="">Select Company</option>
+                                                    @foreach($data['company_view'] as $value)
+                                                    <option value="{{$value->id}}">{{$value->company_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">      
+                                                    <div class="errorTxt22"></div>
+                                                </div>
+                                            </div>
+											<div class="clearfix" style="clear:both"></div>
+											<div class="col s12 m6 union-data">
+                                             <label>Branch Name*</label>
+                                                <select name="branch_id" id="branch" class="error browser-default">
+                                                    <option value="">Select Branch</option>
+                                                    <?php 
+                                                        //  if(!$check_union){
+                                                        //      echo '<option selected >'.$branch_id.'</option>';
+                                                        //  }
+                                                    ?>
+                                                </select>
+                                                <div class="input-field">      
+                                                    <div class="errorTxt23"></div>
+                                                </div>       
+                                            </div>
 
 							<div class="row">
 								<div class="input-field col s12">
@@ -138,5 +155,38 @@
 		</div>
 	</div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('#company').change(function(){
+       var CompanyID = $(this).val();
+      
+       if(CompanyID!='' && CompanyID!='undefined')
+       {
+         $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID,
+            success:function(res){
+                //console.log(res);
+                if(res)
+                {
+                    $('#branch').empty();
+                    
+                    $.each(res,function(key,entry){
+                        $('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+                    });
+                }else{
+                    $('#branch').empty();
+                }
+                console.log(res);
+            }
+         });
+       }else{
+           $('#city').empty();
+       }
+   });
+});
+</script>
 
 @endsection

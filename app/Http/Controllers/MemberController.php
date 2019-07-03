@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
+use App\Model\Membership;
 use App\Helpers\CommonHelper;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMemberMailable;
@@ -40,7 +41,10 @@ class MemberController extends Controller
 		$randompass = CommonHelper::random_password(5,true);
 		
 		$this->validate(request(), [
-            'member_name' => 'required',
+			'member_name' => 'required',
+			'phone'=>'required',
+			'company_id'=>'required',
+			'branch_id'=>'required',
             'email' => 'required|email',
         ]);
 		
@@ -50,7 +54,19 @@ class MemberController extends Controller
 	    $new_user->name = $request->member_name;
 	    $new_user->email = $request->email;
 	    $new_user->password = bcrypt($randompass);
-	    $new_user->save();
+		$new_user->save();
+		$user_id =  $new_user->id;
+
+		$New_member_user = new Membership();
+		$New_member_user->name = $request->member_name;
+		$New_member_user->phone = $request->phone;
+		$New_member_user->branch_id = $request->branch_id;
+		$New_member_user->email = $request->email;
+		$New_member_user->user_id = $user_id;
+		$New_member_user->status = 1;
+		$New_member_user->status_id =1;
+		$New_member_user->save();
+		
 	    $new_user->roles()->attach($member_role);
 		
 		$mail_data = array(

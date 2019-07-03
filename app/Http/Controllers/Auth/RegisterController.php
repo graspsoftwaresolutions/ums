@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Illuminate\Http\Request;
 
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Model\Company;
+use App\Model\Branch;
+use DB;
 
 class RegisterController extends Controller
 {
@@ -55,6 +59,24 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function getBranchList(Request $request){
+       
+        $id = $request->company_id;
+        $res = DB::table('branch')
+        ->select('id','branch_name')
+        ->where([
+            ['company_id','=',$id],
+            ['status','=','1']
+        ])->get();
+      
+        return response()->json($res);
+    }
+
+    public function ShowRegistrationForm()
+    {
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        return view('auth.register')->with('data',$data);
+    }
     /**
      * Create a new user instance after a valid registration.
      *
