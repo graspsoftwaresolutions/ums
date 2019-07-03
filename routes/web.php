@@ -160,4 +160,5 @@ Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
+Route::get('delete-nominee-data','MembershipController@deleteNominee');
 
