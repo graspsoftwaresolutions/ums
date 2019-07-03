@@ -42,8 +42,8 @@
                                     <form class="formValidate" id="branchformValidate" method="post" action="{{ url('branch_save') }}">
                                         @csrf
                                       <div class="row">
-                                        <div class="input-field col s12 m12">
-                                            <select class="error browser-default" id="company_id" name="company_id"  data-error=".errorTxt1">
+                                        <div class="input-field col s12 m6">
+                                            <select class="error browser-default" id="company_id" name="company_id"  data-error=".errorTxt1" style="height: 4rem;">
                                                 <option value="" disabled="" selected="">Select company</option>
                                                 @foreach($data['company_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->company_name}}</option>
@@ -53,8 +53,8 @@
                                                 <div class="errorTxt1"></div>
                                             </div>
                                         </div>
-                                        <div class="input-field col s12 m12">
-                                            <select class="error browser-default" id="union_branch_id" name="union_branch_id"  data-error=".errorTxt2">
+                                        <div class="input-field col s12 m6">
+                                            <select class="error browser-default" id="union_branch_id" name="union_branch_id"  data-error=".errorTxt2" style="height: 4rem;">
                                                 <option value="" disabled="" selected="">Select Union Branch</option>
                                                 @foreach($data['union_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->union_branch}}</option>
@@ -64,23 +64,15 @@
                                                 <div class="errorTxt2"></div>
                                             </div>
                                         </div>
-                                        <div class="input-field col s12 m12">
+                                    </div>
+                                    <div class="row">  
+                                        <div class="input-field col s12 m6">
                                             <input id="branch_name" name="branch_name" type="text" data-error=".errorTxt3">
                                             <div class="errorTxt3" ></div>
                                                 <label for="branch_name">Branch Name*</label>
                                         </div>
-                                        <div class="input-field col s12 m6">
-                                            <input id="address_one" name="address_one" type="text" data-error=".errorTxt4">
-                                            <div class="errorTxt4"></div>
-                                            <label for="address_one">Address Line 1*</label>
-                                        </div>
-                                        <div class="input-field col s12 m6">
-                                            <input id="address_two" name="address_two" type="text" data-error=".errorTxt5">
-                                            <div class="errorTxt5"></div>
-                                            <label for="address_two">Address Line 2*</label>
-                                        </div>
                                         <div class="col s12 m6">
-                                            <select class="error browser-default" name="country_id" id="country" data-error=".errorTxt6">
+                                            <select class="error browser-default" name="country_id" id="country_id" data-error=".errorTxt6" style="height: 4rem;">
                                             <option value="">Select Country</option>
                                                 @foreach($data['country_view'] as $value)
                                                 <option value="{{$value->id}}">{{$value->country_name}}</option>
@@ -90,8 +82,10 @@
                                                 <div class="errorTxt6"></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col s12 m6">
-                                            <select class="error browser-default" data-error=".errorTxt7" id="state_id" name="state_id" aria-required="true" required style="    margin: 1px 0;">
+                                            <select class="error browser-default" data-error=".errorTxt7" id="state_id" name="state_id" aria-required="true" required style="height: 4rem;">
                                                 <option value="" selected>State Name</option>
                                             </select>
                                             <div class="input-field"> 
@@ -99,29 +93,58 @@
                                             </div>
                                         </div>
                                         <div class="col s12 m6">
-                                            <select name="city_id" id="city" class="error browser-default" aria-required="true" required data-error=".errorTxt8" style="    margin: 16px 0;">
+                                            <select name="city_id" id="city_id" class="error browser-default" aria-required="true" required data-error=".errorTxt8" style="height: 4rem;">
                                                 <option value="">Select City</option>
                                             </select>
                                             <div class="input-field">        
                                                 <div class="errorTxt8"></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="input-field col s12 m6">
                                              <label for="postal_code">Postal Code *</label>
                                             <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt9">
                                             <div class="errorTxt9"></div>
                                         </div>
-                                        <div class="clearfix" ></div>
+                                        <div class="input-field col s12 m6">
+                                            <input id="address_one" name="address_one" type="text" data-error=".errorTxt4">
+                                            <div class="errorTxt4"></div>
+                                            <label for="address_one">Address Line 1*</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12 m6">
+                                            <input id="address_two" name="address_two" type="text" data-error=".errorTxt5">
+                                            <div class="errorTxt5"></div>
+                                            <label for="address_two">Address Line 2*</label>
+                                        </div>
+                                        <div class="input-field col s12 m6">
+                                            <input id="address_three" name="address_three" type="text" data-error=".errorTxt12">
+                                            <div class="errorTxt12"></div>
+                                            <label for="address_three">Address Line 3*</label>
+                                        </div>
+                                    </div>
+                                    <div class="row"> 
+                                        <div class="input-field col s12 m6">
+                                          <label for="phone">Phone Number *</label>
+                                          <input id="phone" name="phone" type="text" data-error=".errorTxt13">
+                                          <div class="errorTxt13"></div>
+                                        </div>   
                                         <div class="input-field col s12 m6">
                                           <label for="phone">Mobile Number *</label>
-                                          <input id="phone" name="phone" type="text" data-error=".errorTxt10">
+                                          <input id="mobile" name="mobile" type="text" data-error=".errorTxt10">
                                           <div class="errorTxt10"></div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="input-field col s12 m6">
                                           <label for="email">Email *</label>
-                                          <input id="email" name="email" type="text" data-error=".errorTxt11">
+                                          <input id="email" name="email" type="email" data-error=".errorTxt11">
                                           <div class="errorTxt11"></div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
@@ -135,6 +158,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>
@@ -155,7 +179,7 @@
 
 $(document).ready(function(){
       //state
-      $('#country').change(function(){
+      $('#country_id').change(function(){
         var countryID = $(this).val();   
         
         if(countryID){
@@ -184,8 +208,8 @@ $(document).ready(function(){
             }
             });
         }else{
-            $("#state").empty();
-            $("#city").empty();
+            $("#state_id").empty();
+            $("#city_id").empty();
         }      
     });
     //$("#country").trigger('change');
@@ -203,20 +227,20 @@ $(document).ready(function(){
                 console.log(res);
                 if(res)
                 {
-                    $('#city').empty();
-                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
+                    $('#city_id').empty();
+                    $("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
                     $.each(res,function(key,entry){
-                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+                        $('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
                         
                     });
                 }else{
-                    $('#city').empty();
+                    $('#city_id').empty();
                 }
                // console.log(res);
             }
          });
        }else{
-           $('#city').empty();
+           $('#city_id').empty();
        }
    });
 
@@ -238,6 +262,9 @@ $(document).ready(function(){
             phone: {
                 required: true,
             },
+            mobile: {
+                required: true,
+            },
             email: {
                 required: true,
             },
@@ -245,9 +272,6 @@ $(document).ready(function(){
                 required: true,
             },
             address_one: {
-                required:true,
-            },
-			address_two: {
                 required:true,
             },
             state_id: {
@@ -262,19 +286,23 @@ $(document).ready(function(){
         messages: {
             
             company_id: {
-                required: "Please Enter your Company",
+                required: "Please enter your company",
                 
             },
             union_branch_id: {
-                required: "Please Enter your Union Branch Name",
+                required: "Please enter your union branch name",
                 
             },
             branch_name: {
-                required: "Please Enter your Branch Name",
+                required: "Please enter your branch name",
                 
             },
             phone: {
-                required: "Please Enter your Number",
+                required: "Please enter your phone number",
+                
+            },
+            mobile: {
+                required: "Please enter your mobile number",
                 
             },
             email: {
@@ -289,8 +317,11 @@ $(document).ready(function(){
             city_id: {
                 required:"Please choose  your city",
             },
+            postal_code: {
+                required:"Please enter postal code",     
+            },
             address_one: {
-                required:"Please Enter your Address",
+                required:"Please enter your address",
             }
         },
         errorElement: 'div',

@@ -43,12 +43,14 @@ class BranchController extends Controller
             'branch_name'=>'required',
             'address_one'=>'required',
             'address_two'=>'required',
+            'address_three'=>'required',
             'country_id'=>'required',
             'state_id'=>'required',
             'city_id'=>'required',
             'postal_code'=>'required',
             'email'=>'required',
             'phone'=>'required',
+            'mobile'=>'required',
         ],
         [
             'company_id.required'=>'please Choose Company name',
@@ -56,24 +58,28 @@ class BranchController extends Controller
             'branch_name.required'=>'please Enter branch name',
             'address_one.required'=>'please Enter address one name',
             'address_two.required'=>'please Enter address two name',
+            'address_three.required'=>'please Enter address three name',
             'country_id.required'=>'please Enter country name',
             'state_id.required'=>'please Enter state name',
             'city_id.required'=>'please Enter city name',
             'postal_code.required'=>'please Enter postal code',
             'email.required'=>'please Enter email address',
             'phone.required'=>'please Enter phone number',
+            'mobile.required'=>'please Enter mobile number',
         ]);
         $branch['company_id'] = $request->input('company_id');
         $branch['union_branch_id'] = $request->input('union_branch_id');
         $branch['branch_name'] = $request->input('branch_name');
-        $branch['address_one'] = $request->input('address_one');
-        $branch['address_two'] = $request->input('address_two');
         $branch['country_id'] = $request->input('country_id');
         $branch['state_id'] = $request->input('state_id');
         $branch['city_id'] = $request->input('city_id');
         $branch['postal_code'] = $request->input('postal_code');
-        $branch['email'] = $request->input('email');
+        $branch['address_one'] = $request->input('address_one');
+        $branch['address_two'] = $request->input('address_two');
+        $branch['address_three'] = $request->input('address_three');
         $branch['phone'] = $request->input('phone');
+        $branch['mobile'] = $request->input('mobile');
+        $branch['email'] = $request->input('email');
 
         $data_exists = DB::table('branch')->where([
            ['branch_name','=', $branch['branch_name']],
@@ -137,16 +143,18 @@ class BranchController extends Controller
     {
         $id = $request->input('id');
         $branch['company_id'] = $request->input('company_id');
-        $branch['branch_name'] = $request->input('branch_name');
         $branch['union_branch_id'] = $request->input('union_branch_id');
-        $branch['address_one'] = $request->input('address_one');
-        $branch['address_two'] = $request->input('address_two');
+        $branch['branch_name'] = $request->input('branch_name');
         $branch['country_id'] = $request->input('country_id');
         $branch['state_id'] = $request->input('state_id');
         $branch['city_id'] = $request->input('city_id');
         $branch['postal_code'] = $request->input('postal_code');
-        $branch['email'] = $request->input('email');
+        $branch['address_one'] = $request->input('address_one');
+        $branch['address_two'] = $request->input('address_two');
+        $branch['address_three'] = $request->input('address_three');
         $branch['phone'] = $request->input('phone');
+        $branch['mobile'] = $request->input('mobile');
+        $branch['email'] = $request->input('email');
 		$id = DB::table('branch')->where('id','=',$id)->update($branch);
 		return redirect('branch')->with('message','Branch Details Updated Succesfully');
     }

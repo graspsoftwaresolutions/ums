@@ -64,8 +64,7 @@
                         <td>{{$value->company_name}}</td>
                         <td> {{$value->short_code}}</td>
                         <td> {{$value->head_of_company}}</td>
-                        <td> <a class="btn-small waves-effect waves-light cyan" href="{{url('company-edit/').'/'.$parameter}}">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('company-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
-                        <td></td> 
+                        <td style="text-align:center"> <a class="btn-small waves-effect waves-light cyan" href="{{url('company-edit/').'/'.$parameter}}">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('company-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
                         
                 </tr>
                 @endforeach
