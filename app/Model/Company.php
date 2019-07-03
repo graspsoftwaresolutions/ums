@@ -9,7 +9,7 @@ class Company extends Model
 {
     protected $table = "company";
     protected $fillable = [
-        'id','company_name','owner_name','phone','email','address_one','address_two','status'
+        'id','company_name','short_code','head_of_company','status'
     ];
     public $timestamps = true;
      

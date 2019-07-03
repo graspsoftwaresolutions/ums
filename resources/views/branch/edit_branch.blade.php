@@ -38,7 +38,7 @@
                                     <h4 class="card-title">Edit Branch</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{url('branch_update')}}">
+                                    <form class="formValidate" id="branchformValidate" method="post" action="{{url('branch_update')}}">
                                        <?php $row = $data['branch_view'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
@@ -110,7 +110,7 @@
                                                 <label>City Name*</label>
                                             <select name="city_id" id="city" data-error=".errorTxt8" class="error browser-default">
                                                 @foreach($data['city_view'] as $key=>$value)
-                                                <option value="{{$value->id}}" <?php if($value->id == $row->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
+                                                <option value="{{$value->id}}" <?php if($value->id == $row->city_id) { echo "selected";} ?>>{{$value->city_name}}</option>
                                                 @endforeach
                                             </select>
                                                     

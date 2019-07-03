@@ -53,50 +53,24 @@
                                     @endif</div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="company_name">Owner Name*</label>
-                                          <input id="owner_name" name="owner_name" value="{{$row->owner_name}}" type="text" data-error=".errorTxt2">
+                                          <label for="short_code">Short Code*</label>
+                                          <input id="short_code" name="short_code" value="{{$row->short_code}}" type="text" data-error=".errorTxt2">
                                           <div class="errorTxt2">
-                                          @if($errors->has('owner_name'))
-                                            <span class="text-danger">{{$errors->first('owner_name')}}</span>
+                                          @if($errors->has('short_code'))
+                                            <span class="text-danger">{{$errors->first('short_code')}}</span>
                                             @endif
                                           </div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="phone">Mobile Number*</label>
-                                          <input id="phone" name="phone" value="{{$row->phone}}" type="text" data-error=".errorTxt3">
+                                          <label for="head_of_company">Head of Company*</label>
+                                          <input id="head_of_company" name="head_of_company" value="{{$row->head_of_company}}" type="text" data-error=".errorTxt3">
                                           <div class="errorTxt3">
-                                          @if($errors->has('phone'))
-                                    <span >{{$errors->first('phone')}}</span>
+                                          @if($errors->has('head_of_company'))
+                                    <span >{{$errors->first('head_of_company')}}</span>
                                     @endif
                                           </div>
                                         </div>
-                                        <div class="input-field col s12 m6">
-                                          <label for="email">Email*</label>
-                                          <input id="email" value="{{$row->email}}" name="email" type="text" data-error=".errorTxt4">
-                                          <div class="errorTxt4">
-                                          @if($errors->has('email'))
-                                    <span>{{$errors->first('email')}}</span>
-                                    @endif
-                                          </div>
-                                        </div>
-                                        <div class="input-field col s12 m6">
-                                          <label for="address_one">Addresss line 1*</label>
-                                          <input id="address_one" value="{{$row->address_one}}" name="address_one" type="text" data-error=".errorTxt5">
-                                          <div class="errorTxt5">
-                                          @if($errors->has('address_one'))
-                                            <span>{{$errors->first('address_one')}}</span>
-                                            @endif
-                                          </div>
-                                        </div>
-                                        <div class="input-field col s12 m6">
-                                          <label for="address_two">Addresss line 2*</label>
-                                          <input id="address_two" value="{{$row->address_two}}" name="address_two" type="text" data-error=".errorTxt6">
-                                          <div class="errorTxt6">
-                                          @if($errors->has('company_name'))
-                                            <span>{{$errors->first('address_two')}}</span>
-                                            @endif
-                                          </div>
-                                        </div>
+                                        
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
                                             <i class="material-icons right">send</i>
@@ -128,48 +102,27 @@
     $("#country_sidebar_a_id").addClass('active');
     $('#company_formValidate').validate({
         rules: {
-            company_name: {
+             company_name: {
                 required: true,
             },
-            owner_name: {
+            short_code: {
                 required: true,
             },
-            phone: {
+            head_of_company: {
                 required: true,
             },
-            email: {
-                required: true,
-                email: true
-            },
-            address_one: {
-                required:true,
-             },
-             address_two: {
-                required:true,
-             },
         },
         //For custom messages
         messages: {
-            company_name: {
+             company_name: {
             required: "Please Enter Company Name",
             },
-            owner_name: {
-                required: "Please Enter Owner Name",
+            short_code: {
+                required: "Please Enter Short Code",
             },
-            phone: {
-                required: "Please Enter Mobile Number",
+            head_of_company: {
+                required: "Please Enter Head of company",
             },
-            email : 
-            {
-                required: "Please Enter Email",
-                email : "Please enter valid email",
-            },
-            address_one: {
-                required:"Please Enter your Address",
-             },
-             address_two: {
-                required:"Please Enter your Address 2",
-             },
         },
         errorElement: 'div',
         errorPlacement: function (error, element) {

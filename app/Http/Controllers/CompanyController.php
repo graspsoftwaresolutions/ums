@@ -27,26 +27,17 @@ class CompanyController extends Controller
     {
         $request->validate([ 
             'company_name' => 'required',
-            'owner_name'=>'required',
-            'phone' =>'required',
-            'email' => 'required',
-            'address_one' =>'required',
-            'address_two' => 'required',
+            'short_code'=>'required',
+            'head_of_company' =>'required'
         ],
         [
             'company_name.required' => 'Please Enter your Company Name',
-            'owner_name.required' => 'please Enter your owner Name',
-            'phone.required' => 'Please Enter phone number',
-            'email.required' => 'Please Enter your Email',
-            'address_one.required' => 'Please Enter your Address',
-            'address_two.required' => 'Please Enter your Address',
+            'short_code.required' => 'please Enter short code',
+            'head_of_company.required' => 'Please Enter head of company',
         ]);
         $company['company_name'] = $request->input('company_name');
-        $company['owner_name'] = $request->input('owner_name');
-        $company['phone'] = $request->input('phone');
-        $company['email'] = $request->input('email');
-        $company['address_one'] = $request->input('address_one');
-        $company['address_two'] = $request->input('address_two');
+        $company['short_code'] = $request->input('short_code');
+        $company['head_of_company'] = $request->input('head_of_company');
         
         $data_exists = DB::table('company')->where([
             ['company_name', '=', $company['company_name']],
@@ -78,11 +69,8 @@ class CompanyController extends Controller
     {
         $id = $request->input('id');
 		$company['company_name'] = $request->input('company_name');
-        $company['owner_name'] = $request->input('owner_name');
-        $company['phone'] = $request->input('phone');
-        $company['email'] = $request->input('email');
-        $company['address_one'] = $request->input('address_one');
-        $company['address_two'] = $request->input('address_two');
+        $company['short_code'] = $request->input('short_code');
+        $company['head_of_company'] = $request->input('head_of_company');
 		$id = DB::table('company')->where('id','=',$id)->update($company);
 		return redirect('company')->with('message','Company Details Updated Succesfully');
     }

@@ -116,7 +116,7 @@ class BranchController extends Controller
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
-        $data['branch_view'] = DB::table('company')->select('company.company_name','branch.branch_name','branch.id','branch.company_id','branch.status','company.status','union_branch.union_branch','branch.union_branch_id')
+        $data['branch_view'] = DB::table('company')->select('branch.*', 'company.company_name','branch.branch_name','branch.id','branch.company_id','branch.status','company.status','union_branch.union_branch','branch.union_branch_id')
                 ->join('branch','company.id','=','branch.company_id')
                 ->join('union_branch','branch.union_branch_id','=','union_branch.id')
                 ->where([
@@ -129,7 +129,8 @@ class BranchController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
+        $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->get();
         return view('branch.edit_branch')->with('data',$data);
     }
     public function update(Request $request)
