@@ -252,6 +252,8 @@
                                                     $branch_id = $auth_user->branch_id;
                                                     $member_status = 1;
                                                 }
+                                                $branch_requird = 'required';
+                                                $branch_hide = '';
                                             ?>
                                             <div class=" col s12 m6 union-data {{ $branch_hide }}">
                                             <label>Company Name*</label>
@@ -271,9 +273,9 @@
                                                 <select name="branch_id" id="branch" class="error browser-default" {{ $branch_requird }}>
                                                     <option value="">Select Branch</option>
                                                     <?php 
-                                                         if(!$check_union){
-                                                             echo '<option selected >'.$branch_id.'</option>';
-                                                         }
+                                                        //  if(!$check_union){
+                                                        //      echo '<option selected >'.$branch_id.'</option>';
+                                                        //  }
                                                     ?>
                                                 </select>
                                                 <div class="input-field">      

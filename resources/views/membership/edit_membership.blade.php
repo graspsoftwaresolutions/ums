@@ -259,10 +259,12 @@
                                                 $check_union = $auth_user->hasRole('union');
                                                 if($check_union){
                                                     $branch_requird = 'required';
+                                                    $branch_disabled = '';
                                                     $branch_hide = '';
                                                     $branch_id = '';
                                                 }else{
                                                     $branch_requird = '';
+                                                    $branch_disabled = 'disabled';
                                                     $branch_hide = 'hide';
                                                     $branch_id = $auth_user->branch_id;
                                                 }
@@ -279,9 +281,9 @@
                                                      <div class="errorTxt15"></div>
                                                 </div>
                                             </div>
-                                            <div class="col s12 m6">
+                                            <div class="col s12 m6 ">
                                                 <label>Status*</label>
-                                                <select name="status_id" id="status_id" data-error=".errorTxt16" class="error browser-default">
+                                                <select name="status_id" id="status_id" {{ $branch_disabled }} data-error=".errorTxt16" class="error browser-default">
                                                     @foreach($data['status_view'] as $key=>$value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $values->status_id) { echo "selected";} ?>>{{$value->status_name}}</option>
                                                     @endforeach
@@ -939,18 +941,21 @@ $(document).ready(function(){
                 }, // a JSON object to send back
                 success: function(response){ // What to do if we succeed
                     $("#add_nominee").attr('disabled',false);
-                    var new_row = '<tr>';
-                    new_row += '<td>'+nominee_name+'</td>';
-                    new_row += '<td>'+nominee_years+'</td>';
-                    new_row += '<td>'+nominee_sex+'</td>';
-                    new_row += '<td>'+nominee_relationship+'</td>';
-                    new_row += '<td>'+nric_n+'</td>';
-                    new_row += '<td>'+nric_o+'</td>';
-                    new_row += '</tr>';
-                    $('#test2').find('input:text').val('');    
-                    $('#nominee_table').append(new_row);
+                   
                     if(response.status ==1){
-                        alert(response.message);
+                        var new_row = '<tr>';
+                        new_row += '<td>'+nominee_name+'</td>';
+                        new_row += '<td>'+response.data.age+'</td>';
+                        new_row += '<td>'+nominee_sex+'</td>';
+                        new_row += '<td>'+nominee_relationship+'</td>';
+                        new_row += '<td>'+nric_n+'</td>';
+                        new_row += '<td>'+nric_o+'</td>';
+                        new_row += '</tr>';
+                        $('#test2').find('input:text').val('');    
+                        $('#nominee_table').append(new_row);
+                        M.toast({
+                            html: response.message
+                        });
                     }
                     console.log(response); 
                 },
@@ -962,7 +967,9 @@ $(document).ready(function(){
         }
         else{
             $("#add_nominee").attr('disabled',false);
-            alert("Please fill requierd fields");
+            M.toast({
+                html: "Please fill requierd fields"
+            });
         }
         
             

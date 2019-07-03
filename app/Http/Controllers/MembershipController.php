@@ -20,6 +20,7 @@ use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
 use Auth;
+use Carbon\Carbon;
 
 
 class MembershipController extends Controller
@@ -399,7 +400,7 @@ class MembershipController extends Controller
         //return $guardian; 
 
         $id = $this->MemberGuardian->where('member_id','=',$member_guardian_id)->update($guardian);
-        return redirect('membership')->with('message','Guardian Details Updated Succesfully');
+        return redirect('membership')->with('message','Member Details Updated Succesfully');
 
     }
     public function delete($id)
@@ -429,15 +430,15 @@ class MembershipController extends Controller
        $nominee->phone = $request->nominee_phone;
 
        $fmmm_date = explode("/",$request->input('nominee_dob'));           							
-       $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-       $doe = date('Y-m-d', strtotime($doj1));
-       $nominee->dob =  $doe;
+       $dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+       $dob = date('Y-m-d', strtotime($dob1));
+       $nominee->dob =  $dob;
       
-       $nominee->years =  CommonHelper::calculate_age($doe);
+       $nominee->years =  Carbon::parse($dob)->age;
 
        $nominee->save();
        if($nominee){
-            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => '');
+            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => ['age'=> $nominee->years]);
        }else{
             $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
        }

@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 use DB;
-use DateTime;
+use Carbon\Carbon;
 
 class CommonHelper
 {
@@ -45,20 +45,6 @@ class CommonHelper
      }
 
      public static function calculate_age($userDob){
- 
-        //Create a DateTime object using the user's date of birth.
-        $dob = new DateTime($userDob);
-         
-        //We need to compare the user's date of birth with today's date.
-        $now = new DateTime();
-         
-        //Calculate the time difference between the two dates.
-        $difference = $now->diff($dob);
-         
-        //Get the difference in years, as we are looking for the user's age.
-        $age = $difference->y;
-         
-        //Print it out.
-        return $age;
+        return $years = Carbon::parse($userDob)->age;
      }
 }
