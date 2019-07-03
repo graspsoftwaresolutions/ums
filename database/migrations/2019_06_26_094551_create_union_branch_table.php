@@ -21,8 +21,11 @@ class CreateUnionBranchTable extends Migration
             $table->integer('city_id');
             $table->string('postal_code');
             $table->string('address_one');
-            $table->string('address_two');
+            $table->string('address_two')->nullable();
+            $table->string('address_three')->nullable();
+            $table->string('logo')->nullable();
             $table->string('phone');
+            $table->string('mobile')->nullable();
             $table->string('email');
             $table->string('is_head');
             $table->timestamps();
