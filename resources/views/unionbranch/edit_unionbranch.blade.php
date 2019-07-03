@@ -48,7 +48,7 @@
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                                <select name="country_id" id="country" class="error browser-default">
+                                                <select name="country_id" id="country_id" class="error browser-default">
                                                 <option value="">Select Country</option>
                                                     @foreach($data['country_view'] as $value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $values->country_id) { echo "selected";} ?>>{{$value->country_name}}</option>
@@ -73,7 +73,7 @@
                                             
                                             <div class="col s12 m6">
                                                  <label>City Name*</label>
-                                                <select name="city_id" id="city" class="error browser-default" aria-required="true" required>
+                                                <select name="city_id" id="city_id" class="error browser-default" aria-required="true" required>
                                                 @foreach($data['city_view'] as $value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$value->city_name}}</option>
                                                     @endforeach
@@ -103,13 +103,13 @@
                                                 <div class="errorTxt15"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <label for="mobile">Mobile Number *</label>
-                                                <input id="mobile" name="mobile" type="text" value="{{$values->mobile}}" data-error=".errorTxt5">
-                                                <div class="errorTxt5"></div>
+                                                <label for="phone">Phone *</label>
+                                                <input id="phone" name="phone" type="text" value="{{$values->phone}}" data-error=".errorTxt100">
+                                                <div class="errorTxt100"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <label for="phone">Phone *</label>
-                                                <input id="phone" name="phone" type="text" value="{{$values->phone}}" data-error=".errorTxt5">
+                                                <label for="mobile">Mobile Number *</label>
+                                                <input id="mobile" name="mobile" type="text" value="{{$values->mobile}}" data-error=".errorTxt5">
                                                 <div class="errorTxt5"></div>
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
@@ -166,11 +166,11 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#relation_sidebar_li_id").addClass('active');
+	$("#unionbranch_sidebar_li_id").addClass('active');
 	$("#unionbranch_sidebar_a_id").addClass('active');
     $(document).ready(function(){
         //state
-      $('#country').change(function(){
+      $('#country_id').change(function(){
         var countryID = $(this).val();   
         
         if(countryID){
@@ -182,7 +182,9 @@
                 if(res){
                    // console.log(res);
                     //console.log('hi test');
+                    $("#city_id").empty();
                     $("#state_id").empty();
+                    $("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
                     $("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
                     $.each(res,function(key,entry){
                         
@@ -199,8 +201,8 @@
             }
             });
         }else{
-            $("#state").empty();
-            $("#city").empty();
+            $("#state_id").empty();
+            $("#city_id").empty();
         }      
     });
     //$("#country").trigger('change');
@@ -218,45 +220,23 @@
                 console.log(res);
                 if(res)
                 {
-                    $('#city').empty();
-                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
+                    $('#city_id').empty();
+                    $("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
                     $.each(res,function(key,entry){
-                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+                        $('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
                         
                     });
                 }else{
-                    $('#city').empty();
+                    $('#city_id').empty();
                 }
                // console.log(res);
             }
          });
        }else{
-           $('#city').empty();
+           $('#city_id').empty();
        }
    });
 
-    });
-    $("#unionbranch_formValidate").validate({
-        rules: {
-            branch_name: {
-                required: true,
-            },
-        },
-        //For custom messages
-        messages: {
-            branch_name: {
-                required: "Enter the Union Branch Name",
-            },
-        },
-        errorElement: 'div',
-        errorPlacement: function (error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-            $(placement).append(error)
-        } else {
-            error.insertAfter(element);
-        }
-        }
     });
     $("#unionbranch_formValidate").validate({
         rules: {
@@ -267,17 +247,21 @@
                 required: true,
                 digits: true,
             },
+            mobile: {
+                required: true,
+                digits: true,
+            },
             email: {
                 required: true,
                 email: true,
             },
-            country: {
+            country_id: {
                 required: true,
             },
             state_id: {
                 required: true,
             },
-            city: {
+            city_id: {
                 required: true,
             },
             postal_code: {
@@ -294,7 +278,12 @@
                 required: "Enter the Union Branch Name",
             },
             phone: {
-                required: "Please Enter your Number",
+                required: "Please Enter your Phone Number",
+                digits: "Enter Numbers only",
+                
+            },
+            mobile: {
+                required: "Please Enter your Mobile Number",
                 digits: "Enter Numbers only",
                 
             },
@@ -302,14 +291,17 @@
                 required: "Please enter valid email",
                 email : "Please Enter valid Email",
                 },
-            country: {
+            country_id: {
                 required:"Please choose  your Country",
             },
             state_id: {
                 required:"Please choose  your State",
             },
-            city: {
+            city_id: {
                 required:"Please choose  your city",
+            },
+            postal_code: {
+                required:"Please enter postal code",
             },
             address_one: {
                 required:"Please Enter your Address",

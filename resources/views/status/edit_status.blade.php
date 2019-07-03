@@ -27,7 +27,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('status')}}">Back</a>
+                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('status')}}">Status List</a>
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                     <h4 class="card-title">Edit Status</h4>
                 
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{url('status_update')}}">
+                                    <form class="formValidate" id="status_formValidate" method="post" action="{{url('status_update')}}">
                                        <?php $row = $data['status_edit'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
@@ -78,5 +78,29 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#status_sidebar_li_id").addClass('active');
 	$("#status_sidebar_a_id").addClass('active');
+</script>
+<script>
+    $("#status_formValidate").validate({
+        rules: {
+            status_name: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            status_name: {
+                required: "Enter the Status Name",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 </script>
 @endsection
