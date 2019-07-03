@@ -311,7 +311,7 @@ class MembershipController extends Controller
                                    ['membership.id','=',$id]
                                 ])->get();
 
-                                $queries = DB::getQueryLog();
+                                //$queries = DB::getQueryLog();
                               // dd($queries);
 
         $country_id = $data['member_view'][0]->country_id;
