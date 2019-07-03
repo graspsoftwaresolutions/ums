@@ -56,7 +56,7 @@
                            @foreach($data['race_view'] as $key=>$value)
 													<tr>
 													<?php
-                             $parameter =[
+                            $parameter =[
                                 'id' =>$value->id,
                             ];
                             $parameter = Crypt::encrypt($parameter);    

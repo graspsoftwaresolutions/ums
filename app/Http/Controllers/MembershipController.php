@@ -438,7 +438,7 @@ class MembershipController extends Controller
 
        $nominee->save();
        if($nominee){
-            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => ['age'=> $nominee->years]);
+            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => array('age'=> $nominee->years,'relationship'=> CommonHelper::get_relationship_name($nominee->relation_id)));
        }else{
             $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
        }
@@ -460,6 +460,23 @@ class MembershipController extends Controller
         
 
         return view('membership.membership')->with('data',$data); 
+    }
+
+    public function getNomineeData(Request $request){
+       
+        $nominee_id = $request->nominee_id;
+        $res = DB::table('member_nominees')->where([
+            ['id','=',$nominee_id]
+        ])->get();
+        $result_data = $res[0];
+        $result_data->dob = date('d/M/Y',strtotime($result_data->dob));
+      
+        return response()->json($result_data);
+    }
+
+    public function updateNominee(Request $request){
+        $nominee = MemberNominees::find($request->edit_nominee_id);
+        return $nominee;
     }
     
 }

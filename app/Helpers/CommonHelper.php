@@ -47,4 +47,12 @@ class CommonHelper
      public static function calculate_age($userDob){
         return $years = Carbon::parse($userDob)->age;
      }
+
+     public static function get_relationship_name($relationship_id){
+        $status_data = DB::table('relation')->where('relation.id','=',$relationship_id)->pluck('relation_name');
+        if(!empty($status_data)){
+            return $status_data[0];
+        }
+        return '';
+     }
 }
