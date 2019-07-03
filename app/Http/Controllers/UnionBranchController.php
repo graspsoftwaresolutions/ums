@@ -118,8 +118,9 @@ class UnionBranchController extends Controller
     }
     public function edit($id)
     {
-        $id = Crypt::decrypt($id);
-        $data['union_branch'] = DB::table('union_branch')->select('union_branch.id','union_branch.union_branch','union_branch.is_head','union_branch.country_id','union_branch.state_id','union_branch.city_id','union_branch.postal_code','union_branch.address_one','union_branch.address_two','union_branch.phone','union_branch.email','union_branch.is_head',
+        DB::connection()->enableQueryLog();
+       $id = Crypt::decrypt($id);
+        $data['union_branch'] = DB::table('union_branch')->select('union_branch.id as branchid','union_branch.id','union_branch.union_branch','union_branch.is_head','union_branch.country_id','union_branch.state_id','union_branch.city_id','union_branch.postal_code','union_branch.address_one','union_branch.address_two','union_branch.phone','union_branch.email','union_branch.is_head',
                                             'union_branch.status','union_branch.address_three','union_branch.mobile','union_branch.logo','country.id','country.country_name','country.status','state.id','state.state_name','state.status','city.id','city.city_name','city.status')
                                 ->leftjoin('country','union_branch.country_id','=','country.id')
                                 ->leftjoin('state','union_branch.state_id','=','state.id')
@@ -131,6 +132,10 @@ class UnionBranchController extends Controller
         $country_id = $data['union_branch'][0]->country_id;
         $state_id = $data['union_branch'][0]->state_id;
         $city_id = $data['union_branch'][0]->city_id;
+        
+        $queries = DB::getQueryLog();
+        //dd($queries);
+        //return $data['union_branch'];
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -138,8 +143,7 @@ class UnionBranchController extends Controller
     }
     public function update(Request $request)
     {
-       
-        $id = $request->input('id');
+        $auto_id = $request->input('id');
         $request->validate([
             'branch_name'=>'required',
             'phone'=>'required',
@@ -179,7 +183,6 @@ class UnionBranchController extends Controller
 			$files->move('public/images',$image_name);
 			$union['logo'] = $image_name;
 		}
-        
          //Data Exists
          $data_exists = DB::table('union_branch')->where([
             ['union_branch','=', $union['union_branch']],
@@ -188,8 +191,11 @@ class UnionBranchController extends Controller
          
             if($union['is_head'] == '')
             {
+                DB::connection()->enableQueryLog();
                 $union['is_head'] = '0';
-                $id = DB::table('union_branch')->where('id','=',$id)->update($union);
+                $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
+                
+
                 return redirect('unionbranch')->with('message','Union Branch Name Updated Succesfully');
             }
             else{
@@ -201,11 +207,11 @@ class UnionBranchController extends Controller
                 if($is_head_exists > 0 && !empty($union['is_head']))
                 {
                     $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
-                    $id = DB::table('union_branch')->where('id','=',$id)->update($union);
+                    $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
                     return redirect('unionbranch')->with('message','Union Branch Name Updated Succesfully');
                 }
                 else{
-                    $id = DB::table('union_branch')->where('id','=',$id)->update($union);
+                    $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
                     return redirect('unionbranch')->with('message','Union Branch Name Updated Succesfully');
                 }
             }

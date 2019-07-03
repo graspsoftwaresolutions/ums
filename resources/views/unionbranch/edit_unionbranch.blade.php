@@ -40,7 +40,7 @@
                                     <form class="formValidate" id="unionbranch_formValidate" enctype="multipart/form-data" method="post" action="{{url('unionbranch_update')}}">
                                     @foreach($data['union_branch'] as $key=>$values)
                                         @csrf
-                                        <input type="hidden" name="id" value="{{$values->id}}">
+                                        <input type="hidden" name="id" value="{{$values->branchid}}">
                                       <div class="row">
                                         <div class="input-field col s12 m6">
                                           <label for="branch_name">Union Branch Name*</label>

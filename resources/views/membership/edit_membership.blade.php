@@ -450,7 +450,7 @@
                                                         <td id="nominee_nrico_{{$value->id}}">{{$value->nric_o}}</td>
                                                         <td>
                                                         <a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$value->id}}">Edit</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
+														<a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
                                                         </td>
                                                     </tr>
                                                     @endforeach

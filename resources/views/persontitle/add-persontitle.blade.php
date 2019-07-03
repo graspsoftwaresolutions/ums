@@ -39,7 +39,7 @@
                                     <h4 class="card-title">Add Person Title</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="title_formValidate" method="post" action="{{ url('persontitle_update') }}">
+                                    <form class="formValidate" id="title_formValidate" method="post" action="{{ url('persontitle_save') }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">

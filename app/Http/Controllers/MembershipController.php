@@ -45,8 +45,10 @@ class MembershipController extends Controller
             $data['member_view'] = DB::table('membership')
             ->where('membership.status','=','1')->where('membership.status_id','!=','1')->get();
         }else{
-            $data['member_view'] = DB::table('membership')
-            ->where('membership.status','=','1')->where('membership.status_id','!=','1')->where('branch_id','=',$branch_id)->get();
+			$data['member_view'] = DB::table('membership')
+            ->where('membership.status','=','1')->where('membership.status_id','!=','1')->get();
+           // $data['member_view'] = DB::table('membership')
+            //->where('membership.status','=','1')->where('membership.status_id','!=','1')->where('branch_id','=',$branch_id)->get();
         }
        
         return view('membership.membership')->with('data',$data); 
@@ -311,7 +313,7 @@ class MembershipController extends Controller
                                    ['membership.id','=',$id]
                                 ])->get();
 
-                                $queries = DB::getQueryLog();
+                                //$queries = DB::getQueryLog();
                               // dd($queries);
 
         $country_id = $data['member_view'][0]->country_id;
@@ -454,8 +456,10 @@ class MembershipController extends Controller
             $data['member_view'] = DB::table('membership')
             ->where('membership.status','=','1')->where('membership.status_id','=','1')->get();
         }else{
-            $data['member_view'] = DB::table('membership')
-            ->where('membership.status','=','1')->where('membership.status_id','=','1')->where('branch_id','=',$branch_id)->get();
+			$data['member_view'] = DB::table('membership')
+            ->where('membership.status','=','1')->where('membership.status_id','=','1')->get();
+            //$data['member_view'] = DB::table('membership')
+            //->where('membership.status','=','1')->where('membership.status_id','=','1')->where('branch_id','=',$branch_id)->get();
         }
         
 
