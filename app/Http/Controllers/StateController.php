@@ -16,7 +16,6 @@ class StateController extends Controller
         $this->middleware('auth'); 
         $this->middleware('role:union');
         $this->State = new State;
-       
     }
     public function index()
     {

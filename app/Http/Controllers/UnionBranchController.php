@@ -36,6 +36,7 @@ class UnionBranchController extends Controller
             'city_id'=>'required',
             'postal_code'=>'required',
             'address_one'=>'required',
+            'logo' => 'max:2000',
         ],
         [
             'branch_name.required'=>'Please Enter Branch Name',
@@ -46,9 +47,11 @@ class UnionBranchController extends Controller
             'city_id.required'=>'Please choose  your city',
             'postal_code.required'=>'Please Enter postal code',
             'address_one.required'=>'Please Enter your Address',
+            'logo' => 'Maximum file size is 2MB',
         ]);
         $union['union_branch'] = $request->input('branch_name');
         $union['phone'] = $request->input('phone');
+        $union['mobile'] = $request->input('mobile');
         $union['email'] = $request->input('email');
         $union['postal_code'] = $request->input('postal_code');
         $union['country_id'] = $request->input('country_id');
@@ -56,6 +59,15 @@ class UnionBranchController extends Controller
         $union['city_id'] = $request->input('city_id');
         $union['address_one'] = $request->input('address_one');
         $union['address_two'] = $request->input('address_two');
+        $union['address_three'] = $request->input('address_three');
+        $files = $request->file('logo');
+        
+		if(!empty($validator))
+		{
+			$image_name = time().'.'.$files->getClientOriginalExtension();
+			$files->move('public/images',$image_name);
+			$union['logo'] = $image_name;
+        }
         
         $union['is_head'] = $request->input('is_head');
         
@@ -108,7 +120,7 @@ class UnionBranchController extends Controller
     {
         $id = Crypt::decrypt($id);
         $data['union_branch'] = DB::table('union_branch')->select('union_branch.id','union_branch.union_branch','union_branch.is_head','union_branch.country_id','union_branch.state_id','union_branch.city_id','union_branch.postal_code','union_branch.address_one','union_branch.address_two','union_branch.phone','union_branch.email','union_branch.is_head',
-                                            'union_branch.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status','city.id','city.city_name','city.status')
+                                            'union_branch.status','union_branch.address_three','union_branch.mobile','union_branch.logo','country.id','country.country_name','country.status','state.id','state.state_name','state.status','city.id','city.city_name','city.status')
                                 ->leftjoin('country','union_branch.country_id','=','country.id')
                                 ->leftjoin('state','union_branch.state_id','=','state.id')
                                 ->leftjoin('city','union_branch.city_id','=','city.id')
@@ -151,6 +163,7 @@ class UnionBranchController extends Controller
         $union['union_branch'] = $request->input('branch_name');
         $union['phone'] = $request->input('phone');
         $union['email'] = $request->input('email');
+        $union['mobile'] = $request->input('mobile');
         $union['postal_code'] = $request->input('postal_code');
         $union['country_id'] = $request->input('country_id');
         $union['state_id'] = $request->input('state_id');
@@ -158,6 +171,14 @@ class UnionBranchController extends Controller
         $union['address_one'] = $request->input('address_one');
         $union['is_head'] = $request->input('is_head');
         $union['address_two'] = $request->input('address_two');
+        $union['address_three'] = $request->input('address_three');
+        $files = $request->file('logo');
+		if(!empty($files))
+		{
+			$image_name = time().'.'.$files->getClientOriginalExtension();
+			$files->move('public/images',$image_name);
+			$union['logo'] = $image_name;
+		}
         
          //Data Exists
          $data_exists = DB::table('union_branch')->where([

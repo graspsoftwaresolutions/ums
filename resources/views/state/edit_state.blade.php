@@ -27,7 +27,11 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
+<<<<<<< HEAD
                                         <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('state')}}">State List</a>
+=======
+                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('state')}}">State List</a>
+>>>>>>> 880612f1b469dbf8a52bb1028892e9fca97b5b57
                                     </div>
                                 </div>
                             </div>

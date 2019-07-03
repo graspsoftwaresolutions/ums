@@ -24,3 +24,32 @@ div.error {
 div.clearfix{
 	clear:both;
 }
+.modal {
+    position: fixed;
+    right: 0;
+    left: 0;
+    display: none;
+    overflow-y: auto;
+    width: 55%;
+    /* max-height: 70%; */
+    margin: auto;
+    padding: 0;
+    border-radius: 2px;
+    background-color: #fafafa;
+    will-change: top, opacity;
+}
+
+.modal {
+    position: fixed;
+    right: 0;
+    left: 0;
+    display: none;
+    overflow-y: auto;
+    width: 55%;
+    max-height: 90%;
+    margin: auto;
+    padding: 0;
+    border-radius: 2px;
+    background-color: #fafafa;
+    will-change: top, opacity;
+}

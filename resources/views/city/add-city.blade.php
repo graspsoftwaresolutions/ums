@@ -86,7 +86,11 @@
 
                     </div>
                     <!-- END: Page Main-->
+<<<<<<< HEAD
                      @include('layouts.right-sidebar')
+=======
+                    @include('layouts.right-sidebar')
+>>>>>>> 880612f1b469dbf8a52bb1028892e9fca97b5b57
                 </div>
             </div>
         </div>

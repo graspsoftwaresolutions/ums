@@ -355,6 +355,7 @@
                                             <div class="col s12 m4">
                                                  <label>Country Name*</label>
                                                 <select name="nominee_country_id" id="nominee_country_id"  class="error browser-default">
+                                                    <option value="">Select Country</option>
                                                     @foreach($data['country_view'] as $value)
                                                         <option value="{{$value->id}}" >{{$value->country_name}}</option>
                                                     @endforeach
@@ -426,7 +427,7 @@
                                             <div class="col s12">
                                                 
                                                 <?php // print_r($data['nominee_view']); ?>
-                                                <table id="nominee_table">
+                                                <table id="nominee_table" width="100%">
                                                     <thead>
                                                         <tr>
                                                         <th data-field="name">Name</th>
@@ -435,17 +436,22 @@
                                                         <th data-field="relationship">Relationship</th>
                                                         <th data-field="nric_n">NRIC-N</th>
                                                         <th data-field="nric_o">NRIC-0</th>
+                                                        <th data-field="action" width="25%">Action</th>
                                                         </tr>
                                                     </thead>
                                                 <tbody>
                                                     @foreach($data['nominee_view'] as $key=>$value)
                                                     <tr>
                                                         <td>{{$value->nominee_name}}</td>
-                                                        <td>{{$value->years}}</td>
+                                                        <td>{{ CommonHelper::calculate_age($value->dob) }}</td>
                                                         <td>{{$value->gender}}</td>
-                                                        <td>Father</td>
+                                                        <td>{{ CommonHelper::get_relationship_name($value->relation_id) }}</td>
                                                         <td>{{$value->nric_n}}</td>
                                                         <td>{{$value->nric_o}}</td>
+                                                        <td>
+                                                        <a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$value->id}}">Edit</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -585,7 +591,143 @@
 			</div>
 		</div>
 	</div>
+    <!-- modal -->
+    <!-- Modal Trigger -->
+    <!-- Modal Structure --> 
+    <div id="modal_nominee" class="modal" style="width:70%;height: 700px !important;">
+        <form class="formValidate" id="nominee_formValidate" method="post" action="{{ url('membership_update') }}">
+        @csrf
+        <div class="modal-content">
+            <h4>Edit Nominee</h4>
+            <div class="row">
+                <div class="input-field col s12 m4">
+                   
+                    <input id="edit_nominee_name" name="edit_nominee_name" value=" "  type="text" >
+                    <input id="edit_nominee_id" name="edit_nominee_id" class='hide' value=" "  type="text" >
+                    <label for="edit_nominee_name">Nominee name* </label>
+                </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_nominee_dob" name="edit_nominee_dob" class="datepicker" value=" "  type="text">
+                    <label for="edit_nominee_dob">DOB *</label>
+                </div>
+                <div class="col s12 m4">
+                    <label for="edit_sex">Sex *</label>
+                    <select name="edit_sex" id="edit_sex" class="error browser-default">
+                        <option value="">Select</option>
+                        <option value="male" >Male</option>
+                        <option value="female" >Female</option>
+                    </select>
+                    <div class="input-field">
+                            <div class="errorTxt50"></div>
+                    </div>  
+                </div>
+                <div class="clearfix"> </div>
+                <div class="col s12 m4">
+                        <label>Relationship*</label>
+                        <select name="edit_relationship" id="edit_relationship" data-error=".errorTxt31"  class="error browser-default">
+                            @foreach($data['relationship_view'] as $key=>$value)
+                                <option value="{{$value->id}}" >{{$value->relation_name}}</option>
+                            @endforeach
+                        </select>
+                            
+                        <div class="input-field">
+                            <div class="errorTxt31"></div>
+                        </div>   
+                    
+                </div>
+                <div class="input-field col s12 m4">
+                   
+                    <input id="edit_nric_n" name="edit_nric_n" value=" "  type="text">
+                    <label for="edit_nric_n">NRIC-N *</label>
+                </div>
+                <div class="input-field col s12 m4">
+                   
+                    <input id="edit_nric_o" name="edit_nric_o" value=" "  type="text">
+                    <label for="edit_nric_o">NRIC-O *</label>
+                </div>
+                <div class="clearfix"> </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_nominee_address_one" name="edit_nominee_address_one" type="text" value=" " >
+                    <label for="edit_nominee_address_one">Address Line 1*</label>   
+                </div>
+                <div class="col s12 m4">
+                    <label>Country Name*</label>
+                    <select name="edit_nominee_country_id" id="edit_nominee_country_id"  class="error browser-default">
+                        <option value="">Select Country</option>
+                        @foreach($data['country_view'] as $value)
+                            <option value="{{$value->id}}" >{{$value->country_name}}</option>
+                        @endforeach
+                    </select>
+                    <div class="input-field">
+                        <div class="errorTxt35"></div>
+                    </div>       
+                    
+                </div>
+                <div class="col s12 m4">
+                        <label>State Name*</label>
+                    <select name="edit_nominee_state_id" id="edit_nominee_state_id"  class="error browser-default">
+                        @foreach($data['state_view'] as $key=>$value)
+                            <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
+                        @endforeach
+                    </select>
+                    <div class="input-field">
+                            <div class="errorTxt36"></div>
+                    </div>       
+                    
+                </div>
+                <div class="clearfix"> </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_nominee_address_two" name="edit_nominee_address_two" type="text" value=" " >
+                    <label for="edit_nominee_address_two">Address Line 2*</label>  
+                </div>
+                <div class="col s12 m4">
+                        <label>City Name*</label>
+                    <select name="edit_nominee_city_id" id="edit_nominee_city_id"  class="error browser-default">
+                        @foreach($data['city_view'] as $key=>$value)
+                        <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
+                        @endforeach
+                    </select>
+                    <div class="input-field">
+                            <div class="errorTxt36"></div>
+                    </div>       
+                    
+                </div>
+                <div class="input-field col s12 m4">
+                   
+                    <input id="edit_nominee_postal_code" name="edit_nominee_postal_code" type="text" value=" " >
+                    <label for="edit_nominee_postal_code">Postal code*</label>    
+                </div>
+                <div class="clearfix"> </div>
+                <div class="input-field col s12 m4">
+                   
+                    <input id="edit_nominee_address_three" name="edit_nominee_address_three" type="text" value=" " >
+                    <label for="edit_nominee_address_three">Address Line 3*</label>    
+                </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_nominee_mobile" name="edit_nominee_mobile" type="text" value=" " >
+                    <label for="edit_nominee_mobile" class="active">Mobile No*</label>   
+                </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_nominee_phone" name="edit_nominee_phone" type="text" value=" " >
+                    <label for="edit_nominee_phone" class="active">Phone No</label>    
+                </div>
+                <div class="clearfix"> </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn waves-effect waves-light purple right submit" id="update_nominee" type="submit" name="update_nominee">Update Nominee<i class="material-icons right">send</i></button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
+        </div>
+        </form>
+    </div>
 </div>
+
 @endsection
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
@@ -810,7 +952,7 @@ $(document).ready(function(){
                     $("#state").empty();
                     //console.log('hi test');
                     $.each(res,function(key,entry){
-                      
+                        $("#state").append($('<option></option>').attr('value', '').text("Select State"));
                         $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
                        // var select = $("#state");
                        // select.material_select('destroy');
@@ -845,7 +987,7 @@ $(document).ready(function(){
                 if(res)
                 {
                     $('#city').empty();
-                   
+                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
                     $.each(res,function(key,entry){
                         $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
                         
@@ -939,15 +1081,16 @@ $(document).ready(function(){
                     'nominee_mobile' : nominee_mobile,
                     'nominee_phone' : nominee_phone,
                 }, // a JSON object to send back
+                dataType: "json",
                 success: function(response){ // What to do if we succeed
                     $("#add_nominee").attr('disabled',false);
-                   
+                    console.log(response.data); 
                     if(response.status ==1){
                         var new_row = '<tr>';
                         new_row += '<td>'+nominee_name+'</td>';
                         new_row += '<td>'+response.data.age+'</td>';
                         new_row += '<td>'+nominee_sex+'</td>';
-                        new_row += '<td>'+nominee_relationship+'</td>';
+                        new_row += '<td>'+response.data.relationship+'</td>';
                         new_row += '<td>'+nric_n+'</td>';
                         new_row += '<td>'+nric_o+'</td>';
                         new_row += '</tr>';
@@ -957,7 +1100,7 @@ $(document).ready(function(){
                             html: response.message
                         });
                     }
-                    console.log(response); 
+                    console.log(response.data); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
                     console.log(JSON.stringify(jqXHR));
@@ -988,6 +1131,7 @@ $(document).ready(function(){
                 if(res){
                     $("#nominee_state_id").empty();
                     //console.log('hi test');
+                    $("#nominee_state_id").append($('<option></option>').attr('value', '').text("Select State"));
                     $.each(res,function(key,entry){
                       
                         $("#nominee_state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
@@ -1023,7 +1167,7 @@ $(document).ready(function(){
                 if(res)
                 {
                     $('#nominee_city_id').empty();
-                   
+                    $("#nominee_city_id").append($('<option></option>').attr('value', '').text("Select City"));
                     $.each(res,function(key,entry){
                         $('#nominee_city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
                         
@@ -1038,5 +1182,133 @@ $(document).ready(function(){
            $('#nominee_city_id').empty();
        }
    });
+   $('.modal').modal();
+    $('.edit_nominee_row').click(function(){
+        var nominee_id = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-nominee-data') }}?nominee_id="+nominee_id,
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                    $("#edit_nominee_id").val(res.id);
+                    $("#edit_nominee_name").val(res.nominee_name);
+                    $("#edit_nominee_dob").val(res.dob);
+                    $("#edit_sex").val(res.gender);
+                    $("#edit_relationship").val(res.relation_id);
+                    $("#edit_nric_n").val(res.nric_n);
+                    $("#edit_nric_o").val(res.nric_o);
+                    $("#edit_nominee_address_one").val(res.address_one);
+                    $("#edit_nominee_country_id").val(res.country_id);
+                    $("#edit_nominee_state_id").val(res.state_id);
+                    $("#edit_nominee_address_two").val(res.address_two);
+                    $("#edit_nominee_city_id").val(res.city_id);
+                    $("#edit_nominee_postal_code").val(res.postal_code);
+                    $("#edit_nominee_address_three").val(res.address_three);
+                    $("#edit_nominee_mobile").val(res.mobile);
+                    $("#edit_nominee_phone").val(res.phone);
+                    console.log(res.dob);
+                    $('#modal_nominee').modal('open'); 
+                }else{
+                    
+                }
+               // console.log(res);
+            }
+         });
+    });
+    $("#nominee_formValidate").validate({
+        rules: {
+            edit_nominee_name: {
+                required: true,
+            },
+            edit_nominee_dob: {
+                required: true,
+            },
+            edit_sex: {
+                required: true,
+            },
+            edit_relationship: {
+                required: true,
+            },
+            edit_nric_n: {
+                required: true,
+            },
+            edit_nric_o: {
+                required: true,
+            },
+            edit_nominee_address_one: {
+                required: true,
+            },
+            edit_nominee_country_id: {
+                required: true,
+            },
+            edit_nominee_state_id: {
+                required: true,
+            },
+            edit_nominee_address_two: {
+                required: true,
+            },
+            edit_nominee_city_id: {
+                required: true,
+            },
+            edit_nominee_postal_code: {
+                required: true,
+            },
+            edit_nominee_address_three: {
+                required: true,
+            },
+            edit_nominee_mobile: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            edit_nominee_name: {
+                required: "Enter a Nominee name",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function(form) {
+            var formData = $("#nominee_formValidate").serialize();
+            $.ajax({
+                method: 'POST', // Type of response and matches what we said in the route
+                url: "{{ URL::to('/update-nominee') }}", // This is the url we gave in the route
+                data: formData, // a JSON object to send back
+                dataType: "json",
+                success: function(response){ // What to do if we succeed
+                    $("#update_nominee").attr('disabled',false);
+                    console.log(response.data); 
+                    // if(response.status ==1){
+                    //     var new_row = '<tr>';
+                    //     new_row += '<td>'+nominee_name+'</td>';
+                    //     new_row += '<td>'+response.data.age+'</td>';
+                    //     new_row += '<td>'+nominee_sex+'</td>';
+                    //     new_row += '<td>'+response.data.relationship+'</td>';
+                    //     new_row += '<td>'+nric_n+'</td>';
+                    //     new_row += '<td>'+nric_o+'</td>';
+                    //     new_row += '</tr>';
+                    //     M.toast({
+                    //         html: response.message
+                    //     });
+                    // }
+                    console.log(response.data); 
+                },
+                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+        }
+    });
 </script>
 @endsection

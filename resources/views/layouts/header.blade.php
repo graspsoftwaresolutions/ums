@@ -71,4 +71,4 @@
       </div>
     </header>
     <!-- END: Header-->
-    <a class="btn toast-basic"></a>
+    <a class="toast-basic"></a>

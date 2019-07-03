@@ -156,3 +156,8 @@ Route::post('unionbranch_save','UnionBranchController@save');
 Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
 Route::post('unionbranch_update','UnionBranchController@update');
 Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
+
+
+Route::get('get-nominee-data','MembershipController@getNomineeData');
+Route::post('update-nominee','MembershipController@updateNominee');
+
