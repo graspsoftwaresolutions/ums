@@ -441,13 +441,13 @@
                                                     </thead>
                                                 <tbody>
                                                     @foreach($data['nominee_view'] as $key=>$value)
-                                                    <tr>
-                                                        <td>{{$value->nominee_name}}</td>
-                                                        <td>{{ CommonHelper::calculate_age($value->dob) }}</td>
-                                                        <td>{{$value->gender}}</td>
-                                                        <td>{{ CommonHelper::get_relationship_name($value->relation_id) }}</td>
-                                                        <td>{{$value->nric_n}}</td>
-                                                        <td>{{$value->nric_o}}</td>
+                                                    <tr id="nominee_{{$value->id}}">
+                                                        <td id="nominee_name_{{$value->id}}">{{$value->nominee_name}}</td>
+                                                        <td id="nominee_age_{{$value->id}}">{{ CommonHelper::calculate_age($value->dob) }}</td>
+                                                        <td id="nominee_gender_{{$value->id}}">{{$value->gender}}</td>
+                                                        <td id="nominee_relation_{{$value->id}}">{{ CommonHelper::get_relationship_name($value->relation_id) }}</td>
+                                                        <td id="nominee_nricn_{{$value->id}}">{{$value->nric_n}}</td>
+                                                        <td id="nominee_nrico_{{$value->id}}">{{$value->nric_o}}</td>
                                                         <td>
                                                         <a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$value->id}}">Edit</a>
 														<a class="btn-small waves-effect waves-light amber darken-4" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
@@ -1287,7 +1287,18 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function(response){ // What to do if we succeed
                     $("#update_nominee").attr('disabled',false);
+                    
                     console.log(response.data); 
+                    if(response.status ==1){
+                        var row_id = response.data.nominee_id;
+                        $("#nominee_name_"+row_id).html(response.data.name);
+                        $("#nominee_age_"+row_id).html(response.data.age);
+                        $("#nominee_gender_"+row_id).html(response.data.gender);
+                        $("#nominee_relation_"+row_id).html(response.data.relationship);
+                        $("#nominee_nricn_"+row_id).html(response.data.nric_n);
+                        $("#nominee_nrico_"+row_id).html(response.data.nric_o);
+                        $('#modal_nominee').modal('close'); 
+                    }
                     // if(response.status ==1){
                     //     var new_row = '<tr>';
                     //     new_row += '<td>'+nominee_name+'</td>';

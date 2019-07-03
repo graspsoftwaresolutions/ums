@@ -475,8 +475,40 @@ class MembershipController extends Controller
     }
 
     public function updateNominee(Request $request){
+        $returndata = array('status' => 0, 'message' => '', 'data' => '');
         $nominee = MemberNominees::find($request->edit_nominee_id);
-        return $nominee;
+        $nominee->address_one = $request->edit_nominee_address_one;
+        $nominee->address_two = $request->edit_nominee_address_two;
+        $nominee->address_three = $request->edit_nominee_address_three;
+        $nominee->city_id = $request->edit_nominee_city_id;
+        $nominee->country_id = $request->edit_nominee_country_id;
+
+        $fmmm_date = explode("/",$request->edit_nominee_dob);           							
+        $dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+        $dob = date('Y-m-d', strtotime($dob1));
+        $nominee->dob =  $dob;
+
+        //$nominee->dob = $request->edit_nominee_dob;
+        $nominee->gender = $request->edit_sex;
+        $nominee->mobile = $request->edit_nominee_mobile;
+        $nominee->nominee_name = $request->edit_nominee_name;
+        $nominee->nric_n = $request->edit_nric_n;
+        $nominee->nric_o = $request->edit_nric_o;
+        $nominee->phone = $request->edit_nominee_phone;
+        $nominee->postal_code = $request->edit_nominee_postal_code;
+        $nominee->relation_id = $request->edit_relationship;
+        $nominee->save();
+
+        $years =  Carbon::parse($nominee->dob)->age;
+
+        if($nominee){
+            $returndata = array('status' => 1, 'message' => 'Nominee updated successfully', 'data' => array('age'=> $years,'relationship'=> CommonHelper::get_relationship_name($nominee->relation_id),
+            'name' =>$nominee->nominee_name, 'gender' => $nominee->gender, 'nric_n' => $nominee->nric_n, 'nric_o' => $nominee->nric_o, 'nominee_id' =>$nominee->id));
+         }else{
+            $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
+        }
+       echo json_encode($returndata);
+
     }
     
 }
