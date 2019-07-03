@@ -126,13 +126,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12 m6">
-                                        <label for="address_two">Address Line 2*</label>
+                                        <label for="address_two">Address Line 2</label>
                                             <input id="address_two" name="address_two" type="text"
                                             value="{{$row->address_two}}" data-error=".errorTxt9">
                                             <div class="errorTxt9"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                        <label for="address_three">Address Line 3*</label>
+                                        <label for="address_three">Address Line 3</label>
                                             <input id="address_three" name="address_three" type="text"
                                             value="{{$row->address_three}}" data-error=".errorTxt10">
                                             <div class="errorTxt10"></div>
