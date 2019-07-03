@@ -82,8 +82,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
