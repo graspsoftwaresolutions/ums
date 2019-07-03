@@ -440,7 +440,7 @@ class MembershipController extends Controller
 
        $nominee->save();
        if($nominee){
-            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => array('age'=> $nominee->years,'relationship'=> CommonHelper::get_relationship_name($nominee->relation_id)));
+            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => array('age'=> $nominee->years,'relationship'=> CommonHelper::get_relationship_name($nominee->relation_id), 'nominee_id' => $nominee->id));
        }else{
             $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
        }
