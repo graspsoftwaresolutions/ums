@@ -38,7 +38,7 @@
                                     @include('includes.messages')
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="unionbranch_formValidate" method="post" action="{{url('unionbranch_save')}}">
+                                    <form class="formValidate" id="unionbranch_formValidate" method="post" enctype="multipart/form-data" action="{{url('unionbranch_save')}}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
@@ -46,7 +46,8 @@
                                           <input id="branch_name" name="branch_name" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
-                                        <div class="input-field col s12 m6">
+                                        <div class="col s12 m6">
+                                        <label>Country Name*</label>
                                                 <select name="country_id" id="country" class="error browser-default">
                                                 <option value="">Select Country</option>
                                                     @foreach($data['country_view'] as $value)
@@ -55,9 +56,9 @@
                                                 </select>
                                                 <div class="input-field">        
 													<div class="errorTxt10"></div>
-												</div>
+												</div> 
                                             </div>
-                                            
+                                            <div class="clearfix"></div>
                                             <div class="col s12 m6">
                                                <label>State Name*</label>
                                                 <select class="error browser-default" id="state_id" name="state_id" aria-required="true" required>
@@ -77,32 +78,60 @@
 													<div class="errorTxt12"></div>
 												</div>
                                             </div>
+                                            <div class="clearfix" style="clear:both"></div>
                                             <div class="input-field col s12 m6">
-                                                <label for="phone">Mobile Number *</label>
+                                            <label for="postal_code">Postal Code *</label>
+                                                <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt13">
+                                                <div class="errorTxt13"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_one">Address Line 1*</label>
+                                                <input id="address_one" name="address_one" type="text" data-error=".errorTxt14">
+                                                <div class="errorTxt14"></div>
+                                            </div>
+                                            <div class="clearfix" style="clear:both"></div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_two">Address Line 2*</label>
+                                                <input id="address_two" name="address_two" type="text" data-error=".errorTxt15">
+                                                <div class="errorTxt15"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_three">Address Line 3*</label>
+                                                <input id="address_three" name="address_three" type="text" data-error=".errorTxt15">
+                                                <div class="errorTxt15"></div>
+                                            </div>
+                                            <div class="clearfix" style="clear:both"></div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="mobile">Mobile Number *</label>
+                                                <input id="mobile" name="mobile" type="text" >
+                                                
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="phone">Phone *</label>
                                                 <input id="phone" name="phone" type="text" data-error=".errorTxt5">
                                                 <div class="errorTxt5"></div>
+                                            </div>
+                                            <div class="clearfix" style="clear:both"></div>
+                                            <div class="input-field col s12 m6">
+                                            <div class="file-field input-field">
+                                                <div class="btn">
+                                                    <span>File</span>
+                                                    <input type="file" name="logo" id="logo">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                                </div>
+                                                
                                             </div>
                                             <div class="input-field col s12 m6">
                                                 <label for="email">Email *</label>
                                                 <input id="email" name="email" type="text" data-error=".errorTxt6">
                                                 <div class="errorTxt6"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                            <label for="postal_code">Postal Code *</label>
-                                                <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt13">
-                                                <div class="errorTxt13"></div>
-                                            </div>
                                             
-                                            <div class="input-field col s12 m6">
-                                            <label for="address_one">Address Line 1*</label>
-                                                <input id="address_one" name="address_one" type="text" data-error=".errorTxt14">
-                                                <div class="errorTxt14"></div>
-                                            </div>
-                                            <div class="input-field col s12 m6">
-                                            <label for="address_two">Address Line 2*</label>
-                                                <input id="address_two" name="address_two" type="text" data-error=".errorTxt15">
-                                                <div class="errorTxt15"></div>
-                                            </div>
+                                            <div class="clearfix" style="clear:both"></div>
+                                            
                                         <div class="input-field col s12 m6">
                                         <p>
                                         <label>
@@ -124,6 +153,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>

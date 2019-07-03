@@ -37,7 +37,7 @@
                                     <h4 class="card-title">Edit Union Branch</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="unionbranch_formValidate" method="post" action="{{url('unionbranch_update')}}">
+                                    <form class="formValidate" id="unionbranch_formValidate" enctype="multipart/form-data" method="post" action="{{url('unionbranch_update')}}">
                                     @foreach($data['union_branch'] as $key=>$values)
                                         @csrf
                                         <input type="hidden" name="id" value="{{$values->id}}">
@@ -83,21 +83,10 @@
 												</div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                                <label for="phone">Mobile Number *</label>
-                                                <input id="phone" name="phone" type="text" value="{{$values->phone}}" data-error=".errorTxt5">
-                                                <div class="errorTxt5"></div>
-                                            </div>
-                                            <div class="input-field col s12 m6">
-                                                <label for="email">Email *</label>
-                                                <input id="email" name="email" type="text" value="{{$values->email}}" data-error=".errorTxt6">
-                                                <div class="errorTxt6"></div>
-                                            </div>
-                                            <div class="input-field col s12 m6">
                                             <label for="postal_code">Postal Code *</label>
                                                 <input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt13">
                                                 <div class="errorTxt13"></div>
                                             </div>
-                                            
                                             <div class="input-field col s12 m6">
                                             <label for="address_one">Address Line 1*</label>
                                                 <input id="address_one" name="address_one" value="{{$values->address_one}}" type="text" data-error=".errorTxt14">
@@ -108,14 +97,47 @@
                                                 <input id="address_two" name="address_two" value="{{$values->address_two}}" type="text" data-error=".errorTxt15">
                                                 <div class="errorTxt15"></div>
                                             </div>
+                                            <div class="input-field col s12 m6">
+                                            <label for="address_three">Address Line 3*</label>
+                                                <input id="address_three" name="address_three" value="{{$values->address_three}}" type="text" data-error=".errorTxt15">
+                                                <div class="errorTxt15"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="mobile">Mobile Number *</label>
+                                                <input id="mobile" name="mobile" type="text" value="{{$values->mobile}}" data-error=".errorTxt5">
+                                                <div class="errorTxt5"></div>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="phone">Phone *</label>
+                                                <input id="phone" name="phone" type="text" value="{{$values->phone}}" data-error=".errorTxt5">
+                                                <div class="errorTxt5"></div>
+                                            </div>
+                                            <div class="clearfix" style="clear:both"></div>
+                                            <div class="input-field col s12 m6">
+                                            <div class="file-field input-field">
+                                                <div class="btn">
+                                                    <span>File </span>
+                                                    <input type="file" name="logo" id="logo"> 
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                                </div><img src="{{ asset('public/images/').'/'.$values->logo}}" height=100px width=100px>
+                                            </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="email">Email *</label>
+                                                <input id="email" name="email" type="text" value="{{$values->email}}" data-error=".errorTxt6">
+                                                <div class="errorTxt6"></div>
+                                            </div>
+                                            <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
-                                          
                                         <p>
                                         <label>
                                             <input type="checkbox" name="is_head" id="is_head" value="1" {{ $values->is_head == '1' ? 'checked' : '' }} />
                                             <span>Head</span>
                                         </label>
                                         </p>
+                                        <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
                                             <i class="material-icons right">send</i>
@@ -130,6 +152,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>
@@ -223,6 +246,73 @@
         messages: {
             branch_name: {
                 required: "Enter the Union Branch Name",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+    $("#unionbranch_formValidate").validate({
+        rules: {
+            branch_name: {
+                required: true,
+            },
+            phone: {
+                required: true,
+                digits: true,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            country: {
+                required: true,
+            },
+            state_id: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            postal_code: {
+                required: true,
+                digits: true,
+            },
+            address_one: {
+                required:true,
+            },
+        },
+        //For custom messages
+        messages: {
+            branch_name: {
+                required: "Enter the Union Branch Name",
+            },
+            phone: {
+                required: "Please Enter your Number",
+                digits: "Enter Numbers only",
+                
+            },
+            email: {
+                required: "Please enter valid email",
+                email : "Please Enter valid Email",
+                },
+            country: {
+                required:"Please choose  your Country",
+            },
+            state_id: {
+                required:"Please choose  your State",
+            },
+            city: {
+                required:"Please choose  your city",
+            },
+            address_one: {
+                required:"Please Enter your Address",
             },
         },
         errorElement: 'div',
