@@ -47,8 +47,9 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
+														<th>Country Name</th>
+														<th>State Name</th>
 														<th>City Name</th>
-														<th>Status</th>
 														<th style="text-align:center"> Action</th>
 													</tr>
 												</thead>
@@ -60,9 +61,11 @@
 														'id' =>$value->id,
 													];
 													 $parameter = Crypt::encrypt($parameter);  
+													 
 													 ?>
+														<td>{{$value->country_name}}</td>
+														<td>{{$value->state_name}}</td>
 														<td>{{$value->city_name}}</td>
-														<td>Active</td>
 														<td style="text-align:center">
 														<a class="btn-small waves-effect waves-light cyan" href="{{url('city-edit/').'/'.$parameter}}">Edit</a>
 														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('city-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>

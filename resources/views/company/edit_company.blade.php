@@ -19,15 +19,19 @@
                                     <div class="col s10 m6 l6">
                                         <h5 class="breadcrumbs-title mt-0 mb-0"> Edit Country Details</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="{{url('company')}}">Company</a>
+                                            <li class="breadcrumb-item active">Edit Country
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Back</a>
+<<<<<<< HEAD
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Company List</a>
+=======
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Back</a>
+>>>>>>> 880612f1b469dbf8a52bb1028892e9fca97b5b57
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +43,7 @@
                                     @include('includes.messages')
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{url('company_edit')}}">
+                                    <form class="formValidate" id="company_formValidate" method="post" action="{{url('company_edit')}}">
                                        <?php $row = $data['company_edit'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
@@ -61,6 +65,7 @@
                                             @endif
                                           </div>
                                         </div>
+                                        <div class="clearfix" ></div>
                                         <div class="input-field col s12 m6">
                                           <label for="head_of_company">Head of Company*</label>
                                           <input id="head_of_company" name="head_of_company" value="{{$row->head_of_company}}" type="text" data-error=".errorTxt3">
@@ -85,6 +90,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>
@@ -98,8 +104,8 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-    $("#country_sidebar_a_id").addClass('active');
+	$("#company_sidebar_li_id").addClass('active');
+    $("#company_sidebar_a_id").addClass('active');
     $('#company_formValidate').validate({
         rules: {
              company_name: {

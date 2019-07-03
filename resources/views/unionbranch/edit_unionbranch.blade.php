@@ -93,12 +93,12 @@
                                                 <div class="errorTxt14"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                            <label for="address_two">Address Line 2*</label>
+                                            <label for="address_two">Address Line 2</label>
                                                 <input id="address_two" name="address_two" value="{{$values->address_two}}" type="text" data-error=".errorTxt15">
                                                 <div class="errorTxt15"></div>
                                             </div>
                                             <div class="input-field col s12 m6">
-                                            <label for="address_three">Address Line 3*</label>
+                                            <label for="address_three">Address Line 3</label>
                                                 <input id="address_three" name="address_three" value="{{$values->address_three}}" type="text" data-error=".errorTxt15">
                                                 <div class="errorTxt15"></div>
                                             </div>
@@ -116,7 +116,7 @@
                                             <div class="input-field col s12 m6">
                                             <div class="file-field input-field">
                                                 <div class="btn">
-                                                    <span>File </span>
+                                                    <span>File</span>
                                                     <input type="file" name="logo" id="logo"> 
                                                 </div>
                                                 <div class="file-path-wrapper">

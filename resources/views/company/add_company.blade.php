@@ -21,7 +21,7 @@
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a href="#">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="{{url('company')}}">Company</a>
+                                            <li class="breadcrumb-item active">Add Company
                                             </li>
                                         </ol>
                                     </div>
@@ -82,6 +82,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>

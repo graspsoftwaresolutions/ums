@@ -18,15 +18,18 @@ class CreateBranchTable extends Migration
             $table->integer('company_id');
             $table->integer('union_branch_id')->default(null);
             $table->string('branch_name');
-			$table->string('address_one');
-            $table->string('address_two')->nullable();
 			$table->integer('country_id');
             $table->integer('state_id');
             $table->integer('city_id');
 			$table->string('postal_code');
+			$table->string('address_one');
+            $table->string('address_two')->nullable();
+            $table->string('address_three')->nullable();
+			$table->string('phone');
+			$table->string('mobile');
 			$table->string('email');
-            $table->biginteger('phone');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->integer('status')->default(1);
         });
     }

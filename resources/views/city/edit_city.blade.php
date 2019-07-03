@@ -27,7 +27,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="{{url('city')}}">City List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('city')}}">City List</a>
                                     </div>
                                 </div>
                             </div>
@@ -38,37 +38,35 @@
                                     <h4 class="card-title">Edit City</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{url('city_update')}}">
+                                    <form class="formValidate" id="cityformValidate" method="post" action="{{url('city_update')}}">
                                        <?php $row = $data['city_view'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
                                       <div class="row">
-                                        <div class="input-field col s12 m12">
-                                            <i class="material-icons prefix">map</i>
-                                            <select class="error validate" id="country" name="country_id"  data-error=".errorTxt6">
+                                        <div class="input-field col s12 m6">
+                                            <select class="error browser-default" id="country_id" name="country_id"  data-error=".errorTxt1">
                                                 <option value="" disabled="" selected="">Select country</option>
                                                 @foreach($data['country_view'] as $values)
                                                     <option value="{{$values->id}}" <?php if($values->id == $row->country_id) { echo "selected";} ?>>{{$values->country_name}}</option>
                                                 @endforeach
                                             </select>
                                             <div class="input-field">
-                                                <div class="errorTxt6"></div>
+                                                <div class="errorTxt1"></div>
                                             </div>
                                         </div>
-                                         <div class="input-field col s12 m12">
-                                            <i class="material-icons prefix">room</i>
-                                            <select class="error validate" id="state" name="state_id"  data-error=".errorTxt7">
+                                         <div class="input-field col s12 m6">
+                                            <select class="error browser-default" id="state_id" name="state_id"  data-error=".errorTxt2">
+                                                <option value="" disabled="" selected="">Select country</option>
                                                  @foreach ($data['state_view'] as $state)
                                                     <option value="{{ $state->id }}" <?php if($state->id == $row->state_id) { echo "selected";}?>>{{ $state->state_name }}</option>
                                                 @endforeach
                                             </select>
-                                             <div class="errorTxt7" style="margin: 0 45px;"></div>
+                                             <div class="errorTxt2" ></div>
                                         </div>
-                                        <div class="input-field col s12 m12">
-                                                <i class="material-icons prefix">room</i>
-                                            
-                                            <input name="city_name" id="city_name" type="text" data-error=".errorTxt1" value="{{$row->city_name}}">
-                                            <div class="errorTxt1" style="margin: 0 45px;"></div>
+                                        <div class="clearfix" ></div>
+                                        <div class="input-field col s12 m6">
+                                            <input name="city_name" id="city_name" type="text" data-error=".errorTxt3" value="{{$row->city_name}}">
+                                            <div class="errorTxt3" ></div>
                                                 <label for="city_name">City Name*</label>
                                         </div>
 
@@ -86,6 +84,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>
@@ -99,7 +98,66 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#state_sidebar_li_id").addClass('active');
-	$("#state_sidebar_a_id").addClass('active');
+	$("#city_sidebar_li_id").addClass('active');
+	$("#city_sidebar_a_id").addClass('active');
+</script>
+<script>
+    $(function() {
+        $('select[name=country_id]').change(function() {
+
+            var url = "{{ url('get-state-order-list') }}" + '/' + $(this).val();
+
+            $.get(url, function(data) {
+                var select = $('form select[name= state_id]');
+
+                select.empty();
+
+                $.each(data,function(key, value) {
+                    select.append('<option value=' + value.id + '>' + value.state_name + '</option>');
+                });
+            });
+        });
+    });
+</script>
+<script>
+    $("#cityformValidate").validate({
+        rules: {
+            country_id:{
+                required: true,
+            },
+            state_id: {
+                required: true,
+            },
+            city_name: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            
+            country_id: {
+                required: "Please choose country",
+                
+            },
+            state_id: {
+                required: "Please choose state",
+                
+            },
+            city_name: {
+                required: "Please choose city",
+                
+            }
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+
 </script>
 @endsection

@@ -27,7 +27,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-country')}}">Add New Country</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('country')}}">Country List</a>
                                         
                                     </div>
                                 </div>
@@ -39,7 +39,7 @@
                                     <h4 class="card-title">Add Country</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('country_save') }}">
+                                    <form class="formValidate" id="countryformValidate" method="post" action="{{ url('country_save') }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
@@ -60,6 +60,7 @@
                         </div>
                     </div>
                     <!-- END: Page Main-->
+                    @include('layouts.right-sidebar')
                 </div>
             </div>
         </div>
@@ -75,5 +76,31 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#country_sidebar_li_id").addClass('active');
 	$("#country_sidebar_a_id").addClass('active');
+</script>
+<script>
+    $("#countryformValidate").validate({
+        rules: {
+            country_name:{
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            
+            country_name: {
+                required: "Please enter country name",
+                
+            }
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 </script>
 @endsection
