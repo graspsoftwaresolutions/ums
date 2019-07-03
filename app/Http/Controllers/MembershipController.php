@@ -514,5 +514,18 @@ class MembershipController extends Controller
        echo json_encode($returndata);
 
     }
+    public function deleteNominee(Request $request){
+        $delete = MemberNominees::find($request->nominee_id)->delete();
+        $returndata = array('status' => 0, 'message' => '', 'data' => '');
+        if($delete){
+            $returndata = array('status' => 1, 'message' => 'Nominee data deleted successfully', 'data' => '');
+        }else{
+            $returndata = array('status' => 0, 'message' => 'Failed to delete', 'data' => '');
+            
+        }
+        echo json_encode($returndata);
+    }
     
 }
+
+

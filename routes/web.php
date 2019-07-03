@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/member-register', 'MemberController@register')->name('member.register');
-
+Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
 /* Master */
 
@@ -160,4 +160,5 @@ Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
+Route::get('delete-nominee-data','MembershipController@deleteNominee');
 

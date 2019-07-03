@@ -1088,12 +1088,12 @@ $(document).ready(function(){
                     console.log(response.data); 
                     if(response.status ==1){
                         var new_row = '<tr>';
-                        new_row += '<td>'+nominee_name+'</td>';
-                        new_row += '<td>'+response.data.age+'</td>';
-                        new_row += '<td>'+nominee_sex+'</td>';
-                        new_row += '<td>'+response.data.relationship+'</td>';
-                        new_row += '<td>'+nric_n+'</td>';
-                        new_row += '<td>'+nric_o+'</td>';
+                        new_row += '<td id="nominee_name_'+ response.data.nominee_id +'">'+nominee_name+'</td>';
+                        new_row += '<td id="nominee_age_'+ response.data.nominee_id +'">'+response.data.age+'</td>';
+                        new_row += '<td id="nominee_gender_'+ response.data.nominee_id +'">'+nominee_sex+'</td>';
+                        new_row += '<td id="nominee_relation_'+ response.data.nominee_id +'">'+response.data.relationship+'</td>';
+                        new_row += '<td id="nominee_nricn_'+ response.data.nominee_id +'">'+nric_n+'</td>';
+                        new_row += '<td id="nominee_nrico_'+ response.data.nominee_id +'">'+nric_o+'</td>';
                         new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+response.data.nominee_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="'+response.data.nominee_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
                         new_row += '</tr>';
                         $('#test2').find('input:text').val('');    
@@ -1186,8 +1186,6 @@ $(document).ready(function(){
    });
    $('.modal').modal();
    $(document.body).on('click', '.edit_nominee_row' ,function(){
-    $('.edit_nominee_row').click(function(){
-        alert('ok');
         var nominee_id = $(this).data('id');
         $.ajax({
             type: "GET",
@@ -1324,6 +1322,30 @@ $(document).ready(function(){
                 }
             });
         }
+    });
+    $(document.body).on('click', '.delete_nominee' ,function(){
+        var nominee_id = $(this).data('id');
+        var parrent = $(this).parents("tr");
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/delete-nominee-data') }}?nominee_id="+nominee_id,
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                    parrent.remove(); 
+                    M.toast({
+                        html: res.message
+                    });
+                }else{
+                    M.toast({
+                        html: res.message
+                    });
+                }
+               // console.log(res);
+            }
+         });
     });
 </script>
 @endsection
