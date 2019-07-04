@@ -27,11 +27,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-<<<<<<< HEAD
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Company List</a>
-=======
                                         <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Back</a>
->>>>>>> 880612f1b469dbf8a52bb1028892e9fca97b5b57
                                     </div>
                                 </div>
                             </div>
@@ -66,16 +62,24 @@
                                           </div>
                                         </div>
                                         <div class="clearfix" ></div>
-                                        <div class="input-field col s12 m6">
-                                          <label for="head_of_company">Head of Company*</label>
-                                          <input id="head_of_company" name="head_of_company" value="{{$row->head_of_company}}" type="text" data-error=".errorTxt3">
+                                        <div class=" col s12 m6 union-data">
+                                            <label>Head of Company*</label>
+                                                <select id="head_of_company" name="head_of_company" class="error browser-default">
+                                                <option value="">Select Company</option>
+                                                    @foreach($data['company'] as $value)
+                                                    <option value="{{$value->id}}" <?php if( $value->id == $row->head_of_company) { echo "selected";}?>>{{$value->company_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">      
+                                                    <div class="errorTxt22"></div>
+                                                </div>
+                                            </div>
                                           <div class="errorTxt3">
                                           @if($errors->has('head_of_company'))
                                     <span >{{$errors->first('head_of_company')}}</span>
                                     @endif
                                           </div>
                                         </div>
-                                        
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
                                             <i class="material-icons right">send</i>
