@@ -17,8 +17,8 @@ class CreateCountryTable extends Migration
             $table->bigIncrements('id');
             $table->string('country_code')->nullable();
             $table->string('country_name');
-            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable();
             $table->string('status')->default('1');
         });
     }
