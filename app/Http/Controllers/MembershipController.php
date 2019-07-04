@@ -16,6 +16,7 @@ use App\Role;
 use App\User;
 use App\Model\MemberNominees;
 use App\Model\MemberGuardian;
+use App\Model\MemberFee;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -132,9 +133,9 @@ class MembershipController extends Controller
          $dob2 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
          $dob = date('Y-m-d', strtotime($dob2));
 
-         $years = Carbon::parse($dob1)->age;
+         $years = Carbon::parse($dob)->age;
 
-         dd($years); exit;
+         echo $years;
     }
     public function getBranchList(Request $request){
        
@@ -346,12 +347,19 @@ class MembershipController extends Controller
         $data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
         $data['nominee_view'] = DB::table('member_nominees')->where('status','=','1')->where('member_id','=',$id)->get();
         $data['gardian_view'] = DB::table('member_guardian')->where('status','=','1')->where('member_id','=',$id)->get();
-             
+       
+        $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
+        
+        $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$id)->get();
+      // return  $data; 
         return view('membership.edit_membership')->with('data',$data); 
    
     }
     public function update(Request $request)
     {
+       // return $request->all();
+       
+       // die;
         //return $request->all();
         $id = $request->input('auto_id');
         
@@ -411,6 +419,26 @@ class MembershipController extends Controller
         $guardian['mobile'] = $request->input('guardian_mobile');
         $guardian['phone'] = $request->input('guardian_phone');
 
+
+        $feecount = count($request->input('fee_auto_id'));
+        for($i=0; $i<$feecount; $i++){
+            $fee_auto_id = $request->input('fee_auto_id')[$i];
+            $fee_name_id = $request->input('fee_name_id')[$i];
+            $fee_name_amount = $request->input('fee_name_amount')[$i];
+            if($fee_auto_id ==null){
+                $new_fee = new MemberFee();
+                $new_fee->member_id = $id;
+                $new_fee->fee_id = $fee_name_id;
+                $new_fee->fee_amount = $fee_name_amount;
+                $new_fee->status = 1;
+                $new_fee->save();
+            }else{
+                $old_fee = MemberFee::find($fee_auto_id);
+                $old_fee->fee_id = $fee_name_id;
+                $old_fee->fee_amount = $fee_name_amount;
+                $old_fee->save();
+            }
+        }
         //return $guardian; 
 
         $id = $this->MemberGuardian->where('member_id','=',$member_guardian_id)->update($guardian);
@@ -537,6 +565,26 @@ class MembershipController extends Controller
         }
         echo json_encode($returndata);
     }
+
+    public function deleteFee(Request $request){
+        $delete = MemberFee::find($request->fee_id)->delete();
+        $returndata = array('status' => 0, 'message' => '', 'data' => '');
+        if($delete){
+            $returndata = array('status' => 1, 'message' => 'Fee data deleted successfully', 'data' => '');
+        }else{
+            $returndata = array('status' => 0, 'message' => 'Failed to delete', 'data' => '');
+            
+        }
+        echo json_encode($returndata);
+    }
+
+    public function getFeesList(){
+      
+        $res = DB::table('fee')->where('status','=','1')->get();
+       
+        return response()->json($res);
+    }
+
     
 }
 

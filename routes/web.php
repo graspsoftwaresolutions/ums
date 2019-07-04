@@ -163,3 +163,5 @@ Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
 
+Route::get('delete-fee-data','MembershipController@deleteFee');
+Route::get('get-fee-options','MembershipController@getFeesList');

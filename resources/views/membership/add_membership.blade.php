@@ -38,9 +38,11 @@
 									<h4 class="card-title">New Membership</h4>
 									@include('includes.messages')
 									<div class="row">
-                                        <div class="col s12 hide">
+                                        <div class="col s12">
                                             <ul class="tabs">
-                                            <li class="tab col m3"><a class="active"  href="#test1">Membership details</a></li>
+                                                 <li class="tab col m3"><a class="active"  href="#test1">Membership details</a></li>
+                                                 <li class="tab col m3"><a href="#test2">Nominee Details</a></li>
+                                                  <li class="tab col m3"><a href="#test4">Guardian Details</a></li>
                                             </ul>
                                         </div>
                                         <div id="view-validations">
