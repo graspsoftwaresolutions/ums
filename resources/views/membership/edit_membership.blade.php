@@ -42,6 +42,7 @@
                                         <div class="col s12">
                                             <ul class="tabs">
                                             <li class="tab col m3"><a class="active"  href="#test1">Membership details</a></li>
+                                            <li class="tab col m3"><a href="#test3">Fee Details</a></li>
                                             <li class="tab col m3"><a href="#test2">Nominee Details</a></li>
                                             <li class="tab col m3"><a href="#test4">Guardian Details</a></li>
                                             </ul>
@@ -52,6 +53,7 @@
                                           
 										<div id="test1" class="col s12">
                                         <div id="view-validations">
+                                        </br>
                                       <div class="row">
                                         <div class="col s12 m6">
                                         <input id="auto_id" name="auto_id" value="{{$values->mid}}"  type="text" class="hide">
@@ -299,17 +301,100 @@
                                     
                                   </div>
                                     </div>
+                                    <div id="test3" class="col s12">
+                                        </br>
+                                        <div class="row">
+                                            <div class="col s12 m6">
+                                                <label for="new_fee_id">Fee name* </label>
+                                                <select name="new_fee_id" id="new_fee_id" class="error browser-default">
+                                                    <option value="">Select</option>
+                                                    @foreach($data['fee_list'] as $key=>$value)
+                                                        <option data-feename="{{$value->fee_name}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">
+                                                     <div class="errorTxt50"></div>
+                                                </div>  
+                                            </div>
+                                            
+                                            <div class="input-field col s12 m6">
+                                               <label for="fee_amount">Fee amount *</label>
+                                               <input id="fee_amount" name="fee_amount" value=""  type="text">
+                                               
+                                               
+                                            </div>
+                                           
+                                            <div class="clearfix"> </div>
+                                            <div class="col s12 m12">
+                                                <button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
+                                                <i class="material-icons right">send</i>
+                                            </button>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        <div class="row">
+                                            <div class="col s12">
+                                                
+                                                <?php // print_r($data['nominee_view']); ?>
+                                                <table id="fee_table" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                        <th data-field="feename">Fee Name</th>
+                                                        <th data-field="feeamount">Amount</th>
+                                                        <th data-field="action" width="25%">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                <tbody>
+                                                    @php
+                                                    {{ $sl = 0; }}
+                                                    @endphp
+                                                    @foreach($data['fee_view'] as $key=>$value)
+                                                    <tr id="nominee_{{ $sl }}">
+                                                        <td><span id="fee_name_label_{{ $sl }}">{{ CommonHelper::get_fee_name($value->fee_id) }}</span>
+                                                            <input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_{{ $sl }}" value="{{$value->id}}"></input>
+                                                            <input type="text" class="hide" name="fee_name_id[]" id="fee_name_id_{{ $sl }}" value="{{$value->fee_id}}"></input>
+                                                        </td>
+                                                        <td><span id="fee_amount_label_{{ $sl }}">{{$value->fee_amount}}</span><input type="text" class="hide" name="fee_name_amount[]" id="fee_name_amount_{{ $sl }}" value="{{$value->fee_amount}}"></td>
+                                                        <td>
+                                                        <a class="btn-small waves-effect waves-light cyan edit_fee_row " href="#modal_fee" data-id="{{$sl}}">Edit</a>
+														<a class="btn-small waves-effect waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                    @php
+                                                    {{ $sl++; }}
+                                                    @endphp
+                                                    
+                                                    @endforeach
+                                                    <input id="fee_row_id" class="hide" name="fee_row_id" value="{{ $sl }}"  type="text">
+                                                </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div id="test2" class="col s12">
+                                    </br>
                                         <div class="row">
                                             <div class="input-field col s12 m4">
                                                 <label for="nominee_name">Nominee name* </label>
-                                                <input id="nominee_name" name="nominee_name" value=""  type="text" >
-                                                
+                                                <input id="nominee_name" name="nominee_name" value=""  type="text">
                                             </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="nominee_dob">DOB *</label>
-                                                <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text">
-                                                
+                                            <div class="col s12 m4">
+                                                <div class="row">
+                                                    <div class=" col s12 m8">
+                                                        <p>
+                                                            <label for="nominee_dob">DOB *</label>
+                                                            <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text"> 
+                                                            
+                                                            </label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col s12 m4">
+                                                        <label for="nominee_dob">Age</label>
+                                                        <span> 
+                                                        <input type="text" id="nominee_age">
+                                                        </span>
+                                                    </div>
+                                                 </div>
                                             </div>
                                             <div class="col s12 m4">
                                                <label for="years">Sex *</label>
@@ -350,7 +435,6 @@
                                             <div class="input-field col s12 m4">
                                                 <label for="nominee_address_one">Address Line 1*</label>
                                                 <input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
-                                                 
                                             </div>
                                             <div class="col s12 m4">
                                                  <label>Country Name*</label>
@@ -460,7 +544,7 @@
                                         </div>
                                     </div>
                                     <div id="test4" class="col s12">
-                                    
+                                    </br>
                                     <?php $row = $data['member_view'];?>
                                     <div class="row">
                                             <?php $gardian_row = $data['gardian_view'][0];  ?>
@@ -722,6 +806,40 @@
         </div>
         <div class="modal-footer">
             <button class="btn waves-effect waves-light purple right submit" id="update_nominee" type="submit" name="update_nominee">Update Nominee<i class="material-icons right">send</i></button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
+        </div>
+        </form>
+    </div>
+
+    <div id="modal_fee" class="modal" style="width:70%;height: 350px !important;">
+        <form class="formValidate" id="fee_formValidate" method="post" action="{{ url('membership_update') }}">
+        @csrf
+        </br>
+        <div class="modal-content">
+            <h4>Edit Fee</h4>
+            <div class="row">
+                <div class="col s12 m4">
+                    <label for="edit_fee_name">Fee name* </label>
+                    <select name="edit_fee_name" id="edit_fee_name" class="browser-default valid" aria-invalid="false">
+                        <option value="">Select</option>
+                    </select>
+                    <div class="input-field">
+                        <div class="errorTxt50"></div>
+                    </div>  
+                    <input id="edit_fee_auto_id" name="edit_fee_auto_id" class='hide' value=""  type="text" >
+                    <input id="edit_fee_row_id" name="edit_fee_row_id" class='hide' value=""  type="text" >
+                </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_fee_amount" name="edit_fee_amount" class="" value=" "  type="text">
+                    <label for="edit_fee_amount">Fee amount *</label>
+                </div>
+                <div class="clearfix"> </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn waves-effect waves-light purple right submit" id="update_fee" type="submit" name="update_fee">Update Fee<i class="material-icons right">send</i></button>
             <a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
         </div>
         </form>
@@ -1115,11 +1233,27 @@ $(document).ready(function(){
             M.toast({
                 html: "Please fill requierd fields"
             });
-        }
+        }    
+    });
+    $('#nominee_dob').change(function(){
+       var Dob = $('#nominee_dob').val();
+       if(Dob!=""){
+            $.ajax({
+                type:"GET",
+                dataType:"json",
+                url:"{{URL::to('/get-age') }}? dob="+Dob,
+                success:function(res){
+                    if(res){
+                        $("#nominee_age").val(res);
+                    }else{
+                        $("#nominee_age").val(0);
+                    }
+                }
+            });
+       }else{
+          $("#nominee_age").val(0);
+       }
         
-            
-           
-
     });
     $('#nominee_country_id').change(function(){
         var countryID = $(this).val();   
@@ -1301,19 +1435,7 @@ $(document).ready(function(){
                         $("#nominee_nrico_"+row_id).html(response.data.nric_o);
                         $('#modal_nominee').modal('close'); 
                     }
-                    // if(response.status ==1){
-                    //     var new_row = '<tr>';
-                    //     new_row += '<td>'+nominee_name+'</td>';
-                    //     new_row += '<td>'+response.data.age+'</td>';
-                    //     new_row += '<td>'+nominee_sex+'</td>';
-                    //     new_row += '<td>'+response.data.relationship+'</td>';
-                    //     new_row += '<td>'+nric_n+'</td>';
-                    //     new_row += '<td>'+nric_o+'</td>';
-                    //     new_row += '</tr>';
-                    //     M.toast({
-                    //         html: response.message
-                    //     });
-                    // }
+                   
                     console.log(response.data); 
                 },
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
@@ -1330,6 +1452,165 @@ $(document).ready(function(){
             type: "GET",
             dataType: "json",
             url : "{{ URL::to('/delete-nominee-data') }}?nominee_id="+nominee_id,
+            success:function(res){
+                console.log(res);
+                if(res)
+                {
+                    parrent.remove(); 
+                    M.toast({
+                        html: res.message
+                    });
+                }else{
+                    M.toast({
+                        html: res.message
+                    });
+                }
+               // console.log(res);
+            }
+         });
+    });
+    $('#add_fee').click(function(){
+        var fee_row_id = parseInt($("#fee_row_id").val())+1;
+        var member_auto_id =   $("#auto_id").val();
+        var new_fee_id =   $("#new_fee_id").val();
+        var selected = $("#new_fee_id").find('option:selected');
+        var new_fee_name = selected.data('feename'); 
+        var fee_amount =   $("#fee_amount").val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        if(new_fee_id!="" && fee_amount!="" ){
+            var alert_confirm = "confirm('Are you sure you want to delete?')";
+            $("#add_fee").attr('disabled',true);
+            var row_id =1;
+            var new_row = '<tr>';
+            new_row += '<td><span id="fee_name_label_'+fee_row_id+'">'+new_fee_name+'</span><input type="text" name="fee_auto_id[]" id="fee_auto_id_'+fee_row_id+'"></input><input type="text" name="fee_name_id[]" id="fee_name_id_'+fee_row_id+'" value="'+new_fee_id+'"></input></td>';
+            new_row += '<td><span id="fee_amount_label_'+fee_row_id+'"></span>'+fee_amount+'<input type="text" name="fee_name_amount[]" id="fee_name_amount_'+fee_row_id+'" value="'+fee_amount+'"></input></td>';
+            new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_fee_row " href="#modal_nominee" data-id="'+fee_row_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
+            new_row += '</tr>';
+            //$('#test3').find('input:text').val('');    
+            $('#fee_table').append(new_row);
+            $("#add_fee").attr('disabled',false);
+            $("#fee_row_id").val(fee_row_id)
+        }
+        else{
+            $("#add_fee").attr('disabled',false);
+            M.toast({
+                html: "Please choose fees and fill amount"
+            });
+        }    
+    });
+    $("#fee_formValidate").submit(function(e){
+        e.preventDefault();
+    });
+    $("#fee_formValidate").validate({
+        rules: {
+            edit_fee_name: {
+                required: true,
+            },
+            edit_fee_amount: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            edit_fee_amount: {
+                required: "Enter a Fee Amount",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function(form) {
+            var row_id = $("#edit_fee_row_id").val();
+            var edit_fee_auto_id = $("#edit_fee_name").val();
+            var edit_fee_amount = $("#edit_fee_amount").val();
+            var selected = $("#edit_fee_name").find('option:selected');
+            var new_fee_name = selected.data('feename');
+            //var formData = $("#fee_formValidate").serialize();
+            $("#fee_name_id_"+row_id).val(edit_fee_auto_id);
+            $("#fee_name_amount_"+row_id).val(edit_fee_amount);
+            $("#fee_name_label_"+row_id).html(new_fee_name);
+            $("#fee_amount_label_"+row_id).html(edit_fee_amount);
+            $('#modal_fee').modal('close'); 
+            return false;
+        }
+    });
+    $(document.body).on('click', '.edit_fee_row' ,function(){
+        var fee_id = $(this).data('id');
+        $('#modal_fee').modal('open'); 
+        var db_row_id = $('#fee_auto_id_'+fee_id).val(); 
+        var fee_name_id = $('#fee_name_id_'+fee_id).val(); 
+        
+        //if(db_row_id==""){
+            $('#edit_fee_auto_id').val(db_row_id); 
+            var edit_fee_id = $('#fee_name_id_'+fee_id).val(); 
+            var edit_fee_amount = $('#fee_name_amount_'+fee_id).val(); 
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url : "{{ URL::to('/get-fee-options') }}",
+                success:function(res){
+                    console.log(res);
+                    if(res)
+                    {
+                        $('#edit_fee_name').empty();
+                        $("#edit_fee_name").append($('<option></option>').attr('value', '').text("Select Fee"));
+                        $.each(res,function(key,entry){
+                            var selectval = edit_fee_id==entry.id ? 'selected' : '';
+                            $('#edit_fee_name').append($('<option '+selectval+' data-feename="'+entry.fee_name+'"></option>').attr('value',entry.id).text(entry.fee_name));
+                        });
+                    }else{
+                        $('#edit_fee_name').empty();
+                    }
+                    // console.log(res);
+                }
+            });
+            $('#edit_fee_amount').val(edit_fee_amount);
+            $('#edit_fee_row_id').val(fee_id);
+        //}
+    });
+    $(document.body).on('click', '.delete_fee' ,function(){
+        var fee_id = $(this).data('id');
+        var parrent = $(this).parents("tr");
+        parrent.remove(); 
+        // $.ajax({
+        //     type: "GET",
+        //     dataType: "json",
+        //     url : "{{ URL::to('/delete-nominee-data') }}?nominee_id="+nominee_id,
+        //     success:function(res){
+        //         console.log(res);
+        //         if(res)
+        //         {
+        //             parrent.remove(); 
+        //             M.toast({
+        //                 html: res.message
+        //             });
+        //         }else{
+        //             M.toast({
+        //                 html: res.message
+        //             });
+        //         }
+        //        // console.log(res);
+        //     }
+        //  });
+    });
+    $(document.body).on('click', '.delete_fee_db' ,function(){
+        var fee_id = $(this).data('autoid');
+        var parrent = $(this).parents("tr");
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/delete-fee-data') }}?fee_id="+fee_id,
             success:function(res){
                 console.log(res);
                 if(res)

@@ -36,6 +36,7 @@ Route::get('get-cities-list','MembershipController@getCitiesList');
 Route::get('get-branch-list','MembershipController@getBranchList');
 Route::get('get-oldmember-list','MembershipController@getoldMemberList');
 Route::post('add-nominee','MembershipController@addNominee');
+Route::get('get-age','MembershipController@getAge');
 
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
@@ -162,3 +163,5 @@ Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
 
+Route::get('delete-fee-data','MembershipController@deleteFee');
+Route::get('get-fee-options','MembershipController@getFeesList');

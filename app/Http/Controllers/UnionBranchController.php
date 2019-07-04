@@ -62,7 +62,7 @@ class UnionBranchController extends Controller
         $union['address_three'] = $request->input('address_three');
         $files = $request->file('logo');
         
-		if(!empty($validator))
+		if(!empty($files))
 		{
 			$image_name = time().'.'.$files->getClientOriginalExtension();
 			$files->move('public/images',$image_name);

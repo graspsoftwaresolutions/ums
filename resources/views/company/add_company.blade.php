@@ -59,9 +59,18 @@
                                             @endif
                                           </div>
                                         </div>
-                                        <div class="input-field col s12 m6">
-                                          <label for="head_of_company">Head of Company*</label>
-                                          <input id="head_of_company" name="head_of_company" type="text" data-error=".errorTxt3">
+                                        <div class=" col s12 m6 union-data">
+                                            <label>Head of Company*</label>
+                                                <select id="head_of_company" name="head_of_company" class="error browser-default">
+                                                <option value="">Select Company</option>
+                                                    @foreach($data['company'] as $value)
+                                                    <option value="{{$value->id}}">{{$value->company_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="input-field">      
+                                                    <div class="errorTxt22"></div>
+                                                </div>
+                                            </div>
                                           <div class="errorTxt3">
                                           @if($errors->has('head_of_company'))
                                     <span >{{$errors->first('head_of_company')}}</span>

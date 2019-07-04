@@ -55,4 +55,11 @@ class CommonHelper
         }
         return '';
      }
+     public static function get_fee_name($fee_id){
+        $status_data = DB::table('fee')->where('fee.id','=',$fee_id)->pluck('fee_name');
+        if(!empty($status_data)){
+            return $status_data[0];
+        }
+        return '';
+     }
 }

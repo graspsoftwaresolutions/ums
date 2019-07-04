@@ -17,11 +17,13 @@ class CompanyController extends Controller
     public function index()
     {
         $data['company'] = DB::table('company')->where('status','=','1')->get();
+       
         return view('company.company')->with('data',$data);
     }
     public function addCompany()
     {
-        return view('company.add_company');
+        $data['company'] = DB::table('company')->where('status','=','1')->get();
+        return view('company.add_company')->with('data',$data);
     }
     public function save(Request $request)
     {
@@ -62,7 +64,9 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
+        $data['company'] = DB::table('company')->where('status','=','1')->get();
         $data['company_edit'] = DB::table('company')->where('id','=',$id)->get(); 
+        $head_company_id = $data['company_edit'][0]->head_of_company;
         return view('company.edit_company')->with('data',$data);
     }
     public function update(Request $request)
