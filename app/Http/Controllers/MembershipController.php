@@ -123,7 +123,19 @@ class MembershipController extends Controller
        
         return response()->json($res);
     }
-    
+
+    public function getAge(Request $request)
+    {
+         $dob1 = $request->dob;
+           
+         $fmm_date = explode("/",$dob1);					
+         $dob2 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
+         $dob = date('Y-m-d', strtotime($dob2));
+
+         $years = Carbon::parse($dob1)->age;
+
+         dd($years); exit;
+    }
     public function getBranchList(Request $request){
        
          $id = $request->company_id;

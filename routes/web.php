@@ -36,6 +36,7 @@ Route::get('get-cities-list','MembershipController@getCitiesList');
 Route::get('get-branch-list','MembershipController@getBranchList');
 Route::get('get-oldmember-list','MembershipController@getoldMemberList');
 Route::post('add-nominee','MembershipController@addNominee');
+Route::get('get-age','MembershipController@getAge');
 
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');

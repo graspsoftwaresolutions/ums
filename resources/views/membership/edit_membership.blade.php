@@ -303,13 +303,22 @@
                                         <div class="row">
                                             <div class="input-field col s12 m4">
                                                 <label for="nominee_name">Nominee name* </label>
-                                                <input id="nominee_name" name="nominee_name" value=""  type="text" >
-                                                
+                                                <input id="nominee_name" name="nominee_name" value=""  type="text">
                                             </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="nominee_dob">DOB *</label>
-                                                <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text">
-                                                
+                                            <div class="col s12 m4">
+                                                 <div class=" col s12 m4">
+                                                    <p>
+                                                    <label for="nominee_dob">DOB *</label>
+                                                     <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text"> 
+                                                     
+                                                    </label>
+                                                    </p>
+                                                 </div>
+                                                 <div class="col s12 m4">
+                                                 <span> 
+                                                 <input type="text" id="nominee_age">
+                                                 </span>
+                                                 </div>
                                             </div>
                                             <div class="col s12 m4">
                                                <label for="years">Sex *</label>
@@ -350,7 +359,6 @@
                                             <div class="input-field col s12 m4">
                                                 <label for="nominee_address_one">Address Line 1*</label>
                                                 <input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
-                                                 
                                             </div>
                                             <div class="col s12 m4">
                                                  <label>Country Name*</label>
@@ -1115,11 +1123,22 @@ $(document).ready(function(){
             M.toast({
                 html: "Please fill requierd fields"
             });
-        }
-        
-            
-           
-
+        }    
+    });
+    $('#nominee_dob').click(function(){
+       var Dob = $('#nominee_dob').val();
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            url:"{{URL::to('/get-age') }}? dob="+Dob,
+            success:function(res){
+                if(res){
+                        $("#nominee_age").val( function( index, val ) {
+                                return val + "more text";
+                     });
+                }
+            }
+        });
     });
     $('#nominee_country_id').change(function(){
         var countryID = $(this).val();   
