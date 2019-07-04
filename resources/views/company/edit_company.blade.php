@@ -17,13 +17,12 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0"> Edit Country Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0"> Edit Company Details</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a href="#">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item active">Edit Country
+                                            <li class="breadcrumb-item active">Edit Company
                                             </li>
-                                            
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
@@ -40,7 +39,8 @@
                                     
                                    <div id="view-validations">
                                     <form class="formValidate" id="company_formValidate" method="post" action="{{url('company_edit')}}">
-                                       <?php $row = $data['company_edit'][0]; ?>
+                                     @foreach($data['company_edit'] as $row)
+                                   
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
                                       <div class="row">
@@ -67,7 +67,10 @@
                                                 <select id="head_of_company" name="head_of_company" class="error browser-default">
                                                 <option value="">Select Company</option>
                                                     @foreach($data['company'] as $value)
-                                                    <option value="{{$value->id}}" <?php if( $value->id == $row->head_of_company) { echo "selected";}?>>{{$value->company_name}}</option>
+                                                         <?php if($row->head_of_company == $value->id)   
+                                                         ?> 
+                                                         <option value="{{$value->id}}" <?php if($value->id == $row->head_of_company) { echo "selected";}?>
+                                                         >{{$value->company_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">      
@@ -78,8 +81,10 @@
                                           @if($errors->has('head_of_company'))
                                     <span >{{$errors->first('head_of_company')}}</span>
                                     @endif
+
                                           </div>
                                         </div>
+                                        @endforeach
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
                                             <i class="material-icons right">send</i>
@@ -144,5 +149,6 @@
         }
         }
     });
+    
 </script>
 @endsection
