@@ -44,8 +44,8 @@ class CreateMembershipTable extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('user_type')->nullable();
             $table->string('is_request_approved')->nullable();   
-            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable();
             $table->integer('status')->default(1);
         });
     }
