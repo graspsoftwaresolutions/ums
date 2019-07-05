@@ -385,7 +385,6 @@
                                                             <label for="nominee_dob">DOB *</label>
                                                             <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text"> 
                                                             
-                                                            </label>
                                                         </p>
                                                     </div>
                                                     <div class="col s12 m4">
@@ -677,138 +676,7 @@
     <!-- modal -->
     <!-- Modal Trigger -->
     <!-- Modal Structure --> 
-    <div id="modal_nominee" class="modal" style="width:70%;height: 700px !important;">
-        <form class="formValidate" id="nominee_formValidate" method="post" action="{{ url('membership_update') }}">
-        @csrf
-        <div class="modal-content">
-            <h4>Edit Nominee</h4>
-            <div class="row">
-                <div class="input-field col s12 m4">
-                   
-                    <input id="edit_nominee_name" name="edit_nominee_name" value=" "  type="text" >
-                    <input id="edit_nominee_id" name="edit_nominee_id" class='hide' value=" "  type="text" >
-                    <label for="edit_nominee_name">Nominee name* </label>
-                </div>
-                <div class="input-field col s12 m4">
-                    
-                    <input id="edit_nominee_dob" name="edit_nominee_dob" class="datepicker" value=" "  type="text">
-                    <label for="edit_nominee_dob">DOB *</label>
-                </div>
-                <div class="col s12 m4">
-                    <label for="edit_sex">Sex *</label>
-                    <select name="edit_sex" id="edit_sex" class="error browser-default">
-                        <option value="">Select</option>
-                        <option value="male" >Male</option>
-                        <option value="female" >Female</option>
-                    </select>
-                    <div class="input-field">
-                            <div class="errorTxt50"></div>
-                    </div>  
-                </div>
-                <div class="clearfix"> </div>
-                <div class="col s12 m4">
-                        <label>Relationship*</label>
-                        <select name="edit_relationship" id="edit_relationship" data-error=".errorTxt31"  class="error browser-default">
-                            @foreach($data['relationship_view'] as $key=>$value)
-                                <option value="{{$value->id}}" >{{$value->relation_name}}</option>
-                            @endforeach
-                        </select>
-                            
-                        <div class="input-field">
-                            <div class="errorTxt31"></div>
-                        </div>   
-                    
-                </div>
-                <div class="input-field col s12 m4">
-                   
-                    <input id="edit_nric_n" name="edit_nric_n" value=" "  type="text">
-                    <label for="edit_nric_n">NRIC-N *</label>
-                </div>
-                <div class="input-field col s12 m4">
-                   
-                    <input id="edit_nric_o" name="edit_nric_o" value=" "  type="text">
-                    <label for="edit_nric_o">NRIC-O *</label>
-                </div>
-                <div class="clearfix"> </div>
-                <div class="input-field col s12 m4">
-                    
-                    <input id="edit_nominee_address_one" name="edit_nominee_address_one" type="text" value=" " >
-                    <label for="edit_nominee_address_one">Address Line 1*</label>   
-                </div>
-                <div class="col s12 m4">
-                    <label>Country Name*</label>
-                    <select name="edit_nominee_country_id" id="edit_nominee_country_id"  class="error browser-default">
-                        <option value="">Select Country</option>
-                        @foreach($data['country_view'] as $value)
-                            <option value="{{$value->id}}" >{{$value->country_name}}</option>
-                        @endforeach
-                    </select>
-                    <div class="input-field">
-                        <div class="errorTxt35"></div>
-                    </div>       
-                    
-                </div>
-                <div class="col s12 m4">
-                        <label>State Name*</label>
-                    <select name="edit_nominee_state_id" id="edit_nominee_state_id"  class="error browser-default">
-                        @foreach($data['state_view'] as $key=>$value)
-                            <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
-                        @endforeach
-                    </select>
-                    <div class="input-field">
-                            <div class="errorTxt36"></div>
-                    </div>       
-                    
-                </div>
-                <div class="clearfix"> </div>
-                <div class="input-field col s12 m4">
-                    
-                    <input id="edit_nominee_address_two" name="edit_nominee_address_two" type="text" value=" " >
-                    <label for="edit_nominee_address_two">Address Line 2*</label>  
-                </div>
-                <div class="col s12 m4">
-                        <label>City Name*</label>
-                    <select name="edit_nominee_city_id" id="edit_nominee_city_id"  class="error browser-default">
-                        @foreach($data['city_view'] as $key=>$value)
-                        <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
-                        @endforeach
-                    </select>
-                    <div class="input-field">
-                            <div class="errorTxt36"></div>
-                    </div>       
-                    
-                </div>
-                <div class="input-field col s12 m4">
-                   
-                    <input id="edit_nominee_postal_code" name="edit_nominee_postal_code" type="text" value=" " >
-                    <label for="edit_nominee_postal_code">Postal code*</label>    
-                </div>
-                <div class="clearfix"> </div>
-                <div class="input-field col s12 m4">
-                   
-                    <input id="edit_nominee_address_three" name="edit_nominee_address_three" type="text" value=" " >
-                    <label for="edit_nominee_address_three">Address Line 3*</label>    
-                </div>
-                <div class="input-field col s12 m4">
-                    
-                    <input id="edit_nominee_mobile" name="edit_nominee_mobile" type="text" value=" " >
-                    <label for="edit_nominee_mobile" class="active">Mobile No*</label>   
-                </div>
-                <div class="input-field col s12 m4">
-                    
-                    <input id="edit_nominee_phone" name="edit_nominee_phone" type="text" value=" " >
-                    <label for="edit_nominee_phone" class="active">Phone No</label>    
-                </div>
-                <div class="clearfix"> </div>
-                
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn waves-effect waves-light purple right submit" id="update_nominee" type="submit" name="update_nominee">Update Nominee<i class="material-icons right">send</i></button>
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
-        </div>
-        </form>
-    </div>
+    
 
     
 </div>
@@ -1202,125 +1070,9 @@ $(document).ready(function(){
             });
         }    
     });
-    $('#nominee_dob').change(function(){
-       var Dob = $('#nominee_dob').val();
-       if(Dob!=""){
-            $.ajax({
-                type:"GET",
-                dataType:"json",
-                url:"{{URL::to('/get-age') }}? dob="+Dob,
-                success:function(res){
-                    if(res){
-                        $("#nominee_age").val(res);
-                    }else{
-                        $("#nominee_age").val(0);
-                    }
-                }
-            });
-       }else{
-          $("#nominee_age").val(0);
-       }
-        
-    });
-    $('#nominee_country_id').change(function(){
-        var countryID = $(this).val();   
-        
-        if(countryID){
-            $.ajax({
-            type:"GET",
-            dataType: "json",
-            url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
-            success:function(res){               
-                if(res){
-                    $("#nominee_state_id").empty();
-                    //console.log('hi test');
-                    $("#nominee_state_id").append($('<option></option>').attr('value', '').text("Select State"));
-                    $.each(res,function(key,entry){
-                      
-                        $("#nominee_state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
-                       // var select = $("#state");
-                       // select.material_select('destroy');
-                        //select.empty();
-                        
-                    });
-                    $('#nominee_state_id').trigger('change');
-                   // $('#state').material_select();
-                }else{
-                  $("#nominee_state_id").empty();
-                }
-                console.log(res);
-            }
-            });
-        }else{
-            $("#nominee_state_id").empty();
-            $("#nominee_city_id").empty();
-        }      
-    });
-    $('#nominee_state_id').change(function(){
-       var StateId = $(this).val();
-      
-       if(StateId!='' && StateId!='undefined')
-       {
-         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
-            success:function(res){
-                console.log(res);
-                if(res)
-                {
-                    $('#nominee_city_id').empty();
-                    $("#nominee_city_id").append($('<option></option>').attr('value', '').text("Select City"));
-                    $.each(res,function(key,entry){
-                        $('#nominee_city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
-                        
-                    });
-                }else{
-                    $('#nominee_city_id').empty();
-                }
-               // console.log(res);
-            }
-         });
-       }else{
-           $('#nominee_city_id').empty();
-       }
-   });
+   
    $('.modal').modal();
-   $(document.body).on('click', '.edit_nominee_row' ,function(){
-        var nominee_id = $(this).data('id');
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-nominee-data') }}?nominee_id="+nominee_id,
-            success:function(res){
-                console.log(res);
-                if(res)
-                {
-                    $("#edit_nominee_id").val(res.id);
-                    $("#edit_nominee_name").val(res.nominee_name);
-                    $("#edit_nominee_dob").val(res.dob);
-                    $("#edit_sex").val(res.gender);
-                    $("#edit_relationship").val(res.relation_id);
-                    $("#edit_nric_n").val(res.nric_n);
-                    $("#edit_nric_o").val(res.nric_o);
-                    $("#edit_nominee_address_one").val(res.address_one);
-                    $("#edit_nominee_country_id").val(res.country_id);
-                    $("#edit_nominee_state_id").val(res.state_id);
-                    $("#edit_nominee_address_two").val(res.address_two);
-                    $("#edit_nominee_city_id").val(res.city_id);
-                    $("#edit_nominee_postal_code").val(res.postal_code);
-                    $("#edit_nominee_address_three").val(res.address_three);
-                    $("#edit_nominee_mobile").val(res.mobile);
-                    $("#edit_nominee_phone").val(res.phone);
-                    console.log(res.dob);
-                    $('#modal_nominee').modal('open'); 
-                }else{
-                    
-                }
-               // console.log(res);
-            }
-         });
-    });
+   
     $("#nominee_formValidate").validate({
         rules: {
             edit_nominee_name: {
@@ -1436,8 +1188,6 @@ $(document).ready(function(){
             }
          });
     });
-    
-    
     
     
     $(document.body).on('click', '.delete_fee_db' ,function(){

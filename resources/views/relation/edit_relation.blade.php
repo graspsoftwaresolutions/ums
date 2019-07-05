@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Edit Relation Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{ __('Edit Relation Details') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Relation</a>
+                                            <li class="breadcrumb-item active">{{ __('Relation') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('relation')}}">Relation List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.relation', app()->getLocale()) }}">{{ __('Relation List') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,22 +36,23 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit Relation</h4>
+                                    <h4 class="card-title">{{ __('Edit Relation') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="relation_formValidate" method="post" action="{{url('relation_update')}}">
+                                    <form class="formValidate" id="relation_formValidate" method="post" action="{{ route('master.updaterelation', app()->getLocale()) }}">
                                         <?php $row = $data['relation_view'][0];?>
                                         <input type="hidden" name="id" value="{{$row->id}}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="relation_name">Relation Name*</label>
-                                          <input id="relation_name" name="relation_name" type="text" data-error=".errorTxt1" value="{{$row->relation_name}}">
+                                          <label for="relation_name" class="common-label">{{ __('Relation Name') }}*</label>
+                                          <input id="relation_name" class="common-input" name="relation_name" type="text" data-error=".errorTxt1" value="{{$row->relation_name}}">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">
+                                          {{ __('Update') }}
+                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
@@ -87,7 +88,7 @@
         //For custom messages
         messages: {
             relation_name: {
-                required: "Enter the Relation Name",
+                required: '{{__("Enter the Relation Name") }}',
             },
         },
         errorElement: 'div',

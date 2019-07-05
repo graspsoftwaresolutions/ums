@@ -17,11 +17,11 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Person Title Edit</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{ __('Edit Person Title') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">Dashboard</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Person Title</a>
+                                            <li class="breadcrumb-item active">{{ __('Person Title') }}
                                             </li>
                                             
                                         </ol>
@@ -36,7 +36,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit Person Title</h4>
+                                    <h4 class="card-title">{{ __('Edit Person Title') }}</h4>
                                     
                                    <div id="view-validations">
                                     <form class="formValidate" id="title_formValidate" method="post" action="{{ url('persontitle_update') }}">
@@ -46,13 +46,13 @@
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="person_title">Title Name*</label>
-                                          <input id="person_title" name="person_title"  value="{{$values->person_title}}" type="text" data-error=".errorTxt1">
+                                          <label for="person_title" class="common-label">{{ __('Title Name') }}*</label>
+                                          <input id="person_title" class="common-input" name="person_title"  value="{{$values->person_title}}" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
-                                            <i class="material-icons right"></i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{ __('Update') }}
+                                            <!--i class="material-icons right"></i-->
                                           </button>
                                         </div>
                                       </div>
@@ -89,7 +89,7 @@
         //For custom messages
         messages: {
             person_title: {
-                required: "Enter a Person Title Name",
+                required: '{{__("Enter a Person Title Name") }}',
             },
         },
         errorElement: 'div',

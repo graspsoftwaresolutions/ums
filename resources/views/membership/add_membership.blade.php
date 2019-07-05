@@ -284,6 +284,11 @@
 															</div>       
 														</div>
 														<div class="clearfix" style="clear:both"></div>
+														<div class="input-field col s12 m6">
+															<label for="employee_id">Employee ID*</label>
+															<input id="employee_id" name="employee_id" type="text">
+														</div>
+														<div class="clearfix" style="clear:both"></div>
 														<div class=" col s12 m6 hide">
 														<label>Status*</label>
 															<select name="status_id" id="status_id" class="error browser-default">
@@ -354,7 +359,7 @@
 										</div>
 										<div id="test2" class="col s12">
 											</br>
-											<div class="row">
+											<div id="nominee_add_section" class="row">
 												<div class="input-field col s12 m4">
 													<label for="nominee_name">Nominee name* </label>
 													<input id="nominee_name" name="nominee_name" value=""  type="text">
@@ -366,13 +371,12 @@
 																<label for="nominee_dob">DOB *</label>
 																<input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text"> 
 																
-																</label>
 															</p>
 														</div>
 														<div class="col s12 m4">
 															<label for="nominee_dob">Age</label>
 															<span> 
-															<input type="text" id="nominee_age">
+															<input type="text" id="nominee_age" readonly >
 															</span>
 														</div>
 													 </div>
@@ -393,7 +397,7 @@
 													 <label>Relationship*</label>
 														<select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
 															@foreach($data['relationship_view'] as $key=>$value)
-																<option value="{{$value->id}}" >{{$value->relation_name}}</option>
+																<option value="{{$value->id}}" data-relationshipname="{{$value->relation_name}}" >{{$value->relation_name}}</option>
 															@endforeach
 													   </select>
 														   
@@ -502,6 +506,10 @@
 														
 													</tbody>
 													</table>
+													@php
+														{{ $sl = 0; }}
+													@endphp
+													<input id="nominee_row_id" class="hide" name="nominee_row_id" value="{{ $sl }}"  type="text">
 												</div>
 											</div>
 										</div>
@@ -525,7 +533,7 @@
 												<div class="clearfix"> </div>
 												<div class="col s12 m4">
 													<label>Relationship*</label>
-													<select name="relationship_id" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+													<select name="g_relationship_id" id="g_relationship" data-error=".errorTxt31"  class="error browser-default">
 														@foreach($data['relationship_view'] as $key=>$value)
 															<option value="{{$value->id}}" >{{$value->relation_name}}</option>
 														@endforeach
@@ -878,6 +886,9 @@ $(document).ready(function(){
 			guardian_name : {
 				required: true,
             },
+			employee_id : {
+				required: true,
+            },
         },
         //For custom messages
         messages: {
@@ -952,6 +963,9 @@ $(document).ready(function(){
             },
 			guardian_name: {
                 required: "Enter a Guardian Name",
+            },
+			employee_id: {
+                required: "Enter a Employee ID",
             },
         },
         errorElement: 'div',

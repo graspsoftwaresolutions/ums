@@ -12,7 +12,8 @@ class RelationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); 
+        $this->middleware('auth');
+        $this->middleware('role:union'); 
         $this->Relation = new Relation;
     }
     public function index()
@@ -37,14 +38,16 @@ class RelationController extends Controller
             ['relation_name','=',$relation['relation_name']],
             ['status','=','1']
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add-relation')->with('message','Relation Name Already Exists');
+            
+            return redirect($defdaultLang.'/add-relation')->with('message','Relation Name Already Exists');
         }
         else
         {
             $id = $this->Relation->StoreRelation($relation);
-            return redirect('relation')->with('message','Relation Name Added Succesfully');
+            return redirect($defdaultLang.'/relation')->with('message','Relation Name Added Succesfully');
         }
     }
     public function view($id)
@@ -56,7 +59,7 @@ class RelationController extends Controller
         ])->get();
         return view('relation.view_relation')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang, $id)
     {
         $id = Crypt::decrypt($id);
         $data['relation_view'] = DB::table('relation')->where([
@@ -79,7 +82,7 @@ class RelationController extends Controller
             ['relation_name','=',$relation['relation_name']],
             ['status','=','1']
             ])->count();
-
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
             return redirect()->back()->with('message','Relation Name Already Exists');
@@ -87,12 +90,14 @@ class RelationController extends Controller
         else
         {
             $id = DB::table('relation')->where('id','=',$id)->update($relation);
-            return redirect('relation')->with('message','Relation Name Updated Succesfully');
+            return redirect($defdaultLang.'/relation')->with('message','Relation Name Updated Succesfully');
         }
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('relation')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('relation')->with('message','Relation Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('relation')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/relation')->with('message','Relation Deleted Succesfully');
 	}
 }
