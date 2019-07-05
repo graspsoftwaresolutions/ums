@@ -28,7 +28,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('country_save','CountryController@save')->name('master.savecountry');
 	Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
 	Route::post('country_edit','CountryController@update')->name('master.updatecountry');
-	Route::get('country-delete/{id}','CountryController@delete')->name('master.deletecountry');
+	Route::get('country-delete/{parameter}','CountryController@delete')->name('master.deletecountry');
 });
 /* Master */
 

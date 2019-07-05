@@ -10,11 +10,11 @@
                   </div>
                   <div class="col s10 pl-0">
                      <ul class="tabs">
-                        <li class="tab col s4 p-0">
+                        <!-- <li class="tab col s4 p-0">
                            <a href="#messages" class="active">
                               <span>Messages</span>
                            </a>
-                        </li>
+                        </li> -->
                         <li class="tab col s4 p-0">
                            <a href="#settings">
                               <span>Settings</span>
@@ -30,7 +30,7 @@
                </div>
             </div>
          </div>
-         <div class="slide-out-right-body">
+         <!-- <div class="slide-out-right-body">
             <div id="messages" class="col s12">
                <div class="collection border-none">
                   <input class="header-search-input mt-4 mb-2" type="text" name="Search" placeholder="Search Messages">
@@ -58,7 +58,7 @@
                     
                   </ul>
                </div>
-            </div>
+            </div> -->
             <div id="settings" class="col s12">
                <p class="mt-8 mb-0 ml-5 font-weight-900">GENERAL SETTINGS</p>
                <ul class="collection border-none">

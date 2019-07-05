@@ -21,17 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">Country List</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Country List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+											<li class="breadcrumb-item"><a href="index.html">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active"><a href="#">Country</a>
+											<li class="breadcrumb-item active">{{__('Country') }}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addcountry',app()->getLocale())}}">Add New Country</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addcountry',app()->getLocale())}}">{{__('Add New Country') }}</a>
 										
 									</div>
 								</div>
@@ -40,31 +40,30 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">Country List</h4>
+									<h4 class="card-title">{{__('Country List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>Country Name</th>
-														<th>Status</th>
-														<th style="text-align:center"> Action</th>
+														<th>{{__('Country Name') }}</th>
+														
+														<th style="text-align:center"> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
 													 @foreach($data['country_view'] as $key=>$value)
 													
 													<?php
-													$parameter =[
-														'id' =>$value->id,
-													];
-													 $parameter = Crypt::encrypt($parameter);  
+													 $parameter = Crypt::encrypt($value->id);  
 													 ?>
 													 <tr>
 														<td>{{$value->country_name}}</td>
-														<td>Active</td>
-														<td style="text-align:center"><a class="btn-small waves-effect waves-light cyan" href="{{url('en/country-edit/').'/'.$parameter}}">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('en/country-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+														@php
+														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
+														@endphp
+														<td style="text-align:center"><a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editcountry',[app()->getLocale(),$parameter]) }}">{{__('Edit') }}</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletecountry',[app()->getLocale(),$parameter])}}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
 												  </tr>
 												  @endforeach
 												</tbody>

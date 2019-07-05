@@ -16,7 +16,7 @@
 	<div class="card-alert card gradient-45deg-green-teal">
 		<div class="card-content white-text">
 		  <p>
-			<i class="material-icons">check</i> SUCCESS : {{ session('message') }}</p>
+			<i class="material-icons">check</i> {{__('SUCCESS') }}: {{__(session('message')) }}</p>
 		</div>
 		<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
 		  <span aria-hidden="true">×</span>
@@ -28,7 +28,7 @@
 	<div class="card-alert card gradient-45deg-amber-amber">
 		<div class="card-content white-text">
 		  <p>
-			<i class="material-icons">check</i> SUCCESS : {{ session('message') }}</p>
+			<i class="material-icons">check</i> {{__('SUCCESS') }} : {{__(session('message')) }}</p>
 		</div>
 		<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
 		  <span aria-hidden="true">×</span>
