@@ -1,12 +1,13 @@
 {
-  "Login": "LOG MASUK",
-  "E-Mail Address": "Alamat emel",
-  "Password": "Kata laluan",
-  "Remember Me": "Ingat saya",
+  "Login": "LOGIN_my",
+  "E-Mail Address": "E-Mail_my",
+  "Password": "Password_my",
+  "Remember Me": "Remember me",
   "Forgot Your Password?": "Forgot Password?",
   "You are logged in!": "You are logged in!",
-  "Welcome" : "Selamat datang",
-  "Country Details" : "Butiran Negara",
-  "Dashboard" : "Butiran Negara",
-  "Masters" : "Sarjana"
+  "Welcome" : "Welcome",
+  "Country Details" : "Country Details",
+  "Dashboard" : "Dashboard",
+  "Masters" : "Masters",
+  "Register Now!" : "Register Now!_my"
 }

@@ -27,7 +27,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('country')}}">Country List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ url('en/country') }}">Country List</a>
                                         
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Country</h4>
+                                    <h4 class="card-title">{{ __('Add Country') }}</h4>
                                     
                                    <div id="view-validations">
                                     <form class="formValidate" id="countryformValidate" method="post" action="{{ url('country_save') }}">

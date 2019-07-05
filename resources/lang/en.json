@@ -1,12 +1,16 @@
 {
-  "Login": "LOGIN",
-  "E-Mail Address": "E-Mail",
-  "Password": "Password",
-  "Remember Me": "Remember me",
-  "Forgot Your Password?": "Forgot Password?",
-  "You are logged in!": "You are logged in!",
-  "Welcome" : "Welcome",
-  "Country Details" : "Country Details",
-  "Dashboard" : "Dashboard",
-  "Masters" : "Masters"
+  "Login": "Login_en",
+  "E-Mail Address": "E-Mail_en",
+  "Password": "Password_en",
+  "Remember Me": "Remember me_en",
+  "Forgot Your Password?": "Forgot Password?_en",
+  "You are logged in!": "You are logged in!_en",
+  "Welcome" : "Welcome_en",
+  "Country Details" : "Country Details_en",
+  "Dashboard" : "Dashboard_en",
+  "Masters" : "Masters_en",
+  "Register Now!" : "Register Now!_en",
+  "These credentials do not match our records." : "These credentials do not match our records._en",
+  "Error" : "Error_en",
+  "Add Country" : "Add Country_en"
 }

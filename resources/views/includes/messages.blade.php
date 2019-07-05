@@ -3,7 +3,7 @@
 	<div class="card-alert card gradient-45deg-red-pink">
 		<div class="card-content white-text">
 		  <p>
-			<i class="material-icons">check</i> Error : {{ $error }}</p>
+			<i class="material-icons">check</i> {{ __('Error') }} : {{ __($error) }}</p>
 		</div>
 		<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
 		  <span aria-hidden="true">×</span>

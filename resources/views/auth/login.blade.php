@@ -54,7 +54,7 @@
 							<div class="input-field col s6 m6 l6">
 								<p class="margin medium-small">
 									
-										 <a href="{{ route('register', app()->getLocale()) }}">Register Now!</a>
+										 <a href="{{ route('register', app()->getLocale()) }}">{{ __('Register Now!') }}</a>
 								</p>
 							</div>
 							<div class="input-field col s6 m6 l6">

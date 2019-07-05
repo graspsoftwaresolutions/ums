@@ -24,12 +24,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	//Country Details
 	Route::get('country','CountryController@index')->name('master.country');
-	Route::get('add-country','CountryController@addCountry');
-	Route::post('country_save','CountryController@save');
-	Route::get('country-view/{parameter}','CountryController@view');
-	Route::get('country-edit/{parameter}','CountryController@edit');
-	Route::post('country_edit','CountryController@update');
-	Route::get('country-delete/{id}','CountryController@delete');
+	Route::get('add-country','CountryController@addCountry')->name('master.addcountry');
+	Route::post('country_save','CountryController@save')->name('master.savecountry');
+	Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
+	Route::post('country_edit','CountryController@update')->name('master.updatecountry');
+	Route::get('country-delete/{id}','CountryController@delete')->name('master.deletecountry');
 });
 /* Master */
 
