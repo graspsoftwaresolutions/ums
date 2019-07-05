@@ -277,7 +277,11 @@
 														 <label>Branch Name*</label>
 															<select name="branch_id" id="branch" class="error browser-default" {{ $branch_requird }}>
 																<option value="">Select Branch</option>
-																
+																<?php 
+																	//  if(!$check_union){
+																	//      echo '<option selected >'.$branch_id.'</option>';
+																	//  }
+																?>
 															</select>
 															<div class="input-field">      
 																<div class="errorTxt23"></div>
@@ -308,7 +312,7 @@
 													<select name="new_fee_id" id="new_fee_id" class="error browser-default">
 														<option value="">Select</option>
 														@foreach($data['fee_list'] as $key=>$value)
-															<option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+															<option data-feename="{{$value->fee_name}}" value="{{$value->id}}">{{$value->fee_name}}</option>
 														@endforeach
 													</select>
 													<div class="input-field">
@@ -318,7 +322,7 @@
 												
 												<div class="input-field col s12 m6">
 												   <label for="fee_amount">Fee amount *</label>
-												   <input id="fee_amount" name="fee_amount" value="0"  type="text">
+												   <input id="fee_amount" name="fee_amount" value=""  type="text">
 												   
 												   
 												</div>
@@ -333,6 +337,7 @@
 											<div class="row">
 												<div class="col s12">
 													
+													<?php // print_r($data['nominee_view']); ?>
 													<table id="fee_table" width="100%">
 														<thead>
 															<tr>
@@ -964,8 +969,48 @@ $(document).ready(function(){
         }
         }
     });
+//     document.addEventListener('DOMContentLoaded', function() {
+//     var elems = document.querySelectorAll('.autocomplete');
+//     var instances = M.Autocomplete.init(elems, options);
+//   });
 
 
+  // Or with jQuery
+
+  
+
+  
+$(function() {
+    // var options = {
+    //     url: function(phrase) {
+    //         return "https://restcountries.eu/rest/v2/all?fields=name";
+    //     },
+
+    //     getValue: "name"
+    // };
+
+        //$("#old_mumber_number").autocomplete(options);
+        // $('#old_mumber_number').keyup(function(){
+        //     var searchkey = $(this).val();
+        //         $.ajax({
+        //         type: 'GET',
+        //         url: 'https://restcountries.eu/rest/v2/all?fields=name',
+        //        // url: "{{ URL::to('/get-oldmember-list') }}?number="+searchkey,
+        //         success: function(response) {
+        //             var countryArray = response;
+        //             var dataCountry = {};
+        //             for (var i = 0; i < countryArray.length; i++) {
+        //             //console.log(countryArray[i].name);
+        //             dataCountry[countryArray[i].name] = countryArray[i].flag; //countryArray[i].flag or null
+        //             }
+        //             $('input#old_mumber_number').autocomplete({
+        //                 data: dataCountry,
+        //                 limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
+        //             });
+        //         }
+        //         });
+        //     });
+    });
     $("#country_test").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-oldmember-list') }}?key=1",

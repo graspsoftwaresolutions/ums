@@ -810,7 +810,39 @@
         </form>
     </div>
 
-    
+    <div id="modal_fee" class="modal" style="width:70%;height: 350px !important;">
+        <form class="formValidate" id="fee_formValidate" method="post" action="{{ url('membership_update') }}">
+        @csrf
+        </br>
+        <div class="modal-content">
+            <h4>Edit Fee</h4>
+            <div class="row">
+                <div class="col s12 m4">
+                    <label for="edit_fee_name">Fee name* </label>
+                    <select name="edit_fee_name" id="edit_fee_name" class="browser-default valid" aria-invalid="false">
+                        <option value="">Select</option>
+                    </select>
+                    <div class="input-field">
+                        <div class="errorTxt50"></div>
+                    </div>  
+                    <input id="edit_fee_auto_id" name="edit_fee_auto_id" class='hide' value=""  type="text" >
+                    <input id="edit_fee_row_id" name="edit_fee_row_id" class='hide' value=""  type="text" >
+                </div>
+                <div class="input-field col s12 m4">
+                    
+                    <input id="edit_fee_amount" name="edit_fee_amount" class="" value=" "  type="text">
+                    <label for="edit_fee_amount">Fee amount *</label>
+                </div>
+                <div class="clearfix"> </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn waves-effect waves-light purple right submit" id="update_fee" type="submit" name="update_fee">Update Fee</button>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
+        </div>
+        </form>
+    </div>
 </div>
 
 @endsection
@@ -1438,8 +1470,65 @@ $(document).ready(function(){
     });
     
     
-    
-    
+    $(document.body).on('click', '.edit_fee_row' ,function(){
+        var fee_id = $(this).data('id');
+        $('#modal_fee').modal('open'); 
+        var db_row_id = $('#fee_auto_id_'+fee_id).val(); 
+        var fee_name_id = $('#fee_name_id_'+fee_id).val(); 
+        
+        //if(db_row_id==""){
+            $('#edit_fee_auto_id').val(db_row_id); 
+            var edit_fee_id = $('#fee_name_id_'+fee_id).val(); 
+            var edit_fee_amount = $('#fee_name_amount_'+fee_id).val(); 
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url : "{{ URL::to('/get-fee-options') }}",
+                success:function(res){
+                    console.log(res);
+                    if(res)
+                    {
+                        $('#edit_fee_name').empty();
+                        $("#edit_fee_name").append($('<option></option>').attr('value', '').text("Select Fee"));
+                        $.each(res,function(key,entry){
+                            var selectval = edit_fee_id==entry.id ? 'selected' : '';
+                            $('#edit_fee_name').append($('<option '+selectval+' data-feename="'+entry.fee_name+'"></option>').attr('value',entry.id).text(entry.fee_name));
+                        });
+                    }else{
+                        $('#edit_fee_name').empty();
+                    }
+                    // console.log(res);
+                }
+            });
+            $('#edit_fee_amount').val(edit_fee_amount);
+            $('#edit_fee_row_id').val(fee_id);
+        //}
+    });
+    $(document.body).on('click', '.delete_fee' ,function(){
+        var fee_id = $(this).data('id');
+        var parrent = $(this).parents("tr");
+        parrent.remove(); 
+        // $.ajax({
+        //     type: "GET",
+        //     dataType: "json",
+        //     url : "{{ URL::to('/delete-nominee-data') }}?nominee_id="+nominee_id,
+        //     success:function(res){
+        //         console.log(res);
+        //         if(res)
+        //         {
+        //             parrent.remove(); 
+        //             M.toast({
+        //                 html: res.message
+        //             });
+        //         }else{
+        //             M.toast({
+        //                 html: res.message
+        //             });
+        //         }
+        //        // console.log(res);
+        //     }
+        //  });
+    });
     $(document.body).on('click', '.delete_fee_db' ,function(){
         var fee_id = $(this).data('autoid');
         var parrent = $(this).parents("tr");
