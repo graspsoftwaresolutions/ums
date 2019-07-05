@@ -479,9 +479,9 @@ class MembershipController extends Controller
       
        $nominee->years =  Carbon::parse($dob)->age;
 
-       $nominee->save();
+       //$nominee->save();
        if($nominee){
-            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => array('age'=> $nominee->years,'relationship'=> CommonHelper::get_relationship_name($nominee->relation_id), 'nominee_id' => $nominee->id));
+            $returndata = array('status' => 1, 'message' => 'Nominee added successfully', 'data' => array('age'=> $nominee->years,'relationship'=> CommonHelper::get_relationship_name($nominee->relation_id), 'nominee_id' => ''));
        }else{
             $returndata = array('status' => 0, 'message' => 'Failed to add', 'data' => '');
        }
