@@ -91,4 +91,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+	
+	public function redirectTo()
+    {
+        return app()->getLocale() . '/home';
+    }
+
 }

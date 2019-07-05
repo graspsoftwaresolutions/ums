@@ -25,8 +25,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-		$user = Auth::user();
+		//$user = Auth::user();
 		//dd($user->hasRole('developer'));
         return view('home');
+    }
+	public function redirectTo()
+    {
+        return app()->getLocale() . '/login';
     }
 }

@@ -4,7 +4,7 @@
         <nav class="navbar-main navbar-color nav-collapsible sideNav-lock navbar-dark gradient-45deg-indigo-purple no-shadow">
           <div class="nav-wrapper">
             <div class="header-search-wrapper hide-on-med-and-down"><i class="material-icons">search</i>
-              <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="Explore Materialize">
+              <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="">
             </div>
             <ul class="navbar-list right">
               <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><span class="flag-icon flag-icon-gb"></span></a></li>
@@ -16,10 +16,8 @@
             </ul>
             <!-- translation-button-->
             <ul class="dropdown-content" id="translation-dropdown">
-              <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-gb"></i> English</a></li>
-              <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-fr"></i> French</a></li>
-              <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-cn"></i> Chinese</a></li>
-              <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-de"></i> German</a></li>
+              <li><a class="grey-text text-darken-1" href=""><i class="flag-icon flag-icon-gb"></i> English</a></li>
+              <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-fr"></i> Malay</a></li>
             </ul>
             <!-- notifications-dropdown-->
             <ul class="dropdown-content" id="notifications-dropdown">
@@ -50,8 +48,8 @@
               <li><a class="grey-text text-darken-1" href="page-faq.html"><i class="material-icons">help_outline</i> Help</a></li>
               <li class="divider"></li>
               <li><a class="grey-text text-darken-1" href="user-lock-screen.html"><i class="material-icons">lock_outline</i> Lock</a></li>
-              <li><a class="grey-text text-darken-1" href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="material-icons">keyboard_tab</i> Logout</a>
-			   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              <li><a class="grey-text text-darken-1" href="{{ route('logout', app()->getLocale()) }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="material-icons">keyboard_tab</i> Logout</a>
+			   <form id="logout-form" action="{{ route('logout', app()->getLocale()) }}" method="POST" style="display: none;">
 					@csrf
 				</form>
 			  </li>

@@ -6,7 +6,7 @@
 		<div class="container">
 			<div id="login-page" class="row">
 				<div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
-					<form method="POST" action="{{ route('login') }}">
+					<form method="POST" action="{{ route('login', app()->getLocale()) }}">
                         @csrf
 						<div class="row">
 							<div class="input-field col s12">
@@ -53,18 +53,16 @@
 						<div class="row">
 							<div class="input-field col s6 m6 l6">
 								<p class="margin medium-small">
-									 @if (Route::has('register'))
-										 <a href="{{ route('register') }}">Register Now!</a>
-									@endif
+									
+										 <a href="{{ route('register', app()->getLocale()) }}">Register Now!</a>
 								</p>
 							</div>
 							<div class="input-field col s6 m6 l6">
 								<p class="margin right-align medium-small">
-									 @if (Route::has('password.request'))
-										<a href="{{ route('password.request') }}">
+									
+										<a href="{{ route('password.request', app()->getLocale()) }}">
 											{{ __('Forgot Your Password?') }}
 										</a>
-									@endif
 								</p>
 							</div>
 						</div>

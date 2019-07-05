@@ -11,24 +11,27 @@
 |
 */
 /* Authentication */
-Route::get('/', 'Auth\LoginController@custom_login');
+Route::get('/', function () {
+    return redirect(app()->getLocale());
+});
+Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'setlocale'], function() {
+	Route::get('/', 'Auth\LoginController@custom_login');
+	Auth::routes();
 
-Auth::routes();
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::post('/member-register', 'MemberController@register')->name('member.register');
+	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/member-register', 'MemberController@register')->name('member.register');
-Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
-
+	//Country Details
+	Route::get('country','CountryController@index')->name('master.country');
+	Route::get('add-country','CountryController@addCountry');
+	Route::post('country_save','CountryController@save');
+	Route::get('country-view/{parameter}','CountryController@view');
+	Route::get('country-edit/{parameter}','CountryController@edit');
+	Route::post('country_edit','CountryController@update');
+	Route::get('country-delete/{id}','CountryController@delete');
+});
 /* Master */
-
-//Country Details
-Route::get('country','CountryController@index');
-Route::get('add-country','CountryController@addCountry');
-Route::post('country_save','CountryController@save');
-Route::get('country-view/{parameter}','CountryController@view');
-Route::get('country-edit/{parameter}','CountryController@edit');
-Route::post('country_edit','CountryController@update');
-Route::get('country-delete/{id}','CountryController@delete');
 
 //Membership
 Route::get('get-state-list','MembershipController@getStateList');
