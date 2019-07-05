@@ -17,17 +17,16 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Country List</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Country List') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Country</a>
+                                            <li class="breadcrumb-item active"><a href="{{route('master.country',app()->getLocale())}}">{{__('Country') }}</a>
                                             </li>
-                                            
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ url('en/country') }}">Country List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.country',app()->getLocale()) }}">{{__('Back') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,20 +35,20 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{ __('Add Country') }}</h4>
+                                    <h4 class="card-title ">{{ __('Add Country') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="countryformValidate" method="post" action="{{ url('country_save') }}">
+                                    <form class="formValidate" id="countryformValidate" method="post" action="{{ route('master.savecountry',app()->getLocale()) }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="country_name">Country Name*</label>
-                                          <input id="country_name" name="country_name" type="text" data-error=".errorTxt1">
+                                          <label for="country_name" class="common-label">{{__('Country Name') }}*</label>
+                                          <input id="country_name" class="common-input" name="country_name" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
+                                            <!-- <i class="material-icons right">send</i> -->
                                           </button>
                                         </div>
                                       </div>

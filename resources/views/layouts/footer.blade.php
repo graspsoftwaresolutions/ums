@@ -2,7 +2,7 @@
 
     <footer class="page-footer footer footer-static footer-dark gradient-45deg-indigo-purple gradient-shadow navbar-border navbar-shadow">
       <div class="footer-copyright">
-        <div class="container"><span>&copy; 2019          <a href="#" target="_blank">Membership</a> All rights reserved.</span><span class="right hide-on-small-only"></span></div>
+        <div class="container"><span>&copy; <?php echo date('Y')?><a href="#" target="_blank">Membership</a> {{__('All rights reserved')}}.</span><span class="right hide-on-small-only"></span></div>
       </div>
     </footer>
 
