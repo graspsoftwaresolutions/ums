@@ -29,6 +29,23 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
 	Route::post('country_edit','CountryController@update')->name('master.updatecountry');
 	Route::get('country-delete/{parameter}','CountryController@delete')->name('master.deletecountry');
+
+	//State Details 
+	Route::get('state','StateController@index')->name('master.state');
+	Route::get('add-state','StateController@addState')->name('master.addstate');
+	Route::post('state_save','StateController@save')->name('master.savestate');
+	Route::get('state-edit/{parameter}','StateController@edit')->name('master.editstate');
+	Route::post('state_edit','StateController@update')->name('master.updatestate');
+	Route::get('state-delete/{id}','StateController@delete')->name('master.deletestate');
+
+	//City Details 
+	Route::get('city','CityController@index')->name('master.city');
+	Route::get('add-city','CityController@addCity')->name('master.addCity');
+	Route::get('get-state-order-list/{country}','CityController@getStates')->name('master.getstate');
+	Route::post('city_save','CityController@save')->name('master.citysave');
+	Route::get('city-edit/{parameter}','CityController@edit')->name('master.editcity');
+	Route::post('city_update','CityController@update')->name('master.updatecity');
+	Route::get('city-delete/{id}','CityController@delete')->name('master.deletecity');
 });
 /* Master */
 
@@ -48,13 +65,7 @@ Route::get('membership-edit/{parameter}','MembershipController@edit');
 Route::post('membership_update','MembershipController@update');
 Route::get('membership-delete/{id}','MembershipController@delete');
 Route::get('membership_list','MembershipController@new_members');
-//State Details 
-Route::get('state','StateController@index');
-Route::get('add-state','StateController@addState');
-Route::post('state_save','StateController@save');
-Route::get('state-edit/{parameter}','StateController@edit');
-Route::post('state_edit','StateController@update');
-Route::get('state-delete/{id}','StateController@delete');
+
 //Status Master
 Route::get('status','StatusController@index');
 Route::get('add-status','StatusController@addStatus');
@@ -63,15 +74,7 @@ Route::get('status-edit/{parameter}','StatusController@edit');
 Route::post('status_update','StatusController@update');
 Route::get('status-delete/{id}','StatusController@delete');
 
-//City Details 
-Route::get('city','CityController@index');
-Route::get('add-city','CityController@addCity');
-//Route::get('get-state-order-list','CityController@getStateorderList');
-Route::get('get-state-order-list/{country}','CityController@getStates');
-Route::post('city_save','CityController@save');
-Route::get('city-edit/{parameter}','CityController@edit');
-Route::post('city_update','CityController@update');
-Route::get('city-delete/{id}','CityController@delete');
+
 
 //Designation
 Route::get('designation','DesignationController@index');

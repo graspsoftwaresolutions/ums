@@ -80,16 +80,18 @@ class CityController extends Controller
 
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('city')->with('message','City Name Already Exists');
+            $defaultLanguage = app()->getLocale();
+            return redirect($defaultLanguage.'/city')->with('message','City Name Already Exists');
         }
         else
         {
             $id = $this->City->StoreCity($city);
-            return redirect('city')->with('message','City Name Added Succesfully');
+            $defaultLanguage = app()->getLocale();
+            return redirect($defaultLanguage.'/city')->with('message','City Name Added Succesfully');
         }
     }
     
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['city_view'] =  DB::table('country')
@@ -111,12 +113,15 @@ class CityController extends Controller
     {
         $id = $request->input('id');
         $city['city_name'] = $request->input('city_name');
-		$id = DB::table('city')->where('id','=',$id)->update($city);
-		return redirect('city')->with('message','City Details Updated Succesfully');
+        $id = DB::table('city')->where('id','=',$id)->update($city);
+        $defaultLanguage = app()->getLocale();
+		return redirect($defaultLanguage.'city')->with('message','City Details Updated Succesfully');
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('city')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('city')->with('message','City Details Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('city')->where('id','=',$id)->update(['status'=>'0']);
+        $defaultLanguage = app()->getLocale();
+		return redirect($defaultLanguage.'/city')->with('message','City Details Deleted Succesfully');
 	} 
 }

@@ -21,18 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">City List</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('City List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="#">Dashboard</a>
+										<ol class="breadcrumbs mb-0">
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">City
+											<li class="breadcrumb-item active">{{__('City') }}
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('add-city')}}">Add New City</a>
-										
+										<a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addCity', app()->getLocale())}}">{{__('Add New City') }}</a>
 									</div>
 								</div>
 							</div>
@@ -40,35 +39,34 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">City List</h4>
+									<h4 class="card-title">{{__('City List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>Country Name</th>
-														<th>State Name</th>
-														<th>City Name</th>
-														<th style="text-align:center"> Action</th>
+														<th>{{__('Country Name') }}</th>
+														<th>{{__('State Name') }}</th>
+														<th>{{__('City Name') }}</th>
+														<th style="text-align:center"> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
 													 @foreach($data as $value)
 													<tr>
 													<?php
-													$parameter =[
-														'id' =>$value->id,
-													];
-													 $parameter = Crypt::encrypt($parameter);  
-													 
+													 $parameter = Crypt::encrypt($value->id);  
 													 ?>
 														<td>{{$value->country_name}}</td>
 														<td>{{$value->state_name}}</td>
 														<td>{{$value->city_name}}</td>
+														@php
+														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
+														@endphp
 														<td style="text-align:center">
-														<a class="btn-small waves-effect waves-light cyan" href="{{url('city-edit/').'/'.$parameter}}">Edit</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('city-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+														<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editcity',[app()->getLocale(),$parameter]) }}">{{__('Edit') }}</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletecity',[app()->getLocale(),$parameter]) }}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
 												  </tr>
 												  @endforeach
 												</tbody>

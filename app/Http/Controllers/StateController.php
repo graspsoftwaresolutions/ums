@@ -48,15 +48,17 @@ class StateController extends Controller
             ])->count();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('state')->with('message','State Name Already Exists');
+            $defaultLanguage = app()->getLocale();
+            return redirect($defaultLanguage.'/state')->with('message','State Name Already Exists');
         }
         else
         {
             $id = $this->State->StoreState($state);
-            return redirect('state')->with('message','State Name Added Succesfully');
+            $defaultLanguage = app()->getLocale();
+            return redirect($defaultLanguage.'/state')->with('message','State Name Added Succesfully');
         }
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['state_view'] = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status','state.id')
@@ -71,12 +73,15 @@ class StateController extends Controller
         $id = $request->input('id');
         $state['country_id'] = $request->input('country_id');
         $state['state_name'] = $request->input('state_name');
-		$id = DB::table('state')->where('id','=',$id)->update($state);
-		return redirect('state')->with('message','State Details Updated Succesfully');
+        $id = DB::table('state')->where('id','=',$id)->update($state);
+        $defaultLanguage = app()->getLocale();
+		return redirect($defaultLanguage.'/state')->with('message','State Details Updated Succesfully');
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('state')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('state')->with('state','State Deleted Succesfully');
-	} 
+        $id = Crypt::decrypt($id);
+        $data = DB::table('state')->where('id','=',$id)->update(['status'=>'0']);
+        $defaultLanguage = app()->getLocale();
+		return redirect($defaultLanguage.'/state')->with('state','State Deleted Succesfully');
+	}
 }

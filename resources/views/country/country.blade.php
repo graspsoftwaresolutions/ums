@@ -23,7 +23,7 @@
 									<div class="col s10 m6 l6">
 										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Country List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">{{__('Dashboard') }}</a>
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
 											<li class="breadcrumb-item active">{{__('Country') }}
 											</li>
