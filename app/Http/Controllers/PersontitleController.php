@@ -37,14 +37,15 @@ class PersontitleController extends Controller
             ['person_title','=',$person['person_title']],
             ['status','=','1']
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add-title')->with('message','Title Name Already Exists');
+            return redirect($defdaultLang.'/add-title')->with('message','Title Name Already Exists');
         }
         else
         {
             $id = $this->Persontitle->StorePersontitle($person);
-            return redirect('persontitle')->with('message','Title Name Added Succesfully');
+            return redirect($defdaultLang.'/persontitle')->with('message','Title Name Added Succesfully');
         }
     }
     public function view($id)
@@ -56,7 +57,7 @@ class PersontitleController extends Controller
         ])->get();
         return view('persontitle.view_persontitle')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['title_edit'] = DB::table('persontitle')->where([
@@ -79,7 +80,7 @@ class PersontitleController extends Controller
             ['person_title','=',$person['person_title']],
             ['status','=','1']
             ])->count();
-
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
             return redirect()->back()->with('message','Tirle Name Already Exists');
@@ -87,12 +88,14 @@ class PersontitleController extends Controller
         else
         {
             $id = DB::table('persontitle')->where('id','=',$id)->update($person);
-            return redirect('persontitle')->with('message','Title Name Updated Succesfully');
+            return redirect($defdaultLang.'/persontitle')->with('message','Title Name Updated Succesfully');
         }
     }
-    public function delete($id)
+    public function delete($lang, $id)
 	{
-		$data = DB::table('persontitle')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('persontitle')->with('message','Title Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('persontitle')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/persontitle')->with('message','Title Deleted Succesfully');
 	}
 }

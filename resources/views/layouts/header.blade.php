@@ -7,7 +7,7 @@
               <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="">
             </div>
             <ul class="navbar-list right">
-              <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><span class="flag-icon flag-icon-gb"></span></a></li>
+              <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"></a></li>
               <!-- <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light toggle-fullscreen" href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a></li> -->
               <li class="hide-on-large-only"><a class="waves-effect waves-block waves-light search-button" href="javascript:void(0);"><i class="material-icons">search</i></a></li>
               <!-- <li><a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);" data-target="notifications-dropdown"><i class="material-icons">notifications_none<small class="notification-badge">5</small></i></a></li> -->
@@ -16,8 +16,8 @@
             </ul>
             <!-- translation-button-->
             <ul class="dropdown-content" id="translation-dropdown">
-              <li><a class="grey-text text-darken-1" href=""><i class="flag-icon flag-icon-gb"></i> English</a></li>
-              <li><a class="grey-text text-darken-1" href="#!"><i class="flag-icon flag-icon-fr"></i> Malay</a></li>
+              <li><a class="grey-text text-darken-1" href=""><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"> English</a></li>
+              <li><a class="grey-text text-darken-1" href="#!"><img src="{{ asset('public/assets/images/my_icon.png') }}" alt="Malay"> Malay</a></li>
             </ul>
             <!-- notifications-dropdown-->
             <!-- <ul class="dropdown-content" id="notifications-dropdown">

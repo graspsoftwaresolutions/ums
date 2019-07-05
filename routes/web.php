@@ -29,6 +29,33 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
 	Route::post('country_edit','CountryController@update')->name('master.updatecountry');
 	Route::get('country-delete/{parameter}','CountryController@delete')->name('master.deletecountry');
+	
+	//Person Details
+	Route::get('persontitle','PersontitleController@index')->name('master.persontitle');
+	Route::get('add-title','PersontitleController@addTitle')->name('master.addpersontitle');
+	Route::post('persontitle_save','PersontitleController@save')->name('master.savepersontitle');
+	Route::get('persontitle-edit/{parameter}','PersontitleController@edit')->name('master.editpersontitle');
+	Route::post('persontitle_update','PersontitleController@update')->name('master.updatepersontitle');
+	Route::get('persontitle-delete/{id}','PersontitleController@delete')->name('master.deletepersontitle');
+
+	//Relation Details
+	Route::get('relation','RelationController@index')->name('master.relation');
+	Route::get('add-relation','RelationController@addRelation')->name('master.addrelation');
+	Route::post('relation_save','RelationController@save')->name('master.saverelation');
+	Route::get('relation-edit/{parameter}','RelationController@edit')->name('master.editrelation');
+	Route::post('relation_update','RelationController@update')->name('master.updaterelation');
+	Route::get('relation-delete/{id}','RelationController@delete')->name('master.deleterelation');
+	
+	//Reason Details
+	Route::get('reason','ReasonController@index')->name('master.reason');
+	Route::get('add-reason','ReasonController@addReason')->name('master.addreason');
+	Route::post('reason_save','ReasonController@save')->name('master.savereason');
+	//Route::get('reason-view/{parameter}','ReasonController@view')->name('master.reason');
+	Route::get('reason-edit/{parameter}','ReasonController@edit')->name('master.editreason');
+	Route::post('reason_update','ReasonController@update')->name('master.updatereason');
+	Route::get('reason-delete/{id}','ReasonController@delete')->name('master.deletereason');
+
+
 });
 /* Master */
 
@@ -99,14 +126,7 @@ Route::get('fee-edit/{parameter}','FeeController@edit');
 Route::post('fee_update','FeeController@update');
 Route::get('fee-delete/{id}','FeeController@delete');
 
-//Reason
-Route::get('reason','ReasonController@index');
-Route::get('add-reason','ReasonController@addReason');
-Route::post('reason_save','ReasonController@save');
-Route::get('reason-view/{parameter}','ReasonController@view');
-Route::get('reason-edit/{parameter}','ReasonController@edit');
-Route::post('reason_update','ReasonController@update');
-Route::get('reason-delete/{id}','ReasonController@delete');
+
 
 //branch
 Route::get('branch','BranchController@index');
@@ -144,13 +164,6 @@ Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
 Route::post('persontitle_update','PersontitleController@update');
 Route::get('persontitle-delete/{id}','PersontitleController@delete');
 
-//Member Relation Setup
-Route::get('relation','RelationController@index');
-Route::get('add-relation','RelationController@addRelation');
-Route::post('relation_save','RelationController@save');
-Route::get('relation-edit/{parameter}','RelationController@edit');
-Route::post('relation_update','RelationController@update');
-Route::get('relation-delete/{id}','RelationController@delete');
 
 //Union Branch
 Route::get('unionbranch','UnionBranchController@index');
