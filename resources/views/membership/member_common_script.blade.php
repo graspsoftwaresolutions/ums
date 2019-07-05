@@ -50,13 +50,13 @@ $('#add_fee').click(function(){
 		}
 	});
 	if(new_fee_id!="" && fee_amount!="" ){
-		var alert_confirm = "confirm('Are you sure you want to delete?')";
+		
 		$("#add_fee").attr('disabled',true);
 		var row_id =1;
 		var new_row = '<tr>';
 		new_row += '<td><span id="fee_name_label_'+fee_row_id+'">'+new_fee_name+'</span><input type="text" name="fee_auto_id[]" id="fee_auto_id_'+fee_row_id+'"></input><input type="text" name="fee_name_id[]" id="fee_name_id_'+fee_row_id+'" value="'+new_fee_id+'"></input></td>';
 		new_row += '<td><span id="fee_amount_label_'+fee_row_id+'">'+fee_amount+'</span><input type="text" name="fee_name_amount[]" id="fee_name_amount_'+fee_row_id+'" value="'+fee_amount+'"></input></td>';
-		new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_fee_row " href="#modal_nominee" data-id="'+fee_row_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
+		new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_fee_row " href="#modal_nominee" data-id="'+fee_row_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" >Delete</a></td>';
 		new_row += '</tr>';
 		//$('#test3').find('input:text').val('');    
 		$('#fee_table').append(new_row);
@@ -159,8 +159,96 @@ $(document.body).on('click', '.edit_fee_row' ,function(){
 	//}
 });
 $(document.body).on('click', '.delete_fee' ,function(){
-	var fee_id = $(this).data('id');
-	var parrent = $(this).parents("tr");
-	parrent.remove(); 
+	if(confirm('Are you sure you want to delete?')){
+		var fee_id = $(this).data('id');
+		var parrent = $(this).parents("tr");
+		parrent.remove(); 
+	}else{
+		return false;
+	}
+	
 });
+ $('#add_nominee').click(function(){
+        var auto_id =   $("#auto_id").val();
+        var nominee_name =   $("#nominee_name").val();
+        var nominee_dob =   $("#nominee_dob").val();
+        var nominee_sex =   $("#sex").val();
+        var nominee_relationship =   $("#relationship").val();
+        var nric_n =   $("#nric_n").val();
+        var nric_o =   $("#nric_o").val();
+        var nominee_address_one =   $("#nominee_address_one").val();
+        var nominee_country_id =   $("#nominee_country_id").val();
+        var nominee_state_id =   $("#nominee_state_id").val();
+        var nominee_address_two =   $("#nominee_address_two").val();
+        var nominee_city_id =   $("#nominee_city_id").val();
+        var nominee_postal_code =   $("#nominee_postal_code").val();
+        var nominee_address_three =   $("#nominee_address_three").val();
+        var nominee_mobile =   $("#nominee_mobile").val();
+        var nominee_phone =   $("#nominee_phone").val();
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        if(nominee_name!="" && nominee_dob!="" && nominee_sex!="" && nominee_relationship!="" && 
+        nric_n!="" && nric_o!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
+        nominee_address_two!="" && nominee_city_id!="" && nominee_postal_code != "" && nominee_address_three!="" && nominee_mobile!=""){
+           $("#add_nominee").attr('disabled',true);
+            $.ajax({
+                method: 'POST', // Type of response and matches what we said in the route
+                url: "{{ URL::to('/add-nominee') }}", // This is the url we gave in the route
+                data: { 
+                    'auto_id' : auto_id,
+                    'nominee_name' : nominee_name,
+                    'nominee_dob' : nominee_dob,
+                    'nominee_sex' : nominee_sex,
+                    'nominee_relationship' : nominee_relationship,
+                    'nric_n' : nric_n,
+                    'nric_o' : nric_o,
+                    'nominee_address_one' : nominee_address_one,
+                    'nominee_country_id' : nominee_country_id,
+                    'nominee_state_id' : nominee_state_id,
+                    'nominee_address_two' : nominee_address_two,
+                    'nominee_city_id' : nominee_city_id,
+                    'nominee_postal_code' : nominee_postal_code,
+                    'nominee_address_three' : nominee_address_three,
+                    'nominee_mobile' : nominee_mobile,
+                    'nominee_phone' : nominee_phone,
+                }, // a JSON object to send back
+                dataType: "json",
+                success: function(response){ // What to do if we succeed
+                    $("#add_nominee").attr('disabled',false);
+                    var alert_confirm = "confirm('Are you sure you want to delete?')";
+                    console.log(response.data); 
+                    if(response.status ==1){
+                        var new_row = '<tr>';
+                        new_row += '<td id="nominee_name_'+ response.data.nominee_id +'">'+nominee_name+'</td>';
+                        new_row += '<td id="nominee_age_'+ response.data.nominee_id +'">'+response.data.age+'</td>';
+                        new_row += '<td id="nominee_gender_'+ response.data.nominee_id +'">'+nominee_sex+'</td>';
+                        new_row += '<td id="nominee_relation_'+ response.data.nominee_id +'">'+response.data.relationship+'</td>';
+                        new_row += '<td id="nominee_nricn_'+ response.data.nominee_id +'">'+nric_n+'</td>';
+                        new_row += '<td id="nominee_nrico_'+ response.data.nominee_id +'">'+nric_o+'</td>';
+                        new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+response.data.nominee_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="'+response.data.nominee_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
+                        new_row += '</tr>';
+                        $('#test2').find('input:text').val('');    
+                        $('#nominee_table').append(new_row);
+                        M.toast({
+                            html: response.message
+                        });
+                    }
+                    console.log(response.data); 
+                },
+                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+        }
+        else{
+            $("#add_nominee").attr('disabled',false);
+            M.toast({
+                html: "Please fill requierd fields"
+            });
+        }    
+    });
 </script>

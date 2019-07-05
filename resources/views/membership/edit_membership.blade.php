@@ -1438,8 +1438,6 @@ $(document).ready(function(){
     });
     
     
-    
-    
     $(document.body).on('click', '.delete_fee_db' ,function(){
         var fee_id = $(this).data('autoid');
         var parrent = $(this).parents("tr");
