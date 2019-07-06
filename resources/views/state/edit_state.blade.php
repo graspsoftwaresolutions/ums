@@ -17,21 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0"> Edit State Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0"> {{__('Edit State Details') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">State
+                                            <li class="breadcrumb-item active">{{__('State') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-<<<<<<< HEAD
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('state')}}">State List</a>
-=======
-                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('state')}}">State List</a>
->>>>>>> 880612f1b469dbf8a52bb1028892e9fca97b5b57
+                                    <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.state', app()->getLocale())}}">{{__('Back') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -39,17 +35,17 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit State</h4>
+                                    <h4 class="card-title">{{__('Edit State') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="stateformValidate" method="post" action="{{url('state_edit')}}">
+                                    <form class="formValidate" id="stateformValidate" method="post" action="{{route('master.updatestate',app()->getLocale())}}">
                                        <?php $row = $data['state_view'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                            <select class="error browser-default" id="country_id" name="country_id"  data-error=".errorTxt1">
-                                                <option value="" disabled="" selected="">Select country</option>
+                                            <select class="error browser-default" class="common-select" id="country_id" name="country_id"  data-error=".errorTxt1">
+                                                <option value="" disabled="" selected="">{{__('Select country')}}</option>
                                                 @foreach($data['country_view'] as $values)
                                                     <option value="{{$values->id}}" <?php if($values->id == $row->country_id) { echo "selected";} ?>>{{$values->country_name}}</option>
                                                 @endforeach
@@ -59,13 +55,13 @@
                                             </div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="state_name">State Name*</label>
-                                          <input name="state_name" id="state_name" type="text" value="{{$row->state_name}}" data-error=".errorTxt2">
+                                          <label for="state_name">{{__('State Name')}}*</label>
+                                          <input name="state_name" id="state_name"  class="common-text" type="text" value="{{$row->state_name}}" data-error=".errorTxt2">
                                           <div class="errorTxt2" ></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Update')}}
+                                            
                                           </button>
                                         </div>
                                       </div>
@@ -108,11 +104,11 @@
         messages: {
             
             country_id: {
-                required: "Please choose country",
+                required: '{{__("Please choose Country") }}',
                 
             },
             state_name: {
-                required: "Please choose state",
+                required:  '{{__("Please enter the state") }}',
                 
             }
         },

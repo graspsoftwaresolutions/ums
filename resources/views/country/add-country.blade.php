@@ -87,7 +87,7 @@
         messages: {
             
             country_name: {
-                required: "Please enter country name",
+                required: '{{__("Please enter country name") }}',
                 
             }
         },
