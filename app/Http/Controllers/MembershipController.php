@@ -152,7 +152,7 @@ class MembershipController extends Controller
      }
     public function Save(Request $request)
     {
-       // return $request->input('branch_id');
+        return $request->all();
         $request->validate([
             'member_title'=>'required',
             'member_number'=>'required',
@@ -251,35 +251,67 @@ class MembershipController extends Controller
                             ['email','=',$member['email']],
                             ['status','=','1']
                             ])->count();
+
+            $email_one_exists = DB::table('users')->where([
+                                ['email','=',$member['email']
+                                ]])->count();
                             
-            if($email_exists > 0)
+            if($email_exists > 0 || $email_one_exists > 0)
             {
                 return redirect()->back()->with('message','Email already Exists');
             }
             else{
-              $id = $this->Membership->StoreMembership($member);
-              if(!empty($member_user)){
-                $member_guardian_id = $id;
-                $guardian['member_id'] = $member_guardian_id;
-                $guardian['guardian_name'] ='';
-                $guardian['years'] = '';
-                $guardian['gender'] = '';
-                $guardian['relationship_id'] = 0;
-                $guardian['nric_n'] = '';
-                $guardian['nric_o'] = '';
-                $guardian['address_one'] = '';
-                $guardian['country_id'] = 0;
-                $guardian['state_id'] = 0;
-                $guardian['city_id'] = 0;
-                $guardian['address_two'] = '';
-                $guardian['postal_code'] = '';
-                $guardian['address_three'] = '';
-                $guardian['mobile'] = '';
-                $guardian['phone'] = '';
+                $id = $this->Membership->StoreMembership($member);
+                if(!empty($member_user)){
+                    $member_id = $id;
+                    $guardian['member_id'] = $member_id;
+                    $guardian['guardian_name'] = $request->input('guardian_name');
+                    $guardian['years'] = $request->input('guardian_age');
+                    $guardian['gender'] = $request->input('guardian_sex');
+                    $guardian['relationship_id'] = $request->input('g_relationship_id');
+                    $guardian['nric_n'] = $request->input('nric_n_guardian');
+                    $guardian['nric_o'] = $request->input('nric_o_guardian');
+                    $guardian['address_one'] = $request->input('guardian_address_one');
+                    $guardian['country_id'] = $request->input('guardian_country_id');
+                    $guardian['state_id'] = $request->input('guardian_state_id');
+                    $guardian['city_id'] = $request->input('guardian_city_id');
+                    $guardian['address_two'] = $request->input('guardian_address_two');
+                    $guardian['postal_code'] = $request->input('guardian_postal_code');
+                    $guardian['address_three'] = $request->input('guardian_address_three');
+                    $guardian['mobile'] = $request->input('guardian_mobile');
+                    $guardian['phone'] = $request->input('guardian_phone');
+
+                    $gaurdian_id = $this->MemberGuardian->StoreMemberGaurdian($guardian);
         
-               // return $guardian; 
+                    // return $guardian; 
+                    $fee_count = count($request->input('fee_auto_id'));
+                    for($i =0; $i<$fee_count; $i++){
+                        $fee_auto_id = $request->input('fee_auto_id')[$i];
+                        $fee_name_id = $request->input('fee_name_id')[$i];
+                        $fee_amount = $request->input('fee_name_amount')[$i];
+                    }
+                    $nominee_count = count($request->input('nominee_auto_id'));
+                    for($j =0; $j<$nominee_count; $j++){
+                        $nominee_auto_id = $request->input('nominee_auto_id')[$i];
+                        $nominee_name = $request->input('nominee_name_value')[$i];
+                        $nominee_age = $request->input('nominee_age_value')[$i];
+                        $nominee_dob = $request->input('nominee_dob_value')[$i];
+                        $nominee_gender = $request->input('nominee_gender_value')[$i];
+                        $nominee_relation = $request->input('nominee_relation_value')[$i];
+                        $nominee_nricn = $request->input('nominee_nricn_value')[$i];
+                        $nominee_nrico = $request->input('nominee_nrico_value')[$i];
+                        $nominee_addressone = $request->input('nominee_addressone_value')[$i];
+                        $nominee_addresstwo = $request->input('nominee_addresstwo_value')[$i];
+                        $nominee_addressthree = $request->input('nominee_addressthree_value')[$i];
+                        $nominee_country = $request->input('nominee_country_value')[$i];
+                        $nominee_state = $request->input('nominee_state_value')[$i];
+                        $nominee_city = $request->input('nominee_city_value')[$i];
+                        $nominee_postalcode = $request->input('nominee_postalcode_value')[$i];
+                        $nominee_mobile = $request->input('nominee_mobile_value')[$i];
+                        $nominee_phone = $request->input('nominee_phone_value')[$i];
+                    }
         
-                 $gaurdian_id = $this->MemberGuardian->StoreMemberGaurdian($guardian);
+                
 
                     $mail_data = array(
                         'name' => $member_name,
@@ -290,10 +322,10 @@ class MembershipController extends Controller
                     $status = Mail::to($member_email)->send(new SendMemberMailable($mail_data));
                }
                if( count(Mail::failures()) > 0 ) {
-                   return redirect('membership')->with('message','Member Account created successfully, Failed to send mail');
+                    return redirect('membership')->with('message','Member Account created successfully, Failed to send mail');
                }else{
-                   return redirect('membership')->with('message','Member Account created successfully, password sent to mail');
-               }
+                    return redirect('membership')->with('message','Member Account created successfully, password sent to mail');
+                }
                 //Save
                
                 return redirect('membership')->with('message','Registration Successfull');

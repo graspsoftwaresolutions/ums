@@ -66,7 +66,7 @@
       <!-- Recent Buyers -->
       <div class="card recent-buyers-card animate fadeUp">
          <div class="card-content">
-            <h4 class="card-title mb-0">Recent Buyers <i class="material-icons float-right">more_vert</i></h4>
+            <h4 class="card-title mb-0">Recent Members <i class="material-icons float-right">more_vert</i></h4>
             <p class="medium-small pt-2">Today</p>
             <ul class="collection mb-0">
                <li class="collection-item avatar">

@@ -213,11 +213,19 @@
 															<input id="address_three" name="address_three" type="text" data-error=".errorTxt16">
 															<div class="errorTxt16"></div>
 														</div>
-														<div class="input-field col s12 m6">
-															<input type="text" class="datepicker" id="dob" name="dob" data-error=".errorTxt17">
-																<label for="dob">Date of Birth*</label>
-															<div class="errorTxt17"></div>
+														<div class="col s12 m6">
+															<div class="row">
+																<div class="input-field col s12 m8">
+																	<label for="dob">Date of Birth *</label>
+																	<input id="dob" name="dob" value="" data-reflectage="member_age" class="datepicker"  type="text"> 
+																</div>
+																<div class="input-field col s12 m4">
+																	<label for="member_age">Age</label>
+																	<input type="text" id="member_age" value="0" readonly >
+																</div>
+															</div>
 														</div>
+														
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
 															<input type="text" class="datepicker" id="doj" name="doj" data-error=".errorTxt18">
@@ -285,7 +293,7 @@
 														</div>
 														<div class="clearfix" style="clear:both"></div>
 														<div class="input-field col s12 m6">
-															<label for="employee_id">Employee ID*</label>
+															<label for="employee_id">Employee ID</label>
 															<input id="employee_id" name="employee_id" type="text">
 														</div>
 														<div class="clearfix" style="clear:both"></div>
@@ -366,18 +374,13 @@
 												</div>
 												<div class="col s12 m4">
 													<div class="row">
-														<div class=" col s12 m8">
-															<p>
-																<label for="nominee_dob">DOB *</label>
-																<input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text"> 
-																
-															</p>
+														<div class="input-field col s12 m8">
+															<label for="nominee_dob">DOB *</label>
+															<input id="nominee_dob" name="nominee_dob" data-reflectage="nominee_age" value="" class="datepicker"  type="text"> 
 														</div>
-														<div class="col s12 m4">
+														<div class="input-field col s12 m4">
 															<label for="nominee_dob">Age</label>
-															<span> 
-															<input type="text" id="nominee_age" readonly >
-															</span>
+															<input type="text" id="nominee_age" value="0" readonly >
 														</div>
 													 </div>
 												</div>
@@ -521,13 +524,31 @@
 													<label for="guardian_name">Guardian name* </label>
 													<input id="guardian_name" name="guardian_name" value=""  type="text" >
 												</div>
-												<div class="input-field col s12 m4">
-													<label for="years">Years *</label>
-													<input id="years" name="years" value=""  type="text">
+												<div class="col s12 m4">
+													<div class="row">
+														<div class=" col s12 m8">
+															<p>
+																<label for="gaurdian_dob">DOB *</label>
+																<input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="" class="datepicker"  type="text"> 
+																
+															</p>
+														</div>
+														<div class="col s12 m4">
+															<label for="gaurdian_age">Age</label>
+															<span> 
+															<input type="text" id="gaurdian_age" value="0" readonly >
+															</span>
+														</div>
+													 </div>
 												</div>
-												<div class="input-field col s12 m4">
-													<label for="sex">SEX *</label>
-													<input id="sex" name="sex" value=""  type="text">
+												
+												<div class="col s12 m4">
+													<label for="guardian_sex">SEX *</label>
+													<select name="guardian_sex" id="guardian_sex" class="error browser-default">
+														<option value="">Select</option>
+														<option value="male" >Male</option>
+														<option value="female" >Female</option>
+													</select>
 													
 												</div>
 												<div class="clearfix"> </div>
@@ -590,7 +611,7 @@
 												</div>
 												<div class="col s12 m4">
 													 <label>City Name*</label>
-													<select name="guardiancity_id" id="guardian_city_id"  class="error browser-default">
+													<select name="guardian_city_id" id="guardian_city_id"  class="error browser-default">
 														<option value="" >Select</option>
 													</select>
 													<div class="input-field">
@@ -605,7 +626,7 @@
 												</div>
 												<div class="clearfix"> </div>
 												<div class="input-field col s12 m4">
-													<label for="guardian_address_three">Address Line 2*</label>
+													<label for="guardian_address_three">Address Line 3*</label>
 													<input id="guardian_address_three" name="guardian_address_three" type="text" value="" >
 													 
 												</div>
@@ -883,12 +904,12 @@ $(document).ready(function(){
             designation_name : {
             required: true,
             },  
-			guardian_name : {
-				required: true,
-            },
-			employee_id : {
-				required: true,
-            },
+			// guardian_name : {
+			// 	required: true,
+            // },
+			// employee_id : {
+			// 	required: true,
+            // },
         },
         //For custom messages
         messages: {

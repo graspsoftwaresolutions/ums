@@ -51,7 +51,7 @@
 			<div class="col s12 m4 row">
 				<div class=" col s12 m8">
 					<label for="edit_nominee_dob">DOB *</label>
-					<input id="edit_nominee_dob" name="edit_nominee_dob" class="datepicker" value=" "  type="text">
+					<input id="edit_nominee_dob" name="edit_nominee_dob" data-reflectage="edit_nominee_age" class="datepicker" value=" "  type="text">
 				</div>
 				<div class="col s12 m4">
 					<label for="edit_nominee_age">Age</label>
@@ -186,7 +186,7 @@ $('#add_fee').click(function(){
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		}
 	});
-	if(new_fee_id!="" && fee_amount!="" ){
+	if(new_fee_id!="" && fee_amount!="" && fee_amount!="0" ){
 		
 		$("#add_fee").attr('disabled',true);
 		var row_id =1;
@@ -195,6 +195,7 @@ $('#add_fee').click(function(){
 		new_row += '<td><span id="fee_amount_label_'+fee_row_id+'">'+fee_amount+'</span><input type="text" name="fee_name_amount[]" class="hide" id="fee_name_amount_'+fee_row_id+'" value="'+fee_amount+'"></input></td>';
 		new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_fee_row " href="#modal_nominee" data-id="'+fee_row_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" >Delete</a></td>';
 		new_row += '</tr>';
+		$("#fee_amount").val('');
 		//$('#test3').find('input:text').val('');    
 		$('#fee_table').append(new_row);
 		$("#add_fee").attr('disabled',false);
@@ -305,8 +306,9 @@ $(document.body).on('click', '.delete_fee' ,function(){
 	}
 	
 });
-$('#nominee_dob').change(function(){
-   var Dob = $('#nominee_dob').val();
+$('#nominee_dob, #gaurdian_dob, #dob, #edit_nominee_dob').change(function(){
+   var Dob = $(this).val();
+   var reflect_age = $(this).data('reflectage'); 
    if(Dob!=""){
 		$.ajax({
 			type:"GET",
@@ -314,37 +316,18 @@ $('#nominee_dob').change(function(){
 			url:"{{URL::to('/get-age') }}? dob="+Dob,
 			success:function(res){
 				if(res){
-					$("#nominee_age").val(res);
+					$("#"+reflect_age).val(res);
 				}else{
-					$("#nominee_age").val(0);
+					$("#"+reflect_age).val(0);
 				}
 			}
 		});
    }else{
-	  $("#nominee_age").val(0);
+	  $("#"+reflect_age).val(0);
    }
 	
 });
-$('#edit_nominee_dob').change(function(){
-   var Dob = $('#edit_nominee_dob').val();
-   if(Dob!=""){
-		$.ajax({
-			type:"GET",
-			dataType:"json",
-			url:"{{URL::to('/get-age') }}? dob="+Dob,
-			success:function(res){
-				if(res){
-					$("#edit_nominee_age").val(res);
-				}else{
-					$("#edit_nominee_age").val(0);
-				}
-			}
-		});
-   }else{
-	  $("#edit_nominee_age").val(0);
-   }
-	
-});
+
  $('#nominee_country_id').change(function(){
 	var countryID = $(this).val();   
 	
@@ -797,5 +780,69 @@ $(document.body).on('click', '.delete_nominee' ,function(){
 		return false;
 	}
 	
+});
+
+$('#guardian_country_id').change(function(){
+	var countryID = $(this).val();   
+	
+	if(countryID){
+		$.ajax({
+		type:"GET",
+		dataType: "json",
+		url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
+		success:function(res){               
+			if(res){
+				$("#guardian_state_id").empty();
+				//console.log('hi test');
+				$("#guardian_state_id").append($('<option></option>').attr('value', '').text("Select State"));
+				$.each(res,function(key,entry){
+				  
+					$("#guardian_state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+				   // var select = $("#state");
+				   // select.material_select('destroy');
+					//select.empty();
+					
+				});
+				$('#guardian_state_id').trigger('change');
+			   // $('#state').material_select();
+			}else{
+			  $("#guardian_state_id").empty();
+			}
+			console.log(res);
+		}
+		});
+	}else{
+		$("#guardian_state_id").empty();
+		$("#guardian_city_id").empty();
+	}      
+});
+$('#guardian_state_id').change(function(){
+   var StateId = $(this).val();
+  
+   if(StateId!='' && StateId!='undefined')
+   {
+	 $.ajax({
+		type: "GET",
+		dataType: "json",
+		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+		success:function(res){
+			console.log(res);
+			if(res)
+			{
+				$('#guardian_city_id').empty();
+				$("#guardian_city_id").append($('<option></option>').attr('value', '').text("Select City"));
+				$.each(res,function(key,entry){
+					$('#guardian_city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+					
+				});
+			}else{
+				$('#guardian_city_id').empty();
+			}
+		   // console.log(res);
+		}
+	 });
+   }else{
+	   $('#guardian_city_id').empty();
+   }
 });
 </script>

@@ -41,6 +41,7 @@ class CreateMembershipTable extends Migration
             $table->string('salary');
             $table->string('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->string('employee_id')->nullable();
             $table->integer('user_id')->nullable();
             $table->integer('user_type')->nullable();
             $table->string('is_request_approved')->nullable();   
