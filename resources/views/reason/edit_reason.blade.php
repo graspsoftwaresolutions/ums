@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Edit Reason Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Edit Reason Details') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Reason</a>
+                                            <li class="breadcrumb-item active">{{__('Reason') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('reason')}}">Reason List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.reason', app()->getLocale()) }}">{{__('Reason List') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,21 +36,21 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit Reason</h4>
+                                    <h4 class="card-title">{{__('Edit Reason') }}</h4>
                                     <?php $row = $data['reason_edit'][0]; ?>
                                    <div id="view-validations">
-                                    <form class="formValidate" id="add_formValidate" method="post" action="{{url('reason_update')}}">
+                                    <form class="formValidate" id="add_formValidate" method="post" action="{{ route('master.updatereason', app()->getLocale()) }}">
                                         @csrf
                                       <div class="row">
                                       <input type="hidden" name="id" value="{{ $row->id }}">
                                         <div class="input-field col s12 m6">
-                                          <label for="reason_name">Reason Name*</label>
-                                          <input id="reason_name" name="reason_name" value="{{ $row->reason_name }}" type="text" data-error=".errorTxt1">
+                                          <label for="reason_name" class="common-label">{{__('Reason Name') }}*</label>
+                                          <input id="reason_name" class="common-input" name="reason_name" value="{{ $row->reason_name }}" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Update')}}
+                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
@@ -86,7 +86,7 @@
         //For custom messages
         messages: {
             reason_name: {
-                required: "Enter a Reason Name",
+                required: '{{__("Enter a Reason Name") }}',
             },
         },
         errorElement: 'div',

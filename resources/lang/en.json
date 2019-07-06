@@ -69,5 +69,15 @@
   "Reason List" : "Reason List_en",
   "Reason" : "Reason_en",
   "Add New Reason" : "Add New Reason_en",
-  "Reason Name" : "Reason Name_en"
+  "Reason Name" : "Reason Name_en",
+  "Add Reason Details" : "Add Reason Details_en",
+  "Reason Name" : "Reason Name_en",
+  "Add Reason" : "Add Reason_en",
+  "Enter a Reason Name" : "Enter a Reason Name_en",
+  "Edit Reason Details" : "Edit Reason Details_en",
+  "Edit Reason" : "Edit Reason_en",
+  "Reason Name Already Exists" : "Reason Name Already Exists_en",
+  "Reason Name Added Succesfully" : "Reason Name Added Succesfully_en",
+  "Reason Name Updated Succesfully" : "Reason Name Updated Succesfully_en",
+  "Reason Deleted Succesfully" : "Reason Deleted Succesfully_en"
 }
