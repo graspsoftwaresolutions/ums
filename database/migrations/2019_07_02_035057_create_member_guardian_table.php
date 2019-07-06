@@ -25,7 +25,6 @@ class CreateMemberGuardianTable extends Migration
             $table->string('address_one')->nullable();
             $table->string('address_two')->nullable();
             $table->string('address_three')->nullable();
-            $table->string('years')->nullable();
 			$table->date('dob')->nullable();
             $table->string('gender')->nullable();
             $table->string('nric_n')->nullable();

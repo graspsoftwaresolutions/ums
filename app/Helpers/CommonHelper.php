@@ -55,11 +55,23 @@ class CommonHelper
         }
         return '';
      }
+
      public static function get_fee_name($fee_id){
         $status_data = DB::table('fee')->where('fee.id','=',$fee_id)->pluck('fee_name');
         if(!empty($status_data)){
             return $status_data[0];
         }
         return '';
+     }
+
+     public static function convert_date_database($date){
+        $date_array = explode("/",$date);           							
+        $date_format = $date_array[2]."-".$date_array[1]."-".$date_array[0];
+        $converted_date = date('Y-m-d', strtotime($date_format));
+        return $converted_date;
+     }
+
+     public static function convert_date_datepicker($date){
+        return date('d/M/Y', strtotime($date));
      }
 }

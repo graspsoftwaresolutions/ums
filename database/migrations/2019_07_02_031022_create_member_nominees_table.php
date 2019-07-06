@@ -25,7 +25,6 @@ class CreateMemberNomineesTable extends Migration
             $table->string('address_one');
             $table->string('address_two')->nullable();
             $table->string('address_three')->nullable();
-            $table->string('years');
             $table->date('dob')->nullable();
             $table->string('gender');
             $table->string('nric_n');

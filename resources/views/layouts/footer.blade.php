@@ -30,3 +30,8 @@
 	
 	@section('footerSecondSection')
     @show
+<script>
+  $(".card-alert").fadeTo(2000, 500).slideUp(500, function(){
+      $(".card-alert").slideUp(500);
+  });
+</script>

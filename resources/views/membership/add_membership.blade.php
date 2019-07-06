@@ -57,22 +57,26 @@
 													<label>Member Title*</label>
 													  <select name="member_title" id="member_title" data-error=".errorTxt1" class="error browser-default">
 															<option value="" disabled selected>Choose your option</option>
-															@foreach($data['title_view'] as $key=>$value)
-														<option value="{{$value->id}}">{{$value->person_title}}</option>
-														@endforeach
+																@foreach($data['title_view'] as $key=>$value)
+																	@if (old('member_title') == $value->id)
+																	<option value="{{$value->id}}" selected>{{$value->person_title}}</option>
+																	@else
+																	<option value="{{$value->id}}">{{$value->person_title}}</option>
+																	@endif
+																@endforeach
 															</select>
 														   
 													  <div class="errorTxt1"></div>
 													</div>
 													<div class="input-field col s12 m6">
 													  <label for="member_number">Member Number *</label>
-													  <input id="member_number" name="member_number" type="text" data-error=".errorTxt2">
+													  <input id="member_number" name="member_number" value="{{ old('member_number') }}" type="text" data-error=".errorTxt2">
 													  <div class="errorTxt2"></div>
 													</div>
 													<div class="clearfix" ></div>
 													<div class="input-field col s12 m6">
 													  <label for="name">Member Name *</label>
-													  <input id="name" name="name" type="text" data-error=".errorTxt3">
+													  <input id="name" name="name" type="text" value="{{ old('name') }}" data-error=".errorTxt3">
 													  <div class="errorTxt3"></div>
 													</div>
 													
@@ -102,18 +106,18 @@
 													<div class="clearfix" style="clear:both"></div>
 													<div class="input-field col s12 m6">
 													  <label for="phone">Mobile Number *</label>
-													  <input id="phone" name="phone" type="text" data-error=".errorTxt5">
+													  <input id="phone" name="phone" value="{{ old('phone') }}" type="text" data-error=".errorTxt5">
 													  <div class="errorTxt5"></div>
 													</div>
 													<div class="input-field col s12 m6">
 													  <label for="email">Email *</label>
-													  <input id="email" name="email" type="text" data-error=".errorTxt6">
+													  <input id="email" name="email" value="{{ old('email') }}" type="email" data-error=".errorTxt6">
 													  <div class="errorTxt6"></div>
 													</div>
 													<div class="clearfix" ></div>
 													<div class="input-field col s12 m6">
 													  
-													  <input type="text" class="datepicker" id="doe" name="doe">
+													  <input type="text" class="datepicker" id="doe" value="{{ old('doe') }}" name="doe">
 														<label for="doe">Date of Emp</label>
 													  <div class="errorTxt7"></div>
 													</div>
@@ -128,7 +132,7 @@
 																</p>
 															 </div>
 															 <div class="input-field col s12 m6" id="member_old_div">
-																<input type="text" name="old_mumber_number" id="old_mumber_number" class="autocomplete">
+																<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
 																<label for="old_mumber_number">Old Number</label>
 															 <span> 
 																
@@ -150,7 +154,7 @@
 														</div>
 														<div class="col s12 m6">
 															<label>Race*</label>
-															<select name="race" id="race" class="error browser-default">
+															<select name="race" id="race" value="{{ old('race') }}" class="error browser-default">
 															@foreach($data['race_view'] as $key=>$value)
 																<option value="{{$value->id}}">{{$value->race_name}}</option>
 																@endforeach
@@ -162,7 +166,7 @@
 														<div class="clearfix" ></div>
 														<div class="col s12 m6">
 														   <label>Country Name*</label>
-															<select name="country_id" id="country" class="error browser-default">
+															<select name="country_id" id="country_id" class="error browser-default">
 															<option value="">Select Country</option>
 																@foreach($data['country_view'] as $value)
 																<option value="{{$value->id}}">{{$value->country_name}}</option>
@@ -184,7 +188,7 @@
 														<div class="clearfix" style="clear:both"></div>
 														<div class="col s12 m6">
 															 <label>City Name*</label>
-															<select name="city_id" id="city" class="error browser-default" aria-required="true" required>
+															<select name="city_id" id="city_id" class="error browser-default" aria-required="true" required>
 															<option value="">Select City</option>
 																	</select>
 															<div class="input-field">        
@@ -193,60 +197,60 @@
 														</div>
 														<div class="input-field col s12 m6">
 														<label for="postal_code">Postal Code *</label>
-															<input id="postal_code" name="postal_code" type="text" data-error=".errorTxt13">
+															<input id="postal_code" name="postal_code" value="{{ old('postal_code') }}" type="text" data-error=".errorTxt13">
 															<div class="errorTxt13"></div>
 														</div>
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
 														<label for="address_one">Address Line 1*</label>
-															<input id="address_one" name="address_one" type="text" data-error=".errorTxt14">
+															<input id="address_one" name="address_one" value="{{ old('address_one') }}" type="text" data-error=".errorTxt14">
 															<div class="errorTxt14"></div>
 														</div>
 														<div class="input-field col s12 m6">
 														<label for="address_two">Address Line 2*</label>
-															<input id="address_two" name="address_two" type="text" data-error=".errorTxt15">
+															<input id="address_two" name="address_two" value="{{ old('address_two') }}" type="text" data-error=".errorTxt15">
 															<div class="errorTxt15"></div>
 														</div>
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
 														<label for="address_three">Address Line 3*</label>
-															<input id="address_three" name="address_three" type="text" data-error=".errorTxt16">
+															<input id="address_three" name="address_three" value="{{ old('address_three') }}" type="text" data-error=".errorTxt16">
 															<div class="errorTxt16"></div>
 														</div>
 														<div class="col s12 m6">
 															<div class="row">
 																<div class="input-field col s12 m8">
 																	<label for="dob">Date of Birth *</label>
-																	<input id="dob" name="dob" value="" data-reflectage="member_age" class="datepicker"  type="text"> 
+																	<input id="dob" name="dob" value="{{ old('dob') }}" data-reflectage="member_age" value="{{ old('dob') }}" class="datepicker"  type="text"> 
 																</div>
 																<div class="input-field col s12 m4">
 																	<label for="member_age">Age</label>
-																	<input type="text" id="member_age" value="0" readonly >
+																	<input type="text" id="member_age" value="{{ old('member_age') }}" readonly >
 																</div>
 															</div>
 														</div>
 														
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
-															<input type="text" class="datepicker" id="doj" name="doj" data-error=".errorTxt18">
+															<input type="text" class="datepicker" id="doj" value="{{ old('doj') }}" name="doj" data-error=".errorTxt18">
 																<label for="doj">Date of Joining*</label>
 															<div class="errorTxt18"></div>
 														</div>
 														
 														<div class="input-field col s12 m6">
 														<label for="salary">Salary*</label>
-															<input id="salary" name="salary" type="text" data-error=".errorTxt19">
+															<input id="salary" name="salary" value="{{ old('salary') }}" type="text" data-error=".errorTxt19">
 															<div class="errorTxt19"></div>
 														</div>
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
 														<label for="salary">Old IC Number</label>
-															<input id="old_ic" name="old_ic" type="text" data-error=".errorTxt20">
+															<input id="old_ic" name="old_ic" type="text" value="{{ old('old_ic') }}" data-error=".errorTxt20">
 															<div class="errorTxt20"></div>
 														</div>
 														<div class="input-field col s12 m6">
 														<label for="new_ic">New IC Number*</label>
-															<input id="new_ic" name="new_ic" type="text" data-error=".errorTxt21">
+															<input id="new_ic" name="new_ic" type="text" value="{{ old('new_ic') }}" data-error=".errorTxt21">
 															<div class="errorTxt21"></div>
 														</div>
 														<div class="clearfix" ></div>
@@ -294,19 +298,9 @@
 														<div class="clearfix" style="clear:both"></div>
 														<div class="input-field col s12 m6">
 															<label for="employee_id">Employee ID</label>
-															<input id="employee_id" name="employee_id" type="text">
+															<input id="employee_id" name="employee_id" value="{{ old('employee_id') }}" type="text">
 														</div>
 														<div class="clearfix" style="clear:both"></div>
-														<div class=" col s12 m6 hide">
-														<label>Status*</label>
-															<select name="status_id" id="status_id" class="error browser-default">
-															@foreach($data['status_view'] as $key=>$value)
-																   <option <?php echo $value->id ==$member_status ? 'selected': ''; ?> value="{{$value->id}}">{{$value->status_name}}</option>
-															@endforeach
-															</select>
-																   
-															<div class="errorTxt24"></div>
-														</div>
 														
 												  </div>
 												
@@ -714,105 +708,16 @@ $(document).ready(function(){
 
     });
       //state
-      $('#country').change(function(){
-        var countryID = $(this).val();   
-        
-        if(countryID){
-            $.ajax({
-            type:"GET",
-            dataType: "json",
-            url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
-            success:function(res){               
-                if(res){
-                   // console.log(res);
-                    //console.log('hi test');
-                    $("#state_id").empty();
-                    $("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
-                    $.each(res,function(key,entry){
-                        
-                        $("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
-                       // var select = $("#state");
-                       // select.material_select('destroy');
-                        //select.empty();
-                        
-                    });
-                }else{
-                    $("#state_id").empty();
-                }
-                console.log(res);
-            }
-            });
-        }else{
-            $("#state").empty();
-            $("#city").empty();
-        }      
-    });
+     
     //$("#country").trigger('change');
    // $("#state_id").trigger('change');
-    $('#state_id').change(function(){
-       var StateId = $(this).val();
-      
-       if(StateId!='' && StateId!='undefined')
-       {
-         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
-            success:function(res){
-                console.log(res);
-                if(res)
-                {
-                    $('#city').empty();
-                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
-                    $.each(res,function(key,entry){
-                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
-                        
-                    });
-                }else{
-                    $('#city').empty();
-                }
-               // console.log(res);
-            }
-         });
-       }else{
-           $('#city').empty();
-       }
-   });
-   $('#company').change(function(){
-       var CompanyID = $(this).val();
-      
-       if(CompanyID!='' && CompanyID!='undefined')
-       {
-         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-branch-list') }}?company_id="+CompanyID,
-            success:function(res){
-                //console.log(res);
-                if(res)
-                {
-                    $('#branch').empty();
-                    
-                    $.each(res,function(key,entry){
-                        $('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
-                    });
-                }else{
-                    $('#branch').empty();
-                }
-                console.log(res);
-            }
-         });
-       }else{
-           $('#city').empty();
-       }
-   });
+    
+   
     });
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
-    });
+   
 </script>
 <script>
-	$("#membership_sidebar_a_id").addClass('active');
+	
     $("#member_formValidate").validate({
         rules: {
             member_title:{

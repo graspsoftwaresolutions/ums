@@ -173,6 +173,99 @@
 </div>
 <script>
 $('.modal').modal();
+$("#membership_sidebar_a_id").addClass('active');
+$('#country_id').change(function(){
+	var countryID = $(this).val();   
+	
+	if(countryID){
+		$.ajax({
+		type:"GET",
+		dataType: "json",
+		url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
+		success:function(res){               
+			if(res){
+				$("#state_id").empty();
+				//console.log('hi test');
+				$.each(res,function(key,entry){
+					$("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
+					$("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+				   // var select = $("#state");
+				   // select.material_select('destroy');
+					//select.empty();
+					
+				});
+			   // $('#state').material_select();
+			}else{
+			  $("#state_id").empty();
+			}
+			console.log(res);
+		}
+		});
+	}else{
+		$("#state_id").empty();
+		$("#city_id").empty();
+	}      
+});
+$('#state_id').change(function(){
+   var StateId = $(this).val();
+  
+   if(StateId!='' && StateId!='undefined')
+   {
+	 $.ajax({
+		type: "GET",
+		dataType: "json",
+		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+		success:function(res){
+			console.log(res);
+			if(res)
+			{
+				$('#city_id').empty();
+				$("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
+				$.each(res,function(key,entry){
+					$('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+					
+				});
+			}else{
+				$('#city_id').empty();
+			}
+		   // console.log(res);
+		}
+	 });
+   }else{
+	   $('#city_id').empty();
+   }
+});
+$('#company').change(function(){
+   var CompanyID = $(this).val();
+  
+   if(CompanyID!='' && CompanyID!='undefined')
+   {
+	 $.ajax({
+		type: "GET",
+		dataType: "json",
+		url : "{{ URL::to('/get-branch-list') }}?company_id="+CompanyID,
+		success:function(res){
+			//console.log(res);
+			if(res)
+			{
+				$('#branch').empty();
+				
+				$.each(res,function(key,entry){
+					$('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+				});
+			}else{
+				$('#branch').empty();
+			}
+			console.log(res);
+		}
+	 });
+   }else{
+	   $('#branch').empty();
+   }
+});
+$('.datepicker').datepicker({
+	format: 'yyyy-mm-dd'
+});
 $('#add_fee').click(function(){
 	var fee_row_id = parseInt($("#fee_row_id").val())+1;
 	var member_auto_id =   $("#auto_id").val();
@@ -393,6 +486,7 @@ $('#nominee_state_id').change(function(){
 });
  $('#add_nominee').click(function(){
 	var nominee_row_id = parseInt($("#nominee_row_id").val())+1;
+	alert(nominee_row_id);
 	var auto_id =   $("#auto_id").val();
 	var nominee_name =   $("#nominee_name").val();
 	var nominee_dob =   $("#nominee_dob").val();
@@ -513,7 +607,10 @@ $('#edit_nominee_state_id').change(function(e, data){
 					$('#edit_nominee_city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
 					
 				});
-				$('#edit_nominee_city_id').val(data.city_id);
+				if(typeof data !='undefined'){
+					$('#edit_nominee_city_id').val(data.city_id);
+				}
+				
 			}else{
 				$('#edit_nominee_city_id').empty();
 			}
@@ -547,8 +644,10 @@ $('#edit_nominee_state_id').change(function(e, data){
 					//select.empty();
 					
 				});
-				$('#edit_nominee_state_id').val(data.state_id);
-				$('#edit_nominee_state_id').trigger('change', [{state_id: data.state_id, city_id: data.city_id}]);
+				if(typeof data !='undefined'){
+					$('#edit_nominee_state_id').val(data.state_id);
+					$('#edit_nominee_state_id').trigger('change', [{state_id: data.state_id, city_id: data.city_id}]);
+				}
 			   // $('#state').material_select();
 			}else{
 			  $("#edit_nominee_state_id").empty();

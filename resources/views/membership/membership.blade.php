@@ -72,10 +72,8 @@
 													@foreach($data['member_view'] as $key=>$value)
 													<tr>
 													<?php
-													$parameter =[
-														'id' =>$value->id,
-													];
-													 $parameter = Crypt::encrypt($parameter);  
+													
+													 $parameter = Crypt::encrypt($value->id);  
 													 ?>
 													
 														<td>{{$value->name}}</td>

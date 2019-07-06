@@ -162,7 +162,7 @@
                                             </div>
                                             <div class="col s12 m6">
                                             <label>Country Name*</label>
-                                                <select name="country_id" id="country" data-error=".errorTxt4"  class="error browser-default">
+                                                <select name="country_id" id="country_id" data-error=".errorTxt4"  class="error browser-default">
                                                     @foreach($data['country_view'] as $value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $values->country_id) { echo "selected";} ?>>{{$value->country_name}}</option>
                                                     @endforeach
@@ -174,7 +174,7 @@
                                             </div>
                                             <div class="col s12 m6">
                                                 <label>State Name*</label>
-                                                <select name="state_id" id="state" data-error=".errorTxt5"  class="error browser-default">
+                                                <select name="state_id" id="state_id" data-error=".errorTxt5"  class="error browser-default">
                                                     @foreach($data['state_view'] as $key=>$value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
                                                     @endforeach
@@ -187,7 +187,7 @@
                                             <div class="clearfix" style="clear:both"></div>
                                             <div class="col s12 m6">
                                                  <label>City Name*</label>
-                                                <select name="city_id" id="city" data-error=".errorTxt6" class="error browser-default">
+                                                <select name="city_id" id="city_id" data-error=".errorTxt6" class="error browser-default">
                                                     @foreach($data['city_view'] as $key=>$value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
                                                     @endforeach
@@ -217,11 +217,19 @@
                                                 <input id="address_three" name="address_three" type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
                                                 <div class="errorTxt10"></div>
                                             </div>
-                                            <div class="input-field col s12 m6">
-                                                <input type="text" class="datepicker" id="dob" value="{{ date('d/M/Y',strtotime($values->dob)) }}" name="dob">
-                                                    <label for="dob">Date of Birth</label>
-                                                <div class="errorTxt"></div>
+                                            <div class="col s12 m6">
+                                                <div class="row">
+                                                    <div class="input-field col s12 m8">
+                                                        <label for="dob">Date of Birth *</label>
+                                                        <input id="dob" name="dob" value="{{ date('d/M/Y',strtotime($values->dob)) }}" data-reflectage="member_age" class="datepicker"  type="text"> 
+                                                    </div>
+                                                    <div class="input-field col s12 m4">
+                                                        <label for="member_age">Age</label>
+                                                        <input type="text" id="member_age" value="{{ CommonHelper::calculate_age($values->dob) }}" readonly >
+                                                    </div>
+                                                </div>
                                             </div>
+                                            
                                             <div class="input-field col s12 m6">
                                                 <input type="text" class="datepicker" id="doj" value="{{ date('d/M/Y',strtotime($values->doj)) }}" name="doj">
                                                     <label for="doj">Date of Joining</label>
@@ -283,6 +291,10 @@
                                                      <div class="errorTxt15"></div>
                                                 </div>
                                             </div>
+                                            <div class="input-field col s12 m6">
+                                                <label for="employee_id">Employee ID</label>
+                                                <input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
+                                            </div>
                                             <div class="col s12 m6 ">
                                                 <label>Status*</label>
                                                 <select name="status_id" id="status_id" {{ $branch_disabled }} data-error=".errorTxt16" class="error browser-default">
@@ -309,7 +321,7 @@
                                                 <select name="new_fee_id" id="new_fee_id" class="error browser-default">
                                                     <option value="">Select</option>
                                                     @foreach($data['fee_list'] as $key=>$value)
-                                                        <option data-feename="{{$value->fee_name}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+                                                        <option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">
@@ -319,7 +331,7 @@
                                             
                                             <div class="input-field col s12 m6">
                                                <label for="fee_amount">Fee amount *</label>
-                                               <input id="fee_amount" name="fee_amount" value=""  type="text">
+                                               <input id="fee_amount" name="fee_amount" value="0"  type="text">
                                                
                                                
                                             </div>
@@ -373,7 +385,7 @@
                                     </div>
                                     <div id="test2" class="col s12">
                                     </br>
-                                        <div class="row">
+                                        <div id="nominee_add_section" class="row">
                                             <div class="input-field col s12 m4">
                                                 <label for="nominee_name">Nominee name* </label>
                                                 <input id="nominee_name" name="nominee_name" value=""  type="text">
@@ -383,14 +395,14 @@
                                                     <div class=" col s12 m8">
                                                         <p>
                                                             <label for="nominee_dob">DOB *</label>
-                                                            <input id="nominee_dob" name="nominee_dob" value="" class="datepicker"  type="text"> 
+                                                            <input id="nominee_dob" data-reflectage="nominee_age" name="nominee_dob" value="" class="datepicker"  type="text"> 
                                                             
                                                         </p>
                                                     </div>
                                                     <div class="col s12 m4">
                                                         <label for="nominee_dob">Age</label>
                                                         <span> 
-                                                        <input type="text" id="nominee_age">
+                                                        <input type="text" id="nominee_age" readonly>
                                                         </span>
                                                     </div>
                                                  </div>
@@ -411,7 +423,7 @@
                                                  <label>Relationship*</label>
                                                     <select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
                                                         @foreach($data['relationship_view'] as $key=>$value)
-                                                            <option value="{{$value->id}}" >{{$value->relation_name}}</option>
+                                                            <option value="{{$value->id}}" data-relationshipname="{{$value->relation_name}}" >{{$value->relation_name}}</option>
                                                         @endforeach
                                                    </select>
                                                        
@@ -523,20 +535,63 @@
                                                         </tr>
                                                     </thead>
                                                 <tbody>
+                                                    @php
+                                                    {{ $sl = 0; }}
+                                                    @endphp
                                                     @foreach($data['nominee_view'] as $key=>$value)
-                                                    <tr id="nominee_{{$value->id}}">
-                                                        <td id="nominee_name_{{$value->id}}">{{$value->nominee_name}}</td>
-                                                        <td id="nominee_age_{{$value->id}}">{{ CommonHelper::calculate_age($value->dob) }}</td>
-                                                        <td id="nominee_gender_{{$value->id}}">{{$value->gender}}</td>
-                                                        <td id="nominee_relation_{{$value->id}}">{{ CommonHelper::get_relationship_name($value->relation_id) }}</td>
-                                                        <td id="nominee_nricn_{{$value->id}}">{{$value->nric_n}}</td>
-                                                        <td id="nominee_nrico_{{$value->id}}">{{$value->nric_o}}</td>
+                                                    <tr>
+
                                                         <td>
-                                                        <a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$value->id}}">Edit</a>
-														<a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
+                                                        <span id="nominee_name_label_{{ $sl }}">{{$value->nominee_name}}</span><input type="text" name="nominee_auto_id[]" class="hide" id="nominee_auto_id_{{ $sl }}" value="{{$value->id}}" ><input class="hide" type="text" name="nominee_name_value[]" id="nominee_name_value_{{ $sl }}" value="{{$value->nominee_name}}">
+                                                        </td>
+
+                                                        <td>
+                                                        <span id="nominee_age_label_{{ $sl }}">{{ CommonHelper::calculate_age($value->dob) }}</span><input type="text" class="hide" name="nominee_age_value[]" id="nominee_age_value_{{ $sl }}" value="{{ CommonHelper::calculate_age($value->dob) }}"><input type="text" class="hide" name="nominee_dob_value[]" id="nominee_dob_value_{{ $sl }}" value="{{ CommonHelper::convert_date_datepicker($value->dob) }}">
+                                                        </td>
+
+                                                        <td><span id="nominee_gender_label_{{ $sl }}">{{$value->gender}}</span><input type="text" class="hide" name="nominee_gender_value[]" id="nominee_gender_value_{{ $sl }}" value="{{ $value->gender }}"></td>
+
+                                                        <td>
+                                                        <span id="nominee_relation_label_{{ $sl }}">{{ CommonHelper::get_relationship_name($value->relation_id) }}</span>
+                                                        <input type="text" class="hide" name="nominee_relation_value[]" id="nominee_relation_value_{{ $sl }}" value="{{$value->relation_id}}">
+                                                        </td>
+
+                                                        <td><span id="nominee_nricn_label_{{ $sl }}">{{$value->nric_n}}</span><input class="hide" type="text" name="nominee_nricn_value[]" id="nominee_nricn_value_{{ $sl }}" value="{{$value->nric_n}}"></td>
+
+                                                        <td>
+                                                        <span id="nominee_nrico_label_{{ $sl }}">{{$value->nric_o}}</span><input type="text" class="hide" name="nominee_nrico_value[]" id="nominee_nrico_value_{{ $sl }}" value="{{$value->nric_o}}">
+                                                        </td>
+
+                                                        <td class="hide">
+                                                        <span id="nominee_addressone_label_{{ $sl }}">{{$value->address_one}}</span><input type="text" class="hide" name="nominee_addressone_value[]" id="nominee_addressone_value_{{ $sl }}" value="{{$value->address_one}}">
+                                                        </td>
+
+                                                        <td class="hide"><span id="nominee_addresstwo_label_{{ $sl }}">{{$value->address_two}}</span><input type="text" class="hide" name="nominee_addresstwo_value[]" id="nominee_addresstwo_value_{{ $sl }}" value="{{$value->address_two}}"></td>
+
+                                                        <td class="hide"><span id="nominee_addressthree_label_{{ $sl }}">{{$value->address_three}}</span><input type="text" class="hide" name="nominee_addressthree_value[]" id="nominee_addressthree_value_{{ $sl }}" value="{{$value->address_three}}"></td>
+
+                                                        <td class="hide"><span id="nominee_country_label_{{ $sl }}">{{$value->country_id}}</span><input type="text" name="nominee_country_value[]" id="nominee_country_value_{{ $sl }}" value="{{$value->country_id}}"></td>
+
+                                                        <td class="hide"><span id="nominee_state_label_{{ $sl }}">{{$value->state_id}}</span><input type="text" name="nominee_state_value[]" id="nominee_state_value_{{ $sl }}" value="{{$value->state_id}}"></td>
+
+                                                        <td class="hide"><span id="nominee_city_label_{{ $sl }}">{{$value->city_id}}</span><input type="text" name="nominee_city_value[]" id="nominee_city_value_{{ $sl }}" value="{{$value->city_id}}"></td>
+
+                                                        <td class="hide"><span id="nominee_postalcode_label_{{ $sl }}">{{$value->postal_code}}</span><input type="text" name="nominee_postalcode_value[]" id="nominee_postalcode_value_{{ $sl }}" value="{{$value->postal_code}}"></td>
+
+                                                        <td class="hide"><span id="nominee_mobile_label_{{ $sl }}">{{$value->mobile}}</span><input type="text" name="nominee_mobile_value[]" id="nominee_mobile_value_{{ $sl }}" value="{{$value->mobile}}"></td>
+
+                                                        <td class="hide"><span id="nominee_phone_label_{{ $sl }}">{{$value->phone}}</span><input type="text" name="nominee_phone_value[]" id="nominee_phone_value_{{ $sl }}" value="{{$value->phone}}"></td>
+
+                                                        <td>
+                                                        <a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$sl}}">Edit</a>
+														<a class="btn-small waves-effect waves-light amber darken-4 delete_nominee_db" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a>
                                                         </td>
                                                     </tr>
+                                                    @php
+                                                    {{ $sl++; }}
+                                                    @endphp
                                                     @endforeach
+                                                    <input id="nominee_row_id" class="hide" name="nominee_row_id" value="{{ $sl }}"  type="text">
                                                 </tbody>
                                                 </table>
                                             </div>
@@ -551,15 +606,33 @@
                                                 <label for="guardian_name">Guardian name* </label>
                                                 <input id="guardian_name" name="guardian_name" value="<?php echo $gardian_row->guardian_name; ?>"  type="text" >
                                             </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="years">Years *</label>
-                                                <input id="years" name="years" value="<?php echo $gardian_row->years; ?>"  type="text">
+                                            <div class="col s12 m4">
+                                                <div class="row">
+                                                    <div class=" col s12 m8">
+                                                        <p>
+                                                            <label for="gaurdian_dob">DOB *</label>
+                                                            <input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="<?php echo $gardian_row->dob; ?>" class="datepicker"  type="text"> 
+                                                            
+                                                        </p>
+                                                    </div>
+                                                    <div class="col s12 m4">
+                                                        <label for="gaurdian_age">Age</label>
+                                                        <span> 
+                                                        <input type="text" id="gaurdian_age" value="0" readonly >
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="sex">SEX *</label>
-                                                <input id="sex" name="sex" value="<?php echo $gardian_row->gender; ?>"  type="text">
+                                            <div class="col s12 m4">
+                                                <label for="guardian_sex">SEX *</label>
+                                                <select name="guardian_sex" id="guardian_sex" class="error browser-default">
+                                                    <option value="">Select</option>
+                                                    <option <?php echo $gardian_row->gender=='male' ? 'selected': ''; ?> value="male" >Male</option>
+                                                    <option <?php echo $gardian_row->gender=='female' ? 'selected': ''; ?> value="female" >Female</option>
+                                                </select>
                                                 
                                             </div>
+                                            
                                             <div class="clearfix"> </div>
                                             <div class="col s12 m4">
                                                  <label>Relationship*</label>
@@ -594,7 +667,7 @@
                                                  <label>Country Name*</label>
                                                 <select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
                                                     @foreach($data['country_view'] as $value)
-                                                        <option value="{{$value->id}}" >{{$value->country_name}}</option>
+                                                        <option <?php echo $gardian_row->country_id == $value->id ? 'selected' : ''; ?> value="{{$value->id}}" >{{$value->country_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">
@@ -606,7 +679,7 @@
                                                  <label>State Name*</label>
                                                 <select name="guardian_state_id" id="guardian_state_id"  class="error browser-default">
                                                     @foreach($data['state_view'] as $key=>$value)
-                                                        <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
+                                                        <option value="{{$value->id}}" <?php if($value->id == $gardian_row->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">
@@ -624,7 +697,7 @@
                                                  <label>City Name*</label>
                                                 <select name="guardiancity_id" id="guardian_city_id"  class="error browser-default">
                                                     @foreach($data['city_view'] as $key=>$value)
-                                                    <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
+                                                    <option value="{{$value->id}}" <?php if($value->id == $gardian_row->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">
@@ -694,7 +767,6 @@
 
 $(document).ready(function(){
       $('tabs').tabs();
-      $("#membership_sidebar_a_id").addClass('active');
       $("#member_formValidate").validate({
         rules: {
             member_title:{
@@ -865,306 +937,193 @@ $(document).ready(function(){
         $('#member_old_div').toggle();
        
         var  oldMemberID = $('#old_mumber_number').val();
-        
-        // if(oldMemberID!= '' && oldMemberID != 'undefined'){
-        //     $.ajax({
-        //         type:"GET",
-        //         dataType: "json",
-        //         url:" {{ URL::to('/get-oldmember-list') }}",
-        //         success:function(res){
-        //             if(res){
-        //             $("#old_mumber_number").parent().find(".select-dropdown").remove();
-        //             $("#old_mumber_number").parent().find("svg.caret").remove();
-        //             $("#old_mumber_number").empty();
-        //             $('#old_mumber_number').append($('<option></option>').attr('value','0').text('Select'));
-        //             //console.log('hi test');
-        //             $.each(res,function(key,entry){
-        //                 $("#old_mumber_number").append($('<option></option>').attr('value', entry.member_number).text(entry.member_number));
-        //             });
-        //             $('#old_mumber_number').material_select();
-        //         }else{
-        //         $("#old_mumber_number").empty();
-        //         }
-        //         console.log(res);
-        //         }
-        //     });
-        // }
 
     });
       //state
-      $('#country').change(function(){
-        var countryID = $(this).val();   
-        
-        if(countryID){
-            $.ajax({
-            type:"GET",
-            dataType: "json",
-            url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
-            success:function(res){               
-                if(res){
-                    $("#state").empty();
-                    //console.log('hi test');
-                    $.each(res,function(key,entry){
-                        $("#state").append($('<option></option>').attr('value', '').text("Select State"));
-                        $("#state").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
-                       // var select = $("#state");
-                       // select.material_select('destroy');
-                        //select.empty();
-                        
-                    });
-                   // $('#state').material_select();
-                }else{
-                  $("#state").empty();
-                }
-                console.log(res);
-            }
-            });
-        }else{
-            $("#state").empty();
-            $("#city").empty();
-        }      
-    });
+      
    // $("#country").trigger('change');
     //$("#company").trigger('change');
-    $('#state').change(function(){
-       var StateId = $(this).val();
-      
-       if(StateId!='' && StateId!='undefined')
-       {
-         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
-            success:function(res){
-                console.log(res);
-                if(res)
-                {
-                    $('#city').empty();
-                    $("#city").append($('<option></option>').attr('value', '').text("Select City"));
-                    $.each(res,function(key,entry){
-                        $('#city').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
-                        
-                    });
-                }else{
-                    $('#city').empty();
-                }
-               // console.log(res);
-            }
-         });
-       }else{
-           $('#city').empty();
-       }
-   });
-   $('#company').change(function(){
-       var CompanyID = $(this).val();
-      
-       if(CompanyID!='' && CompanyID!='undefined')
-       {
-         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url : "{{ URL::to('/get-branch-list') }}?company_id="+CompanyID,
-            success:function(res){
-                //console.log(res);
-                if(res)
-                {
-                    $('#branch').empty();
-                    
-                    $.each(res,function(key,entry){
-                        $('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
-                    });
-                }else{
-                    $('#branch').empty();
-                }
-                console.log(res);
-            }
-         });
-       }else{
-           $('#city').empty();
-       }
-   });
+    
     });
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
-    });
-    $('#add_nominee').click(function(){
-        var auto_id =   $("#auto_id").val();
-        var nominee_name =   $("#nominee_name").val();
-        var nominee_dob =   $("#nominee_dob").val();
-        var nominee_sex =   $("#sex").val();
-        var nominee_relationship =   $("#relationship").val();
-        var nric_n =   $("#nric_n").val();
-        var nric_o =   $("#nric_o").val();
-        var nominee_address_one =   $("#nominee_address_one").val();
-        var nominee_country_id =   $("#nominee_country_id").val();
-        var nominee_state_id =   $("#nominee_state_id").val();
-        var nominee_address_two =   $("#nominee_address_two").val();
-        var nominee_city_id =   $("#nominee_city_id").val();
-        var nominee_postal_code =   $("#nominee_postal_code").val();
-        var nominee_address_three =   $("#nominee_address_three").val();
-        var nominee_mobile =   $("#nominee_mobile").val();
-        var nominee_phone =   $("#nominee_phone").val();
-        $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-        if(nominee_name!="" && nominee_dob!="" && nominee_sex!="" && nominee_relationship!="" && 
-        nric_n!="" && nric_o!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
-        nominee_address_two!="" && nominee_city_id!="" && nominee_postal_code != "" && nominee_address_three!="" && nominee_mobile!=""){
-           $("#add_nominee").attr('disabled',true);
-            $.ajax({
-                method: 'POST', // Type of response and matches what we said in the route
-                url: "{{ URL::to('/add-nominee') }}", // This is the url we gave in the route
-                data: { 
-                    'auto_id' : auto_id,
-                    'nominee_name' : nominee_name,
-                    'nominee_dob' : nominee_dob,
-                    'nominee_sex' : nominee_sex,
-                    'nominee_relationship' : nominee_relationship,
-                    'nric_n' : nric_n,
-                    'nric_o' : nric_o,
-                    'nominee_address_one' : nominee_address_one,
-                    'nominee_country_id' : nominee_country_id,
-                    'nominee_state_id' : nominee_state_id,
-                    'nominee_address_two' : nominee_address_two,
-                    'nominee_city_id' : nominee_city_id,
-                    'nominee_postal_code' : nominee_postal_code,
-                    'nominee_address_three' : nominee_address_three,
-                    'nominee_mobile' : nominee_mobile,
-                    'nominee_phone' : nominee_phone,
-                }, // a JSON object to send back
-                dataType: "json",
-                success: function(response){ // What to do if we succeed
-                    $("#add_nominee").attr('disabled',false);
-                    var alert_confirm = "confirm('Are you sure you want to delete?')";
-                    console.log(response.data); 
-                    if(response.status ==1){
-                        var new_row = '<tr>';
-                        new_row += '<td id="nominee_name_'+ response.data.nominee_id +'">'+nominee_name+'</td>';
-                        new_row += '<td id="nominee_age_'+ response.data.nominee_id +'">'+response.data.age+'</td>';
-                        new_row += '<td id="nominee_gender_'+ response.data.nominee_id +'">'+nominee_sex+'</td>';
-                        new_row += '<td id="nominee_relation_'+ response.data.nominee_id +'">'+response.data.relationship+'</td>';
-                        new_row += '<td id="nominee_nricn_'+ response.data.nominee_id +'">'+nric_n+'</td>';
-                        new_row += '<td id="nominee_nrico_'+ response.data.nominee_id +'">'+nric_o+'</td>';
-                        new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+response.data.nominee_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="'+response.data.nominee_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
-                        new_row += '</tr>';
-                        $('#test2').find('input:text').val('');    
-                        $('#nominee_table').append(new_row);
-                        M.toast({
-                            html: response.message
-                        });
-                    }
-                    console.log(response.data); 
-                },
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                }
-            });
-        }
-        else{
-            $("#add_nominee").attr('disabled',false);
-            M.toast({
-                html: "Please fill requierd fields"
-            });
-        }    
-    });
+    
+    // $('#add_nominee').click(function(){
+    //     var auto_id =   $("#auto_id").val();
+    //     var nominee_name =   $("#nominee_name").val();
+    //     var nominee_dob =   $("#nominee_dob").val();
+    //     var nominee_sex =   $("#sex").val();
+    //     var nominee_relationship =   $("#relationship").val();
+    //     var nric_n =   $("#nric_n").val();
+    //     var nric_o =   $("#nric_o").val();
+    //     var nominee_address_one =   $("#nominee_address_one").val();
+    //     var nominee_country_id =   $("#nominee_country_id").val();
+    //     var nominee_state_id =   $("#nominee_state_id").val();
+    //     var nominee_address_two =   $("#nominee_address_two").val();
+    //     var nominee_city_id =   $("#nominee_city_id").val();
+    //     var nominee_postal_code =   $("#nominee_postal_code").val();
+    //     var nominee_address_three =   $("#nominee_address_three").val();
+    //     var nominee_mobile =   $("#nominee_mobile").val();
+    //     var nominee_phone =   $("#nominee_phone").val();
+    //     $.ajaxSetup({
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             }
+    //         });
+    //     if(nominee_name!="" && nominee_dob!="" && nominee_sex!="" && nominee_relationship!="" && 
+    //     nric_n!="" && nric_o!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
+    //     nominee_address_two!="" && nominee_city_id!="" && nominee_postal_code != "" && nominee_address_three!="" && nominee_mobile!=""){
+    //        $("#add_nominee").attr('disabled',true);
+    //         $.ajax({
+    //             method: 'POST', // Type of response and matches what we said in the route
+    //             url: "{{ URL::to('/add-nominee') }}", // This is the url we gave in the route
+    //             data: { 
+    //                 'auto_id' : auto_id,
+    //                 'nominee_name' : nominee_name,
+    //                 'nominee_dob' : nominee_dob,
+    //                 'nominee_sex' : nominee_sex,
+    //                 'nominee_relationship' : nominee_relationship,
+    //                 'nric_n' : nric_n,
+    //                 'nric_o' : nric_o,
+    //                 'nominee_address_one' : nominee_address_one,
+    //                 'nominee_country_id' : nominee_country_id,
+    //                 'nominee_state_id' : nominee_state_id,
+    //                 'nominee_address_two' : nominee_address_two,
+    //                 'nominee_city_id' : nominee_city_id,
+    //                 'nominee_postal_code' : nominee_postal_code,
+    //                 'nominee_address_three' : nominee_address_three,
+    //                 'nominee_mobile' : nominee_mobile,
+    //                 'nominee_phone' : nominee_phone,
+    //             }, // a JSON object to send back
+    //             dataType: "json",
+    //             success: function(response){ // What to do if we succeed
+    //                 $("#add_nominee").attr('disabled',false);
+    //                 var alert_confirm = "confirm('Are you sure you want to delete?')";
+    //                 console.log(response.data); 
+    //                 if(response.status ==1){
+    //                     var new_row = '<tr>';
+    //                     new_row += '<td id="nominee_name_'+ response.data.nominee_id +'">'+nominee_name+'</td>';
+    //                     new_row += '<td id="nominee_age_'+ response.data.nominee_id +'">'+response.data.age+'</td>';
+    //                     new_row += '<td id="nominee_gender_'+ response.data.nominee_id +'">'+nominee_sex+'</td>';
+    //                     new_row += '<td id="nominee_relation_'+ response.data.nominee_id +'">'+response.data.relationship+'</td>';
+    //                     new_row += '<td id="nominee_nricn_'+ response.data.nominee_id +'">'+nric_n+'</td>';
+    //                     new_row += '<td id="nominee_nrico_'+ response.data.nominee_id +'">'+nric_o+'</td>';
+    //                     new_row += '<td><a class="btn-small waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+response.data.nominee_id+'">Edit</a> <a class="btn-small waves-effect waves-light amber darken-4 delete_nominee" data-id="'+response.data.nominee_id+'" onclick="if ('+alert_confirm+') return true; else return false;">Delete</a></td>';
+    //                     new_row += '</tr>';
+    //                     $('#test2').find('input:text').val('');    
+    //                     $('#nominee_table').append(new_row);
+    //                     M.toast({
+    //                         html: response.message
+    //                     });
+    //                 }
+    //                 console.log(response.data); 
+    //             },
+    //             error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+    //                 console.log(JSON.stringify(jqXHR));
+    //                 console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+    //             }
+    //         });
+    //     }
+    //     else{
+    //         $("#add_nominee").attr('disabled',false);
+    //         M.toast({
+    //             html: "Please fill requierd fields"
+    //         });
+    //     }    
+    // });
    
    $('.modal').modal();
    
-    $("#nominee_formValidate").validate({
-        rules: {
-            edit_nominee_name: {
-                required: true,
-            },
-            edit_nominee_dob: {
-                required: true,
-            },
-            edit_sex: {
-                required: true,
-            },
-            edit_relationship: {
-                required: true,
-            },
-            edit_nric_n: {
-                required: true,
-            },
-            edit_nric_o: {
-                required: true,
-            },
-            edit_nominee_address_one: {
-                required: true,
-            },
-            edit_nominee_country_id: {
-                required: true,
-            },
-            edit_nominee_state_id: {
-                required: true,
-            },
-            edit_nominee_address_two: {
-                required: true,
-            },
-            edit_nominee_city_id: {
-                required: true,
-            },
-            edit_nominee_postal_code: {
-                required: true,
-            },
-            edit_nominee_address_three: {
-                required: true,
-            },
-            edit_nominee_mobile: {
-                required: true,
-            },
-        },
-        //For custom messages
-        messages: {
-            edit_nominee_name: {
-                required: "Enter a Nominee name",
-            },
-        },
-        errorElement: 'div',
-        errorPlacement: function (error, element) {
-            var placement = $(element).data('error');
-            if (placement) {
-                $(placement).append(error)
-            } else {
-                error.insertAfter(element);
-            }
-        },
-        submitHandler: function(form) {
-            var formData = $("#nominee_formValidate").serialize();
-            $.ajax({
-                method: 'POST', // Type of response and matches what we said in the route
-                url: "{{ URL::to('/update-nominee') }}", // This is the url we gave in the route
-                data: formData, // a JSON object to send back
-                dataType: "json",
-                success: function(response){ // What to do if we succeed
-                    $("#update_nominee").attr('disabled',false);
+    // $("#nominee_formValidate").validate({
+    //     rules: {
+    //         edit_nominee_name: {
+    //             required: true,
+    //         },
+    //         edit_nominee_dob: {
+    //             required: true,
+    //         },
+    //         edit_sex: {
+    //             required: true,
+    //         },
+    //         edit_relationship: {
+    //             required: true,
+    //         },
+    //         edit_nric_n: {
+    //             required: true,
+    //         },
+    //         edit_nric_o: {
+    //             required: true,
+    //         },
+    //         edit_nominee_address_one: {
+    //             required: true,
+    //         },
+    //         edit_nominee_country_id: {
+    //             required: true,
+    //         },
+    //         edit_nominee_state_id: {
+    //             required: true,
+    //         },
+    //         edit_nominee_address_two: {
+    //             required: true,
+    //         },
+    //         edit_nominee_city_id: {
+    //             required: true,
+    //         },
+    //         edit_nominee_postal_code: {
+    //             required: true,
+    //         },
+    //         edit_nominee_address_three: {
+    //             required: true,
+    //         },
+    //         edit_nominee_mobile: {
+    //             required: true,
+    //         },
+    //     },
+    //     //For custom messages
+    //     messages: {
+    //         edit_nominee_name: {
+    //             required: "Enter a Nominee name",
+    //         },
+    //     },
+    //     errorElement: 'div',
+    //     errorPlacement: function (error, element) {
+    //         var placement = $(element).data('error');
+    //         if (placement) {
+    //             $(placement).append(error)
+    //         } else {
+    //             error.insertAfter(element);
+    //         }
+    //     },
+    //     submitHandler: function(form) {
+    //         var formData = $("#nominee_formValidate").serialize();
+    //         $.ajax({
+    //             method: 'POST', // Type of response and matches what we said in the route
+    //             url: "{{ URL::to('/update-nominee') }}", // This is the url we gave in the route
+    //             data: formData, // a JSON object to send back
+    //             dataType: "json",
+    //             success: function(response){ // What to do if we succeed
+    //                 $("#update_nominee").attr('disabled',false);
                     
-                    console.log(response.data); 
-                    if(response.status ==1){
-                        var row_id = response.data.nominee_id;
-                        $("#nominee_name_"+row_id).html(response.data.name);
-                        $("#nominee_age_"+row_id).html(response.data.age);
-                        $("#nominee_gender_"+row_id).html(response.data.gender);
-                        $("#nominee_relation_"+row_id).html(response.data.relationship);
-                        $("#nominee_nricn_"+row_id).html(response.data.nric_n);
-                        $("#nominee_nrico_"+row_id).html(response.data.nric_o);
-                        $('#modal_nominee').modal('close'); 
-                    }
+    //                 console.log(response.data); 
+    //                 if(response.status ==1){
+    //                     var row_id = response.data.nominee_id;
+    //                     $("#nominee_name_"+row_id).html(response.data.name);
+    //                     $("#nominee_age_"+row_id).html(response.data.age);
+    //                     $("#nominee_gender_"+row_id).html(response.data.gender);
+    //                     $("#nominee_relation_"+row_id).html(response.data.relationship);
+    //                     $("#nominee_nricn_"+row_id).html(response.data.nric_n);
+    //                     $("#nominee_nrico_"+row_id).html(response.data.nric_o);
+    //                     $('#modal_nominee').modal('close'); 
+    //                 }
                    
-                    console.log(response.data); 
-                },
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                }
-            });
-        }
-    });
-    $(document.body).on('click', '.delete_nominee' ,function(){
+    //                 console.log(response.data); 
+    //             },
+    //             error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+    //                 console.log(JSON.stringify(jqXHR));
+    //                 console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+    //             }
+    //         });
+    //     }
+    // });
+    $(document.body).on('click', '.delete_nominee_db' ,function(){
         var nominee_id = $(this).data('id');
         var parrent = $(this).parents("tr");
         $.ajax({
