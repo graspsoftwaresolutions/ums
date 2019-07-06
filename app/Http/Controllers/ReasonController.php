@@ -37,14 +37,15 @@ class ReasonController extends Controller
             ['reason_name','=',$reason['reason_name']],
             ['status','=','1']
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add-reason')->with('message','Reason Name Already Exists');
+            return redirect($defdaultLang.'/add-reason')->with('message','Reason Name Already Exists');
         }
         else
         {
             $id = $this->Reason->StoreReason($reason);
-            return redirect('reason')->with('message','Reason Name Added Succesfully');
+            return redirect($defdaultLang.'/reason')->with('message','Reason Name Added Succesfully');
         }
     }
     public function view($id)
@@ -56,7 +57,7 @@ class ReasonController extends Controller
         ])->get();
         return view('reason.view_reason')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['reason_edit'] = DB::table('reason')->where([
@@ -79,7 +80,7 @@ class ReasonController extends Controller
             ['reason_name','=',$reason['reason_name']],
             ['status','=','1']
             ])->count();
-
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
             return redirect()->back()->with('message','Reason Name Already Exists');
@@ -87,12 +88,14 @@ class ReasonController extends Controller
         else
         {
             $id = DB::table('reason')->where('id','=',$id)->update($reason);
-            return redirect('reason')->with('message','Reason Name Updated Succesfully');
+            return redirect($defdaultLang.'/reason')->with('message','Reason Name Updated Succesfully');
         }
     }
-    public function delete($id)
+    public function delete($lang, $id)
 	{
-		$data = DB::table('reason')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('reason')->with('message','Reason Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('reason')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/reason')->with('message','Reason Deleted Succesfully');
 	}
 }

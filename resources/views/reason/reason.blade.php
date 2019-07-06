@@ -31,7 +31,9 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-reason')}}">{{__('Add New Reason') }}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="
+										{{ route('master.addreason', app()->getLocale()) }}
+										">{{__('Add New Reason') }}</a>
 										
 									</div>
 								</div>
