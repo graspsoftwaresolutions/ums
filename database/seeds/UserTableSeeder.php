@@ -18,6 +18,7 @@ class UserTableSeeder extends Seeder
 	    $union_role = Role::where('slug','union')->first();
 	    $branch_role = Role::where('slug', 'branch')->first();
 	    $member_role = Role::where('slug', 'member')->first();
+	    $company_role = Role::where('slug', 'company')->first();
 		
 	    $union_permission = Permission::where('slug','create-user')->first();
 		
@@ -26,15 +27,15 @@ class UserTableSeeder extends Seeder
 	    $union_user->name = 'Union';
 	    $union_user->email = 'union@gmail.com';
 		$union_user->password = bcrypt('12345678');
-		$union_user->branch_id = 1;
 	    $union_user->save();
 	    $union_user->roles()->attach($union_role);
 	    $union_user->permissions()->attach($union_permission);
 
 		/* master branch user */
 	    $branch_user = new User();
-	    $branch_user->name = 'Branch';
-	    $branch_user->email = 'branch@gmail.com';
+	    $branch_user->name = 'Default union Branch';
+	    $branch_user->email = 'unionbranch@gmail.com';
+		$branch_user->branch_id = 1;
 	    $branch_user->password = bcrypt('12345678');
 	    $branch_user->save();
 	    $branch_user->roles()->attach($branch_role);
@@ -47,5 +48,14 @@ class UserTableSeeder extends Seeder
 	    $branch_user->password = bcrypt('12345678');
 	    $branch_user->save();
 	    $branch_user->roles()->attach($member_role);
+		
+	   /* Company user */
+	    $company_user = new User();
+	    $company_user->name = 'Default Company';
+	    $company_user->email = 'company@gmail.com';
+		$company_user->company_id = 1;
+	    $company_user->password = bcrypt('12345678');
+	    $company_user->save();
+	    $company_user->roles()->attach($company_role);
     }
 }

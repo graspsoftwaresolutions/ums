@@ -19,6 +19,9 @@
 				@role('branch')
 					@include('branch.dashboard')
 				@endrole
+				@role('company')
+					@include('company.dashboard')
+				@endrole
 				@role('member')
 					@include('member.dashboard')
 				@endrole

@@ -53,7 +53,37 @@
 										<div id="test1" class="col s12">
 											</br>
 											<div id="view-validations">
+												<?php 
+													$auth_user = Auth::user();
 													
+													if(!empty($auth_user)){
+														
+														$get_roles = Auth::user()->roles;
+														$user_role = $get_roles[0]->slug;
+														$company_id = '';
+														$branch_id = '';
+														$member_number_readonly = 1;
+														if($user_role =='union'){
+															$member_number_readonly = 0;
+															$branch_hide = '';
+															$member_status = 2;
+														}else if($user_role =='company'){
+															$company_id = $auth_user->company_id;
+															$branch_requird = '';
+															$branch_hide = 'hide';
+															$member_status = 1;
+														} 
+														else if($user_role =='unionbranch'){
+															$branch_id = $auth_user->branch_id;
+															$branch_requird = '';
+															$branch_hide = 'hide';
+															$member_status = 1;
+														} 
+														
+													}else{
+														
+													}
+												?>
 												  <div class="row">
 													<div class="col s12 m6">
 													<label>Member Title*</label>
@@ -72,7 +102,7 @@
 													</div>
 													<div class="input-field col s12 m6">
 													  <label for="member_number">Member Number *</label>
-													  <input id="member_number" name="member_number" value="{{ old('member_number') }}" type="text" data-error=".errorTxt2">
+													  <input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" type="text" data-error=".errorTxt2">
 													  <div class="errorTxt2"></div>
 													</div>
 													<div class="clearfix" ></div>
@@ -258,32 +288,10 @@
 															<div class="errorTxt21"></div>
 														</div>
 														<div class="clearfix" ></div>
-														<?php 
-															$auth_user = Auth::user();
-															
-															if($auth_user!=""){
-																/* $check_union = $auth_user->hasRole('union');
-																if($check_union){
-																	$branch_requird = 'required';
-																	$branch_hide = '';
-																	$branch_id = '';
-																	$member_status = 2;
-																}else{
-																	$branch_requird = '';
-																	$branch_hide = 'hide';
-																	$branch_id = $auth_user->branch_id;
-																	$member_status = 1;
-																} */
-																$branch_requird = 'required';
-																$branch_hide = '';
-															}else{
-																$branch_requird = 'required';
-																$branch_hide = '';
-															}
-														?>
-														<div class=" col s12 m6 union-data {{ $branch_hide }}">
+														
+														<div class=" col s12 m6 union-data ">
 														<label>Company Name*</label>
-															<select name="company_id" id="company" class="error browser-default" {{ $branch_requird }}>
+															<select name="company_id" id="company" class="error browser-default" >
 															<option value="">Select Company</option>
 																@foreach($data['company_view'] as $value)
 																<option value="{{$value->id}}">{{$value->company_name}}</option>
@@ -294,9 +302,9 @@
 															</div>
 														</div>
 														
-														<div class="col s12 m6 union-data {{ $branch_hide }}">
+														<div class="col s12 m6 union-data ">
 														 <label>Branch Name*</label>
-															<select name="branch_id" id="branch" class="error browser-default" {{ $branch_requird }}>
+															<select name="branch_id" id="branch" class="error browser-default" >
 																<option value="">Select Branch</option>
 																
 															</select>

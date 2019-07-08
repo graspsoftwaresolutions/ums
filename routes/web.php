@@ -87,13 +87,14 @@ Route::get('get-fee-options','CommonController@getFeesList');
 Route::post('add-nominee','MemberController@addNominee');
 Route::get('get-oldmember-list','MemberController@getoldMemberList');
 Route::post('membership_save','MemberController@Save');
+Route::post('membership_update','MemberController@update');
 
 //membership
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
 Route::get('membership-view/{parameter}','MembershipController@view');
 Route::get('membership-edit/{parameter}','MembershipController@edit');
-Route::post('membership_update','MembershipController@update');
+
 Route::get('membership-delete/{id}','MembershipController@delete');
 Route::get('membership_list','MembershipController@new_members');
 

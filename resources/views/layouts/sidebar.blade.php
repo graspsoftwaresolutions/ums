@@ -28,13 +28,19 @@
             </ul>
           </div>
         </li>
-        <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{url('membership')}}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
-        </li>
+        
         @endrole
-        @role('branch')
-        <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{url('membership')}}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
-        @endrole
-		
+        @if(!empty(Auth::user()))
+          @php
+            $user_id = Auth::user()->id;
+            $get_roles = Auth::user()->roles;
+            $user_role = $get_roles[0]->slug;
+          @endphp
+          <?php //print_r($user_role);die; ?>
+          @if($user_role=='union' || $user_role=='unionbranch' || $user_role=='company')
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('membership') }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
+          @endif
+        @endif
        
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>
