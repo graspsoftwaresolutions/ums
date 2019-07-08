@@ -17,16 +17,16 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0"> Edit Company Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0"> {{__('Edit Company Details') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                        <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>
                                             </li>
-                                            <li class="breadcrumb-item active">Edit Company
+                                            <li class="breadcrumb-item active">{{__('Edit Company') }}
                                             </li>
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Back</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.company', app()->getLocale())  }}">{{__('Back') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -34,18 +34,18 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit Company</h4>
+                                    <h4 class="card-title">{{__('Edit Company') }}</h4>
                                     @include('includes.messages')
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="company_formValidate" method="post" action="{{url('company_edit')}}">
+                                    <form class="formValidate" id="company_formValidate" method="post" action="{{route('master.companyupdate', app()->getLocale()) }}">
                                      @foreach($data['company_edit'] as $row)
                                    
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
                                       <div class="row">
                                       <div class="input-field col s12 m6">
-                                          <label for="company_name">Company Name*</label>
+                                          <label for="company_name" class="common-label">{{__('Company Name') }}*</label>
                                           <input id="company_name" name="company_name" value="{{$row->company_name}}" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1">
                                           @if($errors->has('company_name'))
@@ -53,7 +53,7 @@
                                     @endif</div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="short_code">Short Code*</label>
+                                          <label for="short_code" class="common-label">{{__('Short Code') }}*</label>
                                           <input id="short_code" name="short_code" value="{{$row->short_code}}" type="text" data-error=".errorTxt2">
                                           <div class="errorTxt2">
                                           @if($errors->has('short_code'))
@@ -63,12 +63,12 @@
                                         </div>
                                         <div class="clearfix" ></div>
                                         <div class=" col s12 m6 union-data">
-                                            <label>Head of Company*</label>
+                                            <label class="common-label">{{__('Head of Company') }}*</label>
                                                 <select id="head_of_company" name="head_of_company" class="error browser-default">
                                                 <option value="">Select Company</option>
+                                                <?php if($row->id)?>
                                                     @foreach($data['company'] as $value)
-                                                         <?php if($row->head_of_company == $value->id)   
-                                                         ?> 
+                                                        
                                                          <option value="{{$value->id}}" <?php if($value->id == $row->head_of_company) { echo "selected";}?>
                                                          >{{$value->company_name}}</option>
                                                     @endforeach
@@ -81,13 +81,11 @@
                                           @if($errors->has('head_of_company'))
                                     <span >{{$errors->first('head_of_company')}}</span>
                                     @endif
-
                                           </div>
                                         </div>
                                         @endforeach
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Update') }}
                                           </button>
                                         </div>
                                       </div>
@@ -129,14 +127,14 @@
         },
         //For custom messages
         messages: {
-             company_name: {
-            required: "Please Enter Company Name",
+            company_name: {
+            required: '{{__("Please Enter Company Name") }}',
             },
             short_code: {
-                required: "Please Enter Short Code",
+                required: '{{__("Please Enter Short Code") }}',
             },
             head_of_company: {
-                required: "Please Enter Head of company",
+                required: '{{__("Please Choose Head of company") }}',
             },
         },
         errorElement: 'div',

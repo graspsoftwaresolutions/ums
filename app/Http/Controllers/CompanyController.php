@@ -48,11 +48,13 @@ class CompanyController extends Controller
         
         if($data_exists > 0 && $data_exists !='' && $data_exists != 'NULL')
         {
-            return redirect('add-company')->with('Warning','Company Name Already Exists');
+            $defaultLanguage = app()->getLocale();
+            return redirect($defaultLanguage.'/add-company')->with('Warning','Company Name Already Exists');
         }
         else{
             $id = $this->Company->StoreCompany($company);
-        return redirect('company')->with('message','Company Name Added Succesfully');
+            $defaultLanguage = app()->getLocale();
+        return redirect($defaultLanguage.'/company')->with('message','Company Name Added Succesfully');
         }
     }
     public function view($id)
@@ -61,7 +63,7 @@ class CompanyController extends Controller
         $data['company_view'] = DB::table('company')->where('id','=',$id)->get(); 
         return view('company.view_company')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['company'] = DB::table('company')->where('status','=','1')->get();
@@ -75,12 +77,15 @@ class CompanyController extends Controller
 		$company['company_name'] = $request->input('company_name');
         $company['short_code'] = $request->input('short_code');
         $company['head_of_company'] = $request->input('head_of_company');
-		$id = DB::table('company')->where('id','=',$id)->update($company);
-		return redirect('company')->with('message','Company Details Updated Succesfully');
+        $id = DB::table('company')->where('id','=',$id)->update($company);
+        $defaultLanguage = app()->getLocale();
+		return redirect($defaultLanguage.'/company')->with('message','Company Details Updated Succesfully');
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('company')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('company')->with('message','Company Deleted Succesfully');
-	} 
+        $id = Crypt::decrypt($id);
+        $data = DB::table('company')->where('id','=',$id)->update(['status'=>'0']);
+        $defaultLanguage = app()->getLocale();
+		return redirect($defaultLanguage.'/company')->with('message','Company Deleted Succesfully');
+	}
 }
