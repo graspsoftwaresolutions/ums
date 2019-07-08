@@ -37,7 +37,7 @@
             $user_role = $get_roles[0]->slug;
           @endphp
           <?php //print_r($user_role);die; ?>
-          @if($user_role=='union' || $user_role=='unionbranch' || $user_role=='company')
+          @if($user_role=='union' || $user_role=='branch' || $user_role=='company')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('membership') }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
           @endif
         @endif

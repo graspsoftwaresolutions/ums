@@ -84,4 +84,19 @@ class CommonHelper
         }
         return 1000;
     }
+
+    public static function get_company_branch($company_id){
+        $branch_list = DB::table('branch')->where('company_id', $company_id)->get();
+       
+        return $branch_list;
+    }
+
+    
+    public static function get_branch_by_unionbranch($branch_id){
+        DB::connection()->enableQueryLog();
+        $branch_list = DB::table('branch')->where('union_branch_id', $branch_id)->get();
+        //$queries = DB::getQueryLog();
+        // dd($queries);
+        return $branch_list;
+    }
 }
