@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Add Race Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Add Race Details') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Race</a>
+                                            <li class="breadcrumb-item active">{{__('Race') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('race')}}">Race List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.race', app()->getLocale()) }}">{{__('Race List') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,20 +36,20 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Race</h4>
+                                    <h4 class="card-title">{{__('Add Race') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="race_formValidate" method="post" action="{{url('race_save')}}">
+                                    <form class="formValidate" id="race_formValidate" method="post" action="{{ route('master.saverace', app()->getLocale()) }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="race_name">Race Name*</label>
-                                          <input id="race_name" name="race_name" type="text" data-error=".errorTxt1">
+                                          <label for="race_name" class="common-label">{{__('Race Name') }}*</label>
+                                          <input id="race_name" name="race_name" class="common-input" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
+                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
@@ -85,7 +85,7 @@
         //For custom messages
         messages: {
             race_name: {
-                required: "Enter a Race Name",
+                required: '{{__("Enter a Race Name") }}',
             },
         },
         errorElement: 'div',

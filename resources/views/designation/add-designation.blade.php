@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Designation List</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Designation List') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Designation</a>
+                                            <li class="breadcrumb-item active">{{__('Designation') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('designation')}}">Designation List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.designation', app()->getLocale()) }}">{{__('Designation List') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,20 +36,20 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Designation</h4>
+                                    <h4 class="card-title">{{__('Add Designation') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="formValidate" method="post" action="{{ url('designation_save') }}">
+                                    <form class="formValidate" id="designation_formValidate" method="post" action="{{ route('master.savedesignation', app()->getLocale()) }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="designation_name">Designation Name*</label>
-                                          <input id="designation_name" name="designation_name" type="text" data-error=".errorTxt1">
+                                          <label for="designation_name" class="common-label">{{__('Designation Name') }}*</label>
+                                          <input id="designation_name" name="designation_name" class="common-input" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
+                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
@@ -74,7 +74,30 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#branch_sidebar_li_id").addClass('active');
-	$("#branch_sidebar_a_id").addClass('active');
+	$("#designation_sidebar_li_id").addClass('active');
+	$("#designation_sidebar_a_id").addClass('active');
+
+    $("#designation_formValidate").validate({
+        rules: {
+            designation_name: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            designation_name: {
+                required: '{{__("Enter a Designation Name") }}',
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 </script>
 @endsection

@@ -19,22 +19,28 @@
               <li id="unionbranch_sidebar_li_id" class=""><a id="unionbranch_sidebar_a_id" class="collapsible-body" href="{{route('master.unionbranch',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Union Branch Details') }}</span></a></li>
               <li id="branch_sidebar_li_id" class=""><a id="branch_sidebar_a_id" class="collapsible-body" href="{{url('branch')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Details</span></a></li> 
               <li id="status_sidebar_li_id" class=""><a id="status_sidebar_a_id" class="collapsible-body" href="{{url('status')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Status Details</span></a></li>
-              <li id="designation_sidebar_li_id" class=""><a id="designation_sidebar_a_id" class="collapsible-body" href="{{url('designation')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Designation Details</span></a></li>
-              <li id="race_sidebar_li_id" class=""><a id="race_sidebar_a_id" class="collapsible-body" href="{{url('race')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Race Details</span></a></li>
-              <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{url('fee')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Fee Details</span></a></li>
+              <li id="designation_sidebar_li_id" class=""><a id="designation_sidebar_a_id" class="collapsible-body" href="{{ route('master.designation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Designation Details')}}</span></a></li>
+              <li id="race_sidebar_li_id" class=""><a id="race_sidebar_a_id" class="collapsible-body" href="{{ route('master.race',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Race Details')}}</span></a></li>
+              <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{ route('master.fee',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Fee Details')}}</span></a></li>
               <li id="reason_sidebar_li_id" class=""><a id="reason_sidebar_a_id" class="collapsible-body" href="{{ route('master.reason',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Reason Details') }}</span></a></li>
               <li id="title_sidebar_li_id" class=""><a id="title_sidebar_a_id" class="collapsible-body" href="{{ route('master.persontitle',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Person Title Details') }}</span></a></li>
               <li id="relation_sidebar_li_id" class=""><a id="relation_sidebar_a_id" class="collapsible-body" href="{{ route('master.relation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Relation Details') }}</span></a></li>
             </ul>
           </div>
         </li>
-        <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{url('membership')}}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
-        </li>
+        
         @endrole
-        @role('branch')
-        <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{url('membership')}}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
-        @endrole
-		
+        @if(!empty(Auth::user()))
+          @php
+            $user_id = Auth::user()->id;
+            $get_roles = Auth::user()->roles;
+            $user_role = $get_roles[0]->slug;
+          @endphp
+          <?php //print_r($user_role);die; ?>
+          @if($user_role=='union' || $user_role=='unionbranch' || $user_role=='company')
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('membership') }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
+          @endif
+        @endif
        
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

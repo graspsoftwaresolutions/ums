@@ -21,17 +21,19 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">Fee List</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Fee List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active"><a href="#">Fee</a>
+											<li class="breadcrumb-item active">{{__('Fee') }}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-fee')}}">Add New Fee</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.addfee', app()->getLocale())  }}">{{
+											__('Add New Fee')
+										}}</a>
 										
 									</div>
 								</div>
@@ -40,16 +42,16 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">Fee List</h4>
+									<h4 class="card-title">{{__('Fee List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>Fee Name</th>
-														<th>Fee Amount</th>
-														<th style="text-align:center"> Action</th>
+														<th>{{__('Fee Name') }}</th>
+														<th>{{__('Fee Amount') }}</th>
+														<th style="text-align:center"> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -61,11 +63,15 @@
                                                             ];
                                                             $parameter = Crypt::encrypt($parameter);    
                                                         ?>
+														@php
+														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
+														@endphp
 														<td>{{$value->fee_name}}</td>
 														<td>{{$value->fee_amount}}</td>
-														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
-														<a class="btn-small waves-effect waves-light cyan" href="{{url('fee-edit/').'/'.$parameter}}">Edit</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" href="{{url('fee-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a></td>
+														<td style="text-align:center">
+														<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editfee', [app()->getLocale(), $parameter]) }}
+														">{{__('Edit') }}</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletefee',[app()->getLocale(),$parameter])}}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
 												  </tr>
 												  @endforeach
 												</tbody>
