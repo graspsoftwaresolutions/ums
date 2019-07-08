@@ -71,6 +71,32 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('reason-edit/{parameter}','ReasonController@edit')->name('master.editreason');
 	Route::post('reason_update','ReasonController@update')->name('master.updatereason');
 	Route::get('reason-delete/{id}','ReasonController@delete')->name('master.deletereason');
+	
+	//Fee Details
+	Route::get('fee','FeeController@index')->name('master.fee');
+	Route::get('add-fee','FeeController@addFee')->name('master.addfee');
+	Route::post('fee_save','FeeController@save')->name('master.savefee');
+	//Route::get('fee-view/{parameter}','FeeController@view')->name('master.fee');
+	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
+	Route::post('fee_update','FeeController@update')->name('master.updatefee');
+	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
+	
+	//Race Details
+	Route::get('race','RaceController@index')->name('master.race');
+	Route::get('add-race','RaceController@addRace')->name('master.addrace');
+	Route::post('race_save','RaceController@save')->name('master.saverace');
+	//Route::get('race-view/{parameter}','RaceController@view')->name('master.fee');
+	Route::get('race-edit/{parameter}','RaceController@edit')->name('master.editrace');
+	Route::post('race_update','RaceController@update')->name('master.updaterace');
+	Route::get('race-delete/{id}','RaceController@delete')->name('master.deleterace');
+	
+	//Designation Details
+	Route::get('designation','DesignationController@index')->name('master.designation');
+	Route::get('add-designation','DesignationController@addDesignation')->name('master.adddesignation');
+	Route::post('designation_save','DesignationController@save')->name('master.savedesignation');
+	Route::get('designation-edit/{parameter}','DesignationController@edit')->name('master.editdesignation');
+	Route::post('update_designation','DesignationController@update')->name('master.updatedesignation');
+	Route::get('designation-delete/{id}','DesignationController@delete')->name('master.deletedesignation');
 
 
 });
@@ -105,33 +131,6 @@ Route::get('status-edit/{parameter}','StatusController@edit');
 Route::post('status_update','StatusController@update');
 Route::get('status-delete/{id}','StatusController@delete');
 
-
-
-//Designation
-Route::get('designation','DesignationController@index');
-Route::get('add-designation','DesignationController@addDesignation');
-Route::post('designation_save','DesignationController@save');
-Route::get('designation-edit/{parameter}','DesignationController@edit');
-Route::post('update_designation','DesignationController@update');
-Route::get('designation-delete/{id}','DesignationController@delete');
-
-//Race 
-Route::get('race','RaceController@index');
-Route::get('add-race','RaceController@addRace');
-Route::post('race_save','RaceController@save');
-Route::get('race-view/{parameter}','RaceController@view');
-Route::get('race-edit/{parameter}','RaceController@edit');
-Route::post('race_update','RaceController@update');
-Route::get('race-delete/{id}','RaceController@delete');
-
-//Fee
-Route::get('fee','FeeController@index');
-Route::get('add-fee','FeeController@addFee');
-Route::post('fee_save','FeeController@save');
-Route::get('fee-view/{parameter}','FeeController@view');
-Route::get('fee-edit/{parameter}','FeeController@edit');
-Route::post('fee_update','FeeController@update');
-Route::get('fee-delete/{id}','FeeController@delete');
 
 
 
