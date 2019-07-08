@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends($data['user_type']==1 ? 'layouts.admin' : 'layouts.new-member')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
 
@@ -15,6 +15,7 @@
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">
+						@if($data['user_type']==1)
 						<div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
 							<!-- Search for small screen-->
 							<div class="container">
@@ -32,6 +33,7 @@
 								</div>
 							</div>
 						</div>
+						@endif
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
@@ -144,6 +146,7 @@
 														<div class="col s12 m6">
 														<label>Designation*</label>
 															<select name="designation" id="designation" class="error browser-default">
+																<option value="" >Select</option>
 																@foreach($data['designation_view'] as $key=>$value)
 																	<option value="{{$value->id}}">{{$value->designation_name}}</option>
 																@endforeach
@@ -155,6 +158,7 @@
 														<div class="col s12 m6">
 															<label>Race*</label>
 															<select name="race" id="race" value="{{ old('race') }}" class="error browser-default">
+															<option value="" >Select</option>
 															@foreach($data['race_view'] as $key=>$value)
 																<option value="{{$value->id}}">{{$value->race_name}}</option>
 																@endforeach
@@ -225,7 +229,7 @@
 																</div>
 																<div class="input-field col s12 m4">
 																	<label for="member_age">Age</label>
-																	<input type="text" id="member_age" value="{{ old('member_age') }}" readonly >
+																	<input type="text" id="member_age" value="{{ old('member_age') != '' ? old('member_age') : 0 }}" readonly >
 																</div>
 															</div>
 														</div>
@@ -257,20 +261,25 @@
 														<?php 
 															$auth_user = Auth::user();
 															
-															$check_union = $auth_user->hasRole('union');
-															if($check_union){
+															if($auth_user!=""){
+																/* $check_union = $auth_user->hasRole('union');
+																if($check_union){
+																	$branch_requird = 'required';
+																	$branch_hide = '';
+																	$branch_id = '';
+																	$member_status = 2;
+																}else{
+																	$branch_requird = '';
+																	$branch_hide = 'hide';
+																	$branch_id = $auth_user->branch_id;
+																	$member_status = 1;
+																} */
 																$branch_requird = 'required';
 																$branch_hide = '';
-																$branch_id = '';
-																$member_status = 2;
 															}else{
-																$branch_requird = '';
-																$branch_hide = 'hide';
-																$branch_id = $auth_user->branch_id;
-																$member_status = 1;
+																$branch_requird = 'required';
+																$branch_hide = '';
 															}
-															$branch_requird = 'required';
-															$branch_hide = '';
 														?>
 														<div class=" col s12 m6 union-data {{ $branch_hide }}">
 														<label>Company Name*</label>
@@ -393,6 +402,7 @@
 												<div class="col s12 m4">
 													 <label>Relationship*</label>
 														<select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+															<option value="" selected>State Relationship</option>
 															@foreach($data['relationship_view'] as $key=>$value)
 																<option value="{{$value->id}}" data-relationshipname="{{$value->relation_name}}" >{{$value->relation_name}}</option>
 															@endforeach
@@ -549,6 +559,7 @@
 												<div class="col s12 m4">
 													<label>Relationship*</label>
 													<select name="g_relationship_id" id="g_relationship" data-error=".errorTxt31"  class="error browser-default">
+														<option value="">Select</option>
 														@foreach($data['relationship_view'] as $key=>$value)
 															<option value="{{$value->id}}" >{{$value->relation_name}}</option>
 														@endforeach
@@ -578,6 +589,7 @@
 												<div class="col s12 m4">
 													 <label>Country Name*</label>
 													<select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
+														<option value="">Select</option>
 														@foreach($data['country_view'] as $value)
 															<option value="{{$value->id}}" >{{$value->country_name}}</option>
 														@endforeach
@@ -686,7 +698,7 @@ $(document).ready(function(){
        
         var  oldMemberID = $('#old_mumber_number').val();
         
-        if(oldMemberID!= '' && oldMemberID != 'undefined'){
+        /* if(oldMemberID!= '' && oldMemberID != 'undefined'){
             $.ajax({
                 type:"GET",
                 dataType: "json",
@@ -704,7 +716,7 @@ $(document).ready(function(){
                 console.log(res);
                 }
             });
-        }
+        } */
 
     });
       //state

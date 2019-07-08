@@ -76,17 +76,21 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 });
 /* Master */
 
-//Membership
-Route::get('get-state-list','MembershipController@getStateList');
-Route::get('get-cities-list','MembershipController@getCitiesList');
-Route::get('get-branch-list','MembershipController@getBranchList');
-Route::get('get-oldmember-list','MembershipController@getoldMemberList');
-Route::post('add-nominee','MembershipController@addNominee');
-Route::get('get-age','MembershipController@getAge');
+//common routes
+Route::get('get-state-list','CommonController@getStateList');
+Route::get('get-cities-list','CommonController@getCitiesList');
+Route::get('get-branch-list','CommonController@getBranchList');
+Route::get('get-age','CommonController@getAge');
+Route::get('get-fee-options','CommonController@getFeesList');
 
+// commom member functions
+Route::post('add-nominee','MemberController@addNominee');
+Route::get('get-oldmember-list','MemberController@getoldMemberList');
+Route::post('membership_save','MemberController@Save');
+
+//membership
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
-Route::post('membership_save','MembershipController@Save');
 Route::get('membership-view/{parameter}','MembershipController@view');
 Route::get('membership-edit/{parameter}','MembershipController@edit');
 Route::post('membership_update','MembershipController@update');
@@ -133,9 +137,10 @@ Route::get('fee-delete/{id}','FeeController@delete');
 
 //branch
 Route::get('branch','BranchController@index');
+/* 
 Route::get('get-state-list','BranchController@getStateList');
 Route::get('get-cities-list','BranchController@getCitiesList');
-
+ */
 Route::get('add-branch','BranchController@addBranch');
 Route::post('branch_save','BranchController@save');
 Route::get('branch-edit/{parameter}','BranchController@edit');
@@ -182,4 +187,4 @@ Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
 
 Route::get('delete-fee-data','MembershipController@deleteFee');
-Route::get('get-fee-options','MembershipController@getFeesList');
+Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');

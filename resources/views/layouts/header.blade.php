@@ -7,7 +7,7 @@
               <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="">
             </div>
             <ul class="navbar-list right">
-              <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"></a></li>
+              <li class=""><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"></a></li>
               <!-- <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light toggle-fullscreen" href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a></li> -->
               <li class="hide-on-large-only"><a class="waves-effect waves-block waves-light search-button" href="javascript:void(0);"><i class="material-icons">search</i></a></li>
               <!-- <li><a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);" data-target="notifications-dropdown"><i class="material-icons">notifications_none<small class="notification-badge">5</small></i></a></li> -->
@@ -16,6 +16,8 @@
             </ul>
             <!-- translation-button-->
             <ul class="dropdown-content" id="translation-dropdown">
+			    {{-- strlen(Request::segment(1))==2 && strlen(Request::segment(2)) ? route(\Illuminate\Support\Facades\Route::currentRouteName(), 'en') : route('home', 'en') --}}
+				
               <li><a class="grey-text text-darken-1" href="{{ route('home','en') }}"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"> English</a></li>
               <li><a class="grey-text text-darken-1" href="{{ route('home','my') }}"><img src="{{ asset('public/assets/images/my_icon.png') }}" alt="Malay"> Malay</a></li>
             </ul>
@@ -44,6 +46,13 @@
             <!-- profile-dropdown-->
             <ul class="dropdown-content" id="profile-dropdown">
               <li><a class="grey-text text-darken-1" href="#"><i class="material-icons">person_outline</i> {{__('Profile') }}</a></li>
+			  @php
+			  $auth_user = Auth::user();
+			  $check_member = $auth_user->hasRole('member');
+			  @endphp
+			  @if($check_member ==1)
+              <li><a class="grey-text text-darken-1" href="{{ route('member.membership.profile') }}"><i class="material-icons">person_outline</i> {{__('Membership details') }}</a></li>
+			  @endif
               <!-- <li><a class="grey-text text-darken-1" href="app-chat.html"><i class="material-icons">chat_bubble_outline</i> Chat</a></li>
               <li><a class="grey-text text-darken-1" href="page-faq.html"><i class="material-icons">help_outline</i> Help</a></li>
               <li class="divider"></li>

@@ -129,11 +129,11 @@
                      </div>
                   </li>
                </ul>
-               <p class="mt-8 mb-0 ml-5 font-weight-900">SYSTEM SETTINGS</p>
+               <p class="mt-8 mb-0 ml-5 font-weight-900">COMPANY SETTINGS</p>
                <ul class="collection border-none">
                   <li class="collection-item border-none mt-3">
                      <div class="m-0">
-                        <span>System Logs</span>
+                        <span>Settins one</span>
                         <div class="switch right">
                            <label>
                               <input type="checkbox">
@@ -144,7 +144,7 @@
                   </li>
                   <li class="collection-item border-none mt-3">
                      <div class="m-0">
-                        <span>Error Reporting</span>
+                        <span>Settins two</span>
                         <div class="switch right">
                            <label>
                               <input type="checkbox">
@@ -155,7 +155,7 @@
                   </li>
                   <li class="collection-item border-none mt-3">
                      <div class="m-0">
-                        <span>Applications Logs</span>
+                        <span>Settins three</span>
                         <div class="switch right">
                            <label>
                               <input checked="" type="checkbox">
@@ -166,7 +166,7 @@
                   </li>
                   <li class="collection-item border-none mt-3">
                      <div class="m-0">
-                        <span>Backup Servers</span>
+                        <span>Settins four</span>
                         <div class="switch right">
                            <label>
                               <input type="checkbox">
@@ -177,7 +177,7 @@
                   </li>
                   <li class="collection-item border-none mt-3">
                      <div class="m-0">
-                        <span>Audit Logs</span>
+                        <span>Settins five</span>
                         <div class="switch right">
                            <label>
                               <input type="checkbox">
@@ -194,18 +194,12 @@
                   <ul class="collection with-header">
                      <li class="collection-item">
                         <div class="font-weight-900">
-                           Homepage mockup design <span class="secondary-content">Just now</span>
+                           New transaction <span class="secondary-content">Just now</span>
                         </div>
-                        <p class="mt-0 mb-2">Melissa liked your activity.</p>
+                        <p class="mt-0 mb-2">Test liked your activity.</p>
                         <span class="new badge amber" data-badge-caption="Important"> </span>
                      </li>
-                     <li class="collection-item">
-                        <div class="font-weight-900">
-                           Melissa liked your activity Drinks. <span class="secondary-content">10 mins</span>
-                        </div>
-                        <p class="mt-0 mb-2">Here are some news feed interactions concepts.</p>
-                        <span class="new badge light-green" data-badge-caption="Resolved"></span>
-                     </li>
+                     
                      <li class="collection-item">
                         <div class="font-weight-900">
                            12 new users registered <span class="secondary-content">30 mins</span>
@@ -214,13 +208,13 @@
                      </li>
                      <li class="collection-item">
                         <div class="font-weight-900">
-                           Tina is attending your activity <span class="secondary-content">2 hrs</span>
+                           User is attending your activity <span class="secondary-content">2 hrs</span>
                         </div>
                         <p class="mt-0 mb-2">Here are some news feed interactions concepts.</p>
                      </li>
                      <li class="collection-item">
                         <div class="font-weight-900">
-                           Josh is now following you <span class="secondary-content">5 hrs</span>
+                           User is now following you <span class="secondary-content">5 hrs</span>
                         </div>
                         <p class="mt-0 mb-2">Here are some news feed interactions concepts.</p>
                         <span class="new badge red" data-badge-caption="Pending"></span>

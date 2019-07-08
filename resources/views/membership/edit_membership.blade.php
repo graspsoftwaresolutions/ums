@@ -140,6 +140,7 @@
                                             <div class="col s12 m6">
                                                 <label>Designation*</label>
                                                     <select name="designation" id="designation" data-error=".errorTxt2"  class="error browser-default">
+														<option value="" >Select</option>
                                                         @foreach($data['designation_view'] as $key=>$value)
                                                             <option value="{{$value->id}}" <?php if($value->id == $values->designation_id) { echo "selected";} ?>>{{$value->designation_name}}</option>
                                                         @endforeach
@@ -152,6 +153,7 @@
                                             <div class="col s12 m6">
                                             <label>Race*</label>
                                                 <select name="race" id="race" data-error=".errorTxt3"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['race_view'] as $key=>$value)
                                                          <option value="{{$value->id}}" <?php if($value->id == $values->race_id) { echo "selected";} ?>>{{$value->race_name}}</option>
                                                     @endforeach
@@ -163,6 +165,7 @@
                                             <div class="col s12 m6">
                                             <label>Country Name*</label>
                                                 <select name="country_id" id="country_id" data-error=".errorTxt4"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['country_view'] as $value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $values->country_id) { echo "selected";} ?>>{{$value->country_name}}</option>
                                                     @endforeach
@@ -175,6 +178,7 @@
                                             <div class="col s12 m6">
                                                 <label>State Name*</label>
                                                 <select name="state_id" id="state_id" data-error=".errorTxt5"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['state_view'] as $key=>$value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
                                                     @endforeach
@@ -188,6 +192,7 @@
                                             <div class="col s12 m6">
                                                  <label>City Name*</label>
                                                 <select name="city_id" id="city_id" data-error=".errorTxt6" class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['city_view'] as $key=>$value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
                                                     @endforeach
@@ -254,6 +259,7 @@
                                             <div class="col s12 m6 hide">
                                                 <label>Company Name*</label>
                                                 <select name="company_id" id="company" class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['company_view'] as $value)
                                                     <option <?php //if($value->id == $values->company_id) { echo "selected";} ?> value="{{$value->id}}">{{$value->company_name}}</option>
                                                     @endforeach
@@ -283,6 +289,7 @@
                                             <div class=" col s12 m6 {{ $branch_hide }}">
                                                 <label>Branch Name*</label>
                                                 <select name="branch_id" id="branch" data-error=".errorTxt15" class="error browser-default">
+													<option value="" >Select</option>
                                                      @foreach($data['branch_view'] as $value)
                                                     <option <?php if($value->id == $values->branch_id) { echo "selected";} ?> value="{{$value->id}}">{{$value->branch_name}}</option>
                                                     @endforeach
@@ -295,19 +302,22 @@
                                                 <label for="employee_id">Employee ID</label>
                                                 <input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
                                             </div>
+											@php
+											if($values->status_id==1 && $check_union==1){
+											@endphp
                                             <div class="col s12 m6 ">
                                                 <label>Status*</label>
-                                                <select name="status_id" id="status_id" {{ $branch_disabled }} data-error=".errorTxt16" class="error browser-default">
-                                                    @foreach($data['status_view'] as $key=>$value)
-                                                        <option value="{{$value->id}}" <?php if($value->id == $values->status_id) { echo "selected";} ?>>{{$value->status_name}}</option>
-                                                    @endforeach
-                                                </select>
-                                                      
+												<label>
+													<input type="checkbox" id="activate_account" name="activate_account" value='1'/>
+													&nbsp; <span>Verify account</span>
+												</label>
                                                 <div class="input-field">       
                                                     <div class="errorTxt16"></div>
                                                 </div>
                                             </div>
-                                          
+											@php												
+											}
+											@endphp
                                       </div>
                                      
                                     
@@ -422,6 +432,7 @@
                                             <div class="col s12 m4">
                                                  <label>Relationship*</label>
                                                     <select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+														<option value="" >Select</option>
                                                         @foreach($data['relationship_view'] as $key=>$value)
                                                             <option value="{{$value->id}}" data-relationshipname="{{$value->relation_name}}" >{{$value->relation_name}}</option>
                                                         @endforeach
@@ -463,6 +474,7 @@
                                             <div class="col s12 m4">
                                                  <label>State Name*</label>
                                                 <select name="nominee_state_id" id="nominee_state_id"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['state_view'] as $key=>$value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $values->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
                                                     @endforeach
@@ -481,6 +493,7 @@
                                             <div class="col s12 m4">
                                                  <label>City Name*</label>
                                                 <select name="nominee_city_id" id="nominee_city_id"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['city_view'] as $key=>$value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
                                                     @endforeach
@@ -611,14 +624,14 @@
                                                     <div class=" col s12 m8">
                                                         <p>
                                                             <label for="gaurdian_dob">DOB *</label>
-                                                            <input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="<?php echo $gardian_row->dob; ?>" class="datepicker"  type="text"> 
+                                                            <input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="{{ date('d/M/Y',strtotime($gardian_row->dob)) }}" class="datepicker"  type="text"> 
                                                             
                                                         </p>
                                                     </div>
                                                     <div class="col s12 m4">
                                                         <label for="gaurdian_age">Age</label>
                                                         <span> 
-                                                        <input type="text" id="gaurdian_age" value="0" readonly >
+                                                        <input type="text" id="gaurdian_age" value="{{ CommonHelper::calculate_age($gardian_row->dob) }}" readonly >
                                                         </span>
                                                     </div>
                                                 </div>
@@ -637,8 +650,8 @@
                                             <div class="col s12 m4">
                                                  <label>Relationship*</label>
                                                     <select name="relationship_id" id="relationship" data-error=".errorTxt31"  class="error browser-default">
-                                                        @foreach($data['relationship_view'] as $key=>$value)
-                                                            <option value="{{$value->id}}" >{{$value->relation_name}}</option>
+                                                       <option value="" >Select</option> @foreach($data['relationship_view'] as $key=>$value)
+                                                            <option <?php echo $gardian_row->relationship_id==$value->id ? 'selected': ''; ?> value="{{$value->id}}" >{{$value->relation_name}}</option>
                                                         @endforeach
                                                    </select>
                                                        
@@ -666,6 +679,7 @@
                                             <div class="col s12 m4">
                                                  <label>Country Name*</label>
                                                 <select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['country_view'] as $value)
                                                         <option <?php echo $gardian_row->country_id == $value->id ? 'selected' : ''; ?> value="{{$value->id}}" >{{$value->country_name}}</option>
                                                     @endforeach
@@ -678,6 +692,7 @@
                                             <div class="col s12 m4">
                                                  <label>State Name*</label>
                                                 <select name="guardian_state_id" id="guardian_state_id"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['state_view'] as $key=>$value)
                                                         <option value="{{$value->id}}" <?php if($value->id == $gardian_row->state_id) { echo "selected";} ?>>{{$value->state_name}}</option>
                                                     @endforeach
@@ -696,6 +711,7 @@
                                             <div class="col s12 m4">
                                                  <label>City Name*</label>
                                                 <select name="guardiancity_id" id="guardian_city_id"  class="error browser-default">
+													<option value="" >Select</option>
                                                     @foreach($data['city_view'] as $key=>$value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $gardian_row->city_id) { echo "selected";} ?>>{{$values->city_name}}</option>
                                                     @endforeach
@@ -712,8 +728,8 @@
                                             </div>
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="guardian_address_three">Address Line 2*</label>
-                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="<?php echo $gardian_row->address_two; ?>" >
+                                                <label for="guardian_address_three">Address Line 3*</label>
+                                                <input id="guardian_address_three" name="guardian_address_three" type="text" value="<?php echo $gardian_row->address_three; ?>" >
                                                  
                                             </div>
                                             <div class="input-field col s12 m4">

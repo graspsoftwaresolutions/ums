@@ -45,7 +45,7 @@
 				<input id="edit_nominee_auto_id" name="edit_nominee_auto_id" class='hide' value=""  type="text" >
 				<input id="edit_nominee_row_id" name="edit_nominee_auto_id" class='hide' value=""  type="text" >
 				<input id="edit_nominee_name" name="edit_nominee_name" value=" "  type="text" >
-				<input id="edit_nominee_id" name="edit_nominee_id" class='hide' value=" "  type="text" >
+				
 				<label for="edit_nominee_name">Nominee name* </label>
 			</div>
 			<div class="col s12 m4 row">
@@ -76,6 +76,7 @@
 			<div class="col s12 m4">
 				<label>Relationship*</label>
 				<select name="edit_relationship" id="edit_relationship" data-error=".errorTxt31"  class="error browser-default">
+					<option value="">Select</option>
 					@foreach($data['relationship_view'] as $key=>$value)
 						<option value="{{$value->id}}" data-relationshipname="{{$value->relation_name}}" >{{$value->relation_name}}</option>
 					@endforeach
@@ -185,9 +186,9 @@ $('#country_id').change(function(){
 		success:function(res){               
 			if(res){
 				$("#state_id").empty();
+				$("#state_id").append($('<option></option>').attr('value', '').text("Select"));
 				//console.log('hi test');
 				$.each(res,function(key,entry){
-					$("#state_id").append($('<option></option>').attr('value', '').text("Select State"));
 					$("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
 				   // var select = $("#state");
 				   // select.material_select('destroy');
@@ -249,7 +250,7 @@ $('#company').change(function(){
 			if(res)
 			{
 				$('#branch').empty();
-				
+				$("#branch").append($('<option></option>').attr('value', '').text("Select"));
 				$.each(res,function(key,entry){
 					$('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
 				});
@@ -486,7 +487,7 @@ $('#nominee_state_id').change(function(){
 });
  $('#add_nominee').click(function(){
 	var nominee_row_id = parseInt($("#nominee_row_id").val())+1;
-	alert(nominee_row_id);
+	//alert(nominee_row_id);
 	var auto_id =   $("#auto_id").val();
 	var nominee_name =   $("#nominee_name").val();
 	var nominee_dob =   $("#nominee_dob").val();

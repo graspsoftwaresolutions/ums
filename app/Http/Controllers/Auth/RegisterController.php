@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 
 use App\User;
@@ -74,8 +75,20 @@ class RegisterController extends Controller
 
     public function ShowRegistrationForm()
     {
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
-        return view('auth.register')->with('data',$data);
+		//return app()->getLocale();
+		$data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+		$data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
+		$data['company_view'] = DB::table('company')->where('status','=','1')->get();
+		$data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
+		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
+		$data['status_view'] = DB::table('status')->where('status','=','1')->get();
+		$data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
+		$data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
+		$data['user_type'] = 0;
+
+		return view('membership.add_membership')->with('data',$data);  
+		/* $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+		return view('auth.register')->with('data',$data); */
     }
     /**
      * Create a new user instance after a valid registration.
