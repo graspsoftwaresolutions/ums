@@ -38,14 +38,15 @@ class DesignationController extends Controller
             ['designation_name','=',$designation['designation_name']],
             ['status','=','1']
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add-designation')->with('message','Designation Name Already Exists');
+            return redirect($defdaultLang.'/add-designation')->with('message','Designation Name Already Exists');
         }
         else
         {
             $id = $this->Designation->StoreDesignation($designation);
-            return redirect('designation')->with('message','Designation Name Added Succesfully');
+            return redirect($defdaultLang.'/designation')->with('message','Designation Name Added Succesfully');
         }
     }
     public function view($id)
@@ -57,7 +58,7 @@ class DesignationController extends Controller
             ])->get();
         return view('designation.view_designation')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['designation_view'] = DB::table('designation')->where([
@@ -80,7 +81,7 @@ class DesignationController extends Controller
             ['designation_name','=',$designation['designation_name']],
             ['status','=','1']
             ])->count();
-
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
             return redirect()->back()->with('message','Designation Name Already Exists');
@@ -88,12 +89,14 @@ class DesignationController extends Controller
         else
         {
             $id = DB::table('designation')->where('id','=',$id)->update($designation);
-            return redirect('designation')->with('message','Designation Name Updated Succesfully');
+            return redirect($defdaultLang.'/designation')->with('message','Designation Name Updated Succesfully');
         }
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('designation')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('designation')->with('message','Designation Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('designation')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/designation')->with('message','Designation Deleted Succesfully');
 	}
 }

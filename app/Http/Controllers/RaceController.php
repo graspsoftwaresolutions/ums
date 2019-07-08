@@ -12,7 +12,8 @@ class RaceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); 
+        $this->middleware('auth');
+        $this->middleware('role:union'); 
         $this->Race = new Race;
     }
     public function index()
@@ -37,14 +38,15 @@ class RaceController extends Controller
             ['race_name','=',$race['race_name']],
             ['status','=','1']
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add-race')->with('message','Race Name Already Exists');
+            return redirect($defdaultLang.'/add-race')->with('message','Race Name Already Exists');
         }
         else
         {
             $id = $this->Race->StoreRace($race);
-            return redirect('race')->with('message','Race Name Added Succesfully');
+            return redirect($defdaultLang.'/race')->with('message','Race Name Added Succesfully');
         }
     }
     public function view($id)
@@ -56,7 +58,7 @@ class RaceController extends Controller
         ])->get();
         return view('race.view_race')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['race_edit'] = DB::table('race')->where([
@@ -79,7 +81,7 @@ class RaceController extends Controller
             ['race_name','=',$race['race_name']],
             ['status','=','1']
             ])->count();
-
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
             return redirect()->back()->with('message','Race Name Already Exists');
@@ -87,12 +89,14 @@ class RaceController extends Controller
         else
         {
             $id = DB::table('race')->where('id','=',$id)->update($race);
-            return redirect('race')->with('message','Race Name Updated Succesfully');
+            return redirect($defdaultLang.'/race')->with('message','Race Name Updated Succesfully');
         }
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('race')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('race')->with('message','Race Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('race')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/race')->with('message','Race Deleted Succesfully');
 	}
 }

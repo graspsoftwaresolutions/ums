@@ -41,14 +41,15 @@ class FeeController extends Controller
             ['fee_name','=',$fee['fee_name']],
             ['status','=','1']
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add-fee')->with('message','Fee Name Already Exists');
+            return redirect($defdaultLang.'/add-fee')->with('message','Fee Name Already Exists');
         }
         else
         {
             $id = $this->Fee->StoreFee($fee);
-            return redirect('fee')->with('message','Fee Name Added Succesfully');
+            return redirect($defdaultLang.'/fee')->with('message','Fee Name Added Succesfully');
         }
     }
     public function view($id)
@@ -60,7 +61,7 @@ class FeeController extends Controller
             ])->get();
         return view('fee.view_fee')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['fee_view'] = DB::table('fee')->where([
@@ -86,7 +87,7 @@ class FeeController extends Controller
             ['fee_name','=',$fee['fee_name']],
             ['status','=','1']
             ])->count();
-
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
             return redirect()->back()->with('message','Fee Name Already Exists');
@@ -94,12 +95,14 @@ class FeeController extends Controller
         else
         {
             $id = DB::table('fee')->where('id','=',$id)->update($fee);
-            return redirect('fee')->with('message','Fee Name Updated Succesfully');
+            return redirect($defdaultLang.'/fee')->with('message','Fee Name Updated Succesfully');
         }
     }
-    public function delete($id)
+    public function delete($lang, $id)
 	{
-		$data = DB::table('fee')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('fee')->with('message','Fee Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('fee')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/fee')->with('message','Fee Deleted Succesfully');
 	}
 }
