@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Branch</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Add Branch') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">Branch
+                                            <li class="breadcrumb-item active">{{__('Branch') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('branch')}}">Branch List</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.branch', app()->getLocale()) }}">{{__('Branch List') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,15 +36,15 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Branch</h4>
+                                    <h4 class="card-title">{{__('Add Branch') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="branchformValidate" method="post" action="{{ url('branch_save') }}">
+                                    <form class="formValidate" id="branchformValidate" method="post" action="{{ route('master.savebranch', app()->getLocale()) }}}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                            <select class="error browser-default" id="company_id" name="company_id"  data-error=".errorTxt1" style="height: 4rem;">
-                                                <option value="" disabled="" selected="">Select company</option>
+                                            <select class="error browser-default common-select" id="company_id" name="company_id"  data-error=".errorTxt1" style="height: 4rem;">
+                                                <option value="" disabled="" selected="">{{__('Select company') }}</option>
                                                 @foreach($data['company_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->company_name}}</option>
                                                 @endforeach
@@ -54,8 +54,8 @@
                                             </div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                            <select class="error browser-default" id="union_branch_id" name="union_branch_id"  data-error=".errorTxt2" style="height: 4rem;">
-                                                <option value="" disabled="" selected="">Select Union Branch</option>
+                                            <select class="error browser-default common-select" id="union_branch_id" name="union_branch_id"  data-error=".errorTxt2" style="height: 4rem;">
+                                                <option value="" disabled="" selected="">{{__('Select Union Branch') }}</option>
                                                 @foreach($data['union_view'] as $value)
                                                     <option value="{{$value->id}}">{{$value->union_branch}}</option>
                                                 @endforeach
@@ -67,13 +67,13 @@
                                     </div>
                                     <div class="row">  
                                         <div class="input-field col s12 m6">
-                                            <input id="branch_name" name="branch_name" type="text" data-error=".errorTxt3">
+                                            <input id="branch_name" name="branch_name" class="common-input" type="text" data-error=".errorTxt3">
                                             <div class="errorTxt3" ></div>
-                                                <label for="branch_name">Branch Name*</label>
+                                                <label for="branch_name" class="common-label">{{__('Branch Name') }}*</label>
                                         </div>
                                         <div class="col s12 m6">
-                                            <select class="error browser-default" name="country_id" id="country_id" data-error=".errorTxt6" style="height: 4rem;">
-                                            <option value="">Select Country</option>
+                                            <select class="error browser-default common-select" name="country_id" id="country_id" data-error=".errorTxt6" style="height: 4rem;">
+                                            <option value="">{{__('Select country') }}</option>
                                                 @foreach($data['country_view'] as $value)
                                                 <option value="{{$value->id}}">{{$value->country_name}}</option>
                                                 @endforeach
@@ -85,16 +85,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col s12 m6">
-                                            <select class="error browser-default" data-error=".errorTxt7" id="state_id" name="state_id" aria-required="true" required style="height: 4rem;">
-                                                <option value="" selected>State Name</option>
+                                            <select class="error browser-default common-select" data-error=".errorTxt7" id="state_id" name="state_id" aria-required="true" required style="height: 4rem;">
+                                                <option value="" selected>{{__('Select state') }}</option>
                                             </select>
                                             <div class="input-field"> 
                                                 <div class="errorTxt7"></div>
                                             </div>
                                         </div>
                                         <div class="col s12 m6">
-                                            <select name="city_id" id="city_id" class="error browser-default" aria-required="true" required data-error=".errorTxt8" style="height: 4rem;">
-                                                <option value="">Select City</option>
+                                            <select name="city_id" id="city_id" class="error browser-default common-select" aria-required="true" required data-error=".errorTxt8" style="height: 4rem;">
+                                                <option value="">{{__('Select city') }}</option>
                                             </select>
                                             <div class="input-field">        
                                                 <div class="errorTxt8"></div>
@@ -103,51 +103,51 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12 m6">
-                                             <label for="postal_code">Postal Code *</label>
-                                            <input id="postal_code" name="postal_code" type="text" data-error=".errorTxt9">
+                                             <label for="postal_code" class="common-label">{{__('Postal Code') }} *</label>
+                                            <input id="postal_code" name="postal_code" class="common-input" type="text" data-error=".errorTxt9">
                                             <div class="errorTxt9"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                            <input id="address_one" name="address_one" type="text" data-error=".errorTxt4">
+                                            <input id="address_one" name="address_one" class="common-input" type="text" data-error=".errorTxt4">
                                             <div class="errorTxt4"></div>
-                                            <label for="address_one">Address Line 1*</label>
+                                            <label for="address_one" class="common-label">{{__('Address Line 1') }}*</label>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12 m6">
-                                            <input id="address_two" name="address_two" type="text" data-error=".errorTxt5">
+                                            <input id="address_two" name="address_two" class="common-input" type="text" data-error=".errorTxt5">
                                             <div class="errorTxt5"></div>
-                                            <label for="address_two">Address Line 2</label>
+                                            <label for="address_two" class="common-label">{{__('Address Line 2') }}</label>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                            <input id="address_three" name="address_three" type="text" data-error=".errorTxt12">
+                                            <input id="address_three" name="address_three" class="common-input" type="text" data-error=".errorTxt12">
                                             <div class="errorTxt12"></div>
-                                            <label for="address_three">Address Line 3</label>
+                                            <label for="address_three" class="common-label">{{__('Address Line 3') }}</label>
                                         </div>
                                     </div>
                                     <div class="row"> 
                                         <div class="input-field col s12 m6">
-                                          <label for="phone">Phone Number *</label>
-                                          <input id="phone" name="phone" type="text" data-error=".errorTxt13">
+                                          <label for="phone" class="common-label">{{__('Phone Number') }} *</label>
+                                          <input id="phone" name="phone" class="common-input" type="text" data-error=".errorTxt13">
                                           <div class="errorTxt13"></div>
                                         </div>   
                                         <div class="input-field col s12 m6">
-                                          <label for="phone">Mobile Number *</label>
-                                          <input id="mobile" name="mobile" type="text" data-error=".errorTxt10">
+                                          <label for="phone" class="common-label">{{__('Mobile Number') }} *</label>
+                                          <input id="mobile" name="mobile" class="common-input" type="text" data-error=".errorTxt10">
                                           <div class="errorTxt10"></div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="email">Email *</label>
-                                          <input id="email" name="email" type="email" data-error=".errorTxt11">
+                                          <label for="email" class="common-label">{{__('Email') }} *</label>
+                                          <input id="email" name="email" class="common-input" type="email" data-error=".errorTxt11">
                                           <div class="errorTxt11"></div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save') }}
+                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
@@ -286,42 +286,42 @@ $(document).ready(function(){
         messages: {
             
             company_id: {
-                required: "Please enter your company",
+                required: '{{__("Please enter your company") }}',
                 
             },
             union_branch_id: {
-                required: "Please enter your union branch name",
+                required: '{{__("Please enter your union branch name") }}',
                 
             },
             branch_name: {
-                required: "Please enter your branch name",
+                required: '{{__("Please enter your branch name") }}',
                 
             },
             phone: {
-                required: "Please enter your phone number",
+                required: '{{__("Please enter your phone number") }}',
                 
             },
             mobile: {
-                required: "Please enter your mobile number",
+                required: '{{__("Please enter your mobile number") }}',
                 
             },
             email: {
-                required: "Please enter valid email",
+                required: '{{__("Please enter valid email") }}',
                 },
             country_id: {
-                required:"Please choose  your Country",
+                required:'{{__("Please choose  your Country") }}',
             },
             state_id: {
-                required:"Please choose  your State",
+                required:'{{__("Please choose  your State") }}',
             },
             city_id: {
-                required:"Please choose  your city",
+                required:'{{__("Please choose  your city") }}',
             },
             postal_code: {
-                required:"Please enter postal code",     
+                required:'{{__("Please enter postal code") }}',     
             },
             address_one: {
-                required:"Please enter your address",
+                required:'{{__("Please enter your address") }}',
             }
         },
         errorElement: 'div',

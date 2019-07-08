@@ -85,14 +85,15 @@ class BranchController extends Controller
            ['branch_name','=', $branch['branch_name']],
            ['status','=','1'] 
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('branch')->with('message','Branch Name Already Exists');
+            return redirect($defdaultLang.'/branch')->with('message','Branch Name Already Exists');
         }
         else
         {
             $id = $this->Branch->StoreBranch($branch);
-            return redirect('branch')->with('message','Branch Name Added Succesfully');
+            return redirect($defdaultLang.'/branch')->with('message','Branch Name Added Succesfully');
         }
     }
     public function getStateList(Request $request)
@@ -119,7 +120,7 @@ class BranchController extends Controller
        
         return response()->json($res);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['branch_view'] = DB::table('company')->select('branch.*', 'company.company_name','branch.branch_name','branch.id','branch.company_id','branch.status','company.status','union_branch.union_branch','branch.union_branch_id')
@@ -155,12 +156,15 @@ class BranchController extends Controller
         $branch['phone'] = $request->input('phone');
         $branch['mobile'] = $request->input('mobile');
         $branch['email'] = $request->input('email');
-		$id = DB::table('branch')->where('id','=',$id)->update($branch);
-		return redirect('branch')->with('message','Branch Details Updated Succesfully');
+        $id = DB::table('branch')->where('id','=',$id)->update($branch);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/branch')->with('message','Branch Details Updated Succesfully');
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('branch')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('branch')->with('branch','Branch Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('branch')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/branch')->with('branch','Branch Deleted Succesfully');
 	} 
 }

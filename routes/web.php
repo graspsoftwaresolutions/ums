@@ -97,6 +97,26 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('designation-edit/{parameter}','DesignationController@edit')->name('master.editdesignation');
 	Route::post('update_designation','DesignationController@update')->name('master.updatedesignation');
 	Route::get('designation-delete/{id}','DesignationController@delete')->name('master.deletedesignation');
+	
+	//Status Details
+	Route::get('status','StatusController@index')->name('master.status');
+	Route::get('add-status','StatusController@addStatus')->name('master.addstatus');
+	Route::post('status_save','StatusController@save')->name('master.savestatus');
+	Route::get('status-edit/{parameter}','StatusController@edit')->name('master.editstatus');
+	Route::post('status_update','StatusController@update')->name('master.updatestatus');
+	Route::get('status-delete/{id}','StatusController@delete')->name('master.deletestatus');
+	
+	//Branch Details
+	Route::get('branch','BranchController@index')->name('master.branch');
+	/* 
+	Route::get('get-state-list','BranchController@getStateList');
+	Route::get('get-cities-list','BranchController@getCitiesList');
+	 */
+	Route::get('add-branch','BranchController@addBranch')->name('master.addbranch');
+	Route::post('branch_save','BranchController@save')->name('master.savebranch');
+	Route::get('branch-edit/{parameter}','BranchController@edit')->name('master.editbranch');
+	Route::post('branch_update','BranchController@update')->name('master.updatebranch');
+	Route::get('branch-delete/{id}','BranchController@delete')->name('master.deletebranch');
 
 
 });
@@ -123,28 +143,9 @@ Route::post('membership_update','MembershipController@update');
 Route::get('membership-delete/{id}','MembershipController@delete');
 Route::get('membership_list','MembershipController@new_members');
 
-//Status Master
-Route::get('status','StatusController@index');
-Route::get('add-status','StatusController@addStatus');
-Route::post('status_save','StatusController@save');
-Route::get('status-edit/{parameter}','StatusController@edit');
-Route::post('status_update','StatusController@update');
-Route::get('status-delete/{id}','StatusController@delete');
 
 
 
-
-//branch
-Route::get('branch','BranchController@index');
-/* 
-Route::get('get-state-list','BranchController@getStateList');
-Route::get('get-cities-list','BranchController@getCitiesList');
- */
-Route::get('add-branch','BranchController@addBranch');
-Route::post('branch_save','BranchController@save');
-Route::get('branch-edit/{parameter}','BranchController@edit');
-Route::post('branch_update','BranchController@update');
-Route::get('branch-delete/{id}','BranchController@delete');
 
 //Union Branch
 Route::get('unionbranch','UnionBranchController@index');
