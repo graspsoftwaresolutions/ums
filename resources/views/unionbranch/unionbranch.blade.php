@@ -21,16 +21,16 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">Union Branch List</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Union Branch List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+										<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>
 											</li>
-											<li class="breadcrumb-item active"><a href="#">Union Branch Title</a>
+											<li class="breadcrumb-item active">{{__('Union Branch Title') }}
 											</li>
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('add-unionbranch')}}">Add New Union Branch</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addunionbranch', app()->getLocale()) }}">{{__('Add New Union Branch') }}</a>
 										
 									</div>
 								</div>
@@ -39,32 +39,32 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">Union Branch List</h4>
+									<h4 class="card-title">{{__('Union Branch List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-                                                        <th>Union Branch Name</th>
-														<th>Head</th>
-														<th style="text-align:center"> Action</th>
+                                                        <th>{{__('Union Branch Name') }}</th>
+														<th>{{__('Head') }}</th>
+														<th style="text-align:center">{{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
 													 @foreach($data['union_view'] as $key=>$value)
 													
-													<?php
-													$parameter =[
-														'id' =>$value->id,
-													];
-													 $parameter = Crypt::encrypt($parameter);  
+													 <?php
+													 $parameter = Crypt::encrypt($value->id);  
 													 ?>
 													 <tr>
                                                      <td>{{$value->union_branch}}</td>
                                                      <td>{{$value->is_head}}</td>
+													 @php
+														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
+														@endphp
 														
-														<td style="text-align:center"><a class="btn-small waves-effect waves-light cyan" href="{{url('unionbranch-edit/').'/'.$parameter}}">Edit</a>  <a class="btn-small waves-effect waves-light amber darken-4" href="{{url('unionbranch-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a> </td>
+														<td style="text-align:center"><a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editunionbranch',[app()->getLocale(),$parameter]) }}">{{__('Edit') }}</a>  <a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deleteunionbranch',[app()->getLocale(),$parameter]) }}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a> </td>
 												  </tr>
 												  @endforeach
 												</tbody>

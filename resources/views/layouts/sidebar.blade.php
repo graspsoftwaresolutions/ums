@@ -14,11 +14,13 @@
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
               <li id="country_sidebar_li_id" class=""><a id="country_sidebar_a_id" class="collapsible-body " href="{{ route('master.country',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Country Details') }}</span></a></li>
               <li id="state_sidebar_li_id" class=""><a id="state_sidebar_a_id" class="collapsible-body" href="{{route('master.state',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('State Details') }}</span></a></li>
-              <li id="city_sidebar_li_id" class=""><a id="city_sidebar_a_id" class="collapsible-body" href="{{route('master.city',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>City Details</span></a></li>
-              <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{url('company')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Company Details</span></a></li>
-              <li id="unionbranch_sidebar_li_id" class=""><a id="unionbranch_sidebar_a_id" class="collapsible-body" href="{{url('unionbranch')}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Union Branch Details</span></a></li>
-              <li id="branch_sidebar_li_id" class=""><a id="branch_sidebar_a_id" class="collapsible-body" href="{{ route('master.branch',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Branch Details')}}</span></a></li> 
+              <li id="city_sidebar_li_id" class=""><a id="city_sidebar_a_id" class="collapsible-body" href="{{route('master.city',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('City Details') }}</span></a></li>
+             
               <li id="status_sidebar_li_id" class=""><a id="status_sidebar_a_id" class="collapsible-body" href="{{ route('master.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Status Details')}}</span></a></li>
+              
+              <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{route('master.company',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Company Details') }}</span></a></li>
+              <li id="unionbranch_sidebar_li_id" class=""><a id="unionbranch_sidebar_a_id" class="collapsible-body" href="{{route('master.unionbranch',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Union Branch Details') }}</span></a></li>
+               <li id="branch_sidebar_li_id" class=""><a id="branch_sidebar_a_id" class="collapsible-body" href="{{ route('master.branch',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Branch Details')}}</span></a></li> 
               <li id="designation_sidebar_li_id" class=""><a id="designation_sidebar_a_id" class="collapsible-body" href="{{ route('master.designation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Designation Details')}}</span></a></li>
               <li id="race_sidebar_li_id" class=""><a id="race_sidebar_a_id" class="collapsible-body" href="{{ route('master.race',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Race Details')}}</span></a></li>
               <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{ route('master.fee',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Fee Details')}}</span></a></li>
@@ -28,13 +30,19 @@
             </ul>
           </div>
         </li>
-        <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{url('membership')}}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
-        </li>
+        
         @endrole
-        @role('branch')
-        <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{url('membership')}}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
-        @endrole
-		
+        @if(!empty(Auth::user()))
+          @php
+            $user_id = Auth::user()->id;
+            $get_roles = Auth::user()->roles;
+            $user_role = $get_roles[0]->slug;
+          @endphp
+          <?php //print_r($user_role);die; ?>
+          @if($user_role=='union' || $user_role=='branch' || $user_role=='company')
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('membership') }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
+          @endif
+        @endif
        
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

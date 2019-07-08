@@ -115,7 +115,7 @@ class CityController extends Controller
         $city['city_name'] = $request->input('city_name');
         $id = DB::table('city')->where('id','=',$id)->update($city);
         $defaultLanguage = app()->getLocale();
-		return redirect($defaultLanguage.'city')->with('message','City Details Updated Succesfully');
+		return redirect($defaultLanguage.'/city')->with('message','City Details Updated Succesfully');
     }
     public function delete($lang,$id)
 	{

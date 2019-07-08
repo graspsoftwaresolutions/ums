@@ -71,7 +71,32 @@ class CommonHelper
         return $converted_date;
      }
 
-     public static function convert_date_datepicker($date){
+    public static function convert_date_datepicker($date){
         return date('d/M/Y', strtotime($date));
-     }
+    }
+
+    public static function get_auto_member_number(){
+        $last_no = DB::table('membership')->orderBy('id', 'desc')->limit(1)->pluck('member_number');
+       
+        if(!empty($last_no)){
+            $last_no =  $last_no[0];
+            return is_numeric($last_no) ? $last_no+1 : 1000;
+        }
+        return 1000;
+    }
+
+    public static function get_company_branch($company_id){
+        $branch_list = DB::table('branch')->where('company_id', $company_id)->get();
+       
+        return $branch_list;
+    }
+
+    
+    public static function get_branch_by_unionbranch($branch_id){
+        DB::connection()->enableQueryLog();
+        $branch_list = DB::table('branch')->where('union_branch_id', $branch_id)->get();
+        //$queries = DB::getQueryLog();
+        // dd($queries);
+        return $branch_list;
+    }
 }

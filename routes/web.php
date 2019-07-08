@@ -41,11 +41,27 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//City Details 
 	Route::get('city','CityController@index')->name('master.city');
 	Route::get('add-city','CityController@addCity')->name('master.addCity');
-	Route::get('get-state-order-list/{country}','CityController@getStates')->name('master.getstate');
+	//Route::get('get-state-order-list/{country}','CityController@getStates')->name('master.getStates');
 	Route::post('city_save','CityController@save')->name('master.citysave');
 	Route::get('city-edit/{parameter}','CityController@edit')->name('master.editcity');
 	Route::post('city_update','CityController@update')->name('master.updatecity');
 	Route::get('city-delete/{id}','CityController@delete')->name('master.deletecity');
+
+	//Company
+	Route::get('/company','CompanyController@index')->name('master.company');
+	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
+	Route::post('/company_save','CompanyController@save')->name('master.companysave');
+	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
+	Route::post('company_edit','CompanyController@update')->name('master.companyupdate');
+	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
+
+	//Union Branch
+	Route::get('unionbranch','UnionBranchController@index')->name('master.unionbranch');
+	Route::get('add-unionbranch','UnionBranchController@addUnionBranch')->name('master.addunionbranch');
+	Route::post('unionbranch_save','UnionBranchController@save')->name('master.saveunionbranch');
+	Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit')->name('master.editunionbranch');
+	Route::post('unionbranch_update','UnionBranchController@update')->name('master.updateunionbranch');
+	Route::get('unionbranch-delete/{id}','UnionBranchController@delete')->name('master.deleteunionbranch');
 	
 	//Person Details
 	Route::get('persontitle','PersontitleController@index')->name('master.persontitle');
@@ -133,13 +149,14 @@ Route::get('get-fee-options','CommonController@getFeesList');
 Route::post('add-nominee','MemberController@addNominee');
 Route::get('get-oldmember-list','MemberController@getoldMemberList');
 Route::post('membership_save','MemberController@Save');
+Route::post('membership_update','MemberController@update');
 
 //membership
 Route::get('membership','MembershipController@index');
 Route::get('membership_register','MembershipController@addMember');
 Route::get('membership-view/{parameter}','MembershipController@view');
 Route::get('membership-edit/{parameter}','MembershipController@edit');
-Route::post('membership_update','MembershipController@update');
+
 Route::get('membership-delete/{id}','MembershipController@delete');
 Route::get('membership_list','MembershipController@new_members');
 
@@ -147,22 +164,9 @@ Route::get('membership_list','MembershipController@new_members');
 
 
 
-//Union Branch
-Route::get('unionbranch','UnionBranchController@index');
-Route::get('add-unionbranch','UnionBranchController@addUnionBranch');
-Route::post('unionbranch_save','UnionBranchController@save');
-Route::get('unionbranch-view/{parameter}','UnionBranchController@view');
-Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
-Route::post('unionbranch_update','UnionBranchController@update');
-Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
 
-//Company
-Route::get('/company','CompanyController@index');
-Route::get('/add-company','CompanyController@addCompany');
-Route::post('/company_save','CompanyController@save');
-Route::get('company-edit/{parameter}','CompanyController@edit');
-Route::post('company_edit','CompanyController@update');
-Route::get('company-delete/{id}','CompanyController@delete');
+
+
 
 //Person Tiltle Setup
 Route::get('persontitle','PersontitleController@index');
