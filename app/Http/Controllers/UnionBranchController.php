@@ -70,6 +70,7 @@ class UnionBranchController extends Controller
         }
         
         $union['is_head'] = $request->input('is_head');
+        $defaultLanguage = app()->getLocale();
         
         //Data Exists
         $data_exists = DB::table('union_branch')->where([
@@ -78,7 +79,7 @@ class UnionBranchController extends Controller
              ])->count();
          if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
          {
-             return redirect('add-unionbranch')->with('message','Union Branch Name Already Exists');
+             return redirect($defaultLanguage.'/add-unionbranch')->with('message','Union Branch Name Already Exists');
          }
          else
          {
@@ -86,7 +87,7 @@ class UnionBranchController extends Controller
             {
                 $union['is_head'] = '0';
                 $id = $this->UnionBranch->StoreUnionBranch($union);
-                return redirect('unionbranch')->with('message','Union Branch Name Added Succesfully');
+                return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Added Succesfully');
             }
             else{
                 $union['is_head'] = '1';
@@ -98,11 +99,11 @@ class UnionBranchController extends Controller
                 {
                     $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                     $id = $this->UnionBranch->StoreUnionBranch($union);
-                    return redirect('unionbranch')->with('message','Union Branch Name Added Succesfully');
+                    return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Added Succesfully');
                 }
                 else{
                     $id = $this->UnionBranch->StoreUnionBranch($union);
-                    return redirect('unionbranch')->with('message','Union Branch Name Added Succesfully');
+                    return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Added Succesfully');
                 }
             }
          }
@@ -116,10 +117,10 @@ class UnionBranchController extends Controller
         ])->get();
         return view('unionbranch.view_unionbranch')->with('data',$data);
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         DB::connection()->enableQueryLog();
-       $id = Crypt::decrypt($id);
+        $id = Crypt::decrypt($id);
         $data['union_branch'] = DB::table('union_branch')->select('union_branch.id as branchid','union_branch.id','union_branch.union_branch','union_branch.is_head','union_branch.country_id','union_branch.state_id','union_branch.city_id','union_branch.postal_code','union_branch.address_one','union_branch.address_two','union_branch.phone','union_branch.email','union_branch.is_head',
                                             'union_branch.status','union_branch.address_three','union_branch.mobile','union_branch.logo','country.id','country.country_name','country.status','state.id','state.state_name','state.status','city.id','city.city_name','city.status')
                                 ->leftjoin('country','union_branch.country_id','=','country.id')
@@ -129,11 +130,13 @@ class UnionBranchController extends Controller
                                         ['union_branch.status','=','1'],
                                         ['union_branch.id','=',$id]
                                     ])->get();
+        
         $country_id = $data['union_branch'][0]->country_id;
         $state_id = $data['union_branch'][0]->state_id;
         $city_id = $data['union_branch'][0]->city_id;
         
         $queries = DB::getQueryLog();
+        $defaultLanguage = app()->getLocale();
         //dd($queries);
         //return $data['union_branch'];
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
@@ -182,7 +185,9 @@ class UnionBranchController extends Controller
 			$image_name = time().'.'.$files->getClientOriginalExtension();
 			$files->move('public/images',$image_name);
 			$union['logo'] = $image_name;
-		}
+        }
+        $defaultLanguage = app()->getLocale();
+        
          //Data Exists
          $data_exists = DB::table('union_branch')->where([
             ['union_branch','=', $union['union_branch']],
@@ -196,7 +201,7 @@ class UnionBranchController extends Controller
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
                 
 
-                return redirect('unionbranch')->with('message','Union Branch Name Updated Succesfully');
+                return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
             }
             else{
 
@@ -208,17 +213,18 @@ class UnionBranchController extends Controller
                 {
                     $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                     $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-                    return redirect('unionbranch')->with('message','Union Branch Name Updated Succesfully');
+                    return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
                 }
                 else{
                     $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-                    return redirect('unionbranch')->with('message','Union Branch Name Updated Succesfully');
+                    return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
                 }
             }
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
+        $id = Crypt::decrypt($id);
 		$data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('unionbranch')->with('message','Union Branch Deleted Succesfully');
+		return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
 	}
 }

@@ -27,7 +27,7 @@
 										</ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('city')}}">{{__('Back') }}</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.city', app()->getLocale())}}">{{__('Back') }}</a>
                                         
                                     </div>
                                 </div>
@@ -56,9 +56,11 @@
                                                 </div>
                                             </div>
                                             <div class="input-field col s12 m6">
+                                           
                                             <select class="error browser-default" class="common-select" id="state_id" name="state_id"  data-error=".errorTxt2">
                                                 <option value="" disabled="" selected="">{{__('Select state') }}</option>
                                             </select>
+                                           
                                              <div class="errorTxt2" ></div>
                                             </div>
                                             <div class="clearfix" ></div>
@@ -72,7 +74,7 @@
 
                                         <div class="row">
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Save
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save') }}
                                             
                                           </button>
                                         </div>
@@ -105,7 +107,7 @@
     $(function() {
         $('select[name=country_id]').change(function() {
 
-            var url = "{{ url('get-state-order-list') }}" + '/' + $(this).val();
+            var url = "{{ url('get-state-list') }}" + '?country_id=' + $(this).val();
 
             $.get(url, function(data) {
                 var select = $('form select[name= state_id]');
@@ -136,15 +138,15 @@
         messages: {
             
             country_id: {
-                required: {{__("Please choose Country") }}'
+                required: '{{__("Please choose Country") }}',
                 
             },
             state_id: {
-                required: {{__("Please choose state") }}'
+                required: '{{__("Please choose state") }}',
                 
             },
             city_name: {
-                required: {{__("Please Enter City") }}'    
+                required: '{{__("Please Enter City") }}' ,  
             }
         },
         errorElement: 'div',

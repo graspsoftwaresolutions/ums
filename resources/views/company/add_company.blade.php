@@ -17,16 +17,15 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">Add New Company</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Add New Company') }}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="#">Dashboard</a>
-                                            </li>
-                                            <li class="breadcrumb-item active">Add Company
+                                        <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>
+                                            <li class="breadcrumb-item active">{{__('Add Company') }}
                                             </li>
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('company')}}">Company List</a>
+                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{route('master.company', app()->getLocale()) }}">{{__('Back') }}</a>
                                         
                                     </div>
                                 </div>
@@ -35,15 +34,15 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Add Company</h4>
+                                    <h4 class="card-title">{{__('Add Company') }}</h4>
                                     @include('includes.messages')
                                    <div id="view-validations">
-                                    <form class="formValidate" autocomplete="off" id="company_formValidate" method="post" action="{{ url('company_save') }}">
+                                    <form class="formValidate" autocomplete="off" id="company_formValidate" method="post" action="{{ route('master.companysave', app()->getLocale()) }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="company_name">Company Name*</label>
-                                          <input id="company_name" name="company_name" type="text" data-error=".errorTxt1">
+                                          <label for="company_name" class="common-label">{{__('Company Name') }}*</label>
+                                          <input id="company_name" class="common-input" name="company_name" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1">
                                             @if($errors->has('company_name'))
                                                 <span>{{$errors->first('company_name')}}</span>
@@ -51,8 +50,8 @@
                                             </div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="company_name">Short Code*</label>
-                                          <input id="short_code" name="short_code" type="text" data-error=".errorTxt2">
+                                          <label for="company_name" class="common-label">{{__('Short Code') }}*</label>
+                                          <input id="short_code" class="common-input" name="short_code" type="text" data-error=".errorTxt2">
                                           <div class="errorTxt2">
                                           @if($errors->has('short_code'))
                                             <span class="text-danger">{{$errors->first('short_code')}}</span>
@@ -60,9 +59,9 @@
                                           </div>
                                         </div>
                                         <div class=" col s12 m6 union-data">
-                                            <label>Head of Company*</label>
-                                                <select id="head_of_company" name="head_of_company" class="error browser-default">
-                                                <option value="">Select Company</option>
+                                            <label class="common-label">{{__('Head of Company') }}*</label>
+                                                <select id="head_of_company" name="head_of_company" class="error browser-default common-select">
+                                                <option value="">{{__('Select Company') }}</option>
                                                     @foreach($data['company'] as $value)
                                                     <option value="{{$value->id}}">{{$value->company_name}}</option>
                                                     @endforeach
@@ -79,8 +78,8 @@
                                         </div>
                                         
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Submit
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save') }}
+                                          
                                           </button>
                                         </div>
                                       </div>
@@ -122,13 +121,13 @@
         //For custom messages
         messages: {
             company_name: {
-            required: "Please Enter Company Name",
+            required: '{{__("Please Enter Company Name") }}',
             },
             short_code: {
-                required: "Please Enter Short Code",
+                required: '{{__("Please Enter Short Code") }}',
             },
             head_of_company: {
-                required: "Please Enter Head of company",
+                required: '{{__("Please Choose Head of company") }}',
             },
         },
         errorElement: 'div',
