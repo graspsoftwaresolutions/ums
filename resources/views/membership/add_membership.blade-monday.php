@@ -55,25 +55,25 @@
 											<div id="view-validations">
 												<?php 
 													$auth_user = Auth::user();
-													$member_number_readonly = 'readonly';
-													$member_number_hide = 'hide';
+													$company_id = '';
+													$branch_id = '';
+													$user_role = '';
 													if(!empty($auth_user)){
 														
 														$get_roles = Auth::user()->roles;
 														$user_role = $get_roles[0]->slug;
-														$company_id = '';
-														$branch_id = '';
-														
+													
+														$member_number_readonly = 'readonly';
+														$member_number_hide = 'hide';
 														if($user_role =='union'){
 															$member_number_readonly = '';
 															$member_number_hide = '';
 															$member_status = 2;
 														}else if($user_role =='company'){
 															$company_id = $auth_user->company_id;
-															$branch_requird = '';
 															$member_status = 1;
 														} 
-														else if($user_role =='unionbranch'){
+														else if($user_role =='branch'){
 															$branch_id = $auth_user->branch_id;
 															$member_status = 1;
 														} 
@@ -290,9 +290,15 @@
 														<div class=" col s12 m6 union-data ">
 														<label>Company Name*</label>
 															<select name="company_id" id="company" class="error browser-default" >
-															<option value="">Select Company</option>
+																@if($user_role=='union' || $user_role=='')
+																<option value="">Select Company</option>
+																@endif
 																@foreach($data['company_view'] as $value)
-																<option value="{{$value->id}}">{{$value->company_name}}</option>
+																	@if($company_id=="")
+																		<option value="{{$value->id}}">{{$value->company_name}}</option>
+																	@elseif($company_id == $value->id)
+																		<option selected value="{{$value->id}}">{{$value->company_name}}</option>
+																	@endif
 																@endforeach
 															</select>
 															<div class="input-field">      
@@ -304,7 +310,21 @@
 														 <label>Branch Name*</label>
 															<select name="branch_id" id="branch" class="error browser-default" >
 																<option value="">Select Branch</option>
-																
+																@php
+																	$branch_list = [];
+																	if($company_id!=''){
+																		$branch_list = CommonHelper::get_company_branch($company_id);
+																	}
+
+																	if($branch_id!=''){
+																		$branch_list = CommonHelper::get_branch_by_unionbranch($branch_id);
+																	}
+																	
+																@endphp
+
+																@foreach($branch_list as $branch)
+																	<option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+																@endforeach
 															</select>
 															<div class="input-field">      
 																<div class="errorTxt23"></div>
