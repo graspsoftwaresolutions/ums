@@ -139,7 +139,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
 									<tr>
 										<td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-											<h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Union Login Details</h1>
+											<h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Union {{ $user_data['union_type'] ==1 ? 'Head': 'branch' }} Login Details</h1>
 										</td>
 									</tr>
 								</table>
@@ -163,7 +163,6 @@
 									<!-- start copy -->
 									<tr>
 										<td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-										<p style="margin: 0;">Union Login</p>
 											<p style="margin: 0;">test Hello {{ $user_data['name'] }}. Your account has created successfully.</p>
 											<p style="margin: 0;">Username: {{ $user_data['email'] }}</p>
 											<p style="margin: 0;">Password: {{ $user_data['password'] }}</p>

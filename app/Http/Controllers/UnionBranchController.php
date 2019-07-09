@@ -95,6 +95,7 @@ class UnionBranchController extends Controller
         }
         else
         {
+            $union_type =2;
             if($union['is_head'] == '')
             {
                 $union['is_head'] = '0';
@@ -136,6 +137,7 @@ class UnionBranchController extends Controller
                         $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
                         $member_user->roles()->attach($union_head_role);
                         $status =1;
+                        $union_type =1;
                     }
                 }
                 else{
@@ -152,6 +154,7 @@ class UnionBranchController extends Controller
                         $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
                         $member_user->roles()->attach($union_head_role);
                         $status =1;
+                        $union_type =2;
                     }
                 }
             }
@@ -162,6 +165,7 @@ class UnionBranchController extends Controller
 					'email' => $union['email'],
 					'password' => $randompass,
 					'site_url' => URL::to("/"),
+					'union_type' => $union_type,
 				);
 				$status = Mail::to($union['email'])->send(new UnionBranchMailable($mail_data));
 

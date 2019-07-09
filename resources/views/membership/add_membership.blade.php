@@ -676,7 +676,7 @@
 							</div>
 						</div>
 					</div>
-                    <div class="row ">
+                    <div class="row hide">
 					<div class="input-field col s6">
 					<input id="country_test" type="text" name="country_test" class="validate">
 					<label for="country_test">Search Country here</label>

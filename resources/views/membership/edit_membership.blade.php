@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="member_number">Member Number *</label>
-                                          <input id="member_number" name="member_number" value="{{$values->member_number}}"  type="text" data-error=".errorTxt29">
+                                          <input id="member_number" name="member_number" value="{{$values->member_number}}" readonly type="text" data-error=".errorTxt29">
                                           <div class="errorTxt29"></div>
                                         </div>
                                         <div class="input-field col s12 m6">

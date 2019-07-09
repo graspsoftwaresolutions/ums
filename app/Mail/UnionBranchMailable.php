@@ -29,6 +29,6 @@ class UnionBranchMailable extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.register-union')->subject('Registration successful | Membership');
+        return $this->view('emails.register-union')->subject('Union Registration successful | Membership');
     }
 }
