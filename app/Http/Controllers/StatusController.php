@@ -38,17 +38,18 @@ class StatusController extends Controller
             ['status_name','=',$status['status_name']],
             ['status','=','1'],
             ])->count();
+        $defdaultLang = app()->getLocale();
         if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
         {
-            return redirect('add_status')->with('message','Status Name Already Exists');
+            return redirect($defdaultLang.'/add_status')->with('message','Status Name Already Exists');
         }
         else
         {
             $id = $this->Status->StoreStatus($status);
-            return redirect('status')->with('message','Status Name Added Succesfully');
+            return redirect($defdaultLang.'/status')->with('message','Status Name Added Succesfully');
         }
     }
-    public function edit($id)
+    public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $data['status_edit'] = DB::table('status')->where('id','=',$id)->get(); 
@@ -58,12 +59,15 @@ class StatusController extends Controller
     {
         $id = $request->input('id');
         $status['status_name'] = $request->input('status_name');
-		$id = DB::table('status')->where('id','=',$id)->update($status);
-		return redirect('status')->with('message','Status Details Updated Succesfully');
+        $id = DB::table('status')->where('id','=',$id)->update($status);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/status')->with('message','Status Details Updated Succesfully');
     }
-    public function delete($id)
+    public function delete($lang,$id)
 	{
-		$data = DB::table('status')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect('status')->with('message','Status Deleted Succesfully');
+        $id = Crypt::decrypt($id);
+        $data = DB::table('status')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/status')->with('message','Status Deleted Succesfully');
 	} 
 }

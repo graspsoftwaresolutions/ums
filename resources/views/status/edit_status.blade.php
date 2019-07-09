@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0"> Edit Status Details</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0"> {{ __('Edit Status Details')}}</h5>
                                         <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active"><a href="#">Status</a>
+                                            <li class="breadcrumb-item active">{{__('Status') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{url('status')}}">Status List</a>
+                                        <a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.status', app()->getLocale()) }}">{{__('Status List') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -35,22 +35,22 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit Status</h4>
+                                    <h4 class="card-title">{{ __('Edit Status')}}</h4>
                 
                                    <div id="view-validations">
-                                    <form class="formValidate" id="status_formValidate" method="post" action="{{url('status_update')}}">
+                                    <form class="formValidate" id="status_formValidate" method="post" action="{{ route('master.updatestatus', app()->getLocale()) }}">
                                        <?php $row = $data['status_edit'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
                                       <div class="row">
                                         <div class="input-field col s12 m6">
-                                          <label for="status_name">Country Name*</label>
-                                          <input id="status_name" name="status_name" type="text" value="{{ $row->status_name}}" data-error=".errorTxt1">
+                                          <label for="status_name" class="common-label">{{__('Status Name') }}*</label>
+                                          <input id="status_name" name="status_name" class="common-input" type="text" value="{{ $row->status_name}}" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">Update
-                                            <i class="material-icons right">send</i>
+                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Update')}}
+                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
@@ -89,7 +89,7 @@
         //For custom messages
         messages: {
             status_name: {
-                required: "Enter the Status Name",
+                required: '{{__("Enter the Status Name") }}',
             },
         },
         errorElement: 'div',
