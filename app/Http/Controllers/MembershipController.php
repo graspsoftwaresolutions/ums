@@ -29,7 +29,7 @@ class MembershipController extends Controller
     public function __construct()
     {
         $this->middleware('auth'); 
-		$this->middleware('role:union|branch|company');
+		//$this->middleware('role:union|union-branch|company|company-branch');
         $this->Membership = new Membership;
         $this->MemberGuardian = new MemberGuardian;       
     }
@@ -84,7 +84,7 @@ class MembershipController extends Controller
          $data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
          $data['user_type'] = 1;
          
-       
+        //return $data['title_view'];
         return view('membership.add_membership')->with('data',$data);  
         
     }

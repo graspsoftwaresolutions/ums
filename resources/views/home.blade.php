@@ -16,11 +16,14 @@
 				@role('union')
 					@include('union.dashboard')
 				@endrole
-				@role('branch')
-					@include('branch.dashboard')
+				@role('union-branch')
+					@include('unionbranch.dashboard')
 				@endrole
 				@role('company')
 					@include('company.dashboard')
+				@endrole
+				@role('company-branch')
+					@include('branch.dashboard')
 				@endrole
 				@role('member')
 					@include('member.dashboard')

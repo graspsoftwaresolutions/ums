@@ -20,23 +20,30 @@ class RoleTableSeeder extends Seeder
 	    $union_role->slug = 'union';
 	    $union_role->name = 'Union';
 	    $union_role->save();
-	    $union_role->permissions()->attach($union_permission);
+	    //$union_role->permissions()->attach($union_permission);
 		
 		
 		$branch_role = new Role();
-	    $branch_role->slug = 'branch';
-	    $branch_role->name = 'Branch';
+	    $branch_role->slug = 'union-branch';
+	    $branch_role->name = 'union-branch';
 	    $branch_role->save();
+		
+		$company_role = new Role();
+	    $company_role->slug = 'company';
+	    $company_role->name = 'Company';
+	    $company_role->save();
+		
+		$cbranch_role = new Role();
+	    $cbranch_role->slug = 'company-branch';
+	    $cbranch_role->name = 'Company Branch';
+	    $cbranch_role->save();
 		
 		$member_role = new Role();
 	    $member_role->slug = 'member';
 	    $member_role->name = 'Member';
 	    $member_role->save();
 		
-		$member_role = new Role();
-	    $member_role->slug = 'company';
-	    $member_role->name = 'Company';
-	    $member_role->save();
+		
 
 	   /*  $manager_role = new Role();
 	    $manager_role->slug = 'manager';

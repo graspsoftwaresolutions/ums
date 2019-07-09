@@ -15,7 +15,7 @@ class AddBranchIdToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
              $table->integer('branch_id')->after('password')->nullable();
-             $table->integer('company_id')->after('branch_id')->nullable();
+             $table->integer('union_branch_id')->after('branch_id')->nullable();
         });
     }
 
@@ -28,7 +28,7 @@ class AddBranchIdToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('branch_id');
-            $table->integer('company_id');
+            $table->integer('union_branch_id');
         });
     }
 }

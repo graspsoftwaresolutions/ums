@@ -88,6 +88,7 @@
 													}else{
 														
 													}
+													
 												?>
 												  <div class="row">
 													<div class="col s12 m6">
@@ -105,11 +106,13 @@
 														   
 													  <div class="errorTxt1"></div>
 													</div>
+													
 													<div class="input-field col s12 m6 {{ $member_number_hide }}">
 													  <label for="member_number">Member Number *</label>
 													  <input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" type="text" {{ $member_number_readonly }} data-error=".errorTxt2">
 													  <div class="errorTxt2"></div>
 													</div>
+													<?php //die; ?>
 													<div class="clearfix" ></div>
 													<div class="input-field col s12 m6">
 													  <label for="name">Member Name *</label>
@@ -942,7 +945,15 @@ $(document).ready(function(){
         },
         showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',
+		onSearchComplete: function (query, suggestions) {
+			if(!suggestions.length){
+				//$("#old_mumber_number").val('');
+			}
+		}
     });
+	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+		$("#old_mumber_number").val('');
+	});
 </script>
 @include('membership.member_common_script');
 @endsection

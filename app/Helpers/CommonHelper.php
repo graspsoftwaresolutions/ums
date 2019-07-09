@@ -78,7 +78,7 @@ class CommonHelper
     public static function get_auto_member_number(){
         $last_no = DB::table('membership')->orderBy('id', 'desc')->limit(1)->pluck('member_number');
        
-        if(!empty($last_no)){
+        if(count($last_no)>0){
             $last_no =  $last_no[0];
             return is_numeric($last_no) ? $last_no+1 : 1000;
         }

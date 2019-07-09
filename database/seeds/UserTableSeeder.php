@@ -16,9 +16,10 @@ class UserTableSeeder extends Seeder
     {
 
 	    $union_role = Role::where('slug','union')->first();
-	    $branch_role = Role::where('slug', 'branch')->first();
+	    $union_branch_role = Role::where('slug', 'union-branch')->first();
 	    $member_role = Role::where('slug', 'member')->first();
 	    $company_role = Role::where('slug', 'company')->first();
+	    $company_branch_role = Role::where('slug', 'company-branch')->first();
 		
 	    $union_permission = Permission::where('slug','create-user')->first();
 		
@@ -29,16 +30,16 @@ class UserTableSeeder extends Seeder
 		$union_user->password = bcrypt('12345678');
 	    $union_user->save();
 	    $union_user->roles()->attach($union_role);
-	    $union_user->permissions()->attach($union_permission);
+	    //$union_user->permissions()->attach($union_permission);
 
-		/* master branch user */
+		/* master union branch user */
 	    $branch_user = new User();
 	    $branch_user->name = 'Default union Branch';
 	    $branch_user->email = 'unionbranch@gmail.com';
-		$branch_user->branch_id = 1;
+		$branch_user->union_branch_id = 1;
 	    $branch_user->password = bcrypt('12345678');
 	    $branch_user->save();
-	    $branch_user->roles()->attach($branch_role);
+	    $branch_user->roles()->attach($union_branch_role);
 	   // $manager->permissions()->attach($manager_perm);
 	   
 	   /* master memmber user */
@@ -53,9 +54,18 @@ class UserTableSeeder extends Seeder
 	    $company_user = new User();
 	    $company_user->name = 'Default Company';
 	    $company_user->email = 'company@gmail.com';
-		$company_user->company_id = 1;
 	    $company_user->password = bcrypt('12345678');
 	    $company_user->save();
 	    $company_user->roles()->attach($company_role);
+		
+		 /* Company company branch user */
+	    $company_user = new User();
+	    $company_user->name = 'Default Company Branch';
+	    $company_user->email = 'companybranch@gmail.com';
+		$company_user->branch_id = 1;
+		$company_user->union_branch_id = 1;
+	    $company_user->password = bcrypt('12345678');
+	    $company_user->save();
+	    $company_user->roles()->attach($company_branch_role);
     }
 }

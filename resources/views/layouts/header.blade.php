@@ -44,12 +44,17 @@
               </li>
             </ul> -->
             <!-- profile-dropdown-->
+            @php
+            $auth_user = Auth::user();
+            $check_member = $auth_user->hasRole('member');
+            $user_id = Auth::user()->id;
+            $get_roles = Auth::user()->roles;
+            $user_role = $get_roles[0]->slug;
+            @endphp
             <ul class="dropdown-content" id="profile-dropdown">
+              <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ ucfirst($user_role) }}</a></li>
               <li><a class="grey-text text-darken-1" href="#"><i class="material-icons">person_outline</i> {{__('Profile') }}</a></li>
-			  @php
-			  $auth_user = Auth::user();
-			  $check_member = $auth_user->hasRole('member');
-			  @endphp
+			 
 			  @if($check_member ==1)
               <li><a class="grey-text text-darken-1" href="{{ route('member.membership.profile') }}"><i class="material-icons">person_outline</i> {{__('Membership details') }}</a></li>
 			  @endif
