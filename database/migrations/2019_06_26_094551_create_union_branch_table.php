@@ -28,7 +28,8 @@ class CreateUnionBranchTable extends Migration
             $table->string('mobile')->nullable();
             $table->string('email');
             $table->string('is_head');
-            $table->timestamps();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable();
             $table->integer('status')->default(1);
         });
     }
