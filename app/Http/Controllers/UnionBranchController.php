@@ -77,8 +77,8 @@ class UnionBranchController extends Controller
         $union['is_head'] = $request->input('is_head');
         $defaultLanguage = app()->getLocale();
        
-        $union_role = Role::where('slug', 'union-branch')->first();
         $union_head_role = Role::where('slug', 'union')->first();
+        $union_branch_role = Role::where('slug', 'union-branch')->first();
         $randompass = CommonHelper::random_password(5,true);
         $redirect_failurl = app()->getLocale().'/unionbranch';
 		$redirect_url = app()->getLocale().'/unionbranch';
@@ -110,7 +110,7 @@ class UnionBranchController extends Controller
                     $member_user->email = $request->input('email');
                     $member_user->password = bcrypt($randompass);
                     $member_user->save();
-                    $member_user->roles()->attach($union_role);
+                    $member_user->roles()->attach($union_branch_role);
                     $status =1;
                  }
             }
@@ -123,39 +123,25 @@ class UnionBranchController extends Controller
                
                 if($is_head_exists > 0 && !empty($union['is_head']))
                 {
-                    $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
-                    $id = $this->UnionBranch->StoreUnionBranch($union);
-                    //member record in users table
-                    if(!empty($id))
-                    {
-                        $member_user = new User();
-                        $member_user->name = $request->input('branch_name');
-                        $member_user->union_branch_id =  $id;
-                        $member_user->email = $request->input('email');
-                        $member_user->password = bcrypt($randompass);
-                        $member_user->save();
-                        $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-                        $member_user->roles()->attach($union_head_role);
-                        $status =1;
-                        $union_type =1;
-                    }
+                    //$data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                 }
                 else{
-                    $id = $this->UnionBranch->StoreUnionBranch($union);
-                    //member record in users table
-                    if(!empty($id))
-                    { 
-                        $member_user = new User();
-                        $member_user->name = $request->input('branch_name');
-                        $member_user->branch_id =  $id;
-                        $member_user->email = $request->input('email');
-                        $member_user->password = bcrypt($randompass);
-                        $member_user->save();
-                        $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-                        $member_user->roles()->attach($union_head_role);
-                        $status =1;
-                        $union_type =2;
-                    }
+                   
+                }
+                $id = $this->UnionBranch->StoreUnionBranch($union);
+                //member record in users table
+                if(!empty($id))
+                {
+                    $member_user = new User();
+                    $member_user->name = $request->input('branch_name');
+                    $member_user->union_branch_id =  $id;
+                    $member_user->email = $request->input('email');
+                    $member_user->password = bcrypt($randompass);
+                    $member_user->save();
+                    $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
+                    $member_user->roles()->attach($union_head_role);
+                    $status =1;
+                    $union_type =1;
                 }
             }
         }
@@ -219,6 +205,7 @@ class UnionBranchController extends Controller
     public function update(Request $request)
     {
         $auto_id = $request->input('id');
+        $user_id = User::where('union_branch_id',$auto_id)->pluck('id')[0];
         $request->validate([
             'branch_name'=>'required',
             'phone'=>'required',
@@ -259,7 +246,7 @@ class UnionBranchController extends Controller
 			$union['logo'] = $image_name;
         }
         $defaultLanguage = app()->getLocale();
-        $union_role = Role::where('slug', 'union-branch')->first();
+        $union_branch_role = Role::where('slug', 'union-branch')->first();
         $union_head_role = Role::where('slug', 'union')->first();
         $randompass = CommonHelper::random_password(5,true);
         $redirect_failurl = app()->getLocale().'/unionbranch';
@@ -276,24 +263,11 @@ class UnionBranchController extends Controller
                 DB::connection()->enableQueryLog();
                 $union['is_head'] = '0';
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-                
-                 //member record in users table
-                 if(!empty($id))
-                 {
-                   
-                    $member_user = new User();
-                    $member_user->name = $request->input('branch_name');
-                    $member_user->union_branch_id =  $id;
-                    $member_user->email = $request->input('email');
-                    $member_user->password = bcrypt($randompass);
-                    $member_user->save();
-                    $member_user->roles()->attach($union_role);
-                 }
 
                 return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
             }
             else{
-
+               
                 $is_head_exists = DB::table('union_branch')->where([
                     ['is_head','=','1'],
                     ['status','=','1']
@@ -301,37 +275,17 @@ class UnionBranchController extends Controller
                 if($is_head_exists > 0 && !empty($union['is_head']))
                 {
                     $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
+                    $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
+                    $rold_id_2 = DB::table('users_roles')->where('role_id','=','2')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
                     $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
                     //Users and user role entry
-                    if(!empty($id))
-                    {
-                        $member_user = new User();
-                        $member_user->name = $request->input('branch_name');
-                        $member_user->union_branch_id =  $id;
-                        $member_user->email = $request->input('email');
-                        $member_user->password = bcrypt($randompass);
-                        $member_user->save();
-                        $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-                        $member_user->roles()->attach($union_head_role);
-                    }
 
                     return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
                 }
                 else{
                     $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-
-                    //Users and user role entry
-                    if(!empty($id))
-                    {
-                        $member_user = new User();
-                        $member_user->name = $request->input('branch_name');
-                        $member_user->union_branch_id =  $id;
-                        $member_user->email = $request->input('email');
-                        $member_user->password = bcrypt($randompass);
-                        $member_user->save();
-                        $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-                        $member_user->roles()->attach($union_head_role);
-                    }
+                    $rold_id_2 = DB::table('users_roles')->where('role_id','=','2')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
+                    
                     return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
                 }
             }
