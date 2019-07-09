@@ -7,17 +7,15 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UnionBranchMailable extends Mailable
+class CompanyBranchMailable extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $user_data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public $user_data;
-    
     public function __construct($user_data)
     {
         $this->user_data = $user_data;
@@ -30,6 +28,6 @@ class UnionBranchMailable extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.register-union')->subject('Union Registration successful | Membership');
+        return $this->view('emails.register-company')->subject('Company Registration successful | Membership');
     }
 }

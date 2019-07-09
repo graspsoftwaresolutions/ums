@@ -38,7 +38,7 @@
                                     <h4 class="card-title">Edit Branch</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="branchformValidate" method="post" action="{{url('branch_update')}}">
+                                    <form class="formValidate" id="branchformValidate" method="post" action="{{route('master.updatebranch',app()->getLocale())}}">
                                        <?php $row = $data['branch_view'][0]; ?>
 										@csrf
 										<input type="hidden" name="id" value="{{$row->id}}">
@@ -153,8 +153,16 @@
                                     <div class="row">
                                         <div class="input-field col s12 m6">
                                           <label for="email">Email *</label>
-                                          <input id="email" name="email" type="text" value="{{$row->email}}" data-error=".errorTxt13">
+                                          <input id="email" name="email" type="text" readonly value="{{$row->email}}" data-error=".errorTxt13">
                                           <div class="errorTxt13"></div>
+                                        </div>
+                                        <div class="input-field col s12 m6">
+                                            <p>
+                                            <label>
+                                                <input type="checkbox" name="is_head" class="common-checkbox" id="is_head" value="1" {{ $row->is_head == '1' ? 'checked' : '' }} />
+                                                <span>{{__('Head') }}</span>
+                                            </label>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="row">

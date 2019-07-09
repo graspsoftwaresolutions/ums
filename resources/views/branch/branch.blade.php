@@ -49,6 +49,7 @@
 													<tr>
 														<th>{{__('Company Name') }}</th>
 														<th>{{__('Branch Name') }}</th>
+														<th>{{__('Head') }}</th>
 														<th style="text-align:center">{{__('Action') }}</th>
 													</tr>
 												</thead>
@@ -66,6 +67,7 @@
 													@endphp
 														<td>{{$value->company_name}}</td>
 														<td>{{$value->branch_name}}</td>
+														<td>{{$value->is_head}}</td>
 														<td style="text-align:center">
 														<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editbranch', [app()->getLocale(), $parameter]) }}">{{__('Edit') }}</a>
 														<a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletebranch', [app()->getLocale(), $parameter]) }}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>

@@ -37,7 +37,7 @@
                             <div class="card">
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Add Branch') }}</h4>
-                                    
+                                    @include('includes.messages')
                                    <div id="view-validations">
                                     <form class="formValidate" id="branchformValidate" method="post" action="{{ route('master.savebranch', app()->getLocale()) }}">
                                         @csrf
@@ -142,6 +142,14 @@
                                           <label for="email" class="common-label">{{__('Email') }} *</label>
                                           <input id="email" name="email" class="common-input" type="email" data-error=".errorTxt11">
                                           <div class="errorTxt11"></div>
+                                        </div>
+                                        <div class="input-field col s12 m6">
+                                            <p>
+                                                <label>
+                                                    <input type="checkbox" name="is_head" class="common-checkbox" id="is_head" value="1"  />
+                                                    <span>{{__('Head') }}</span>
+                                                </label>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="row">

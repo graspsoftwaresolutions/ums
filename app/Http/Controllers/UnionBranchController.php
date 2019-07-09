@@ -260,6 +260,14 @@ class UnionBranchController extends Controller
          
             if($union['is_head'] == '')
             {
+                $already_head = DB::table('union_branch')->where([
+                    ['is_head','=', 1],
+                    ['id','=', $auto_id],
+                    ['status','=','1'] 
+                     ])->count();
+                if($already_head==1){
+                    $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->where('user_id','=',$user_id)->update(['role_id'=>'2']);
+                }
                 DB::connection()->enableQueryLog();
                 $union['is_head'] = '0';
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
