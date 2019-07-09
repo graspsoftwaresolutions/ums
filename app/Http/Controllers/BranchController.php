@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Model\Company;
 use App\Model\Branch;
+use App\Helpers\CommonHelper;
 use DB;
 use View;
 

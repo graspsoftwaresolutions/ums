@@ -143,6 +143,14 @@
                                           <input id="email" name="email" class="common-input" type="email" data-error=".errorTxt11">
                                           <div class="errorTxt11"></div>
                                         </div>
+                                        <div class="input-field col s12 m6">
+                                            <p>
+                                                <label>
+                                                    <input type="checkbox" name="is_head" class="common-checkbox" id="is_head" value="1"  />
+                                                    <span>{{__('Head') }}</span>
+                                                </label>
+                                            </p>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12">
