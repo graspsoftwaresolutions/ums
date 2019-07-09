@@ -30,16 +30,15 @@ class CompanyController extends Controller
         $request->validate([ 
             'company_name' => 'required',
             'short_code'=>'required',
-            'head_of_company' =>'required'
+            
         ],
         [
             'company_name.required' => 'Please Enter your Company Name',
             'short_code.required' => 'please Enter short code',
-            'head_of_company.required' => 'Please Enter head of company',
+            
         ]);
         $company['company_name'] = $request->input('company_name');
         $company['short_code'] = $request->input('short_code');
-        $company['head_of_company'] = $request->input('head_of_company');
         
         $data_exists = DB::table('company')->where([
             ['company_name', '=', $company['company_name']],

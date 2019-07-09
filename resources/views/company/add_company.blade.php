@@ -114,9 +114,6 @@
             short_code: {
                 required: true,
             },
-            head_of_company: {
-                required: true,
-            },
         },
         //For custom messages
         messages: {
@@ -126,9 +123,7 @@
             short_code: {
                 required: '{{__("Please Enter Short Code") }}',
             },
-            head_of_company: {
-                required: '{{__("Please Choose Head of company") }}',
-            },
+            
         },
         errorElement: 'div',
         errorPlacement: function (error, element) {
