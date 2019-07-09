@@ -303,16 +303,17 @@ class MemberController extends Controller
         
     }
 	
-	public function getoldMemberList()
+	public function getoldMemberList(Request $request)
     {
-        
-        $res = DB::table('membership')
+        $search = $request->serachkey;
+       // return $search;
+        $res['suggestions'] = DB::table('membership')->select(DB::raw('CONCAT(membership.name, " - ", membership.member_number) AS value'),'membership.member_number as number')
             ->join('status','membership.status_id','=','status.id')        
         ->where([
-            ['status.status_name','=','inactive']
+            ['status.status_name','=','Inactive']
         ])->get();
-        $res['suggestions'] = [ array('value' => 'United States', 'data' => 'us') ];
-        echo json_encode($res); die;
+        //$res['suggestions'] = [ array('value' => 'United States', 'data' => 'us'), array('value' => 'India', 'data' => 'in') ];
+        //echo json_encode($res); die;
         return response()->json($res);
         
     }

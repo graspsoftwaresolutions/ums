@@ -39,7 +39,7 @@
                                     <h4 class="card-title">{{__('Add Branch') }}</h4>
                                     
                                    <div id="view-validations">
-                                    <form class="formValidate" id="branchformValidate" method="post" action="{{ route('master.savebranch', app()->getLocale()) }}}">
+                                    <form class="formValidate" id="branchformValidate" method="post" action="{{ route('master.savebranch', app()->getLocale()) }}">
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">

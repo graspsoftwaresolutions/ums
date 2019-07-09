@@ -1,7 +1,14 @@
 @extends($data['user_type']==1 ? 'layouts.admin' : 'layouts.new-member')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-
+<style type="text/css">
+  	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+</style>
 @endsection
 @section('headSecondSection')
 
@@ -666,7 +673,7 @@
 							</div>
 						</div>
 					</div>
-                    <div class="row hide">
+                    <div class="row ">
 					<div class="input-field col s6">
 					<input id="country_test" type="text" name="country_test" class="validate">
 					<label for="country_test">Search Country here</label>
@@ -924,13 +931,14 @@ $(document).ready(function(){
     });
 
 
-    $("#country_test").devbridgeAutocomplete({
+    $("#old_mumber_number").devbridgeAutocomplete({
         //lookup: countries,
-        serviceUrl: "{{ URL::to('/get-oldmember-list') }}?key=1",
+        serviceUrl: "{{ URL::to('/get-oldmember-list') }}?serachkey="+ $("#old_mumber_number").val(),
         type:'GET',
         //callback just to show it's working
         onSelect: function (suggestion) {
-             console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+             console.log('You selected: ' + suggestion.value + ', ' + suggestion.number);
+			 $("#old_mumber_number").val(suggestion.number);
         },
         showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',
