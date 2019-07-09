@@ -37,7 +37,7 @@
                             <div class="card">
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Add Branch') }}</h4>
-                                    
+                                    @include('includes.messages')
                                    <div id="view-validations">
                                     <form class="formValidate" id="branchformValidate" method="post" action="{{ route('master.savebranch', app()->getLocale()) }}">
                                         @csrf
