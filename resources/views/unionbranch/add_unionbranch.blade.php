@@ -68,7 +68,6 @@
 													<div class="errorTxt11"></div>
 												</div>
                                             </div>
-                                            
                                             <div class="col s12 m6">
                                                  <label class="common-label">{{__('City Name') }}*</label>
                                                 <select name="city_id" id="city_id" class="error browser-default common-select" aria-required="true" required>

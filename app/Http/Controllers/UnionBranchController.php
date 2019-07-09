@@ -5,8 +5,13 @@ use Illuminate\Support\Facades\Crypt;
 
 use Illuminate\Http\Request;
 use App\Model\UnionBranch;
+use App\Helpers\CommonHelper;
+use App\Mail\SendMemberMailable;
 use DB;
 use View;
+use Mail;
+use App\Role;
+use App\User;
 
 class UnionBranchController extends Controller
 {
@@ -73,13 +78,13 @@ class UnionBranchController extends Controller
         $defaultLanguage = app()->getLocale();
         
         //Data Exists
-        $data_exists = DB::table('union_branch')->where([
-            ['union_branch','=', $union['union_branch']],
-            ['status','=','1'] 
-             ])->count();
+        $data_exists = DB::table('unionbranch')->where([
+            ['email','=',$union['email']],
+            ['status','=','1']
+            ])->count();
          if($data_exists>0 && $data_exists!='' && $data_exists!='NULL')
          {
-             return redirect($defaultLanguage.'/add-unionbranch')->with('message','Union Branch Name Already Exists');
+             return redirect($defaultLanguage.'/add-unionbranch')->with('message','Email Already Exists');
          }
          else
          {
@@ -87,6 +92,7 @@ class UnionBranchController extends Controller
             {
                 $union['is_head'] = '0';
                 $id = $this->UnionBranch->StoreUnionBranch($union);
+                
                 return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Added Succesfully');
             }
             else{
@@ -99,6 +105,8 @@ class UnionBranchController extends Controller
                 {
                     $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                     $id = $this->UnionBranch->StoreUnionBranch($union);
+                    //member record in users table
+                   
                     return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Added Succesfully');
                 }
                 else{
