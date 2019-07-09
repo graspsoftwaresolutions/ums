@@ -293,7 +293,6 @@ class MemberController extends Controller
                 }else{
                     return redirect($redirect_failurl)->with('error','Failed to Register');
                 }
-
             }
             
         }else{
