@@ -212,7 +212,7 @@
   "Status Details Updated Succesfully" : "Status Details Updated Succesfully_en",
   "Status Deleted Succesfully" : "Status Deleted Succesfully_en",
   
-  "Branch Details" : "Branch Details_en",
+  "Branch Details" : "Company Branch Details_en",
   "Branch List" : "Branch List_en",
   "Branch" : "Branch_en",
   "Add New Branch" : "Add New Branch_en",
@@ -258,6 +258,8 @@
   "Is Update" : "Is Update_en",
   "Is Delete" : "Is Delete_en",
   "Description" : "Description_en",
-  "Please enter Form Name" : "Please enter Form Name_en"
+  "Please enter Form Name" : "Please enter Form Name_en",
+  "Edit Branch" : "Edit Branch_en",
+  "Email Already Exists" : "Email Already Exists_en"
   
 }

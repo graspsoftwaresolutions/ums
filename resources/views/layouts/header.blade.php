@@ -12,7 +12,7 @@
               <li class="hide-on-large-only"><a class="waves-effect waves-block waves-light search-button" href="javascript:void(0);"><i class="material-icons">search</i></a></li>
               <!-- <li><a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);" data-target="notifications-dropdown"><i class="material-icons">notifications_none<small class="notification-badge">5</small></i></a></li> -->
               <li><a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);" data-target="profile-dropdown"><span class="avatar-status avatar-online"><img src="{{ asset('public/assets/images/avatar/avatar-7.png') }}" alt="avatar"><i></i></span></a></li>
-              <li><a class="waves-effect waves-block waves-light sidenav-trigger" href="#" data-target="slide-out-right"><i class="material-icons">format_indent_increase</i></a></li>
+              <li class="hide"><a class="waves-effect waves-block waves-light sidenav-trigger" href="#" data-target="slide-out-right"><i class="material-icons">format_indent_increase</i></a></li>
             </ul>
             <!-- translation-button-->
             <ul class="dropdown-content" id="translation-dropdown">
@@ -52,12 +52,8 @@
             $user_role = $get_roles[0]->slug;
             @endphp
             <ul class="dropdown-content" id="profile-dropdown">
-              <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ ucfirst($user_role) }}</a></li>
-              <li><a class="grey-text text-darken-1" href="#"><i class="material-icons">person_outline</i> {{__('Profile') }}</a></li>
-			 
-			  @if($check_member ==1)
-              <li><a class="grey-text text-darken-1" href="{{ route('member.membership.profile') }}"><i class="material-icons">person_outline</i> {{__('Membership details') }}</a></li>
-			  @endif
+              <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }}</a></li>
+              <li><a class="grey-text text-darken-1" href="{{ route('changepassword',app()->getLocale()) }}"><i class="material-icons">person_outline</i> {{__('Change Password') }}</a></li>
               <!-- <li><a class="grey-text text-darken-1" href="app-chat.html"><i class="material-icons">chat_bubble_outline</i> Chat</a></li>
               <li><a class="grey-text text-darken-1" href="page-faq.html"><i class="material-icons">help_outline</i> Help</a></li>
               <li class="divider"></li>

@@ -15,15 +15,15 @@ class CreateAppFormTable extends Migration
     {
         Schema::create('app_form', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('formname');
-            $table->string('formtype');
-            $table->decimal('orderno', 14,2);
+            $table->string('formname')->nullable();
+            $table->string('formtype')->nullable();
+            $table->decimal('orderno', 14,2)->nullable();
             $table->string('route')->nullable();
-            $table->string('isactive')->default(0);
-            $table->string('isinsert')->default(0);
-            $table->string('isupdate')->default(0);
-            $table->string('isdelete')->default(0);
-            $table->string('ismenu')->default(0);
+            $table->string('isactive')->nullable();
+            $table->string('isinsert')->nullable();
+            $table->string('isupdate')->nullable();
+            $table->string('isdelete')->nullable();
+            $table->string('ismenu')->nullable();
             $table->string('description')->nullable();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->nullable();  
