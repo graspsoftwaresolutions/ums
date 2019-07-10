@@ -277,6 +277,17 @@
   "Please enter Name" : "Please enter Name_en",
   "Role Details Updated Successfully!!" : "Role Details Updated Successfully!!_en",
   "Role Details Added Successfully!!" : "Role Details Added Successfully!!_en",
-  "Role Details Deleted Successfully!!" : "Role Details Deleted Successfully!!_en"
+  "Role Details Deleted Successfully!!" : "Role Details Deleted Successfully!!_en",
 
+  "Users List" : "Users List_en",
+  "Users" : "users_en",
+  "Add New User" : "Add New User_en",
+  "User Name" : "User Name_en",
+  "Name" : "Name_en",
+  "email" : "email_en",
+  "Edit Users" : "Edit Users_en",
+  "Confirm Password" : "Confirm Password",
+  "User Details Updated Successfully!!" : "User Details Updated Successfully!!_en",
+  "User Details Added Successfully!!" : "User Details Added Successfully!!_en",
+  "User Details Deleted Successfully!!" : "User Details Deleted Successfully!!_en"
 }

@@ -138,6 +138,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('appform', 'AppFormController');
 	//Roles Form
 	Route::resource('roles','RolesController');
+	//users Form
+	//Roles Form
+	Route::resource('users','UsersController');
 	
 	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
 	//Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
