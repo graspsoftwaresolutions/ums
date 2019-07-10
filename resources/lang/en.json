@@ -253,6 +253,9 @@
   "Branch Details Updated Succesfully" : "Branch Details Updated Succesfully_en",
   "Union" : "Union_en",
   "Branch Deleted Succesfully" : "Branch Deleted Succesfully_en",
-  "History" : "History_en"
+  "History" : "History_en",
+  "Edit Branch Details" : "Edit Branch Details_en",
+  "Edit Branch" : "Edit Branch_en",
+  "Email Already Exists" : "Email Already Exists_en"
   
 }
