@@ -251,6 +251,9 @@
   "Branch Name Already Exists" : "Branch Name Already Exists_en",
   "Branch Name Added Succesfully" : "Branch Name Added Succesfully_en",
   "Branch Details Updated Succesfully" : "Branch Details Updated Succesfully_en",
-  "Branch Deleted Succesfully" : "Branch Deleted Succesfully_en"
+  "Branch Deleted Succesfully" : "Branch Deleted Succesfully_en",
+  "Edit Branch Details" : "Edit Branch Details_en",
+  "Edit Branch" : "Edit Branch_en",
+  "Email Already Exists" : "Email Already Exists_en"
   
 }

@@ -162,12 +162,6 @@ Route::get('membership_list','MembershipController@new_members');
 
 
 
-
-
-
-
-
-
 //Person Tiltle Setup
 Route::get('persontitle','PersontitleController@index');
 Route::get('add-title','PersontitleController@addTitle');
