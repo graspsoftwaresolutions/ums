@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Model\Branch;
+use App\Model\CompanyBranch;
 
 class CompanyBranchTableSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class CompanyBranchTableSeeder extends Seeder
      */
     public function run()
     {
-        $branch = new Branch();
+        $branch = new CompanyBranch();
 	    $branch->company_id = 1;
 	    $branch->union_branch_id = 1;
 		$branch->branch_name = 'Default branch';
