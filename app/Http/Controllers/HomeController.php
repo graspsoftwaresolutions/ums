@@ -33,4 +33,8 @@ class HomeController extends Controller
     {
         return app()->getLocale() . '/login';
     }
+	
+	public function showChangePasswordForm(){
+        return view('change_password');
+    }
 }

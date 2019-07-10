@@ -134,6 +134,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('branch_update','BranchController@update')->name('master.updatebranch');
 	Route::get('branch-delete/{id}','BranchController@delete')->name('master.deletebranch');
 
+	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
 
 });
 /* Master */
@@ -192,3 +193,10 @@ Route::get('delete-nominee-data','MembershipController@deleteNominee');
 
 Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
+
+
+
+
+Route::get('/maintenance', function () {
+    return view('errors.maintenance');
+});

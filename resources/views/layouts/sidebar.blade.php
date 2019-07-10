@@ -42,6 +42,10 @@
           @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('membership') }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">Member registration</span></a>
           @endif
+		  @if($user_role=='member')
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('member.membership.profile') }}"><i class="material-icons">account_box</i><span class="menu-title" data-i18n="">{{ __('Profile') }}</span></a>
+            <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a>
+          @endif
         @endif
        
       </ul>
