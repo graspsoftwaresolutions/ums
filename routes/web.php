@@ -140,6 +140,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('roles','RolesController');
 	
 	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
+	//Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
 });
 /* Master */

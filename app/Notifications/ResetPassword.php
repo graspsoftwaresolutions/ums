@@ -42,8 +42,15 @@ class ResetPassword extends Notification
     {
         return (new MailMessage)
                     ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->action('Notification Action', url('/aa'))
                     ->line('Thank you for using our application!');
+    }
+	
+	public function message($notifiable)
+    {
+        return $this->line('You are not receiving this email because we received a password reset request for your account. Click the button below to reset your password:')
+                    ->action('Reset Passwords', url('/aa', $this->token))
+                    ->line('If you did not request a password reset, no further action is required.');
     }
 
     /**

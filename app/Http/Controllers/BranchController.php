@@ -115,8 +115,6 @@ class BranchController extends Controller
                 $id = $this->Branch->StoreBranch($branch);
                 $member_user = new User();
                 $member_user->name = $request->input('branch_name');
-                $member_user->union_branch_id =  $branch['union_branch_id'];
-                $member_user->branch_id =  $id;
                 $member_user->email = $request->input('email');
                 $member_user->password = bcrypt($randompass);
                 $member_user->save();
@@ -131,8 +129,6 @@ class BranchController extends Controller
                 $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
                 $member_user = new User();
                 $member_user->name = $request->input('branch_name');
-                $member_user->union_branch_id =  $branch['union_branch_id'];
-                $member_user->branch_id =  $id;
                 $member_user->email = $request->input('email');
                 $member_user->password = bcrypt($randompass);
                 $member_user->save();
