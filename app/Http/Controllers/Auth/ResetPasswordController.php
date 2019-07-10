@@ -44,6 +44,26 @@ class ResetPasswordController extends Controller
 			['token' => $token, 'email' => $request->email]
 		);
 	}
+	
+	public function toMail(Request $request)
+    {
+		print_r(11);die;
+		//return $request->all();
+		return $reseturl = app()->getLocale().'password/reset/'.$this->token.'?email=murugan@gmail.com'; exit;
+        return (new MailMessage)
+            ->line('You are receiving this email because we received a password reset request for your account.')
+            ->action('Reset Password', url($reseturl)) 
+            ->line('If you did not request a password reset, no further action is required.');
+    }
+	
+	public function showLinkRequestForm(){
+		die;
+	}
+	
+	public function sendResetLinkEmail(){
+		print_r(11);die;
+		return 1;
+	}
 	public function redirectTo()
     {
         return app()->getLocale() . '/home';

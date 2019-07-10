@@ -19,6 +19,8 @@
 {{-- Action Button --}}
 @isset($actionText)
 <?php
+	$reset_email = $_POST['email'];
+	$reset_token = $_POST['_token'];
     switch ($level) {
         case 'success':
         case 'error':
