@@ -134,9 +134,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('branch_update','BranchController@update')->name('master.updatebranch');
 	Route::get('branch-delete/{id}','BranchController@delete')->name('master.deletebranch');
 
+	// App Form
+	Route::resource('appform', 'AppFormController');
 
 });
 /* Master */
+
+
 
 //common routes
 Route::get('get-state-list','CommonController@getStateList');
