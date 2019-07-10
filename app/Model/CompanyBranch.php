@@ -15,7 +15,7 @@ class CompanyBranch extends Model
 	
     public function StoreBranch($branch)
     {
-        $id = DB::table('branch')->insertGetId($branch);
+        $id = DB::table('company_branch')->insertGetId($branch);
         return $id;
     }
 }

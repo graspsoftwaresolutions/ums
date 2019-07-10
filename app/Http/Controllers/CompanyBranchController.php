@@ -25,11 +25,11 @@ class CompanyBranchController extends Controller
     }
     public function index()
     {
-        $data = DB::table('company')->select('company.company_name','branch.branch_name','branch.id','branch.company_id','branch.status','branch.is_head','company.status')
-                ->join('branch','company.id','=','branch.company_id')
+        $data = DB::table('company')->select('company.company_name','company_branch.branch_name','company_branch.id','company_branch.company_id','company_branch.status','company_branch.is_head','company.status')
+                ->join('company_branch','company.id','=','company_branch.company_id')
                 ->orderBy('company.id','ASC')
                 ->where([
-                    ['branch.status','=','1'],
+                    ['company_branch.status','=','1'],
                     ['company.status','=','1']
                     ])->get();
         return view('branch.branch',compact('data',$data));
@@ -97,7 +97,7 @@ class CompanyBranchController extends Controller
         $company_branch_role = Role::where('slug', 'company-branch')->first();
         $randompass = CommonHelper::random_password(5,true);
 
-        $data_exists_branchemail = DB::table('branch')->where([
+        $data_exists_branchemail = DB::table('company_branch')->where([
             ['email','=',$branch['email']]
             ])->count();
         $data_exists_usersemail = DB::table('users')->where('email','=',$branch['email'])->count();
@@ -110,33 +110,34 @@ class CompanyBranchController extends Controller
         {
             $company_type =2;
            
-            if($branch['is_head'] == '')
+            if($branch['is_head'] == 0)
             {
-                $id = $this->Branch->StoreBranch($branch);
                 $member_user = new User();
                 $member_user->name = $request->input('branch_name');
-                $member_user->union_branch_id =  $branch['union_branch_id'];
-                $member_user->branch_id =  $id;
                 $member_user->email = $request->input('email');
                 $member_user->password = bcrypt($randompass);
                 $member_user->save();
                 $member_user->roles()->attach($company_branch_role);
+				$branch['user_id'] = $member_user->id;
+                $id = $this->Branch->StoreBranch($branch);
                 $status =1;
             }else{
-                $company_type = 1;
-                $union_branch_id = $branch['union_branch_id'];
-                $data = DB::table('branch')->where('is_head','=','1')->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
-                $id = $this->Branch->StoreBranch($branch);
-                //$rold_id_1 = DB::table('users_roles')->where('role_id','=','3')->where('union_branch_id','=',$branch['union_branch_id'])->update(['role_id'=>'4']);
-                $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
-                $member_user = new User();
+				$member_user = new User();
+				$companyid = $request->input('company_id');
                 $member_user->name = $request->input('branch_name');
-                $member_user->union_branch_id =  $branch['union_branch_id'];
-                $member_user->branch_id =  $id;
                 $member_user->email = $request->input('email');
                 $member_user->password = bcrypt($randompass);
                 $member_user->save();
                 $member_user->roles()->attach($company_head_role);
+                $company_type = 1;
+                $union_branch_id = $branch['union_branch_id'];
+                $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
+				$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$companyid'");
+				$branch['user_id'] = $member_user->id;
+                $id = $this->Branch->StoreBranch($branch);
+                //$rold_id_1 = DB::table('users_roles')->where('role_id','=','3')->where('union_branch_id','=',$branch['union_branch_id'])->update(['role_id'=>'4']);
+                //$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
+               
                 $status =1;
             }
 
@@ -156,7 +157,7 @@ class CompanyBranchController extends Controller
             }
         }
 
-        // $data_exists = DB::table('branch')->where([
+        // $data_exists = DB::table('company_branch')->where([
         //    ['branch_name','=', $branch['branch_name']],
         //    ['status','=','1'] 
         //     ])->count();
@@ -198,13 +199,13 @@ class CompanyBranchController extends Controller
     public function edit($lang,$id)
     {
         $id = Crypt::decrypt($id);
-        $data['branch_view'] = DB::table('company')->select('branch.*', 'company.company_name','branch.branch_name','branch.id','branch.company_id','branch.status','company.status','union_branch.union_branch','branch.union_branch_id')
-                ->join('branch','company.id','=','branch.company_id')
-                ->join('union_branch','branch.union_branch_id','=','union_branch.id')
+        $data['branch_view'] = DB::table('company')->select('company_branch.*', 'company.company_name','company_branch.branch_name','company_branch.id','company_branch.company_id','company_branch.status','company.status','union_branch.union_branch','company_branch.union_branch_id')
+                ->join('company_branch','company.id','=','company_branch.company_id')
+                ->join('union_branch','company_branch.union_branch_id','=','union_branch.id')
                 ->where([
-                    ['branch.status','=','1'],
+                    ['company_branch.status','=','1'],
                     ['company.status','=','1'],
-                    ['branch.id','=',$id]
+                    ['company_branch.id','=',$id]
                     ])->get();
         $company_id = $data['branch_view'][0]->company_id;
         $union_branch_id = $data['branch_view'][0]->union_branch_id;
@@ -218,7 +219,7 @@ class CompanyBranchController extends Controller
     public function update($lang, Request $request)
     {
         $id = $request->input('id');
-        $user_id = User::where('branch_id',$id)->pluck('id')[0];
+        $user_id = CompanyBranch::where('id',$id)->pluck('user_id')[0];
         $branch['company_id'] = $request->input('company_id');
         $branch['union_branch_id'] = $request->input('union_branch_id');
         $branch['branch_name'] = $request->input('branch_name');
@@ -242,19 +243,21 @@ class CompanyBranchController extends Controller
             $branch['is_head'] = 0;
         }
         $union_branch_id = $request->input('union_branch_id');
+        $company_id = $request->input('company_id');
 
-        $is_head_exists = DB::table('branch')->where([
+        /* $is_head_exists = DB::table('company_branch')->where([
             ['is_head','=','1'],
             ['union_branch_id','=', $request->input('union_branch_id')],
             ['status','=','1']
-            ])->count();
+            ])->count(); */
         if($branch['is_head']==0){
-            $upid = DB::table('branch')->where('id','=',$id)->update($branch);
+            $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','3')->where('user_id','=',$user_id)->update(['role_id'=>'4']);
         }else{
-            $data = DB::table('branch')->where('is_head','=','1')->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
-            $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
-            $upid = DB::table('branch')->where('id','=',$id)->update($branch);
+            $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$company_id)->update(['is_head'=>'0']);
+			$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$company_id'");
+			
+            $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','4')->where('user_id','=',$user_id)->update(['role_id'=>'3']);
         }
 
@@ -263,7 +266,7 @@ class CompanyBranchController extends Controller
     public function delete($lang,$id)
 	{
         $id = Crypt::decrypt($id);
-        $data = DB::table('branch')->where('id','=',$id)->update(['status'=>'0']);
+        $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
         $defdaultLang = app()->getLocale();
 		return redirect($defdaultLang.'/branch')->with('branch','Branch Deleted Succesfully');
 	} 

@@ -61,7 +61,7 @@ class MembershipController extends Controller
                                 ->join('country','membership.country_id','=','country.id')
                                 ->join('state','membership.state_id','=','state.id')
                                 ->join('city','membership.city_id','=','city.id')
-                                ->join('branch','membership.branch_id','=','branch.id')
+                                ->join('company_branch','membership.branch_id','=','company_branch.id')
                                 ->join('persontitle','membership.member_title_id','=','persontitle.id')
                                 ->join('race','membership.race_id','=','race.id')
                                 ->join('designation','membership.designation_id','=','designation.id')
@@ -99,11 +99,11 @@ class MembershipController extends Controller
          $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.phone',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
-                                        'city.id','city.city_name','city.status','branch.id','branch.branch_name','branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id')
+                                        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id')
                                 ->leftjoin('country','membership.country_id','=','country.id')
                                 ->leftjoin('state','membership.state_id','=','state.id')
                                 ->leftjoin('city','membership.city_id','=','city.id')
-                                ->leftjoin('branch','membership.branch_id','=','branch.id')
+                                ->leftjoin('company_branch','membership.branch_id','=','company_branch.id')
                                 ->leftjoin('persontitle','membership.member_title_id','=','persontitle.id')
                                 ->leftjoin('race','membership.race_id','=','race.id')
                                 ->leftjoin('designation','membership.designation_id','=','designation.id')
@@ -113,11 +113,12 @@ class MembershipController extends Controller
 
                                 //$queries = DB::getQueryLog();
                               // dd($queries);
-
+                             
         $country_id = $data['member_view'][0]->country_id;
       
         $state_id = $data['member_view'][0]->state_id;
         $city_id = $data['member_view'][0]->city_id;
+       
         $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -125,7 +126,7 @@ class MembershipController extends Controller
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['branch_view'] = DB::table('branch')->where('status','=','1')->where('company_id', $company_id)->get();
+        $data['branch_view'] = DB::table('company_branch')->where('status','=','1')->where('company_id', $company_id)->get();
         $data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
         $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
@@ -152,7 +153,7 @@ class MembershipController extends Controller
         $data['member_type'] = 0;
         $auth_user = Auth::user();
         $check_union = $auth_user->hasRole('union');
-        $branch_id = $auth_user->branch_id;
+        //$branch_id = $auth_user->branch_id;
         if($check_union){
             $data['member_view'] = DB::table('membership')
             ->where('membership.status','=','1')->where('membership.status_id','=','1')->get();

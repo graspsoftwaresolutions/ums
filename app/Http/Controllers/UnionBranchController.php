@@ -88,24 +88,7 @@ class UnionBranchController extends Controller
         $randompass = CommonHelper::random_password(5,true);
         $redirect_failurl = app()->getLocale().'/unionbranch';
         $redirect_url = app()->getLocale().'/unionbranch';
-        if($union['is_head']==1){
-            $member_user = new User();
-            $member_user->name = $request->input('branch_name');
-            $member_user->email = $request->input('email');
-            $member_user->password = bcrypt($randompass);
-            $member_user->save();
-            $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-            $member_user->roles()->attach($union_head_role);
-        }else{
-            $member_user = new User();
-            $member_user->name = $request->input('branch_name');
-            $member_user->email = $request->input('email');
-            $member_user->password = bcrypt($randompass);
-            $member_user->save();
-            $member_user->roles()->attach($union_branch_role);
-            $status =1;
-        }
-        $user_id = $member_user->id;
+        
 		
         //Data Exists
         $data_exists_unionemail = DB::table('union_branch')->where([
@@ -120,39 +103,30 @@ class UnionBranchController extends Controller
         else
         {
             $union_type =2;
-            if($union['is_head'] == '')
-            {
-                $union['is_head'] = '0';
-                $id = $this->UnionBranch->StoreUnionBranch($union);
-                 //member record in users table
-                 if(!empty($id))
-                 {
-                   
-                 }
+            if($union['is_head']==1){
+                $member_user = new User();
+                $member_user->name = $request->input('branch_name');
+                $member_user->email = $request->input('email');
+                $member_user->password = bcrypt($randompass);
+                $member_user->save();
+                $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
+                $rold_id_2 = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
+                $member_user->roles()->attach($union_head_role);
+                $union_type =1;
+            }else{
+                $member_user = new User();
+                $member_user->name = $request->input('branch_name');
+                $member_user->email = $request->input('email');
+                $member_user->password = bcrypt($randompass);
+                $member_user->save();
+                $member_user->roles()->attach($union_branch_role);
+                $status =1;
             }
-            else{
-                $union['is_head'] = '1';
-                $is_head_exists = DB::table('union_branch')->where([
-                    ['is_head','=','1'],
-                    ['status','=','1']
-                    ])->count();
-               
-                if($is_head_exists > 0 && !empty($union['is_head']))
-                {
-                    //$data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
-                }
-                else{
-                   
-                }
-                $id = $this->UnionBranch->StoreUnionBranch($union);
-                //member record in users table
-                if(!empty($id))
-                {
-                    
-                    $status =1;
-                    $union_type =1;
-                }
-            }
+            $user_id = $member_user->id;
+            $union['user_id'] = $user_id;
+            $id = $this->UnionBranch->StoreUnionBranch($union);
+            $status =1;
+            
         }
 		if($status == 1){
 				$mail_data = array( 
@@ -214,7 +188,7 @@ class UnionBranchController extends Controller
     public function update(Request $request)
     {
         $auto_id = $request->input('id');
-        $user_id = User::where('union_branch_id',$auto_id)->pluck('id')[0];
+        $user_id = UnionBranch::where('id',$auto_id)->pluck('user_id')[0];
         $request->validate([
             'branch_name'=>'required',
             'phone'=>'required',
@@ -259,54 +233,27 @@ class UnionBranchController extends Controller
         $union_head_role = Role::where('slug', 'union')->first();
         $randompass = CommonHelper::random_password(5,true);
         $redirect_failurl = app()->getLocale().'/unionbranch';
-		$redirect_url = app()->getLocale().'/unionbranch';
+        $redirect_url = app()->getLocale().'/unionbranch';
         
-         //Data Exists
-         $data_exists = DB::table('union_branch')->where([
-            ['union_branch','=', $union['union_branch']],
-            ['status','=','1'] 
-             ])->count();
+        $is_head = $request->input('is_head');
+        if(isset($is_head)){
+            $union['is_head'] = 1;
+        }else{
+            $union['is_head'] = 0;
+        }
+        if($union['is_head'] == 0)
+        {
+            $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
+            $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->where('user_id','=',$user_id)->update(['role_id'=>'2']);
+            return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
+        }else{
+            $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
+            $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
+            $rold_id_2 = DB::table('users_roles')->where('role_id','=','2')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
+            $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
+            return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
+        }
          
-            if($union['is_head'] == '')
-            {
-                $already_head = DB::table('union_branch')->where([
-                    ['is_head','=', 1],
-                    ['id','=', $auto_id],
-                    ['status','=','1'] 
-                     ])->count();
-                if($already_head==1){
-                    $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->where('user_id','=',$user_id)->update(['role_id'=>'2']);
-                }
-                DB::connection()->enableQueryLog();
-                $union['is_head'] = '0';
-                $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-
-                return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
-            }
-            else{
-               
-                $is_head_exists = DB::table('union_branch')->where([
-                    ['is_head','=','1'],
-                    ['status','=','1']
-                    ])->count(); 
-                    
-                if($is_head_exists > 0 && !empty($union['is_head']))
-                {
-                    $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
-                    $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-                    $rold_id_2 = DB::table('users_roles')->where('role_id','=','2')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
-                    $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-                    //Users and user role entry
-
-                    return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
-                }
-                else{
-                    $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-                    $rold_id_2 = DB::table('users_roles')->where('role_id','=','2')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
-                    
-                    return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
-                }
-            }
     }
     public function delete($lang,$id)
 	{

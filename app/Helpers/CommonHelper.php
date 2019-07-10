@@ -37,7 +37,7 @@ class CommonHelper
     }
 
     public static function get_branch_company_id($branch_id){
-        $company_data = DB::table('branch')->where('branch.id','=',$branch_id)->pluck('company_id');
+        $company_data = DB::table('company_branch')->where('company_branch.id','=',$branch_id)->pluck('company_id');
         if(!empty($company_data)){
             return $company_data[0];
         }
@@ -86,15 +86,23 @@ class CommonHelper
     }
 
     public static function get_company_branch($company_id){
-        $branch_list = DB::table('branch')->where('company_id', $company_id)->get();
+        $branch_list = DB::table('company_branch')->where('company_id', $company_id)->get();
        
         return $branch_list;
+    }
+
+    public static function getaccountStatus($user_id){
+        $status_data = DB::table('membership')->where('user_id', $user_id)->pluck('status_id');
+        if(!empty($status_data)){
+            return $status_data[0];
+        }
+        return '';
     }
 
     
     public static function get_branch_by_unionbranch($branch_id){
         DB::connection()->enableQueryLog();
-        $branch_list = DB::table('branch')->where('union_branch_id', $branch_id)->get();
+        $branch_list = DB::table('company_branch')->where('union_branch_id', $branch_id)->get();
         //$queries = DB::getQueryLog();
         // dd($queries);
         return $branch_list;

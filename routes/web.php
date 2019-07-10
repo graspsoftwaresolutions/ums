@@ -123,16 +123,16 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('status-delete/{id}','StatusController@delete')->name('master.deletestatus');
 	
 	//Branch Details
-	Route::get('branch','BranchController@index')->name('master.branch');
+	Route::get('branch','CompanyBranchController@index')->name('master.branch');
 	/* 
 	Route::get('get-state-list','BranchController@getStateList');
 	Route::get('get-cities-list','BranchController@getCitiesList');
 	 */
-	Route::get('add-branch','BranchController@addBranch')->name('master.addbranch');
-	Route::post('branch_save','BranchController@save')->name('master.savebranch');
-	Route::get('branch-edit/{parameter}','BranchController@edit')->name('master.editbranch');
-	Route::post('branch_update','BranchController@update')->name('master.updatebranch');
-	Route::get('branch-delete/{id}','BranchController@delete')->name('master.deletebranch');
+	Route::get('add-branch','CompanyBranchController@addBranch')->name('master.addbranch');
+	Route::post('branch_save','CompanyBranchController@save')->name('master.savebranch');
+	Route::get('branch-edit/{parameter}','CompanyBranchController@edit')->name('master.editbranch');
+	Route::post('branch_update','CompanyBranchController@update')->name('master.updatebranch');
+	Route::get('branch-delete/{id}','CompanyBranchController@delete')->name('master.deletebranch');
 
 	//App Form
 	Route::resource('appform', 'AppFormController');

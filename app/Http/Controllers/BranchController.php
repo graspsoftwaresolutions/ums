@@ -97,7 +97,7 @@ class BranchController extends Controller
         $company_branch_role = Role::where('slug', 'company-branch')->first();
         $randompass = CommonHelper::random_password(5,true);
 
-        $data_exists_branchemail = DB::table('branch')->where([
+        $data_exists_branchemail = DB::table('company_branch')->where([
             ['email','=',$branch['email']]
             ])->count();
         $data_exists_usersemail = DB::table('users')->where('email','=',$branch['email'])->count();
@@ -110,7 +110,7 @@ class BranchController extends Controller
         {
             $company_type =2;
            
-            if($branch['is_head'] == '')
+            if($branch['is_head'] == 0)
             {
                 $id = $this->Branch->StoreBranch($branch);
                 $member_user = new User();
@@ -123,7 +123,7 @@ class BranchController extends Controller
             }else{
                 $company_type = 1;
                 $union_branch_id = $branch['union_branch_id'];
-                $data = DB::table('branch')->where('is_head','=','1')->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
+                $data = DB::table('company_branch')->where('is_head','=','1')->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
                 $id = $this->Branch->StoreBranch($branch);
                 //$rold_id_1 = DB::table('users_roles')->where('role_id','=','3')->where('union_branch_id','=',$branch['union_branch_id'])->update(['role_id'=>'4']);
                 $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
@@ -152,7 +152,7 @@ class BranchController extends Controller
             }
         }
 
-        // $data_exists = DB::table('branch')->where([
+        // $data_exists = DB::table('company_branch')->where([
         //    ['branch_name','=', $branch['branch_name']],
         //    ['status','=','1'] 
         //     ])->count();
@@ -239,18 +239,18 @@ class BranchController extends Controller
         }
         $union_branch_id = $request->input('union_branch_id');
 
-        $is_head_exists = DB::table('branch')->where([
+        $is_head_exists = DB::table('company_branch')->where([
             ['is_head','=','1'],
             ['union_branch_id','=', $request->input('union_branch_id')],
             ['status','=','1']
             ])->count();
         if($branch['is_head']==0){
-            $upid = DB::table('branch')->where('id','=',$id)->update($branch);
+            $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','3')->where('user_id','=',$user_id)->update(['role_id'=>'4']);
         }else{
-            $data = DB::table('branch')->where('is_head','=','1')->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
+            $data = DB::table('company_branch')->where('is_head','=','1')->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
             $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
-            $upid = DB::table('branch')->where('id','=',$id)->update($branch);
+            $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','4')->where('user_id','=',$user_id)->update(['role_id'=>'3']);
         }
 
@@ -259,7 +259,7 @@ class BranchController extends Controller
     public function delete($lang,$id)
 	{
         $id = Crypt::decrypt($id);
-        $data = DB::table('branch')->where('id','=',$id)->update(['status'=>'0']);
+        $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
         $defdaultLang = app()->getLocale();
 		return redirect($defdaultLang.'/branch')->with('branch','Branch Deleted Succesfully');
 	} 
