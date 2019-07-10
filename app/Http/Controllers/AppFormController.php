@@ -128,7 +128,7 @@ class AppFormController extends Controller
         $AppForm->save();
 
         $defdaultLang = app()->getLocale();
-        return redirect($defdaultLang.'/appform')->with('message','Form Details Added Successfully!!');
+        return redirect($defdaultLang.'/appform')->with('message','Form Details Updated Successfully!!');
     }
 
     /**
