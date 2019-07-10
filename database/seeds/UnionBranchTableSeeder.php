@@ -24,6 +24,7 @@ class UnionBranchTableSeeder extends Seeder
 	    $new_branch->email = 'unionbranch@gmail.com';
 	    $new_branch->is_head = 1;
 		$new_branch->status = 1;
+		$new_branch->user_id = 0;
 	    $new_branch->save();
     }
 }

@@ -15,7 +15,7 @@ class Branch extends Model
 	
     public function StoreBranch($branch)
     {
-        $id = DB::table('branch')->insertGetId($branch);
+        $id = DB::table('union_branch')->insertGetId($branch);
         return $id;
     }
 }

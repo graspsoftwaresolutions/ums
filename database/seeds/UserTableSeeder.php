@@ -36,7 +36,6 @@ class UserTableSeeder extends Seeder
 	    $branch_user = new User();
 	    $branch_user->name = 'Default union Branch';
 	    $branch_user->email = 'unionbranch@gmail.com';
-		$branch_user->union_branch_id = 1;
 	    $branch_user->password = bcrypt('12345678');
 	    $branch_user->save();
 	    $branch_user->roles()->attach($union_branch_role);
@@ -62,8 +61,6 @@ class UserTableSeeder extends Seeder
 	    $company_user = new User();
 	    $company_user->name = 'Default Company Branch';
 	    $company_user->email = 'companybranch@gmail.com';
-		$company_user->branch_id = 1;
-		$company_user->union_branch_id = 1;
 	    $company_user->password = bcrypt('12345678');
 	    $company_user->save();
 	    $company_user->roles()->attach($company_branch_role);

@@ -63,7 +63,7 @@ class RegisterController extends Controller
     public function getBranchList(Request $request){
        
         $id = $request->company_id;
-        $res = DB::table('branch')
+        $res = DB::table('company_branch')
         ->select('id','branch_name')
         ->where([
             ['company_id','=',$id],

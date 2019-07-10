@@ -27,6 +27,7 @@ class CompanyBranchTableSeeder extends Seeder
 		$branch->mobile = '88888888';
 		$branch->email = 'companybranch@gmail.com';
 		$branch->is_head = 1;
+		$branch->user_id = 0;
 		$branch->status = 1;
 	    $branch->save();
     }
