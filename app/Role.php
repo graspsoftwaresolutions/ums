@@ -9,4 +9,7 @@ class Role extends Model
     public function permissions() {
     	return $this->belongsToMany(Permission::class,'roles_permissions');
     }
+    protected $fillable = ['id','slug','name'];
+    protected $table = 'roles';
+    public $timestamps = true;
 }

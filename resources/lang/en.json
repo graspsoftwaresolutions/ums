@@ -260,6 +260,23 @@
   "Description" : "Description_en",
   "Please enter Form Name" : "Please enter Form Name_en",
   "Edit Branch" : "Edit Branch_en",
-  "Email Already Exists" : "Email Already Exists_en"
-  
+  "Email Already Exists" : "Email Already Exists_en",
+  "Form Details Added Successfully!!" : "Form Details Added Successfully!!_en",
+  "Form Details Deleted Successfully!!" : "Form Details Deleted Successfully!!_en",
+  "Form Details Updated Successfully!!" : "Form Details Updated Successfully!!_en",
+
+  "Roles List" : "Roles List_en",
+  "Roles" : "Roles_en",
+  "Add New Roles" : "Add New Roles_en",
+  "Role Name"  : "Roles Name_en",
+  "Slug" : "Slug_en",
+  "Role List" : "Role List_en",
+  "Edit Roles" : "Edit Roles_en",
+  "Add Roles" : "Add Roles_en",
+  "Please enter Slug" : "Please enter Slug_en",
+  "Please enter Name" : "Please enter Name_en",
+  "Role Details Updated Successfully!!" : "Role Details Updated Successfully!!_en",
+  "Role Details Added Successfully!!" : "Role Details Added Successfully!!_en",
+  "Role Details Deleted Successfully!!" : "Role Details Deleted Successfully!!_en"
+
 }
