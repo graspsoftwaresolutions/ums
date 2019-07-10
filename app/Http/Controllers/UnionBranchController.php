@@ -289,6 +289,7 @@ class UnionBranchController extends Controller
                     ['is_head','=','1'],
                     ['status','=','1']
                     ])->count(); 
+                    
                 if($is_head_exists > 0 && !empty($union['is_head']))
                 {
                     $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);

@@ -71,7 +71,7 @@
                                             
                                             <input name="branch_name" id="branch_name" class="common-input" type="text" data-error=".errorTxt3" value="{{$row->branch_name}}">
                                             <div class="errorTxt3" ></div>
-                                                <label for="branch_name" class="common-label">Branch Name*</label>
+                                                <label for="branch_name" class="common-label">{{__('Branch Name') }}*</label>
                                         </div>
                                         <div class="col s12 m6">
                                             <select name="country_id" id="country_id" data-error=".errorTxt4"  class="error browser-default common-select" style="height: 4rem;">

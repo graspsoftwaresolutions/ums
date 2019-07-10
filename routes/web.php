@@ -134,11 +134,16 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('branch_update','BranchController@update')->name('master.updatebranch');
 	Route::get('branch-delete/{id}','BranchController@delete')->name('master.deletebranch');
 
+	//App Form
+	Route::resource('appform', 'AppFormController');
+	
 	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
 	//Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
 });
 /* Master */
+
+
 
 //common routes
 Route::get('get-state-list','CommonController@getStateList');
