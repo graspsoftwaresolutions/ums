@@ -16,7 +16,6 @@
             </ul>
             <!-- translation-button-->
             <ul class="dropdown-content" id="translation-dropdown">
-			    {{-- strlen(Request::segment(1))==2 && strlen(Request::segment(2)) ? route(\Illuminate\Support\Facades\Route::currentRouteName(), 'en') : route('home', 'en') --}}
 				
               <li><a class="grey-text text-darken-1" href="{{ route('home','en') }}"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"> English</a></li>
               <li><a class="grey-text text-darken-1" href="{{ route('home','my') }}"><img src="{{ asset('public/assets/images/my_icon.png') }}" alt="Malay"> Malay</a></li>

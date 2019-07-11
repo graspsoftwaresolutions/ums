@@ -16,8 +16,9 @@
 						</div>
 						<div class="row margin">
 							<div class="input-field col s12">
+								 <input type="hidden" name="token" value="{{ $token }}">
 								<i class="material-icons prefix pt-2">person_outline</i>
-								<input id="email" name="email" type="email" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required >
+								<input id="email" name="email" type="email" class="@error('email') is-invalid @enderror" value="{{ $email }}" readonly required >
 								<label for="email" class="center-align">{{ __('E-Mail Address') }}</label>
 								@error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -35,7 +36,8 @@
 						</div>
 						<div class="row margin">
 							<div class="input-field col s12">
-								<input id="password-confirm" name="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+								<i class="material-icons prefix pt-2">lock_outline</i>
+								<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
 								<label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 							</div>
                         </div>
@@ -52,7 +54,7 @@
 		</div>
 	</div>
 </div>
-<div class="container hide">
+<!--div class="container hide">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -111,5 +113,5 @@
             </div>
         </div>
     </div>
-</div>
+</div-->
 @endsection

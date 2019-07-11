@@ -33,7 +33,7 @@
 								<label for="password">{{ __('Password') }}</label>
 							</div>
 						</div>
-						<div class="row">
+						<div class="row hide">
 							<div class="col s12 m12 l12 ml-2 mt-1">
 								<p>
 									<label>

@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Permissions\HasPermissionsTrait;
+use App\Notifications\ResetPassword;
+
 class User extends Authenticatable
 {
     use Notifiable, HasPermissionsTrait;
@@ -27,4 +29,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+	public function sendPasswordResetNotification($token)
+	{
+	   $this->notify( new ResetPassword($token));
+	}
 }

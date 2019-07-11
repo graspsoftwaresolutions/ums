@@ -6,19 +6,23 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 
-class ResetPassword extends Notification
+class ResetPassword extends ResetPasswordNotification
 {
     use Queueable;
+	
+	public $token;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
+		//print_r($token);die;
     }
 
     /**
@@ -40,17 +44,12 @@ class ResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
+		$emailid = $_POST['email'];
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/aa'))
+                    ->line('Reset your password')
+                    ->line('Hey, did you forget your password? Click the button to reset it.')
+                    ->action('Reset Password', url('en/password/reset', $this->token).'?email='.$emailid)
                     ->line('Thank you for using our application!');
-    }
-	
-	public function message($notifiable)
-    {
-        return $this->line('You are not receiving this email because we received a password reset request for your account. Click the button below to reset your password:')
-                    ->action('Reset Passwords', url('/aa', $this->token))
-                    ->line('If you did not request a password reset, no further action is required.');
     }
 
     /**

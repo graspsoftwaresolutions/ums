@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+
 
 class ResetPasswordController extends Controller
 {
@@ -38,31 +40,34 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
     }
 	
-	public function showResetForm($lang,Request $request, $token = null)
-	{
-		return view('auth.passwords.reset')->with(
-			['token' => $token, 'email' => $request->email]
-		);
-	}
 	
-	public function toMail(Request $request)
+	public function reset($lang,Request $request)
     {
-		print_r(11);die;
+		$request->validate($this->rules(), $this->validationErrorMessages());
+
+        // Here we will attempt to reset the user's password. If it is successful we
+        // will update the password on an actual user model and persist it to the
+        // database. Otherwise we will parse the error and return the response.
+        $response = $this->broker()->reset(
+            $this->credentials($request), function ($user, $password) {
+                $this->resetPassword($user, $password);
+            }
+        );
+
+        // If the password was successfully reset, we will redirect the user back to
+        // the application's home authenticated view. If there is an error we can
+        // redirect them back to where they came from with their error message.
+        return $response == Password::PASSWORD_RESET
+                    ? $this->sendResetResponse($request, $response)
+                    : $this->sendResetFailedResponse($request, $response);
 		//return $request->all();
-		return $reseturl = app()->getLocale().'password/reset/'.$this->token.'?email=murugan@gmail.com'; exit;
-        return (new MailMessage)
-            ->line('You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url($reseturl)) 
-            ->line('If you did not request a password reset, no further action is required.');
-    }
-	
-	public function showLinkRequestForm(){
-		die;
 	}
-	
-	public function sendResetLinkEmail(){
-		print_r(11);die;
-		return 1;
+	public function showResetForm(Request $request, $lang, $token=null)
+    {
+		//return $token;
+		return view('auth.passwords.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
 	}
 	public function redirectTo()
     {
