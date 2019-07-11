@@ -753,9 +753,7 @@ $(document.body).on('click', '.edit_nominee_row' ,function(){
 		edit_nric_n: {
 			required: true,
 		},
-		edit_nric_o: {
-			required: true,
-		},
+		
 		edit_nominee_address_one: {
 			required: true,
 		},
