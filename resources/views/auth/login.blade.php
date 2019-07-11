@@ -12,8 +12,8 @@
 							<div class="input-field col s12">
 								<h5 class="ml-4">{{ __('Login') }}
 									<select name="language" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language" class="browser-default" style="float: right;color: #333;font:size:16px;">
-										<option {{ app()->getLocale()=='en' ? 'selected' : '' }} value="en" >English</option>
-										<option {{ app()->getLocale()=='my' ? 'selected' : '' }} value="my">Malay</option>
+										<option {{ app()->getLocale()=='en' ? 'selected' : '' }} value="{{ url('en') }}" >English</option>
+										<option {{ app()->getLocale()=='my' ? 'selected' : '' }} value="{{ url('my') }}">Malay</option>
 									</select>
 								</h5>
 								<div class="clearfix"/>
