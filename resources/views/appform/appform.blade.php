@@ -50,7 +50,7 @@
 														<th>{{__('App Form Name') }}</th>
                                                         <th>{{__('App Form Type') }}</th>
 														
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th style="margin-left:20px"> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -64,10 +64,10 @@
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 															@endphp
-															<td><a class="btn-small waves-effect waves-light cyan" href="{{ route('appform.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a> <form action="{{ route('appform.destroy',[app()->getLocale(),$value->id])}}" method="POST">
+															<td><a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('appform.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a> <form action="{{ route('appform.destroy',[app()->getLocale(),$value->id])}}" method="POST" style="float: left;margin-left:5px;">
 															{{ method_field('DELETE') }}
     														{{ csrf_field() }}									
-															 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form></td>
+															 <button type="submit" class="btn-small waves-effect waves-light amber darken-4" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form></td>
 													    </tr>
                                                     @endforeach
 												</tbody>
@@ -96,7 +96,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
+	$("#appform_sidebar_li_id").addClass('active');
+	$("#appform_sidebar_a_id").addClass('active');
 </script>
 @endsection
