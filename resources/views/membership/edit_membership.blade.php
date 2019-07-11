@@ -449,7 +449,7 @@
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="nric_o">NRIC-O *</label>
+                                                <label for="nric_o">NRIC-O </label>
                                                 <input id="nric_o" name="nric_o" value=""  type="text">
                                                 
                                             </div>
@@ -666,7 +666,7 @@
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="nric_o_guardian">NRIC-O *</label>
+                                                <label for="nric_o_guardian">NRIC-O </label>
                                                 <input id="nric_o_guardian" name="nric_o_guardian" value="<?php echo $gardian_row->nric_o; ?>"  type="text">
                                                 
                                             </div>

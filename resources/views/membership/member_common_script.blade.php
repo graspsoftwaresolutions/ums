@@ -514,7 +514,7 @@ $('#nominee_state_id').change(function(){
 			}
 		});
 	if(nominee_name!="" && nominee_dob!="" && nominee_sex!="" && nominee_relationship!="" && 
-	nric_n!="" && nric_o!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
+	nric_n!="" && nominee_address_one!="" && nominee_country_id!="" && nominee_state_id!="" && 
 	nominee_address_two!="" && nominee_city_id!="" && nominee_postal_code != "" && nominee_address_three!="" && nominee_mobile!=""){
 	   $("#add_nominee").attr('disabled',true);
 	    var new_row = '<tr>';

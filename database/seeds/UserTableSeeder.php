@@ -40,14 +40,7 @@ class UserTableSeeder extends Seeder
 	    $branch_user->save();
 	    $branch_user->roles()->attach($union_branch_role);
 	   // $manager->permissions()->attach($manager_perm);
-	   
-	   /* master memmber user */
-	    $branch_user = new User();
-	    $branch_user->name = 'Member';
-	    $branch_user->email = 'member@gmail.com';
-	    $branch_user->password = bcrypt('12345678');
-	    $branch_user->save();
-	    $branch_user->roles()->attach($member_role);
+	  
 		
 	   /* Company user */
 	    $company_user = new User();
@@ -64,5 +57,13 @@ class UserTableSeeder extends Seeder
 	    $company_user->password = bcrypt('12345678');
 	    $company_user->save();
 	    $company_user->roles()->attach($company_branch_role);
+		
+		 /* master memmber user */
+	    $branch_user = new User();
+	    $branch_user->name = 'Member';
+	    $branch_user->email = 'member@gmail.com';
+	    $branch_user->password = bcrypt('12345678');
+	    $branch_user->save();
+	    $branch_user->roles()->attach($member_role);
     }
 }
