@@ -1,3 +1,58 @@
+  <!-- card stats start -->
+<div id="card-stats">
+   <div class="row">
+      <div class="col s12 m6 l3">
+         <div class="card animate fadeLeft">
+            <div class="card-content cyan white-text">
+               <p class="card-stats-title"><i class="material-icons">person_outline</i> No of Union Branch</p>
+               <h4 class="card-stats-number white-text">566</h4>
+               <!-- <p class="card-stats-compare">
+                  <i class="mdi-creation"></i> 15%
+                  <span class="cyan text text-lighten-5">from yesterday</span>
+               </p> -->
+            </div>
+            <div class="card-action cyan darken-1">
+               <div id="clients-bar" class="center-align"><a style="color:white" href="{{route('master.unionbranch', app()->getLocale())}}">Union Branch List</a> </div>
+            </div>
+         </div>
+      </div>
+      <div class="col s12 m6 l3">
+         <div class="card animate fadeLeft">
+            <div class="card-content red accent-2 white-text">
+               <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
+               <h4 class="card-stats-number white-text">2</h4>
+              
+            </div>
+            <div class="card-action red">
+               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url('membership')}}">Members List</a></div>
+            </div>
+         </div>
+      </div>
+      <div class="col s12 m6 l3">
+         <div class="card animate fadeRight">
+            <div class="card-content orange lighten-1 white-text">
+               <p class="card-stats-title"><i class="material-icons"></i>No of Company's</p>
+               <h4 class="card-stats-number white-text">806</h4>
+            </div>
+            <div class="card-action orange">
+               <div id="profit-tristate" class="center-align"><a style="color:white" href="{{route('master.company', app()->getLocale())}}">Company List</a></div>
+            </div>
+         </div>
+      </div>
+      <div class="col s12 m6 l3">
+         <div class="card animate fadeRight">
+            <div class="card-content green lighten-1 white-text">
+               <p class="card-stats-title"><i class="material-icons"></i> No of Company Branches</p>
+               <h4 class="card-stats-number white-text">1806</h4>
+            </div>
+            <div class="card-action green">
+               <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> Branches List</a></div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!--card stats end-->
  <!-- Current balance & total transactions cards-->
 <div class="row mt-4">
    <div class="col s12 m4 l4">

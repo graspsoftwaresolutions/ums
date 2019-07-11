@@ -97,7 +97,6 @@
   "Add New Reason" : "Add New Reason_my",
   "Reason Name" : "Reason Name_my",
   "Add Reason Details" : "Add Reason Details_my",
-  "Reason Name" : "Reason Name_my",
   "Add Reason" : "Add Reason_my",
   "Enter a Reason Name" : "Enter a Reason Name_my",
   "Edit Reason Details" : "Edit Reason Details_my",
@@ -105,5 +104,6 @@
   "Reason Name Already Exists" : "Reason Name Already Exists_my",
   "Reason Name Added Succesfully" : "Reason Name Added Succesfully_my",
   "Reason Name Updated Succesfully" : "Reason Name Updated Succesfully_my",
-  "Reason Deleted Succesfully" : "Reason Deleted Succesfully_my"
+  "Reason Deleted Succesfully" : "Reason Deleted Succesfully_my",
+  
 }

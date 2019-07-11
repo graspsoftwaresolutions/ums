@@ -68,9 +68,8 @@
                                                 <option value="">Select Company</option>
                                                 <?php if($row->id)?>
                                                     @foreach($data['company'] as $value)
-                                                        
                                                          <option value="{{$value->id}}" <?php if($value->id == $row->head_of_company) { echo "selected";}?>
-                                                         >{{$value->company_name}}</option>
+                                                         ><?php echo $value->company_name;?></option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">      
