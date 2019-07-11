@@ -7,7 +7,7 @@
 			</br>
 			@php
 			 $user_id = Auth::user()->id;
-			 $accountstatus = CommonHelper::getaccountStatus($user_id);
+			 $accountstatus = 1;
 			@endphp
 			@if($accountstatus==1)
 			<span class="badge new badge pill pink">Your account is not verified yet</span>
