@@ -23,7 +23,21 @@
     <!-- END: Page Level CSS-->
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/custom/custom.css') }}">
-
+    <style>
+        select.browser-default {
+            display: inline-block;
+        }
+        select {
+            font-size: 17px;
+            width: auto;
+            height: 3rem;
+            padding: 5px;
+            border: none;
+            border-bottom: 1px solid #bdbdbd;
+            border-radius: 2px;
+            background-color: transparent;
+        }
+    </style>
 </head>
   <body class="vertical-layout vertical-menu-collapsible page-header-dark vertical-modern-menu 1-column login-bg  blank-page blank-page" data-open="click" data-menu="vertical-modern-menu" data-col="1-column">
     <div id="app">
@@ -39,5 +53,6 @@
     <!-- BEGIN THEME  JS-->
     <script src="{{ asset('public/assets/js/plugins.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/assets/js/custom/custom-script.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/js/scripts/ui-alerts.js') }}" type="text/javascript"></script>
 </body>
 </html>
