@@ -47,16 +47,16 @@
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="formtype" class="common-label">{{__('Form Type') }}*</label>
+                                          <label for="formtype" class="common-label">{{__('Form Type') }}</label>
                                           <input id="formtype" class="common-input" name="formtype" type="text" >
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
-                                          <label for="orderno" class="common-label">{{__('Order No') }}*</label>
+                                          <label for="orderno" class="common-label">{{__('Order No') }}</label>
                                           <input id="orderno" class="common-input" name="orderno" type="text" >
                                         </div>
                                         <div class="input-field col s12 m6">
-                                          <label for="route" class="common-label">{{__('Route') }}*</label>
+                                          <label for="route" class="common-label">{{__('Route') }}</label>
                                           <input id="route" class="common-input" name="route" type="text" > 
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
@@ -102,7 +102,7 @@
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
-                                          <label for="description" class="common-label">{{__('Description') }}*</label>
+                                          <label for="description" class="common-label">{{__('Description') }}</label>
                                           <input id="route" class="common-input" name="description" type="text" >
                                           
                                         </div>

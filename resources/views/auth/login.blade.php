@@ -10,7 +10,13 @@
                         @csrf
 						<div class="row">
 							<div class="input-field col s12">
-								<h5 class="ml-4">{{ __('Login') }}</h5>
+								<h5 class="ml-4">{{ __('Login') }}
+									<select name="language" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language" class="browser-default" style="float: right;color: #333;font:size:16px;">
+										<option {{ app()->getLocale()=='en' ? 'selected' : '' }} value="{{ url('en') }}" >English</option>
+										<option {{ app()->getLocale()=='my' ? 'selected' : '' }} value="{{ url('my') }}">Malay</option>
+									</select>
+								</h5>
+								<div class="clearfix"/>
 								@include('includes.messages')
 							</div>
 						</div>
@@ -53,16 +59,14 @@
 						<div class="row">
 							<div class="input-field col s6 m6 l6">
 								<p class="margin medium-small">
-									
-										 <a href="{{ route('register', app()->getLocale()) }}">{{ __('Register Now!') }}</a>
+									 <a href="{{ route('register', app()->getLocale()) }}">{{ __('Register Now!') }}</a>
 								</p>
 							</div>
 							<div class="input-field col s6 m6 l6">
 								<p class="margin right-align medium-small">
-									
-										<a href="{{ route('password.request', app()->getLocale()) }}">
-											{{ __('Forgot Your Password?') }}
-										</a>
+									<a href="{{ route('password.request', app()->getLocale()) }}">
+										{{ __('Forgot Your Password?') }}
+									</a>
 								</p>
 							</div>
 						</div>

@@ -12,6 +12,7 @@ class CompanyBranchTableSeeder extends Seeder
      */
     public function run()
     {
+		// company head
         $branch = new CompanyBranch();
 	    $branch->company_id = 1;
 	    $branch->union_branch_id = 1;
@@ -27,7 +28,7 @@ class CompanyBranchTableSeeder extends Seeder
 		$branch->mobile = '88888888';
 		$branch->email = 'companybranch@gmail.com';
 		$branch->is_head = 1;
-		$branch->user_id = 0;
+		$branch->user_id = 3;
 		$branch->status = 1;
 	    $branch->save();
     }

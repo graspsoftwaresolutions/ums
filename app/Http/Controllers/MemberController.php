@@ -179,6 +179,8 @@ class MemberController extends Controller
                 $member['new_ic'] = $request->input('new_ic');
                 $member['branch_id'] = $request->input('branch_id');
                 $member_id = $this->Membership->StoreMembership($member);
+                $g_nric_o=$request->input('nric_o_guardian');
+                $g_nric_o=isset($g_nric_o) ? $g_nric_o: '';
 
                 if($member_id>0){
                     $guardian['member_id'] = $member_id;
@@ -186,7 +188,7 @@ class MemberController extends Controller
                     $guardian['gender'] = $request->input('guardian_sex');
                     $guardian['relationship_id'] = $request->input('g_relationship_id');
                     $guardian['nric_n'] = $request->input('nric_n_guardian');
-                    $guardian['nric_o'] = $request->input('nric_o_guardian');
+                    $guardian['nric_o'] = $g_nric_o;
                     $guardian['address_one'] = $request->input('guardian_address_one');
                     $guardian['country_id'] = $request->input('guardian_country_id');
                     $guardian['state_id'] = $request->input('guardian_state_id');
@@ -247,6 +249,8 @@ class MemberController extends Controller
                             $nominee_postalcode = $request->input('nominee_postalcode_value')[$j];
                             $nominee_mobile = $request->input('nominee_mobile_value')[$j];
                             $nominee_phone = $request->input('nominee_phone_value')[$j];
+
+                            $nominee_nrico = isset($nominee_nrico) ? $nominee_nrico : '';
 
                             $nominee = new MemberNominees();
 
@@ -546,6 +550,8 @@ class MemberController extends Controller
                     $nominee_postalcode = $request->input('nominee_postalcode_value')[$j];
                     $nominee_mobile = $request->input('nominee_mobile_value')[$j];
                     $nominee_phone = $request->input('nominee_phone_value')[$j];
+
+                    $nominee_nrico=isset($nominee_nrico) ? $nominee_nrico: '';
                     
                     if($nominee_auto_id ==null){
                         $nominee = new MemberNominees();

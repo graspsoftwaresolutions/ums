@@ -12,6 +12,7 @@ class UnionBranchTableSeeder extends Seeder
      */
     public function run()
     {
+		// union head
         $new_branch = new UnionBranch();
 	    $new_branch->union_branch = 'Head union branch';
 	    $new_branch->country_id = 1;
@@ -24,7 +25,7 @@ class UnionBranchTableSeeder extends Seeder
 	    $new_branch->email = 'unionbranch@gmail.com';
 	    $new_branch->is_head = 1;
 		$new_branch->status = 1;
-		$new_branch->user_id = 0;
+		$new_branch->user_id = 1;
 	    $new_branch->save();
     }
 }

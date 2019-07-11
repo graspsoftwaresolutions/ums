@@ -38,6 +38,10 @@
 								<div class="card-content">
 									<h4 class="card-title">Edit Membership</h4>
 									@include('includes.messages')
+                                    @php
+                                    $get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
+                                    @endphp
 									<div class="row">
                                         <div class="col s12">
                                             <ul class="tabs">
@@ -77,7 +81,8 @@
                                           <input id="name" name="name" value="{{$values->name}}" type="text" data-error=".errorTxt30">
                                           <div class="errorTxt30"></div>
                                         </div>
-                                        
+                                        @php
+                                        @endphp
                                         <div class="input-field col s12 m6">
                                         <div class="col s12 row">
                                                 <div class="col s12 m4">
@@ -92,7 +97,7 @@
                                                 <div class="col s12 m4">
                                                     <p>
                                                         <label>
-                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="male" {{ $values->gender == 'male' ? 'checked' : '' }}>
+                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="male" {{ $values->gender == 'male' ? 'checked' : '' }}>
                                                         <span>Male</span>
                                                         </label>
                                                     </p>
@@ -119,6 +124,7 @@
                                           <div class="errorTxt26"></div>
                                         </div>
                                             <div class="col s12 m6">
+                                                @if($user_role!='member')
                                                  <div class="input-field col s12 m6">
                                                     <p>
                                                     <label>
@@ -134,6 +140,11 @@
                                                 
                                                  </span>
                                                  </div>
+                                                 @else
+                                                 <input type="checkbox" id="rejoined" class="hide" <?php echo $values->old_member_number!="" ? 'checked' : ''; ?>/>
+                                                     </br>
+                                                     <?php echo $values->old_member_number!="" ? 'Old Number: '.$values->old_member_number : ''; ?>
+                                                 @endif
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
 
@@ -318,6 +329,24 @@
 											@php												
 											}
 											@endphp
+                                            @php
+											if($values->status_id==1 && $check_union!=1){
+											@endphp
+                                            <div class="col s12 m6 ">
+                                                <label>Status*</label>
+                                                <span class="badge red">Account is not verified</span>
+                                            </div>
+											@php												
+											}else{
+											@endphp
+                                            <div class="col s12 m6 ">
+                                                <label>Status*</label>
+                                                <span class=" badge gradient-45deg-light-blue-cyan">Account is verified</span>
+												
+                                            </div>
+                                            @php												
+											}
+											@endphp
                                       </div>
                                      
                                     
@@ -449,7 +478,7 @@
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="nric_o">NRIC-O *</label>
+                                                <label for="nric_o">NRIC-O </label>
                                                 <input id="nric_o" name="nric_o" value=""  type="text">
                                                 
                                             </div>
@@ -666,7 +695,7 @@
                                                 
                                             </div>
                                             <div class="input-field col s12 m4">
-                                                <label for="nric_o_guardian">NRIC-O *</label>
+                                                <label for="nric_o_guardian">NRIC-O </label>
                                                 <input id="nric_o_guardian" name="nric_o_guardian" value="<?php echo $gardian_row->nric_o; ?>"  type="text">
                                                 
                                             </div>

@@ -49,7 +49,7 @@
 													<tr>
 														<th>{{__('User Name') }}</th>
                                                         <th>{{__('Email') }}</th>
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th style="margin-left:20px"> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -63,10 +63,10 @@
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 															@endphp
-															<td><a class="btn-small waves-effect waves-light cyan" href="{{ route('users.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a> <form action="{{ route('users.destroy',[app()->getLocale(),$value->id])}}" method="POST">
+															<td><a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('users.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a> <form style="float: left;margin-left:5px;" action="{{ route('users.destroy',[app()->getLocale(),$value->id])}}" method="POST">
 															{{ method_field('DELETE') }}
     														{{ csrf_field() }}									
-															 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form></td>
+															 <button  type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form></td>
 													    </tr>
                                                     @endforeach
 												</tbody>

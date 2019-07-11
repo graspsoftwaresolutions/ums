@@ -66,8 +66,8 @@
 															
 															<td>
 																@if($value->id>5)
-																<a class="btn-small waves-effect waves-light cyan" href="{{ route('roles.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a>
-																<form action="{{ route('roles.destroy',[app()->getLocale(),$value->id])}}" method="POST">
+																<a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('roles.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a>
+																<form style="float: left;margin-left:5px;" action="{{ route('roles.destroy',[app()->getLocale(),$value->id])}}" method="POST">
 																{{ method_field('DELETE') }}
 																{{ csrf_field() }}									
 																 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form>

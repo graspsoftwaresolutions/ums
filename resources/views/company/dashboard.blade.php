@@ -1,11 +1,18 @@
-<div class="row">
-   
-   <div class="col s12 m6 l8">
-      <div class="card subscriber-list-card animate fadeRight">
-         <div class="card-content">
-            <h4 class="card-title mb-0">Company Dashboard <i class="material-icons float-right">more_vert</i></h4>
+ <!-- card stats start -->
+<div id="card-stats">
+   <div class="row">
+      <div class="col s12 m6 l3">
+         <div class="card animate fadeLeft">
+            <div class="card-content red accent-2 white-text">
+               <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
+               <h4 class="card-stats-number white-text">2</h4>
+              
+            </div>
+            <div class="card-action red">
+               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url('membership')}}">Members List</a></div>
+            </div>
          </div>
       </div>
+      
    </div>
 </div>
-

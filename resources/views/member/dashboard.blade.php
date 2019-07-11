@@ -25,13 +25,7 @@
 				</button>
 			</div>
 		@endif
-      <div class="card subscriber-list-card animate fadeRight">
-         <div class="card-content">
-            <h4 class="card-title mb-0">Member Dashboard <i class="material-icons float-right">more_vert</i></h4>
-			</br>
-			
-         </div>
-      </div>
+     
    </div>
 </div>
 

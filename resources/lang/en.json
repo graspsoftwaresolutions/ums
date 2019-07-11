@@ -286,8 +286,24 @@
   "Name" : "Name_en",
   "email" : "email_en",
   "Edit Users" : "Edit Users_en",
-  "Confirm Password" : "Confirm Password",
+  "Confirm Password" : "Confirm Password_en",
   "User Details Updated Successfully!!" : "User Details Updated Successfully!!_en",
   "User Details Added Successfully!!" : "User Details Added Successfully!!_en",
-  "User Details Deleted Successfully!!" : "User Details Deleted Successfully!!_en"
+  "User Details Deleted Successfully!!" : "User Details Deleted Successfully!!_en",
+
+  "Reset Password" : "Reset Password_en",
+  "Send Password Reset Link" : "Send Password Reset Link_en",
+  "Change Password" : "Change Password_en",
+  "Current Password" : "Current Password_en",
+  "New Password" : "New Password_en",
+  "Please enter Current Password" : "Please enter Current Password_en",
+  "Please enter Password" : "Please enter Password_en",
+  "Please enter Password Confirmation" : "Please enter Password Confirmation_en",
+  "History" : "History_en",
+  "We can't find a user with that e-mail address." : "We can't find a user with that e-mail address._en",
+  "Verify Your Email Address" : "Verify Your Email Address_en",
+  "Before proceeding, please check your email for a verification link." : "Before proceeding, please check your email for a verification link._en",
+  "If you did not receive the email" :"If you did not receive the email_en",
+  "click here to request another" : "click here to request another_en",
+  "We have e-mailed your password reset link!" : "We have e-mailed your password reset link!_en"
 }

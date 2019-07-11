@@ -249,7 +249,7 @@ class UnionBranchController extends Controller
         }else{
             $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
-            $rold_id_2 = DB::table('users_roles')->where('role_id','=','2')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
+            $rold_id_2 = DB::table('users_roles')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
             $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
             return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
         }

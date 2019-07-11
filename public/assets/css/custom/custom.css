@@ -53,3 +53,12 @@ div.clearfix{
     background-color: #fafafa;
     will-change: top, opacity;
 }
+
+input[readonly] {
+    background-color: #e9ecef !important;
+    opacity: 1;
+}
+
+.brand-sidebar .logo-wrapper a.brand-logo img {
+    height: 25px;
+}
