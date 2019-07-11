@@ -92,8 +92,8 @@ class CommonHelper
     }
 
     public static function getaccountStatus($user_id){
-        $status_data = DB::table('membership')->where('user_id', $user_id)->pluck('status_id');
-        if(!empty($status_data)){
+       $status_data = DB::table('membership')->where('user_id', $user_id)->pluck('status_id');
+        if(count($status_data)>0){
             return $status_data[0];
         }
         return '';

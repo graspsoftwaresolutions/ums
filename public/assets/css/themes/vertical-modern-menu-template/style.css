@@ -11150,3 +11150,63 @@ tr.group:hover
     top: 40%;
     right: -2px;
 }
+
+/* alert card */
+.card-alert-nonclose .card-content
+{
+    padding: 10px 20px;
+}
+
+.card-alert-nonclose i
+{
+    font-size: 20px;
+
+    position: relative;
+    top: 2px;
+}
+
+.card-alert-nonclose .alert-circle
+{
+    position: relative;
+    top: -5px;
+    left: -2px;
+
+    display: inline-block;
+
+    width: 40px;
+
+    vertical-align: bottom;
+    white-space: nowrap;
+
+    border-radius: 1000px;
+}
+
+.card-alert-nonclose .single-alert
+{
+    line-height: 42px;
+}
+
+.card-alert-nonclose button
+{
+    font-size: 20px;
+
+    position: absolute;
+    top: 5px;
+    right: 10px;
+
+    color: #fff;
+    border: none;
+    background: none;
+}
+
+.card-alert-nonclose .card .card-content
+{
+    padding: 20px 40px 20px 20px;
+}
+
+.card-alert-nonclose .card-action i
+{
+    top: 0;
+
+    margin: 0;
+}

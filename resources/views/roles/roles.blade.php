@@ -63,12 +63,16 @@
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 															@endphp
-															<td style="text-align:center"><a class="btn-small waves-effect waves-light cyan" href="{{ route('roles.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a> <td>
 															
-															<td><form action="{{ route('roles.destroy',[app()->getLocale(),$value->id])}}" method="POST">
-															{{ method_field('DELETE') }}
-    														{{ csrf_field() }}									
-															 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form></td>
+															<td>
+																@if($value->id>5)
+																<a class="btn-small waves-effect waves-light cyan" href="{{ route('roles.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a>
+																<form action="{{ route('roles.destroy',[app()->getLocale(),$value->id])}}" method="POST">
+																{{ method_field('DELETE') }}
+																{{ csrf_field() }}									
+																 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form>
+																@endif
+															 </td>
 													    </tr>
                                                     @endforeach
 												</tbody>
