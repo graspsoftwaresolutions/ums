@@ -90,9 +90,6 @@ class BranchController extends Controller
         }else{
             $branch['is_head'] = 0;
         }
-       
-
-
         $company_head_role = Role::where('slug', 'company')->first();
         $company_branch_role = Role::where('slug', 'company-branch')->first();
         $randompass = CommonHelper::random_password(5,true);

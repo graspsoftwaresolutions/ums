@@ -27,7 +27,6 @@
 											</li>
 											<li class="breadcrumb-item active">{{__('App Form') }}
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
@@ -49,7 +48,7 @@
 													<tr>
 														<th>{{__('App Form Name') }}</th>
                                                         <th>{{__('App Form Type') }}</th>
-														
+														<th>{{__('Route') }}</th>
 														<th style="margin-left:20px"> {{__('Action') }}</th>
 													</tr>
 												</thead>
@@ -61,6 +60,7 @@
                                                         <tr>
                                                             <td>{{$value->formname}}</td>
                                                             <td>{{$value->formtype}}</td>
+															<td>{{$value->route}}</td>
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 															@endphp
