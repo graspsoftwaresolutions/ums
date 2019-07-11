@@ -139,7 +139,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Roles Form
 	Route::resource('roles','RolesController');
 	//users Form
-	//Roles Form
 	Route::resource('users','UsersController');
 	
 	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
