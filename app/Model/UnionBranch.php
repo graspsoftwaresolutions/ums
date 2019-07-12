@@ -16,8 +16,9 @@ class UnionBranch extends Model
         $id = DB::table('union_branch')->insertGetId($union);
         return $id;
     }
-    public function User()
+
+    public function user()
     {
-        return $this->hasmany('App\User');
+        return $this->belongsTo('App\User');
     }
 }

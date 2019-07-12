@@ -62,3 +62,7 @@ input[readonly] {
 .brand-sidebar .logo-wrapper a.brand-logo img {
     height: 25px;
 }
+
+#card-stats .card .card-action {
+   font-size:12px;
+}
