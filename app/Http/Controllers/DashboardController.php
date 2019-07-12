@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {   
    public function unionBranchCount()
    {
-        $phone = unionBranch::where('is_head',0)->count();
+        $union_branch_count = unionBranch::where('is_head',0)->count();
         //$phone = User::find(1)->unionbranch;
         //$union = UnionBranch::with('User')->get();
       
