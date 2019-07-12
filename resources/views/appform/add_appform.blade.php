@@ -46,9 +46,15 @@
                                           <input id="formname" class="common-input" name="formname" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
-                                        <div class="input-field col s12 m6">
+                                        <div class="col s12 m6">
                                           <label for="formtype" class="common-label">{{__('Form Type') }}</label>
-                                          <input id="formtype" class="common-input" name="formtype" type="text" >
+										   <select class="error browser-default" class="common-select" id="formtype" name="formtype" data-error=".errorTxt1">
+												<option selected="" value="">{{__('Select Form Type')}}</option>
+												@foreach($data['form_type'] as $value)
+													<option value="{{$value->id}}" >{{$value->formname}}</option>
+												@endforeach
+											</select>
+											
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">

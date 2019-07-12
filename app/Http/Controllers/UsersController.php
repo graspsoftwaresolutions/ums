@@ -95,7 +95,7 @@ class UsersController extends Controller
         $id = Crypt::decrypt($id);
         
         $User = new User();
-        $data['users_edit'] = User::find($id)->first();
+        $data['users_edit'] = User::find($id);
        
         return view('users.edit_users')->with('data',$data);
     }

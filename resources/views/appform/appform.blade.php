@@ -59,7 +59,7 @@
 													 ?>
                                                         <tr>
                                                             <td>{{$value->formname}}</td>
-                                                            <td>{{$value->formtype}}</td>
+                                                            <td>{{ CommonHelper::getFormTypeName($value->formtype_id) }}</td>
 															<td>{{$value->route}}</td>
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}

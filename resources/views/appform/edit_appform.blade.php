@@ -39,33 +39,40 @@
                                     @include('includes.messages')
                                    <div id="view-validations">
                                     <form class="formValidate" id="AppformValidate" method="post" action="{{ route('appform.update',[app()->getLocale(),$data['appform_edit']->id]) }}">
-                                    <?php $row = $data['appform_edit'][0]; ?>
+                                    @php 
+										$row = $data['appform_edit'][0]; 
+									@endphp
                                         @method('PATCH')
                                         @csrf
                                       <div class="row">
                                         <div class="input-field col s12 m6">
                                           <label for="formname" class="common-label">{{__('App Form Name') }}*</label>
-                                          <input id="formname" class="common-input" value="<?php echo $data['appform_edit']->formname; ?>" name="formname" type="text"  data-error=".errorTxt1">
+                                          <input id="formname" class="common-input" value="{{ $data['appform_edit']->formname }}" name="formname" type="text"  data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
-                                        <div class="input-field col s12 m6">
-                                          <label for="formtype" class="common-label">{{__('Form Type') }}</label>
-                                          <input id="formtype" class="common-input" value="<?php echo $data['appform_edit']->formtype; ?>" name="formtype" type="text">
+                                        <div class="col s12 m6">
+											<label for="formtype" class="common-label">{{__('Form Type') }}</label>
+										    <select class="error browser-default" class="common-select" id="formtype" name="formtype"  data-error=".errorTxt1">
+												<option selected="" value="">{{__('Select Form Type')}}</option>
+												@foreach($data['form_type'] as $value)
+													<option value="{{$value->id}}" {{ $value->id ==$data['appform_edit']->formtype_id ? 'selected' : '' }}>{{$value->formname}}</option>
+												@endforeach
+											</select>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                           <label for="orderno" class="common-label">{{__('Order No') }}</label>
-                                          <input id="orderno" class="common-input" value="<?php echo $data['appform_edit']->orderno; ?>" name="orderno" type="text" >
+                                          <input id="orderno" class="common-input" value="{{ $data['appform_edit']->orderno }}" name="orderno" type="text" >
                                         </div>
                                         <div class="input-field col s12 m6">
                                           <label for="route" class="common-label">{{__('Route') }}</label>
-                                          <input id="route" class="common-input" value="<?php echo $data['appform_edit']->route; ?>" name="route" type="text" > 
+                                          <input id="route" class="common-input" value="{{ $data['appform_edit']->route }}" name="route" type="text" > 
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                         <p>
                                         <label>                                                                    
-                                            <input type="checkbox" name="isactive" value="1" <?php  echo $data['appform_edit']->isactive == '1' ? 'checked' : '' ; ?>  class="common-checkbox" id="isactive"  />
+                                            <input type="checkbox" name="isactive" value="1" {{ $data['appform_edit']->isactive == '1' ? 'checked' : '' }}  class="common-checkbox" id="isactive"  />
                                             <span>{{__('Is Active') }}</span>
                                         </label>
                                         </p>
@@ -73,7 +80,7 @@
                                         <div class="input-field col s12 m6">
                                         <p>
                                         <label>
-                                            <input type="checkbox" name="isinsert" class="common-checkbox" id="isinsert" value="1"<?php  echo $data['appform_edit']->isinsert == '1' ? 'checked' : '' ; ?>  />
+                                            <input type="checkbox" name="isinsert" class="common-checkbox" id="isinsert" value="1"  {{  $data['appform_edit']->isinsert == '1' ? 'checked' : '' }}  />
                                             <span>{{__('Is Insert') }}</span>
                                         </label>
                                         </p>
@@ -81,7 +88,7 @@
                                         <div class="input-field col s12 m6">
                                         <p>
                                         <label>
-                                            <input type="checkbox" name="isupdate" class="common-checkbox" id="isupdate" value="1" <?php  echo $data['appform_edit']->isupdate == '1' ? 'checked' : '' ; ?>  />
+                                            <input type="checkbox" name="isupdate" class="common-checkbox" id="isupdate" value="1"  {{ $data['appform_edit']->isupdate == '1' ? 'checked' : '' }}  />
                                             <span>{{__('Is Update') }}</span>
                                         </label>
                                         </p>
@@ -89,7 +96,7 @@
                                         <div class="input-field col s12 m6">
                                         <p>
                                         <label>
-                                            <input type="checkbox" name="isdelete" class="common-checkbox" id="isdelete" value="1"<?php  echo $data['appform_edit']->isdelete == '1' ? 'checked' : '' ; ?> />
+                                            <input type="checkbox" name="isdelete" class="common-checkbox" id="isdelete" value="1"  {{ $data['appform_edit']->isdelete == '1' ? 'checked' : '' }} />
                                             <span>{{__('Is Delete') }}</span>
                                         </label>
                                         </p>
@@ -97,7 +104,7 @@
                                         <div class="input-field col s12 m6">
                                         <p>
                                         <label>
-                                            <input type="checkbox" name="ismenu" class="common-checkbox" id="ismenu" value="1"<?php  echo $data['appform_edit']->ismenu == '1' ? 'checked' : '' ; ?>  />
+                                            <input type="checkbox" name="ismenu" class="common-checkbox" id="ismenu" value="1"  {{ $data['appform_edit']->ismenu == '1' ? 'checked' : '' }}  />
                                             <span>{{__('Is Menu') }}</span>
                                         </label>
                                         </p>
@@ -105,7 +112,7 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                           <label for="description" class="common-label">{{__('Description') }}</label>
-                                          <input id="route" value="<?php echo $data['appform_edit']->description; ?>" class="common-input" name="description" type="text" >
+                                          <input id="route" value="  {{ $data['appform_edit']->description }}" class="common-input" name="description" type="text" >
                                         </div>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Update')}}

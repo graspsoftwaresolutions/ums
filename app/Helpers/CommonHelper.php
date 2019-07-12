@@ -3,6 +3,8 @@
 namespace App\Helpers;
 use DB;
 use Carbon\Carbon;
+use App\Model\FormType;
+use App\Model\AppForm;
 
 class CommonHelper
 {
@@ -107,4 +109,21 @@ class CommonHelper
         // dd($queries);
         return $branch_list;
     }
+	
+	public static function getFormTypes($status=false){
+		return $status==false ? FormType::all() :  FormType::all()->where('status',$status);
+	}
+	
+	public static function getSubForms($formtype_id){
+		$appforms = FormType::find($formtype_id)->appforms;
+		return $appforms;
+    }
+    
+    public static function getFormTypeName($type_id){
+        $form_name = FormType::where('id',$type_id)->pluck('formname');
+        if(count($form_name)>0){
+            return $form_name[0];
+        }
+        return '';
+	}
 }
