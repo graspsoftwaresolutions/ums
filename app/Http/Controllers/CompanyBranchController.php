@@ -261,13 +261,13 @@ class CompanyBranchController extends Controller
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','4')->where('user_id','=',$user_id)->update(['role_id'=>'3']);
         }
 
-		return redirect($defdaultLang.'/branch')->with('message','Branch Details Updated Succesfully');
+		return redirect($defdaultLang.'/branch')->with('message','Company Branch Details Updated Succesfully');
     }
     public function delete($lang,$id)
 	{
         $id = Crypt::decrypt($id);
         $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
         $defdaultLang = app()->getLocale();
-		return redirect($defdaultLang.'/branch')->with('branch','Branch Deleted Succesfully');
+		return redirect($defdaultLang.'/branch')->with('branch','Company Branch Deleted Succesfully');
 	} 
 }
