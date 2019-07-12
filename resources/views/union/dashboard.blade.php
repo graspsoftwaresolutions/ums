@@ -31,11 +31,11 @@
       <div class="col s12 m6 l3">
          <div class="card animate fadeRight">
             <div class="card-content orange lighten-1 white-text">
-               <p class="card-stats-title"><i class="material-icons"></i>No of Company's</p>
+               <p class="card-stats-title"><i class="material-icons"></i>No of Companies</p>
                <h4 class="card-stats-number white-text">806</h4>
             </div>
             <div class="card-action orange">
-               <div id="profit-tristate" class="center-align"><a style="color:white" href="{{route('master.company', app()->getLocale())}}">Company List</a></div>
+               <div id="profit-tristate" class="center-align"><a style="color:white" href="{{route('master.company', app()->getLocale())}}">Companies List</a></div>
             </div>
          </div>
       </div>
@@ -46,7 +46,7 @@
                <h4 class="card-stats-number white-text">1806</h4>
             </div>
             <div class="card-action green">
-               <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> Branches List</a></div>
+               <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> Company Branches List</a></div>
             </div>
          </div>
       </div>
