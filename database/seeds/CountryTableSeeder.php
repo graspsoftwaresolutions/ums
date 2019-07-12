@@ -13,7 +13,7 @@ class CountryTableSeeder extends Seeder
     {
         DB::table('country')->delete();
  
-        $countries = array(
+        /* $countries = array(
             array(
                 'id' => 1,
                 'country_code' => 'US',
@@ -1209,8 +1209,40 @@ class CountryTableSeeder extends Seeder
                 'country_code' => 'ZW',
                 'country_name' => 'Zimbabwe'
             )
-        );
- 
+        ); */
+		
+		$countries = array(
+				array(
+					'id' => 1,
+					'country_code' => 'US',
+					'country_name' => 'United States'
+				),
+				array(
+					'id' => 2,
+					'country_code' => 'CA',
+					'country_name' => 'Canada'
+				),
+				 array(
+					'id' => 130,
+					'country_code' => 'MY',
+					'country_name' => 'Malaysia'
+				),
+				 array(
+					'id' => 189,
+					'country_code' => 'SG',
+					'country_name' => 'Singapore'
+				),
+				array(
+					'id' => 223,
+					'country_code' => 'GB',
+					'country_name' => 'United Kingdom'
+				),
+				array(
+					'id' => 131,
+					'country_code' => 'MV',
+					'country_name' => 'Maldives'
+				)
+			);
         DB::table('country')->insert($countries);
     }
 }

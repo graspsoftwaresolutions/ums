@@ -17,9 +17,9 @@ class CompanyBranchTableSeeder extends Seeder
 	    $branch->company_id = 1;
 	    $branch->union_branch_id = 1;
 		$branch->branch_name = 'Default branch';
-		$branch->country_id = 1;
-		$branch->state_id = 1;
-		$branch->city_id = 1;
+		$branch->country_id = 130;
+	    $branch->state_id = 15;
+	    $branch->city_id = 33;
 		$branch->postal_code = '635204';
 		$branch->address_one = 'test address';
 		$branch->address_two = 'test address';
