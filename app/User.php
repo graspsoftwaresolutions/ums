@@ -29,12 +29,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
 	public function sendPasswordResetNotification($token)
 	{
 	   $this->notify( new ResetPassword($token));
     }
-    public function UnionBranch()
+
+    public function unionbranch()
     {
-        return $this->hasmany('App\Model\UnionBranch');
+        return $this->hasOne('App\Model\UnionBranch');
     }
 }
