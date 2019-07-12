@@ -14,6 +14,6 @@ class AppForm extends Model
 	
 	public function form()
     {
-        return $this->belongsTo('App\Model\FormType','formtype_id');
+        return $this->belongsTo('App\Model\FormType','formtype_id')->orderBy('orderno', 'ASC');
     }
 }

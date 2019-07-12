@@ -53,6 +53,7 @@
         @endif
 		@php
 			$form_type_list = CommonHelper::getFormTypes(1);
+			$single_menu_list = CommonHelper::getSingleMenus();
 		@endphp
 		@foreach($form_type_list as $form)
 		<li id="reports_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">dvr	</i><span class="menu-title" data-i18n="">{{ __($form->formname) }}</span></a>
@@ -63,12 +64,15 @@
 					@endphp
 					@foreach($forms_list as $key => $subform)
 						@if (Route::has($subform->route))
-						<li id="status_sidebar_li_id" class=""><a id="status_sidebar_a_id" class="collapsible-body" href="{{ route($subform->route,app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __( $subform->formname )}}</span></a></li>
+							<li id="status_sidebar_li_id" class=""><a id="status_sidebar_a_id" class="collapsible-body" href="{{ route($subform->route,app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __( $subform->formname )}}</span></a></li>
 						@endif
 					@endforeach
 				</ul>
 			</div>
 		</li>
+		@endforeach
+		@foreach($single_menu_list as $form)
+		<li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route($form->route,app()->getLocale()) }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __( $form->formname )}}</span></a></li>
 		@endforeach
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

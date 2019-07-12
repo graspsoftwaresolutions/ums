@@ -111,11 +111,16 @@ class CommonHelper
     }
 	
 	public static function getFormTypes($status=false){
-		return $status==false ? FormType::all() :  FormType::all()->where('status',$status);
+		return $status==false ? FormType::all()->orderBy('orderno', 'ASC') :  FormType::where('status',$status)->orderBy('orderno', 'ASC')->get();
 	}
 	
 	public static function getSubForms($formtype_id){
 		$appforms = FormType::find($formtype_id)->appforms;
+		return $appforms;
+    }
+    
+	public static function getSingleMenus(){
+		$appforms = AppForm::where('formtype_id',NULL)->orderBy('orderno', 'ASC')->get();
 		return $appforms;
     }
     

@@ -12,6 +12,6 @@ class FormType extends Model
 	
 	public function appforms()
     {
-        return $this->hasmany('App\Model\AppForm','formtype_id');
+        return $this->hasmany('App\Model\AppForm','formtype_id')->orderBy('orderno', 'ASC');
     }
 }

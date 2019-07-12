@@ -49,6 +49,7 @@
 														<th>{{__('App Form Name') }}</th>
                                                         <th>{{__('App Form Type') }}</th>
 														<th>{{__('Route') }}</th>
+														<th>{{__('Order No') }}</th>
 														<th style="margin-left:20px"> {{__('Action') }}</th>
 													</tr>
 												</thead>
@@ -61,6 +62,7 @@
                                                             <td>{{$value->formname}}</td>
                                                             <td>{{ CommonHelper::getFormTypeName($value->formtype_id) }}</td>
 															<td>{{$value->route}}</td>
+															<td>{{ round($value->orderno) }}</td>
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 															@endphp
