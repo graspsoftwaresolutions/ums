@@ -103,6 +103,7 @@ class UnionBranchController extends Controller
         else
         {
             $union_type =2;
+            DB::connection()->enableQueryLog();
             if($union['is_head']==1){
                 $member_user = new User();
                 $member_user->name = $request->input('branch_name');
@@ -111,7 +112,10 @@ class UnionBranchController extends Controller
                 $member_user->save();
                 $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
                 $rold_id_2 = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
+                //$queries = DB::getQueryLog();
+               // dd($queries);
                 $member_user->roles()->attach($union_head_role);
+               
                 $union_type =1;
             }else{
                 $member_user = new User();

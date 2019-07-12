@@ -128,12 +128,12 @@ class CompanyBranchController extends Controller
                 $member_user->email = $request->input('email');
                 $member_user->password = bcrypt($randompass);
                 $member_user->save();
-                $member_user->roles()->attach($company_head_role);
                 $company_type = 1;
                 $union_branch_id = $branch['union_branch_id'];
-                $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->where('union_branch_id','=',$union_branch_id)->update(['is_head'=>'0']);
+                $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->update(['is_head'=>'0']);
 				$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$companyid'");
-				$branch['user_id'] = $member_user->id;
+                $branch['user_id'] = $member_user->id;
+                $member_user->roles()->attach($company_head_role);
                 $id = $this->Branch->StoreBranch($branch);
                 //$rold_id_1 = DB::table('users_roles')->where('role_id','=','3')->where('union_branch_id','=',$branch['union_branch_id'])->update(['role_id'=>'4']);
                 //$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
