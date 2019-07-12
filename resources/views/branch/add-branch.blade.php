@@ -17,17 +17,17 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Add Branch') }}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Add Company Branch') }}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('Branch') }}
+                                            <li class="breadcrumb-item active">{{__('Company Branch') }}
                                             </li>
                                             
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.branch', app()->getLocale()) }}">{{__('Branch List') }}</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.branch', app()->getLocale()) }}">{{__('Company Branch List') }}</a>
                                         
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('Add Branch') }}</h4>
+                                    <h4 class="card-title">{{__('Add Company Branch') }}</h4>
                                     @include('includes.messages')
                                    <div id="view-validations">
                                     <form class="formValidate" id="branchformValidate" method="post" action="{{ route('master.savebranch', app()->getLocale()) }}">

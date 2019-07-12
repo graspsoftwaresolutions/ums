@@ -10,6 +10,11 @@ use App\Model\Branch;
 use App\User;
 
 class DashboardController extends Controller
-{
-    
+{   
+   public function unionBranchCount()
+   {
+    $union = UnionBranch::with('User')->get();
+      
+       dd($union);
+   }
 }

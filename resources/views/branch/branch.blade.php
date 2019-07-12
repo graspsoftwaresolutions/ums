@@ -25,13 +25,13 @@
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Branch') }}
+											<li class="breadcrumb-item active">{{__('Company Branch') }}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.addbranch', app()->getLocale()) }}">{{__('Add New Branch')}}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.addbranch', app()->getLocale()) }}">{{__('Add New Company Branch')}}</a>
 										
 									</div>
 								</div>
@@ -40,7 +40,7 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Branch List') }}</h4>
+									<h4 class="card-title">{{__('Company Branch List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">

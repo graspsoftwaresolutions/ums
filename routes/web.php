@@ -148,7 +148,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 });
 /* Master */
 
-
+Route::get('count','DashboardController@unionBranchCount');
 
 //common routes
 Route::get('get-state-list','CommonController@getStateList');
