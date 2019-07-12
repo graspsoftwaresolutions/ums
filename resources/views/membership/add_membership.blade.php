@@ -440,10 +440,7 @@
 													
 												</div>
 												<div class="clearfix"> </div>
-												<div class="input-field col s12 m4">
-													<label for="nominee_address_one">Address Line 1*</label>
-													<input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
-												</div>
+												
 												<div class="col s12 m4">
 													 <label>Country Name*</label>
 													<select name="nominee_country_id" id="nominee_country_id"  class="error browser-default">
@@ -467,12 +464,6 @@
 													</div>       
 													
 												</div>
-												<div class="clearfix"> </div>
-												<div class="input-field col s12 m4">
-													<label for="nominee_address_two">Address Line 2*</label>
-													<input id="nominee_address_two" name="nominee_address_two" type="text" value="" >
-													 
-												</div>
 												<div class="col s12 m4">
 													 <label>City Name*</label>
 													<select name="nominee_city_id" id="nominee_city_id"  class="error browser-default">
@@ -480,14 +471,25 @@
 													</select>
 													<div class="input-field">
 														 <div class="errorTxt36"></div>
-													</div>       
-													
+													</div>
 												</div>
+												<div class="clearfix"> </div>
 												<div class="input-field col s12 m4">
 													<label for="nominee_postal_code">Postal code*</label>
 													<input id="nominee_postal_code" name="nominee_postal_code" type="text" value="" >
 													 
 												</div>
+												<div class="input-field col s12 m4">
+													<label for="nominee_address_one">Address Line 1*</label>
+													<input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
+												</div>
+												<div class="input-field col s12 m4">
+													<label for="nominee_address_two">Address Line 2*</label>
+													<input id="nominee_address_two" name="nominee_address_two" type="text" value="" >
+													 
+												</div>
+												
+												
 												<div class="clearfix"> </div>
 												<div class="input-field col s12 m4">
 													<label for="nominee_address_three">Address Line 3*</label>
@@ -549,8 +551,7 @@
 														<div class=" col s12 m8">
 															<p>
 																<label for="gaurdian_dob">DOB *</label>
-																<input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="" class="datepicker"  type="text"> 
-																
+																<input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="" class="datepicker"  type="text"> 	
 															</p>
 														</div>
 														<div class="col s12 m4">
@@ -597,11 +598,7 @@
 													
 												</div>
 												<div class="clearfix"> </div>
-												<div class="input-field col s12 m4">
-													<label for="guardian_address_one">Address Line 1*</label>
-													<input id="guardian_address_one" name="guardian_address_one" type="text" value="" >
-													 
-												</div>
+												
 												<div class="col s12 m4">
 													 <label>Country Name*</label>
 													<select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
@@ -612,8 +609,7 @@
 													</select>
 													<div class="input-field">
 														 <div class="errorTxt35"></div>
-													</div>       
-													
+													</div>
 												</div>
 												<div class="col s12 m4">
 													<label>State Name*</label>
@@ -622,14 +618,7 @@
 													</select>
 													<div class="input-field">
 														 <div class="errorTxt36"></div>
-													</div>       
-													
-												</div>
-												<div class="clearfix"> </div>
-												<div class="input-field col s12 m4">
-													<label for="guardian_address_two">Address Line 2*</label>
-													<input id="guardian_address_two" name="guardian_address_two" type="text" value="" >
-													 
+													</div>
 												</div>
 												<div class="col s12 m4">
 													 <label>City Name*</label>
@@ -638,13 +627,21 @@
 													</select>
 													<div class="input-field">
 														 <div class="errorTxt36"></div>
-													</div>       
-													
+													</div>
 												</div>
+												<div class="clearfix"> </div>
 												<div class="input-field col s12 m4">
 													<label for="guardian_postal_code">Postal code*</label>
 													<input id="guardian_postal_code" name="guardian_postal_code" type="text" value="" >
 													 
+												</div>
+												<div class="input-field col s12 m4">
+													<label for="guardian_address_one">Address Line 1*</label>
+													<input id="guardian_address_one" name="guardian_address_one" type="text" value="" >
+												</div>
+												<div class="input-field col s12 m4">
+													<label for="guardian_address_two">Address Line 2*</label>
+													<input id="guardian_address_two" name="guardian_address_two" type="text" value="" >
 												</div>
 												<div class="clearfix"> </div>
 												<div class="input-field col s12 m4">
