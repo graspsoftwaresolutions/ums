@@ -1,11 +1,24 @@
-  <!-- card stats start -->
+@section('headSecondSection')
+<style>
+.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
+    stroke: #ff4bac !important;
+	fill: #ff4bac !important;
+}
+.ct-series-b .ct-area, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-slice-pie {
+    stroke: #BBBBBB !important;
+	fill: #BBBBBB !important;
+}
+
+</style>
+@endsection
+<!-- card stats start -->
 <div id="card-stats">
    <div class="row">
       <div class="col s12 m6 l3">
          <div class="card animate fadeLeft">
             <div class="card-content cyan white-text">
                <p class="card-stats-title"><i class="material-icons">person_outline</i> No of Union Branch</p>
-               <h4 class="card-stats-number white-text">566</h4>
+               <h4 class="card-stats-number white-text">{{ $data['union_branch_count'] }}</h4>
                <!-- <p class="card-stats-compare">
                   <i class="mdi-creation"></i> 15%
                   <span class="cyan text text-lighten-5">from yesterday</span>
@@ -20,7 +33,7 @@
          <div class="card animate fadeLeft">
             <div class="card-content red accent-2 white-text">
                <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
-               <h4 class="card-stats-number white-text">2</h4>
+               <h4 class="card-stats-number white-text">{{ $data['total_member_count'] }}</h4>
               
             </div>
             <div class="card-action red">
@@ -32,7 +45,7 @@
          <div class="card animate fadeRight">
             <div class="card-content orange lighten-1 white-text">
                <p class="card-stats-title"><i class="material-icons"></i>No of Companies</p>
-               <h4 class="card-stats-number white-text">806</h4>
+               <h4 class="card-stats-number white-text">{{ $data['total_company_count'] }}</h4>
             </div>
             <div class="card-action orange">
                <div id="profit-tristate" class="center-align"><a style="color:white" href="{{route('master.company', app()->getLocale())}}">Companies List</a></div>
@@ -43,7 +56,7 @@
          <div class="card animate fadeRight">
             <div class="card-content green lighten-1 white-text">
                <p class="card-stats-title"><i class="material-icons"></i> No of Company Branches</p>
-               <h4 class="card-stats-number white-text">1806</h4>
+               <h4 class="card-stats-number white-text">{{ $data['total_company_branch_count'] }}</h4>
             </div>
             <div class="card-action green">
                <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> Company Branches List</a></div>
@@ -55,17 +68,27 @@
 <!--card stats end-->
  <!-- Current balance & total transactions cards-->
 <div class="row mt-4">
+	
    <div class="col s12 m4 l4">
       <!-- Current Balance -->
+		<div id="ct9-chart" class="ct-chart card hide">
+		  <div class="card-content">
+			 <h4 class="card-title">Total members</h4>
+			 <p class="caption">
+				<a href="https://gionkunz.github.io/chartist-js/getting-started.html" target="_blank">Chartist-js</a> A very simple pie chart with label interpolation to show percentage instead of the actual data series value.
+			 </p>
+		  </div>
+	   </div>
       <div class="card animate fadeLeft">
          <div class="card-content">
-            <h4 class="card-title mb-0">Current Balance <i class="material-icons float-right">more_vert</i></h4>
-            <p class="medium-small">This billing cycle</p>
+            <h4 class="card-title mb-0">Total Members<i class="material-icons float-right hide">more_vert</i></h4>
+			</br>
             <div class="current-balance-container">
+				
                <div id="current-balance-donut-chart" class="current-balance-shadow"></div>
             </div>
-            <h5 class="center-align">$ 50,150.00</h5>
-            <p class="medium-small center-align">Used balance this billing cycle</p>
+            <h5 class="center-align">{{ $data['total_active_members_count'] }}</h5>
+            <p class="medium-small center-align">Active Members</p>
          </div>
       </div>
    </div>
@@ -73,7 +96,7 @@
       <!-- Total Transaction -->
       <div class="card">
          <div class="card-content">
-            <h4 class="card-title mb-0">Total Transaction <i class="material-icons float-right">more_vert</i></h4>
+            <h4 class="card-title mb-0">Total Transaction <i class="material-icons float-right hide">more_vert</i></h4>
             <p class="medium-small">This month transaction</p>
             <div class="total-transaction-container">
                <div id="total-transaction-line-chart" class="total-transaction-shadow"></div>
@@ -85,7 +108,7 @@
 <!--/ Current balance & total transactions cards-->
 
 <!-- User statistics & appointment cards-->
-<div class="row">
+<div class="row hide">
    <div class="col s12 l5">
       <!-- User Statistics -->
       <div class="card user-statistics-card animate fadeLeft">
@@ -161,7 +184,7 @@
 </div>
 <!--/ Current balance & appointment cards-->
 
-<div class="row">
+<div class="row hide">
    <div class="col s12 m6 l4">
       <div class="card padding-4 animate fadeLeft">
          <div class="col s5 m5">
@@ -242,3 +265,43 @@
       </div>
    </div>
 </div>
+@section('footerSecondSection')
+<script>
+	var data = {
+	  series: [97, 3]
+	};
+
+	var sum = function (a, b) { return a + b };
+	new Chartist.Pie('#ct9-chart', data, {
+	  labelInterpolationFnc: function (value) {
+		return Math.round(value);
+	  }
+	});
+	(function (window, document, $) {
+		// Donut chart
+		// -----------
+		var CurrentBalanceDonutChart = new Chartist.Pie(
+			"#current-balance-donut-chart",
+			{
+				labels: [1, 2],
+				series: [{ meta: "Active members", value: {{ $data['total_active_members_count'] }} }, { meta: "New Members", value: {{ $data['total_new_members_count'] }} }]
+			},
+			{
+				donut: true,
+				donutWidth: 8,
+				showLabel: false,
+				plugins: [
+					Chartist.plugins.tooltip({ class: "current-balance-tooltip", appendToBody: true }),
+					Chartist.plugins.fillDonut({
+						items: [
+							{
+								content: '<p class="small">New Members</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_new_members_count']}}+'</h5>'
+							}
+						]
+					})
+				]
+			}
+		)
+	})(window, document, jQuery);
+</script>
+@endsection

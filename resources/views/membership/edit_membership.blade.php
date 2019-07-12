@@ -483,10 +483,7 @@
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="nominee_address_one">Address Line 1*</label>
-                                                <input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
-                                            </div>
+                                          
                                             <div class="col s12 m4">
                                                  <label>Country Name*</label>
                                                 <select name="nominee_country_id" id="nominee_country_id"  class="error browser-default">
@@ -513,13 +510,7 @@
                                                 </div>       
                                                 
                                             </div>
-                                            <div class="clearfix"> </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="nominee_address_two">Address Line 2*</label>
-                                                <input id="nominee_address_two" name="nominee_address_two" type="text" value="" >
-                                                 
-                                            </div>
-                                            <div class="col s12 m4">
+											<div class="col s12 m4">
                                                  <label>City Name*</label>
                                                 <select name="nominee_city_id" id="nominee_city_id"  class="error browser-default">
 													<option value="" >Select</option>
@@ -532,11 +523,23 @@
                                                 </div>       
                                                 
                                             </div>
-                                            <div class="input-field col s12 m4">
+                                            <div class="clearfix"> </div>
+											<div class="input-field col s12 m4">
                                                 <label for="nominee_postal_code">Postal code*</label>
                                                 <input id="nominee_postal_code" name="nominee_postal_code" type="text" value="" >
                                                  
                                             </div>
+											<div class="input-field col s12 m4">
+                                                <label for="nominee_address_one">Address Line 1*</label>
+                                                <input id="nominee_address_one" name="nominee_address_one" type="text" value="" >
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="nominee_address_two">Address Line 2*</label>
+                                                <input id="nominee_address_two" name="nominee_address_two" type="text" value="" >
+                                                 
+                                            </div>
+                                           
+                                            
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="nominee_address_three">Address Line 3*</label>
@@ -700,11 +703,7 @@
                                                 
                                             </div>
                                             <div class="clearfix"> </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="guardian_address_one">Address Line 1*</label>
-                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="<?php echo $gardian_row->guardian_name; ?>" >
-                                                 
-                                            </div>
+                                           
                                             <div class="col s12 m4">
                                                  <label>Country Name*</label>
                                                 <select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
@@ -731,13 +730,7 @@
                                                 </div>       
                                                 
                                             </div>
-                                            <div class="clearfix"> </div>
-                                            <div class="input-field col s12 m4">
-                                                <label for="guardian_address_two">Address Line 2*</label>
-                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="<?php echo $gardian_row->address_two; ?>" >
-                                                 
-                                            </div>
-                                            <div class="col s12 m4">
+											<div class="col s12 m4">
                                                  <label>City Name*</label>
                                                 <select name="guardiancity_id" id="guardian_city_id"  class="error browser-default">
 													<option value="" >Select</option>
@@ -750,11 +743,24 @@
                                                 </div>       
                                                 
                                             </div>
-                                            <div class="input-field col s12 m4">
+                                            <div class="clearfix"> </div>
+											<div class="input-field col s12 m4">
                                                 <label for="guardian_postal_code">Postal code*</label>
                                                 <input id="guardian_postal_code" name="guardian_postal_code" type="text" value="<?php echo $gardian_row->postal_code; ?>" >
                                                  
                                             </div>
+											<div class="input-field col s12 m4">
+                                                <label for="guardian_address_one">Address Line 1*</label>
+                                                <input id="guardian_address_one" name="guardian_address_one" type="text" value="<?php echo $gardian_row->guardian_name; ?>" >
+                                                 
+                                            </div>
+                                            <div class="input-field col s12 m4">
+                                                <label for="guardian_address_two">Address Line 2*</label>
+                                                <input id="guardian_address_two" name="guardian_address_two" type="text" value="<?php echo $gardian_row->address_two; ?>" >
+                                                 
+                                            </div>
+                                            
+                                           
                                             <div class="clearfix"> </div>
                                             <div class="input-field col s12 m4">
                                                 <label for="guardian_address_three">Address Line 3*</label>

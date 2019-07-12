@@ -94,14 +94,10 @@
 			<div class="input-field col s12 m4">
 			   
 				<input id="edit_nric_o" name="edit_nric_o" value=" "  type="text">
-				<label for="edit_nric_o">NRIC-O *</label>
+				<label for="edit_nric_o">NRIC-O </label>
 			</div>
 			<div class="clearfix"> </div>
-			<div class="input-field col s12 m4">
-				
-				<input id="edit_nominee_address_one" name="edit_nominee_address_one" type="text" value=" " >
-				<label for="edit_nominee_address_one">Address Line 1*</label>   
-			</div>
+			
 			<div class="col s12 m4">
 				<label>Country Name*</label>
 				<select name="edit_nominee_country_id" id="edit_nominee_country_id"  class="error browser-default">
@@ -125,12 +121,6 @@
 				</div>       
 				
 			</div>
-			<div class="clearfix"> </div>
-			<div class="input-field col s12 m4">
-				
-				<input id="edit_nominee_address_two" name="edit_nominee_address_two" type="text" value=" " >
-				<label for="edit_nominee_address_two">Address Line 2*</label>  
-			</div>
 			<div class="col s12 m4">
 					<label>City Name*</label>
 				<select name="edit_nominee_city_id" id="edit_nominee_city_id"  class="error browser-default">
@@ -141,11 +131,24 @@
 				</div>       
 				
 			</div>
+			<div class="clearfix"> </div>
 			<div class="input-field col s12 m4">
 			   
 				<input id="edit_nominee_postal_code" name="edit_nominee_postal_code" type="text" value=" " >
 				<label for="edit_nominee_postal_code">Postal code*</label>    
 			</div>
+			<div class="input-field col s12 m4">
+				
+				<input id="edit_nominee_address_one" name="edit_nominee_address_one" type="text" value=" " >
+				<label for="edit_nominee_address_one">Address Line 1*</label>   
+			</div>
+			<div class="input-field col s12 m4">
+				
+				<input id="edit_nominee_address_two" name="edit_nominee_address_two" type="text" value=" " >
+				<label for="edit_nominee_address_two">Address Line 2*</label>  
+			</div>
+			
+			
 			<div class="clearfix"> </div>
 			<div class="input-field col s12 m4">
 			   

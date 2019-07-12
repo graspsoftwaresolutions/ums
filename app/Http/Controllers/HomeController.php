@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CommonHelper;
 use Hash;
+use App\Model\UnionBranch;
+use App\Model\Membership;
+use App\Model\Company;
+use App\Model\CompanyBranch;
+use App\Model\Branch;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -27,8 +33,40 @@ class HomeController extends Controller
     public function index()
     {
 		//$user = Auth::user();
-		//dd($user->hasRole('developer'));
-        return view('home');
+        //dd($user->hasRole('developer'));
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        //return $get_union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+        
+        $data['union_branch_count'] = '';
+        if($user_role=='union'){
+            $union_branch_count = unionBranch::where('is_head',0)->count();
+            $data['union_branch_count'] = $union_branch_count;
+
+            $member_count = Membership::all()->count();
+            $data['total_member_count'] = $member_count;
+            
+            $company_count = Company::all()->count();
+            $data['total_company_count'] = $company_count;
+
+            $company_branch_count = CompanyBranch::all()->count();
+            $data['total_company_branch_count'] = $company_branch_count;
+
+            $company_branch_count = CompanyBranch::all()->count();
+
+            $total_active_members_count = Membership::where('status_id',2)->count();
+            $data['total_active_members_count'] = $total_active_members_count;
+            $total_new_members_count = Membership::where('status_id',1)->count();
+            $data['total_new_members_count'] = $total_new_members_count;
+
+
+        }else if($user_role=='union-branch'){
+            $member_count = Membership::where('union_branch_id')->count();
+            $data['total_member_count'] = $member_count;
+        }
+        
+        return view('home')->with('data',$data);
     }
 	public function redirectTo()
     {
