@@ -21,16 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Membership List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Form Type List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-										<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
-											<li class="breadcrumb-item active"><a href="#">{{__('Member') }}</a>
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
+											</li>
+											<li class="breadcrumb-item active">{{__('Form Type') }}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addmembership', app()->getLocale())}}">{{__('Add New Membership') }}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('Form Type.create',app()->getLocale())}}">{{__('Add New Form Type') }}</a>
 										
 									</div>
 								</div>
@@ -39,51 +40,41 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">
-										@if($data['member_type'] ==1)
-											Active
-										@else
-											New
-										@endif
-										 Membership List
-										@if($data['member_type'] ==1) 
-											<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{route('home', app()->getLocale())}}">{{__('New members list') }}</a>
-										@else
-											<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{url('membership')}}">{{__('Active members list') }}</a>
-										@endif
-									</h4>
+									<h4 class="card-title">{{__('Form Type List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Member Name') }}</th>
-														<th>{{__('Email') }}</th>
-														<th>{{__('Mobile') }}</th>
-														@if($data['member_type'] ==1) 
-														<th>{{__('Status') }}</th>
-														@endif
+														<th>{{__('Form Type Name') }}</th>
+                                                        <th>{{__('Slug') }}</th>
 														<th style="text-align:center"> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
-													@foreach($data['member_view'] as $key=>$value)
-													<tr>
+													@foreach($data as $key=>$value)
 													<?php
-													
-													 $parameter = Crypt::encrypt($value->id);  
+													 $id = Crypt::encrypt($value->id);  
 													 ?>
-													
-														<td>{{$value->name}}</td>
-														<td>{{$value->email}}</td>
-														<td>{{$value->phone}}</td>
-														@if($data['member_type'] ==1)
-														<td>{{ CommonHelper::get_member_status_name($value->status_id) }}</td>
-														@endif
-														<td>	<a class="btn-small waves-effect waves-light cyan" href="{{url('membership-edit/').'/'.$parameter}}">{{__('Edit') }}</a>	<!--a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a--></td>
-													</tr>
-													@endforeach
+                                                        <tr>
+                                                            <td>{{$value->name}}</td>
+                                                            <td>{{$value->slug}}</td>
+                                                            @php
+															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
+															@endphp
+															
+															<td>
+																@if($value->id>5)
+																<a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('Form Type.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a>
+																<form style="float: left;margin-left:5px;" action="{{ route('Form Type.destroy',[app()->getLocale(),$value->id])}}" method="POST">
+																{{ method_field('DELETE') }}
+																{{ csrf_field() }}									
+																 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form>
+																@endif
+															 </td>
+													    </tr>
+                                                    @endforeach
 												</tbody>
 												
 											</table>
@@ -109,6 +100,8 @@
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
- $("#membership_sidebar_a_id").addClass('active');
- </script>
+	$("#masters_sidebars_id").addClass('active');
+	$("#Form Type_sidebar_li_id").addClass('active');
+	$("#Form Type_sidebar_a_id").addClass('active');
+</script>
 @endsection

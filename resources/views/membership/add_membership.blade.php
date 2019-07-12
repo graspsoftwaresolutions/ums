@@ -28,11 +28,11 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">New Membership</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('New Membership') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+											<li class="breadcrumb-item"><a href="index.html">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active"><a href="#">Member</a>
+											<li class="breadcrumb-item active"><a href="#">{{__('Member') }}</a>
 											</li>
 											
 										</ol>
@@ -44,15 +44,15 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">New Membership</h4>
+									<h4 class="card-title">{{__('New Membership') }}</h4>
 									@include('includes.messages')
 									<div class="row">
                                         <div class="col s12">
                                             <ul class="tabs">
-                                                <li class="tab col m3"><a class="active"  href="#test1">Membership details</a></li>
-												<li class="tab col m3"><a href="#test3">Fee Details</a></li>
-                                                <li class="tab col m3"><a href="#test2">Nominee Details</a></li>
-                                                <li class="tab col m3"><a href="#test4">Guardian Details</a></li>
+                                                <li class="tab col m3"><a class="active"  href="#test1">{{__('Membership details') }}</a></li>
+												<li class="tab col m3"><a href="#test3">{{__('Fee Details') }}</a></li>
+                                                <li class="tab col m3"><a href="#test2">{{__('Nominee Details') }}</a></li>
+                                                <li class="tab col m3"><a href="#test4">{{__('Guardian Details') }}</a></li>
                                             </ul>
                                         </div>
 										<form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_save') }}">
@@ -92,9 +92,9 @@
 												?>
 												  <div class="row">
 													<div class="col s12 m6">
-													<label>Member Title*</label>
+													<label>{{__('Member Title') }}*</label>
 													  <select name="member_title" id="member_title" data-error=".errorTxt1" class="error browser-default">
-															<option value="" disabled selected>Choose your option</option>
+															<option value="" disabled selected>{{__('Choose your option') }}</option>
 																@foreach($data['title_view'] as $key=>$value)
 																	@if (old('member_title') == $value->id)
 																	<option value="{{$value->id}}" selected>{{$value->person_title}}</option>
@@ -108,14 +108,14 @@
 													</div>
 													
 													<div class="input-field col s12 m6 {{ $member_number_hide }}">
-													  <label for="member_number">Member Number *</label>
+													  <label for="member_number">{{__('Member Number') }} *</label>
 													  <input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" type="text" {{ $member_number_readonly }} data-error=".errorTxt2">
 													  <div class="errorTxt2"></div>
 													</div>
 													<?php //die; ?>
 													<div class="clearfix" ></div>
 													<div class="input-field col s12 m6">
-													  <label for="name">Member Name *</label>
+													  <label for="name">{{__('Member Name') }} *</label>
 													  <input id="name" name="name" type="text" value="{{ old('name') }}" data-error=".errorTxt3">
 													  <div class="errorTxt3"></div>
 													</div>
@@ -123,19 +123,19 @@
 													<div class="input-field col s12 m6">
 													<div class="col s12 row">
 															<div class="col s12 m4">
-																<p>Gender</p>
+																<p>{{__('Gender') }}</p>
 															</div>
 															<div class="col s12 m4">
 																<label>
 																	<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="female">
-																	<span>Female</span>
+																	<span>{{__('Female') }}</span>
 																</label>  
 															</div>
 															<div class="col s12 m4">
 																<p>
 																	<label>
 																	<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="male">
-																	<span>Male</span>
+																	<span>{{__('Male') }}</span>
 																	</label>
 																</p>
 															</div>
@@ -145,12 +145,12 @@
 													</div> 
 													<div class="clearfix" style="clear:both"></div>
 													<div class="input-field col s12 m6">
-													  <label for="phone">Mobile Number *</label>
+													  <label for="phone">{{__('Mobile Number') }} *</label>
 													  <input id="phone" name="phone" value="{{ old('phone') }}" type="text" data-error=".errorTxt5">
 													  <div class="errorTxt5"></div>
 													</div>
 													<div class="input-field col s12 m6">
-													  <label for="email">Email *</label>
+													  <label for="email">{{__('Email') }} *</label>
 													  <input id="email" name="email" value="{{ old('email') }}" type="email" data-error=".errorTxt6">
 													  <div class="errorTxt6"></div>
 													</div>
@@ -158,7 +158,7 @@
 													<div class="input-field col s12 m6">
 													  
 													  <input type="text" class="datepicker" id="doe" value="{{ old('doe') }}" name="doe">
-														<label for="doe">Date of Emp</label>
+														<label for="doe">{{__('Date of Emp') }}</label>
 													  <div class="errorTxt7"></div>
 													</div>
 														<div class="col s12 m6">
@@ -166,14 +166,14 @@
 																<p>
 																<label>
 																	<input type="checkbox" id="rejoined"/>
-																	<span>Rejoined</span>
+																	<span>{{__('Rejoined') }}</span>
 																	
 																</label>
 																</p>
 															 </div>
 															 <div class="input-field col s12 m6" id="member_old_div">
 																<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
-																<label for="old_mumber_number">Old Number</label>
+																<label for="old_mumber_number">{{__('Old Number') }}</label>
 															 <span> 
 																
 															 </span>
@@ -182,9 +182,9 @@
 														<div class="clearfix" style="clear:both"></div>
 
 														<div class="col s12 m6">
-														<label>Designation*</label>
+														<label>{{__('Designation') }}*</label>
 															<select name="designation" id="designation" class="error browser-default">
-																<option value="" >Select</option>
+																<option value="" >{{__('Select') }}</option>
 																@foreach($data['designation_view'] as $key=>$value)
 																	<option value="{{$value->id}}">{{$value->designation_name}}</option>
 																@endforeach
@@ -196,7 +196,7 @@
 														<div class="col s12 m6">
 															<label>Race*</label>
 															<select name="race" id="race" value="{{ old('race') }}" class="error browser-default">
-															<option value="" >Select</option>
+															<option value="" >{{__('Select Race') }}</option>
 															@foreach($data['race_view'] as $key=>$value)
 																<option value="{{$value->id}}">{{$value->race_name}}</option>
 																@endforeach
@@ -207,9 +207,9 @@
 														</div>
 														<div class="clearfix" ></div>
 														<div class="col s12 m6">
-														   <label>Country Name*</label>
+														   <label>{{__('Country Name') }}*</label>
 															<select name="country_id" id="country_id" class="error browser-default">
-															<option value="">Select Country</option>
+															<option value="">{{__('Select Country') }}</option>
 																@foreach($data['country_view'] as $value)
 																<option value="{{$value->id}}">{{$value->country_name}}</option>
 																@endforeach
@@ -219,9 +219,9 @@
 															</div>
 														</div>
 														<div class="col s12 m6">
-														   <label>State Name*</label>
+														   <label>{{__('State Name') }}*</label>
 															<select class="error browser-default" id="state_id" name="state_id" aria-required="true" required>
-																<option value="" selected>State Name</option>
+																<option value="" selected>{{__('State Name') }}</option>
 															</select>
 															<div class="input-field"> 
 																<div class="errorTxt11"></div>
@@ -229,44 +229,44 @@
 														</div>
 														<div class="clearfix" style="clear:both"></div>
 														<div class="col s12 m6">
-															 <label>City Name*</label>
+															 <label>{{__('City Name') }}*</label>
 															<select name="city_id" id="city_id" class="error browser-default" aria-required="true" required>
-															<option value="">Select City</option>
+															<option value="">{{__('Select City') }}</option>
 																	</select>
 															<div class="input-field">        
 																<div class="errorTxt12"></div>
 															</div>
 														</div>
 														<div class="input-field col s12 m6">
-														<label for="postal_code">Postal Code *</label>
+														<label for="postal_code">{{__('Postal Code') }} *</label>
 															<input id="postal_code" name="postal_code" value="{{ old('postal_code') }}" type="text" data-error=".errorTxt13">
 															<div class="errorTxt13"></div>
 														</div>
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
-														<label for="address_one">Address Line 1*</label>
+														<label for="address_one">{{__('Address Line 1') }}*</label>
 															<input id="address_one" name="address_one" value="{{ old('address_one') }}" type="text" data-error=".errorTxt14">
 															<div class="errorTxt14"></div>
 														</div>
 														<div class="input-field col s12 m6">
-														<label for="address_two">Address Line 2*</label>
+														<label for="address_two">{{__('Address Line 2') }}*</label>
 															<input id="address_two" name="address_two" value="{{ old('address_two') }}" type="text" data-error=".errorTxt15">
 															<div class="errorTxt15"></div>
 														</div>
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
-														<label for="address_three">Address Line 3*</label>
+														<label for="address_three">{{__('Address Line 3') }}*</label>
 															<input id="address_three" name="address_three" value="{{ old('address_three') }}" type="text" data-error=".errorTxt16">
 															<div class="errorTxt16"></div>
 														</div>
 														<div class="col s12 m6">
 															<div class="row">
 																<div class="input-field col s12 m8">
-																	<label for="dob">Date of Birth *</label>
+																	<label for="dob">{{__('Date of Birth') }} *</label>
 																	<input id="dob" name="dob" value="{{ old('dob') }}" data-reflectage="member_age" value="{{ old('dob') }}" class="datepicker"  type="text"> 
 																</div>
 																<div class="input-field col s12 m4">
-																	<label for="member_age">Age</label>
+																	<label for="member_age">{{__('Age') }}</label>
 																	<input type="text" id="member_age" value="{{ old('member_age') != '' ? old('member_age') : 0 }}" readonly >
 																</div>
 															</div>
@@ -275,32 +275,32 @@
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
 															<input type="text" class="datepicker" id="doj" value="{{ old('doj') }}" name="doj" data-error=".errorTxt18">
-																<label for="doj">Date of Joining*</label>
+																<label for="doj">{{__('Date of Joining') }}*</label>
 															<div class="errorTxt18"></div>
 														</div>
 														
 														<div class="input-field col s12 m6">
-														<label for="salary">Salary*</label>
+														<label for="salary">{{__('Salary') }}*</label>
 															<input id="salary" name="salary" value="{{ old('salary') }}" type="text" data-error=".errorTxt19">
 															<div class="errorTxt19"></div>
 														</div>
 														<div class="clearfix" ></div>
 														<div class="input-field col s12 m6">
-														<label for="salary">Old IC Number</label>
+														<label for="salary">{{__('Old IC Number') }}</label>
 															<input id="old_ic" name="old_ic" type="text" value="{{ old('old_ic') }}" data-error=".errorTxt20">
 															<div class="errorTxt20"></div>
 														</div>
 														<div class="input-field col s12 m6">
-														<label for="new_ic">New IC Number*</label>
+														<label for="new_ic">{{__('New IC Number') }}*</label>
 															<input id="new_ic" name="new_ic" type="text" value="{{ old('new_ic') }}" data-error=".errorTxt21">
 															<div class="errorTxt21"></div>
 														</div>
 														<div class="clearfix" ></div>
 														
 														<div class=" col s12 m6 union-data ">
-														<label>Company Name*</label>
+														<label>{{__('Company Name') }}*</label>
 															<select name="company_id" id="company" class="error browser-default" >
-															<option value="">Select Company</option>
+															<option value="">{{__('Select Company') }}</option>
 																@foreach($data['company_view'] as $value)
 																<option value="{{$value->id}}">{{$value->company_name}}</option>
 																@endforeach
@@ -311,9 +311,9 @@
 														</div>
 														
 														<div class="col s12 m6 union-data ">
-														 <label>Branch Name*</label>
+														 <label>{{__('Branch Name') }}*</label>
 															<select name="branch_id" id="branch" class="error browser-default" >
-																<option value="">Select Branch</option>
+																<option value="">{{__('Select Branch') }}</option>
 																
 															</select>
 															<div class="input-field">      
@@ -322,7 +322,7 @@
 														</div>
 														<div class="clearfix" style="clear:both"></div>
 														<div class="input-field col s12 m6">
-															<label for="employee_id">Employee ID</label>
+															<label for="employee_id">{{__('Employee ID') }}</label>
 															<input id="employee_id" name="employee_id" value="{{ old('employee_id') }}" type="text">
 														</div>
 														<div class="clearfix" style="clear:both"></div>
