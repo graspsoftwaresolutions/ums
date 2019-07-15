@@ -190,19 +190,20 @@ class UsersController extends Controller
         {
             $enc_id = Crypt::encrypt($user->id);  
             $delete =  route('users.destroy',[app()->getLocale(),$user->id]) ;
-            $edit =  route('users.edit',[app()->getLocale(),$enc_id]);
+            $edit =  "#modal_add_edit";
 
             $nestedData['name'] = $user->name;
             $nestedData['email'] = $user->email;
-            $actions ="<a style='float: left;' class='btn-small waves-effect waves-light cyan' href='$edit'>".trans('Edit')."</a>";
+            $userid = $user->id;
+
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($userid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
             $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
             $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
             $nestedData['options'] = $actions;
             $data[] = $nestedData;
 
         }
-        }
-
+    }
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  

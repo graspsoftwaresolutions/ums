@@ -160,6 +160,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership_list','MembershipController@new_members')->name('master.membershipnew');
 
 	Route::post('users_list','UsersController@userList')->name('master.userList');
+
+	Route::get('users_detail','CommonController@userDetail');
+
 	
 	//Route::get('membership_list','MembershipController@new_members')->name('reports.new-members');
 });
