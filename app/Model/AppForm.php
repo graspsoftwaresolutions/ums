@@ -11,4 +11,9 @@ class AppForm extends Model
                         'route','isactive','isinsert','isupdate','isdelete','ismenu','description','status'];
  
     public $timestamps = true;
+	
+	public function form()
+    {
+        return $this->belongsTo('App\Model\FormType','formtype_id')->orderBy('orderno', 'ASC');
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Helpers;
 use DB;
 use Carbon\Carbon;
+use App\Model\FormType;
+use App\Model\AppForm;
 
 class CommonHelper
 {
@@ -107,4 +109,33 @@ class CommonHelper
         // dd($queries);
         return $branch_list;
     }
+	
+	public static function getFormTypes($status=false){
+		return $status==false ? FormType::all()->orderBy('orderno', 'ASC') :  FormType::where('status',$status)->orderBy('orderno', 'ASC')->get();
+	}
+	
+	public static function getSubForms($formtype_id){
+		$appforms = FormType::find($formtype_id)->appforms;
+		return $appforms;
+    }
+    
+	public static function getSingleMenus(){
+		$appforms = AppForm::where('formtype_id',NULL)->orderBy('orderno', 'ASC')->get();
+		return $appforms;
+    }
+    
+    public static function getFormTypeName($type_id){
+        $form_name = FormType::where('id',$type_id)->pluck('formname');
+        if(count($form_name)>0){
+            return $form_name[0];
+        }
+        return '';
+    }
+    public static function getStatusName($statusid){
+        $status_data = DB::table('status')->where('id', $statusid)->pluck('status_name');
+         if(count($status_data)>0){
+             return $status_data[0];
+         }
+         return '';
+     }
 }

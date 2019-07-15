@@ -330,7 +330,7 @@
 											}
 											@endphp
                                             @php
-											if($values->status_id==1 && $check_union!=1){
+											if($values->status_id==1){
 											@endphp
                                             <div class="col s12 m6 ">
                                                 <label>Status*</label>
@@ -341,7 +341,7 @@
 											@endphp
                                             <div class="col s12 m6 ">
                                                 <label>Status*</label>
-                                                <span class=" badge gradient-45deg-light-blue-cyan">Account is verified</span>
+                                                <span class=" badge gradient-45deg-light-blue-cyan">{{ CommonHelper::getStatusName($values->status_id) }}</span>
 												
                                             </div>
                                             @php												

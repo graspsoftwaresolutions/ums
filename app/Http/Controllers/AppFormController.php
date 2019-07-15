@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Model\AppForm;
+use App\Model\FormType;
 use View;
 use DB;
 
@@ -32,7 +33,8 @@ class AppFormController extends Controller
      */
     public function create()
     {
-        return view('appform.add_appform');
+        $data['form_type'] = FormType::all();
+        return view('appform.add_appform')->with('data',$data);
     }
 
     /**
@@ -53,7 +55,7 @@ class AppFormController extends Controller
        
         $AppForm = new AppForm();
         $AppForm->formname = $request->formname;
-        $AppForm->formtype = $request->formtype;
+        $AppForm->formtype_id = $request->formtype;
         $AppForm->orderno = $request->orderno;
         $AppForm->route = $request->route;
         $AppForm->isactive = $request->isactive;
@@ -88,10 +90,10 @@ class AppFormController extends Controller
      */
     public function edit($lang,$id)
     {
-        $id = Crypt::decrypt($id);
-        
+        $auto_id = Crypt::decrypt($id);
+        $data['form_type'] = FormType::all();
         $AppForm = new AppForm();
-        $data['appform_edit'] = AppForm::find($id);
+        $data['appform_edit'] = AppForm::find($auto_id);
        
         return view('appform.edit_appform')->with('data',$data);
     }
@@ -115,7 +117,7 @@ class AppFormController extends Controller
         $AppForm = new AppForm();
         $AppForm = AppForm::find($id);
         $AppForm->formname = $request->formname;
-        $AppForm->formtype = $request->formtype;
+        $AppForm->formtype_id = $request->formtype;
         $AppForm->orderno = $request->orderno;
         $AppForm->route = $request->route;
         $AppForm->isactive = $request->isactive;

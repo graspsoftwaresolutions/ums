@@ -16,7 +16,7 @@ class CreateAppFormTable extends Migration
         Schema::create('app_form', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('formname')->nullable();
-            $table->string('formtype')->nullable();
+            $table->integer('formtype_id')->nullable();
             $table->decimal('orderno', 14,2)->nullable();
             $table->string('route')->nullable();
             $table->string('isactive')->nullable();

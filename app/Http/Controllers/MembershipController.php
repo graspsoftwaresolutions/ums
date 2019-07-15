@@ -88,7 +88,9 @@ class MembershipController extends Controller
         return view('membership.add_membership')->with('data',$data);  
         
     }
-    public function edit($id)
+    
+    
+    public function edit($lang,$id)
     {
        
         $id = Crypt::decrypt($id);
