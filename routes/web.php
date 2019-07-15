@@ -152,7 +152,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership_register','MembershipController@addMember')->name('master.addmembership');
 	Route::get('membership-edit/{parameter}','MembershipController@edit')->name('master.editmembership');
 	Route::get('membership-delete/{id}','MembershipController@delete')->name('master.deletemembership');
-	Route::get('membership_list','MembershipController@new_members')->name('master.membership');
+	Route::get('membership_list','MembershipController@new_members')->name('master.membershipnew');
 	
 	//Route::get('membership_list','MembershipController@new_members')->name('reports.new-members');
 });

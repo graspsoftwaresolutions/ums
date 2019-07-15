@@ -130,5 +130,12 @@ class CommonHelper
             return $form_name[0];
         }
         return '';
-	}
+    }
+    public static function getStatusName($statusid){
+        $status_data = DB::table('status')->where('id', $statusid)->pluck('status_name');
+         if(count($status_data)>0){
+             return $status_data[0];
+         }
+         return '';
+     }
 }

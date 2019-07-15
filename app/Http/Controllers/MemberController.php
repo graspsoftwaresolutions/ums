@@ -591,7 +591,7 @@ class MemberController extends Controller
             if($user_role=="member"){
                 return redirect('edit-membership-profile')->with('message','Member Details Updated Succesfully');
             }else{
-                return redirect('membership')->with('message','Member Details Updated Succesfully');
+                return redirect(app()->getLocale().'/membership')->with('message','Member Details Updated Succesfully');
             }
             
         }else{
