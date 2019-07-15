@@ -31,7 +31,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" href="#modal_add_edit">Add</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">Add</a>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
 
                             <div class="modal-content">
                                 <h4>Country Details</h4>
-                                <form class="formValidate" id="UsersformValidate" method="post" action="{{ route('users.store',app()->getLocale()) }}">
+                                <form class="formValidate" id="UsersformValidate" method="post"  action="{{ route('users.store',app()->getLocale()) }}">
                                     @csrf
                                     <div class="row">
                                         <div class="input-field col s12 m6">
@@ -145,6 +145,12 @@ function ConfirmDeletion() {
     } else {
         return false;
     }
+}
+function showaddForm(userid) {
+	$('.edit_hide').show();
+	$('#name').val("");
+	$('#email').val("");
+	$('.modal').modal();
 }
 function showeditForm(userid) {
     $('.edit_hide').hide();
