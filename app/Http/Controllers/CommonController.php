@@ -30,7 +30,13 @@ class CommonController extends Controller
     {
 		
 	}
-	
+	public function userDetail(Request $request)
+    {
+        $id = $request->id;
+        $User = new User();
+        $data = User::find($id);
+        return $data;
+    }
     public function getStateList(Request $request)
     {
         $id = $request->country_id;
