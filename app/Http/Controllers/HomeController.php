@@ -12,6 +12,7 @@ use App\Model\Company;
 use App\Model\CompanyBranch;
 use App\Model\Branch;
 use App\User;
+use DB;
 
 class HomeController extends Controller
 {
@@ -62,7 +63,19 @@ class HomeController extends Controller
 
 
         }else if($user_role=='union-branch'){
-            $member_count = Membership::where('union_branch_id')->count();
+            $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+			$member_count = 0;
+			if(count($union_branch_id)>0){
+				$union_branch_id = $union_branch_id[0];
+				$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where union_branch_id=$union_branch_id";
+				$results = DB::select( DB::raw($rawQuery));
+				if(!empty($results)){
+					$member_count = $results[0]->count;
+				}
+
+			}else{
+				$member_count = 0;
+			}
             $data['total_member_count'] = $member_count;
         }
         
