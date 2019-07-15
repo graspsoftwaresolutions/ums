@@ -52,24 +52,7 @@
 														<th style="margin-left:20px"> {{__('Action') }}</th>
 													</tr>
 												</thead>
-												<tbody>
-													@foreach($data as $key=>$value)
-													<?php
-													 $id = Crypt::encrypt($value->id);  
-													 ?>
-                                                        <tr>
-                                                            <td>{{$value->name}}</td>
-                                                            <td>{{$value->email}}</td>
-                                                            @php
-															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
-															@endphp
-															<td><a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('users.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a> <form style="float: left;margin-left:5px;" action="{{ route('users.destroy',[app()->getLocale(),$value->id])}}" method="POST">
-															{{ method_field('DELETE') }}
-    														{{ csrf_field() }}									
-															 <button  type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form></td>
-													    </tr>
-                                                    @endforeach
-												</tbody>
+												
 												
 											</table>
 										</div>
@@ -89,13 +72,44 @@
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
+<!--script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script-->
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
+	var deflanguage = '{{ app()->getLocale() }}';
 	$("#masters_sidebars_id").addClass('active');
 	$("#users_sidebar_li_id").addClass('active');
 	$("#users_sidebar_a_id").addClass('active');
+	$(function () {
+		$('#page-length-option').DataTable({
+			"responsive": true,
+			"lengthMenu": [
+			  [10, 25, 50, -1],
+			  [10, 25, 50, "All"]
+			],
+			"processing": true,
+            "serverSide": true,
+            "ajax":{
+                     "url": "{{ url(app()->getLocale().'/users_list') }}",
+                     "dataType": "json",
+                     "type": "POST",
+                     "data":{ _token: "{{csrf_token()}}"}
+                   },
+            "columns": [
+                { "data": "name" },
+                { "data": "email" },
+                { "data": "options" }
+            ]	 
+
+		 });
+	 });
+	 function ConfirmDeletion(){
+		 if( confirm("{{ __('Are you sure you want to delete?') }}" )){
+			 return true;
+		 }else{
+			 return false;
+		 }
+	 }
 </script>
 @endsection
