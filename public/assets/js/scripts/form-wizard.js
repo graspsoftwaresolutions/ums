@@ -1,7 +1,7 @@
 // Form Wizard / Stepper
 
 
-var linearStepper = document.querySelector('#linearStepper');
+/*var linearStepper = document.querySelector('#linearStepper');
 var linearStepperInstace = new MStepper(linearStepper, {
     firstActive: 0,
     showFeedbackPreloader: true,
@@ -14,7 +14,7 @@ var linearStepperInstace = new MStepper(linearStepper, {
     feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
 });
 
-linearStepperInstace.resetStepper();
+linearStepperInstace.resetStepper(); */
 
 
 
