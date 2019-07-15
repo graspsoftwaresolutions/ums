@@ -334,5 +334,18 @@
   "Male" : "Male_en",
   "Date of Emp" : "Date of Emp_en",
   "Old Number" : "Old Number_en",
-  "Select Race" : "Select Race_en"
+  "Select Race" : "Select Race_en",
+
+  "No of Union Branch" : "No of Union Branch_en",
+  "No of Members" : "No of Members_en",
+  "Members List" : "Members List_en",
+  "No of Companies" : "No of Companies_en",
+  "Companies List" : "Companies List_en",
+  "No of Company Branches" : "No of Company Branches_en",
+  "Company Branches List" : "Company Branches List_en",
+  "Total Members" : "Total Members_en",
+  "Total Transaction" : "Total Transaction_en",
+  "Active Members" : "Active Members_en",
+  "This month transaction" : "This month transaction_en",
+  "New Members" : "New Members_en"
 }

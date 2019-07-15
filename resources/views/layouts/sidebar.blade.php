@@ -1,7 +1,7 @@
 <!-- BEGIN: SideNav-->
     <aside class="sidenav-main nav-expanded nav-lock nav-collapsible sidenav-light sidenav-active-square">
       <div class="brand-sidebar">
-        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="index.html"><img src="{{ asset('public/assets/images/logo/materialize-logo-color.png') }}" alt="Membership logo"><span class="logo-text hide-on-med-and-down">Membership</span></a><a class="navbar-toggler" href="#"><i class="material-icons">radio_button_checked</i></a></h1>
+        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="#"><img src="{{ asset('public/assets/images/logo/materialize-logo-color.png') }}" alt="Membership logo"><span class="logo-text hide-on-med-and-down">Membership</span></a><a class="navbar-toggler" href="#"><i class="material-icons">radio_button_checked</i></a></h1>
       </div>
       <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out" data-menu="menu-navigation" data-collapsible="menu-accordion">
 		<li class="navigation" style="font:size:8px;"> <center>{{ __('Welcome') }} {{ Auth::user()->name }} </center>
@@ -30,7 +30,7 @@
               <li id="appform_sidebar_li_id" class=""><a id="appform_sidebar_a_id" class="collapsible-body" href="{{ route('appform.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('App Form') }}</span></a></li>
               <li id="roles_sidebar_li_id" class=""><a id="roles_sidebar_a_id" class="collapsible-body" href="{{ route('roles.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Roles') }}</span></a></li>
               <li id="users_sidebar_li_id" class=""><a id="users_sidebar_a_id" class="collapsible-body" href="{{ route('users.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Users') }}</span></a></li>
-              <li id="fee_sidebar_li_id" class=""><a id="fee_sidebar_a_id" class="collapsible-body" href="{{ route('appform.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Form Type')}}</span></a></li>
+              <li id="formType_sidebar_li_id" class=""><a id="formType_sidebar_a_id" class="collapsible-body" href="{{ route('formtype.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Form Type')}}</span></a></li>
             </ul>
           </div>
         </li>
@@ -44,7 +44,7 @@
           @endphp
           <?php //print_r($user_role);die; ?>
           @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
-            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">{{ __('Member registration') }}</span></a>
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('membership') }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">{{ __('Member registration') }}</span></a>
           @endif
 		  @if($user_role=='member')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('member.membership.profile') }}"><i class="material-icons">account_box</i><span class="menu-title" data-i18n="">{{ __('Profile') }}</span></a>

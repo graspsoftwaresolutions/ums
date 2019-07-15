@@ -148,15 +148,16 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
 	//membership
-	Route::get('membership','MembershipController@index')->name('master.membership');
-	Route::get('membership_register','MembershipController@addMember')->name('master.addmembership');
-	Route::get('membership-edit/{parameter}','MembershipController@edit')->name('master.editmembership');
-	Route::get('membership-delete/{id}','MembershipController@delete')->name('master.deletemembership');
-	Route::get('membership_list','MembershipController@new_members')->name('master.membership');
+	
 });
 /* Master */
-
-Route::get('count','DashboardController@unionBranchCount');
+	Route::get('membership','MembershipController@index');
+	Route::get('membership_register','MembershipController@addMember');
+	Route::get('membership_list','MembershipController@new_members');
+	Route::get('membership-edit/{parameter}','MembershipController@edit');
+	Route::get('membership-delete/{id}','MembershipController@delete');
+	
+	Route::get('count','DashboardController@unionBranchCount');
 
 //common routes
 Route::get('get-state-list','CommonController@getStateList');
@@ -170,10 +171,6 @@ Route::post('add-nominee','MemberController@addNominee');
 Route::get('get-oldmember-list','MemberController@getoldMemberList');
 Route::post('membership_save','MemberController@Save');
 Route::post('membership_update','MemberController@update');
-
-
-
-
 
 //Person Tiltle Setup
 Route::get('persontitle','PersontitleController@index');

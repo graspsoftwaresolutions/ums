@@ -66,6 +66,7 @@ class CompanyController extends Controller
     {
         $id = Crypt::decrypt($id);
         $data['company'] = DB::table('company')->where('status','=','1')->get();
+       // dd($data['company']); exit;
         $data['company_edit'] = DB::table('company')->where('id','=',$id)->get(); 
         $head_company_id = $data['company_edit'][0]->head_of_company;
         return view('company.edit_company')->with('data',$data);

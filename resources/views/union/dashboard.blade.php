@@ -17,7 +17,7 @@
       <div class="col s12 m6 l3">
          <div class="card animate fadeLeft">
             <div class="card-content cyan white-text">
-               <p class="card-stats-title"><i class="material-icons">person_outline</i> No of Union Branch</p>
+               <p class="card-stats-title"><i class="material-icons">person_outline</i> {{__('No of Union Branch') }}</p>
                <h4 class="card-stats-number white-text">{{ $data['union_branch_count'] }}</h4>
                <!-- <p class="card-stats-compare">
                   <i class="mdi-creation"></i> 15%
@@ -25,41 +25,41 @@
                </p> -->
             </div>
             <div class="card-action cyan darken-1">
-               <div id="clients-bar" class="center-align"><a style="color:white" href="{{route('master.unionbranch', app()->getLocale())}}">Union Branch List</a> </div>
+               <div id="clients-bar" class="center-align"><a style="color:white" href="{{route('master.unionbranch', app()->getLocale())}}">{{__('Union Branch List') }}</a> </div>
             </div>
          </div>
       </div>
       <div class="col s12 m6 l3">
          <div class="card animate fadeLeft">
             <div class="card-content red accent-2 white-text">
-               <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
+               <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Members') }}</p>
                <h4 class="card-stats-number white-text">{{ $data['total_member_count'] }}</h4>
               
             </div>
             <div class="card-action red">
-               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url('membership')}}">Members List</a></div>
+               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url('membership')}}">{{__('Members List') }}</a></div>
             </div>
          </div>
       </div>
       <div class="col s12 m6 l3">
          <div class="card animate fadeRight">
             <div class="card-content orange lighten-1 white-text">
-               <p class="card-stats-title"><i class="material-icons"></i>No of Companies</p>
+               <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Companies') }}</p>
                <h4 class="card-stats-number white-text">{{ $data['total_company_count'] }}</h4>
             </div>
             <div class="card-action orange">
-               <div id="profit-tristate" class="center-align"><a style="color:white" href="{{route('master.company', app()->getLocale())}}">Companies List</a></div>
+               <div id="profit-tristate" class="center-align"><a style="color:white" href="{{route('master.company', app()->getLocale())}}">{{__('Companies List') }} </a></div>
             </div>
          </div>
       </div>
       <div class="col s12 m6 l3">
          <div class="card animate fadeRight">
             <div class="card-content green lighten-1 white-text">
-               <p class="card-stats-title"><i class="material-icons"></i> No of Company Branches</p>
+               <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Company Branches') }}</p>
                <h4 class="card-stats-number white-text">{{ $data['total_company_branch_count'] }}</h4>
             </div>
             <div class="card-action green">
-               <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> Company Branches List</a></div>
+               <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> {{__('Company Branches List') }}</a></div>
             </div>
          </div>
       </div>
@@ -73,7 +73,7 @@
       <!-- Current Balance -->
 		<div id="ct9-chart" class="ct-chart card hide">
 		  <div class="card-content">
-			 <h4 class="card-title">Total members</h4>
+			 <h4 class="card-title">{{__('Total members') }}</h4>
 			 <p class="caption">
 				<a href="https://gionkunz.github.io/chartist-js/getting-started.html" target="_blank">Chartist-js</a> A very simple pie chart with label interpolation to show percentage instead of the actual data series value.
 			 </p>
@@ -81,14 +81,14 @@
 	   </div>
       <div class="card animate fadeLeft">
          <div class="card-content">
-            <h4 class="card-title mb-0">Total Members<i class="material-icons float-right hide">more_vert</i></h4>
+            <h4 class="card-title mb-0">{{__('Total Members') }}<i class="material-icons float-right hide">more_vert</i></h4>
 			</br>
             <div class="current-balance-container">
 				
                <div id="current-balance-donut-chart" class="current-balance-shadow"></div>
             </div>
             <h5 class="center-align">{{ $data['total_active_members_count'] }}</h5>
-            <p class="medium-small center-align">Active Members</p>
+            <p class="medium-small center-align">{{__('Active Members') }}</p>
          </div>
       </div>
    </div>
@@ -96,8 +96,8 @@
       <!-- Total Transaction -->
       <div class="card">
          <div class="card-content">
-            <h4 class="card-title mb-0">Total Transaction <i class="material-icons float-right hide">more_vert</i></h4>
-            <p class="medium-small">This month transaction</p>
+            <h4 class="card-title mb-0">{{__('Total Transaction') }}<i class="material-icons float-right hide">more_vert</i></h4>
+            <p class="medium-small">{{__('This month transaction') }}</p>
             <div class="total-transaction-container">
                <div id="total-transaction-line-chart" class="total-transaction-shadow"></div>
             </div>
@@ -295,7 +295,7 @@
 					Chartist.plugins.fillDonut({
 						items: [
 							{
-								content: '<p class="small">New Members</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_new_members_count']}}+'</h5>'
+								content: '<p class="small">{{__("New Members") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_new_members_count']}}+'</h5>'
 							}
 						]
 					})

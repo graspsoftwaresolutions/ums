@@ -91,7 +91,7 @@ class AppFormController extends Controller
         $id = Crypt::decrypt($id);
         
         $AppForm = new AppForm();
-        $data['appform_edit'] = AppForm::find($id)->first();
+        $data['appform_edit'] = AppForm::find($id);
        
         return view('appform.edit_appform')->with('data',$data);
     }

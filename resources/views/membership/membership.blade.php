@@ -30,7 +30,7 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addmembership', app()->getLocale())}}">{{__('Add New Membership') }}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{url('membership_register')}}">{{__('Add New Membership') }}</a>
 										
 									</div>
 								</div>
@@ -47,9 +47,9 @@
 										@endif
 										 Membership List
 										@if($data['member_type'] ==1) 
-											<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{route('home', app()->getLocale())}}">{{__('New members list') }}</a>
+											<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{url('membership_list')}}">{{__('New members list') }}</a>
 										@else
-											<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{url('membership')}}">{{__('Active members list') }}</a>
+											<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{url('membership_list')}}">{{__('Active members list') }}</a>
 										@endif
 									</h4>
 									@include('includes.messages')
@@ -74,7 +74,6 @@
 													
 													 $parameter = Crypt::encrypt($value->id);  
 													 ?>
-													
 														<td>{{$value->name}}</td>
 														<td>{{$value->email}}</td>
 														<td>{{$value->phone}}</td>

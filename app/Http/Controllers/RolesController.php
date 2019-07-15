@@ -81,7 +81,7 @@ class RolesController extends Controller
         $id = Crypt::decrypt($id);
         
         $Role = new Role();
-        $data['roles_edit'] = Role::find($id)->first();
+        $data['roles_edit'] = Role::find($id);
        
         return view('roles.edit_roles')->with('data',$data);
     }

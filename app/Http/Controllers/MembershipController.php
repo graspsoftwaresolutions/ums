@@ -88,8 +88,6 @@ class MembershipController extends Controller
         return view('membership.add_membership')->with('data',$data);  
         
     }
-    
-    
     public function edit($id)
     {
        

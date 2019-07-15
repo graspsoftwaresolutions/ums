@@ -31,7 +31,7 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('Form Type.create',app()->getLocale())}}">{{__('Add New Form Type') }}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('formtype.create',app()->getLocale())}}">{{__('Add New Form Type') }}</a>
 										
 									</div>
 								</div>
@@ -48,30 +48,28 @@
 												<thead>
 													<tr>
 														<th>{{__('Form Type Name') }}</th>
-                                                        <th>{{__('Slug') }}</th>
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th>{{__('Form Order No') }}</th>
+														<th> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
-													@foreach($data as $key=>$value)
+													@foreach($data as $key=>$value) 
 													<?php
 													 $id = Crypt::encrypt($value->id);  
 													 ?>
                                                         <tr>
-                                                            <td>{{$value->name}}</td>
-                                                            <td>{{$value->slug}}</td>
+                                                            <td>{{$value->formname}}</td>
+															<td>{{$value->orderno}}</td>
                                                             @php
 															{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 															@endphp
-															
 															<td>
-																@if($value->id>5)
-																<a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('Form Type.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a>
-																<form style="float: left;margin-left:5px;" action="{{ route('Form Type.destroy',[app()->getLocale(),$value->id])}}" method="POST">
+																<a style="float: left;" class="btn-small waves-effect waves-light cyan" href="{{ route('formtype.edit',[app()->getLocale(),$id]) }}">{{__('Edit') }}</a>
+																<form style="float: left;margin-left:5px;" action="{{ route('formtype.destroy',[app()->getLocale(),$value->id])}}" method="POST">
 																{{ method_field('DELETE') }}
 																{{ csrf_field() }}									
 																 <button type="submit" class="btn-small waves-effect waves-light amber darken-4"  onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</button> </form>
-																@endif
+																
 															 </td>
 													    </tr>
                                                     @endforeach
@@ -101,7 +99,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#Form Type_sidebar_li_id").addClass('active');
-	$("#Form Type_sidebar_a_id").addClass('active');
+	$("#formType_sidebar_li_id").addClass('active');
+	$("#formType_sidebar_a_id").addClass('active');
 </script>
 @endsection

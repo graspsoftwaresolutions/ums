@@ -16,6 +16,7 @@ class CreateFormTypeTable extends Migration
         Schema::create('form_type', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('formname');
+            $table->string('orderno');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->nullable();  
             $table->integer('status')->default(1);

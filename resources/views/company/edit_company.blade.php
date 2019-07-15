@@ -64,12 +64,14 @@
                                         <div class="clearfix" ></div>
                                         <div class=" col s12 m6 union-data">
                                             <label class="common-label">{{__('Head of Company') }}*</label>
-                                                <select id="head_of_company" name="head_of_company" class="error browser-default">
+                                                <select id="head_of_company" name="head_of_company" class="error browser-default ">
                                                 <option value="">Select Company</option>
-                                                <?php if($row->id)?>
+                                                <!-- <option value="{{$row->id}}" selected style="display:none;"> {{$row->company_name}}</option> -->
                                                     @foreach($data['company'] as $value)
-                                                         <option value="{{$value->id}}" <?php if($value->id == $row->head_of_company) { echo "selected";}?>
-                                                         ><?php echo $value->company_name;?></option>
+                                                    @if($value->id != $row->id)
+                                                         <option value="{{$value->id}}" @if( $value->id == $row->head_of_company) {{"selected" }}  @endif  >
+                                                           {{$value->company_name}}</option>
+                                                           @endif
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">      
