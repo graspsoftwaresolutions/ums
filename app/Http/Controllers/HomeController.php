@@ -64,6 +64,7 @@ class HomeController extends Controller
 
         }else if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+            
 			$member_count = 0;
 			if(count($union_branch_id)>0){
 				$union_branch_id = $union_branch_id[0];
@@ -72,12 +73,41 @@ class HomeController extends Controller
 				if(!empty($results)){
 					$member_count = $results[0]->count;
 				}
-
+				$company_branch_count = CompanyBranch::where('union_branch_id',$union_branch_id)->count();
 			}else{
 				$member_count = 0;
+				$company_branch_count = 0;
 			}
             $data['total_member_count'] = $member_count;
-        }
+            $data['total_company_branch_count'] = $company_branch_count;
+        }else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+			$company_branch_count = 0;
+			$member_count = 0;
+			if(count($company_id)>0){
+				$companyid = $company_id[0];
+				$company_branch_count = CompanyBranch::where('company_id',$company_id[0])->count();
+				$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where company_id=$companyid";
+				$results = DB::select( DB::raw($rawQuery));
+				if(!empty($results)){
+					$member_count = $results[0]->count;
+				}
+			}
+			$data['total_company_branch_count'] = $company_branch_count;
+			$data['total_member_count'] = $member_count;
+		}else if($user_role=='company-branch'){
+			$member_count = 0;
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+			if(count($company_id)>0){
+				$companyid = $company_id[0];
+				$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where company_id=$companyid";
+				$results = DB::select( DB::raw($rawQuery));
+				if(!empty($results)){
+					$member_count = $results[0]->count;
+				}
+			}
+			$data['total_member_count'] = $member_count;
+		}
         
         return view('home')->with('data',$data);
     }
