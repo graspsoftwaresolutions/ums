@@ -5,7 +5,7 @@
          <div class="card animate fadeLeft">
             <div class="card-content red accent-2 white-text">
                <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
-               <h4 class="card-stats-number white-text">2</h4>
+               <h4 class="card-stats-number white-text">{{ $data['total_member_count'] }}</h4>
               
             </div>
             <div class="card-action red">
