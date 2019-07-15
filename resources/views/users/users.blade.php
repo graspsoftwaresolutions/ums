@@ -58,12 +58,11 @@
                             </div>
                         </div>
                         <div id="modal_add_edit" class="modal">
-
-
                             <div class="modal-content">
-                                <h4>Country Details</h4>
-                                <form class="formValidate" id="UsersformValidate" method="post"  action="{{ route('users.store',app()->getLocale()) }}">
+                                <h4>Users Details</h4>
+                                <form class="formValidate" id="UsersformValidate" method="post"  action="{{ route('master.saveuser',app()->getLocale()) }}">
                                     @csrf
+									<input type="hidden" name="id" id="id">
                                     <div class="row">
                                         <div class="input-field col s12 m6">
                                             <label for="name" class="common-label">{{__('Name') }}*</label>
@@ -77,13 +76,13 @@
                                         </div>
                                         <div class="input-field col s12 m6 edit_hide" >
                                             <label for="password" class="common-label">{{__('Password') }}*</label>
-                                            <input id="password" class="common-input" name="password" type="password" data-error=".errorTxt2">
-                                            <div class="errorTxt2"></div>
+                                            <input id="password" class="common-input" name="password" type="password" data-error=".errorTxt3">
+                                            <div class="errorTxt3"></div>
                                         </div>
                                         <div class="input-field col s12 m6 edit_hide">
                                             <label for="password" class="common-label">{{__('Confirm Password') }}*</label>
-                                            <input id="confirm_password" class="common-input" name="confirm_password" type="password" data-error=".errorTxt2">
-                                            <div class="errorTxt2"></div>
+                                            <input id="confirm_password" class="common-input" name="confirm_password" type="password" data-error=".errorTxt4">
+                                            <div class="errorTxt4"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
@@ -110,12 +109,63 @@
 <!--script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script-->
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 var deflanguage = '{{ app()->getLocale() }}';
 $("#masters_sidebars_id").addClass('active');
 $("#users_sidebar_li_id").addClass('active');
 $("#users_sidebar_a_id").addClass('active');
+
+$("#UsersformValidate").validate({
+        rules: {
+            name:{
+                required: true,
+            },
+            email:{
+                required: true,
+                remote:{
+                    url: 'App\Helpers\CommonHelper/checkemailExists/?id='+$("#email").val(),
+                    type: "post",
+                },
+            },
+            password: {
+                required: true,
+            },
+            confirm_password : {
+
+				required: true,
+				equalTo:"#password",
+            },
+        },
+        //For custom messages
+        messages: {       
+            name: {
+                required: '{{__("Please enter Name") }}', 
+            },
+            email:{
+				
+				remote : '{{__("Email Already exists") }}',
+            },
+            password: {
+                required: '{{__("Please enter Password") }}',
+            },
+            confirm_password : {
+                required: '{{__("Please enter Confirm Password") }}',
+			},
+			
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
 $(function () {
     $('#page-length-option').DataTable({
         "responsive": true,
@@ -157,7 +207,8 @@ function showeditForm(userid) {
     $('.modal').modal();
     var url = "{{ url(app()->getLocale().'/users_detail') }}" + '?id=' + userid;
     $.ajax({url: url, type: "GET", success: function (result) {
-            console.log(result);
+			console.log(result);
+			$('#id').val(result.id);
             $('#name').val(result.name);
             $('#email').val(result.email);
         }
@@ -167,6 +218,8 @@ $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
 });
+
+  
 
 </script>
 @endsection

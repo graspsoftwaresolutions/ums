@@ -39,4 +39,15 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Model\UnionBranch');
     }
+
+    public function saveUserdata($data=array())
+    {
+       
+        if (!empty($data['id'])) {
+            $savedata = User::find($data['id'])->update($data);
+        } else {
+            $savedata = User::create($data);
+        }
+        return $savedata;
+    }
 }

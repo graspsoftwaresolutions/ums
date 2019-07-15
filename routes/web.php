@@ -145,6 +145,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('roles','RolesController');
 	//users Form
 	Route::resource('users','UsersController');
+	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
 	//Form Type
 	Route::resource('formtype','FormTypeController');
 	

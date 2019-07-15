@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
+use App\User;
 
 class MasterController extends Controller
 {
@@ -13,6 +14,7 @@ class MasterController extends Controller
     {
         $this->middleware('auth'); 
         $this->Country = new Country;
+        $this->User = new User;
     }
     public function countryList()
     {
@@ -48,5 +50,54 @@ class MasterController extends Controller
         $id = Crypt::decrypt($id);
         $data = Country::find($id);
         return view('master.country.country_list')->with('data',$data);
+    }
+    //user Details 
+    public function userSave(Request $request)
+    {
+        $request->validate([
+            'name'=>'required',
+            'email'=>'required',
+            // 'password'=>'required',
+            // 'confirm_password'=>'required',
+        ],
+        [
+            'name.required'=>'Please enter User name',
+            'email.required'=>'Please enter Valid Email',
+            // 'password.required'=>'Please enter Password',
+            // 'confirm_password.required'=>'Please enter Confirm Password',
+        ]);
+
+        $data = $request->all();
+        $data_exists = CommonHelper::getExistingUserEmail($request->email);
+        $defdaultLang = app()->getLocale();
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/users')->with('error','User Email Already Exists'); 
+        }
+        else if(!empty($data)) {
+
+           if(($request->password == $request->confirm_password))
+           {
+                $data['password'] = Crypt::encrypt($request->password);
+                $saveUser = $this->User->saveUserdata($data);
+            
+                if($saveUser == true)
+                {
+                    return  redirect($defdaultLang.'/users')->with('message','User Added Succesfully');
+                }
+           }
+           else {
+             return  redirect($defdaultLang.'/users')->with('error','passwords are mismatch');
+           }
+         }
+         else{
+            $data->email = $request->email;
+            $data->name = $request->name;
+            $saveUser = $this->User->saveUserdata($data);
+            if($saveUser == true)
+            {
+                return  redirect($defdaultLang.'/users')->with('message','User Updated Succesfully');
+            }
+         }
     }
 }

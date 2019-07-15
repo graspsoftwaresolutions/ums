@@ -100,6 +100,10 @@
             },
             email:{
                 required: true,
+                remote:{
+                    url: baseurl+'/user/checkemailExists/?id='+$("#user_id").val(),
+                    type: "post",
+                },
             },
             password: {
                 required: true,
