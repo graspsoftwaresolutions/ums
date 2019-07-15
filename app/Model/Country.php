@@ -11,14 +11,14 @@ class Country extends Model
     protected $fillable = ['id','country_name','status'];
     public $timestamps = true;
 
-    public function StoreCountry($country)
+    public function saveCountrydata($data=array())
     {
-        $id = DB::table('country')->insertGetId($country);
-        return $id;
-    }
-    public function state()
-    {
-        return $this->hasMany('App\Model\state');
+        if (!empty($data['id'])) {
+            $savedata = Country::find($data['id'])->update($data);
+        } else {
+            $savedata = Country::create($data);
+        }
+        return $savedata;
     }
     
 }

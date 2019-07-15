@@ -5,6 +5,7 @@ use DB;
 use Carbon\Carbon;
 use App\Model\FormType;
 use App\Model\AppForm;
+use App\Model\Country;
 
 class CommonHelper
 {
@@ -137,5 +138,10 @@ class CommonHelper
              return $status_data[0];
          }
          return '';
+     }
+     public static function getExistingCountry($countryname)
+     {
+         $country_exists = Country::where('country_name','=',$countryname)->count();    
+         return  $country_exists;
      }
 }

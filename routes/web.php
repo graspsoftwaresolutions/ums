@@ -18,16 +18,21 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('/', 'Auth\LoginController@custom_login');
 	Auth::routes();
 
+
+	// Masters
+	//Country Master Details
+	Route::get('country','MasterController@countryList')->name('master.country');
+	Route::post('country_save','MasterController@countrySave')->name('master.savecountry');
+	Route::get('country-edit','MasterController@countryEdit')->name('master.editcountry');
+
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
 	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
 	//Country Details
-	Route::get('country','CountryController@index')->name('master.country');
-	Route::get('add-country','CountryController@addCountry')->name('master.addcountry');
-	Route::post('country_save','CountryController@save')->name('master.savecountry');
-	Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
-	Route::post('country_edit','CountryController@update')->name('master.updatecountry');
+	
+	//Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
+	//Route::post('country_edit','CountryController@update')->name('master.updatecountry');
 	Route::get('country-delete/{parameter}','CountryController@delete')->name('master.deletecountry');
 
 	//State Details 
