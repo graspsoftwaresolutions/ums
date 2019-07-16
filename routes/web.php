@@ -157,7 +157,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('appform', 'AppFormController');
 	//Roles Form
 	Route::resource('roles','RolesController');
-<<<<<<< HEAD
 	//users Form
 	//Route::resource('users','UsersController');
 	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
@@ -166,9 +165,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
 
 	Route::post('unionBranchList','MasterController@unionBranchList')->name('master.union_BranchList');
-=======
 	
->>>>>>> 534de81e4f6ca646b88d5ba77791e4cde40d27a3
 	//Form Type
 	Route::resource('formtype','FormTypeController');
 	
