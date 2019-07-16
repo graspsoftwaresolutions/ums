@@ -18,7 +18,7 @@ linearStepperInstace.resetStepper(); */
 
 
 
-var horizStepper = document.querySelector('#horizStepper');
+/* var horizStepper = document.querySelector('#horizStepper');
 var horizStepperInstace = new MStepper(horizStepper, {
     // options
     firstActive: 0,
@@ -27,7 +27,7 @@ var horizStepperInstace = new MStepper(horizStepper, {
     // validationFunction: defaultValidationFunction,
     stepTitleNavigation: true,
     feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
-});
+}); */
 
 horizStepperInstace.resetStepper();
 
