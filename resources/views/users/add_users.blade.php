@@ -101,7 +101,7 @@
             email:{
                 required: true,
                 remote:{
-                    url: baseurl+'/user/checkemailExists/?id='+$("#user_id").val(),
+                    url: baseurl+'/user/checkemailExists/?id='+$("#email").val(),
                     type: "post",
                 },
             },

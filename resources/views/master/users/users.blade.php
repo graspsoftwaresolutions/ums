@@ -99,6 +99,7 @@
                     </div>
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
+					
                 </div>
             </div>
         </div>
@@ -178,9 +179,13 @@ $(function () {
     $('#page-length-option').DataTable({
         "responsive": true,
         "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+		/* "lengthMenu": [
             [10, 25, 50, -1],
             [10, 25, 50, "All"]
-        ],
+        ], */
         "processing": true,
         "serverSide": true,
         "ajax": {

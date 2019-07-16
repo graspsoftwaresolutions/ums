@@ -132,7 +132,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($lang, $id)
+    public function user_destroy($lang, $id)
     {
         $User = new User();
         $User = User::find($id);
@@ -141,77 +141,4 @@ class UsersController extends Controller
         $defdaultLang = app()->getLocale();
         return redirect($defdaultLang.'/users')->with('message','User Details Deleted Successfully!!');
     }
-
-
-    public function userList(Request $request){
-        $columns = array( 
-            0 => 'name', 
-            1 => 'email',
-            2 => 'id',
-        );
-
-        $totalData = User::count();
-
-        $totalFiltered = $totalData; 
-
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-
-        if(empty($request->input('search.value')))
-        {            
-        $users = User::offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->get();
-        }
-        else {
-        $search = $request->input('search.value'); 
-
-        $users =  User::where('id','LIKE',"%{$search}%")
-                    ->orWhere('name', 'LIKE',"%{$search}%")
-                    ->orWhere('email', 'LIKE',"%{$search}%")
-                    ->offset($start)
-                    ->limit($limit)
-                    ->orderBy($order,$dir)
-                    ->get();
-
-        $totalFiltered = User::where('id','LIKE',"%{$search}%")
-                    ->orWhere('name', 'LIKE',"%{$search}%")
-                    ->orWhere('email', 'LIKE',"%{$search}%")
-                    ->count();
-        }
-
-        $data = array();
-        if(!empty($users))
-        {
-        foreach ($users as $user)
-        {
-            $enc_id = Crypt::encrypt($user->id);  
-            $delete =  route('users.destroy',[app()->getLocale(),$user->id]) ;
-            $edit =  "#modal_add_edit";
-
-            $nestedData['name'] = $user->name;
-            $nestedData['email'] = $user->email;
-            $userid = $user->id;
-
-            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($userid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-            $nestedData['options'] = $actions;
-            $data[] = $nestedData;
-
-        }
-    }
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
-            );
-
-        echo json_encode($json_data); 
-    }
-
 }

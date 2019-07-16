@@ -145,15 +145,5 @@ class CommonHelper
          $country_exists = Country::where('country_name','=',$countryname)->count();    
          return  $country_exists;
      }
-     public static function getExistingUserEmail($email)
-     {
-         $useremail_exists = User::where('email','=',$email)->count();    
-            if($useremail_exists)
-            {
-                return false;
-            }
-            else{
-                return true;
-            }
-     }
+   
 }
