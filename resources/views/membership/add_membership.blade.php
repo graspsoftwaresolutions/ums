@@ -17,7 +17,7 @@
 			position: relative;
 			display: flex;
 			justify-content: space-between;
-			min-height: 540px !important;
+			height:auto !important;
 			overflow: hidden;
 		}
 	}
@@ -112,8 +112,7 @@
 															<div class="row">
 																<div class="col s12 m6">
 																	<label>{{__('Member Title') }}*</label>
-																	<input id="auto_id" name="auto_id" value=""  type="text" class="hide">
-																	<select name="member_title" id="member_title" required data-error=".errorTxt1" class="error browser-default">
+																	<select name="member_title" id="member_title" required data-error=".errorTxt1" class="error browser-default selectpicker">
 																		<option value="" disabled selected>{{__('Choose your option') }}</option>
 																		@foreach($data['title_view'] as $key=>$value)
 																		@if (old('member_title') == $value->id)
@@ -123,10 +122,12 @@
 																		@endif
 																		@endforeach
 																	</select>
-																	<div class="errorTxt1"></div>
+																	<div class="input-field">
+																		<div class="errorTxt1"></div>
+																	</div>
+																	<input id="auto_id" name="auto_id" value=""  type="text" class="hide">
 																</div>
 																<div class="input-field col s12 m6 {{ $member_number_hide }}">
-																	
 																	<input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" required type="text" {{ $member_number_readonly }} data-error=".errorTxt2">
 																	<label for="member_number" class="force-active">{{__('Member Number') }} *</label>
 																	<div class="errorTxt2"></div>
@@ -196,7 +197,7 @@
 																<div class="clearfix" style="clear:both"></div>
 																<div class="col s12 m6">
 																	<label>{{__('Designation') }}*</label>
-																	<select name="designation" id="designation" class="error browser-default">
+																	<select name="designation" id="designation" class="error browser-default selectpicker">
 																		<option value="" >{{__('Select') }}</option>
 																		@foreach($data['designation_view'] as $key=>$value)
 																		<option value="{{$value->id}}">{{$value->designation_name}}</option>
@@ -208,7 +209,7 @@
 																</div>
 																<div class="col s12 m6">
 																	<label>Race*</label>
-																	<select name="race" id="race" value="{{ old('race') }}" class="error browser-default">
+																	<select name="race" id="race" value="{{ old('race') }}" class="error browser-default selectpicker">
 																		<option value="" >{{__('Select Race') }}</option>
 																		@foreach($data['race_view'] as $key=>$value)
 																		<option value="{{$value->id}}">{{$value->race_name}}</option>
@@ -221,7 +222,7 @@
 																<div class="clearfix" ></div>
 																<div class="col s12 m6">
 																	<label>{{__('Country Name') }}*</label>
-																	<select name="country_id" id="country_id" class="error browser-default">
+																	<select name="country_id" id="country_id" class="error browser-default selectpicker" data-error=".errorTxt10">
 																		<option value="">{{__('Select Country') }}</option>
 																		@foreach($data['country_view'] as $value)
 																		<option value="{{$value->id}}">{{$value->country_name}}</option>
@@ -233,7 +234,7 @@
 																</div>
 																<div class="col s12 m6">
 																	<label>{{__('State Name') }}*</label>
-																	<select class="error browser-default" id="state_id" name="state_id" aria-required="true" required>
+																	<select class="error browser-default selectpicker" id="state_id" name="state_id" data-error=".errorTxt11" aria-required="true" required>
 																		<option value="" selected>{{__('State Name') }}</option>
 																	</select>
 																	<div class="input-field">
@@ -243,7 +244,7 @@
 																<div class="clearfix" style="clear:both"></div>
 																<div class="col s12 m6">
 																	<label>{{__('City Name') }}*</label>
-																	<select name="city_id" id="city_id" class="error browser-default" aria-required="true" required>
+																	<select name="city_id" id="city_id" class="error browser-default selectpicker" aria-required="true" required data-error=".errorTxt12">
 																		<option value="">{{__('Select City') }}</option>
 																	</select>
 																	<div class="input-field">
@@ -309,7 +310,7 @@
 																<div class="clearfix" ></div>
 																<div class=" col s12 m6 union-data ">
 																	<label>{{__('Company Name') }}*</label>
-																	<select name="company_id" id="company" class="error browser-default" required >
+																	<select name="company_id" id="company" class="error browser-default selectpicker" required >
 																		<option value="">{{__('Select Company') }}</option>
 																		@foreach($data['company_view'] as $value)
 																		<option value="{{$value->id}}">{{$value->company_name}}</option>
@@ -321,7 +322,7 @@
 																</div>
 																<div class="col s12 m6 union-data ">
 																	<label>{{__('Branch Name') }}*</label>
-																	<select name="branch_id" id="branch" class="error browser-default" required >
+																	<select name="branch_id" id="branch" class="error browser-default selectpicker" required >
 																		<option value="">{{__('Select Branch') }}</option>
 																	</select>
 																	<div class="input-field">
@@ -704,10 +705,10 @@
 </div>
 @endsection
 @section('footerSection')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/materialize-stepper/materialize-stepper.min.js')}}"></script>
