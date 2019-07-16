@@ -144,8 +144,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Roles Form
 	Route::resource('roles','RolesController');
 	//users Form
-	Route::resource('users','UsersController');
+	//Route::resource('users','UsersController');
+	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
+	Route::get('users','MasterController@users_list')->name('master.userslist');
 	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
+	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
 	//Form Type
 	Route::resource('formtype','FormTypeController');
 	
@@ -160,7 +163,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership-delete/{id}','MembershipController@delete')->name('master.deletemembership');
 	Route::get('membership_list','MembershipController@new_members')->name('master.membershipnew');
 
-	Route::post('users_list','UsersController@userList')->name('master.userList');
+	
 
 	Route::get('users_detail','CommonController@userDetail');
 	Route::post('users_emailexists','CommonController@checkemailExists');
