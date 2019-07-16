@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
 use App\User;
+<<<<<<< HEAD
 use App\Model\UnionBranch;
 use App\Mail\UnionBranchMailable;
 use DB;
@@ -14,6 +15,9 @@ use View;
 use Mail;
 use App\Role;
 use URL;
+=======
+use App\Model\Relation;
+>>>>>>> 534de81e4f6ca646b88d5ba77791e4cde40d27a3
 
 class MasterController extends CommonController
 {
@@ -22,12 +26,97 @@ class MasterController extends CommonController
         $this->middleware('auth'); 
         $this->Country = new Country;
         $this->User = new User;
+        $this->Relation = new Relation;
     }
     public function countryList()
     {
         $data['country_view'] = Country::all();
         return view('master.country.country_list')->with('data',$data);
     }
+    //Ajax Datatable Countries List //Users List 
+        public function ajax_countries_list(Request $request){
+            $columns = array( 
+                0 => 'country_name', 
+                1 => 'id',
+            );
+    
+            $totalData = Country::count();
+    
+            $totalFiltered = $totalData; 
+    
+            $limit = $request->input('length');
+            
+            $start = $request->input('start');
+            $order = $columns[$request->input('order.0.column')];
+            $dir = $request->input('order.0.dir');
+    
+            if(empty($request->input('search.value')))
+            {            
+                if( $limit == -1){
+                    $country = Country::orderBy($order,$dir)
+                    ->where('status','=','1')
+                    ->get();
+                }else{
+                    $country = Country::offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->where('status','=','1')
+                    ->get();
+                }
+            
+            }
+            else {
+            $search = $request->input('search.value'); 
+            if( $limit == -1){
+                $country =  Country::where('id','LIKE',"%{$search}%")
+                            ->orWhere('country_name', 'LIKE',"%{$search}%")
+                            ->where('status','=','1')
+                            ->orderBy($order,$dir)
+                            ->get();
+            }else{
+                $country =  Country::where('id','LIKE',"%{$search}%")
+                            ->orWhere('country_name', 'LIKE',"%{$search}%")
+                            ->offset($start)
+                            ->limit($limit)
+                            ->where('status','=','1')
+                            ->orderBy($order,$dir)
+                            ->get();
+            }
+            $totalFiltered = Country::where('id','LIKE',"%{$search}%")
+                        ->orWhere('country_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->count();
+            }
+    
+            $data = array();
+            if(!empty($country))
+            {
+            foreach ($country as $country)
+            {
+                $enc_id = Crypt::encrypt($country->id);  
+                $delete =  route('master.countrydestroy',[app()->getLocale(),$country->id]) ;
+                $edit =  "#modal_add_edit";
+    
+                $nestedData['country_name'] = $country->country_name;
+                $countryid = $country->id;
+    
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($countryid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+                $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+    
+            }
+        }
+            $json_data = array(
+                "draw"            => intval($request->input('draw')),  
+                "recordsTotal"    => intval($totalData),  
+                "recordsFiltered" => intval($totalFiltered), 
+                "data"            => $data   
+                );
+    
+            echo json_encode($json_data); 
+        }
     public function countrySave(Request $request)
     {
         $request->validate([
@@ -36,12 +125,16 @@ class MasterController extends CommonController
         [
             'country_name.required'=>'please enter Country name',
         ]);
-        $data = $request->all();
-        $data_exists = CommonHelper::getExistingCountry($request->country_name);
+        $data = $request->all();   
         $defdaultLang = app()->getLocale();
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('country_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('country_name'));
+        }
         if($data_exists>0)
         {
-            return  redirect($defdaultLang.'/country')->with('error','Country Name Already Exists'); 
+            return  redirect($defdaultLang.'/country')->with('error','User Email Already Exists'); 
         }
         else{
             $saveCountry = $this->Country->saveCountrydata($data);
@@ -52,13 +145,14 @@ class MasterController extends CommonController
             }
         }
     }
-    public function countryEdit($lang,$id)
-    {
-        $id = Crypt::decrypt($id);
-        $data = Country::find($id);
-        return view('master.country.country_list')->with('data',$data);
-    }
-
+    public function countrydestroy($lang,$id)
+	{
+        $Country = new Country();
+        $Country = Country::find($id);
+        $Country->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/country')->with('message','Country Details Deleted Successfully!!');
+	}
     //user Details Save and Update
     public function userSave(Request $request)
     {
@@ -210,7 +304,6 @@ class MasterController extends CommonController
 
     public function users_list()
     {
-        //$data = User::all();
         return view('master.users.users');
     }
 
@@ -225,10 +318,25 @@ class MasterController extends CommonController
         );
 
         $totalData = UnionBranch::count();
+    //Relation Details 
+    public function relationList()
+    {
+        return view('master.relation.relation_list');
+    }
+    //Ajax Datatable Relation List
+    public function ajax_relation_list(Request $request){
+
+        $columns = array( 
+            0 => 'relation_name', 
+            1 => 'id',
+        );
+
+        $totalData = Relation::count();
 
         $totalFiltered = $totalData; 
 
         $limit = $request->input('length');
+        
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
@@ -244,6 +352,17 @@ class MasterController extends CommonController
                 ->orderBy($order,$dir)
                 ->get();
             }
+                $Relation = Relation::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Relation = Relation::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        
         }
         else {
         $search = $request->input('search.value'); 
@@ -271,6 +390,23 @@ class MasterController extends CommonController
                     ->orWhere('union_branch', 'LIKE',"%{$search}%")
                     ->orWhere('is_head', 'LIKE',"%{$search}%")
                     ->orWhere('email', 'LIKE',"%{$search}%")
+            $Relation =  Relation::where('id','LIKE',"%{$search}%")
+                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Relation =  Relation::where('id','LIKE',"%{$search}%")
+                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Relation::where('id','LIKE',"%{$search}%")
+                    ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
                     ->count();
         }
 
@@ -300,6 +436,25 @@ class MasterController extends CommonController
 
             }
         }
+        if(!empty($Relation))
+        {
+        foreach ($Relation as $Relation)
+        {
+            $enc_id = Crypt::encrypt($Relation->id);  
+            $delete =  route('master.relationdestroy',[app()->getLocale(),$Relation->id]) ;
+            $edit =  "#modal_add_edit";
+
+            $nestedData['relation_name'] = $Relation->relation_name;
+            $relationid = $Relation->id;
+
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($relationid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+
+        }
+    }
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
@@ -309,4 +464,42 @@ class MasterController extends CommonController
 
         echo json_encode($json_data); 
     }
+    //Relation Save and Update
+    public function Relationsave(Request $request)
+    {   
+        $request->validate([
+            'relation_name'=>'required',
+        ],
+        [
+            'relation_name.required'=>'please enter Relation name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkRelationExists($request->input('relation_name'),$request->id);
+        }else{
+            $data_exists = $this->checkRelationExists($request->input('relation_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/relation')->with('error','Relation Name Already Exists'); 
+        }
+        else{
+            $saveRelation = $this->Relation->saveRelationdata($data);
+           
+            if($saveRelation == true)
+            {
+                return  redirect($defdaultLang.'/relation')->with('message','Relation Name Added Succesfully');
+            }
+        }
+    }
+    public function relationDestroy($lang,$id)
+	{
+        $Relation = new Relation();
+        $Relation = Relation::find($id);
+        $Relation->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/relation')->with('message','Relation Details Deleted Successfully!!');
+	}
 }

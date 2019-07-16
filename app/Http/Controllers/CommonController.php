@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\Membership;
 use App\Model\Country;
 use App\Model\State;
+use App\Model\Relation;
 use App\Model\City;
 use App\Model\Company;
 use DB;
@@ -120,6 +121,79 @@ class CommonController extends Controller
         $email =  $request->input('email');
         $userid = $request->input('login_userid');
         return $this->mailExists($email,$userid);
-      
+
+    } 
+    //Country Details 
+    public function countryDetail(Request $request)
+    {
+        $id = $request->id;
+        $country = new Country();
+        $data = Country::find($id);
+        return $data;
     }
+    //Country Name Exists Check
+    public function checkCountryNameExists(Request $request)
+    {
+        $country_name =  $request->input('country_name');
+        $country_id = $request->input('country_id');
+
+        if(!empty($country_id))
+          {
+                 $countryname_exists = Country::where([
+                  ['country_name','=',$country_name],
+                  ['id','!=',$country_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $countryname_exists = Country::where('country_name','=',$country_name)->count(); 
+          } 
+          if($countryname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Relation Name Exists Check
+    public function checkRelationNameExists(Request $request)
+    {
+        $relation_name =  $request->input('relation_name');
+        $relation_id = $request->input('relation_id');
+        return $this->checkRelationExists($relation_name,$relation_id);
+    }
+    public function checkRelationExists($relation_name,$relation_id=false)
+    {
+
+        if(!empty($relation_id))
+          {
+                 $relation_exists = Relation::where([
+                  ['relation_name','=',$relation_name],
+                  ['id','!=',$relation_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $relation_exists = Relation::where('relation_name','=',$relation_name)->count(); 
+          } 
+          if($relation_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Relation Details
+    public function relationDetail(Request $request)
+    {
+        $id = $request->id;
+        $relation = new Relation();
+        $data = Relation::find($id);
+        return $data;
+    }
+
 }

@@ -20,10 +20,30 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 
 	// Masters
-	//Country Master Details
+	//users Form
+	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
+	Route::get('users','MasterController@users_list')->name('master.userslist');
+	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
+	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
+	Route::get('users_detail','CommonController@userDetail');
+	Route::post('users_emailexists','CommonController@checkemailExists');
+
+	//Country Master Details 
+	Route::post('ajax_countries_list','MasterController@ajax_countries_list')->name('master.ajaxcountrieslist');
 	Route::get('country','MasterController@countryList')->name('master.country');
 	Route::post('country_save','MasterController@countrySave')->name('master.savecountry');
 	Route::get('country-edit','MasterController@countryEdit')->name('master.editcountry');
+	Route::delete('country_delete/{id}','MasterController@countrydestroy')->name('master.countrydestroy');
+	Route::post('country_nameexists','CommonController@checkCountryNameExists');
+	Route::get('country_detail','CommonController@countryDetail');
+
+	//Relation Details relationdestroy
+	Route::post('ajax_relation_list','MasterController@ajax_relation_list')->name('master.ajaxrelationlist');
+	Route::get('relation','MasterController@relationList')->name('master.relation'); 
+	Route::post('relation_save','MasterController@Relationsave')->name('master.saverelation'); 
+	Route::post('relation_nameexists','CommonController@checkRelationNameExists');
+	Route::get('relation_detail','CommonController@relationDetail');
+	Route::delete('relation_delete/{id}','MasterController@relationDestroy')->name('master.relationdestroy');
 
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
@@ -76,13 +96,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('persontitle_update','PersontitleController@update')->name('master.updatepersontitle');
 	Route::get('persontitle-delete/{id}','PersontitleController@delete')->name('master.deletepersontitle');
 
-	//Relation Details
-	Route::get('relation','RelationController@index')->name('master.relation');
-	Route::get('add-relation','RelationController@addRelation')->name('master.addrelation');
-	Route::post('relation_save','RelationController@save')->name('master.saverelation');
-	Route::get('relation-edit/{parameter}','RelationController@edit')->name('master.editrelation');
-	Route::post('relation_update','RelationController@update')->name('master.updaterelation');
-	Route::get('relation-delete/{id}','RelationController@delete')->name('master.deleterelation');
+
 	
 	//Reason Details
 	Route::get('reason','ReasonController@index')->name('master.reason');
@@ -143,6 +157,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('appform', 'AppFormController');
 	//Roles Form
 	Route::resource('roles','RolesController');
+<<<<<<< HEAD
 	//users Form
 	//Route::resource('users','UsersController');
 	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
@@ -151,6 +166,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
 
 	Route::post('unionBranchList','MasterController@unionBranchList')->name('master.union_BranchList');
+=======
+	
+>>>>>>> 534de81e4f6ca646b88d5ba77791e4cde40d27a3
 	//Form Type
 	Route::resource('formtype','FormTypeController');
 	
@@ -167,11 +185,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	
 
-	Route::get('users_detail','CommonController@userDetail');
-	Route::post('users_emailexists','CommonController@checkemailExists');
-
 	
-	//Route::get('membership_list','MembershipController@new_members')->name('reports.new-members');
+
 });
 /* Master */
 	Route::get('membership','MembershipController@index');
