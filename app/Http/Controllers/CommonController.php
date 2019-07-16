@@ -140,7 +140,8 @@ class CommonController extends Controller
           {
                  $countryname_exists = Country::where([
                   ['country_name','=',$country_name],
-                  ['id','!=',$country_id]
+                  ['id','!=',$country_id],
+                  ['status','=','1']
                   ])->count();
           }
           else
