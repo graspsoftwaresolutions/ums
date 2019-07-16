@@ -31,7 +31,8 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" href="#modal_add_edit 0">Add</a>	
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">Add</a>
+										
 									</div>
 								</div>
 							</div>
@@ -51,49 +52,36 @@
 														<th style="text-align:center"> {{__('Action') }}</th>
 													</tr>
 												</thead>
-												<tbody>
-                                                @foreach($data['country_view'] as $key=>$value)
-												{{$value}}
-													<?php
-													 $parameter = Crypt::encrypt($value->id);  
-													 ?>
-													 <tr>
-														<td>{{$value->country_name}}</td>
-														@php
-														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
-														@endphp
-														<td style="text-align:center"><a id="modal_add_edit" class="btn-small waves-effect waves-light cyan modal-trigger edit_country" href="#modal_add_edit {{$value->id}}"  xhref="{{ route('master.editcountry',[app()->getLocale(),$parameter]) }}">{{__('Edit') }}</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletecountry',[app()->getLocale(),$parameter])}}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
-													</tr>
-													  <div id="modal_add_edit @if(isset($value->id)){{$value->id}}@else{{0}}}@endif" class="modal">
-														<div class="modal-content">
-														<h4>Country Details{{$value->id}}</h4>
-														<form class="formValidate" id="countryformValidate" method="post" action="{{ route('master.savecountry',app()->getLocale()) }}">
-															@isset($data[0])
-															<input type="hidden" name="id" value="{{$data[0]->id}}">
-															@endisset
-															@csrf
-															<div class="row">
-															<div class="input-field col s12 m6">
-																<label for="country_name" class="common-label">{{__('Country Name') }}*</label>
-																<input id="country_name" class="common-input" name="country_name" type="text" value="@if(isset($data[0]->country_name)){{ $data[0]->country_name }}@endif" data-error=".errorTxt1">
-																<div class="errorTxt1"></div>
-															</div>
-															<div class="col s12 m6">
-																<button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
-																</button>
-															</div>
-															</div>
-														</form>
-														</div>
-													</div>
-												  @endforeach
-												</tbody>
 											</table>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+                        <div id="modal_add_edit" class="modal">
+                            <div class="modal-content">
+                                <h4>Country Details</h4>
+                                <form class="formValidate" id="countryformValidate" method="post"  action="{{ route('master.savecountry',app()->getLocale()) }}">
+                                    @csrf
+									<input type="hidden" name="id" id="updateid">
+                                    <div class="row">
+                                        <div class="input-field col s12 m6">
+                                            <label for="name" class="common-label force-active">{{__('Country Name') }}*</label>
+                                            <input id="country_name" class="common-input" name="country_name" type="text" data-error=".errorTxt1">
+                                            <div class="errorTxt1"></div>
+                                        </div>
+                                        <div class="clearfix" style="clear:both"></div>
+                                        <div class="input-field col s12">
+                                            <a href="#!" class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                            <button class="btn waves-effect waves-light right submit edit_hide_btn " type="submit" name="action">{{__('Update')}}
+                                            </button>
+                                            <button class="btn waves-effect waves-light right submit add_hide" style="display:none;" type="submit" name="action">{{__('Save')}} 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 					</div>
 					<!-- END: Page Main-->
 					@include('layouts.right-sidebar')
@@ -101,11 +89,7 @@
 			</div>
 		</div>
 	</div>
-	</div>
-    <!-- Modal -->
-    <!-- Modal Structure -->
-   
-
+</div>
 @endsection
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
@@ -113,14 +97,106 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
-    $(document).ready(function(){
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-  });
 	$("#masters_sidebars_id").addClass('active');
 	$("#country_sidebar_li_id").addClass('active');
 	$("#country_sidebar_a_id").addClass('active');
+//Data table Ajax call
+$(function () {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+		/* "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajax_countries_list') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {_token: "{{csrf_token()}}"}
+        },
+        "columns": [
+            {"data": "country_name"},
+            {"data": "options"}
+        ]
+    });
+});
+function ConfirmDeletion() {
+    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+// Form Validation
+$("#countryformValidate").validate({
+        rules: {
+            country_name:{
+                required: true,
+                remote:{
+                   url: "{{ url(app()->getLocale().'/country_nameexists')}}", 
+                   data: {
+                         country_id: function() {
+                            return $( "#updateid" ).val();
+                        },
+                        _token: "{{csrf_token()}}",
+                        country_name: $(this).data('country_name')
+                        },
+                   type: "post",
+                },
+            },
+        },
+        //For custom messages
+        messages: {
+            country_name: {
+                required: '{{__("Please enter Country Name") }}', 
+                remote : '{{__("Country Name Already exists") }}', 
+            }
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+//Model
+$(document).ready(function () {
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+});
+function showaddForm() {
+	$('.edit_hide').show();
+    $('.add_hide').show();
+    $('.edit_hide_btn').hide();
+	$('#country_name').val("");
+    $('.modal').modal();
+}
+function showeditForm(countryid){
+    $('.edit_hide').hide();
+    $('.add_hide').hide();
+    $('.edit_hide_btn').show();
+    $('.modal').modal();
+    var url = "{{ url(app()->getLocale().'/country_detail') }}" + '?id=' + countryid;
+    $.ajax({url: url, type: "GET", success: function (result) {
+			console.log(result);
+			$('#updateid').val(result.id);
+			$('#updateid').attr('data-autoid',result.id);
+            $('#country_name').val(result.country_name);
+        }
+    });
+}
 </script>
 @endsection

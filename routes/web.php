@@ -20,10 +20,22 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 
 	// Masters
-	//Country Master Details
+	//users Form
+	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
+	Route::get('users','MasterController@users_list')->name('master.userslist');
+	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
+	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
+	Route::get('users_detail','CommonController@userDetail');
+	Route::post('users_emailexists','CommonController@checkemailExists');
+
+	//Country Master Details 
+	Route::post('ajax_countries_list','MasterController@ajax_countries_list')->name('master.ajaxcountrieslist');
 	Route::get('country','MasterController@countryList')->name('master.country');
 	Route::post('country_save','MasterController@countrySave')->name('master.savecountry');
 	Route::get('country-edit','MasterController@countryEdit')->name('master.editcountry');
+	Route::delete('country_delete/{id}','MasterController@countrydestroy')->name('master.countrydestroy');
+	Route::post('country_nameexists','CommonController@checkCountryNameExists');
+	Route::get('country_detail','CommonController@countryDetail');
 
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
@@ -143,12 +155,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('appform', 'AppFormController');
 	//Roles Form
 	Route::resource('roles','RolesController');
-	//users Form
-	//Route::resource('users','UsersController');
-	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
-	Route::get('users','MasterController@users_list')->name('master.userslist');
-	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
-	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
+	
 	//Form Type
 	Route::resource('formtype','FormTypeController');
 	
@@ -165,11 +172,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	
 
-	Route::get('users_detail','CommonController@userDetail');
-	Route::post('users_emailexists','CommonController@checkemailExists');
-
 	
-	//Route::get('membership_list','MembershipController@new_members')->name('reports.new-members');
+
 });
 /* Master */
 	Route::get('membership','MembershipController@index');

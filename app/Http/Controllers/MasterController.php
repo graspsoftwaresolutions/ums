@@ -21,6 +21,90 @@ class MasterController extends CommonController
         $data['country_view'] = Country::all();
         return view('master.country.country_list')->with('data',$data);
     }
+    //Ajax Datatable Countries List //Users List 
+        public function ajax_countries_list(Request $request){
+            $columns = array( 
+                0 => 'country_name', 
+                1 => 'id',
+            );
+    
+            $totalData = Country::count();
+    
+            $totalFiltered = $totalData; 
+    
+            $limit = $request->input('length');
+            
+            $start = $request->input('start');
+            $order = $columns[$request->input('order.0.column')];
+            $dir = $request->input('order.0.dir');
+    
+            if(empty($request->input('search.value')))
+            {            
+                if( $limit == -1){
+                    $country = Country::orderBy($order,$dir)
+                    ->where('status','=','1')
+                    ->get();
+                }else{
+                    $country = Country::offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->where('status','=','1')
+                    ->get();
+                }
+            
+            }
+            else {
+            $search = $request->input('search.value'); 
+            if( $limit == -1){
+                $country =  Country::where('id','LIKE',"%{$search}%")
+                            ->orWhere('country_name', 'LIKE',"%{$search}%")
+                            ->where('status','=','1')
+                            ->orderBy($order,$dir)
+                            ->get();
+            }else{
+                $country =  Country::where('id','LIKE',"%{$search}%")
+                            ->orWhere('country_name', 'LIKE',"%{$search}%")
+                            ->offset($start)
+                            ->limit($limit)
+                            ->where('status','=','1')
+                            ->orderBy($order,$dir)
+                            ->get();
+            }
+            $totalFiltered = Country::where('id','LIKE',"%{$search}%")
+                        ->orWhere('country_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->count();
+            }
+    
+            $data = array();
+            if(!empty($country))
+            {
+            foreach ($country as $country)
+            {
+                $enc_id = Crypt::encrypt($country->id);  
+                $delete =  route('master.countrydestroy',[app()->getLocale(),$country->id]) ;
+                $edit =  "#modal_add_edit";
+    
+                $nestedData['country_name'] = $country->country_name;
+                $countryid = $country->id;
+    
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($countryid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+                $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+    
+            }
+        }
+            $json_data = array(
+                "draw"            => intval($request->input('draw')),  
+                "recordsTotal"    => intval($totalData),  
+                "recordsFiltered" => intval($totalFiltered), 
+                "data"            => $data   
+                );
+    
+            echo json_encode($json_data); 
+        }
     public function countrySave(Request $request)
     {
         $request->validate([
@@ -29,12 +113,16 @@ class MasterController extends CommonController
         [
             'country_name.required'=>'please enter Country name',
         ]);
-        $data = $request->all();
-        $data_exists = CommonHelper::getExistingCountry($request->country_name);
+        $data = $request->all();   
         $defdaultLang = app()->getLocale();
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('country_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('country_name'));
+        }
         if($data_exists>0)
         {
-            return  redirect($defdaultLang.'/country')->with('error','Country Name Already Exists'); 
+            return  redirect($defdaultLang.'/country')->with('error','User Email Already Exists'); 
         }
         else{
             $saveCountry = $this->Country->saveCountrydata($data);
@@ -45,13 +133,14 @@ class MasterController extends CommonController
             }
         }
     }
-    public function countryEdit($lang,$id)
-    {
-        $id = Crypt::decrypt($id);
-        $data = Country::find($id);
-        return view('master.country.country_list')->with('data',$data);
-    }
-
+    public function countrydestroy($lang,$id)
+	{
+        $Country = new Country();
+        $Country = Country::find($id);
+        $Country->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/country')->with('message','Country Details Deleted Successfully!!');
+	}
     //user Details Save and Update
     public function userSave(Request $request)
     {
