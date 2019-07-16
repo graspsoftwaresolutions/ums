@@ -48,26 +48,11 @@
 													<tr>
                                                         <th>{{__('Union Branch Name') }}</th>
 														<th>{{__('Head') }}</th>
+														<th>{{__('Email') }}</th>
 														<th style="text-align:center">{{__('Action') }}</th>
 													</tr>
 												</thead>
-												<tbody>
-													 @foreach($data['union_view'] as $key=>$value)
-													
-													 <?php
-													 $parameter = Crypt::encrypt($value->id);  
-													 ?>
-													 <tr>
-                                                     <td>{{$value->union_branch}}</td>
-                                                     <td>{{$value->is_head}}</td>
-													 @php
-														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
-														@endphp
-														
-														<td style="text-align:center"><a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editunionbranch',[app()->getLocale(),$parameter]) }}">{{__('Edit') }}</a>  <a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deleteunionbranch',[app()->getLocale(),$parameter]) }}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a> </td>
-												  </tr>
-												  @endforeach
-												</tbody>
+												
 											</table>
 										</div>
 									</div>
@@ -94,5 +79,34 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#unionbranch_sidebar_li_id").addClass('active');
 	$("#unionbranch_sidebar_a_id").addClass('active');
+</script>
+
+<script>
+	$(function () {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/unionBranchList') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {_token: "{{csrf_token()}}"}
+        },
+        "columns": [
+            {"data": "union_branch"},
+			{"data": "is_head"},
+            {"data": "email"},
+            {"data": "options"}
+        ]
+
+    });
+});
+
+
 </script>
 @endsection

@@ -7,7 +7,17 @@ use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
 use App\User;
+<<<<<<< HEAD
+use App\Model\UnionBranch;
+use App\Mail\UnionBranchMailable;
+use DB;
+use View;
+use Mail;
+use App\Role;
+use URL;
+=======
 use App\Model\Relation;
+>>>>>>> 534de81e4f6ca646b88d5ba77791e4cde40d27a3
 
 class MasterController extends CommonController
 {
@@ -296,6 +306,18 @@ class MasterController extends CommonController
     {
         return view('master.users.users');
     }
+
+    // UNION BRANCH
+
+    public function unionBranchList(Request $request){
+        $columns = array( 
+            0 => 'union_branch', 
+            1 => 'is_head',
+            2 => 'email',
+            3 => 'id'
+        );
+
+        $totalData = UnionBranch::count();
     //Relation Details 
     public function relationList()
     {
@@ -322,6 +344,14 @@ class MasterController extends CommonController
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
+                $unionbranchs = UnionBranch::orderBy($order,$dir)
+                ->get();
+            }else{
+                $unionbranchs = UnionBranch::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->get();
+            }
                 $Relation = Relation::orderBy($order,$dir)
                 ->where('status','=','1')
                 ->get();
@@ -337,6 +367,29 @@ class MasterController extends CommonController
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
+            $unionbranchs =  UnionBranch::where('id','LIKE',"%{$search}%")
+                            ->orWhere('union_branch', 'LIKE',"%{$search}%")
+                            ->orWhere('is_head', 'LIKE',"%{$search}%")
+                            ->orWhere('email', 'LIKE',"%{$search}%")
+                            ->orderBy($order,$dir)
+                            ->get();
+        }else{
+            $unionbranchs =  UnionBranch::where('id','LIKE',"%{$search}%")
+                    ->orWhere('union_branch', 'LIKE',"%{$search}%")
+                    ->orWhere('is_head', 'LIKE',"%{$search}%")
+                    ->orWhere('email', 'LIKE',"%{$search}%")
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+        }
+
+        
+
+        $totalFiltered = UnionBranch::where('id','LIKE',"%{$search}%")
+                    ->orWhere('union_branch', 'LIKE',"%{$search}%")
+                    ->orWhere('is_head', 'LIKE',"%{$search}%")
+                    ->orWhere('email', 'LIKE',"%{$search}%")
             $Relation =  Relation::where('id','LIKE',"%{$search}%")
                         ->orWhere('relation_name', 'LIKE',"%{$search}%")
                         ->where('status','=','1')
@@ -358,6 +411,31 @@ class MasterController extends CommonController
         }
 
         $data = array();
+        if(!empty($unionbranchs))
+        {
+            foreach ($unionbranchs as $unionbranch)
+            {
+                $enc_id = Crypt::encrypt($unionbranch->id);  
+                $delete =  route('master.deleteunionbranch',[app()->getLocale(),$enc_id]);
+                $edit =  route('master.editunionbranch',[app()->getLocale(),$enc_id]);
+                $confirmAlert = __("Are you sure you want to delete?");
+
+                $nestedData['union_branch'] = $unionbranch->union_branch;
+                $nestedData['is_head'] = $unionbranch->is_head;
+                $nestedData['email'] = $unionbranch->email;
+                $unionbranchid = $unionbranch->id;
+                
+                $actions ="<a class='btn-small waves-effect waves-light cyan' href='$edit'>".trans('Edit')."</a>";  
+                
+                $actions .="&nbsp; <a class='btn-small waves-effect waves-light amber darken-4' href='$delete' onclick='if (confirm('{{ $confirmAlert }}')) return true; else return false;'>".trans('Delete')."</a>";
+
+                
+
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
         if(!empty($Relation))
         {
         foreach ($Relation as $Relation)

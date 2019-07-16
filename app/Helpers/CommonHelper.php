@@ -145,5 +145,10 @@ class CommonHelper
          $country_exists = Country::where('country_name','=',$countryname)->count();    
          return  $country_exists;
      }
+
+     public static function DefaultCountry()
+     {
+         return 130;
+     }
    
 }

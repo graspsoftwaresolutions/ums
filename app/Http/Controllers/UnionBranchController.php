@@ -22,8 +22,8 @@ class UnionBranchController extends Controller
     }
     public function index()
     {
-        $data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        return view('unionbranch.unionbranch')->with('data',$data);
+        //$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        return view('unionbranch.unionbranch');
     }
     public function addUnionBranch()
     {
@@ -264,5 +264,7 @@ class UnionBranchController extends Controller
         $id = Crypt::decrypt($id);
 		$data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
 		return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
-	}
+    }
+    
+    
 }
