@@ -109,5 +109,14 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
  $("#membership_sidebar_a_id").addClass('active');
+ $(function () {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],   
+	});
+});
  </script>
 @endsection

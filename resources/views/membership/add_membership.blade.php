@@ -197,7 +197,7 @@
 																<div class="clearfix" style="clear:both"></div>
 																<div class="col s12 m6">
 																	<label>{{__('Designation') }}*</label>
-																	<select name="designation" id="designation" class="error browser-default selectpicker">
+																	<select name="designation" id="designation" class="error browser-default selectpicker" data-error=".errorTxt8">
 																		<option value="" >{{__('Select') }}</option>
 																		@foreach($data['designation_view'] as $key=>$value)
 																		<option value="{{$value->id}}">{{$value->designation_name}}</option>
@@ -209,7 +209,7 @@
 																</div>
 																<div class="col s12 m6">
 																	<label>Race*</label>
-																	<select name="race" id="race" value="{{ old('race') }}" class="error browser-default selectpicker">
+																	<select name="race" id="race" value="{{ old('race') }}" class="error browser-default selectpicker" data-error=".errorTxt9">
 																		<option value="" >{{__('Select Race') }}</option>
 																		@foreach($data['race_view'] as $key=>$value)
 																		<option value="{{$value->id}}">{{$value->race_name}}</option>
@@ -310,7 +310,7 @@
 																<div class="clearfix" ></div>
 																<div class=" col s12 m6 union-data ">
 																	<label>{{__('Company Name') }}*</label>
-																	<select name="company_id" id="company" class="error browser-default selectpicker" required >
+																	<select name="company_id" id="company" class="error browser-default selectpicker" data-error=".errorTxt22" required >
 																		<option value="">{{__('Select Company') }}</option>
 																		@foreach($data['company_view'] as $value)
 																		<option value="{{$value->id}}">{{$value->company_name}}</option>
@@ -322,7 +322,7 @@
 																</div>
 																<div class="col s12 m6 union-data ">
 																	<label>{{__('Branch Name') }}*</label>
-																	<select name="branch_id" id="branch" class="error browser-default selectpicker" required >
+																	<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
 																		<option value="">{{__('Select Branch') }}</option>
 																	</select>
 																	<div class="input-field">
@@ -381,7 +381,7 @@
 																			<div class="row">
 																				<div class="col s12 m6">
 																					<label for="new_fee_id">Fee name* </label>
-																					<select name="new_fee_id" id="new_fee_id" class="error browser-default">
+																					<select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																						@foreach($data['fee_list'] as $key=>$value)
 																						<option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
@@ -445,7 +445,7 @@
 																				</div>
 																				<div class="col s12 m4">
 																					<label for="years">Sex *</label>
-																					<select name="sex" id="sex" class="error browser-default">
+																					<select name="sex" id="sex" class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																						<option value="male" >Male</option>
 																						<option value="female" >Female</option>
@@ -457,7 +457,7 @@
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m4">
 																					<label>Relationship*</label>
-																					<select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default">
+																					<select name="relationship" id="relationship" data-error=".errorTxt31"  class="error browser-default selectpicker">
 																						<option value="" selected>State Relationship</option>
 																						@foreach($data['relationship_view'] as $key=>$value)
 																						<option value="{{$value->id}}" data-relationshipname="{{$value->relation_name}}" >{{$value->relation_name}}</option>
@@ -478,7 +478,7 @@
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m4">
 																					<label>Country Name*</label>
-																					<select name="nominee_country_id" id="nominee_country_id"  class="error browser-default">
+																					<select name="nominee_country_id" id="nominee_country_id"  class="error browser-default selectpicker">
 																						<option value="">Select Country</option>
 																						@foreach($data['country_view'] as $value)
 																						<option value="{{$value->id}}" >{{$value->country_name}}</option>
@@ -490,7 +490,7 @@
 																				</div>
 																				<div class="col s12 m4">
 																					<label>State Name*</label>
-																					<select name="nominee_state_id" id="nominee_state_id"  class="error browser-default">
+																					<select name="nominee_state_id" id="nominee_state_id"  class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																					</select>
 																					<div class="input-field">
@@ -499,7 +499,7 @@
 																				</div>
 																				<div class="col s12 m4">
 																					<label>City Name*</label>
-																					<select name="nominee_city_id" id="nominee_city_id"  class="error browser-default">
+																					<select name="nominee_city_id" id="nominee_city_id"  class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																					</select>
 																					<div class="input-field">
@@ -589,7 +589,7 @@
 																				</div>
 																				<div class="col s12 m4">
 																					<label for="guardian_sex">SEX *</label>
-																					<select name="guardian_sex" id="guardian_sex" class="error browser-default">
+																					<select name="guardian_sex" id="guardian_sex" class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																						<option value="male" >Male</option>
 																						<option value="female" >Female</option>
@@ -598,7 +598,7 @@
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m4">
 																					<label>Relationship*</label>
-																					<select name="g_relationship_id" id="g_relationship" data-error=".errorTxt31"  class="error browser-default">
+																					<select name="g_relationship_id" id="g_relationship" data-error=".errorTxt31"  class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																						@foreach($data['relationship_view'] as $key=>$value)
 																						<option value="{{$value->id}}" >{{$value->relation_name}}</option>
@@ -619,7 +619,7 @@
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m4">
 																					<label>Country Name*</label>
-																					<select name="guardian_country_id" id="guardian_country_id"  class="error browser-default">
+																					<select name="guardian_country_id" id="guardian_country_id"  class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																						@foreach($data['country_view'] as $value)
 																						<option value="{{$value->id}}" >{{$value->country_name}}</option>
@@ -631,7 +631,7 @@
 																				</div>
 																				<div class="col s12 m4">
 																					<label>State Name*</label>
-																					<select name="guardian_state_id" id="guardian_state_id"  class="error browser-default">
+																					<select name="guardian_state_id" id="guardian_state_id"  class="error browser-default selectpicker">
 																						<option value="" >Select</option>
 																					</select>
 																					<div class="input-field">
@@ -640,7 +640,7 @@
 																				</div>
 																				<div class="col s12 m4">
 																					<label>City Name*</label>
-																					<select name="guardian_city_id" id="guardian_city_id"  class="error browser-default">
+																					<select name="guardian_city_id" id="guardian_city_id"  class="error browser-default selectpicker">
 																						<option value="" >Select</option>
 																					</select>
 																					<div class="input-field">
