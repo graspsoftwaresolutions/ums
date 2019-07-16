@@ -37,6 +37,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('country_nameexists','CommonController@checkCountryNameExists');
 	Route::get('country_detail','CommonController@countryDetail');
 
+	//Relation Details relationdestroy
+	Route::post('ajax_relation_list','MasterController@ajax_relation_list')->name('master.ajaxrelationlist');
+	Route::get('relation','MasterController@relationList')->name('master.relation'); 
+	Route::post('relation_save','MasterController@Relationsave')->name('master.saverelation'); 
+	Route::post('relation_nameexists','CommonController@checkRelationNameExists');
+	Route::get('relation_detail','CommonController@relationDetail');
+	Route::delete('relation_delete/{id}','MasterController@relationDestroy')->name('master.relationdestroy');
+
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
 	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
@@ -88,13 +96,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('persontitle_update','PersontitleController@update')->name('master.updatepersontitle');
 	Route::get('persontitle-delete/{id}','PersontitleController@delete')->name('master.deletepersontitle');
 
-	//Relation Details
-	Route::get('relation','RelationController@index')->name('master.relation');
-	Route::get('add-relation','RelationController@addRelation')->name('master.addrelation');
-	Route::post('relation_save','RelationController@save')->name('master.saverelation');
-	Route::get('relation-edit/{parameter}','RelationController@edit')->name('master.editrelation');
-	Route::post('relation_update','RelationController@update')->name('master.updaterelation');
-	Route::get('relation-delete/{id}','RelationController@delete')->name('master.deleterelation');
+
 	
 	//Reason Details
 	Route::get('reason','ReasonController@index')->name('master.reason');
@@ -155,6 +157,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::resource('appform', 'AppFormController');
 	//Roles Form
 	Route::resource('roles','RolesController');
+	//users Form
+	//Route::resource('users','UsersController');
+	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
+	Route::get('users','MasterController@users_list')->name('master.userslist');
+	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
+	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
+
+	Route::post('unionBranchList','MasterController@unionBranchList')->name('master.union_BranchList');
 	
 	//Form Type
 	Route::resource('formtype','FormTypeController');
@@ -205,14 +215,6 @@ Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
 Route::post('persontitle_update','PersontitleController@update');
 Route::get('persontitle-delete/{id}','PersontitleController@delete');
 
-
-//Union Branch
-Route::get('unionbranch','UnionBranchController@index');
-Route::get('add-unionbranch','UnionBranchController@addUnionBranch');
-Route::post('unionbranch_save','UnionBranchController@save');
-Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
-Route::post('unionbranch_update','UnionBranchController@update');
-Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
 
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');

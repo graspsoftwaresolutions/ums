@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\Membership;
 use App\Model\Country;
 use App\Model\State;
+use App\Model\Relation;
 use App\Model\City;
 use App\Model\Company;
 use DB;
@@ -155,7 +156,44 @@ class CommonController extends Controller
           else{
               return "true";
           }
+    }
+    //Relation Name Exists Check
+    public function checkRelationNameExists(Request $request)
+    {
+        $relation_name =  $request->input('relation_name');
+        $relation_id = $request->input('relation_id');
+        return $this->checkRelationExists($relation_name,$relation_id);
+    }
+    public function checkRelationExists($relation_name,$relation_id=false)
+    {
 
+        if(!empty($relation_id))
+          {
+                 $relation_exists = Relation::where([
+                  ['relation_name','=',$relation_name],
+                  ['id','!=',$relation_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $relation_exists = Relation::where('relation_name','=',$relation_name)->count(); 
+          } 
+          if($relation_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Relation Details
+    public function relationDetail(Request $request)
+    {
+        $id = $request->id;
+        $relation = new Relation();
+        $data = Relation::find($id);
+        return $data;
     }
 
 }
