@@ -66,3 +66,16 @@ input[readonly] {
 #card-stats .card .card-action {
    font-size:12px;
 }
+
+.input-field > label:not(.label-icon).force-active {
+	-webkit-transform: translateY(-14px) scale(.8);
+	-moz-transform: translateY(-14px) scale(.8);
+	-ms-transform: translateY(-14px) scale(.8);
+	-o-transform: translateY(-14px) scale(.8);
+	transform: translateY(-14px) scale(.8);
+	-webkit-transform-origin: 0 0;
+	-moz-transform-origin: 0 0;
+	-ms-transform-origin: 0 0;
+	-o-transform-origin: 0 0;
+	transform-origin: 0 0;
+}
