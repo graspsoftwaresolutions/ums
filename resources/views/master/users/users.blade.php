@@ -150,7 +150,7 @@ $("#UsersformValidate").validate({
             },
         },
         //For custom messages
-        messages: {       
+        messages: {
             name: {
                 required: '{{__("Please enter Name") }}', 
             },
@@ -209,7 +209,7 @@ function ConfirmDeletion() {
         return false;
     }
 }
-function showaddForm(userid) {
+function showaddForm() {
 	$('.edit_hide').show();
     $('.add_hide').show();
     $('.edit_hide_btn').hide();

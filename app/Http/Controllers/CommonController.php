@@ -120,6 +120,41 @@ class CommonController extends Controller
         $email =  $request->input('email');
         $userid = $request->input('login_userid');
         return $this->mailExists($email,$userid);
-      
+
+    } 
+    //Country Details 
+    public function countryDetail(Request $request)
+    {
+        $id = $request->id;
+        $country = new Country();
+        $data = Country::find($id);
+        return $data;
     }
+    //Country Name Exists Check
+    public function checkCountryNameExists(Request $request)
+    {
+        $country_name =  $request->input('country_name');
+        $country_id = $request->input('country_id');
+
+        if(!empty($country_id))
+          {
+                 $countryname_exists = Country::where([
+                  ['country_name','=',$country_name],
+                  ['id','!=',$country_id]
+                  ])->count();
+          }
+          else
+          {
+            $countryname_exists = Country::where('country_name','=',$country_name)->count(); 
+          } 
+          if($countryname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+
+    }
+
 }
