@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
 use App\User;
-<<<<<<< HEAD
 use App\Model\UnionBranch;
 use App\Mail\UnionBranchMailable;
 use DB;
@@ -15,9 +14,7 @@ use View;
 use Mail;
 use App\Role;
 use URL;
-=======
 use App\Model\Relation;
->>>>>>> 534de81e4f6ca646b88d5ba77791e4cde40d27a3
 
 class MasterController extends CommonController
 {
@@ -318,21 +315,6 @@ class MasterController extends CommonController
         );
 
         $totalData = UnionBranch::count();
-    //Relation Details 
-    public function relationList()
-    {
-        return view('master.relation.relation_list');
-    }
-    //Ajax Datatable Relation List
-    public function ajax_relation_list(Request $request){
-
-        $columns = array( 
-            0 => 'relation_name', 
-            1 => 'id',
-        );
-
-        $totalData = Relation::count();
-
         $totalFiltered = $totalData; 
 
         $limit = $request->input('length');
@@ -352,16 +334,7 @@ class MasterController extends CommonController
                 ->orderBy($order,$dir)
                 ->get();
             }
-                $Relation = Relation::orderBy($order,$dir)
-                ->where('status','=','1')
-                ->get();
-            }else{
-                $Relation = Relation::offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->where('status','=','1')
-                ->get();
-            }
+                
         
         }
         else {
@@ -384,33 +357,14 @@ class MasterController extends CommonController
                     ->get();
         }
 
-        
-
-        $totalFiltered = UnionBranch::where('id','LIKE',"%{$search}%")
+             $totalFiltered = UnionBranch::where('id','LIKE',"%{$search}%")
                     ->orWhere('union_branch', 'LIKE',"%{$search}%")
                     ->orWhere('is_head', 'LIKE',"%{$search}%")
                     ->orWhere('email', 'LIKE',"%{$search}%")
-            $Relation =  Relation::where('id','LIKE',"%{$search}%")
-                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
-                        ->where('status','=','1')
-                        ->orderBy($order,$dir)
-                        ->get();
-        }else{
-            $Relation =  Relation::where('id','LIKE',"%{$search}%")
-                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
-                        ->offset($start)
-                        ->limit($limit)
-                        ->where('status','=','1')
-                        ->orderBy($order,$dir)
-                        ->get();
-        }
-        $totalFiltered = Relation::where('id','LIKE',"%{$search}%")
-                    ->orWhere('relation_name', 'LIKE',"%{$search}%")
-                    ->where('status','=','1')
                     ->count();
-        }
-
-        $data = array();
+          
+    }
+    $data = array();
         if(!empty($unionbranchs))
         {
             foreach ($unionbranchs as $unionbranch)
@@ -435,7 +389,72 @@ class MasterController extends CommonController
                 $data[] = $nestedData;
 
             }
+        }  
+         $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    } 
+    //Relation Details 
+    public function relationList()
+    {
+        return view('master.relation.relation_list');
+    }
+    //Ajax Datatable Relation List
+    public function ajax_relation_list(Request $request){
+        $columns = array( 
+            0 => 'relation_name', 
+            1 => 'id',
+        );
+        $totalData = Relation::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Relation = Relation::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Relation = Relation::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        
         }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Relation =  Relation::where('id','LIKE',"%{$search}%")
+                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Relation =  Relation::where('id','LIKE',"%{$search}%")
+                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Relation::where('id','LIKE',"%{$search}%")
+                    ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
         if(!empty($Relation))
         {
         foreach ($Relation as $Relation)
@@ -443,16 +462,13 @@ class MasterController extends CommonController
             $enc_id = Crypt::encrypt($Relation->id);  
             $delete =  route('master.relationdestroy',[app()->getLocale(),$Relation->id]) ;
             $edit =  "#modal_add_edit";
-
             $nestedData['relation_name'] = $Relation->relation_name;
             $relationid = $Relation->id;
-
             $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($relationid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
             $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
             $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
             $nestedData['options'] = $actions;
             $data[] = $nestedData;
-
         }
     }
         $json_data = array(
@@ -461,7 +477,6 @@ class MasterController extends CommonController
             "recordsFiltered" => intval($totalFiltered), 
             "data"            => $data   
             );
-
         echo json_encode($json_data); 
     }
     //Relation Save and Update
