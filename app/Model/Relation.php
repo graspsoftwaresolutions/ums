@@ -10,9 +10,13 @@ class Relation extends Model
     protected $fillable = ['id','relation_name','status'];
     public $timestamps = true;
 
-    public function StoreRelation($relation)
+    public function saveRelationdata($data=array())
     {
-        $id = DB::table('relation')->insertGetId($relation);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Relation::find($data['id'])->update($data);
+        } else {
+            $savedata = Relation::create($data);
+        }
+        return $savedata;
     }
 }
