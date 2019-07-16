@@ -51,7 +51,6 @@
 														<th style="text-align:center"> {{ __('Action') }}</th>
 													</tr>
 												</thead>
-												
 											</table>
 										</div>
 									</div>
