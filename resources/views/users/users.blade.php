@@ -62,7 +62,7 @@
                                 <h4>Users Details</h4>
                                 <form class="formValidate" id="UsersformValidate" method="post"  action="{{ route('master.saveuser',app()->getLocale()) }}">
                                     @csrf
-									<input type="hidden" name="id" id="id">
+									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
                                         <div class="input-field col s12 m6">
                                             <label for="name" class="common-label">{{__('Name') }}*</label>
@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="input-field col s12 m6">
                                             <label for="email" class="common-label">{{__('email') }}*</label>
-                                            <input id="email" class="common-input" name="email" type="email" data-error=".errorTxt2">
+                                            <input id="email" data-autoid="" class="common-input" name="email" type="email" data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>
                                         <div class="input-field col s12 m6 edit_hide" >
@@ -86,7 +86,11 @@
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
-                                            <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
+                                            <a href="#!" class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                            <button class="btn waves-effect waves-light right submit edit_hide_btn " type="submit" name="action">{{__('Update')}}
+                                              <!-- <i class="material-icons right">send</i> -->
+                                            </button>
+                                            <button class="btn waves-effect waves-light right submit add_hide" style="display:none;" type="submit" name="action">{{__('Save')}}
                                               <!-- <i class="material-icons right">send</i> -->
                                             </button>
                                         </div>
@@ -126,8 +130,16 @@ $("#UsersformValidate").validate({
             email:{
                 required: true,
                 remote:{
-                    url: 'App\Helpers\CommonHelper/checkemailExists/?id='+$("#email").val(),
-                    type: "post",
+                   url: "{{ url(app()->getLocale().'/users_emailexists')}}", 
+                   data: {
+                         login_userid: function() {
+                            return $( "#updateid" ).val();
+                        },
+                        _token: "{{csrf_token()}}", 
+                        email: $(this).data('email')
+                        },
+                   //data: {_token: "{{csrf_token()}}", email: $(this).data('email'), login_userid :$(this).data('autoid')},
+                   type: "post",
                 },
             },
             password: {
@@ -145,7 +157,6 @@ $("#UsersformValidate").validate({
                 required: '{{__("Please enter Name") }}', 
             },
             email:{
-				
 				remote : '{{__("Email Already exists") }}',
             },
             password: {
@@ -198,25 +209,32 @@ function ConfirmDeletion() {
 }
 function showaddForm(userid) {
 	$('.edit_hide').show();
+    $('.add_hide').show();
+    $('.edit_hide_btn').hide();
 	$('#name').val("");
 	$('#email').val("");
-	$('.modal').modal();
+    $('.modal').modal();
 }
 function showeditForm(userid) {
     $('.edit_hide').hide();
+    $('.add_hide').hide();
+    $('.edit_hide_btn').show();
     $('.modal').modal();
     var url = "{{ url(app()->getLocale().'/users_detail') }}" + '?id=' + userid;
     $.ajax({url: url, type: "GET", success: function (result) {
 			console.log(result);
-			$('#id').val(result.id);
+			$('#updateid').val(result.id);
+			$('#updateid').attr('data-autoid',result.id);
             $('#name').val(result.name);
             $('#email').val(result.email);
+            $('#email').attr('data-autoid',result.id);
         }
     });
 }
 $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
+
 });
 
   

@@ -8,7 +8,7 @@ use App\Helpers\CommonHelper;
 use App\Model\Country;
 use App\User;
 
-class MasterController extends Controller
+class MasterController extends CommonController
 {
     public function __construct()
     {
@@ -56,19 +56,19 @@ class MasterController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'email'=>'required',
+           // 'email'=>'required',
             // 'password'=>'required',
             // 'confirm_password'=>'required',
         ],
         [
             'name.required'=>'Please enter User name',
-            'email.required'=>'Please enter Valid Email',
+            //'email.required'=>'Please enter Valid Email',
             // 'password.required'=>'Please enter Password',
             // 'confirm_password.required'=>'Please enter Confirm Password',
         ]);
 
         $data = $request->all();
-        $data_exists = CommonHelper::getExistingUserEmail($request->email);
+        $data_exists = $this->mailExists($request->input('email'));
         $defdaultLang = app()->getLocale();
         if($data_exists>0)
         {

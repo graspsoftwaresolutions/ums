@@ -92,4 +92,34 @@ class CommonController extends Controller
        
         return response()->json($res);
     }
+    public function mailExists($email,$userid=false){
+          //  return $userid;
+          if(!empty($userid))
+          {
+              $useremail_exists = User::where([
+                  ['email','=',$email],
+                  ['id','!=',$userid]
+                  ])->count(); 
+          }
+          else
+          {
+              $useremail_exists = User::where('email','=',$email)->count(); 
+          } 
+          if($useremail_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+
+    //user exists check 
+    public function checkemailExists(Request $request)
+    {
+        $email =  $request->input('email');
+        $userid = $request->input('login_userid');
+        return $this->mailExists($email,$userid);
+      
+    }
 }
