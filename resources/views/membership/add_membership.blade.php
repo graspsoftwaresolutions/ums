@@ -21,6 +21,21 @@
 			overflow: hidden;
 		}
 	}
+	@media only screen and (min-width: 993px){
+		ul.stepper.horizontal .step .step-content {
+			position: absolute;
+			height: calc(100% - 84px);
+			top: 84px;
+			display: block;
+			left: -100%;
+			width: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			margin: 0;
+			padding: 0 !important;
+			transition: left .4s cubic-bezier(.4,0,.2,1);
+		}
+	}
 	
 </style>
 @endsection
@@ -92,11 +107,12 @@
 											<ul class="stepper horizontal" id="horizStepper">
 												<li class="step active">
 													<div class="step-title waves-effect">Member Details</div>
-													<div class="step-content" style="padding: 20px 40px;">
+													<div class="step-content" >
 														<div style="box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);padding:50px 50px;">
 															<div class="row">
 																<div class="col s12 m6">
 																	<label>{{__('Member Title') }}*</label>
+																	<input id="auto_id" name="auto_id" value=""  type="text" class="hide">
 																	<select name="member_title" id="member_title" required data-error=".errorTxt1" class="error browser-default">
 																		<option value="" disabled selected>{{__('Choose your option') }}</option>
 																		@foreach($data['title_view'] as $key=>$value)
