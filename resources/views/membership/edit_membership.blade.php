@@ -51,7 +51,7 @@
                                             <li class="tab col m3"><a href="#test4">Guardian Details</a></li>
                                             </ul>
                                         </div>
-                                        <form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_update') }}">
+                                        <form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_save') }}">
                                           @foreach($data['member_view'] as $key=>$values)
                                           @csrf
                                           
