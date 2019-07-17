@@ -13,6 +13,7 @@ use App\Model\Company;
 use App\Model\Race;
 use App\Model\Reason;
 use App\Model\Persontitle;
+use App\Model\Designation;
 use DB;
 use View;
 use Mail;
@@ -341,7 +342,6 @@ class CommonController extends Controller
         $persontitle_id = $request->input('persontitle_id');
         
         return $this->checkPersonTitleExists($person_title,$persontitle_id);
-        //return $race_id;
     }
      //checkPerson Title Exists
      public function checkPersonTitleExists($person_title,$persontitle_id=false)
@@ -376,8 +376,49 @@ class CommonController extends Controller
         $persontitle = new Persontitle();
         $data = Persontitle::find($id);
         return $data;
-    }
+    } 
     //Person Title Details End
 
-    
+     //Designation Details Start
+     public function checkDesignationNameExists(Request $request)
+     { 
+         $designation_name =  $request->input('designation_name');
+         $designation_id = $request->input('designation_id');
+         
+         return $this->checkDesignationExists($designation_name,$designation_id);
+     }
+     //checkPerson Title Exists
+     public function checkDesignationExists($designation_name,$designation_id=false)
+     {   
+         if(!empty($designation_id))
+          { 
+                 $designation_exists = Designation::where([
+                  ['designation_name','=',$designation_name],
+                  ['id','!=',$designation_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $designation_exists = Designation::where([
+                ['designation_name','=',$designation_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($designation_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    public function designationDetail(Request $request)
+    {
+        $id = $request->id;
+        $Designation = new Designation();
+        $data = Designation::find($id);
+        return $data;
+    } 
+    //Designation Details End
 }

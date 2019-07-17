@@ -12,6 +12,7 @@ use App\Model\Race;
 use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\UnionBranch;
+use App\Model\Designation;
 use App\Mail\UnionBranchMailable;
 use DB;
 use View;
@@ -31,6 +32,7 @@ class MasterController extends CommonController
         $this->Race = new Race;
         $this->Reason = new Reason;
         $this->Persontitle = new Persontitle;
+        $this->Designation = new Designation;
     }
     public function countryList()
     {
@@ -736,7 +738,7 @@ class MasterController extends CommonController
     }
     //Reason Details End
 
-    //Person Title Details
+    //Person Title Details Starts
     public function titleList()
     {
         return view('master.persontitle.persontitle_list');
@@ -856,5 +858,123 @@ class MasterController extends CommonController
         return redirect($defdaultLang.'/persontitle')->with('message','Person Title Details Deleted Successfully!!');
     }
     //Person title Details End
-    
+
+    //Designation Details Start
+    public function designationList()
+    {
+        return view('master.designation.designation_list');
+    }
+    //Ajax Datatable Race List
+    public function ajax_designation_list(Request $request){
+        $columns = array( 
+            0 => 'designation_name', 
+            1 => 'id',
+        );
+        $totalData = Designation::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Designation = Designation::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Designation = Designation::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Designation     =  Designation::where('id','LIKE',"%{$search}%")
+                        ->orWhere('designation_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Designation      = Designation::where('id','LIKE',"%{$search}%")
+                        ->orWhere('designation_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Designation::where('id','LIKE',"%{$search}%")
+                    ->orWhere('designation_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
+        if(!empty($Designation))
+        {
+        foreach ($Designation as $Designation)
+        { 
+            $enc_id = Crypt::encrypt($Designation->id);  
+            $delete =  route('master.designationdestroy',[app()->getLocale(),$Designation->id]) ;
+            $edit =  "#modal_add_edit";
+            $nestedData['designation_name'] = $Designation->designation_name;
+            $Designation = $Designation->id;
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Designation);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+        }
+    }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    }
+     //Designation Save and Update
+     public function designationSave(Request $request)
+     {   
+         $request->validate([
+             'designation_name'=>'required',
+         ],
+         [
+             'designation_name.required'=>'please enter Designation name',
+         ]);
+         $data = $request->all();   
+         $defdaultLang = app()->getLocale();
+         
+         if(!empty($request->id)){
+             $data_exists = $this->checkDesignationExists($request->input('designation_name'),$request->id);
+         }else{
+             $data_exists = $this->checkDesignationExists($request->input('designation_name'));
+         }
+         if($data_exists>0)
+         {
+             return  redirect($defdaultLang.'/designation')->with('error','Designation Name Already Exists'); 
+         }
+         else{
+             $saveDesignation = $this->Designation->saveDesignationdata($data);
+            
+             if($saveDesignation == true)
+             {
+                 return  redirect($defdaultLang.'/designation')->with('message','Designation Added Succesfully');
+             }
+         }
+     }
+     public function designationDestroy($lang,$id)
+     {
+         $Designation = new Designation();
+         $Designation = Designation::find($id);
+         $Designation->where('id','=',$id)->update(['status'=>'0']);
+         $defdaultLang = app()->getLocale();
+         return redirect($defdaultLang.'/designation')->with('message','Person Title Details Deleted Successfully!!');
+     }
+    //Designation Details End
 }
