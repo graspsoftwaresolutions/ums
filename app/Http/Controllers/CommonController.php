@@ -12,6 +12,7 @@ use App\Model\City;
 use App\Model\Company;
 use App\Model\Race;
 use App\Model\Reason;
+use App\Model\Persontitle;
 use DB;
 use View;
 use Mail;
@@ -149,7 +150,10 @@ class CommonController extends Controller
           }
           else
           {
-            $countryname_exists = Country::where('country_name','=',$country_name)->count(); 
+            $countryname_exists = Country::where([
+                ['country_name','=',$country_name],
+                ['status','=','1'],     
+                ])->count(); 
           } 
           if($countryname_exists > 0)
           {
@@ -181,7 +185,10 @@ class CommonController extends Controller
           }
           else
           {
-            $relation_exists = Relation::where('relation_name','=',$relation_name)->count(); 
+            $relation_exists = Relation::where([
+                ['relation_name','=',$relation_name],
+                ['status','=','1'],
+                ])->count(); 
           } 
           if($relation_exists > 0)
           {
@@ -225,7 +232,10 @@ class CommonController extends Controller
           }
           else
           {   
-            $race_exists = Race::where('race_name','=',$race_name)->count(); 
+            $race_exists = Race::where([
+                ['race_name','=',$race_name],
+                ['status','=','1'],
+                ])->count(); 
           } 
           if($race_exists > 0)
           {
@@ -301,7 +311,10 @@ class CommonController extends Controller
           }
           else
           {   
-            $reason_exists = Reason::where('reason_name','=',$reason_name)->count(); 
+            $reason_exists = Reason::where([
+                ['reason_name','=',$reason_name],
+                ['status','=','1'],
+                ])->count(); 
           } 
           if($reason_exists > 0)
           {
@@ -319,7 +332,52 @@ class CommonController extends Controller
           $data = Reason::find($id);
           return $data;
       }
-
     //Reason Details End
+
+    //Person Title Details Start
+    public function checkTitleNameExists(Request $request)
+    { 
+        $person_title =  $request->input('person_title');
+        $persontitle_id = $request->input('persontitle_id');
+        
+        return $this->checkPersonTitleExists($person_title,$persontitle_id);
+        //return $race_id;
+    }
+     //checkPerson Title Exists
+     public function checkPersonTitleExists($person_title,$persontitle_id=false)
+     {   
+         if(!empty($persontitle_id))
+          { 
+                 $persontitle_exists = Persontitle::where([
+                  ['person_title','=',$person_title],
+                  ['id','!=',$persontitle_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $persontitle_exists = Persontitle::where([
+                ['person_title','=',$person_title],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($persontitle_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Person Title Details
+    public function personTitleDetail(Request $request)
+    {
+        $id = $request->id;
+        $persontitle = new Persontitle();
+        $data = Persontitle::find($id);
+        return $data;
+    }
+    //Person Title Details End
+
     
 }

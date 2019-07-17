@@ -9,11 +9,16 @@ class Persontitle extends Model
 {
     protected $table = 'persontitle';
     protected $fillable = ['id','person_title','status'];
-    public $timestamps = true;
+    public $timestamps = true; 
 
-    public function StorePersontitle($person)
+    public function savePersonTitledata($data=array())
     {
-        $id = DB::table('persontitle')->insertGetId($person);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Persontitle::find($data['id'])->update($data);
+        } else {
+            $savedata = Persontitle::create($data);
+        }
+        return $savedata;
     }
+    
 }
