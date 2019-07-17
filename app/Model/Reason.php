@@ -11,9 +11,13 @@ class Reason extends Model
     protected $fillable = ['id','reason_name','status'];
     public $timestamps = true;
 
-    public function StoreReason($reason)
+    public function saveReasondata($data=array())
     {
-        $id = DB::table('reason')->insertGetId($reason);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Reason::find($data['id'])->update($data);
+        } else {
+            $savedata = Reason::create($data);
+        }
+        return $savedata;
     }
 }
