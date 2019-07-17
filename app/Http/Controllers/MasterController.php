@@ -116,6 +116,7 @@ class MasterController extends CommonController
     
             echo json_encode($json_data); 
         }
+
     public function countrySave(Request $request)
     {
         $request->validate([
@@ -152,6 +153,13 @@ class MasterController extends CommonController
         $defdaultLang = app()->getLocale();
         return redirect($defdaultLang.'/country')->with('message','Country Details Deleted Successfully!!');
 	}
+
+    public function stateList()
+    {
+        $data['country_view'] = Country::all();
+        return view('master.state.state_list')->with('data',$data);
+    }
+
     //user Details Save and Update
     public function userSave(Request $request)
     {
