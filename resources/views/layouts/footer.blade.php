@@ -50,7 +50,7 @@ $(document).ready(function(){
     .select2 .selection .select2-selection--single, .select2-container--default .select2-search--dropdown .select2-search__field {
         border-width: 0 0 1px 0 !important;
         border-radius: 0 !important;
-        height: 2.05rem;
+        height: 2.80rem;
     }
 
     .select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple {

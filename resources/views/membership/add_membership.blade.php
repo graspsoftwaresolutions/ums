@@ -253,7 +253,7 @@
 																</div>
 																<div class="input-field col s12 m6">
 																	<label for="postal_code">{{__('Postal Code') }} *</label>
-																	<input id="postal_code" name="postal_code" value="{{ old('postal_code') }}" type="text" data-error=".errorTxt13">
+																	<input id="postal_code" name="postal_code" class="padding-top-6" value="{{ old('postal_code') }}" type="text" data-error=".errorTxt13">
 																	<div class="errorTxt13"></div>
 																</div>
 																<div class="clearfix" ></div>
