@@ -66,7 +66,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('reason_delete/{id}','MasterController@reasonDestroy')->name('master.reasondestroy');
 
 	//State Details 
-	Route::get('state','StateController@index')->name('master.state');
+	Route::get('state','MasterController@stateList')->name('master.state');
 	Route::get('add-state','StateController@addState')->name('master.addstate');
 	Route::post('state_save','StateController@save')->name('master.savestate');
 	Route::get('state-edit/{parameter}','StateController@edit')->name('master.editstate');

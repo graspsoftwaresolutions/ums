@@ -245,6 +245,39 @@ class CommonController extends Controller
     }
     // Race Details End
 
+    /*
+        Input $result = query result (array)
+        Input $deleteRoute = Delete Route Name (string)
+    */
+    public function CommonAjaxReturn($result, $deleteRoute){
+        $data = array();
+        if(!empty($result))
+        {
+            foreach ($result as $resultdata)
+            {
+                foreach($resultdata as $newkey => $newvalue){
+                    if($newkey=='id'){
+                        $autoid = $newvalue;
+                    }else{
+                        $nestedData[$newkey] = $newvalue;
+                    }
+                }
+                
+                $enc_id = Crypt::encrypt($autoid);  
+                $delete =  route($deleteRoute, [app()->getLocale(),$autoid]) ;
+                $edit =  "#modal_add_edit";
+
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+                $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
+        return $data;
+    }
+
     //Reason Details Start
     //Reason Name Exists Check
     public function checkReasonNameExists(Request $request)
@@ -288,5 +321,5 @@ class CommonController extends Controller
       }
 
     //Reason Details End
-
+    
 }
