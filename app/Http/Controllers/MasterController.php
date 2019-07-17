@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
 use App\User;
+use App\Model\Relation;
+use App\Model\Race;
+use App\Model\Reason;
 use App\Model\UnionBranch;
 use App\Mail\UnionBranchMailable;
 use DB;
@@ -14,8 +17,7 @@ use View;
 use Mail;
 use App\Role;
 use URL;
-use App\Model\Relation;
-use App\Model\Race;
+
 
 class MasterController extends CommonController
 {
@@ -26,6 +28,7 @@ class MasterController extends CommonController
         $this->User = new User;
         $this->Relation = new Relation;
         $this->Race = new Race;
+        $this->Reason = new Reason;
     }
     public function countryList()
     {
@@ -611,5 +614,124 @@ class MasterController extends CommonController
         return redirect($defdaultLang.'/race')->with('message','Race Details Deleted Successfully!!');
     }
     // Race Details End
+
+    //Reason Details Start
+    public function reasonList()
+    {
+        return view('master.reason.reason_list');
+    }
+     //Ajax Datatable Race List
+     public function ajax_reason_list(Request $request){
+        $columns = array( 
+            0 => 'reason_name', 
+            1 => 'id',
+        );
+        $totalData = Reason::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Reason = Reason::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Reason = Reason::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Reason     =  Reason::where('id','LIKE',"%{$search}%")
+                        ->orWhere('reason_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Reason      = Reason::where('id','LIKE',"%{$search}%")
+                        ->orWhere('reason_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Reason::where('id','LIKE',"%{$search}%")
+                    ->orWhere('reason_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
+        if(!empty($Reason))
+        {
+        foreach ($Reason as $Reason)
+        {
+            $enc_id = Crypt::encrypt($Reason->id);  
+            $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]) ;
+            $edit =  "#modal_add_edit";
+            $nestedData['reason_name'] = $Reason->reason_name;
+            $relationid = $Reason->id;
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($relationid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+        }
+    }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    }
+    //Reason Save and Update
+    public function reasonSave(Request $request)
+    {   
+        $request->validate([
+            'reason_name'=>'required',
+        ],
+        [
+            'reason_name.required'=>'please enter Reason name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkReasonExists($request->input('reason_name'),$request->id);
+        }else{
+            $data_exists = $this->checkReasonExists($request->input('reason_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/reason')->with('error','Reason Name Already Exists'); 
+        }
+        else{
+            $saveReason = $this->Reason->saveReasondata($data);
+           
+            if($saveReason == true)
+            {
+                return  redirect($defdaultLang.'/reason')->with('message','Reason Name Added Succesfully');
+            }
+        }
+    }
+    public function reasonDestroy($lang,$id)
+	{
+        $Reason = new Reason();
+        $Reason = Reason::find($id);
+        $Reason->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/reason')->with('message','Reason Details Deleted Successfully!!');
+    }
+    //Reason Details End
     
 }

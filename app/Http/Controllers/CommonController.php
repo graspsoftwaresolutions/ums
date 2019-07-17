@@ -11,6 +11,7 @@ use App\Model\Relation;
 use App\Model\City;
 use App\Model\Company;
 use App\Model\Race;
+use App\Model\Reason;
 use DB;
 use View;
 use Mail;
@@ -276,5 +277,49 @@ class CommonController extends Controller
         }
         return $data;
     }
+
+    //Reason Details Start
+    //Reason Name Exists Check
+    public function checkReasonNameExists(Request $request)
+    { 
+        $reason_name =  $request->input('reason_name');
+        $reason_id = $request->input('reason_id');
+        
+        return $this->checkReasonExists($reason_name,$reason_id);
+        //return $race_id;
+    }
+     //checkReasonExists
+     public function checkReasonExists($reason_name,$reason_id=false)
+     {   
+         if(!empty($reason_id))
+          { 
+                 $reason_exists = Reason::where([
+                  ['reason_name','=',$reason_name],
+                  ['id','!=',$reason_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $reason_exists = Reason::where('reason_name','=',$reason_name)->count(); 
+          } 
+          if($reason_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+      //Reason Details
+      public function reasonDetail(Request $request)
+      {
+          $id = $request->id;
+          $reason = new Reason();
+          $data = Reason::find($id);
+          return $data;
+      }
+
+    //Reason Details End
     
 }

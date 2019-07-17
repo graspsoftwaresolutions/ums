@@ -80,6 +80,7 @@
         rules: {
             reason_name: {
                 required: true,
+                
             },
         },
         //For custom messages

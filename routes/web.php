@@ -50,14 +50,20 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
 	//Race Details 
-	
 	Route::get('race','MasterController@raceList')->name('master.race'); 
 	Route::post('ajax_race_list','MasterController@ajax_race_list')->name('master.ajaxracelist');
 	Route::post('race_nameexists','CommonController@checkRaceNameExists');
 	Route::post('race_save','MasterController@raceSave')->name('master.saverace');
-	Route::get('race-delete/{id}','RaceController@delete')->name('master.deleterace');
 	Route::get('race_detail','CommonController@raceDetail');
 	Route::delete('race_delete/{id}','MasterController@raceDestroy')->name('master.racedestroy');
+
+	//Reason Details 
+	Route::post('ajax_reason_list','MasterController@ajax_reason_list')->name('master.ajaxreasonlist');
+	Route::get('reason','MasterController@reasonList')->name('master.reason');
+	Route::post('reason_nameexists','CommonController@checkReasonNameExists'); 
+	Route::post('reason_save','MasterController@reasonSave')->name('master.reasonSave');
+	Route::get('reason_detail','CommonController@reasonDetail'); 
+	Route::delete('reason_delete/{id}','MasterController@reasonDestroy')->name('master.reasondestroy');
 
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
@@ -102,14 +108,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 
 	
-	//Reason Details
-	Route::get('reason','ReasonController@index')->name('master.reason');
-	Route::get('add-reason','ReasonController@addReason')->name('master.addreason');
-	Route::post('reason_save','ReasonController@save')->name('master.savereason');
-	//Route::get('reason-view/{parameter}','ReasonController@view')->name('master.reason');
-	Route::get('reason-edit/{parameter}','ReasonController@edit')->name('master.editreason');
-	Route::post('reason_update','ReasonController@update')->name('master.updatereason');
-	Route::get('reason-delete/{id}','ReasonController@delete')->name('master.deletereason');
+	
 	
 	//Fee Details
 	Route::get('fee','FeeController@index')->name('master.fee');
