@@ -91,12 +91,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
 
 	//Union Branch
-	Route::get('unionbranch','UnionBranchController@index')->name('master.unionbranch');
-	Route::get('add-unionbranch','UnionBranchController@addUnionBranch')->name('master.addunionbranch');
-	Route::post('unionbranch_save','UnionBranchController@save')->name('master.saveunionbranch');
-	Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit')->name('master.editunionbranch');
+	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');
+	Route::get('save-unionbranch','MasterController@addUnionBranch')->name('master.addunionbranch');
+	Route::post('unionbranch_save','MasterController@UnionBranchsave')->name('master.saveunionbranch');
+	Route::get('unionbranch-edit/{parameter}','MasterController@EditUnionBranch')->name('master.editunionbranch');
 	Route::post('unionbranch_update','UnionBranchController@update')->name('master.updateunionbranch');
 	Route::get('unionbranch-delete/{id}','UnionBranchController@delete')->name('master.deleteunionbranch');
+	Route::post('ajaxUnionBranchList','MasterController@AjaxunionBranchList')->name('master.union_BranchList');
 	
 	//Person Details
 	Route::get('persontitle','PersontitleController@index')->name('master.persontitle');
@@ -158,7 +159,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
 	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
 
-	Route::post('unionBranchList','MasterController@unionBranchList')->name('master.union_BranchList');
+	
 	
 	//Form Type
 	Route::resource('formtype','FormTypeController');
