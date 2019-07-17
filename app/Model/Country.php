@@ -20,5 +20,8 @@ class Country extends Model
         }
         return $savedata;
     }
+    public function states(){
+        return $this->hasMany('App\Model\State');
+    }
     
 }
