@@ -10,6 +10,7 @@ use App\Model\State;
 use App\Model\Relation;
 use App\Model\City;
 use App\Model\Company;
+use App\Model\Race;
 use DB;
 use View;
 use Mail;
@@ -157,6 +158,8 @@ class CommonController extends Controller
               return "true";
           }
     }
+
+    //Relation Details Start
     //Relation Name Exists Check
     public function checkRelationNameExists(Request $request)
     {
@@ -195,6 +198,52 @@ class CommonController extends Controller
         $data = Relation::find($id);
         return $data;
     }
+    //Relation Details End
+
+    // Race Details Start
+     //Race Name Exists Check
+     public function checkRaceNameExists(Request $request)
+     {
+         
+         $race_name =  $request->input('race_name');
+         $race_id = $request->input('race_id');
+         
+         return $this->checkRaceExists($race_name,$race_id);
+         //return $race_id;
+     }
+     //checkRaceExists
+     public function checkRaceExists($race_name,$race_id=false)
+     {   
+         if(!empty($race_id))
+          { 
+                 $race_exists = Race::where([
+                  ['race_name','=',$race_name],
+                  ['id','!=',$race_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $race_exists = Race::where('race_name','=',$race_name)->count(); 
+          } 
+          if($race_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Relation Details
+    public function raceDetail(Request $request)
+    {
+        $id = $request->id;
+        $race = new Race();
+        $data = Race::find($id);
+        return $data;
+    }
+    // Race Details End
+
     /*
         Input $result = query result (array)
         Input $deleteRoute = Delete Route Name (string)
@@ -227,5 +276,5 @@ class CommonController extends Controller
         }
         return $data;
     }
-
+    
 }

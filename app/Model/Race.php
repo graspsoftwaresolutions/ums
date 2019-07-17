@@ -11,9 +11,13 @@ class Race extends Model
     protected $fillable = ['id','race_name','status'];
     public $timestamps = true;
 
-    public function StoreRace($race)
+    public function saveRacedata($data=array())
     {
-        $id = DB::table('race')->insertGetId($race);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Race::find($data['id'])->update($data);
+        } else {
+            $savedata = Race::create($data);
+        }
+        return $savedata;
     }
 }

@@ -15,6 +15,7 @@ use Mail;
 use App\Role;
 use URL;
 use App\Model\Relation;
+use App\Model\Race;
 
 class MasterController extends CommonController
 {
@@ -24,6 +25,7 @@ class MasterController extends CommonController
         $this->Country = new Country;
         $this->User = new User;
         $this->Relation = new Relation;
+        $this->Race = new Race;
     }
     public function countryList()
     {
@@ -481,5 +483,125 @@ class MasterController extends CommonController
         $Relation->where('id','=',$id)->update(['status'=>'0']);
         $defdaultLang = app()->getLocale();
         return redirect($defdaultLang.'/relation')->with('message','Relation Details Deleted Successfully!!');
-	}
+    }
+
+    //Race Details Start
+    public function raceList()
+    {
+        return view('master.race.race_list');
+    }
+     //Ajax Datatable Race List
+     public function ajax_race_list(Request $request){
+        $columns = array( 
+            0 => 'race_name', 
+            1 => 'id',
+        );
+        $totalData = Race::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Race = Race::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Race = Race::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Race     =  Race::where('id','LIKE',"%{$search}%")
+                        ->orWhere('race_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Race      =  Race::where('id','LIKE',"%{$search}%")
+                        ->orWhere('race_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Race::where('id','LIKE',"%{$search}%")
+                    ->orWhere('race_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
+        if(!empty($Race))
+        {
+        foreach ($Race as $Race)
+        {
+            $enc_id = Crypt::encrypt($Race->id);  
+            $delete =  route('master.racedestroy',[app()->getLocale(),$Race->id]) ;
+            $edit =  "#modal_add_edit";
+            $nestedData['race_name'] = $Race->race_name;
+            $raceid = $Race->id;
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($raceid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+        }
+    }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    }
+    //Race Save and Update
+    public function raceSave(Request $request)
+    {   
+        $request->validate([
+            'race_name'=>'required',
+        ],
+        [
+            'race_name.required'=>'please enter Race name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkRaceExists($request->input('race_name'),$request->id);
+        }else{
+            $data_exists = $this->checkRaceExists($request->input('race_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/race')->with('error','Race Name Already Exists'); 
+        }
+        else{
+            $saveRace = $this->Race->saveRacedata($data);
+           
+            if($saveRace == true)
+            {
+                return  redirect($defdaultLang.'/race')->with('message','Race Name Added Succesfully');
+            }
+        }
+    }
+    public function raceDestroy($lang,$id)
+	{
+        $Race = new Race();
+        $Race = Race::find($id);
+        $Race->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/race')->with('message','Race Details Deleted Successfully!!');
+    }
+    // Race Details End
 }
