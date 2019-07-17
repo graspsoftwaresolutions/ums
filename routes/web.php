@@ -49,11 +49,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
 	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
-	//Country Details
+	//Race Details 
 	
-	//Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
-	//Route::post('country_edit','CountryController@update')->name('master.updatecountry');
-	Route::get('country-delete/{parameter}','CountryController@delete')->name('master.deletecountry');
+	Route::get('race','MasterController@raceList')->name('master.race'); 
+	Route::post('ajax_race_list','MasterController@ajax_race_list')->name('master.ajaxracelist');
+	Route::post('race_nameexists','CommonController@checkRaceNameExists');
+	Route::post('race_save','MasterController@raceSave')->name('master.saverace');
+	Route::get('race-delete/{id}','RaceController@delete')->name('master.deleterace');
+	Route::get('race_detail','CommonController@raceDetail');
+	Route::delete('race_delete/{id}','MasterController@raceDestroy')->name('master.racedestroy');
 
 	//State Details 
 	Route::get('state','StateController@index')->name('master.state');
@@ -115,15 +119,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
 	Route::post('fee_update','FeeController@update')->name('master.updatefee');
 	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
-	
-	//Race Details
-	Route::get('race','RaceController@index')->name('master.race');
-	Route::get('add-race','RaceController@addRace')->name('master.addrace');
-	Route::post('race_save','RaceController@save')->name('master.saverace');
-	//Route::get('race-view/{parameter}','RaceController@view')->name('master.fee');
-	Route::get('race-edit/{parameter}','RaceController@edit')->name('master.editrace');
-	Route::post('race_update','RaceController@update')->name('master.updaterace');
-	Route::get('race-delete/{id}','RaceController@delete')->name('master.deleterace');
 	
 	//Designation Details
 	Route::get('designation','DesignationController@index')->name('master.designation');

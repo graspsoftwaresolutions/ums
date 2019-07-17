@@ -49,7 +49,6 @@
                                         </div>
                                         <div class="input-field col s12">
                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
-                                            <!--i class="material-icons right">send</i-->
                                           </button>
                                         </div>
                                       </div>
