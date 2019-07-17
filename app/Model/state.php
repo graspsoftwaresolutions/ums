@@ -7,6 +7,7 @@ use DB;
 
 class state extends Model
 {
+    protected $table = 'state';
     protected $fillable = [
         'id','country_id','state_name','status',
     ];
@@ -18,6 +19,9 @@ class state extends Model
     public function country()
     {
         return $this->belongsTo('App\Model\Country');
+    }
+    public function cities(){
+        return $this->hasMany('App\Model\City');
     }
     public $timestamps = true;
 }
