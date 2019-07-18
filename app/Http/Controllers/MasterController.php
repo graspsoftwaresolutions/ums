@@ -236,7 +236,7 @@ class MasterController extends CommonController {
         }
         
         
-        $data = $this->CommonAjaxReturn($state, 'master.statedestroy'); 
+        $data = $this->CommonAjaxReturn($state, 0, 'master.statedestroy', 0); 
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -371,7 +371,7 @@ class MasterController extends CommonController {
         }
         
         
-        $data = $this->CommonAjaxReturn($city, 'master.citydestroy'); 
+        $data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0); 
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
