@@ -26,7 +26,7 @@
                 </ol>
               </div>
               <div class="col s2 m6 l6">
-			 <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addcompany', app()->getLocale())}}">{{__('Add New Company') }}</a>
+			 <a class="btn waves-effect waves-light breadcrumbs-btn right " href="{{route('master.addcompany', app()->getLocale())}}">{{__('Add New Company') }}</a>
               </div>
             </div>
           </div>
@@ -35,48 +35,30 @@
           <div class="container">
             <div class="section section-data-tables">
   <!-- Page Length Options -->
-  <div class="row">
-    <div class="col s12">
-      <div class="card">
-        <div class="card-content">
-          <h4 class="card-title">{{__('Company List') }}</h4>
-          @include('includes.messages')
-          <div class="row">
-            <div class="col s12">
-              <table id="page-length-option" class="display">
-                <thead>
-                    <tr>
-                    <td>{{__('Company Name') }}</td>
-                            <td>{{__('Short Name') }}</td>
-                        <th style="text-align:center"> {{__('Action') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data['company'] as $key=>$value)
-                    <tr>
-                    <?php
-													 $parameter = Crypt::encrypt($value->id);  
-										?>
-                        <td>{{$value->company_name}}</td>
-                        <td> {{$value->short_code}}</td>
-                        @php
-														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
-														@endphp
-                        <td style="text-align:center"> <a class="btn-small waves-effect waves-light cyan" href="{{route('master.companyedit',[app()->getLocale(),$parameter])}}">{{__('Edit') }}</a> <a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletecompany',[app()->getLocale(),$parameter]) }}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>   
-                </tr>
-                @endforeach
-                </tbody>
-              </table>
+            <div class="row">
+                <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                    <h4 class="card-title">{{__('Company List') }}</h4>
+                    @include('includes.messages')
+                    <div class="row">
+                        <div class="col s12">
+                        <table id="page-length-option" class="display">
+                            <thead>
+                                <tr>
+                                <td>{{__('Company Name') }}</td>
+                                        <td>{{__('Short Name') }}</td>
+                                    <th style="text-align:center"> {{__('Action') }}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
  <!-- Multi Select -->
-
-
 </div><!-- START RIGHT SIDEBAR NAV -->
 @include('layouts.right-sidebar')
 <!-- END RIGHT SIDEBAR NAV -->
@@ -92,6 +74,8 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
@@ -99,5 +83,39 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#company_sidebar_li_id").addClass('active');
 	$("#company_sidebar_a_id").addClass('active');
+        //Data table Ajax call
+        $(function () {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+		/* "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajax_company_list') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {_token: "{{csrf_token()}}"}
+        },
+        "columns": [
+            {"data": "company_name"},
+            {"data": "short_code"},
+            {"data": "options"}
+        ]
+    });
+});
+function ConfirmDeletion() {
+    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 </script>
 @endsection

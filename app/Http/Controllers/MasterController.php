@@ -18,6 +18,7 @@ use App\Model\UnionBranch;
 use App\Model\Designation;
 use App\Model\Status;
 use App\Model\FormType;
+use App\Model\Company;
 use App\Mail\UnionBranchMailable;
 use DB;
 use View;
@@ -107,7 +108,7 @@ class MasterController extends CommonController {
         }
         
         
-        $data = $this->CommonAjaxReturn($country, 'master.countrydestroy'); 
+        $data = $this->CommonAjaxReturn($country, 0, 'master.countrydestroy',0); 
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -520,7 +521,7 @@ class MasterController extends CommonController {
                     ->orWhere('email', 'LIKE',"%{$search}%")
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($users, 'master.destroy');
+        $data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -570,13 +571,13 @@ class MasterController extends CommonController {
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $unionbranchs = UnionBranch::where('status',1)->orderBy($order,$dir)
-                ->get();
+                $unionbranchs = UnionBranch::select('id','union_branch','is_head','email')->where('status',1)->orderBy($order,$dir)
+                ->get()->toArray();
             }else{
-                $unionbranchs = UnionBranch::where('status',1)->offset($start)
+                $unionbranchs = UnionBranch::select('id','union_branch','is_head','email')->where('status',1)->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
-                ->get();
+                ->get()->toArray();
             }
                 
         
@@ -584,21 +585,21 @@ class MasterController extends CommonController {
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $unionbranchs =  UnionBranch::where('status',1)->where('id','LIKE',"%{$search}%")
+            $unionbranchs =  UnionBranch::select('id','union_branch','is_head','email')->where('status',1)->where('id','LIKE',"%{$search}%")
                             ->orWhere('union_branch', 'LIKE',"%{$search}%")
                             ->orWhere('is_head', 'LIKE',"%{$search}%")
                             ->orWhere('email', 'LIKE',"%{$search}%")
                             ->orderBy($order,$dir)
-                            ->get();
+                            ->get()->toArray();
         }else{
-            $unionbranchs =  UnionBranch::where('status',1)->where('id','LIKE',"%{$search}%")
+            $unionbranchs =  UnionBranch::select('id','union_branch','is_head','email')->where('status',1)->where('id','LIKE',"%{$search}%")
                     ->orWhere('union_branch', 'LIKE',"%{$search}%")
                     ->orWhere('is_head', 'LIKE',"%{$search}%")
                     ->orWhere('email', 'LIKE',"%{$search}%")
                     ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
-                    ->get();
+                    ->get()->toArray();
         }
 
              $totalFiltered = UnionBranch::where('status',1)->where('id','LIKE',"%{$search}%")
@@ -608,31 +609,8 @@ class MasterController extends CommonController {
                     ->count();
           
     }
-    $data = array();
-        if(!empty($unionbranchs))
-        {
-            foreach ($unionbranchs as $unionbranch)
-            {
-                $enc_id = Crypt::encrypt($unionbranch->id);  
-                $delete =  route('master.deleteunionbranch',[app()->getLocale(),$enc_id]);
-                $edit =  route('master.editunionbranch',[app()->getLocale(),$enc_id]);
-
-                $nestedData['union_branch'] = $unionbranch->union_branch;
-                $nestedData['is_head'] = $unionbranch->is_head;
-                $nestedData['email'] = $unionbranch->email;
-                $unionbranchid = $unionbranch->id;
-                
-                $actions ="<a class='btn-small waves-effect waves-light cyan' href='$edit'>".trans('Edit')."</a>";  
-                
-                $actions .="&nbsp; <a class='btn-small waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' >".trans('Delete')."</a>";
-
-                
-
-                $nestedData['options'] = $actions;
-                $data[] = $nestedData;
-
-            }
-        }  
+    $data = $this->CommonAjaxReturn($unionbranchs, 1, 'master.deleteunionbranch', 1, 'master.editunionbranch'); 
+    
          $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
@@ -664,57 +642,42 @@ class MasterController extends CommonController {
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $Relation = Relation::orderBy($order,$dir)
+                $Relation = Relation::select('id','relation_name')->orderBy($order,$dir)
                 ->where('status','=','1')
-                ->get();
+                ->get()->toArray();
             }else{
-                $Relation = Relation::offset($start)
+                $Relation = Relation::select('id','relation_name')->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
                 ->where('status','=','1')
-                ->get();
+                ->get()->toArray();
             }
         
         }
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $Relation =  Relation::where('id','LIKE',"%{$search}%")
+            $Relation =  Relation::select('id','relation_name')->where('id','LIKE',"%{$search}%")
                         ->orWhere('relation_name', 'LIKE',"%{$search}%")
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
-                        ->get();
+                        ->get()->toArray();
         }else{
-            $Relation =  Relation::where('id','LIKE',"%{$search}%")
+            $Relation =  Relation::select('id','relation_name')->where('id','LIKE',"%{$search}%")
                         ->orWhere('relation_name', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
-                        ->get();
+                        ->get()->toArray();
         }
         $totalFiltered = Relation::where('id','LIKE',"%{$search}%")
                     ->orWhere('relation_name', 'LIKE',"%{$search}%")
                     ->where('status','=','1')
                     ->count();
         }
-        $data = array();
-        if(!empty($Relation))
-        {
-        foreach ($Relation as $Relation)
-        {
-            $enc_id = Crypt::encrypt($Relation->id);  
-            $delete =  route('master.relationdestroy',[app()->getLocale(),$Relation->id]) ;
-            $edit =  "#modal_add_edit";
-            $nestedData['relation_name'] = $Relation->relation_name;
-            $relationid = $Relation->id;
-            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($relationid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-            $nestedData['options'] = $actions;
-            $data[] = $nestedData;
-        }
-    }
+        $data = $this->CommonAjaxReturn($Relation, 0, 'master.relationdestroy', 0);
+       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
@@ -784,57 +747,42 @@ class MasterController extends CommonController {
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $Race = Race::orderBy($order,$dir)
+                $Race = Race::select('id','race_name')->orderBy($order,$dir)
                 ->where('status','=','1')
-                ->get();
+                ->get()->toArray();
             }else{
-                $Race = Race::offset($start)
+                $Race = Race::select('id','race_name')->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
                 ->where('status','=','1')
-                ->get();
+                ->get()->toArray();
             }
         
         }
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $Race     =  Race::where('id','LIKE',"%{$search}%")
+            $Race     =  Race::select('id','race_name')->where('id','LIKE',"%{$search}%")
                         ->orWhere('race_name', 'LIKE',"%{$search}%")
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
-                        ->get();
+                        ->get()->toArray();
         }else{
-            $Race      =  Race::where('id','LIKE',"%{$search}%")
+            $Race      =  Race::select('id','race_name')->where('id','LIKE',"%{$search}%")
                         ->orWhere('race_name', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
-                        ->get();
+                        ->get()->toArray();
         }
         $totalFiltered = Race::where('id','LIKE',"%{$search}%")
                     ->orWhere('race_name', 'LIKE',"%{$search}%")
                     ->where('status','=','1')
                     ->count();
         }
-        $data = array();
-        if(!empty($Race))
-        {
-        foreach ($Race as $Race)
-        {
-            $enc_id = Crypt::encrypt($Race->id);  
-            $delete =  route('master.racedestroy',[app()->getLocale(),$Race->id]) ;
-            $edit =  "#modal_add_edit";
-            $nestedData['race_name'] = $Race->race_name;
-            $raceid = $Race->id;
-            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($raceid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-            $nestedData['options'] = $actions;
-            $data[] = $nestedData;
-        }
-    }
+        $data = $this->CommonAjaxReturn($Race, 0, 'master.racedestroy', 0);
+    
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
@@ -905,56 +853,57 @@ class MasterController extends CommonController {
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $Reason = Reason::orderBy($order,$dir)
+                $Reason = Reason::select('id','reason_name')->orderBy($order,$dir)
                 ->where('status','=','1')
-                ->get();
+                ->get()->toArray();
             }else{
-                $Reason = Reason::offset($start)
+                $Reason = Reason::select('id','reason_name')->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
                 ->where('status','=','1')
-                ->get();
+                ->get()->toArray();
             }
         }
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $Reason     =  Reason::where('id','LIKE',"%{$search}%")
+            $Reason     =  Reason::select('id','reason_name')->where('id','LIKE',"%{$search}%")
                         ->orWhere('reason_name', 'LIKE',"%{$search}%")
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
-                        ->get();
+                        ->get()->toArray();
         }else{
-            $Reason      = Reason::where('id','LIKE',"%{$search}%")
+            $Reason      = Reason::select('id','reason_name')->where('id','LIKE',"%{$search}%")
                         ->orWhere('reason_name', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
-                        ->get();
+                        ->get()->toArray();
         }
         $totalFiltered = Reason::where('id','LIKE',"%{$search}%")
                     ->orWhere('reason_name', 'LIKE',"%{$search}%")
                     ->where('status','=','1')
                     ->count();
         }
-        $data = array();
-        if(!empty($Reason))
-        {
-        foreach ($Reason as $Reason)
-        {
-            $enc_id = Crypt::encrypt($Reason->id);  
-            $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]);
-            $edit =  "#modal_add_edit";
-            $nestedData['reason_name'] = $Reason->reason_name;
-            $relationid = $Reason->id;
-            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($relationid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-            $nestedData['options'] = $actions;
-            $data[] = $nestedData;
-        }
-    }
+        $data = $this->CommonAjaxReturn($Reason, 0, 'master.reasondestroy', 0);
+        // $data = array();
+        // if(!empty($Reason))
+        // {
+        //     foreach ($Reason as $Reason)
+        //     {
+        //         $enc_id = Crypt::encrypt($Reason->id);  
+        //         $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]);
+        //         $edit =  "#modal_add_edit";
+        //         $nestedData['reason_name'] = $Reason->reason_name;
+        //         $relationid = $Reason->id;
+        //         $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($relationid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+        //         $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+        //         $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+        //         $nestedData['options'] = $actions;
+        //         $data[] = $nestedData;
+        //     }
+        // }
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
@@ -1816,7 +1765,7 @@ class MasterController extends CommonController {
              {
                  return  redirect($defdaultLang.'/formtype')->with('message','Form Type Added Succesfully');
              }
-         }
+        }
      }
      public function formTypeDestroy($lang,$id)
      {
@@ -1827,4 +1776,91 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
      }
      //FormType Details End
+     //Company Details Starts
+     public function companyList()
+     {
+        return view('master.company.company_list');
+     } 
+    //Ajax Datatable FormType List
+    public function ajax_company_list(Request $request){
+
+    $columns = array(
+        0 => 'company_name',
+        1 => 'short_code',
+        2 => 'id'
+    );
+    $totalData = Company::count();
+    $totalFiltered = $totalData; 
+    $limit = $request->input('length');
+    
+    $start = $request->input('start');
+    $order = $columns[$request->input('order.0.column')];
+    $dir = $request->input('order.0.dir');
+    if(empty($request->input('search.value')))
+    {            
+        if( $limit == -1){
+            $Company = Company::orderBy($order,$dir)
+            ->where('status','=','1')
+            ->get();
+        }else{
+            $Company = Company::offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->where('status','=','1')
+            ->get();
+        }
+    }
+    else {
+    $search = $request->input('search.value'); 
+    if($limit == -1){
+        $Company     = Company::where('id','LIKE',"%{$search}%")
+                    ->orWhere('company_name', 'LIKE',"%{$search}%")
+                     ->orWhere('short_code', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get();
+    }else{
+        $Company      = Company::where('id','LIKE',"%{$search}%")
+                    ->orWhere('company_name', 'LIKE',"%{$search}%")
+                    ->orWhere('short_code', 'LIKE',"%{$search}%")
+                    ->offset($start)
+                    ->limit($limit)
+                    ->where('status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get();
+    }
+    $totalFiltered = Company::where('id','LIKE',"%{$search}%")
+                ->orWhere('company_name', 'LIKE',"%{$search}%")
+                ->orWhere('short_code', 'LIKE',"%{$search}%")
+                ->where('status','=','1')
+                ->count();
+    }
+    $data = array();
+    if(!empty($Company))
+    {
+    foreach ($Company as $Company)
+    { 
+        $enc_id = Crypt::encrypt($Company->id);  
+        $delete =  route('master.formTypedestroy',[app()->getLocale(),$Company->id]) ;
+        $edit =  "#modal_add_edit";
+        $nestedData['company_name'] = $Company->company_name;
+        $nestedData['short_code'] = $Company->short_code;
+        $Company = $Company->id;
+        $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Company);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+        $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+        $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+        $nestedData['options'] = $actions;
+        $data[] = $nestedData;
+    }
+}
+    $json_data = array(
+        "draw"            => intval($request->input('draw')),  
+        "recordsTotal"    => intval($totalData),  
+        "recordsFiltered" => intval($totalFiltered), 
+        "data"            => $data   
+        );
+    echo json_encode($json_data); 
+}
+
+     //Company Details End
 }
