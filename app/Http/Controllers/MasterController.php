@@ -1650,7 +1650,7 @@ class MasterController extends CommonController {
     ////Status Details End
     public function deleteUnionBranch($lang,$id)
 	{
-        $id = Crypt::decrypt($id);
+        //return $id = Crypt::decrypt($id);
 		$data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
 		return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
     }

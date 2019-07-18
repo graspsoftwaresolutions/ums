@@ -31,7 +31,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">Add</a>
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger hide" onClick='showaddForm();' href="#modal_add_edit">Add</a>
                                     </div>
                                 </div>
                             </div>
