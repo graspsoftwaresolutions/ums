@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
 use App\Model\State;
+use App\Model\City;
 use App\Model\Fee;
 use App\User;
 use App\Model\Relation;
@@ -32,6 +33,7 @@ class MasterController extends CommonController {
         $this->middleware('auth');
         $this->Country = new Country;
         $this->state = new state;
+        $this->City = new City;
         $this->User = new User;
         $this->Relation = new Relation;
         $this->Race = new Race;
@@ -159,8 +161,9 @@ class MasterController extends CommonController {
 
     public function stateList()
     {
-        $data = Country::select('*')->where('status','=','1')->get();
-        return view('master.state.state_list',compact('data',$data));
+		
+		$data['country_view'] = Country::all();
+        return view('master.state.state_list')->with('data',$data);
         //return view('master.state.state_list');
 
     }
@@ -227,7 +230,7 @@ class MasterController extends CommonController {
         }
         $totalFiltered = State::where('id','LIKE',"%{$search}%")
                     ->orWhere('state_name', 'LIKE',"%{$search}%")
-                    ->where('state.status','=','1')
+                    ->where('status','=','1')
                     ->count();
         }
         
@@ -284,6 +287,141 @@ class MasterController extends CommonController {
         return redirect($defdaultLang.'/state')->with('message','State Details Deleted Successfully!!');
 	}
 	
+		
+	// City List
+	
+	public function cityList()
+    {
+        $data['country_view'] = Country::all();
+        $data['state_view'] = State::all();
+        return view('master.city.city_list',compact('data',$data));
+    }
+	public function ajax_city_list(Request $request){
+        $columns = array( 
+            0 => 'country_name', 
+            1 => 'state_name', 
+            2 => 'city_name', 
+            3 => 'id',
+        );
+
+        $totalData = City::where('status','=','1')
+					->count();
+
+        $totalFiltered = $totalData; 
+
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+				$city = DB::table('country')->select('country.country_name','state.state_name','city.id','state.country_id','city.status','city.city_name')
+                ->join('state','country.id','=','state.country_id')
+                ->join('city','city.state_id','=','state.id')
+                ->orderBy($order,$dir)
+                ->where('city.status','=','1')
+				->get()->toArray();
+            }else{
+               $city = DB::table('country')->select('country.country_name','state.state_name','city.id','state.country_id','city.status','city.city_name')
+                ->join('state','country.id','=','state.country_id')
+                ->join('city','city.state_id','=','state.id')
+				->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('city.status','=','1')
+                ->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+			$city = DB::table('country')->select('country.country_name','state.state_name','city.id','state.country_id','city.status','city.city_name')
+					->join('state','country.id','=','state.country_id')
+					->join('city','city.state_id','=','state.id')
+					->where('city.id','LIKE',"%{$search}%")
+                    ->orWhere('country.country_name', 'LIKE',"%{$search}%")
+                    ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+                    ->orWhere('city.city_name', 'LIKE',"%{$search}%")
+                    ->where('city.status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get()->toArray();
+        }else{
+            $city = DB::table('country')->select('country.country_name','state.state_name','city.id','state.country_id','city.status','city.city_name')
+						->join('state','country.id','=','state.country_id')
+						->join('city','city.state_id','=','state.id')
+						->where('city.id','LIKE',"%{$search}%")
+						->orWhere('country.country_name', 'LIKE',"%{$search}%")
+						->orWhere('state.state_name', 'LIKE',"%{$search}%")
+						->orWhere('city.city_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('city.status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = City::where('id','LIKE',"%{$search}%")
+                    ->orWhere('city_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        
+        
+        $data = $this->CommonAjaxReturn($city, 'master.citydestroy'); 
+       
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+	public function citySave(Request $request)
+    {
+
+        $request->validate([
+            'country_id' => 'required',
+			'state_id' => 'required',
+			'city_name' => 'required',
+                ], [
+            'country_id.required' => 'please enter Country name',
+			'state_id.required' => 'please enter State name',
+			'city_name.required' => 'please enter City name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('city_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('city_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/city')->with('error','User Email Already Exists'); 
+        }
+        else{
+
+            $saveCity = $this->City->saveCitydata($data);
+
+            if ($saveCity == true) {
+                return redirect($defdaultLang . '/city')->with('message', 'City Name Added Succesfully');
+            }
+        }
+    }
+	public function citydestroy($lang,$id)
+	{
+        $City = new City();
+        $City = City::find($id);
+        $City->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/city')->with('message','City Details Deleted Successfully!!');
+	}
     //user Details Save and Update
     public function userSave(Request $request) {
         $request->validate([

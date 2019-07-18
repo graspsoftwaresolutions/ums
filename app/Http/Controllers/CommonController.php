@@ -211,7 +211,52 @@ class CommonController extends Controller
               return "true";
           }
     }
+	//City Details 
+    public function cityDetail(Request $request)
+    {
+        $id = $request->id;
+        $city = new City();
+        $data = City::find($id);
+        return $data;
+    }
+	//City Name Exists Check
+    public function checkCityNameExists(Request $request)
+    {
+        $city_name =  $request->input('city_name');
+        $city_id = $request->input('city_id');
+        $country_id = $request->input('country_id');
+        $state_id = $request->input('state_id');
 
+        if(!empty($city_id))
+          {
+				
+                 $cityname_exists = City::where([
+                  ['city_name','=',$city_name],
+                  ['country_id','=',$country_id],
+                  ['state_id','=',$state_id],
+                  ['id','!=',$city_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $cityname_exists = City::where([
+                ['city_name','=',$city_name],
+                ['country_id','=',$country_id],
+				['state_id','=',$state_id],
+                ['id','!=',$city_id],
+                ['status','=','1'],     
+                ])->count(); 
+          } 
+          if($cityname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+	
     //Relation Details Start
     //Relation Name Exists Check
     public function checkRelationNameExists(Request $request)

@@ -107,13 +107,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 
 	//City Details 
-	Route::get('city','CityController@index')->name('master.city');
-	Route::get('add-city','CityController@addCity')->name('master.addCity');
-	//Route::get('get-state-order-list/{country}','CityController@getStates')->name('master.getStates');
-	Route::post('city_save','CityController@save')->name('master.citysave');
-	Route::get('city-edit/{parameter}','CityController@edit')->name('master.editcity');
-	Route::post('city_update','CityController@update')->name('master.updatecity');
-	Route::get('city-delete/{id}','CityController@delete')->name('master.deletecity');
+	Route::get('city','MasterController@cityList')->name('master.city');
+	Route::post('ajax_city_list','MasterController@ajax_city_list');
+	Route::post('city_save','MasterController@citySave')->name('master.savecity');
+	Route::post('city_nameexists','CommonController@checkCityNameExists');
+	Route::get('city_detail','CommonController@cityDetail');
+	Route::delete('city-delete/{id}','MasterController@citydestroy')->name('master.citydestroy');
 
 	//Company
 	Route::get('/company','CompanyController@index')->name('master.company');
