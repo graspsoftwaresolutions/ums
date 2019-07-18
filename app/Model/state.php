@@ -11,10 +11,14 @@ class state extends Model
     protected $fillable = [
         'id','country_id','state_name','status',
     ];
-    public function StoreState($state)
+    public function saveStatedata($data=array())
     {
-        $id = DB::table('state')->insertGetId($state);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = state::find($data['id'])->update($data);
+        } else {
+            $savedata = state::create($data);
+        }
+        return $savedata;
     }
     public function country()
     {

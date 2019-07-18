@@ -65,8 +65,8 @@
 									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
                                     <div class="input-field col s12 m6">
-                                    <label for="person_title" class="common-label force-active">{{ __('Title Name') }}*</label>
-                                          <input id="person_title" class="common-input" name="person_title" type="text" data-error=".errorTxt1">
+                                    <label for="race_name" class="common-label force-active">{{ __('Race Name') }}*</label>
+                                          <input id="race_name" class="common-input" name="race_name" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
