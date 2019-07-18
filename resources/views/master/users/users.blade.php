@@ -62,7 +62,7 @@
                                 <h4>Users Details</h4>
                                 <form class="formValidate" id="UsersformValidate" method="post"  action="{{ route('master.saveuser',app()->getLocale()) }}">
                                     @csrf
-									<input type="hidden" name="id" id="updateid">
+                                    <input type="hidden" name="id" id="updateid">
                                     <div class="row">
                                         <div class="input-field col s12 m6">
                                             <label for="name" class="common-label force-active">{{__('Name') }}*</label>
@@ -99,7 +99,7 @@
                     </div>
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
-					
+
                 </div>
             </div>
         </div>
@@ -116,129 +116,127 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
-var deflanguage = '{{ app()->getLocale() }}';
-$("#masters_sidebars_id").addClass('active');
-$("#users_sidebar_li_id").addClass('active');
-$("#users_sidebar_a_id").addClass('active');
+        var deflanguage = '{{ app()->getLocale() }}';
+        $("#masters_sidebars_id").addClass('active');
+        $("#users_sidebar_li_id").addClass('active');
+        $("#users_sidebar_a_id").addClass('active');
 
-$("#UsersformValidate").validate({
-        rules: {
-            name:{
-                required: true,
-            },
-            email:{
-                required: true,
-                remote:{
-                   url: "{{ url(app()->getLocale().'/users_emailexists')}}", 
-                   data: {
-                         login_userid: function() {
-                            return $( "#updateid" ).val();
-                        },
-                        _token: "{{csrf_token()}}", 
-                        email: $(this).data('email')
-                        },
-                   type: "post",
+        $("#UsersformValidate").validate({
+            rules: {
+                name: {
+                    required: true,
                 },
-            },
-            password: {
-                required: true,
-            },
-            confirm_password : {
-
+                email: {
+                    required: true,
+                    remote: {
+                        url: "{{ url(app()->getLocale().'/users_emailexists')}}",
+                        data: {
+                            login_userid: function () {
+                                return $("#updateid").val();
+                            },
+                            _token: "{{csrf_token()}}",
+                            email: $(this).data('email')
+                        },
+                        type: "post",
+                    },
+                },
+                password: {
+                    required: true,
+                },
+                confirm_password: {
 				required: true,
 				equalTo:"#password",
             },
-        },
-        //For custom messages
-        messages: {
-            name: {
-                required: '{{__("Please enter Name") }}', 
-            },
-            email:{
-				remote : '{{__("Email Already exists") }}',
-            },
-            password: {
-                required: '{{__("Please enter Password") }}',
-            },
-            confirm_password : {
-                required: '{{__("Please enter Confirm Password") }}',
-			},
-			
-        },
-        errorElement: 'div',
-        errorPlacement: function (error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-            $(placement).append(error)
-        } else {
-            error.insertAfter(element);
-        }
-        }
-    });
-$(function () {
-    $('#page-length-option').DataTable({
-        "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-		/* "lengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
-        ], */
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_users_list') }}",
-            "dataType": "json",
-            "type": "POST",
-            "data": {_token: "{{csrf_token()}}"}
-        },
-        "columns": [
-            {"data": "name"},
-            {"data": "email"},
-            {"data": "options"}
-        ]
-    });
-});
-function ConfirmDeletion() {
-    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
-        return true;
-    } else {
-        return false;
-    }
-}
-function showaddForm() {
-	$('.edit_hide').show();
-    $('.add_hide').show();
-    $('.edit_hide_btn').hide();
-	$('#name').val("");
-	$('#email').val("");
-    $('.modal').modal();
-}
-function showeditForm(userid) {
-    $('.edit_hide').hide();
-    $('.add_hide').hide();
-    $('.edit_hide_btn').show();
-    $('.modal').modal();
-    var url = "{{ url(app()->getLocale().'/users_detail') }}" + '?id=' + userid;
-    $.ajax({url: url, type: "GET", success: function (result) {
-			console.log(result);
-			$('#updateid').val(result.id);
-			$('#updateid').attr('data-autoid',result.id);
-            $('#name').val(result.name);
-            $('#email').val(result.email);
-            $('#email').attr('data-autoid',result.id);
-        }
-    });
-}
-$(document).ready(function () {
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
+        },      
+            //For custom messages
+            messages: {
+                name: {
+                    required: '{{__("Please enter Name") }}',
+                },
+                email: {
+                    remote: '{{__("Email Already exists") }}',
+                },
+                password: {
+                    required: '{{__("Please enter Password") }}',
+                },
+                confirm_password: {
+                    required: '{{__("Please enter Confirm Password") }}',
+                },
 
-});
+            },
+            errorElement: 'div',
+            errorPlacement: function (error, element) {
+                var placement = $(element).data('error');
+                if (placement) {
+                    $(placement).append(error)
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+        $(function () {
+            $('#page-length-option').DataTable({
+                "responsive": true,
+                "lengthMenu": [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+                /* "lengthMenu": [
+                 [10, 25, 50, -1],
+                 [10, 25, 50, "All"]
+                 ], */
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ url(app()->getLocale().'/ajax_users_list') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data": {_token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                    {"data": "name"},
+                    {"data": "email"},
+                    {"data": "options"}
+                ]
 
-  
+            });
+        });
+        function ConfirmDeletion() {
+            if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function showaddForm(userid) {
+            $('.edit_hide').show();
+            $('.add_hide').show();
+            $('.edit_hide_btn').hide();
+            $('#name').val("");
+            $('#email').val("");
+            $('.modal').modal();
+        }
 
+        function showeditForm(userid) {
+            $('.edit_hide').hide();
+            $('.add_hide').hide();
+            $('.edit_hide_btn').show();
+            $('.modal').modal();
+            var url = "{{ url(app()->getLocale().'/users_detail') }}" + '?id=' + userid;
+            $.ajax({url: url, type: "GET", success: function (result) {
+                    console.log(result);
+                    $('#updateid').val(result.id);
+                    $('#updateid').attr('data-autoid', result.id);
+                    $('#name').val(result.name);
+                    $('#email').val(result.email);
+                    $('#email').attr('data-autoid', result.id);
+                }
+            });
+        }
+        $(document).ready(function () {
+            // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+
+        });
 </script>
 @endsection
