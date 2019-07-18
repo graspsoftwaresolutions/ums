@@ -166,6 +166,49 @@ class CommonController extends Controller
               return "true";
           }
     }
+	
+	//State Details 
+    public function stateDetail(Request $request)
+    {
+        $id = $request->id;
+        $state = new State();
+        $data = State::find($id);
+        return $data;
+    }
+	
+	//State Name Exists Check
+    public function checkStateNameExists(Request $request)
+    {
+        $state_name =  $request->input('state_name');
+        $state_id = $request->input('state_id');
+        $country_id = $request->input('country_id');
+
+        if(!empty($state_id))
+          {
+				
+                 $statename_exists = State::where([
+                  ['state_name','=',$state_name],
+                  ['country_id','=',$country_id],
+                  ['id','!=',$state_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $statename_exists = State::where([
+                ['state_name','=',$state_name],
+				['country_id','=',$country_id],
+                ['status','=','1'],     
+                ])->count(); 
+          } 
+          if($statename_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
 
     //Relation Details Start
     //Relation Name Exists Check

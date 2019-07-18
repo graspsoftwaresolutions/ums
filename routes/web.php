@@ -82,11 +82,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
-	Route::get('add-state','StateController@addState')->name('master.addstate');
-	Route::post('state_save','StateController@save')->name('master.savestate');
-	Route::get('state-edit/{parameter}','StateController@edit')->name('master.editstate');
-	Route::post('state_edit','StateController@update')->name('master.updatestate');
-	Route::get('state-delete/{id}','StateController@delete')->name('master.deletestate');
+	Route::post('ajax_state_list','MasterController@ajax_state_list');
+	Route::post('state_save','MasterController@stateSave')->name('master.savestate');
+	Route::delete('state-delete/{id}','MasterController@statedestroy')->name('master.statedestroy');
+	Route::post('state_nameexists','CommonController@checkStateNameExists');
+	Route::get('state_detail','CommonController@stateDetail');
+	
 
 	//City Details 
 	Route::get('city','CityController@index')->name('master.city');
