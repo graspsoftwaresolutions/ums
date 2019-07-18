@@ -17,6 +17,7 @@ use App\Model\Persontitle;
 use App\Model\Designation;
 use App\Model\UnionBranch;
 use App\Model\Fee;
+use App\Model\FormType;
 use DB;
 use View;
 use Mail;
@@ -456,7 +457,6 @@ class CommonController extends Controller
         $status_id = $request->input('status_id');   
         return $this->checkStatusExists($status_name,$status_id);
     }
-    //Check branch starts
 	public function checkStatusExists($status_name,$status_id=false)
      {   
          if(!empty($status_id))
@@ -490,4 +490,47 @@ class CommonController extends Controller
         return $data;
     } 
     //Status Details End
+
+    //Form Type Deatils Start
+    public function checkFormTypeNameExists(Request $request)
+    {
+        //dd($request->all());
+        $formname =  $request->input('formname');
+        $formtype_id = $request->input('formtype_id');   
+        return $this->checkFormTyNameExists($formname,$formtype_id);
+    }
+    public function checkFormTyNameExists($formname,$formtype_id=false)
+    {   
+         if(!empty($formtype_id))
+          { 
+                 $formtype_exists = FormType::where([
+                  ['formname','=',$formname],
+                  ['id','!=',$formtype_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          { 
+            $formtype_exists = FormType::where([
+                ['formname','=',$formname],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($formtype_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    } 
+    public function formTypeDetail(Request $request)
+    {
+        $id = $request->id;
+        $FormType = new FormType();
+        $data = FormType::find($id);
+        return $data;
+    } 
+
+     //Form Type Deatils End
 }
