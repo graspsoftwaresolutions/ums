@@ -44,7 +44,7 @@ class UserTableSeeder extends Seeder
 		
 	   /* Company user */
 	    $company_user = new User();
-	    $company_user->name = 'Default Company';
+	    $company_user->name = 'Head Company';
 	    $company_user->email = 'company@gmail.com';
 	    $company_user->password = bcrypt('12345678');
 	    $company_user->save();
