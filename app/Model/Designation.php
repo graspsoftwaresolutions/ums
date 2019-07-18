@@ -11,9 +11,13 @@ class Designation extends Model
     protected $fillable = ['id','designation_name','status'];
     public $timestamps = true;
 
-    public function StoreDesignation($designation)
+    public function saveDesignationdata($data=array())
     {
-        $id = DB::table('designation')->insertGetId($designation);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Designation::find($data['id'])->update($data);
+        } else {
+            $savedata = Designation::create($data);
+        }
+        return $savedata;
     }
 }

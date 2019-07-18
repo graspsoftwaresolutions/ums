@@ -21,19 +21,16 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Reason List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Union Branch List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
+										<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>
 											</li>
-											<li class="breadcrumb-item active">{{__('Reason') }}
+											<li class="breadcrumb-item active">{{__('Union Branch Title') }}
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="
-										{{ route('master.addreason', app()->getLocale()) }}
-										">{{__('Add New Reason') }}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addunionbranch', app()->getLocale()) }}">{{__('Add New Union Branch') }}</a>
 										
 									</div>
 								</div>
@@ -42,38 +39,19 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Reason List') }}</h4>
+									<h4 class="card-title">{{__('Union Branch List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Reason Name') }}</th>
-														
-														<th style="text-align:center"> {{__('Action') }}</th>
+                                                        <th>{{__('Union Branch Name') }}</th>
+														<th>{{__('Head') }}</th>
+														<th>{{__('Email') }}</th>
+														<th style="text-align:center">{{__('Action') }}</th>
 													</tr>
 												</thead>
-												<tbody>
-                                                    @foreach($data['reason_view'] as $key=>$value)
-													<tr>
-                                                        <?php
-                                                            $parameter =[
-                                                                'id' =>$value->id,
-                                                            ];
-                                                            $parameter = Crypt::encrypt($parameter);    
-                                                        ?>
-														@php
-														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
-														@endphp
-														<td>{{$value->reason_name}}</td>
-														
-														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
-														<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editreason', [app()->getLocale(), $parameter]) }}">{{__('Edit') }}</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletereason',[app()->getLocale(),$parameter])}} " onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
-												  </tr>
-												  @endforeach
-												</tbody>
 												
 											</table>
 										</div>
@@ -99,7 +77,43 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#reason_sidebar_li_id").addClass('active');
-	$("#reason_sidebar_a_id").addClass('active');
+	$("#unionbranch_sidebar_li_id").addClass('active');
+	$("#unionbranch_sidebar_a_id").addClass('active');
+</script>
+
+<script>
+	$(function () {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajaxUnionBranchList') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {_token: "{{csrf_token()}}"}
+        },
+        "columns": [
+            {"data": "union_branch"},
+			{"data": "is_head"},
+            {"data": "email"},
+            {"data": "options"}
+        ]
+
+    });
+});
+function ConfirmDeletion() {
+    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 </script>
 @endsection

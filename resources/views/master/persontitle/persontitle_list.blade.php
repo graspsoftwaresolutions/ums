@@ -21,17 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Race List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Person Title List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Race') }}
+											<li class="breadcrumb-item active">{{ __('Person Title') }}
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Race') }}</a>	
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Title') }}</a>
+										
 									</div>
 								</div>
 							</div>
@@ -39,18 +39,19 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Race List') }}</h4>
+									<h4 class="card-title">{{ __('Person Title List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Race Name') }}</th>
+                                                        <th>{{ __('Title Name') }}</th>
 														
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th style="text-align:center"> {{ __('Action') }}</th>
 													</tr>
 												</thead>
+												
 											</table>
 										</div>
 									</div>
@@ -59,8 +60,8 @@
 						</div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Race Details</h4>
-                                <form class="formValidate" id="race_formValidate" method="post"  action="{{ route('master.saverace',app()->getLocale()) }}">
+                                <h4>Person Title Details</h4>
+                                <form class="formValidate" id="title_formValidate" method="post"  action="{{ route('master.savepersontitle',app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
@@ -94,17 +95,50 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#race_sidebar_li_id").addClass('active');
-	$("#race_sidebar_a_id").addClass('active');
-    
-    //Data table Ajax call
+	$("#title_sidebar_li_id").addClass('active');
+    $("#title_sidebar_a_id").addClass('active');
+    $("#title_formValidate").validate({
+        rules: {
+            person_title: {
+                required: true,
+                remote:{
+                   url: "{{ url(app()->getLocale().'/persontitle_nameexists')}}", 
+                   data: {
+                    persontitle_id: function() {
+                            return $( "#updateid" ).val();
+                        },
+                        _token: "{{csrf_token()}}",
+                        person_title: $(this).data('person_title')
+                        },
+                   type: "post",
+                },
+            },
+        },
+        //For custom messages
+        messages: {
+            person_title: {
+                required: '{{__("Enter a Person Title Name") }}',
+                remote : '{{__("Person Title Already exists") }}', 
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+        //Data table Ajax call
 $(function () {
     $('#page-length-option').DataTable({
         "responsive": true,
@@ -119,13 +153,13 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_race_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_persontitle_list') }}",
             "dataType": "json",
             "type": "POST",
             "data": {_token: "{{csrf_token()}}"}
         },
         "columns": [
-            {"data": "race_name"},
+            {"data": "person_title"},
             {"data": "options"}
         ]
     });
@@ -137,40 +171,6 @@ function ConfirmDeletion() {
         return false;
     }
 }
-$("#race_formValidate").validate({
-        rules: {
-            race_name: {
-                required: true,
-                remote:{
-                   url: "{{ url(app()->getLocale().'/race_nameexists')}}", 
-                   data: {
-                         race_id: function() {
-                            return $( "#updateid" ).val();
-                        },
-                        _token: "{{csrf_token()}}",
-                        race_name: $(this).data('race_name')
-                        },
-                   type: "post",
-                },
-            },
-        },
-        //For custom messages
-        messages: {
-            race_name: {
-                required: '{{__("Enter a Race Name") }}',
-                remote : '{{__("Race Name Already exists") }}', 
-            },
-        },
-        errorElement: 'div',
-        errorPlacement: function (error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-            $(placement).append(error)
-        } else {
-            error.insertAfter(element);
-        }
-        }
-    });
 //Model
 $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -180,20 +180,20 @@ function showaddForm() {
 	$('.edit_hide').show();
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
-	$('#race_name').val("");
+	$('#person_title').val("");
     $('.modal').modal();
 }
-function showeditForm(raceid){
+function showeditForm(Persontitle){
     $('.edit_hide').hide();
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
-    var url = "{{ url(app()->getLocale().'/race_detail') }}" + '?id=' + raceid;
-    $.ajax({url: url, type: "GET", success: function (result) {
+    var url = "{{ url(app()->getLocale().'/persontitle_detail') }}" + '?id=' + Persontitle;
+    $.ajax({url: url, type: "GET", success: function (result){
 			console.log(result);
 			$('#updateid').val(result.id);
 			$('#updateid').attr('data-autoid',result.id);
-            $('#race_name').val(result.race_name);
+            $('#person_title').val(result.person_title);
         }
     });
 }

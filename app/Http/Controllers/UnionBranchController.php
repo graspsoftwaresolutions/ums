@@ -20,16 +20,8 @@ class UnionBranchController extends Controller
         $this->middleware('auth'); 
         $this->UnionBranch = new UnionBranch;
     }
-    public function index()
-    {
-        //$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        return view('unionbranch.unionbranch');
-    }
-    public function addUnionBranch()
-    {
-        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        return view('unionbranch.add_unionbranch')->with('data',$data);
-    }
+   
+   
     public function save(Request $request)
     {
         $request->validate([
