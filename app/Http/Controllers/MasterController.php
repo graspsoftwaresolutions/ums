@@ -32,6 +32,7 @@ class MasterController extends CommonController {
     public function __construct() {
         $this->middleware('auth');
         $this->Country = new Country;
+        $this->state = new state;
         $this->User = new User;
         $this->Relation = new Relation;
         $this->Race = new Race;
@@ -55,7 +56,8 @@ class MasterController extends CommonController {
             1 => 'id',
         );
 
-        $totalData = Country::count();
+        $totalData = Country::where('status','=','1')
+                     ->count();
 
         $totalFiltered = $totalData; 
 
@@ -158,11 +160,131 @@ class MasterController extends CommonController {
 
     public function stateList()
     {
-        $data['state_view'] = State::all();
-        return view('master.state.state_list')->with('data',$data);
+        $data = Country::select('*')->where('status','=','1')->get();
+        return view('master.state.state_list',compact('data',$data));
+        //return view('master.state.state_list');
 
     }
+	public function ajax_state_list(Request $request){
+        $columns = array( 
+            0 => 'country_name', 
+            1 => 'state_name', 
+            2 => 'id',
+        );
 
+        $totalData = State::where('status','=','1')
+					->count();
+
+        $totalFiltered = $totalData; 
+
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+				
+				$state = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+                ->join('state','country.id','=','state.country_id')
+                ->orderBy($order,$dir)
+                ->where('state.status','=','1')
+				->get()->toArray();
+            }else{
+                $state = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+                ->join('state','country.id','=','state.country_id')
+				->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('state.status','=','1')
+                ->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+			$state = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+					->join('state','country.id','=','state.country_id')
+					->where('state.id','LIKE',"%{$search}%")
+                    ->orWhere('country.country_name', 'LIKE',"%{$search}%")
+                    ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+                    ->where('state.status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get()->toArray();
+        }else{
+            $state 	=  DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+						->join('state','country.id','=','state.country_id')
+						->where('state.id','LIKE',"%{$search}%")
+                        ->orWhere('country.country_name', 'LIKE',"%{$search}%")
+                        ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('state.status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = State::where('id','LIKE',"%{$search}%")
+                    ->orWhere('state_name', 'LIKE',"%{$search}%")
+                    ->where('state.status','=','1')
+                    ->count();
+        }
+        
+        
+        $data = $this->CommonAjaxReturn($state, 'master.statedestroy'); 
+       
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+	
+	public function stateSave(Request $request)
+    {
+
+        $request->validate([
+            'country_id' => 'required',
+			'state_name' => 'required',
+                ], [
+            'country_id.required' => 'please enter Country name',
+			'state_name.required' => 'please enter State name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('state_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('state_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/state')->with('error','User Email Already Exists'); 
+        }
+        else{
+
+            $saveState = $this->state->saveStatedata($data);
+
+            if ($saveState == true) {
+                return redirect($defdaultLang . '/state')->with('message', 'State Name Added Succesfully');
+            }
+        }
+    }
+	public function statedestroy($lang,$id)
+	{
+        $State = new state();
+        $State = state::find($id);
+        $State->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/state')->with('message','State Details Deleted Successfully!!');
+	}
+	
     //user Details Save and Update
     public function userSave(Request $request) {
         $request->validate([
@@ -298,7 +420,8 @@ class MasterController extends CommonController {
             3 => 'id'
         );
 
-        $totalData = UnionBranch::count();
+        $totalData = UnionBranch::where('status','=','1')
+                                ->count();
         $totalFiltered = $totalData; 
 
         $limit = $request->input('length');
@@ -393,7 +516,8 @@ class MasterController extends CommonController {
             0 => 'relation_name', 
             1 => 'id',
         );
-        $totalData = Relation::count();
+        $totalData = Relation::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -512,7 +636,8 @@ class MasterController extends CommonController {
             0 => 'race_name', 
             1 => 'id',
         );
-        $totalData = Race::count();
+        $totalData = Race::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -632,7 +757,8 @@ class MasterController extends CommonController {
             0 => 'reason_name', 
             1 => 'id',
         );
-        $totalData = Reason::count();
+        $totalData = Reason::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -752,7 +878,8 @@ class MasterController extends CommonController {
             0 => 'person_title', 
             1 => 'id',
         );
-        $totalData = Persontitle::count();
+        $totalData = Persontitle::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -874,7 +1001,8 @@ class MasterController extends CommonController {
             0 => 'designation_name', 
             1 => 'id',
         );
-        $totalData = Designation::count();
+        $totalData = Designation::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -1326,7 +1454,8 @@ class MasterController extends CommonController {
             0 => 'status_name', 
             1 => 'id',
         );
-        $totalData = Status::count();
+        $totalData = Status::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -1451,7 +1580,8 @@ class MasterController extends CommonController {
              0 => 'formname', 
              1 => 'id',
          );
-         $totalData = FormType::count();
+         $totalData = FormType::where('status','=','1')
+         ->count();
          $totalFiltered = $totalData; 
          $limit = $request->input('length');
          
