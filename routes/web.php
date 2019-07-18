@@ -116,14 +116,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('branch_emailexists','MasterController@checkBranchemailExists');
 	
 	//Fee Details
-	Route::get('fee','FeeController@index')->name('master.fee');
+	Route::get('fee','MasterController@fees_list')->name('master.fee');
 	Route::get('add-fee','FeeController@addFee')->name('master.addfee');
 	Route::post('fee_save','FeeController@save')->name('master.savefee');
 	//Route::get('fee-view/{parameter}','FeeController@view')->name('master.fee');
 	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
 	Route::post('fee_update','FeeController@update')->name('master.updatefee');
 	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
-		
+        Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
+	
 	//Status Details
 	Route::get('status','StatusController@index')->name('master.status');
 	Route::get('add-status','StatusController@addStatus')->name('master.addstatus');
@@ -214,9 +215,6 @@ Route::get('delete-nominee-data','MembershipController@deleteNominee');
 
 Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
-
-
-
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');

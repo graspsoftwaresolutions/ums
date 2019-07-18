@@ -15,6 +15,7 @@ use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\Designation;
 use App\Model\UnionBranch;
+use App\Model\Fee;
 use DB;
 use View;
 use Mail;
