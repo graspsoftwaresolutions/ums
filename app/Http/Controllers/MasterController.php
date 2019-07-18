@@ -55,7 +55,8 @@ class MasterController extends CommonController {
             1 => 'id',
         );
 
-        $totalData = Country::count();
+        $totalData = Country::where('status','=','1')
+                     ->count();
 
         $totalFiltered = $totalData; 
 
@@ -170,7 +171,7 @@ class MasterController extends CommonController {
             2 => 'id',
         );
 
-        $totalData = State::where('state.status','=','1')
+        $totalData = State::where('status','=','1')
 					->count();
 
         $totalFiltered = $totalData; 
@@ -418,7 +419,8 @@ class MasterController extends CommonController {
             3 => 'id'
         );
 
-        $totalData = UnionBranch::count();
+        $totalData = UnionBranch::where('status','=','1')
+                                ->count();
         $totalFiltered = $totalData; 
 
         $limit = $request->input('length');
@@ -513,7 +515,8 @@ class MasterController extends CommonController {
             0 => 'relation_name', 
             1 => 'id',
         );
-        $totalData = Relation::count();
+        $totalData = Relation::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -632,7 +635,8 @@ class MasterController extends CommonController {
             0 => 'race_name', 
             1 => 'id',
         );
-        $totalData = Race::count();
+        $totalData = Race::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -752,7 +756,8 @@ class MasterController extends CommonController {
             0 => 'reason_name', 
             1 => 'id',
         );
-        $totalData = Reason::count();
+        $totalData = Reason::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -872,7 +877,8 @@ class MasterController extends CommonController {
             0 => 'person_title', 
             1 => 'id',
         );
-        $totalData = Persontitle::count();
+        $totalData = Persontitle::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -994,7 +1000,8 @@ class MasterController extends CommonController {
             0 => 'designation_name', 
             1 => 'id',
         );
-        $totalData = Designation::count();
+        $totalData = Designation::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -1446,7 +1453,8 @@ class MasterController extends CommonController {
             0 => 'status_name', 
             1 => 'id',
         );
-        $totalData = Status::count();
+        $totalData = Status::where('status','=','1')
+        ->count();
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -1571,7 +1579,8 @@ class MasterController extends CommonController {
              0 => 'formname', 
              1 => 'id',
          );
-         $totalData = FormType::count();
+         $totalData = FormType::where('status','=','1')
+         ->count();
          $totalFiltered = $totalData; 
          $limit = $request->input('length');
          
