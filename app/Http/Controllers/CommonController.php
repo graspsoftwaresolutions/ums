@@ -9,6 +9,7 @@ use App\Model\Country;
 use App\Model\State;
 use App\Model\City;
 use App\Model\Company;
+use App\Model\Fee;
 use DB;
 use View;
 use Mail;

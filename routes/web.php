@@ -94,13 +94,16 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('reason-delete/{id}','ReasonController@delete')->name('master.deletereason');
 	
 	//Fee Details
-	Route::get('fee','FeeController@index')->name('master.fee');
+	Route::get('fee','MasterController@fees_list')->name('master.fee');
 	Route::get('add-fee','FeeController@addFee')->name('master.addfee');
 	Route::post('fee_save','FeeController@save')->name('master.savefee');
 	//Route::get('fee-view/{parameter}','FeeController@view')->name('master.fee');
 	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
 	Route::post('fee_update','FeeController@update')->name('master.updatefee');
 	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
+        
+        //feelist
+        Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
 	
 	//Race Details
 	Route::get('race','RaceController@index')->name('master.race');
