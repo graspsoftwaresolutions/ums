@@ -199,7 +199,6 @@ $(function () {
             {"data": "email"},
             {"data": "options"}
         ]
-
     });
 });
 function ConfirmDeletion() {

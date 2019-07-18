@@ -917,7 +917,7 @@ class MasterController extends CommonController
         if(!empty($Designation))
         {
         foreach ($Designation as $Designation)
-        { 
+        {
             $enc_id = Crypt::encrypt($Designation->id);  
             $delete =  route('master.designationdestroy',[app()->getLocale(),$Designation->id]) ;
             $edit =  "#modal_add_edit";

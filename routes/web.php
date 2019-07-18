@@ -213,9 +213,6 @@ Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
 
-
-
-
 Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });
