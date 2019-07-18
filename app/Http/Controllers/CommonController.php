@@ -263,8 +263,10 @@ class CommonController extends Controller
     /*
         Input $result = query result (array)
         Input $deleteRoute = Delete Route Name (string)
+        deletetype : 0 => post , 1 => get
+        edittype : 0 => popup , 1 => page
     */
-    public function CommonAjaxReturn($result, $deleteRoute){
+    public function CommonAjaxReturn($result, $deletetype, $deleteRoute,$edittype,$editRoute=false){
         $data = array();
         if(!empty($result))
         {
@@ -280,11 +282,21 @@ class CommonController extends Controller
                 
                 $enc_id = Crypt::encrypt($autoid);  
                 $delete =  route($deleteRoute, [app()->getLocale(),$autoid]) ;
-                $edit =  "#modal_add_edit";
+                if($edittype==0){
+                    $edit =  "#modal_add_edit";
+                }else{
+                    $edit =  route($editRoute,[app()->getLocale(),$enc_id]);
+                }
+               
 
                 $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-                $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-                $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                if($deletetype==0){
+                    $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                    $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                }else{
+                    $actions .="&nbsp; <a class='btn-small waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' >".trans('Delete')."</a>";
+                }
+                
                 $nestedData['options'] = $actions;
                 $data[] = $nestedData;
 
