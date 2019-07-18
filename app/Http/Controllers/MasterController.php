@@ -17,6 +17,7 @@ use App\Model\UnionBranch;
 use App\Model\Designation;
 use App\Model\Status;
 use App\Model\FormType;
+use App\Model\Company;
 use App\Mail\UnionBranchMailable;
 use DB;
 use View;
@@ -1548,7 +1549,7 @@ class MasterController extends CommonController {
              {
                  return  redirect($defdaultLang.'/formtype')->with('message','Form Type Added Succesfully');
              }
-         }
+        }
      }
      public function formTypeDestroy($lang,$id)
      {
@@ -1559,4 +1560,91 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
      }
      //FormType Details End
+     //Company Details Starts
+     public function companyList()
+     {
+        return view('master.company.company_list');
+     } 
+    //Ajax Datatable FormType List
+    public function ajax_company_list(Request $request){
+
+    $columns = array(
+        0 => 'company_name',
+        1 => 'short_code',
+        2 => 'id'
+    );
+    $totalData = Company::count();
+    $totalFiltered = $totalData; 
+    $limit = $request->input('length');
+    
+    $start = $request->input('start');
+    $order = $columns[$request->input('order.0.column')];
+    $dir = $request->input('order.0.dir');
+    if(empty($request->input('search.value')))
+    {            
+        if( $limit == -1){
+            $Company = Company::orderBy($order,$dir)
+            ->where('status','=','1')
+            ->get();
+        }else{
+            $Company = Company::offset($start)
+            ->limit($limit)
+            ->orderBy($order,$dir)
+            ->where('status','=','1')
+            ->get();
+        }
+    }
+    else {
+    $search = $request->input('search.value'); 
+    if($limit == -1){
+        $Company     = Company::where('id','LIKE',"%{$search}%")
+                    ->orWhere('company_name', 'LIKE',"%{$search}%")
+                     ->orWhere('short_code', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get();
+    }else{
+        $Company      = Company::where('id','LIKE',"%{$search}%")
+                    ->orWhere('company_name', 'LIKE',"%{$search}%")
+                    ->orWhere('short_code', 'LIKE',"%{$search}%")
+                    ->offset($start)
+                    ->limit($limit)
+                    ->where('status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get();
+    }
+    $totalFiltered = Company::where('id','LIKE',"%{$search}%")
+                ->orWhere('company_name', 'LIKE',"%{$search}%")
+                ->orWhere('short_code', 'LIKE',"%{$search}%")
+                ->where('status','=','1')
+                ->count();
+    }
+    $data = array();
+    if(!empty($Company))
+    {
+    foreach ($Company as $Company)
+    { 
+        $enc_id = Crypt::encrypt($Company->id);  
+        $delete =  route('master.formTypedestroy',[app()->getLocale(),$Company->id]) ;
+        $edit =  "#modal_add_edit";
+        $nestedData['company_name'] = $Company->company_name;
+        $nestedData['short_code'] = $Company->short_code;
+        $Company = $Company->id;
+        $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Company);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+        $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+        $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+        $nestedData['options'] = $actions;
+        $data[] = $nestedData;
+    }
+}
+    $json_data = array(
+        "draw"            => intval($request->input('draw')),  
+        "recordsTotal"    => intval($totalData),  
+        "recordsFiltered" => intval($totalFiltered), 
+        "data"            => $data   
+        );
+    echo json_encode($json_data); 
+}
+
+     //Company Details End
 }

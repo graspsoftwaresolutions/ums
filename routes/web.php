@@ -63,6 +63,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('reason_save','MasterController@reasonSave')->name('master.reasonSave');
 	Route::get('reason_detail','CommonController@reasonDetail'); 
 	Route::delete('reason_delete/{id}','MasterController@reasonDestroy')->name('master.reasondestroy');
+	Route::post('reason_nameexists','CommonController@checkReasonNameExists'); 
 
 	//Person Title Details 
 	Route::post('ajax_persontitle_list','MasterController@ajax_persontitle_list')->name('master.ajaxpersontitlelist');
@@ -97,6 +98,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('formtype_detail','CommonController@formTypeDetail'); 
 	Route::delete('formtype-delete/{id}','MasterController@formTypeDestroy')->name('master.formTypedestroy');
 
+	//Company 
+	Route::get('/company','MasterController@companyList')->name('master.company');
+	Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
+	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
+	Route::post('/company_save','CompanyController@save')->name('master.companysave');
+	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
+	Route::post('company_edit','CompanyController@update')->name('master.companyupdate');
+	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
+	
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
 	Route::get('add-state','StateController@addState')->name('master.addstate');
@@ -114,13 +124,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('city_update','CityController@update')->name('master.updatecity');
 	Route::get('city-delete/{id}','CityController@delete')->name('master.deletecity');
 
-	//Company
-	Route::get('/company','CompanyController@index')->name('master.company');
-	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
-	Route::post('/company_save','CompanyController@save')->name('master.companysave');
-	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
-	Route::post('company_edit','CompanyController@update')->name('master.companyupdate');
-	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
+	
 
 	//Union Branch
 	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');
