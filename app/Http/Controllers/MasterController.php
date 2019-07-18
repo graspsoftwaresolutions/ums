@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Helpers\CommonHelper;
 use App\Model\Country;
+use App\Model\State;
 use App\Model\Fee;
 use App\User;
 use App\Model\Relation;
@@ -154,7 +155,7 @@ class MasterController extends CommonController {
 
     public function stateList()
     {
-        $data['country_view'] = Country::all();
+        $data['state_view'] = State::all();
         return view('master.state.state_list')->with('data',$data);
 
     }
