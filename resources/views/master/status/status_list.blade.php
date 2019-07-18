@@ -21,17 +21,18 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Race List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Status List') }}</h5>
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Race') }}
+											<li class="breadcrumb-item active">{{__('Status') }}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Race') }}</a>	
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Status') }}</a>
+										
 									</div>
 								</div>
 							</div>
@@ -39,16 +40,16 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Race List') }}</h4>
+									<h4 class="card-title">{{__('Status List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Race Name') }}</th>
+														<th>{{__('Status Name') }}</th>
 														
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th> {{__('Action') }}</th>
 													</tr>
 												</thead>
 											</table>
@@ -59,14 +60,14 @@
 						</div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Race Details</h4>
-                                <form class="formValidate" id="race_formValidate" method="post"  action="{{ route('master.saverace',app()->getLocale()) }}">
+                                <h4>Status Details</h4>
+                                <form class="formValidate" id="status_formValidate" method="post"  action="{{ route('master.saveStatus',app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
                                     <div class="input-field col s12 m6">
-                                    <label for="person_title" class="common-label force-active">{{ __('Title Name') }}*</label>
-                                          <input id="person_title" class="common-input" name="person_title" type="text" data-error=".errorTxt1">
+                                          <label for="status_name" class="common-label force-active">{{__('Status Name') }}*</label>
+                                          <input id="status_name" name="status_name" class="common-input" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
@@ -94,55 +95,21 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#race_sidebar_li_id").addClass('active');
-	$("#race_sidebar_a_id").addClass('active');
-    
-    //Data table Ajax call
-    $(function () {
-    $('#page-length-option').DataTable({
-        "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-		/* "lengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
-        ], */
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_race_list') }}",
-            "dataType": "json",
-            "type": "POST",
-            "data": {_token: "{{csrf_token()}}"}
-        },
-        "columns": [
-            {"data": "race_name"},
-            {"data": "options"}
-        ]
-    });
-});
-function ConfirmDeletion() {
-    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
-        return true;
-    } else {
-        return false;
-    }
-}
-$("#race_formValidate").validate({
+	$("#status_sidebar_li_id").addClass('active');
+	$("#status_sidebar_a_id").addClass('active');
+    $("#status_formValidate").validate({
         rules: {
-            race_name: {
+            status_name: {
                 required: true,
                 remote:{
-                   url: "{{ url(app()->getLocale().'/race_nameexists')}}", 
+                   url: "{{ url(app()->getLocale().'/status_nameexists')}}", 
                    data: {
                          race_id: function() {
                             return $( "#updateid" ).val();
@@ -156,9 +123,9 @@ $("#race_formValidate").validate({
         },
         //For custom messages
         messages: {
-            race_name: {
-                required: '{{__("Enter a Race Name") }}',
-                remote : '{{__("Race Name Already exists") }}', 
+            status_name: {
+                required: '{{__("Enter the Status Name") }}',
+                remote : '{{__("Status Name Already exists") }}', 
             },
         },
         errorElement: 'div',
@@ -171,6 +138,40 @@ $("#race_formValidate").validate({
         }
         }
     });
+
+//Data table Ajax call
+$(function () {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+		/* "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajax_status_list') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {_token: "{{csrf_token()}}"}
+        },
+        "columns": [
+            {"data": "status_name"},
+            {"data": "options"}
+        ]
+    });
+});
+function ConfirmDeletion() {
+    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 //Model
 $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -180,20 +181,20 @@ function showaddForm() {
 	$('.edit_hide').show();
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
-	$('#race_name').val("");
+	$('#status_name').val("");
     $('.modal').modal();
 }
-function showeditForm(raceid){
+function showeditForm(stateid){
     $('.edit_hide').hide();
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
-    var url = "{{ url(app()->getLocale().'/race_detail') }}" + '?id=' + raceid;
+    var url = "{{ url(app()->getLocale().'/status_details') }}" + '?id=' + stateid;
     $.ajax({url: url, type: "GET", success: function (result) {
 			console.log(result);
 			$('#updateid').val(result.id);
 			$('#updateid').attr('data-autoid',result.id);
-            $('#race_name').val(result.race_name);
+            $('#status_name').val(result.status_name);
         }
     });
 }

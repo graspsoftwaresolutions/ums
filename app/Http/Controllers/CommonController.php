@@ -12,10 +12,12 @@ use App\Model\City;
 use App\Model\Company;
 use App\Model\Race;
 use App\Model\Reason;
+use App\Model\Status;
 use App\Model\Persontitle;
 use App\Model\Designation;
 use App\Model\UnionBranch;
 use App\Model\Fee;
+use App\Model\FormType;
 use DB;
 use View;
 use Mail;
@@ -432,7 +434,7 @@ class CommonController extends Controller
          
          return $this->checkDesignationExists($designation_name,$designation_id);
      }
-     //checkPerson Title Exists
+     //checkDesignation Exists
      public function checkDesignationExists($designation_name,$designation_id=false)
      {   
          if(!empty($designation_id))
@@ -466,6 +468,8 @@ class CommonController extends Controller
         return $data;
     } 
     //Designation Details End
+    
+    //Check branch starts
 	public function BranchmailExists($email,$autoid=false){
           //  return $userid;
           if(!empty($autoid))
@@ -487,4 +491,89 @@ class CommonController extends Controller
               return "true";
           }
     }
+    //Branch End
+
+    //Status Details Start  
+    public function checkStatusNameExists(Request $request)
+    {
+        $status_name =  $request->input('status_name');
+        $status_id = $request->input('status_id');   
+        return $this->checkStatusExists($status_name,$status_id);
+    }
+	public function checkStatusExists($status_name,$status_id=false)
+     {   
+         if(!empty($status_id))
+          { 
+                 $status_exists = Status::where([
+                  ['status_name','=',$status_name],
+                  ['id','!=',$status_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $status_exists = Status::where([
+                ['status_name','=',$status_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($status_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    public function statusDetail(Request $request)
+    {
+        $id = $request->id;
+        $Status = new Status();
+        $data = Status::find($id);
+        return $data;
+    } 
+    //Status Details End
+
+    //Form Type Deatils Start
+    public function checkFormTypeNameExists(Request $request)
+    {
+        //dd($request->all());
+        $formname =  $request->input('formname');
+        $formtype_id = $request->input('formtype_id');   
+        return $this->checkFormTyNameExists($formname,$formtype_id);
+    }
+    public function checkFormTyNameExists($formname,$formtype_id=false)
+    {   
+         if(!empty($formtype_id))
+          { 
+                 $formtype_exists = FormType::where([
+                  ['formname','=',$formname],
+                  ['id','!=',$formtype_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          { 
+            $formtype_exists = FormType::where([
+                ['formname','=',$formname],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($formtype_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    } 
+    public function formTypeDetail(Request $request)
+    {
+        $id = $request->id;
+        $FormType = new FormType();
+        $data = FormType::find($id);
+        return $data;
+    } 
+
+     //Form Type Deatils End
 }

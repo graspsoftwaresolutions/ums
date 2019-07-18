@@ -15,6 +15,8 @@ use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\UnionBranch;
 use App\Model\Designation;
+use App\Model\Status;
+use App\Model\FormType;
 use App\Mail\UnionBranchMailable;
 use DB;
 use View;
@@ -37,6 +39,8 @@ class MasterController extends CommonController {
         $this->UnionBranch = new UnionBranch;
         $this->Persontitle = new Persontitle;
         $this->Designation = new Designation;
+        $this->Status = new Status; 
+        $this->FormType = new FormType;
     }
 
     public function countryList() {
@@ -797,7 +801,7 @@ class MasterController extends CommonController {
         foreach ($Reason as $Reason)
         {
             $enc_id = Crypt::encrypt($Reason->id);  
-            $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]) ;
+            $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]);
             $edit =  "#modal_add_edit";
             $nestedData['reason_name'] = $Reason->reason_name;
             $relationid = $Reason->id;
@@ -1097,6 +1101,8 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/designation')->with('message','Person Title Details Deleted Successfully!!');
      }
     //Designation Details End
+
+    //Union Branch Details Start
     public function  unionBranchList()
     {
         //$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
@@ -1227,7 +1233,7 @@ class MasterController extends CommonController {
         }else{
             $auto_id = $request->input('auto_id');
             $user_id = UnionBranch::where('id',$auto_id)->pluck('user_id')[0];
-            
+            $rold_id_21 = DB::table('users')->where('id','=',$user_id)->update(['name'=> $request->input('branch_name')]);
             if($union['is_head'] == 0)
             {
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
@@ -1272,7 +1278,9 @@ class MasterController extends CommonController {
         return view('master.unionbranch.unionbranch_details')->with('data',$data);
 
     }
+    //Union BRanch List End
 
+    //Fee Details Start
     public function ajax_fees_list(Request $request) {
         $columns = array(
             0 => 'fee_name',
@@ -1299,7 +1307,7 @@ class MasterController extends CommonController {
              $or_where = array($or_where1, $or_where2);
         }
         $feelist = new Fee();
-        $overallfeedetail = $feelist->getUser($select, $where, $or_where, $orderby, $limit, $offset);
+        $overallfeedetail = $feelist->getFee($select, $where, $or_where, $orderby, $limit, $offset);
         $totalFiltered =$totalData=$overallfeedetail->count();
           $data = array();
           if (!empty($overallfeedetail)) {
@@ -1412,28 +1420,264 @@ class MasterController extends CommonController {
         return view('master.fee.fee');
     }
 	
-	
 	public function checkBranchemailExists(Request $request){
 		//return $request->all();
 		$email =  $request->input('email');
         $db_autoid = $request->input('db_autoid');
 		if($db_autoid=='' || $db_autoid==null)
         {
-			//$userexists = $this->mailExists($email);
-			//$userexists;
 			return $branchexists = $this->BranchmailExists($email);
-			//$branchexists;
-			/* if($userexists===false ){
-				return Response::json(false);
-				die;
-			}else{
-				return Response::json(true);
-				die;
-				$return_status = 'true1';
-			} */
 		}else{
 			return $branchexists = $this->BranchmailExists($email,$db_autoid);
 		}
 		//return Response::json($return_status);
-	}
+    }
+    //Fee Details End
+
+    //Status Details Start
+    public function statusList()
+    {
+        return view('master.status.status_list');
+    } 
+    //Ajax Datatable Status List
+    public function ajax_status_list(Request $request){
+
+        $columns = array(
+            0 => 'status_name', 
+            1 => 'id',
+        );
+        $totalData = Status::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Status = Status::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Status = Status::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Status     =  Status::where('id','LIKE',"%{$search}%")
+                        ->orWhere('status_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Status      = Status::where('id','LIKE',"%{$search}%")
+                        ->orWhere('status_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Status::where('id','LIKE',"%{$search}%")
+                    ->orWhere('status_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
+        if(!empty($Status))
+        {
+        foreach ($Status as $Status)
+        { 
+            $enc_id = Crypt::encrypt($Status->id);  
+            $delete =  route('master.statusdestroy',[app()->getLocale(),$Status->id]) ;
+            $edit =  "#modal_add_edit";
+            $nestedData['status_name'] = $Status->status_name;
+            $Status = $Status->id;
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Status);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+        }
+    }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    } 
+    //Status Save and Update
+    public function statusSave(Request $request)
+    {   
+        $request->validate([
+            'status_name'=>'required',
+        ],
+        [
+            'status_name.required'=>'please enter Status name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkStatusExists($request->input('status_name'),$request->id);
+        }else{
+            $data_exists = $this->checkStatusExists($request->input('status_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/status')->with('error','Status Name Already Exists'); 
+        }
+        else{
+            $saveStatus = $this->Status->saveStatusdata($data);
+           
+            if($saveStatus == true)
+            {
+                return  redirect($defdaultLang.'/status')->with('message','Status Added Succesfully');
+            }
+        }
+    }
+    public function statusDestroy($lang,$id)
+    {
+        $Status = new Status();
+        $Status = Status::find($id);
+        $Status->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/status')->with('message','Status Details Deleted Successfully!!');
+    }
+    ////Status Details End
+    public function deleteUnionBranch($lang,$id)
+	{
+        $id = Crypt::decrypt($id);
+		$data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
+		return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
+    }
+     //FormType Details Start 
+     public function formTypeList()
+     {
+         return view('master.formtype.formtype_list');
+     } 
+     //Ajax Datatable FormType List
+     public function ajax_formtype_list(Request $request){
+ 
+         $columns = array(
+             0 => 'formname', 
+             1 => 'id',
+         );
+         $totalData = FormType::count();
+         $totalFiltered = $totalData; 
+         $limit = $request->input('length');
+         
+         $start = $request->input('start');
+         $order = $columns[$request->input('order.0.column')];
+         $dir = $request->input('order.0.dir');
+         if(empty($request->input('search.value')))
+         {            
+             if( $limit == -1){
+                 $FormType = FormType::orderBy($order,$dir)
+                 ->where('status','=','1')
+                 ->get();
+             }else{
+                 $FormType = FormType::offset($start)
+                 ->limit($limit)
+                 ->orderBy($order,$dir)
+                 ->where('status','=','1')
+                 ->get();
+             }
+         }
+         else {
+         $search = $request->input('search.value'); 
+         if($limit == -1){
+             $FormType     =  FormType::where('id','LIKE',"%{$search}%")
+                         ->orWhere('formname', 'LIKE',"%{$search}%")
+                         ->where('status','=','1')
+                         ->orderBy($order,$dir)
+                         ->get();
+         }else{
+             $FormType      = FormType::where('id','LIKE',"%{$search}%")
+                         ->orWhere('formname', 'LIKE',"%{$search}%")
+                         ->offset($start)
+                         ->limit($limit)
+                         ->where('status','=','1')
+                         ->orderBy($order,$dir)
+                         ->get();
+         }
+         $totalFiltered = FormType::where('id','LIKE',"%{$search}%")
+                     ->orWhere('formname', 'LIKE',"%{$search}%")
+                     ->where('status','=','1')
+                     ->count();
+         }
+         $data = array();
+         if(!empty($FormType))
+         {
+         foreach ($FormType as $FormType)
+         { 
+             $enc_id = Crypt::encrypt($FormType->id);  
+             $delete =  route('master.formTypedestroy',[app()->getLocale(),$FormType->id]) ;
+             $edit =  "#modal_add_edit";
+             $nestedData['formname'] = $FormType->formname;
+             $nestedData['orderno'] = $FormType->orderno;
+             $FormType = $FormType->id;
+             $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($FormType);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+             $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+             $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+             $nestedData['options'] = $actions;
+             $data[] = $nestedData;
+         }
+     }
+         $json_data = array(
+             "draw"            => intval($request->input('draw')),  
+             "recordsTotal"    => intval($totalData),  
+             "recordsFiltered" => intval($totalFiltered), 
+             "data"            => $data   
+             );
+         echo json_encode($json_data); 
+     } 
+     //Status Save and Update
+     public function formTypeSave(Request $request)
+     {   
+         $request->validate([
+             'formname'=>'required',
+         ],
+         [
+             'formname.required'=>'Please enter Form name',
+         ]);
+         $data = $request->all();   
+         
+         $defdaultLang = app()->getLocale();
+         
+         if(!empty($request->id)){
+             $data_exists = $this->checkFormTyNameExists($request->input('formname'),$request->id);
+         }else{
+             $data_exists = $this->checkFormTyNameExists($request->input('formname'));
+         }
+         if($data_exists>0)
+         {
+             return  redirect($defdaultLang.'/formtype')->with('error','Form Type Name Already Exists'); 
+         }
+         else{
+             $saveFormType = $this->FormType->saveFormTypedata($data);
+            
+             if($saveFormType == true)
+             {
+                 return  redirect($defdaultLang.'/formtype')->with('message','Form Type Added Succesfully');
+             }
+         }
+     }
+     public function formTypeDestroy($lang,$id)
+     {
+         $FormType = new FormType();
+         $FormType = FormType::find($id);
+         $FormType->where('id','=',$id)->update(['status'=>'0']);
+         $defdaultLang = app()->getLocale();
+         return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
+     }
+     //FormType Details End
 }

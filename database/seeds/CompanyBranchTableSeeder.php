@@ -26,9 +26,29 @@ class CompanyBranchTableSeeder extends Seeder
 		$branch->address_three = 'test address';
 		$branch->phone = '9988888';
 		$branch->mobile = '88888888';
-		$branch->email = 'companybranch@gmail.com';
+		$branch->email = 'company@gmail.com';
 		$branch->is_head = 1;
 		$branch->user_id = 3;
+		$branch->status = 1;
+	    $branch->save();
+		
+		// company head
+        $branch = new CompanyBranch();
+	    $branch->company_id = 1;
+	    $branch->union_branch_id = 1;
+		$branch->branch_name = 'Default company branch';
+		$branch->country_id = 130;
+	    $branch->state_id = 15;
+	    $branch->city_id = 33;
+		$branch->postal_code = '635204';
+		$branch->address_one = 'test address';
+		$branch->address_two = 'test address';
+		$branch->address_three = 'test address';
+		$branch->phone = '9988888';
+		$branch->mobile = '88888888';
+		$branch->email = 'companybranch@gmail.com';
+		$branch->is_head = 0;
+		$branch->user_id = 4;
 		$branch->status = 1;
 	    $branch->save();
     }
