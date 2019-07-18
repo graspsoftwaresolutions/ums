@@ -99,8 +99,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('formtype-delete/{id}','MasterController@formTypeDestroy')->name('master.formTypedestroy');
 
 	//Company 
-	Route::get('/company','MasterController@companyList')->name('master.company');
-	Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
+	Route::get('/company','CompanyController@index')->name('master.company');
+	//Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
 	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
 	Route::post('/company_save','CompanyController@save')->name('master.companysave');
 	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
