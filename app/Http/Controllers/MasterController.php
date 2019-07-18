@@ -19,6 +19,7 @@ use View;
 use Mail;
 use App\Role;
 use URL;
+use Response;
 
 
 class MasterController extends CommonController
@@ -1013,64 +1014,61 @@ class MasterController extends CommonController
             'postal_code.required'=>'Please Enter postal code',
             'address_one.required'=>'Please Enter your Address',
         ]);
-       
-        if($auto_id=""){
-            $union['union_branch'] = $request->input('branch_name');
-            $union['phone'] = $request->input('phone');
-            $union['mobile'] = $request->input('mobile');
-            $union['email'] = $request->input('email');
-            $union['postal_code'] = $request->input('postal_code');
-            $union['country_id'] = $request->input('country_id');
-            $union['state_id'] = $request->input('state_id');
-            $union['city_id'] = $request->input('city_id');
-            $union['address_one'] = $request->input('address_one');
-            $union['address_two'] = $request->input('address_two');
-            $union['address_three'] = $request->input('address_three');
-            $files = $request->file('logo');
+		$union['union_branch'] = $request->input('branch_name');
+		$union['phone'] = $request->input('phone');
+		$union['mobile'] = $request->input('mobile');
+		$union['email'] = $request->input('email');
+		$union['postal_code'] = $request->input('postal_code');
+		$union['country_id'] = $request->input('country_id');
+		$union['state_id'] = $request->input('state_id');
+		$union['city_id'] = $request->input('city_id');
+		$union['address_one'] = $request->input('address_one');
+		$union['address_two'] = $request->input('address_two');
+		$union['address_three'] = $request->input('address_three');
+		$is_head = $request->input('is_head');
+		if(isset($is_head)){
+			$union['is_head'] = 1;
+		}else{
+			$union['is_head'] = 0;
+		}
+		$files = $request->file('logo');
             
-            if(!empty($files))
-            {
-                $image_name = time().'.'.$files->getClientOriginalExtension();
-                $files->move('public/images',$image_name);
-                $union['logo'] = $image_name;
-            }
-            
-            $is_head = $request->input('is_head');
-            if(isset($is_head)){
-                $union['is_head'] = 1;
-            }else{
-                $union['is_head'] = 0;
-            }
-    
-            $defaultLanguage = app()->getLocale();
-           
+		if(!empty($files))
+		{
+			$image_name = time().'.'.$files->getClientOriginalExtension();
+			$files->move('public/images',$image_name);
+			$union['logo'] = $image_name;
+		}
+		$defaultLanguage = app()->getLocale();
+		
+        if($auto_id==""){
             $union_head_role = Role::where('slug', 'union')->first();
             $union_branch_role = Role::where('slug', 'union-branch')->first();
             $randompass = CommonHelper::random_password(5,true);
             $redirect_failurl = app()->getLocale().'/unionbranch';
             $redirect_url = app()->getLocale().'/unionbranch';
-            
+			
             
             //Data Exists
             $data_exists_unionemail = DB::table('union_branch')->where([
                                         ['email','=',$union['email']]
                                         ])->count();
+										echo 'br';
             $data_exists_usersemail = DB::table('users')->where('email','=',$union['email'])->count();
-    
             if($data_exists_unionemail > 0 ||  $data_exists_usersemail > 0)
             {
                 return redirect($defaultLanguage.'/save-unionbranch')->with('error','Email Already Exists');
             }
             else
             {
+				$member_user = new User();
+				$member_user->name = $request->input('branch_name');
+				$member_user->email = $request->input('email');
+				$member_user->password = bcrypt($randompass);
+				$member_user->save();
                 $union_type =2;
                 DB::connection()->enableQueryLog();
                 if($union['is_head']==1){
-                    $member_user = new User();
-                    $member_user->name = $request->input('branch_name');
-                    $member_user->email = $request->input('email');
-                    $member_user->password = bcrypt($randompass);
-                    $member_user->save();
                     $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
                     $rold_id_2 = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                     //$queries = DB::getQueryLog();
@@ -1079,13 +1077,7 @@ class MasterController extends CommonController
                    
                     $union_type =1;
                 }else{
-                    $member_user = new User();
-                    $member_user->name = $request->input('branch_name');
-                    $member_user->email = $request->input('email');
-                    $member_user->password = bcrypt($randompass);
-                    $member_user->save();
                     $member_user->roles()->attach($union_branch_role);
-                    $status =1;
                 }
                 $user_id = $member_user->id;
                 $union['user_id'] = $user_id;
@@ -1111,57 +1103,24 @@ class MasterController extends CommonController
             }
             if($status == 0)
             {
-                return redirect()->back()->with('error','please check');
+                return redirect()->back()->with('error','please fill  valid data');
             }
         }else{
             $auto_id = $request->input('auto_id');
             $user_id = UnionBranch::where('id',$auto_id)->pluck('user_id')[0];
-           
-            $union['union_branch'] = $request->input('branch_name');
-            $union['phone'] = $request->input('phone');
-            $union['email'] = $request->input('email');
-            $union['mobile'] = $request->input('mobile');
-            $union['postal_code'] = $request->input('postal_code');
-            $union['country_id'] = $request->input('country_id');
-            $union['state_id'] = $request->input('state_id');
-            $union['city_id'] = $request->input('city_id');
-            $union['address_one'] = $request->input('address_one');
-            $union['is_head'] = $request->input('is_head');
-            $union['address_two'] = $request->input('address_two');
-            $union['address_three'] = $request->input('address_three');
-            $files = $request->file('logo');
-           
-            if(!empty($files))
-            {
-                $image_name = time().'.'.$files->getClientOriginalExtension();
-                $files->move('public/images',$image_name);
-                $union['logo'] = $image_name;
-            }
-            $defaultLanguage = app()->getLocale();
-            $union_branch_role = Role::where('slug', 'union-branch')->first();
-            $union_head_role = Role::where('slug', 'union')->first();
-            $randompass = CommonHelper::random_password(5,true);
-            $redirect_failurl = app()->getLocale().'/unionbranch';
-            $redirect_url = app()->getLocale().'/unionbranch';
             
-            $is_head = $request->input('is_head');
-            if(isset($is_head)){
-                $union['is_head'] = 1;
-            }else{
-                $union['is_head'] = 0;
-            }
             if($union['is_head'] == 0)
             {
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
                 $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->where('user_id','=',$user_id)->update(['role_id'=>'2']);
-                return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
+               
             }else{
                 $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                 $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
                 $rold_id_2 = DB::table('users_roles')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
-                return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
             }
+			return redirect($defaultLanguage.'/unionbranch')->with('message','Union Branch Name Updated Succesfully');
         }
        
     }
@@ -1193,4 +1152,29 @@ class MasterController extends CommonController
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
         return view('master.unionbranch.unionbranch_details')->with('data',$data);
     }
+	
+	
+	public function checkBranchemailExists(Request $request){
+		//return $request->all();
+		$email =  $request->input('email');
+        $db_autoid = $request->input('db_autoid');
+		if($db_autoid=='' || $db_autoid==null)
+        {
+			//$userexists = $this->mailExists($email);
+			//$userexists;
+			return $branchexists = $this->BranchmailExists($email);
+			//$branchexists;
+			/* if($userexists===false ){
+				return Response::json(false);
+				die;
+			}else{
+				return Response::json(true);
+				die;
+				$return_status = 'true1';
+			} */
+		}else{
+			return $branchexists = $this->BranchmailExists($email,$db_autoid);
+		}
+		//return Response::json($return_status);
+	}
 }

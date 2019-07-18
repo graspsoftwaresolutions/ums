@@ -14,6 +14,7 @@ use App\Model\Race;
 use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\Designation;
+use App\Model\UnionBranch;
 use DB;
 use View;
 use Mail;
@@ -421,4 +422,25 @@ class CommonController extends Controller
         return $data;
     } 
     //Designation Details End
+	public function BranchmailExists($email,$autoid=false){
+          //  return $userid;
+          if(!empty($autoid))
+          {
+              $useremail_exists = UnionBranch::where([
+                  ['email','=',$email],
+                  ['id','!=',$autoid]
+                  ])->count(); 
+          }
+          else
+          {
+              $useremail_exists = UnionBranch::where('email','=',$email)->count(); 
+          } 
+          if($useremail_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
 }

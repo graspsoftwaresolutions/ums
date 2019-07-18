@@ -113,6 +113,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('unionbranch_update','UnionBranchController@update')->name('master.updateunionbranch');
 	Route::get('unionbranch-delete/{id}','UnionBranchController@delete')->name('master.deleteunionbranch');
 	Route::post('ajaxUnionBranchList','MasterController@AjaxunionBranchList')->name('master.union_BranchList');
+	Route::post('branch_emailexists','MasterController@checkBranchemailExists');
 	
 	//Fee Details
 	Route::get('fee','FeeController@index')->name('master.fee');

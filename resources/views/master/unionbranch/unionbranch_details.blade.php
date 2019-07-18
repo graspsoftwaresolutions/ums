@@ -52,28 +52,28 @@
                                    <div id="view-validations">
                                     <form class="formValidate" id="unionbranch_formValidate" enctype="multipart/form-data" method="post" action="{{route('master.saveunionbranch', app()->getLocale())}}">
                                         @csrf
-                                        <input type="hidden" name="auto_id" value="@isset($values){{$values->branchid}}@endisset">
+                                        <input type="hidden" name="auto_id" id="auto_id" value="@isset($values){{$values->branchid}}@endisset">
                                       <div class="row">
                                         <div class="input-field col s12 m6">
                                           <label for="branch_name" class="common-label">{{__('Union Branch Name') }}*</label>
                                           <input id="branch_name" class="common-input" name="branch_name" value="@isset($values){{ $values->union_branch }}@endisset" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                         </div>
-                                        <div class="input-field col s12 m6">
-                                                <select name="country_id" id="country_id" class="error browser-default common-select">
+                                       <div class="input-field col s12 m6">
+                                                <select name="country_id" id="country_id" class="error browser-default common-select selectpicker" data-error=".errorTxt101">
                                                 <option value="">{{__('Select Country') }}</option>
                                                     @foreach($data['country_view'] as $value)
                                                     <option value="{{$value->id}}" @isset($values)  @php if($value->id == $values->country_id) { echo "selected";} @endphp  @endisset >{{$value->country_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-field">        
-													<div class="errorTxt10"></div>
+													<div class="errorTxt101"></div>
 												</div>
                                             </div>
                                             
                                             <div class="col s12 m6">
                                                <label class="common-label">{{__('State Name') }}*</label>
-                                                <select class="error browser-default common-select" id="state_id" name="state_id" aria-required="true" required>
+                                                <select class="error browser-default common-select selectpicker" id="state_id" name="state_id" aria-required="true"data-error=".errorTxt102" required>
                                                     @isset($data['state_view'])
                                                     @foreach($data['state_view'] as $value)
                                                     <option value="{{$value->id}}" @isset($values) @php if($value->id == $values->state_id) { echo "selected";} @endphp @endisset >{{$value->state_name}}</option>
@@ -81,12 +81,12 @@
                                                     @endisset
                                                 </select>
                                                 <div class="input-field"> 
-													<div class="errorTxt11"></div>
+													<div class="errorTxt102"></div>
 												</div>
                                             </div>
                                             <div class="col s12 m6">
                                                  <label class="common-label">{{__('City Name') }}*</label>
-                                                <select name="city_id" id="city_id" class="error browser-default common-select" aria-required="true" required>
+                                                <select name="city_id" id="city_id" class="error browser-default common-select selectpicker" aria-required="true"data-error=".errorTxt103" required>
                                                       @isset($data['city_view'])
                                                      @foreach($data['city_view'] as $value)
                                                     <option value="{{$value->id}}" <?php if($value->id == $values->city_id) { echo "selected";} ?>>{{$value->city_name}}</option>
@@ -94,7 +94,7 @@
                                                     @endisset
                                                 </select>
                                                 <div class="input-field">        
-													<div class="errorTxt12"></div>
+													<div class="errorTxt103"></div>
 												</div>
                                             </div>
                                             <div class="input-field col s12 m6">
@@ -153,7 +153,7 @@
                                             </div>
                                             <div class="input-field col s12 m6">
                                                 <label for="email" class="common-label">{{__('Email') }} *</label>
-                                                <input id="email" name="email" class="common-input" type="text" value="@isset($values){{$values->email}}@endisset" data-error=".errorTxt6">
+                                                <input id="email" name="email" class="common-input" type="text" @isset($values) readonly @endisset value="@isset($values){{$values->email}}@endisset" data-error=".errorTxt6">
                                                 <div class="errorTxt6"></div>
                                             </div>
                                             <div class="clearfix" style="clear:both"></div>
@@ -166,8 +166,11 @@
                                         </p>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
-                                          <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Update') }}
-                                            
+                                           <button class="btn waves-effect waves-light right submit" type="submit" name="action">
+										   @if(isset($values))
+											{{__('Update') }}
+											@else{{__('Save') }}
+                                            @endif
                                           </button>
                                         </div>
                                       </div>
@@ -277,9 +280,19 @@
                 required: true,
                 digits: true,
             },
-            email: {
+            email:{
                 required: true,
-                email: true,
+                remote:{
+                   url: "{{ url(app()->getLocale().'/branch_emailexists')}}", 
+                   data: {
+                        db_autoid: function() {
+                            return $( "#auto_id" ).val();
+                        },
+                        _token: "{{csrf_token()}}", 
+                        email: $(this).data('email')
+                        },
+                   type: "post",
+                },
             },
             country_id: {
                 required: true,
@@ -313,10 +326,9 @@
                 digits: '{{__("Enter Numbers only") }}',
                 
             },
-            email: {
-                required: '{{__("Please enter valid email") }}',
-                email : '{{__("Please Enter valid Email") }}',
-                },
+            email:{
+				remote : '{{__("Email Already exists") }}',
+            },
             country_id: {
                 required:'{{__("Please choose Country") }}',
             },
