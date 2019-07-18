@@ -17,6 +17,8 @@ use App\User;
 use App\Model\MemberNominees;
 use App\Model\MemberGuardian;
 use App\Model\MemberFee;
+use App\Model\CompanyBranch;
+use App\Model\UnionBranch;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -35,13 +37,64 @@ class MembershipController extends Controller
     }
     public function index()
     {
-        $auth_user = Auth::user();
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
                                                 
-        $check_union = $auth_user->hasRole('union');
-        $branch_id = $auth_user->branch_id;
        
         $data['member_type'] = 1;
-        if($check_union){
+		if($user_role=='union'){
+			$data['member_view'] = DB::table('membership')
+				->where('membership.status','=','1')->where('membership.status_id','!=','1')->get();
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+			if(count($union_branch_id)>0){
+				$union_branch_id = $union_branch_id[0];
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['c.union_branch_id','=',$union_branch_id],
+                    ['m.status_id','!=','1']
+                    ])->get();
+				/* $data['member_view'] = DB::table('company_branch as c')
+										->innerjoin('membership.status','=','1')->where('membership.status_id','!=','1')->get();
+										->where('membership.status','=','1')->where('membership.status_id','!=','1')->get(); */
+			}else{
+				$data['member_view'] = array();
+			}
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+			if(count($company_id)>0){
+				$companyid = $company_id[0];
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['c.company_id','=',$companyid],
+                    ['m.status_id','!=','1']
+                    ])->get();
+			}else{
+				$data['member_view'] = array();
+			}
+		}else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
+			if(count($branch_id)>0){
+				$branchid = $branch_id[0];
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['m.branch_id','=',$branchid],
+                    ['m.status_id','!=','1']
+                    ])->get();
+			}else{
+				$data['member_view'] = array();
+			}
+		}else{
+			return view('errors.404'); 
+		}
+        /* if($check_union){
             $data['member_view'] = DB::table('membership')
             ->where('membership.status','=','1')->where('membership.status_id','!=','1')->get();
         }else{
@@ -49,7 +102,7 @@ class MembershipController extends Controller
             ->where('membership.status','=','1')->where('membership.status_id','!=','1')->get();
            // $data['member_view'] = DB::table('membership')
             //->where('membership.status','=','1')->where('membership.status_id','!=','1')->where('branch_id','=',$branch_id)->get();
-        }
+        } */
        
         return view('membership.membership')->with('data',$data); 
        
@@ -150,7 +203,8 @@ class MembershipController extends Controller
     
 
     public function new_members(){
-        $data['member_type'] = 0;
+		
+        /* $data['member_type'] = 0;
         $auth_user = Auth::user();
         $check_union = $auth_user->hasRole('union');
         //$branch_id = $auth_user->branch_id;
@@ -162,7 +216,64 @@ class MembershipController extends Controller
             ->where('membership.status','=','1')->where('membership.status_id','=','1')->get();
             //$data['member_view'] = DB::table('membership')
             //->where('membership.status','=','1')->where('membership.status_id','=','1')->where('branch_id','=',$branch_id)->get();
-        }
+        } */
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+                                                
+       
+        $data['member_type'] = 0;
+		if($user_role=='union'){
+			$data['member_view'] = DB::table('membership')
+				->where('membership.status','=','1')->where('membership.status_id','=','1')->get();
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+			if(count($union_branch_id)>0){
+				$union_branch_id = $union_branch_id[0];
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['c.union_branch_id','=',$union_branch_id],
+                    ['m.status_id','=','1']
+                    ])->get();
+				/* $data['member_view'] = DB::table('company_branch as c')
+										->innerjoin('membership.status','=','1')->where('membership.status_id','!=','1')->get();
+										->where('membership.status','=','1')->where('membership.status_id','!=','1')->get(); */
+			}else{
+				$data['member_view'] = array();
+			}
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+			if(count($company_id)>0){
+				$companyid = $company_id[0];
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['c.company_id','=',$companyid],
+                    ['m.status_id','=','1']
+                    ])->get();
+			}else{
+				$data['member_view'] = array();
+			}
+		}else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
+			if(count($branch_id)>0){
+				$branchid = $branch_id[0];
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['m.branch_id','=',$branchid],
+                    ['m.status_id','=','1']
+                    ])->get();
+			}else{
+				$data['member_view'] = array();
+			}
+		}else{
+			return view('errors.404'); 
+		}
         
 
         return view('membership.membership')->with('data',$data); 

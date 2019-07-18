@@ -1105,7 +1105,7 @@ class MasterController extends CommonController {
         }else{
             $auto_id = $request->input('auto_id');
             $user_id = UnionBranch::where('id',$auto_id)->pluck('user_id')[0];
-            
+            $rold_id_21 = DB::table('users')->where('id','=',$user_id)->update(['name'=> $request->input('branch_name')]);
             if($union['is_head'] == 0)
             {
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
@@ -1297,21 +1297,17 @@ class MasterController extends CommonController {
         $db_autoid = $request->input('db_autoid');
 		if($db_autoid=='' || $db_autoid==null)
         {
-			//$userexists = $this->mailExists($email);
-			//$userexists;
 			return $branchexists = $this->BranchmailExists($email);
-			//$branchexists;
-			/* if($userexists===false ){
-				return Response::json(false);
-				die;
-			}else{
-				return Response::json(true);
-				die;
-				$return_status = 'true1';
-			} */
 		}else{
 			return $branchexists = $this->BranchmailExists($email,$db_autoid);
 		}
 		//return Response::json($return_status);
 	}
+	
+	public function deleteUnionBranch($lang,$id)
+	{
+        $id = Crypt::decrypt($id);
+		$data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
+		return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
+    }
 }

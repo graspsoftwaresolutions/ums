@@ -44,13 +44,14 @@
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
-											<table id="page-length-option" class="display">
+											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
 														<th>{{__('Company Name') }}</th>
 														<th>{{__('Branch Name') }}</th>
+														<th width="10%">{{__('Email') }}</th>
 														<th>{{__('Head') }}</th>
-														<th style="text-align:center">{{__('Action') }}</th>
+														<th style="" width="40%">{{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -67,8 +68,9 @@
 													@endphp
 														<td>{{$value->company_name}}</td>
 														<td>{{$value->branch_name}}</td>
+														<td>{{$value->email}}</td>
 														<td>{{$value->is_head}}</td>
-														<td style="text-align:center">
+														<td >
 														<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editbranch', [app()->getLocale(), $parameter]) }}">{{__('Edit') }}</a>
 														<a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletebranch', [app()->getLocale(), $parameter]) }}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
 												  </tr>

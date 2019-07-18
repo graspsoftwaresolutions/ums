@@ -110,8 +110,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('save-unionbranch','MasterController@addUnionBranch')->name('master.addunionbranch');
 	Route::post('unionbranch_save','MasterController@UnionBranchsave')->name('master.saveunionbranch');
 	Route::get('unionbranch-edit/{parameter}','MasterController@EditUnionBranch')->name('master.editunionbranch');
-	Route::post('unionbranch_update','UnionBranchController@update')->name('master.updateunionbranch');
-	Route::get('unionbranch-delete/{id}','UnionBranchController@delete')->name('master.deleteunionbranch');
+	Route::get('unionbranch-delete/{id}','MasterController@deleteUnionBranch')->name('master.deleteunionbranch');
 	Route::post('ajaxUnionBranchList','MasterController@AjaxunionBranchList')->name('master.union_BranchList');
 	Route::post('branch_emailexists','MasterController@checkBranchemailExists');
 	

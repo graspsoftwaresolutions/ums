@@ -7,6 +7,7 @@ use DB;
 
 class Status extends Model
 {
+	protected $table='status';
     protected $fillable = [
         'id','country_id','status_name','status',
     ];

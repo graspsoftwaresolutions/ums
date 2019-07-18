@@ -25,7 +25,7 @@ class CompanyBranchController extends Controller
     }
     public function index()
     {
-        $data = DB::table('company')->select('company.company_name','company_branch.branch_name','company_branch.id','company_branch.company_id','company_branch.status','company_branch.is_head','company.status')
+        $data = DB::table('company')->select('company.company_name','company_branch.branch_name','company_branch.id','company_branch.company_id','company_branch.status','company_branch.is_head','company.status','company_branch.email')
                 ->join('company_branch','company.id','=','company_branch.company_id')
                 ->orderBy('company.id','ASC')
                 ->where([
@@ -250,6 +250,7 @@ class CompanyBranchController extends Controller
             ['union_branch_id','=', $request->input('union_branch_id')],
             ['status','=','1']
             ])->count(); */
+		$rold_id_21 = DB::table('users')->where('id','=',$user_id)->update(['name'=> $request->input('branch_name')]);
         if($branch['is_head']==0){
             $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
             $rold_id_2 = DB::table('users_roles')->where('role_id','=','3')->where('user_id','=',$user_id)->update(['role_id'=>'4']);
