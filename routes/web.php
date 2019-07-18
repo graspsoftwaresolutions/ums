@@ -70,7 +70,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('persontitle_detail','CommonController@personTitleDetail');
 	Route::post('persontitle_nameexists','CommonController@checkTitleNameExists'); 
 	Route::post('persontitle_save','MasterController@personTileSave')->name('master.savepersontitle');
-	Route::delete('reason_delete/{id}','MasterController@personTiteDestroy')->name('master.persontitledestroy');
+	Route::delete('persontitle_delete/{id}','MasterController@personTiteDestroy')->name('master.persontitledestroy');
 
 	//Designation Details  
 	Route::get('designation','MasterController@designationList')->name('master.designation');
@@ -79,6 +79,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('designation_save','MasterController@designationSave')->name('master.saveDesignation'); 
 	Route::get('designation_detail','CommonController@designationDetail');
 	Route::delete('designation-delete/{id}','MasterController@designationDestroy')->name('master.designationdestroy');
+
+	//Status Details
+	Route::get('status','MasterController@statusList')->name('master.status');
+	Route::post('ajax_status_list','MasterController@ajax_status_list')->name('master.ajaxstatuslist'); 
+	Route::post('status_nameexists','CommonController@checkStatusNameExists'); 
+	Route::post('saveStatus','MasterController@statusSave')->name('master.saveStatus'); 
+	Route::get('status_details','CommonController@statusDetail'); 
+	Route::delete('status-delete/{id}','MasterController@statusDestroy')->name('master.statusdestroy');
 	
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
@@ -123,15 +131,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
 	Route::post('fee_update','FeeController@update')->name('master.updatefee');
 	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
-        Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
+    Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
 	
-	//Status Details
-	Route::get('status','StatusController@index')->name('master.status');
-	Route::get('add-status','StatusController@addStatus')->name('master.addstatus');
-	Route::post('status_save','StatusController@save')->name('master.savestatus');
-	Route::get('status-edit/{parameter}','StatusController@edit')->name('master.editstatus');
-	Route::post('status_update','StatusController@update')->name('master.updatestatus');
-	Route::get('status-delete/{id}','StatusController@delete')->name('master.deletestatus');
+
 	
 	//Branch Details
 	Route::get('branch','CompanyBranchController@index')->name('master.branch');
@@ -212,7 +214,6 @@ Route::get('persontitle-delete/{id}','PersontitleController@delete');
 Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
-
 Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
 

@@ -14,6 +14,7 @@ use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\UnionBranch;
 use App\Model\Designation;
+use App\Model\Status;
 use App\Mail\UnionBranchMailable;
 use DB;
 use View;
@@ -35,6 +36,7 @@ class MasterController extends CommonController {
         $this->UnionBranch = new UnionBranch;
         $this->Persontitle = new Persontitle;
         $this->Designation = new Designation;
+        $this->Status = new Status;
     }
 
     public function countryList() {
@@ -675,7 +677,7 @@ class MasterController extends CommonController {
         foreach ($Reason as $Reason)
         {
             $enc_id = Crypt::encrypt($Reason->id);  
-            $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]) ;
+            $delete =  route('master.reasondestroy',[app()->getLocale(),$Reason->id]);
             $edit =  "#modal_add_edit";
             $nestedData['reason_name'] = $Reason->reason_name;
             $relationid = $Reason->id;
@@ -975,6 +977,8 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/designation')->with('message','Person Title Details Deleted Successfully!!');
      }
     //Designation Details End
+
+    //Union Branch Details Start
     public function  unionBranchList()
     {
         //$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
@@ -1150,7 +1154,9 @@ class MasterController extends CommonController {
         return view('master.unionbranch.unionbranch_details')->with('data',$data);
 
     }
+    //Union BRanch List End
 
+    //Fee Details Start
     public function ajax_fees_list(Request $request) {
         $columns = array(
             0 => 'fee_name',
@@ -1290,7 +1296,6 @@ class MasterController extends CommonController {
         return view('master.fee.fee');
     }
 	
-	
 	public function checkBranchemailExists(Request $request){
 		//return $request->all();
 		$email =  $request->input('email');
@@ -1313,5 +1318,126 @@ class MasterController extends CommonController {
 			return $branchexists = $this->BranchmailExists($email,$db_autoid);
 		}
 		//return Response::json($return_status);
-	}
+    }
+    //Fee Details End
+
+    //Status Details Start
+    public function statusList()
+    {
+        return view('master.status.status_list');
+    } 
+    //Ajax Datatable Race List
+    public function ajax_status_list(Request $request){
+
+        $columns = array(
+            0 => 'status_name', 
+            1 => 'id',
+        );
+        $totalData = Status::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Status = Status::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $Status = Status::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Status     =  Status::where('id','LIKE',"%{$search}%")
+                        ->orWhere('status_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $Status      = Status::where('id','LIKE',"%{$search}%")
+                        ->orWhere('status_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = Status::where('id','LIKE',"%{$search}%")
+                    ->orWhere('status_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
+        if(!empty($Status))
+        {
+        foreach ($Status as $Status)
+        { 
+            $enc_id = Crypt::encrypt($Status->id);  
+            $delete =  route('master.statusdestroy',[app()->getLocale(),$Status->id]) ;
+            $edit =  "#modal_add_edit";
+            $nestedData['status_name'] = $Status->status_name;
+            $Status = $Status->id;
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Status);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+        }
+    }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    } 
+    //Status Save and Update
+    public function statusSave(Request $request)
+    {   
+        $request->validate([
+            'status_name'=>'required',
+        ],
+        [
+            'status_name.required'=>'please enter Status name',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkStatusExists($request->input('status_name'),$request->id);
+        }else{
+            $data_exists = $this->checkStatusExists($request->input('status_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/status')->with('error','Status Name Already Exists'); 
+        }
+        else{
+            $saveStatus = $this->Status->saveStatusdata($data);
+           
+            if($saveStatus == true)
+            {
+                return  redirect($defdaultLang.'/status')->with('message','Status Added Succesfully');
+            }
+        }
+    }
+    public function statusDestroy($lang,$id)
+    {
+        $Status = new Status();
+        $Status = Status::find($id);
+        $Status->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/status')->with('message','Status Details Deleted Successfully!!');
+    }
+    ////Status Details End
 }

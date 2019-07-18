@@ -7,14 +7,19 @@ use DB;
 
 class Status extends Model
 {
+    protected $table = 'status';
     protected $fillable = [
         'id','country_id','status_name','status',
     ];
     public $timestamps = true;
 
-    public function StoreStatus($status)
+    public function saveStatusdata($data=array())
     {
-        $id = DB::table('status')->insertGetId($status);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Status::find($data['id'])->update($data);
+        } else {
+            $savedata = Status::create($data);
+        }
+        return $savedata;
     }
 }
