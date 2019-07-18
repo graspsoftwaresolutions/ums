@@ -22,11 +22,11 @@ class DashboardController extends Controller
     //    print_r($branch);
     //    die;
         //$union = UnionBranch::with('User')->get();
-        echo '<pre>';
+       // echo '<pre>';
         //$country_states= Country::find(130)->states;
-        $state_country= State::find(1)->country;
-        print_r($state_country);
-        die;
+       // $state_country= State::find(1)->country;
+        // print_r($state_country);
+       // die;
       
    }
 }
