@@ -16,7 +16,7 @@ class Fee extends Model {
         return $id;
     }
 
-    public function getUser($select = array(), $where = array(), $or_where = array(),$orderby = array(), $limit="", $offset = 0) {
+    public function getFee($select = array(), $where = array(), $or_where = array(),$orderby = array(), $limit="", $offset = 0) {
       //  \DB::enableQueryLog();
         $query = Fee::query();
         if ($select == "")

@@ -30,7 +30,7 @@
               <li id="appform_sidebar_li_id" class=""><a id="appform_sidebar_a_id" class="collapsible-body" href="{{ route('appform.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('App Form') }}</span></a></li>
               <li id="roles_sidebar_li_id" class=""><a id="roles_sidebar_a_id" class="collapsible-body" href="{{ route('roles.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Roles') }}</span></a></li>
               <li id="users_sidebar_li_id" class=""><a id="users_sidebar_a_id" class="collapsible-body" href="{{ route('master.userslist',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Users') }}</span></a></li>
-              <li id="formType_sidebar_li_id" class=""><a id="formType_sidebar_a_id" class="collapsible-body" href="{{ route('formtype.index',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Form Type')}}</span></a></li>
+              <li id="formType_sidebar_li_id" class=""><a id="formType_sidebar_a_id" class="collapsible-body" href="{{ route('master.formtype',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Form Type')}}</span></a></li>
             </ul>
           </div>
         </li>

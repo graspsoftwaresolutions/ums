@@ -21,17 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Race List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Form Type List') }}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale()) }}">{{__('Dashboard') }}</a>
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Race') }}
+											<li class="breadcrumb-item active">{{__('Form Type') }}
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Race') }}</a>	
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Form Type') }}</a>
+										
 									</div>
 								</div>
 							</div>
@@ -39,16 +39,16 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Race List') }}</h4>
+									<h4 class="card-title">{{__('Form Type List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Race Name') }}</th>
-														
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th>{{__('Form Type Name') }}</th>
+														<th>{{__('Form Order No') }}</th>
+														<th> {{__('Action') }}</th>
 													</tr>
 												</thead>
 											</table>
@@ -57,17 +57,22 @@
 								</div>
 							</div>
 						</div>
-                        <div id="modal_add_edit" class="modal">
+						<div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Race Details</h4>
-                                <form class="formValidate" id="race_formValidate" method="post"  action="{{ route('master.saverace',app()->getLocale()) }}">
+                                <h4>Form Type Details</h4>
+                                <form class="formValidate" id="FormTypeformValidate" method="post"  action="{{ route('master.saveFormType',app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
-                                    <div class="input-field col s12 m6">
-                                    <label for="person_title" class="common-label force-active">{{ __('Title Name') }}*</label>
-                                          <input id="person_title" class="common-input" name="person_title" type="text" data-error=".errorTxt1">
+                                   	 <div class="input-field col s12 m6">
+                                   		 <label for="formname" class="common-label force-active">{{__('Form Name') }}*</label>
+                                          <input id="formname" class="common-input" name="formname" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
+                                        </div>
+										<div class="input-field col s12 m6">
+                                          <label for="orderno" class="common-label force-active">{{__('Order No') }}*</label>
+                                          <input id="orderno" class="common-input" name="orderno" type="text" data-error=".errorTxt2">
+                                          <div class="errorTxt2"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
@@ -101,11 +106,11 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#race_sidebar_li_id").addClass('active');
-	$("#race_sidebar_a_id").addClass('active');
-    
-    //Data table Ajax call
-    $(function () {
+	$("#formType_sidebar_li_id").addClass('active');
+	$("#formType_sidebar_a_id").addClass('active');
+	
+//Data table Ajax call
+$(function () {
     $('#page-length-option').DataTable({
         "responsive": true,
         "lengthMenu": [
@@ -119,13 +124,14 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_race_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_formtype_list') }}",
             "dataType": "json",
             "type": "POST",
             "data": {_token: "{{csrf_token()}}"}
         },
         "columns": [
-            {"data": "race_name"},
+            {"data": "formname"},
+			{"data": "orderno"},
             {"data": "options"}
         ]
     });
@@ -137,18 +143,18 @@ function ConfirmDeletion() {
         return false;
     }
 }
-$("#race_formValidate").validate({
+$("#FormTypeformValidate").validate({
         rules: {
-            race_name: {
+            formname:{
                 required: true,
-                remote:{
-                   url: "{{ url(app()->getLocale().'/race_nameexists')}}", 
+				remote:{
+                   url: "{{ url(app()->getLocale().'/formtype_nameexists')}}", 
                    data: {
-                         race_id: function() {
-                            return $( "#updateid" ).val();
-                        },
-                        _token: "{{csrf_token()}}",
-                        race_name: $(this).data('race_name')
+							formtype_id: function(){
+								return $( "#updateid" ).val();
+							},
+							_token: "{{csrf_token()}}",
+							formname: $(this).data('formname'),
                         },
                    type: "post",
                 },
@@ -156,9 +162,10 @@ $("#race_formValidate").validate({
         },
         //For custom messages
         messages: {
-            race_name: {
-                required: '{{__("Enter a Race Name") }}',
-                remote : '{{__("Race Name Already exists") }}', 
+            
+            formname: {
+                required: '{{__("Please enter Form name") }}', 
+				remote: '{{__("Form name Already Exists") }}', 
             },
         },
         errorElement: 'div',
@@ -180,20 +187,22 @@ function showaddForm() {
 	$('.edit_hide').show();
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
-	$('#race_name').val("");
+	$('#formname').val("");
+	$('#orderno').val("");
     $('.modal').modal();
 }
-function showeditForm(raceid){
+function showeditForm(formtypeid){
     $('.edit_hide').hide();
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
-    var url = "{{ url(app()->getLocale().'/race_detail') }}" + '?id=' + raceid;
+    var url = "{{ url(app()->getLocale().'/formtype_detail') }}" + '?id=' + formtypeid;
     $.ajax({url: url, type: "GET", success: function (result) {
 			console.log(result);
 			$('#updateid').val(result.id);
 			$('#updateid').attr('data-autoid',result.id);
-            $('#race_name').val(result.race_name);
+            $('#formname').val(result.formname);
+			$('#orderno').val(result.orderno);
         }
     });
 }

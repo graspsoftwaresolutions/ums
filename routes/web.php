@@ -88,6 +88,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('status_details','CommonController@statusDetail'); 
 	Route::delete('status-delete/{id}','MasterController@statusDestroy')->name('master.statusdestroy');
 	
+	//Form Type
+	//Route::resource('formtype','FormTypeController');
+	Route::get('formtype','MasterController@formTypeList')->name('master.formtype'); 
+	Route::post('ajax_formtype_list','MasterController@ajax_formtype_list')->name('master.ajaxformtypelist'); 
+	Route::post('formtype_nameexists','CommonController@checkFormTypeNameExists');  
+	Route::post('saveFormType','MasterController@formTypeSave')->name('master.saveFormType');  
+	Route::get('formtype_detail','CommonController@formTypeDetail'); 
+	Route::delete('formtype-delete/{id}','MasterController@formTypeDestroy')->name('master.formTypedestroy');
+
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
 	Route::get('add-state','StateController@addState')->name('master.addstate');
@@ -159,9 +168,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
 
 	
-	
-	//Form Type
-	Route::resource('formtype','FormTypeController');
 	
 	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
 	Route::post('/changePassword','HomeController@ChangePassword')->name('changePassword');

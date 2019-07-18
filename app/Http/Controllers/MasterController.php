@@ -16,6 +16,7 @@ use App\Model\Persontitle;
 use App\Model\UnionBranch;
 use App\Model\Designation;
 use App\Model\Status;
+use App\Model\FormType;
 use App\Mail\UnionBranchMailable;
 use DB;
 use View;
@@ -37,7 +38,8 @@ class MasterController extends CommonController {
         $this->UnionBranch = new UnionBranch;
         $this->Persontitle = new Persontitle;
         $this->Designation = new Designation;
-        $this->Status = new Status;
+        $this->Status = new Status; 
+        $this->FormType = new FormType;
     }
 
     public function countryList() {
@@ -1184,7 +1186,7 @@ class MasterController extends CommonController {
              $or_where = array($or_where1, $or_where2);
         }
         $feelist = new Fee();
-        $overallfeedetail = $feelist->getUser($select, $where, $or_where, $orderby, $limit, $offset);
+        $overallfeedetail = $feelist->getFee($select, $where, $or_where, $orderby, $limit, $offset);
         $totalFiltered =$totalData=$overallfeedetail->count();
           $data = array();
           if (!empty($overallfeedetail)) {
@@ -1327,7 +1329,7 @@ class MasterController extends CommonController {
     {
         return view('master.status.status_list');
     } 
-    //Ajax Datatable Race List
+    //Ajax Datatable Status List
     public function ajax_status_list(Request $request){
 
         $columns = array(
@@ -1441,4 +1443,126 @@ class MasterController extends CommonController {
         return redirect($defdaultLang.'/status')->with('message','Status Details Deleted Successfully!!');
     }
     ////Status Details End
+
+    //FormType Details Start 
+    public function formTypeList()
+    {
+        return view('master.formtype.formtype_list');
+    } 
+    //Ajax Datatable FormType List
+    public function ajax_formtype_list(Request $request){
+
+        $columns = array(
+            0 => 'formname', 
+            1 => 'id',
+        );
+        $totalData = FormType::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $FormType = FormType::orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }else{
+                $FormType = FormType::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if($limit == -1){
+            $FormType     =  FormType::where('id','LIKE',"%{$search}%")
+                        ->orWhere('formname', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }else{
+            $FormType      = FormType::where('id','LIKE',"%{$search}%")
+                        ->orWhere('formname', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get();
+        }
+        $totalFiltered = FormType::where('id','LIKE',"%{$search}%")
+                    ->orWhere('formname', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = array();
+        if(!empty($FormType))
+        {
+        foreach ($FormType as $FormType)
+        { 
+            $enc_id = Crypt::encrypt($FormType->id);  
+            $delete =  route('master.formTypedestroy',[app()->getLocale(),$FormType->id]) ;
+            $edit =  "#modal_add_edit";
+            $nestedData['formname'] = $FormType->formname;
+            $nestedData['orderno'] = $FormType->orderno;
+            $FormType = $FormType->id;
+            $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($FormType);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+            $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+            $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+            $nestedData['options'] = $actions;
+            $data[] = $nestedData;
+        }
+    }
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    } 
+    //Status Save and Update
+    public function formTypeSave(Request $request)
+    {   
+        $request->validate([
+            'formname'=>'required',
+        ],
+        [
+            'formname.required'=>'Please enter Form name',
+        ]);
+        $data = $request->all();   
+        
+        $defdaultLang = app()->getLocale();
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkFormTyNameExists($request->input('formname'),$request->id);
+        }else{
+            $data_exists = $this->checkFormTyNameExists($request->input('formname'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/formtype')->with('error','Form Type Name Already Exists'); 
+        }
+        else{
+            $saveFormType = $this->FormType->saveFormTypedata($data);
+           
+            if($saveFormType == true)
+            {
+                return  redirect($defdaultLang.'/formtype')->with('message','Form Type Added Succesfully');
+            }
+        }
+    }
+    public function formTypeDestroy($lang,$id)
+    {
+        $FormType = new FormType();
+        $FormType = FormType::find($id);
+        $FormType->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
+    }
+    //FormType Details End
 }
