@@ -21,17 +21,16 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Country List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Person Title List') }}</h5>
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Country') }}
+											<li class="breadcrumb-item active">{{ __('Person Title') }}
 											</li>
-											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">Add</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Title') }}</a>
 										
 									</div>
 								</div>
@@ -40,18 +39,19 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Country List') }}</h4>
+									<h4 class="card-title">{{ __('Person Title List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Country Name') }}</th>
+                                                        <th>{{ __('Title Name') }}</th>
 														
-														<th> {{__('Action') }}</th>
+														<th style="text-align:center"> {{ __('Action') }}</th>
 													</tr>
 												</thead>
+												
 											</table>
 										</div>
 									</div>
@@ -60,15 +60,15 @@
 						</div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Country Details</h4>
-                                <form class="formValidate" id="countryformValidate" method="post"  action="{{ route('master.savecountry',app()->getLocale()) }}">
+                                <h4>Person Title Details</h4>
+                                <form class="formValidate" id="title_formValidate" method="post"  action="{{ route('master.savepersontitle',app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
-                                        <div class="input-field col s12 m6">
-                                            <label for="name" class="common-label force-active">{{__('Country Name') }}*</label>
-                                            <input id="country_name" class="common-input" name="country_name" type="text" data-error=".errorTxt1">
-                                            <div class="errorTxt1"></div>
+                                    <div class="input-field col s12 m6">
+                                    <label for="person_title" class="common-label force-active">{{ __('Title Name') }}*</label>
+                                          <input id="person_title" class="common-input" name="person_title" type="text" data-error=".errorTxt1">
+                                          <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
@@ -102,9 +102,43 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
-//Data table Ajax call
+	$("#title_sidebar_li_id").addClass('active');
+    $("#title_sidebar_a_id").addClass('active');
+    $("#title_formValidate").validate({
+        rules: {
+            person_title: {
+                required: true,
+                remote:{
+                   url: "{{ url(app()->getLocale().'/persontitle_nameexists')}}", 
+                   data: {
+                    persontitle_id: function() {
+                            return $( "#updateid" ).val();
+                        },
+                        _token: "{{csrf_token()}}",
+                        person_title: $(this).data('person_title')
+                        },
+                   type: "post",
+                },
+            },
+        },
+        //For custom messages
+        messages: {
+            person_title: {
+                required: '{{__("Enter a Person Title Name") }}',
+                remote : '{{__("Person Title Already exists") }}', 
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+        //Data table Ajax call
 $(function () {
     $('#page-length-option').DataTable({
         "responsive": true,
@@ -119,13 +153,13 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_countries_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_persontitle_list') }}",
             "dataType": "json",
             "type": "POST",
             "data": {_token: "{{csrf_token()}}"}
         },
         "columns": [
-            {"data": "country_name"},
+            {"data": "person_title"},
             {"data": "options"}
         ]
     });
@@ -137,41 +171,6 @@ function ConfirmDeletion() {
         return false;
     }
 }
-// Form Validation
-$("#countryformValidate").validate({
-        rules: {
-            country_name:{
-                required: true,
-                remote:{
-                   url: "{{ url(app()->getLocale().'/country_nameexists')}}", 
-                   data: {
-                         country_id: function() {
-                            return $( "#updateid" ).val();
-                        },
-                        _token: "{{csrf_token()}}",
-                        country_name: $(this).data('country_name')
-                        },
-                   type: "post",
-                },
-            },
-        },
-        //For custom messages
-        messages: {
-            country_name: {
-                required: '{{__("Please enter Country Name") }}', 
-                remote : '{{__("Country Name Already exists") }}', 
-            }
-        },
-        errorElement: 'div',
-        errorPlacement: function (error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-            $(placement).append(error)
-        } else {
-            error.insertAfter(element);
-        }
-        }
-    });
 //Model
 $(document).ready(function () {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -181,20 +180,20 @@ function showaddForm() {
 	$('.edit_hide').show();
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
-	$('#country_name').val("");
+	$('#person_title').val("");
     $('.modal').modal();
 }
-function showeditForm(countryid){
+function showeditForm(Persontitle){
     $('.edit_hide').hide();
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
-    var url = "{{ url(app()->getLocale().'/country_detail') }}" + '?id=' + countryid;
-    $.ajax({url: url, type: "GET", success: function (result) {
+    var url = "{{ url(app()->getLocale().'/persontitle_detail') }}" + '?id=' + Persontitle;
+    $.ajax({url: url, type: "GET", success: function (result){
 			console.log(result);
 			$('#updateid').val(result.id);
 			$('#updateid').attr('data-autoid',result.id);
-            $('#country_name').val(result.country_name);
+            $('#person_title').val(result.person_title);
         }
     });
 }

@@ -16,4 +16,8 @@ class City extends Model
         $id = DB::table('city')->insertGetId($city);
         return $id;
     }
+    public function state()
+    {
+        return $this->belongsTo('App\Model\State');
+    }
 }

@@ -144,11 +144,10 @@
                     required: true,
                 },
                 confirm_password: {
-
-                    required: true,
-                    equalTo: "#password",
-                },
+				required: true,
+				equalTo:"#password",
             },
+        },      
             //For custom messages
             messages: {
                 name: {
@@ -217,6 +216,7 @@
             $('#email').val("");
             $('.modal').modal();
         }
+
         function showeditForm(userid) {
             $('.edit_hide').hide();
             $('.add_hide').hide();

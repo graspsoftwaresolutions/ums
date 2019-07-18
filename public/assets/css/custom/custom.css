@@ -79,3 +79,31 @@ input[readonly] {
 	-o-transform-origin: 0 0;
 	transform-origin: 0 0;
 }
+@media only screen and (min-width: 993px){
+	ul.stepper.horizontal .step .step-content {
+		position: absolute;
+		height: calc(100% - 84px);
+		top: 84px;
+		display: block;
+		left: -100%;
+		width: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		margin: 0;
+		padding: 0 !important;
+		transition: left .4s cubic-bezier(.4,0,.2,1);
+	}
+}
+
+.padding-top-6{
+    padding-top:6px !important;
+}
+
+
+.padding-top-5{
+    padding-top:5px !important;
+}
+
+.margin-minus-4{
+    padding-top:6px !important;
+}

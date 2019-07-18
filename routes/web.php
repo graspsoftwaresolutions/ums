@@ -20,23 +20,68 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 
 	// Masters
-	//Country Master Details
+	//users Form
+	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
+	Route::get('users','MasterController@users_list')->name('master.userslist');
+	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
+	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
+	Route::get('users_detail','CommonController@userDetail');
+	Route::post('users_emailexists','CommonController@checkemailExists');
+
+	//Country Master Details 
+	Route::post('ajax_countries_list','MasterController@ajax_countries_list')->name('master.ajaxcountrieslist');
 	Route::get('country','MasterController@countryList')->name('master.country');
 	Route::post('country_save','MasterController@countrySave')->name('master.savecountry');
 	Route::get('country-edit','MasterController@countryEdit')->name('master.editcountry');
+	Route::delete('country_delete/{id}','MasterController@countrydestroy')->name('master.countrydestroy');
+	Route::post('country_nameexists','CommonController@checkCountryNameExists');
+	Route::get('country_detail','CommonController@countryDetail');
+
+	//Relation Details
+	Route::post('ajax_relation_list','MasterController@ajax_relation_list')->name('master.ajaxrelationlist');
+	Route::get('relation','MasterController@relationList')->name('master.relation'); 
+	Route::post('relation_save','MasterController@Relationsave')->name('master.saverelation'); 
+	Route::post('relation_nameexists','CommonController@checkRelationNameExists');
+	Route::get('relation_detail','CommonController@relationDetail');
+	Route::delete('relation_delete/{id}','MasterController@relationDestroy')->name('master.relationdestroy');
 
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
 	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
 
-	//Country Details
-	
-	//Route::get('country-edit/{parameter}','CountryController@edit')->name('master.editcountry');
-	//Route::post('country_edit','CountryController@update')->name('master.updatecountry');
-	Route::get('country-delete/{parameter}','CountryController@delete')->name('master.deletecountry');
+	//Race Details 
+	Route::get('race','MasterController@raceList')->name('master.race'); 
+	Route::post('ajax_race_list','MasterController@ajax_race_list')->name('master.ajaxracelist');
+	Route::post('race_nameexists','CommonController@checkRaceNameExists');
+	Route::post('race_save','MasterController@raceSave')->name('master.saverace');
+	Route::get('race_detail','CommonController@raceDetail');
+	Route::delete('race_delete/{id}','MasterController@raceDestroy')->name('master.racedestroy');
 
+	//Reason Details 
+	Route::post('ajax_reason_list','MasterController@ajax_reason_list')->name('master.ajaxreasonlist');
+	Route::get('reason','MasterController@reasonList')->name('master.reason'); 
+	Route::post('reason_save','MasterController@reasonSave')->name('master.reasonSave');
+	Route::get('reason_detail','CommonController@reasonDetail'); 
+	Route::delete('reason_delete/{id}','MasterController@reasonDestroy')->name('master.reasondestroy');
+
+	//Person Title Details 
+	Route::post('ajax_persontitle_list','MasterController@ajax_persontitle_list')->name('master.ajaxpersontitlelist');
+	Route::get('persontitle','MasterController@titleList')->name('master.persontitle');
+	Route::get('persontitle_detail','CommonController@personTitleDetail');
+	Route::post('persontitle_nameexists','CommonController@checkTitleNameExists'); 
+	Route::post('persontitle_save','MasterController@personTileSave')->name('master.savepersontitle');
+	Route::delete('reason_delete/{id}','MasterController@personTiteDestroy')->name('master.persontitledestroy');
+
+	//Designation Details  
+	Route::get('designation','MasterController@designationList')->name('master.designation');
+	Route::post('ajax_designation_list','MasterController@ajax_designation_list')->name('master.ajaxdesignationlist');
+	Route::post('designation_nameexists','CommonController@checkDesignationNameExists'); 
+	Route::post('designation_save','MasterController@designationSave')->name('master.saveDesignation'); 
+	Route::get('designation_detail','CommonController@designationDetail');
+	Route::delete('designation-delete/{id}','MasterController@designationDestroy')->name('master.designationdestroy');
+	
 	//State Details 
-	Route::get('state','StateController@index')->name('master.state');
+	Route::get('state','MasterController@stateList')->name('master.state');
 	Route::get('add-state','StateController@addState')->name('master.addstate');
 	Route::post('state_save','StateController@save')->name('master.savestate');
 	Route::get('state-edit/{parameter}','StateController@edit')->name('master.editstate');
@@ -61,37 +106,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
 
 	//Union Branch
-	Route::get('unionbranch','UnionBranchController@index')->name('master.unionbranch');
-	Route::get('add-unionbranch','UnionBranchController@addUnionBranch')->name('master.addunionbranch');
-	Route::post('unionbranch_save','UnionBranchController@save')->name('master.saveunionbranch');
-	Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit')->name('master.editunionbranch');
+	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');
+	Route::get('save-unionbranch','MasterController@addUnionBranch')->name('master.addunionbranch');
+	Route::post('unionbranch_save','MasterController@UnionBranchsave')->name('master.saveunionbranch');
+	Route::get('unionbranch-edit/{parameter}','MasterController@EditUnionBranch')->name('master.editunionbranch');
 	Route::post('unionbranch_update','UnionBranchController@update')->name('master.updateunionbranch');
 	Route::get('unionbranch-delete/{id}','UnionBranchController@delete')->name('master.deleteunionbranch');
-	
-	//Person Details
-	Route::get('persontitle','PersontitleController@index')->name('master.persontitle');
-	Route::get('add-title','PersontitleController@addTitle')->name('master.addpersontitle');
-	Route::post('persontitle_save','PersontitleController@save')->name('master.savepersontitle');
-	Route::get('persontitle-edit/{parameter}','PersontitleController@edit')->name('master.editpersontitle');
-	Route::post('persontitle_update','PersontitleController@update')->name('master.updatepersontitle');
-	Route::get('persontitle-delete/{id}','PersontitleController@delete')->name('master.deletepersontitle');
-
-	//Relation Details
-	Route::get('relation','RelationController@index')->name('master.relation');
-	Route::get('add-relation','RelationController@addRelation')->name('master.addrelation');
-	Route::post('relation_save','RelationController@save')->name('master.saverelation');
-	Route::get('relation-edit/{parameter}','RelationController@edit')->name('master.editrelation');
-	Route::post('relation_update','RelationController@update')->name('master.updaterelation');
-	Route::get('relation-delete/{id}','RelationController@delete')->name('master.deleterelation');
-	
-	//Reason Details
-	Route::get('reason','ReasonController@index')->name('master.reason');
-	Route::get('add-reason','ReasonController@addReason')->name('master.addreason');
-	Route::post('reason_save','ReasonController@save')->name('master.savereason');
-	//Route::get('reason-view/{parameter}','ReasonController@view')->name('master.reason');
-	Route::get('reason-edit/{parameter}','ReasonController@edit')->name('master.editreason');
-	Route::post('reason_update','ReasonController@update')->name('master.updatereason');
-	Route::get('reason-delete/{id}','ReasonController@delete')->name('master.deletereason');
+	Route::post('ajaxUnionBranchList','MasterController@AjaxunionBranchList')->name('master.union_BranchList');
 	
 	//Fee Details
 	Route::get('fee','MasterController@fees_list')->name('master.fee');
@@ -101,26 +122,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
 	Route::post('fee_update','FeeController@update')->name('master.updatefee');
 	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
-        
-        //feelist
         Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
-	
-	//Race Details
-	Route::get('race','RaceController@index')->name('master.race');
-	Route::get('add-race','RaceController@addRace')->name('master.addrace');
-	Route::post('race_save','RaceController@save')->name('master.saverace');
-	//Route::get('race-view/{parameter}','RaceController@view')->name('master.fee');
-	Route::get('race-edit/{parameter}','RaceController@edit')->name('master.editrace');
-	Route::post('race_update','RaceController@update')->name('master.updaterace');
-	Route::get('race-delete/{id}','RaceController@delete')->name('master.deleterace');
-	
-	//Designation Details
-	Route::get('designation','DesignationController@index')->name('master.designation');
-	Route::get('add-designation','DesignationController@addDesignation')->name('master.adddesignation');
-	Route::post('designation_save','DesignationController@save')->name('master.savedesignation');
-	Route::get('designation-edit/{parameter}','DesignationController@edit')->name('master.editdesignation');
-	Route::post('update_designation','DesignationController@update')->name('master.updatedesignation');
-	Route::get('designation-delete/{id}','DesignationController@delete')->name('master.deletedesignation');
 	
 	//Status Details
 	Route::get('status','StatusController@index')->name('master.status');
@@ -152,6 +154,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('users','MasterController@users_list')->name('master.userslist');
 	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
 	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
+
+	
+	
 	//Form Type
 	Route::resource('formtype','FormTypeController');
 	
@@ -168,11 +173,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	
 
-	Route::get('users_detail','CommonController@userDetail');
-	Route::post('users_emailexists','CommonController@checkemailExists');
-
 	
-	//Route::get('membership_list','MembershipController@new_members')->name('reports.new-members');
+
 });
 /* Master */
 	Route::get('membership','MembershipController@index');
@@ -204,14 +206,6 @@ Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
 Route::post('persontitle_update','PersontitleController@update');
 Route::get('persontitle-delete/{id}','PersontitleController@delete');
 
-
-//Union Branch
-Route::get('unionbranch','UnionBranchController@index');
-Route::get('add-unionbranch','UnionBranchController@addUnionBranch');
-Route::post('unionbranch_save','UnionBranchController@save');
-Route::get('unionbranch-edit/{parameter}','UnionBranchController@edit');
-Route::post('unionbranch_update','UnionBranchController@update');
-Route::get('unionbranch-delete/{id}','UnionBranchController@delete');
 
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');

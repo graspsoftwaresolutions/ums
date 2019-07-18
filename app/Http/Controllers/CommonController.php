@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\Membership;
 use App\Model\Country;
 use App\Model\State;
+use App\Model\Relation;
 use App\Model\City;
 use App\Model\Company;
 use App\Model\Fee;
@@ -121,6 +122,300 @@ class CommonController extends Controller
         $email =  $request->input('email');
         $userid = $request->input('login_userid');
         return $this->mailExists($email,$userid);
-      
+
+    } 
+    //Country Details 
+    public function countryDetail(Request $request)
+    {
+        $id = $request->id;
+        $country = new Country();
+        $data = Country::find($id);
+        return $data;
     }
+    //Country Name Exists Check
+    public function checkCountryNameExists(Request $request)
+    {
+        $country_name =  $request->input('country_name');
+        $country_id = $request->input('country_id');
+
+        if(!empty($country_id))
+          {
+                 $countryname_exists = Country::where([
+                  ['country_name','=',$country_name],
+                  ['id','!=',$country_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $countryname_exists = Country::where([
+                ['country_name','=',$country_name],
+                ['status','=','1'],     
+                ])->count(); 
+          } 
+          if($countryname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+
+    //Relation Details Start
+    //Relation Name Exists Check
+    public function checkRelationNameExists(Request $request)
+    {
+        $relation_name =  $request->input('relation_name');
+        $relation_id = $request->input('relation_id');
+        return $this->checkRelationExists($relation_name,$relation_id);
+    }
+    public function checkRelationExists($relation_name,$relation_id=false)
+    {
+
+        if(!empty($relation_id))
+          {
+                 $relation_exists = Relation::where([
+                  ['relation_name','=',$relation_name],
+                  ['id','!=',$relation_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $relation_exists = Relation::where([
+                ['relation_name','=',$relation_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($relation_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Relation Details
+    public function relationDetail(Request $request)
+    {
+        $id = $request->id;
+        $relation = new Relation();
+        $data = Relation::find($id);
+        return $data;
+    }
+    //Relation Details End
+
+    // Race Details Start
+     //Race Name Exists Check
+     public function checkRaceNameExists(Request $request)
+     {
+         
+         $race_name =  $request->input('race_name');
+         $race_id = $request->input('race_id');
+         
+         return $this->checkRaceExists($race_name,$race_id);
+         //return $race_id;
+     }
+     //checkRaceExists
+     public function checkRaceExists($race_name,$race_id=false)
+     {   
+         if(!empty($race_id))
+          { 
+                 $race_exists = Race::where([
+                  ['race_name','=',$race_name],
+                  ['id','!=',$race_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $race_exists = Race::where([
+                ['race_name','=',$race_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($race_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Relation Details
+    public function raceDetail(Request $request)
+    {
+        $id = $request->id;
+        $race = new Race();
+        $data = Race::find($id);
+        return $data;
+    }
+    // Race Details End
+
+    /*
+        Input $result = query result (array)
+        Input $deleteRoute = Delete Route Name (string)
+    */
+    public function CommonAjaxReturn($result, $deleteRoute){
+        $data = array();
+        if(!empty($result))
+        {
+            foreach ($result as $resultdata)
+            {
+                foreach($resultdata as $newkey => $newvalue){
+                    if($newkey=='id'){
+                        $autoid = $newvalue;
+                    }else{
+                        $nestedData[$newkey] = $newvalue;
+                    }
+                }
+                
+                $enc_id = Crypt::encrypt($autoid);  
+                $delete =  route($deleteRoute, [app()->getLocale(),$autoid]) ;
+                $edit =  "#modal_add_edit";
+
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+                $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
+        return $data;
+    }
+
+    //Reason Details Start
+    //Reason Name Exists Check
+    public function checkReasonNameExists(Request $request)
+    { 
+        $reason_name =  $request->input('reason_name');
+        $reason_id = $request->input('reason_id');
+        
+        return $this->checkReasonExists($reason_name,$reason_id);
+        //return $race_id;
+    }
+     //checkReasonExists
+     public function checkReasonExists($reason_name,$reason_id=false)
+     {   
+         if(!empty($reason_id))
+          { 
+                 $reason_exists = Reason::where([
+                  ['reason_name','=',$reason_name],
+                  ['id','!=',$reason_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $reason_exists = Reason::where([
+                ['reason_name','=',$reason_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($reason_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+      //Reason Details
+      public function reasonDetail(Request $request)
+      {
+          $id = $request->id;
+          $reason = new Reason();
+          $data = Reason::find($id);
+          return $data;
+      }
+    //Reason Details End
+
+    //Person Title Details Start
+    public function checkTitleNameExists(Request $request)
+    { 
+        $person_title =  $request->input('person_title');
+        $persontitle_id = $request->input('persontitle_id');
+        
+        return $this->checkPersonTitleExists($person_title,$persontitle_id);
+    }
+     //checkPerson Title Exists
+     public function checkPersonTitleExists($person_title,$persontitle_id=false)
+     {   
+         if(!empty($persontitle_id))
+          { 
+                 $persontitle_exists = Persontitle::where([
+                  ['person_title','=',$person_title],
+                  ['id','!=',$persontitle_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $persontitle_exists = Persontitle::where([
+                ['person_title','=',$person_title],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($persontitle_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Person Title Details
+    public function personTitleDetail(Request $request)
+    {
+        $id = $request->id;
+        $persontitle = new Persontitle();
+        $data = Persontitle::find($id);
+        return $data;
+    } 
+    //Person Title Details End
+
+     //Designation Details Start
+     public function checkDesignationNameExists(Request $request)
+     { 
+         $designation_name =  $request->input('designation_name');
+         $designation_id = $request->input('designation_id');
+         
+         return $this->checkDesignationExists($designation_name,$designation_id);
+     }
+     //checkPerson Title Exists
+     public function checkDesignationExists($designation_name,$designation_id=false)
+     {   
+         if(!empty($designation_id))
+          { 
+                 $designation_exists = Designation::where([
+                  ['designation_name','=',$designation_name],
+                  ['id','!=',$designation_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $designation_exists = Designation::where([
+                ['designation_name','=',$designation_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($designation_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    public function designationDetail(Request $request)
+    {
+        $id = $request->id;
+        $Designation = new Designation();
+        $data = Designation::find($id);
+        return $data;
+    } 
+    //Designation Details End
 }

@@ -32,7 +32,6 @@
 									</div>
 									<div class="col s2 m6 l6 ">
 										<a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addstate',app()->getLocale())}}">{{__('Add New State')}}</a>
-										
 									</div>
 								</div>
 							</div>

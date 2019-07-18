@@ -21,19 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Reason List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('State List')}}</h5>
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
+											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Reason') }}
+											<li class="breadcrumb-item active">{{__('State')}}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="
-										{{ route('master.addreason', app()->getLocale()) }}
-										">{{__('Add New Reason') }}</a>
+										<a class="btn  waves-effect waves-light breadcrumbs-btn right" href="{{route('master.addstate',app()->getLocale())}}">{{__('Add New State')}}</a>
 										
 									</div>
 								</div>
@@ -42,35 +40,32 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Reason List') }}</h4>
+									<h4 class="card-title">{{__('State List')}}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Reason Name') }}</th>
-														
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th>{{__('Country Name')}}</th>
+														<th>{{__('State Name')}}</th>
+														<th style="text-align:center">{{__('Action')}}</th>
 													</tr>
 												</thead>
 												<tbody>
-                                                    @foreach($data['reason_view'] as $key=>$value)
+													 @foreach($data as $value)
 													<tr>
-                                                        <?php
-                                                            $parameter =[
-                                                                'id' =>$value->id,
-                                                            ];
-                                                            $parameter = Crypt::encrypt($parameter);    
-                                                        ?>
+													<?php
+													 $parameter = Crypt::encrypt($value->id);
+													 ?>
+														<td>{{$value->country_name}}</td>
+														<td>{{$value->state_name}}</td>
 														@php
 														{{ $confirmAlert = __("Are you sure you want to delete?"); }}
 														@endphp
-														<td>{{$value->reason_name}}</td>
-														
-														<td style="text-align:center"><!--a class="btn-small waves-effect waves-light purple lightrn-1" href="{{url('country-view/').'/'.$parameter}}">View </a-->
-														<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editreason', [app()->getLocale(), $parameter]) }}">{{__('Edit') }}</a>
-														<a class="btn-small waves-effect waves-light amber darken-4" href="{{ route('master.deletereason',[app()->getLocale(),$parameter])}} " onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete') }}</a></td>
+														<td style="text-align:center">
+														<a class="btn-small waves-effect waves-light cyan" href="{{route('master.editstate',[app()->getLocale(),$parameter])}}">{{__('Edit')}}</a>
+														<a class="btn-small waves-effect waves-light amber darken-4" href="{{route('master.deletestate',[app()->getLocale(),$parameter])}}" onclick="if (confirm('{{ $confirmAlert }}')) return true; else return false;">{{__('Delete')}}</a></td>
 												  </tr>
 												  @endforeach
 												</tbody>
@@ -99,7 +94,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#reason_sidebar_li_id").addClass('active');
-	$("#reason_sidebar_a_id").addClass('active');
+	$("#state_sidebar_li_id").addClass('active');
+	$("#state_sidebar_a_id").addClass('active');
 </script>
 @endsection

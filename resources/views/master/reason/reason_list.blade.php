@@ -21,17 +21,17 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Country List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Reason List') }}</h5>
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Country') }}
+											<li class="breadcrumb-item active">{{__('Reason') }}
 											</li>
 											
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">Add</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Reason') }}</a>
 										
 									</div>
 								</div>
@@ -40,16 +40,15 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Country List') }}</h4>
+									<h4 class="card-title">{{__('Reason List') }}</h4>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Country Name') }}</th>
-														
-														<th> {{__('Action') }}</th>
+														<th>{{__('Reason Name') }}</th>
+														<th > {{__('Action') }}</th>
 													</tr>
 												</thead>
 											</table>
@@ -60,15 +59,15 @@
 						</div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Country Details</h4>
-                                <form class="formValidate" id="countryformValidate" method="post"  action="{{ route('master.savecountry',app()->getLocale()) }}">
+                                <h4>Reason Details</h4>
+                                <form class="formValidate" id="add_formValidate" method="post"  action="{{ route('master.reasonSave',app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
-                                        <div class="input-field col s12 m6">
-                                            <label for="name" class="common-label force-active">{{__('Country Name') }}*</label>
-                                            <input id="country_name" class="common-input" name="country_name" type="text" data-error=".errorTxt1">
-                                            <div class="errorTxt1"></div>
+                                    <div class="input-field col s12 m6">
+                                    <label for="reason_name" class="common-label force-active">{{__('Reason Name') }}*</label>
+                                          <input id="reason_name" class="common-input" name="reason_name" type="text" data-error=".errorTxt1">
+                                          <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
@@ -102,54 +101,20 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 	$("#masters_sidebars_id").addClass('active');
-	$("#country_sidebar_li_id").addClass('active');
-	$("#country_sidebar_a_id").addClass('active');
-//Data table Ajax call
-$(function () {
-    $('#page-length-option').DataTable({
-        "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-		/* "lengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
-        ], */
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_countries_list') }}",
-            "dataType": "json",
-            "type": "POST",
-            "data": {_token: "{{csrf_token()}}"}
-        },
-        "columns": [
-            {"data": "country_name"},
-            {"data": "options"}
-        ]
-    });
-});
-function ConfirmDeletion() {
-    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
-        return true;
-    } else {
-        return false;
-    }
-}
-// Form Validation
-$("#countryformValidate").validate({
+	$("#reason_sidebar_li_id").addClass('active');
+	$("#reason_sidebar_a_id").addClass('active');
+    $("#add_formValidate").validate({
         rules: {
-            country_name:{
+            reason_name: {
                 required: true,
                 remote:{
-                   url: "{{ url(app()->getLocale().'/country_nameexists')}}", 
+                   url: "{{ url(app()->getLocale().'/reason_nameexists')}}", 
                    data: {
-                         country_id: function() {
+                         race_id: function() {
                             return $( "#updateid" ).val();
                         },
                         _token: "{{csrf_token()}}",
-                        country_name: $(this).data('country_name')
+                        reason_name: $(this).data('reason_name')
                         },
                    type: "post",
                 },
@@ -157,10 +122,10 @@ $("#countryformValidate").validate({
         },
         //For custom messages
         messages: {
-            country_name: {
-                required: '{{__("Please enter Country Name") }}', 
-                remote : '{{__("Country Name Already exists") }}', 
-            }
+            reason_name: {
+                required: '{{__("Enter a Reason Name") }}',
+                remote : '{{__("Reason Name Already exists") }}',
+            },
         },
         errorElement: 'div',
         errorPlacement: function (error, element) {
@@ -172,31 +137,64 @@ $("#countryformValidate").validate({
         }
         }
     });
-//Model
-$(document).ready(function () {
-    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-});
-function showaddForm() {
-	$('.edit_hide').show();
-    $('.add_hide').show();
-    $('.edit_hide_btn').hide();
-	$('#country_name').val("");
-    $('.modal').modal();
-}
-function showeditForm(countryid){
-    $('.edit_hide').hide();
-    $('.add_hide').hide();
-    $('.edit_hide_btn').show();
-    $('.modal').modal();
-    var url = "{{ url(app()->getLocale().'/country_detail') }}" + '?id=' + countryid;
-    $.ajax({url: url, type: "GET", success: function (result) {
-			console.log(result);
-			$('#updateid').val(result.id);
-			$('#updateid').attr('data-autoid',result.id);
-            $('#country_name').val(result.country_name);
-        }
+    //Data table Ajax call
+    $(function () {
+        $('#page-length-option').DataTable({
+            "responsive": true,
+            "lengthMenu": [
+                [10, 25, 50, 100],
+                [10, 25, 50, 100]
+            ],
+            /* "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ], */
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{ url(app()->getLocale().'/ajax_reason_list') }}",
+                "dataType": "json",
+                "type": "POST",
+                "data": {_token: "{{csrf_token()}}"}
+            },
+            "columns": [
+                {"data": "reason_name"},
+                {"data": "options"}
+            ]
+        });
     });
-}
+    function ConfirmDeletion() {
+        if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //Model
+    $(document).ready(function () {
+        // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+        $('.modal').modal();
+    });
+    function showaddForm() {
+        $('.edit_hide').show();
+        $('.add_hide').show();
+        $('.edit_hide_btn').hide();
+        $('#reason_name').val("");
+        $('.modal').modal();
+    }
+    function showeditForm(relationid){
+        $('.edit_hide').hide();
+        $('.add_hide').hide();
+        $('.edit_hide_btn').show();
+        $('.modal').modal();
+        var url = "{{ url(app()->getLocale().'/reason_detail') }}" + '?id=' + relationid;
+        $.ajax({url: url, type: "GET", success: function (result) {
+                console.log(result);
+                $('#updateid').val(result.id);
+                $('#updateid').attr('data-autoid',result.id);
+                $('#reason_name').val(result.reason_name);
+            }
+        });
+    }
 </script>
 @endsection

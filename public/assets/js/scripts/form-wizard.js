@@ -27,9 +27,9 @@ var horizStepperInstace = new MStepper(horizStepper, {
     // validationFunction: defaultValidationFunction,
     stepTitleNavigation: true,
     feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
-}); */
+}); 
 
-horizStepperInstace.resetStepper();
+horizStepperInstace.resetStepper(); */
 
 var nonLinearStepper = document.querySelector('#nonLinearStepper');
 var nonLinearStepperInstace = new MStepper(nonLinearStepper, {
