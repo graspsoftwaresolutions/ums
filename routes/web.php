@@ -142,7 +142,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Route::get('fee-view/{parameter}','FeeController@view')->name('master.fee');
 	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
 	Route::post('fee_update','FeeController@update')->name('master.updatefee');
-	Route::get('fee-delete/{id}','FeeController@delete')->name('master.deletefee');
+	Route::get('fee-delete/{id}','FeeController@delete')->name('master.feedestroy');
     Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
 	
 
