@@ -44,6 +44,7 @@ class MasterController extends CommonController {
         $this->Designation = new Designation;
         $this->Status = new Status; 
         $this->FormType = new FormType;
+        $this->Company = new Company;
     }
 
     public function countryList() {
@@ -1601,10 +1602,12 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
      }
      //FormType Details End
+
      //Company Details Starts
      public function companyList()
      {
-        return view('master.company.company_list');
+        $data['company_view'] = Company::all();
+        return view('master.company.company_list')->with('data',$data);
      } 
     //Ajax Datatable FormType List
     public function ajax_company_list(Request $request){
@@ -1660,25 +1663,25 @@ class MasterController extends CommonController {
                 ->where('status','=','1')
                 ->count();
     }
-    $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.deletecompany', 0);
-//     $data = array();
-//     if(!empty($Company))
-//     {
-//     foreach ($Company as $Company)
-//     { 
-//         $enc_id = Crypt::encrypt($Company->id);  
-//         $delete =  route('master.formTypedestroy',[app()->getLocale(),$Company->id]) ;
-//         $edit =  "#modal_add_edit";
-//         $nestedData['company_name'] = $Company->company_name;
-//         $nestedData['short_code'] = $Company->short_code;
-//         $Company = $Company->id;
-//         $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Company);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-//         $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-//         $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-//         $nestedData['options'] = $actions;
-//         $data[] = $nestedData;
-//     }
-// }
+    $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.companydestroy', 0);
+    $data = array();
+    if(!empty($Company))
+    {
+    foreach ($Company as $Company)
+    { 
+        $enc_id = Crypt::encrypt($Company->id);  
+        $delete =  route('master.companydestroy',[app()->getLocale(),$Company->id]) ;
+        $edit =  "#modal_add_edit";
+        $nestedData['company_name'] = $Company->company_name;
+        $nestedData['short_code'] = $Company->short_code;
+        $Company = $Company->id;
+        $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Company);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+        $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+        $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+        $nestedData['options'] = $actions;
+        $data[] = $nestedData;
+    }
+}
     $json_data = array(
         "draw"            => intval($request->input('draw')),  
         "recordsTotal"    => intval($totalData),  
@@ -1687,6 +1690,44 @@ class MasterController extends CommonController {
         );
     echo json_encode($json_data); 
 }
-
+//Company Save and Update
+public function companySave(Request $request)
+{  
+    $request->validate([
+        'company_name'=>'required',
+    ],
+    [
+        'company_name.required'=>'Please enter Company name',
+    ]);
+    $data = $request->all();  
+    
+    $defdaultLang = app()->getLocale();
+    
+    if(!empty($request->id)){
+        $data_exists = $this->checkCompanyExists($request->input('company_name'),$request->id);
+    }else{
+        $data_exists = $this->checkCompanyExists($request->input('company_name'));
+    }
+    if($data_exists>0)
+    {
+        return  redirect($defdaultLang.'/company')->with('error','Company Name Already Exists'); 
+    }
+    else{
+        $saveCompany = $this->Company->saveCompanydata($data);
+       
+        if($saveCompany == true)
+        {
+            return  redirect($defdaultLang.'/company')->with('message','Company Added Succesfully');
+        }
+   }
+} 
+public function companyDestroy($lang,$id)
+{
+    $Company = new Company();
+    $Company = Company::find($id);
+    $Company->where('id','=',$id)->update(['status'=>'0']);
+    $defdaultLang = app()->getLocale();
+    return redirect($defdaultLang.'/company')->with('message','Company Details Deleted Successfully!!');
+}
      //Company Details End
 }

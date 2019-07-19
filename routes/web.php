@@ -99,13 +99,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('formtype-delete/{id}','MasterController@formTypeDestroy')->name('master.formTypedestroy');
 
 	//Company 
-	Route::get('/company','CompanyController@index')->name('master.company');
-	//Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
-	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
-	Route::post('/company_save','CompanyController@save')->name('master.companysave');
-	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
-	Route::post('company_edit','CompanyController@update')->name('master.companyupdate');
-	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
+	Route::get('/company','MasterController@companyList')->name('master.company');
+	Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
+	Route::post('company_nameexists','CommonController@checkCompanyNameExists'); 
+	Route::post('saveCompany','MasterController@companySave')->name('master.saveCompany'); 
+	Route::get('company_detail','CommonController@companyDetail'); 
+	Route::get('save_company_detail','CommonController@saveCompanyDetail');
+	Route::delete('companydestroy/{id}','MasterController@companyDestroy')->name('master.companydestroy');
 	
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
@@ -123,8 +123,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('city_nameexists','CommonController@checkCityNameExists');
 	Route::get('city_detail','CommonController@cityDetail');
 	Route::delete('city-delete/{id}','MasterController@citydestroy')->name('master.citydestroy');
-
-	
 
 	//Union Branch
 	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');

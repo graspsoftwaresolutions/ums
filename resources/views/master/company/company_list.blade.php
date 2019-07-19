@@ -26,7 +26,7 @@
                 </ol>
               </div>
               <div class="col s2 m6 l6">
-			 <a class="btn waves-effect waves-light breadcrumbs-btn right " href="{{route('master.addcompany', app()->getLocale())}}">{{__('Add New Company') }}</a>
+			 <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit"">{{__('Add New Company') }}</a>
               </div>
             </div>
           </div>
@@ -48,15 +48,62 @@
                                 <tr>
                                 <td>{{__('Company Name') }}</td>
                                         <td>{{__('Short Name') }}</td>
-                                    <th style="text-align:center"> {{__('Action') }}</th>
+                                    <th> {{__('Action') }}</th>
                                 </tr>
                             </thead>
                         </table>
                         </div>
                     </div>
+                   
                     </div>
                 </div>
+                
                 </div>
+                <div id="modal_add_edit" class="modal">
+                            <div class="modal-content">
+                                <h4>Company Details</h4>
+                                <form class="formValidate" id="company_formValidate" method="post"  action="{{ route('master.saveCompany',app()->getLocale()) }}">
+                                    @csrf
+									                <input type="hidden" name="id" id="updateid">
+                                    <div class="row">
+                                    <div class="input-field col s12 m6">
+                                        <label for="company_name" class="common-label force-active">{{__('Company Name') }}*</label>
+                                        <input id="company_name" class="common-input" name="company_name" type="text" data-error=".errorTxt1">
+                                          <div class="errorTxt1"></div>
+                                        </div>
+                                        <div class="input-field col s12 m6">
+                                          <label for="company_name" class="common-label force-active">{{__('Short Code') }}*</label>
+                                          <input id="short_code" class="common-input" name="short_code" type="text" data-error=".errorTxt2">
+                                        </div>
+                                        <!--div class="input-field col s12 m6">
+                                                <select name="country_id" id="country_id" class="error browser-default common-select selelctpicker-modal" data-error=".errorTxt101">
+                                                <option value="">{{__('Select Country') }}</option>
+                                                    <option value="1"  >India</option>  
+                                                </select>
+                                              <div class="input-field">        
+                                              <div class="errorTxt101"></div>
+                                              </div>
+                                        </div-->
+                                        <div class="clearfix" style="clear:both"></div>
+                                        <div class="col s12 m6">
+                                            <label class="common-label">{{__('Head of Company') }}*</label>
+                                              <select id="head_of_company" name="head_of_company" class="error browser-default common-select add-select">
+                                                  <option value="">{{__('Select Company') }}</option>
+                                                   
+                                              </select>
+                                        </div>
+                                        <div class="clearfix" style="clear:both"></div>
+                                        <div class="input-field col s12">
+                                            <a href="#!" class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                            <button class="btn waves-effect waves-light right submit edit_hide_btn " type="submit" name="action">{{__('Update')}}
+                                            </button>
+                                            <button class="btn waves-effect waves-light right submit add_hide" style="display:none;" type="submit" name="action">{{__('Save')}} 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
             </div>
  <!-- Multi Select -->
 </div><!-- START RIGHT SIDEBAR NAV -->
@@ -83,8 +130,51 @@
 	$("#masters_sidebars_id").addClass('active');
 	$("#company_sidebar_li_id").addClass('active');
 	$("#company_sidebar_a_id").addClass('active');
+  $('#company_formValidate').validate({
+        rules: {
+            company_name: {
+                required: true,
+                remote:{
+                   url: "{{ url(app()->getLocale().'/company_nameexists')}}", 
+                   data: {
+                         company_id: function() {
+                            return $( "#updateid" ).val();
+                        },
+                        _token: "{{csrf_token()}}",
+                        company_name: $(this).data('company_name')
+                        },
+                   type: "post",
+                },
+            },
+            short_code: {
+                required: true,
+            },
+        },
+        //For custom messages
+        messages: {
+            company_name: {
+            required: '{{__("Please Enter Company Name") }}',
+            remote : '{{__("Company Name Already exists") }}',
+            },
+            short_code: {
+                required: '{{__("Please Enter Short Code") }}',
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
         //Data table Ajax call
         $(function () {
+          $('.selelctpicker-modal').select2({
+              dropdownParent: $('#modal_add_edit')
+          });
     $('#page-length-option').DataTable({
         "responsive": true,
         "lengthMenu": [
@@ -116,6 +206,55 @@ function ConfirmDeletion() {
     } else {
         return false;
     }
+}
+//Model
+$(document).ready(function () {
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+});
+function showaddForm() {
+	$('.edit_hide').show();
+  $('.add_hide').show();
+  $('.edit_hide_btn').hide();
+	$('#company_name').val("");
+  $('#short_code').val("");
+  $('.modal').modal();
+  var url = "{{ url(app()->getLocale().'/save_company_detail') }}";
+  $.ajax({
+        url: url, 
+        type: 'GET',
+        dataType: 'json', // added data type
+        success: function(res) {
+          $('#short_code').empty();
+          $('#head_of_company').empty();
+          $.each(res['company'],function(key,entry){
+                  $('#head_of_company').append($('<option></option>').attr('value',entry.id).text(entry.company_name));
+            });
+        }
+    });
+}
+function showeditForm(companyid){
+   $('#head_of_company').empty();
+    $('.edit_hide').hide();
+    $('.add_hide').hide();
+    $('.edit_hide_btn').show();
+    $('.modal').modal();
+    var url = "{{ url(app()->getLocale().'/company_detail') }}" + '?id=' + companyid;
+    $.ajax({
+      url: url,
+      type: "GET", 
+      success: function (resultdata) {
+          result=resultdata['company'];
+          $('#updateid').val(result.id);
+          $('#updateid').attr('data-autoid',result.id);
+          $('#company_name').val(result.company_name);
+          $('#short_code').val(result.short_code);
+          $('#head_of_company').empty();
+          $.each(resultdata['head_company'],function(key,entry){
+                $('#head_of_company').append($('<option></option>').attr('value',entry.id).text(entry.company_name));
+          });
+        }
+    });
 }
 </script>
 @endsection
