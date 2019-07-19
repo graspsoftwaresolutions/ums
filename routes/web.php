@@ -148,16 +148,17 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	
 	//Branch Details
-	Route::get('branch','CompanyBranchController@index')->name('master.branch');
+	Route::get('branch','MasterController@CompanyBranchList')->name('master.branch');
 	/* 
 	Route::get('get-state-list','BranchController@getStateList');
 	Route::get('get-cities-list','BranchController@getCitiesList');
 	 */
-	Route::get('add-branch','CompanyBranchController@addBranch')->name('master.addbranch');
-	Route::post('branch_save','CompanyBranchController@save')->name('master.savebranch');
+	Route::get('add-branch','MasterController@addCompanyBranch')->name('master.addbranch');
+	Route::post('branch_save','MasterController@CompanyBranchsave')->name('master.savecompanybranch');
 	Route::get('branch-edit/{parameter}','CompanyBranchController@edit')->name('master.editbranch');
 	Route::post('branch_update','CompanyBranchController@update')->name('master.updatebranch');
-	Route::get('branch-delete/{id}','CompanyBranchController@delete')->name('master.deletebranch');
+	Route::get('branch-delete/{id}','MasterController@deleteCompanyBranch')->name('master.deletebranch');
+	Route::post('ajax-company-branchlist','MasterController@AjaxCompanyBranchList')->name('master.company_branch_list');
 
 	//App Form
 	Route::resource('appform', 'AppFormController');

@@ -32,7 +32,7 @@ class CompanyBranchController extends Controller
                     ['company_branch.status','=','1'],
                     ['company.status','=','1']
                     ])->get();
-        return view('branch.branch',compact('data',$data));
+        return view('master.companybranch.branch',compact('data',$data));
     }
     public function addBranch()
     {
@@ -43,64 +43,10 @@ class CompanyBranchController extends Controller
     }
     public function save(Request $request)
     {
-        $defdaultLang = app()->getLocale();
-        $request->validate([
-            'company_id'=>'required',
-            'union_branch_id'=>'required',
-            'branch_name'=>'required',
-            'address_one'=>'required',
-            'country_id'=>'required',
-            'state_id'=>'required',
-            'city_id'=>'required',
-            'postal_code'=>'required',
-            'email'=>'required',
-            'phone'=>'required',
-            'mobile'=>'required',
-        ],
-        [
-            'company_id.required'=>'please Choose Company name',
-            'union_branch_id.required'=>'Please Choose union Banch',
-            'branch_name.required'=>'please Enter branch name',
-            'address_one.required'=>'please Enter address one name',
-            'country_id.required'=>'please Enter country name',
-            'state_id.required'=>'please Enter state name',
-            'city_id.required'=>'please Enter city name',
-            'postal_code.required'=>'please Enter postal code',
-            'email.required'=>'please Enter email address',
-            'phone.required'=>'please Enter phone number',
-            'mobile.required'=>'please Enter mobile number',
-        ]);
-        $branch['company_id'] = $request->input('company_id');
-        $branch['union_branch_id'] = $request->input('union_branch_id');
-        $branch['branch_name'] = $request->input('branch_name');
-        $branch['country_id'] = $request->input('country_id');
-        $branch['state_id'] = $request->input('state_id');
-        $branch['city_id'] = $request->input('city_id');
-        $branch['postal_code'] = $request->input('postal_code');
-        $branch['address_one'] = $request->input('address_one');
-        $branch['address_two'] = $request->input('address_two');
-        $branch['address_three'] = $request->input('address_three');
-        $branch['phone'] = $request->input('phone');
-        $branch['mobile'] = $request->input('mobile');
-        $branch['email'] = $request->input('email');
-
-        $is_head = $request->input('is_head');
-        if(isset($is_head)){
-            $branch['is_head'] = 1;
-        }else{
-            $branch['is_head'] = 0;
-        }
+       
        
 
-
-        $company_head_role = Role::where('slug', 'company')->first();
-        $company_branch_role = Role::where('slug', 'company-branch')->first();
-        $randompass = CommonHelper::random_password(5,true);
-
-        $data_exists_branchemail = DB::table('company_branch')->where([
-            ['email','=',$branch['email']]
-            ])->count();
-        $data_exists_usersemail = DB::table('users')->where('email','=',$branch['email'])->count();
+        
         $redirect_url = app()->getLocale().'/branch';
         if($data_exists_branchemail > 0 ||  $data_exists_usersemail > 0)
         {
@@ -108,53 +54,23 @@ class CompanyBranchController extends Controller
         }
         else
         {
-            $company_type =2;
+            
            
             if($branch['is_head'] == 0)
             {
-                $member_user = new User();
-                $member_user->name = $request->input('branch_name');
-                $member_user->email = $request->input('email');
-                $member_user->password = bcrypt($randompass);
-                $member_user->save();
-                $member_user->roles()->attach($company_branch_role);
-				$branch['user_id'] = $member_user->id;
-                $id = $this->Branch->StoreBranch($branch);
+               
+               
                 $status =1;
             }else{
-				$member_user = new User();
-				$companyid = $request->input('company_id');
-                $member_user->name = $request->input('branch_name');
-                $member_user->email = $request->input('email');
-                $member_user->password = bcrypt($randompass);
-                $member_user->save();
-                $company_type = 1;
-                $union_branch_id = $branch['union_branch_id'];
-                $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->update(['is_head'=>'0']);
-				$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$companyid'");
-                $branch['user_id'] = $member_user->id;
-                $member_user->roles()->attach($company_head_role);
-                $id = $this->Branch->StoreBranch($branch);
+				
+               
                 //$rold_id_1 = DB::table('users_roles')->where('role_id','=','3')->where('union_branch_id','=',$branch['union_branch_id'])->update(['role_id'=>'4']);
                 //$rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN users ON users.id = users_roles.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND users.union_branch_id = '$union_branch_id'");
                
                 $status =1;
             }
 
-            $mail_data = array( 
-                'name' => $request->input('branch_name'),
-                'email' => $branch['email'],
-                'password' => $randompass,
-                'site_url' => URL::to("/"),
-                'company_type' => $company_type,
-            );
-            $status = Mail::to($branch['email'])->send(new CompanyBranchMailable($mail_data));
-
-            if( count(Mail::failures()) > 0 ) {
-                return redirect($redirect_url)->with('message','Company Account created successfully, Failed to send mail');
-            }else{
-                return redirect($redirect_url)->with('message','Company Account created successfully, password sent to mail');
-            }
+            
         }
 
         // $data_exists = DB::table('company_branch')->where([
@@ -242,8 +158,7 @@ class CompanyBranchController extends Controller
         }else{
             $branch['is_head'] = 0;
         }
-        $union_branch_id = $request->input('union_branch_id');
-        $company_id = $request->input('company_id');
+        
 
         /* $is_head_exists = DB::table('company_branch')->where([
             ['is_head','=','1'],

@@ -377,12 +377,12 @@ class CommonController extends Controller
                 }
                
 
-                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 if($deletetype==0){
                     $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-                    $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                    $actions .="<button  type='submit' class='btn-floating waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'><i class='material-icons'>delete</i></button> </form>";
                 }else{
-                    $actions .="&nbsp; <a class='btn-small waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' >".trans('Delete')."</a>";
+                    $actions .="&nbsp; <a class='btn-floating waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons'>delete</i></a>";
                 }
                 
                 $nestedData['options'] = $actions;
