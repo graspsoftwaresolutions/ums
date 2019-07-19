@@ -38,6 +38,7 @@ class MasterController extends CommonController {
         $this->User = new User;
         $this->Relation = new Relation;
         $this->Race = new Race;
+        $this->Fee = new Fee;
         $this->Reason = new Reason;
         $this->UnionBranch = new UnionBranch;
         $this->Persontitle = new Persontitle;
@@ -1327,6 +1328,11 @@ class MasterController extends CommonController {
     //Union BRanch List End
 
     //Fee Details Start
+	
+	public function fees_list() {
+        return view('master.fee.fee');
+    }
+	
     public function ajax_fees_list(Request $request) {
         $columns = array(
             0 => 'fee_name',
@@ -1366,9 +1372,47 @@ class MasterController extends CommonController {
 
           echo json_encode($json_data);
     }
-    public function fees_list() {
-        return view('master.fee.fee');
+    
+	public function saveFee(Request $request)
+    {
+
+        $request->validate([
+            'fee_name' => 'required',
+			'fee_amount' => 'required',
+                ], [
+            'fee_name.required' => 'please enter Fee name',
+			'fee_amount.required' => 'please enter Fee Amount',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('fee_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('fee_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/fee')->with('error','User Email Already Exists'); 
+        }
+        else{
+//dd($data);
+            $saveFee = $this->Fee->saveFeedata($data);
+
+            if ($saveFee == true) {
+                return redirect($defdaultLang . '/fee')->with('message', 'Fee Name Added Succesfully');
+            }
+        }
     }
+	
+	public function feedestroy($lang,$id)
+	{
+        $Fee = new Fee();
+        $Fee = Fee::find($id);
+        $Fee->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/fee')->with('message','Fee Details Deleted Successfully!!');
+	}
 	
 	public function checkBranchemailExists(Request $request){
 		//return $request->all();

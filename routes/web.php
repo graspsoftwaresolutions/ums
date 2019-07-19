@@ -137,13 +137,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	//Fee Details
 	Route::get('fee','MasterController@fees_list')->name('master.fee');
-	Route::get('add-fee','FeeController@addFee')->name('master.addfee');
-	Route::post('fee_save','FeeController@save')->name('master.savefee');
-	//Route::get('fee-view/{parameter}','FeeController@view')->name('master.fee');
-	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
-	Route::post('fee_update','FeeController@update')->name('master.updatefee');
-	Route::get('fee-delete/{id}','FeeController@delete')->name('master.feedestroy');
-    Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
+	Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
+	Route::post('fee_save','MasterController@saveFee')->name('master.savefee');
+	Route::post('fee_nameexists','CommonController@checkFeeNameExists');
+	Route::get('fee_detail','CommonController@feeDetail');
+	Route::delete('fee-delete/{id}','MasterController@feedestroy')->name('master.feedestroy');
+    
 	
 
 	

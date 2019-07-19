@@ -244,7 +244,6 @@ class CommonController extends Controller
                 ['city_name','=',$city_name],
                 ['country_id','=',$country_id],
 				['state_id','=',$state_id],
-                ['id','!=',$city_id],
                 ['status','=','1'],     
                 ])->count(); 
           } 
@@ -347,7 +346,46 @@ class CommonController extends Controller
         return $data;
     }
     // Race Details End
+	
+	//Fee Details 
+    public function feeDetail(Request $request)
+    {
+        $id = $request->id;
+        $fee = new Fee();
+        $data = Fee::find($id);
+        return $data;
+    }
+	//Fee Name Exists Check
+    public function checkFeeNameExists(Request $request)
+    {
+        $fee_name =  $request->input('fee_name');
+        $fee_id = $request->input('fee_id');
 
+        if(!empty($fee_id))
+          {
+				
+                 $feename_exists = Fee::where([
+                  ['fee_name','=',$fee_name],
+                  ['id','!=',$fee_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $feename_exists = Fee::where([
+                ['fee_name','=',$fee_name],
+                ['status','=','1'],     
+                ])->count(); 
+          } 
+          if($feename_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+	
     /*
         Input $result = query result (array)
         Input $deleteRoute = Delete Route Name (string)

@@ -31,10 +31,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.addfee', app()->getLocale())  }}">{{
-											__('Add New Fee')
-                                            }}</a>
-
+										<a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger" onClick='showaddForm();' href="#modal_add_edit">{{__('Add')}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -64,22 +61,26 @@
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
                                 <h4>Fee Details</h4>
-                                <form class="formValidate" id="add_formValidate" method="post" action="{{ route('master.savefee', app()->getLocale()) }}">
+                                <form class="formValidate" id="feeformValidate" method="post" action="{{ route('master.savefee', app()->getLocale()) }}">
                                     @csrf
+									<input type="hidden" name="id" id="updateid">
                                     <div class="row">
                                         <div class="input-field col s12 m6">
-                                            <label for="fee_name" class="common-label">{{__('Fee Name') }}*</label>
+                                            <label for="fee_name" class="common-label force-active">{{__('Fee Name') }}*</label>
                                             <input id="fee_name" name="fee_name" class="common-input" type="text" data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
                                         <div class="input-field col s12 m6">
-                                            <label for="fee_amount" class="common-label">{{__('Fee Amount') }}*</label>
+                                            <label for="fee_amount" class="common-label force-active">{{__('Fee Amount') }}*</label>
                                             <input id="fee_amount" name="fee_amount" class="common-input" type="text" data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>
+                                        <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
-                                            <button class="btn waves-effect waves-light right submit" type="submit" name="action">{{__('Save')}}
-                                                <!--i class="material-icons right">send</i-->
+                                            <a href="#!" class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                            <button class="btn waves-effect waves-light right submit edit_hide_btn " type="submit" name="action">{{__('Update')}}
+                                            </button>
+                                            <button class="btn waves-effect waves-light right submit add_hide" style="display:none;" type="submit" name="action">{{__('Save')}} 
                                             </button>
                                         </div>
                                     </div>
@@ -101,6 +102,8 @@
 <!--<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>-->
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
@@ -135,5 +138,84 @@ $("#fee_sidebar_a_id").addClass('active');
 
         });
     });
+	
+	function ConfirmDeletion() {
+		if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// Form Validation
+	$("#feeformValidate").validate({
+        rules: {
+            fee_name:{
+                required: true,
+                remote:{
+                   url: "{{ url(app()->getLocale().'/fee_nameexists')}}", 
+                   data: {
+                         fee_id: function() {
+                            return $( "#updateid" ).val();
+                        },
+                        _token: "{{csrf_token()}}",
+                        fee_name: $(this).data('fee_name')
+                        },
+                   type: "post",
+                },
+            },
+			fee_amount: {
+				required: true,
+			},
+        },
+        //For custom messages
+        messages: {
+            fee_name: {
+                required: '{{__("Enter a Fee Name") }}', 
+                remote : '{{__("Fee Name Already exists") }}', 
+            },
+			fee_amount: {
+				required: '{{__("Enter a Fee Amount") }}',
+			},
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+
+	//Model
+	$(document).ready(function () {
+		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+		$('.modal').modal();
+	});
+	function showaddForm() {
+		$('.edit_hide').show();
+		$('.add_hide').show();
+		$('.edit_hide_btn').hide();
+		$('#fee_name').val("");
+		$('#fee_amount').val("");
+		$('.modal').modal();
+	}
+	function showeditForm(feeid){
+		$('.edit_hide').hide();
+		$('.add_hide').hide();
+		$('.edit_hide_btn').show();
+		$('.modal').modal();
+		var url = "{{ url(app()->getLocale().'/fee_detail') }}" + '?id=' + feeid;
+		$.ajax({url: url, type: "GET", success: function (result) {
+				console.log(result);
+				$('#updateid').val(result.id);
+				$('#updateid').attr('data-autoid',result.id);
+				$('#fee_name').val(result.fee_name);
+				$('#fee_amount').val(result.fee_amount);
+			}
+		});
+	}
 </script>
 @endsection
