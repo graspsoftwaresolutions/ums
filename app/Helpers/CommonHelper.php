@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Model\FormType;
 use App\Model\AppForm;
 use App\Model\Country;
+use App\Model\UnionBranch;
+use App\Model\Company;
 use App\User;
 
 class CommonHelper
@@ -150,5 +152,38 @@ class CommonHelper
      {
          return 130;
      }
+	 
+	 public static function getUnionBranchID($user_id){
+		 $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+		 if(count($union_branch_id)>0){
+				return $union_branch_id[0];
+		 }
+		 return false;
+	 }
+	 
+	 public static function getUnionCompanyList($union_branch_id){
+		$rawQuery = "SELECT c.id, c.company_name from company_branch as b left join company as c on b.company_id=c.id where b.union_branch_id=$union_branch_id ";
+		//DB::select( DB::raw('set sql_mode='''));
+		return $results = DB::table('company_branch as b')
+							->selectRaw('c.id, c.company_name')
+							->join('company as c','c.id','=','b.company_id')
+							->where('b.union_branch_id','=',$union_branch_id)
+							->groupBy('c.id')
+							->get();
+	 }
+	 
+	 public static function getCompanyID($user_id){
+		 $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+		 if(count($company_id)>0){
+			return $company_id[0];
+		 }
+		 return false;
+	 }
+	 
+	 public static function getCompanyList($companyid){
+		$rawQuery = "SELECT c.id, c.company_name from company_branch as b left join company as c on b.company_id=c.id where b.union_branch_id=$union_branch_id ";
+		//DB::select( DB::raw('set sql_mode='''));
+		return $results = Company::find($companyid);
+	 }
    
 }
