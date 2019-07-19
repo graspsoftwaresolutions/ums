@@ -386,6 +386,43 @@ class CommonController extends Controller
           }
     }
 	
+	//Role Details 
+    public function roleDetail(Request $request)
+    {
+        $id = $request->id;
+        $role = new Role();
+        $data = Role::find($id);
+        return $data;
+    }
+	//Role Name Exists Check
+    public function checkRoleNameExists(Request $request)
+    {
+        $name =  $request->input('name');
+        $role_id = $request->input('role_id');
+
+        if(!empty($role_id))
+          {
+				
+            $rolename_exists = Role::where([
+                  ['name','=',$name],
+                  ['id','!=',$role_id]
+                  ])->count();
+          }
+          else
+          {
+            $rolename_exists = Role::where([
+                ['name','=',$name]    
+                ])->count(); 
+          } 
+          if($rolename_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+	
     /*
         Input $result = query result (array)
         Input $deleteRoute = Delete Route Name (string)
@@ -406,8 +443,13 @@ class CommonController extends Controller
                     }
                 }
                 
-                $enc_id = Crypt::encrypt($autoid);  
+                $enc_id = Crypt::encrypt($autoid);
+				if($deleteRoute == "")
+				{
+					$delete = "";
+				}else{
                 $delete =  route($deleteRoute, [app()->getLocale(),$autoid]) ;
+				}
                 if($edittype==0){
                     $edit =  "#modal_add_edit";
                 }else{
@@ -419,7 +461,11 @@ class CommonController extends Controller
                 if($deletetype==0){
                     $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
                     $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-                }else{
+                }
+				if($deletetype==2){
+                    $actions .="";
+                }
+				else{
                     $actions .="&nbsp; <a class='btn-small waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' >".trans('Delete')."</a>";
                 }
                 
