@@ -151,14 +151,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	//Branch Details
 	Route::get('branch','MasterController@CompanyBranchList')->name('master.branch');
-	/* 
-	Route::get('get-state-list','BranchController@getStateList');
-	Route::get('get-cities-list','BranchController@getCitiesList');
-	 */
 	Route::get('add-branch','MasterController@addCompanyBranch')->name('master.addbranch');
 	Route::post('branch_save','MasterController@CompanyBranchsave')->name('master.savecompanybranch');
-	Route::get('branch-edit/{parameter}','CompanyBranchController@edit')->name('master.editbranch');
-	Route::post('branch_update','CompanyBranchController@update')->name('master.updatebranch');
+	Route::get('branch-edit/{parameter}','MasterController@EditCompanyBranch')->name('master.editbranch');
 	Route::get('branch-delete/{id}','MasterController@deleteCompanyBranch')->name('master.deletebranch');
 	Route::post('ajax-company-branchlist','MasterController@AjaxCompanyBranchList')->name('master.company_branch_list');
 
@@ -212,15 +207,6 @@ Route::post('add-nominee','MemberController@addNominee');
 Route::get('get-oldmember-list','MemberController@getoldMemberList');
 Route::post('membership_save','MemberController@Save');
 Route::post('membership_update','MemberController@update');
-
-//Person Tiltle Setup
-Route::get('persontitle','PersontitleController@index');
-Route::get('add-title','PersontitleController@addTitle');
-Route::post('persontitle_save','PersontitleController@save');
-Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
-Route::post('persontitle_update','PersontitleController@update');
-Route::get('persontitle-delete/{id}','PersontitleController@delete');
-
 
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');

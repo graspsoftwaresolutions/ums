@@ -2055,7 +2055,6 @@ public function companyDestroy($lang,$id)
                 if($branch['is_head'] == 0)
                 {
                     $member_user->roles()->attach($company_branch_role);
-                    $id = $this->CompanyBranch->StoreBranch($branch);
                 }else{
                     $company_type = 1;
                     $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->update(['is_head'=>'0']);
@@ -2082,13 +2081,13 @@ public function companyDestroy($lang,$id)
              $user_id = CompanyBranch::where('id',$auto_id)->pluck('user_id')[0];
              $rold_id_21 = DB::table('users')->where('id','=',$user_id)->update(['name'=> $request->input('branch_name')]);
              if($branch['is_head']==0){
-                $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
+                $upid = DB::table('company_branch')->where('id','=',$auto_id)->update($branch);
                 $rold_id_2 = DB::table('users_roles')->where('role_id','=','3')->where('user_id','=',$user_id)->update(['role_id'=>'4']);
              }else{
                 $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->update(['is_head'=>'0']);
                 $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$companyid'");
                 
-                $upid = DB::table('company_branch')->where('id','=',$id)->update($branch);
+                $upid = DB::table('company_branch')->where('id','=',$auto_id)->update($branch);
                 $rold_id_2 = DB::table('users_roles')->where('role_id','=','4')->where('user_id','=',$user_id)->update(['role_id'=>'3']);
              }
 
@@ -2103,5 +2102,25 @@ public function companyDestroy($lang,$id)
         $defdaultLang = app()->getLocale();
 		return redirect($defdaultLang.'/branch')->with('message','Company Branch Deleted Succesfully');
 	} 
+
+    public function EditCompanyBranch($lang,$id){
+        $id = Crypt::decrypt($id);
+        $data['branch_view'] = DB::table('company')->select('company_branch.*', 'company.company_name','company_branch.branch_name','company_branch.id as branchid','company_branch.company_id','company_branch.status','company.status','union_branch.union_branch','company_branch.union_branch_id')
+                ->join('company_branch','company.id','=','company_branch.company_id')
+                ->join('union_branch','company_branch.union_branch_id','=','union_branch.id')
+                ->where([
+                    ['company_branch.status','=','1'],
+                    ['company.status','=','1'],
+                    ['company_branch.id','=',$id]
+                    ])->get();
+        $company_id = $data['branch_view'][0]->company_id;
+        $union_branch_id = $data['branch_view'][0]->union_branch_id;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->get();
+        return view('master.companybranch.companybranch_details')->with('data',$data);
+    }
     
 }
