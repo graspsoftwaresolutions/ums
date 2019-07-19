@@ -63,7 +63,7 @@
 						
 						<div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Fee Details</h4>
+                                <h4>Role Details</h4>
                                 <form class="formValidate" id="rolesformValidate" method="post" action="{{ route('master.saverole', app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">
