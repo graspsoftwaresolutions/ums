@@ -62,7 +62,7 @@
 						</div>
 						<div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>State Details</h4>
+                                <h4>City Details</h4>
                                 <form class="formValidate" id="cityformValidate" method="post"  action="{{ route('master.savecity',app()->getLocale()) }}">
                                     @csrf
 									<input type="hidden" name="id" id="updateid">

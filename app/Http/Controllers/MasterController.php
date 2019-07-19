@@ -38,6 +38,8 @@ class MasterController extends CommonController {
         $this->User = new User;
         $this->Relation = new Relation;
         $this->Race = new Race;
+        $this->Fee = new Fee;
+        $this->Role = new Role;
         $this->Reason = new Reason;
         $this->UnionBranch = new UnionBranch;
         $this->Persontitle = new Persontitle;
@@ -1328,6 +1330,11 @@ class MasterController extends CommonController {
     //Union BRanch List End
 
     //Fee Details Start
+	
+	public function fees_list() {
+        return view('master.fee.fee');
+    }
+	
     public function ajax_fees_list(Request $request) {
         $columns = array(
             0 => 'fee_name',
@@ -1367,9 +1374,149 @@ class MasterController extends CommonController {
 
           echo json_encode($json_data);
     }
-    public function fees_list() {
-        return view('master.fee.fee');
+    
+	public function saveFee(Request $request)
+    {
+
+        $request->validate([
+            'fee_name' => 'required',
+			'fee_amount' => 'required',
+                ], [
+            'fee_name.required' => 'please enter Fee name',
+			'fee_amount.required' => 'please enter Fee Amount',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('fee_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('fee_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/fee')->with('error','User Email Already Exists'); 
+        }
+        else{
+//dd($data);
+            $saveFee = $this->Fee->saveFeedata($data);
+
+            if ($saveFee == true) {
+                return redirect($defdaultLang . '/fee')->with('message', 'Fee Name Added Succesfully');
+            }
+        }
     }
+	
+	public function feedestroy($lang,$id)
+	{
+        $Fee = new Fee();
+        $Fee = Fee::find($id);
+        $Fee->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/fee')->with('message','Fee Details Deleted Successfully!!');
+	}
+	
+	// Roles section
+	
+	public function roles_list() {
+        return view('master.roles.roles');
+    }
+	public function ajax_roles_list(Request $request) {
+        $columns = array( 
+            0 => 'name', 
+            1 => 'slug', 
+            2 => 'id',
+        );
+        $totalData = Role::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Role = Role::select('id','name','slug')->orderBy($order,$dir)
+                ->get()->toArray();
+            }else{
+                $Role = Role::select('id','name','slug')->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->get()->toArray();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Role     =  Role::select('id','name','slug')->where('id','LIKE',"%{$search}%")
+                        ->orWhere('name', 'LIKE',"%{$search}%")
+                        ->orWhere('slug', 'LIKE',"%{$search}%")
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }else{
+            $Role      = Role::select('id','name','slug')->where('id','LIKE',"%{$search}%")
+                        ->orWhere('name', 'LIKE',"%{$search}%")
+                        ->orWhere('slug', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = Role::where('id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('slug', 'LIKE',"%{$search}%")
+                    ->count();
+        }
+        $data = $this->CommonAjaxReturn($Role, 2, '', 0);
+   
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    }
+	public function saveRole(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+			'slug' => 'required',
+                ], [
+            'name.required' => 'please enter name',
+			'slug.required' => 'please enter slug',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/roles')->with('error','User Email Already Exists'); 
+        }
+        else{
+//dd($data);
+            $saveRole = $this->Role->saveRoledata($data);
+
+            if ($saveRole == true) {
+                return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');
+            }
+        }
+    }
+	public function roledestroy($lang,$id)
+	{
+        $Role = new Role();
+        $Role = Role::find($id);
+        $Role->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/roles')->with('message','Role Details Deleted Successfully!!');
+	}
 	
 	public function checkBranchemailExists(Request $request){
 		//return $request->all();

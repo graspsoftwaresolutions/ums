@@ -11,9 +11,14 @@ class Fee extends Model {
     protected $fillable = ['id', 'fee_name', 'fee_amount', 'status'];
     public $timestamps = true;
 
-    public function StoreFee($fee) {
-        $id = DB::table('fee')->insertGetId($fee);
-        return $id;
+    public function saveFeedata($data=array())
+    {
+        if (!empty($data['id'])) {
+            $savedata = Fee::find($data['id'])->update($data);
+        } else {
+            $savedata = Fee::create($data);
+        }
+        return $savedata;
     }
 
     public function getFee($select = array(), $where = array(), $or_where = array(),$orderby = array(), $limit="", $offset = 0) {
