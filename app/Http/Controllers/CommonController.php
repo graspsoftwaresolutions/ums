@@ -244,7 +244,6 @@ class CommonController extends Controller
                 ['city_name','=',$city_name],
                 ['country_id','=',$country_id],
 				['state_id','=',$state_id],
-                ['id','!=',$city_id],
                 ['status','=','1'],     
                 ])->count(); 
           } 
@@ -347,7 +346,83 @@ class CommonController extends Controller
         return $data;
     }
     // Race Details End
+	
+	//Fee Details 
+    public function feeDetail(Request $request)
+    {
+        $id = $request->id;
+        $fee = new Fee();
+        $data = Fee::find($id);
+        return $data;
+    }
+	//Fee Name Exists Check
+    public function checkFeeNameExists(Request $request)
+    {
+        $fee_name =  $request->input('fee_name');
+        $fee_id = $request->input('fee_id');
 
+        if(!empty($fee_id))
+          {
+				
+                 $feename_exists = Fee::where([
+                  ['fee_name','=',$fee_name],
+                  ['id','!=',$fee_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {
+            $feename_exists = Fee::where([
+                ['fee_name','=',$fee_name],
+                ['status','=','1'],     
+                ])->count(); 
+          } 
+          if($feename_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+	
+	//Role Details 
+    public function roleDetail(Request $request)
+    {
+        $id = $request->id;
+        $role = new Role();
+        $data = Role::find($id);
+        return $data;
+    }
+	//Role Name Exists Check
+    public function checkRoleNameExists(Request $request)
+    {
+        $name =  $request->input('name');
+        $role_id = $request->input('role_id');
+
+        if(!empty($role_id))
+          {
+				
+            $rolename_exists = Role::where([
+                  ['name','=',$name],
+                  ['id','!=',$role_id]
+                  ])->count();
+          }
+          else
+          {
+            $rolename_exists = Role::where([
+                ['name','=',$name]    
+                ])->count(); 
+          } 
+          if($rolename_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+	
     /*
         Input $result = query result (array)
         Input $deleteRoute = Delete Route Name (string)
@@ -368,8 +443,13 @@ class CommonController extends Controller
                     }
                 }
                 
-                $enc_id = Crypt::encrypt($autoid);  
+                $enc_id = Crypt::encrypt($autoid);
+				if($deleteRoute == "")
+				{
+					$delete = "";
+				}else{
                 $delete =  route($deleteRoute, [app()->getLocale(),$autoid]) ;
+				}
                 if($edittype==0){
                     $edit =  "#modal_add_edit";
                 }else{
@@ -381,7 +461,11 @@ class CommonController extends Controller
                 if($deletetype==0){
                     $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
                     $actions .="<button  type='submit' class='btn-floating waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'><i class='material-icons'>delete</i></button> </form>";
-                }else{
+                }
+				else if($deletetype==2){
+                    $actions .="";
+                }
+				else{
                     $actions .="&nbsp; <a class='btn-floating waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons'>delete</i></a>";
                 }
                 
@@ -631,6 +715,54 @@ class CommonController extends Controller
         $data = FormType::find($id);
         return $data;
     } 
-
      //Form Type Deatils End
+
+     //Company Deatils Starts 
+    public function checkCompanyNameExists(Request $request)
+    {
+        $company_name =  $request->input('company_name');
+        $company_id = $request->input('company_id'); 
+      
+        return $this->checkCompanyExists($company_name,$company_id);
+    }
+    public function checkCompanyExists($company_name,$company_id=false)
+    {   
+         if(!empty($company_id))
+          { 
+            $companyname_exists = Company::where([
+            ['company_name','=',$company_name],
+            ['id','!=',$company_id],
+            ['status','=','1']
+            ])->count();
+          }
+          else
+          {
+            $companyname_exists = Company::where([
+            ['company_name','=',$company_name],
+            ['status','=','1'],
+            ])->count(); 
+          } 
+          if($companyname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    } 
+    public function companyDetail(Request $request)
+    {
+        $id = $request->id;
+        $Company = new Company();
+        $data['company'] = Company::find($id);
+        $data['head_company'] = Company::where('id','!=',$id)->get();
+        return $data;
+    } 
+    public function saveCompanyDetail(Request $request)
+    {
+        $Company = new Company();
+        $data['company'] = Company::all();
+        return $data;
+    }
+      //Company Deatils End 
 }

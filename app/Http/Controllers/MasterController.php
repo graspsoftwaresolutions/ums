@@ -40,6 +40,8 @@ class MasterController extends CommonController {
         $this->User = new User;
         $this->Relation = new Relation;
         $this->Race = new Race;
+        $this->Fee = new Fee;
+        $this->Role = new Role;
         $this->Reason = new Reason;
         $this->UnionBranch = new UnionBranch;
         $this->Persontitle = new Persontitle;
@@ -47,6 +49,7 @@ class MasterController extends CommonController {
         $this->Status = new Status; 
         $this->FormType = new FormType;
         $this->CompanyBranch = new CompanyBranch;
+        $this->Company = new Company;
     }
 
     public function countryList() {
@@ -1330,6 +1333,11 @@ class MasterController extends CommonController {
     //Union BRanch List End
 
     //Fee Details Start
+	
+	public function fees_list() {
+        return view('master.fee.fee');
+    }
+	
     public function ajax_fees_list(Request $request) {
         $columns = array(
             0 => 'fee_name',
@@ -1369,9 +1377,149 @@ class MasterController extends CommonController {
 
           echo json_encode($json_data);
     }
-    public function fees_list() {
-        return view('master.fee.fee');
+    
+	public function saveFee(Request $request)
+    {
+
+        $request->validate([
+            'fee_name' => 'required',
+			'fee_amount' => 'required',
+                ], [
+            'fee_name.required' => 'please enter Fee name',
+			'fee_amount.required' => 'please enter Fee Amount',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('fee_name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('fee_name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/fee')->with('error','User Email Already Exists'); 
+        }
+        else{
+//dd($data);
+            $saveFee = $this->Fee->saveFeedata($data);
+
+            if ($saveFee == true) {
+                return redirect($defdaultLang . '/fee')->with('message', 'Fee Name Added Succesfully');
+            }
+        }
     }
+	
+	public function feedestroy($lang,$id)
+	{
+        $Fee = new Fee();
+        $Fee = Fee::find($id);
+        $Fee->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/fee')->with('message','Fee Details Deleted Successfully!!');
+	}
+	
+	// Roles section
+	
+	public function roles_list() {
+        return view('master.roles.roles');
+    }
+	public function ajax_roles_list(Request $request) {
+        $columns = array( 
+            0 => 'name', 
+            1 => 'slug', 
+            2 => 'id',
+        );
+        $totalData = Role::count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $Role = Role::select('id','name','slug')->orderBy($order,$dir)
+                ->get()->toArray();
+            }else{
+                $Role = Role::select('id','name','slug')->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->get()->toArray();
+            }
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Role     =  Role::select('id','name','slug')->where('id','LIKE',"%{$search}%")
+                        ->orWhere('name', 'LIKE',"%{$search}%")
+                        ->orWhere('slug', 'LIKE',"%{$search}%")
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }else{
+            $Role      = Role::select('id','name','slug')->where('id','LIKE',"%{$search}%")
+                        ->orWhere('name', 'LIKE',"%{$search}%")
+                        ->orWhere('slug', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = Role::where('id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('slug', 'LIKE',"%{$search}%")
+                    ->count();
+        }
+        $data = $this->CommonAjaxReturn($Role, 2, '', 0);
+   
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data); 
+    }
+	public function saveRole(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+			'slug' => 'required',
+                ], [
+            'name.required' => 'please enter name',
+			'slug.required' => 'please enter slug',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        if(!empty($request->id)){
+            $data_exists = $this->mailExists($request->input('name'),$request->id);
+        }else{
+            $data_exists = $this->mailExists($request->input('name'));
+        }
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/roles')->with('error','User Email Already Exists'); 
+        }
+        else{
+//dd($data);
+            $saveRole = $this->Role->saveRoledata($data);
+
+            if ($saveRole == true) {
+                return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');
+            }
+        }
+    }
+	public function roledestroy($lang,$id)
+	{
+        $Role = new Role();
+        $Role = Role::find($id);
+        $Role->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/roles')->with('message','Role Details Deleted Successfully!!');
+	}
 	
 	public function checkBranchemailExists(Request $request){
 		//return $request->all();
@@ -1604,10 +1752,12 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
      }
      //FormType Details End
+
      //Company Details Starts
      public function companyList()
      {
-        return view('master.company.company_list');
+        $data['company_view'] = Company::all();
+        return view('master.company.company_list')->with('data',$data);
      } 
     //Ajax Datatable FormType List
     public function ajax_company_list(Request $request){
@@ -1663,25 +1813,8 @@ class MasterController extends CommonController {
                 ->where('status','=','1')
                 ->count();
     }
-    $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.deletecompany', 0);
-//     $data = array();
-//     if(!empty($Company))
-//     {
-//     foreach ($Company as $Company)
-//     { 
-//         $enc_id = Crypt::encrypt($Company->id);  
-//         $delete =  route('master.formTypedestroy',[app()->getLocale(),$Company->id]) ;
-//         $edit =  "#modal_add_edit";
-//         $nestedData['company_name'] = $Company->company_name;
-//         $nestedData['short_code'] = $Company->short_code;
-//         $Company = $Company->id;
-//         $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Company);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-//         $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-//         $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-//         $nestedData['options'] = $actions;
-//         $data[] = $nestedData;
-//     }
-// }
+    $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.companydestroy', 0);
+    
     $json_data = array(
         "draw"            => intval($request->input('draw')),  
         "recordsTotal"    => intval($totalData),  
@@ -1690,7 +1823,45 @@ class MasterController extends CommonController {
         );
     echo json_encode($json_data); 
 }
-
+//Company Save and Update
+public function companySave(Request $request)
+{  
+    $request->validate([
+        'company_name'=>'required',
+    ],
+    [
+        'company_name.required'=>'Please enter Company name',
+    ]);
+    $data = $request->all();  
+    
+    $defdaultLang = app()->getLocale();
+    
+    if(!empty($request->id)){
+        $data_exists = $this->checkCompanyExists($request->input('company_name'),$request->id);
+    }else{
+        $data_exists = $this->checkCompanyExists($request->input('company_name'));
+    }
+    if($data_exists>0)
+    {
+        return  redirect($defdaultLang.'/company')->with('error','Company Name Already Exists'); 
+    }
+    else{
+        $saveCompany = $this->Company->saveCompanydata($data);
+       
+        if($saveCompany == true)
+        {
+            return  redirect($defdaultLang.'/company')->with('message','Company Added Succesfully');
+        }
+   }
+} 
+public function companyDestroy($lang,$id)
+{
+    $Company = new Company();
+    $Company = Company::find($id);
+    $Company->where('id','=',$id)->update(['status'=>'0']);
+    $defdaultLang = app()->getLocale();
+    return redirect($defdaultLang.'/company')->with('message','Company Details Deleted Successfully!!');
+}
      //Company Details End
      public function AjaxCompanyBranchList(Request $request){
         DB::enableQueryLog();

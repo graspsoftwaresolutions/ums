@@ -99,13 +99,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('formtype-delete/{id}','MasterController@formTypeDestroy')->name('master.formTypedestroy');
 
 	//Company 
-	Route::get('/company','CompanyController@index')->name('master.company');
-	//Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
-	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
-	Route::post('/company_save','CompanyController@save')->name('master.companysave');
-	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
-	Route::post('company_edit','CompanyController@update')->name('master.companyupdate');
-	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
+	Route::get('/company','MasterController@companyList')->name('master.company');
+	Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
+	Route::post('company_nameexists','CommonController@checkCompanyNameExists'); 
+	Route::post('saveCompany','MasterController@companySave')->name('master.saveCompany'); 
+	Route::get('company_detail','CommonController@companyDetail'); 
+	Route::get('save_company_detail','CommonController@saveCompanyDetail');
+	Route::delete('companydestroy/{id}','MasterController@companyDestroy')->name('master.companydestroy');
 	
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
@@ -124,8 +124,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('city_detail','CommonController@cityDetail');
 	Route::delete('city-delete/{id}','MasterController@citydestroy')->name('master.citydestroy');
 
-	
-
 	//Union Branch
 	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');
 	Route::get('save-unionbranch','MasterController@addUnionBranch')->name('master.addunionbranch');
@@ -137,15 +135,19 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	//Fee Details
 	Route::get('fee','MasterController@fees_list')->name('master.fee');
-	Route::get('add-fee','FeeController@addFee')->name('master.addfee');
-	Route::post('fee_save','FeeController@save')->name('master.savefee');
-	//Route::get('fee-view/{parameter}','FeeController@view')->name('master.fee');
-	Route::get('fee-edit/{parameter}','FeeController@edit')->name('master.editfee');
-	Route::post('fee_update','FeeController@update')->name('master.updatefee');
-	Route::get('fee-delete/{id}','FeeController@delete')->name('master.feedestroy');
-    Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
-	
-
+	Route::post('ajax_fees_list','MasterController@ajax_fees_list')->name('master.ajaxfeeslist');
+	Route::post('fee_save','MasterController@saveFee')->name('master.savefee');
+	Route::post('fee_nameexists','CommonController@checkFeeNameExists');
+	Route::get('fee_detail','CommonController@feeDetail');
+	Route::delete('fee-delete/{id}','MasterController@feedestroy')->name('master.feedestroy');
+    
+	// Role Details
+	Route::get('roles','MasterController@roles_list')->name('master.roles');
+	Route::post('ajax_roles_list','MasterController@ajax_roles_list')->name('master.ajax_roles_list');
+	Route::post('role_save','MasterController@saveRole')->name('master.saverole');
+	Route::post('roles_nameexists','CommonController@checkRoleNameExists');
+	Route::get('role_detail','CommonController@roleDetail');
+	//Route::delete('roles-delete/{id}','MasterController@roledestroy')->name('master.rolesdestroy');
 	
 	//Branch Details
 	Route::get('branch','MasterController@CompanyBranchList')->name('master.branch');
@@ -163,7 +165,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//App Form
 	Route::resource('appform', 'AppFormController');
 	//Roles Form
-	Route::resource('roles','RolesController');
+	//Route::resource('roles','RolesController');
 	//users Form
 	//Route::resource('users','UsersController');
 	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
