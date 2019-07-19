@@ -84,6 +84,7 @@
 												$member_number_readonly = 'readonly';
 												$member_number_hide = 'hide';
 												if(!empty($auth_user)){
+													$userid = Auth::user()->id;
 													$get_roles = Auth::user()->roles;
 													$user_role = $get_roles[0]->slug;
 													$company_id = '';
@@ -93,16 +94,26 @@
 														$member_number_readonly = '';
 														$member_number_hide = '';
 														$member_status = 2;
-													}else if($user_role =='company'){
-														$company_id = $auth_user->company_id;
-														$branch_requird = '';
+														$companylist = $data['company_view'];
+													}
+													else if($user_role =='union-branch'){
+														$unionbranchid = CommonHelper::getUnionBranchID($userid);
+														$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+														
 														$member_status = 1;
 													} 
-													else if($user_role =='unionbranch'){
-														$branch_id = $auth_user->branch_id;
+													else if($user_role =='company'){
+														$companyid = CommonHelper::getCompanyID($userid);
+														$companylist = CommonHelper::getCompanyList($companyid);
 														$member_status = 1;
-													} 
+														$companylist = $data['company_view'];
+													}
+													else if($user_role =='company-branch'){
+														$member_status = 1;
+														$companylist = $data['company_view'];
+													}  
 												}
+												
 											@endphp
 											<ul class="stepper horizontal" id="horizStepper">
 												<li class="step active">
@@ -128,14 +139,14 @@
 																	<input id="auto_id" name="auto_id" value=""  type="text" class="hide">
 																</div>
 																<div class="input-field col s12 m6 {{ $member_number_hide }}">
-																	<input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" required type="text" {{ $member_number_readonly }} data-error=".errorTxt2">
+																	<input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" required type="text" class="validate" {{ $member_number_readonly }} data-error=".errorTxt2">
 																	<label for="member_number" class="force-active">{{__('Member Number') }} *</label>
 																	<div class="errorTxt2"></div>
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<label for="name">{{__('Member Name') }} *</label>
-																	<input id="name" name="name" type="text" value="{{ old('name') }}" data-error=".errorTxt3">
+																	<input id="name" name="name" type="text" class="validate" value="{{ old('name') }}" data-error=".errorTxt3">
 																	<div class="errorTxt3"></div>
 																</div>
 																<div class="input-field col s12 m6">
@@ -312,7 +323,7 @@
 																	<label>{{__('Company Name') }}*</label>
 																	<select name="company_id" id="company" class="error browser-default selectpicker" data-error=".errorTxt22" required >
 																		<option value="">{{__('Select Company') }}</option>
-																		@foreach($data['company_view'] as $value)
+																		@foreach($companylist as $value)
 																		<option value="{{$value->id}}">{{$value->company_name}}</option>
 																		@endforeach
 																	</select>
@@ -353,7 +364,7 @@
 																		Next
 																		<i class="material-icons right">arrow_forward</i>
 																		</button>
-																		<button class="waves-effect waves-dark btn btn-primary"
+																		<button id="submit-member" class="waves-effect waves-dark btn btn-primary"
 																	type="submit">Submit</button>
 																	</div>
 																</div>
@@ -377,7 +388,9 @@
 																<ul class="collapsible collapsible-accordion" data-collapsible="accordion">
 																	<li class="active">
 																		<div class="collapsible-header gradient-45deg-indigo-purple white-text" ><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
+																		
 																		<div class="collapsible-body ">
+																			<form id="fee_new_form" name="fee_new_form">
 																			<div class="row">
 																				<div class="col s12 m6">
 																					<label for="new_fee_id">Fee name* </label>
@@ -401,6 +414,7 @@
 																					</button>
 																				</div>
 																			</div>
+																			</form>
 																			</br>
 																			<div class="row">
 																				<div class="col s12">
@@ -711,7 +725,7 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/materialize-stepper/materialize-stepper.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
 <!--script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script-->
 @endsection
 @section('footerSecondSection')
@@ -738,18 +752,66 @@ $(document).ready(function(){
 		firstActive: 0,
 		showFeedbackPreloader: true,
 		autoFormCreation: true,
-		// validationFunction: defaultValidationFunction,
+		validationFunction: defaultValidationFunction,
 		stepTitleNavigation: true,
 		feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
 	});
 
 	horizStepperInstace.resetStepper();
+	
    
 });
    
 </script>
 <script>
-	
+	function defaultValidationFunction(horizStepper, activeStepContent) {
+		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+		
+	   for (let i = 0; i < inputs.length; i++) 
+	   {
+		   if (!inputs[i].checkValidity()) {
+			   jQuery("#submit-member").trigger('submit');
+			   return false;
+		   }
+	   }
+	   return true;
+	}
+	/* function validationFunction(stepperForm, activeStepContent) {
+	   // You can use the 'stepperForm' to valide the whole form around the stepper:
+	   someValidationPlugin(stepperForm);
+	   // Or you can do something with just the activeStepContent
+	   someValidationPlugin(activeStepContent);
+	   // Return true or false to proceed or show an error
+	   return true;
+	} */
+	/* function defaultValidationFunction(){
+		//jQuery("#submit-member").trigger('submit');
+	} */
+	/* var validator = $( "#fee_new_form" ).validate();
+	validator.element( "#new_fee_id" );
+    $("#fee_new_form").validate({
+		 rules: {
+				new_fee_id:{
+					required: true,
+				},  
+			},
+        //For custom messages
+        messages: {
+				new_fee_id: {
+					required: "Please Enter Your Title ",
+					
+				},
+			},
+			errorElement: 'div',
+			errorPlacement: function (error, element) {
+				var placement = $(element).data('error');
+				if (placement) {
+					$(placement).append(error)
+				} else {
+					error.insertAfter(element);
+				}
+			}
+	}); */
     $("#member_formValidate").validate({
         rules: {
             member_title:{

@@ -458,16 +458,16 @@ class CommonController extends Controller
                 }
                
 
-                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 if($deletetype==0){
                     $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-                    $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
+                    $actions .="<button  type='submit' class='btn-floating waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'><i class='material-icons'>delete</i></button> </form>";
                 }
-				if($deletetype==2){
+				else if($deletetype==2){
                     $actions .="";
                 }
 				else{
-                    $actions .="&nbsp; <a class='btn-small waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' >".trans('Delete')."</a>";
+                    $actions .="&nbsp; <a class='btn-floating waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons'>delete</i></a>";
                 }
                 
                 $nestedData['options'] = $actions;
@@ -750,6 +750,54 @@ class CommonController extends Controller
         $data = FormType::find($id);
         return $data;
     } 
-
      //Form Type Deatils End
+
+     //Company Deatils Starts 
+    public function checkCompanyNameExists(Request $request)
+    {
+        $company_name =  $request->input('company_name');
+        $company_id = $request->input('company_id'); 
+      
+        return $this->checkCompanyExists($company_name,$company_id);
+    }
+    public function checkCompanyExists($company_name,$company_id=false)
+    {   
+         if(!empty($company_id))
+          { 
+            $companyname_exists = Company::where([
+            ['company_name','=',$company_name],
+            ['id','!=',$company_id],
+            ['status','=','1']
+            ])->count();
+          }
+          else
+          {
+            $companyname_exists = Company::where([
+            ['company_name','=',$company_name],
+            ['status','=','1'],
+            ])->count(); 
+          } 
+          if($companyname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    } 
+    public function companyDetail(Request $request)
+    {
+        $id = $request->id;
+        $Company = new Company();
+        $data['company'] = Company::find($id);
+        $data['head_company'] = Company::where('id','!=',$id)->get();
+        return $data;
+    } 
+    public function saveCompanyDetail(Request $request)
+    {
+        $Company = new Company();
+        $data['company'] = Company::all();
+        return $data;
+    }
+      //Company Deatils End 
 }

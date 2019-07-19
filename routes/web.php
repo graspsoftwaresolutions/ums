@@ -99,13 +99,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('formtype-delete/{id}','MasterController@formTypeDestroy')->name('master.formTypedestroy');
 
 	//Company 
-	Route::get('/company','CompanyController@index')->name('master.company');
-	//Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
-	Route::get('/add-company','CompanyController@addCompany')->name('master.addcompany');
-	Route::post('/company_save','CompanyController@save')->name('master.companysave');
-	Route::get('company-edit/{parameter}','CompanyController@edit')->name('master.companyedit');
-	Route::post('company_edit','CompanyController@update')->name('master.companyupdate');
-	Route::get('company-delete/{id}','CompanyController@delete')->name('master.deletecompany');
+	Route::get('/company','MasterController@companyList')->name('master.company');
+	Route::post('ajax_company_list','MasterController@ajax_company_list')->name('master.ajaxcompanylist'); 
+	Route::post('company_nameexists','CommonController@checkCompanyNameExists'); 
+	Route::post('saveCompany','MasterController@companySave')->name('master.saveCompany'); 
+	Route::get('company_detail','CommonController@companyDetail'); 
+	Route::get('save_company_detail','CommonController@saveCompanyDetail');
+	Route::delete('companydestroy/{id}','MasterController@companyDestroy')->name('master.companydestroy');
 	
 	//State Details 
 	Route::get('state','MasterController@stateList')->name('master.state');
@@ -123,8 +123,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('city_nameexists','CommonController@checkCityNameExists');
 	Route::get('city_detail','CommonController@cityDetail');
 	Route::delete('city-delete/{id}','MasterController@citydestroy')->name('master.citydestroy');
-
-	
 
 	//Union Branch
 	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');
@@ -152,16 +150,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Route::delete('roles-delete/{id}','MasterController@roledestroy')->name('master.rolesdestroy');
 	
 	//Branch Details
-	Route::get('branch','CompanyBranchController@index')->name('master.branch');
-	/* 
-	Route::get('get-state-list','BranchController@getStateList');
-	Route::get('get-cities-list','BranchController@getCitiesList');
-	 */
-	Route::get('add-branch','CompanyBranchController@addBranch')->name('master.addbranch');
-	Route::post('branch_save','CompanyBranchController@save')->name('master.savebranch');
-	Route::get('branch-edit/{parameter}','CompanyBranchController@edit')->name('master.editbranch');
-	Route::post('branch_update','CompanyBranchController@update')->name('master.updatebranch');
-	Route::get('branch-delete/{id}','CompanyBranchController@delete')->name('master.deletebranch');
+	Route::get('branch','MasterController@CompanyBranchList')->name('master.branch');
+	Route::get('add-branch','MasterController@addCompanyBranch')->name('master.addbranch');
+	Route::post('branch_save','MasterController@CompanyBranchsave')->name('master.savecompanybranch');
+	Route::get('branch-edit/{parameter}','MasterController@EditCompanyBranch')->name('master.editbranch');
+	Route::get('branch-delete/{id}','MasterController@deleteCompanyBranch')->name('master.deletebranch');
+	Route::post('ajax-company-branchlist','MasterController@AjaxCompanyBranchList')->name('master.company_branch_list');
 
 	//App Form
 	Route::get('appform','MasterController@appFormList')->name('master.appform');
@@ -221,15 +215,6 @@ Route::post('add-nominee','MemberController@addNominee');
 Route::get('get-oldmember-list','MemberController@getoldMemberList');
 Route::post('membership_save','MemberController@Save');
 Route::post('membership_update','MemberController@update');
-
-//Person Tiltle Setup
-Route::get('persontitle','PersontitleController@index');
-Route::get('add-title','PersontitleController@addTitle');
-Route::post('persontitle_save','PersontitleController@save');
-Route::get('persontitle-edit/{parameter}','PersontitleController@edit');
-Route::post('persontitle_update','PersontitleController@update');
-Route::get('persontitle-delete/{id}','PersontitleController@delete');
-
 
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');

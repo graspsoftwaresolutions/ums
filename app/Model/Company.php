@@ -12,10 +12,14 @@ class Company extends Model
         'id','company_name','short_code','head_of_company','status'
     ];
     public $timestamps = true;
-     
-    public function StoreCompany($company)
+
+    public function saveCompanydata($data=array())
     {
-        $id = DB::table($this->table)->InsertGetId($company);
-        return $id;
+        if (!empty($data['id'])) {
+            $savedata = Company::find($data['id'])->update($data);
+        } else {
+            $savedata = Company::create($data);
+        }
+        return $savedata;
     }
 }

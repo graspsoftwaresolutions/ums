@@ -16,11 +16,13 @@ use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\UnionBranch;
 use App\Model\AppForm;
+use App\Model\CompanyBranch;
 use App\Model\Designation;
 use App\Model\Status;
 use App\Model\FormType;
 use App\Model\Company;
 use App\Mail\UnionBranchMailable;
+use App\Mail\CompanyBranchMailable;
 use DB;
 use View;
 use Mail;
@@ -48,6 +50,8 @@ class MasterController extends CommonController {
         $this->Designation = new Designation;
         $this->Status = new Status; 
         $this->FormType = new FormType;
+        $this->CompanyBranch = new CompanyBranch;
+        $this->Company = new Company;
     }
 
     public function countryList() {
@@ -1892,10 +1896,12 @@ class MasterController extends CommonController {
          return redirect($defdaultLang.'/formtype')->with('message','Form Type Details Deleted Successfully!!');
      }
      //FormType Details End
+
      //Company Details Starts
      public function companyList()
      {
-        return view('master.company.company_list');
+        $data['company_view'] = Company::all();
+        return view('master.company.company_list')->with('data',$data);
      } 
     //Ajax Datatable FormType List
     public function ajax_company_list(Request $request){
@@ -1951,25 +1957,8 @@ class MasterController extends CommonController {
                 ->where('status','=','1')
                 ->count();
     }
-    $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.deletecompany', 0);
-//     $data = array();
-//     if(!empty($Company))
-//     {
-//     foreach ($Company as $Company)
-//     { 
-//         $enc_id = Crypt::encrypt($Company->id);  
-//         $delete =  route('master.formTypedestroy',[app()->getLocale(),$Company->id]) ;
-//         $edit =  "#modal_add_edit";
-//         $nestedData['company_name'] = $Company->company_name;
-//         $nestedData['short_code'] = $Company->short_code;
-//         $Company = $Company->id;
-//         $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($Company);' class='btn-small waves-effect waves-light cyan modal-trigger' href='$edit'>".trans('Edit')."</a>";
-//         $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-//         $actions .="<button  type='submit' class='btn-small waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'>".trans('Delete')."</button> </form>";
-//         $nestedData['options'] = $actions;
-//         $data[] = $nestedData;
-//     }
-// }
+    $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.companydestroy', 0);
+    
     $json_data = array(
         "draw"            => intval($request->input('draw')),  
         "recordsTotal"    => intval($totalData),  
@@ -1978,6 +1967,304 @@ class MasterController extends CommonController {
         );
     echo json_encode($json_data); 
 }
-
+//Company Save and Update
+public function companySave(Request $request)
+{  
+    $request->validate([
+        'company_name'=>'required',
+    ],
+    [
+        'company_name.required'=>'Please enter Company name',
+    ]);
+    $data = $request->all();  
+    
+    $defdaultLang = app()->getLocale();
+    
+    if(!empty($request->id)){
+        $data_exists = $this->checkCompanyExists($request->input('company_name'),$request->id);
+    }else{
+        $data_exists = $this->checkCompanyExists($request->input('company_name'));
+    }
+    if($data_exists>0)
+    {
+        return  redirect($defdaultLang.'/company')->with('error','Company Name Already Exists'); 
+    }
+    else{
+        $saveCompany = $this->Company->saveCompanydata($data);
+       
+        if($saveCompany == true)
+        {
+            return  redirect($defdaultLang.'/company')->with('message','Company Added Succesfully');
+        }
+   }
+} 
+public function companyDestroy($lang,$id)
+{
+    $Company = new Company();
+    $Company = Company::find($id);
+    $Company->where('id','=',$id)->update(['status'=>'0']);
+    $defdaultLang = app()->getLocale();
+    return redirect($defdaultLang.'/company')->with('message','Company Details Deleted Successfully!!');
+}
      //Company Details End
+     public function AjaxCompanyBranchList(Request $request){
+        DB::enableQueryLog();
+
+        $columns = array( 
+            0 => 'company_id', 
+            1 => 'branch_name',
+            2 => 'email',
+            3 => 'is_head',
+            4 => 'id'
+        );
+
+       
+        $totalData = DB::table('company_branch as b')->where('b.status','=','1')
+                                ->count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $companybranchs = DB::table('company_branch as b')
+				->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+				->leftjoin('company as c','c.id','=','b.company_id')
+                ->where('b.status','=','1')
+                ->orderBy($order,$dir)
+                ->get()->toArray();
+            }else{
+                $companybranchs = DB::table('company_branch as b')
+				->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+				->leftjoin('company as c','c.id','=','b.company_id')
+                ->where('b.status','=','1')
+                ->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->get()->toArray();
+            }
+                
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $companybranchs = DB::table('company_branch as b')
+                            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+                            ->leftjoin('company as c','c.id','=','b.company_id')
+                            ->where('b.status','=','1')
+                            ->where(function($query) use ($search){
+                                $query->orWhere('b.id','LIKE',"%{$search}%")
+                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
+                                ->orWhere('b.is_head', 'LIKE',"%{$search}%")
+                                ->orWhere('b.email', 'LIKE',"%{$search}%");
+                            })
+                            ->orderBy($order,$dir)
+                            ->get()->toArray();
+        }else{
+            $companybranchs =  DB::table('company_branch as b')
+                            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+                            ->leftjoin('company as c','c.id','=','b.company_id')
+                            ->where('b.status','=','1')
+                            ->where(function($query) use ($search){
+                                $query->orWhere('b.id','LIKE',"%{$search}%")
+                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
+                                ->orWhere('b.is_head', 'LIKE',"%{$search}%")
+                                ->orWhere('b.email', 'LIKE',"%{$search}%");
+                            })
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                            ->get()->toArray();
+                            
+        }
+
+             $totalFiltered = DB::table('company_branch as b')
+                            ->leftjoin('company as c','c.id','=','b.company_id')
+                            ->where('b.status','=','1')
+                            ->where(function($query) use ($search){
+                                $query->orWhere('b.id','LIKE',"%{$search}%")
+                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
+                                ->orWhere('b.is_head', 'LIKE',"%{$search}%")
+                                ->orWhere('b.email', 'LIKE',"%{$search}%");
+                            })
+                            ->count();
+          
+    }
+    $data = $this->CommonAjaxReturn($companybranchs, 1, 'master.deletebranch', 1, 'master.editbranch'); 
+    
+         $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    } 
+    public function CompanyBranchList(){
+        return view('master.companybranch.branch');
+    }
+    public function addCompanyBranch(){
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->select('id','state_name')->where('country_id','=',130)->where('status','=','1')->get();
+        $data['city_view'] = [];
+        return view('master.companybranch.companybranch_details')->with('data',$data);
+    }
+
+    public function CompanyBranchsave(Request $request){
+        $redirect_failurl = app()->getLocale().'/branch';
+        $redirect_url = app()->getLocale().'/branch';
+        $defdaultLang = app()->getLocale();
+        $request->validate([
+            'company_id'=>'required',
+            'union_branch_id'=>'required',
+            'branch_name'=>'required',
+            'address_one'=>'required',
+            'country_id'=>'required',
+            'state_id'=>'required',
+            'city_id'=>'required',
+            'postal_code'=>'required',
+            'email'=>'required',
+            'phone'=>'required',
+            'mobile'=>'required',
+        ],
+        [
+            'company_id.required'=>'please Choose Company name',
+            'union_branch_id.required'=>'Please Choose union Banch',
+            'branch_name.required'=>'please Enter branch name',
+            'address_one.required'=>'please Enter address one name',
+            'country_id.required'=>'please Enter country name',
+            'state_id.required'=>'please Enter state name',
+            'city_id.required'=>'please Enter city name',
+            'postal_code.required'=>'please Enter postal code',
+            'email.required'=>'please Enter email address',
+            'phone.required'=>'please Enter phone number',
+            'mobile.required'=>'please Enter mobile number',
+        ]);
+        $auto_id = $request->input('auto_id');
+        $branch['company_id'] = $request->input('company_id');
+        $branch['union_branch_id'] = $request->input('union_branch_id');
+        $branch['branch_name'] = $request->input('branch_name');
+        $branch['country_id'] = $request->input('country_id');
+        $branch['state_id'] = $request->input('state_id');
+        $branch['city_id'] = $request->input('city_id');
+        $branch['postal_code'] = $request->input('postal_code');
+        $branch['address_one'] = $request->input('address_one');
+        $branch['address_two'] = $request->input('address_two');
+        $branch['address_three'] = $request->input('address_three');
+        $branch['phone'] = $request->input('phone');
+        $branch['mobile'] = $request->input('mobile');
+        $branch['email'] = $request->input('email');
+
+        $is_head = $request->input('is_head');
+        $companyid = $request->input('company_id');
+		if(isset($is_head)){
+			$branch['is_head'] = 1;
+		}else{
+			$branch['is_head'] = 0;
+        }
+        if($auto_id==""){
+            $company_head_role = Role::where('slug', 'company')->first();
+            $company_branch_role = Role::where('slug', 'company-branch')->first();
+            $randompass = CommonHelper::random_password(5,true);
+
+            $data_exists_branchemail = DB::table('company_branch')->where([
+                ['email','=',$branch['email']]
+                ])->count();
+            $data_exists_usersemail = DB::table('users')->where('email','=',$branch['email'])->count();
+            if($data_exists_branchemail > 0 ||  $data_exists_usersemail > 0)
+            {
+                return redirect($defdaultLang.'/branch')->with('error','Email Already Exists');
+            }
+            else
+            {
+                $company_type =2;
+                $member_user = new User();
+                $member_user->name = $request->input('branch_name');
+                $member_user->email = $request->input('email');
+                $member_user->password = bcrypt($randompass);
+                $member_user->save();
+                $branch['user_id'] = $member_user->id;
+                $company_type =2;
+                if($branch['is_head'] == 0)
+                {
+                    $member_user->roles()->attach($company_branch_role);
+                }else{
+                    $company_type = 1;
+                    $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->update(['is_head'=>'0']);
+                    $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$companyid'");
+                    $member_user->roles()->attach($company_head_role);
+                }
+                $id = $this->CompanyBranch->StoreBranch($branch);
+                $mail_data = array( 
+                    'name' => $request->input('branch_name'),
+                    'email' => $branch['email'],
+                    'password' => $randompass,
+                    'site_url' => URL::to("/"),
+                    'company_type' => $company_type,
+                );
+                $status = Mail::to($branch['email'])->send(new CompanyBranchMailable($mail_data));
+    
+                if( count(Mail::failures()) > 0 ) {
+                    return redirect($redirect_url)->with('message','Company Account created successfully, Failed to send mail');
+                }else{
+                    return redirect($redirect_url)->with('message','Company Account created successfully, password sent to mail');
+                }
+            }
+        }else{
+             $user_id = CompanyBranch::where('id',$auto_id)->pluck('user_id')[0];
+             $rold_id_21 = DB::table('users')->where('id','=',$user_id)->update(['name'=> $request->input('branch_name')]);
+             if($branch['is_head']==0){
+                $upid = DB::table('company_branch')->where('id','=',$auto_id)->update($branch);
+                $rold_id_2 = DB::table('users_roles')->where('role_id','=','3')->where('user_id','=',$user_id)->update(['role_id'=>'4']);
+             }else{
+                $data = DB::table('company_branch')->where('is_head','=','1')->where('company_id','=',$companyid)->update(['is_head'=>'0']);
+                $rold_id_1 = DB::statement("UPDATE users_roles LEFT JOIN company_branch ON users_roles.user_id = company_branch.user_id SET users_roles.role_id = 4 WHERE users_roles.role_id = 3 AND company_branch.company_id = '$companyid'");
+                
+                $upid = DB::table('company_branch')->where('id','=',$auto_id)->update($branch);
+                $rold_id_2 = DB::table('users_roles')->where('role_id','=','4')->where('user_id','=',$user_id)->update(['role_id'=>'3']);
+             }
+
+            return redirect($defdaultLang.'/branch')->with('message','Company Branch Details Updated Succesfully');
+        }
+    }
+
+    public function deleteCompanyBranch($lang,$id)
+	{
+        //$id = Crypt::decrypt($id);
+        $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+		return redirect($defdaultLang.'/branch')->with('message','Company Branch Deleted Succesfully');
+	} 
+
+    public function EditCompanyBranch($lang,$id){
+        $id = Crypt::decrypt($id);
+        $data['branch_view'] = DB::table('company')->select('company_branch.*', 'company.company_name','company_branch.branch_name','company_branch.id as branchid','company_branch.company_id','company_branch.status','company.status','union_branch.union_branch','company_branch.union_branch_id')
+                ->join('company_branch','company.id','=','company_branch.company_id')
+                ->join('union_branch','company_branch.union_branch_id','=','union_branch.id')
+                ->where([
+                    ['company_branch.status','=','1'],
+                    ['company.status','=','1'],
+                    ['company_branch.id','=',$id]
+                    ])->get();
+        $company_id = $data['branch_view'][0]->company_id;
+        $union_branch_id = $data['branch_view'][0]->union_branch_id;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->get();
+        return view('master.companybranch.companybranch_details')->with('data',$data);
+    }
+    
 }
