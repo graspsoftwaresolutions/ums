@@ -54,7 +54,6 @@
 													<option value="{{$value->id}}" >{{$value->formname}}</option>
 												@endforeach
 											</select>
-											
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
