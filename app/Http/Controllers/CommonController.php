@@ -18,6 +18,7 @@ use App\Model\Designation;
 use App\Model\UnionBranch;
 use App\Model\Fee;
 use App\Model\FormType;
+use App\Model\AppForm;
 use DB;
 use View;
 use Mail;
@@ -512,7 +513,7 @@ class CommonController extends Controller
           else{
               return "true";
           }
-    }
+    }		
       //Reason Details
       public function reasonDetail(Request $request)
       {
@@ -522,6 +523,40 @@ class CommonController extends Controller
           return $data;
       }
     //Reason Details End
+	
+	
+     //Appform
+     public function checkAppformExists(Request $request)
+     {   
+         $formname =  $request->input('formname');
+        $formname_id = $request->input('formname_id');
+
+        if(!empty($formname_id))
+          {
+				
+            $formname_exists = AppForm::where([
+                  ['formname','=',$formname],
+                  ['id','!=',$formname_id],
+                  ['status','=',1]
+                  ])->count();
+          }
+          else
+          {
+            $formname_exists = AppForm::where([
+                ['formname','=',$formname],
+				['status','=',1]
+                ])->count(); 
+          } 
+          if($formname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+	
+
 
     //Person Title Details Start
     public function checkTitleNameExists(Request $request)

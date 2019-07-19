@@ -164,7 +164,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('branch-delete/{id}','CompanyBranchController@delete')->name('master.deletebranch');
 
 	//App Form
-	Route::resource('appform', 'AppFormController');
+	Route::get('appform','MasterController@appFormList')->name('master.appform');
+	Route::post('ajax_appform_list','MasterController@ajaxAppFormList')->name('master.ajax_appform_list');
+	Route::get('save-appform','MasterController@addAppForm')->name('master.addappform');
+	Route::post('appform_save','MasterController@AppFormsave')->name('master.saveappform');
+	Route::get('appform-edit/{parameter}','MasterController@EditAppForm')->name('master.editappform');
+	Route::get('appform-delete/{id}','MasterController@deleteAppForm')->name('master.deleteappform');
+	Route::post('appformexists','CommonController@checkAppformExists');
+	
+	//Route::resource('appform', 'AppFormController');
 	//Roles Form
 	//Route::resource('roles','RolesController');
 	//users Form

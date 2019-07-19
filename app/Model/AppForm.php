@@ -16,4 +16,14 @@ class AppForm extends Model
     {
         return $this->belongsTo('App\Model\FormType','formtype_id')->orderBy('orderno', 'ASC');
     }
+	
+	public function saveAppFormdata($data=array())
+    {
+        if (!empty($data['id'])) {
+            $savedata = AppForm::find($data['id'])->update($data);
+        } else {
+            $savedata = AppForm::create($data);
+        }
+        return $savedata;
+    }
 }

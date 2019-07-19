@@ -15,6 +15,7 @@ use App\Model\Race;
 use App\Model\Reason;
 use App\Model\Persontitle;
 use App\Model\UnionBranch;
+use App\Model\AppForm;
 use App\Model\Designation;
 use App\Model\Status;
 use App\Model\FormType;
@@ -42,6 +43,7 @@ class MasterController extends CommonController {
         $this->Role = new Role;
         $this->Reason = new Reason;
         $this->UnionBranch = new UnionBranch;
+        $this->AppForm = new AppForm;
         $this->Persontitle = new Persontitle;
         $this->Designation = new Designation;
         $this->Status = new Status; 
@@ -1414,6 +1416,148 @@ class MasterController extends CommonController {
         $defdaultLang = app()->getLocale();
         return redirect($defdaultLang.'/fee')->with('message','Fee Details Deleted Successfully!!');
 	}
+	
+	//App Form Details Start
+    public function  appFormList()
+    {
+        //$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        return view('master.appform.appform');
+    }
+	// App Form
+
+    public function ajaxAppFormList(Request $request){
+        $columns = array( 
+            0 => 'formname', 
+            1 => 'formtype_id',
+            2 => 'route',
+            3 => 'orderno',
+            4 => 'id'
+        );
+
+        $totalData = AppForm::where('status','=','1')
+                                ->count();
+        $totalFiltered = $totalData; 
+
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $appforms = AppForm::select('id','formname','formtype_id','route','orderno')->where('status',1)->orderBy($order,$dir)
+                ->get()->toArray();
+            }else{
+                $appforms = AppForm::select('id','formname','formtype_id','route','orderno')->where('status',1)->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->get()->toArray();
+            }
+                
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $appforms =  AppForm::select('id','formname','formtype_id','route','orderno')->where('status',1)->where('id','LIKE',"%{$search}%")
+                            ->orWhere('formname', 'LIKE',"%{$search}%")
+                            ->orWhere('formtype_id', 'LIKE',"%{$search}%")
+                            ->orWhere('route', 'LIKE',"%{$search}%")
+                            ->orWhere('orderno', 'LIKE',"%{$search}%")
+                            ->orderBy($order,$dir)
+                            ->get()->toArray();
+        }else{
+            $appforms =  AppForm::select('id','formname','formtype_id','route','orderno')->where('status',1)->where('id','LIKE',"%{$search}%")
+                    ->orWhere('formname', 'LIKE',"%{$search}%")
+                            ->orWhere('formtype_id', 'LIKE',"%{$search}%")
+                            ->orWhere('route', 'LIKE',"%{$search}%")
+                            ->orWhere('orderno', 'LIKE',"%{$search}%")
+							->offset($start)
+							->limit($limit)
+							->orderBy($order,$dir)
+							->get()->toArray();
+        }
+
+             $totalFiltered = AppForm::where('status',1)->where('id','LIKE',"%{$search}%")
+							->orWhere('formname', 'LIKE',"%{$search}%")
+                            ->orWhere('formtype_id', 'LIKE',"%{$search}%")
+                            ->orWhere('route', 'LIKE',"%{$search}%")
+                            ->orWhere('orderno', 'LIKE',"%{$search}%")
+							->count();
+          
+    }
+    $data = $this->CommonAjaxReturn($appforms, 1, 'master.deleteappform', 1, 'master.editappform'); 
+    
+         $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+	
+	public function addAppForm()
+    {
+       $data['form_type'] = FormType::all();
+        return view('master.appform.add_appform')->with('data',$data);
+    }
+	
+	public function AppFormsave(Request $request)
+     {   
+         $request->validate([
+             'formname'=>'required'
+         ],
+         [
+             'formname.required'=>'please enter Form name'
+             
+         ]);
+         $data = $request->all();   
+         $defdaultLang = app()->getLocale();
+        // var_dump($data);
+		// exit;
+         if(!empty($request->id)){
+             $data_exists = $this->checkDesignationExists($request->input('formname'),$request->id);
+         }else{
+             $data_exists = $this->checkDesignationExists($request->input('formname'));
+         }
+         if($data_exists>0)
+         {
+             return  redirect($defdaultLang.'/appform')->with('error','Form Name Already Exists'); 
+         }
+         else{
+             $saveAppForm = $this->AppForm->saveAppFormdata($data);
+          //  dd($saveAppForm);
+             if($saveAppForm == true)
+             {
+			//return  redirect back();
+                 return  redirect($defdaultLang.'/appform')->with('message','AppForm Added Succesfully');
+				 //return  redirect($defdaultLang.'/roles')->with('error','User Email Already Exists'); 
+             }
+         }
+     }
+	  public function EditAppForm($lang,$id)
+    {
+        //DB::connection()->enableQueryLog();
+        //$id = Crypt::decrypt($id);
+		$auto_id = Crypt::decrypt($id);
+        $data['form_type'] = FormType::all();
+        $AppForm = new AppForm();
+        $data['appform_edit'] = AppForm::find($auto_id);
+		$defaultLanguage = app()->getLocale();
+		return view('master.appform.add_appform')->with('data',$data);
+
+    }
+	
+	public function deleteAppForm($lang,$id)
+	{
+        //return $id = Crypt::decrypt($id);
+		$data = AppForm::where('id','=',$id)->update(['status'=>'0']);
+		return redirect($lang.'/appform')->with('message','App Form  Deleted Succesfully');
+    }
 	
 	// Roles section
 	
