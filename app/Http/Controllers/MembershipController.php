@@ -50,7 +50,7 @@ class MembershipController extends Controller
 			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
 			if(count($union_branch_id)>0){
 				$union_branch_id = $union_branch_id[0];
-				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -67,7 +67,7 @@ class MembershipController extends Controller
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -81,7 +81,7 @@ class MembershipController extends Controller
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
-				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -149,7 +149,7 @@ class MembershipController extends Controller
         $id = Crypt::decrypt($id);
         //print_r($id) ;
          DB::connection()->enableQueryLog();
-         $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.phone',
+         $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.mobile',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
                                         'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id')
@@ -191,6 +191,8 @@ class MembershipController extends Controller
         
         $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$id)->get();
       // return  $data; 
+        // $data['user_type'] = 1;
+        // return view('membership.add_membership')->with('data',$data);  
         return view('membership.edit_membership')->with('data',$data); 
    
     }
@@ -230,7 +232,7 @@ class MembershipController extends Controller
 			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
 			if(count($union_branch_id)>0){
 				$union_branch_id = $union_branch_id[0];
-				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -247,7 +249,7 @@ class MembershipController extends Controller
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -261,7 +263,7 @@ class MembershipController extends Controller
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
-				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.phone','m.status_id as status_id')
+				$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->orderBy('m.id','DESC')
                 ->where([

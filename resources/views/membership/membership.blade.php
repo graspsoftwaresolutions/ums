@@ -76,7 +76,7 @@
 													 ?>
 														<td>{{$value->name}}</td>
 														<td>{{$value->email}}</td>
-														<td>{{$value->phone}}</td>
+														<td>{{$value->mobile}}</td>
 														@if($data['member_type'] ==1)
 														<td>{{ CommonHelper::get_member_status_name($value->status_id) }}</td>
 														@endif

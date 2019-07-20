@@ -196,6 +196,278 @@
 	}
 @endphp
 <script>
+	$('#rejoined').click(function(){
+	$('#member_old_div').toggle();
+	var  oldMemberID = $('#old_mumber_number').val();
+	});
+
+	$(document).ready(function(){
+		$('#member_old_div').hide();
+		var horizStepper = document.querySelector('#horizStepper');
+		var horizStepperInstace = new MStepper(horizStepper, {
+			// options
+			firstActive: 0,
+			showFeedbackPreloader: true,
+			autoFormCreation: true,
+			validationFunction: defaultValidationFunction,
+			stepTitleNavigation: false,
+			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
+		});
+
+		horizStepperInstace.resetStepper();
+		
+	
+	});
+	function defaultValidationFunction(horizStepper, activeStepContent) {
+		
+		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+	   for (let i = 0; i < inputs.length; i++) 
+	   {
+			//console.log(inputs[i].checkValidity());
+		   if (!inputs[i].checkValidity()) {
+			   jQuery("#submit-member").trigger('submit');
+			   return false;
+		   }
+	   }
+	  
+	   return true;
+	}
+	function SubmitMemberForm(){
+		 $('#member_formValidate').trigger('submit');
+	}
+	/* window.addEventListener('load', function () {
+      var apiNavDemo = new MStepper(document.getElementById('horizStepper'));
+      //var cntrldPrev = document.getElementById('controlled_prev')
+      var cntrldNext = document.getElementById('controlled_next')
+      var cntrldGoto = document.getElementById('controlled_goto')
+      var cntrldGotoInput = document.getElementById('controlled_goto_input')
+      //cntrldPrev.addEventListener('click', function () { apiNavDemo.prevStep() })
+      cntrldNext.addEventListener('click', function () { apiNavDemo.nextStep() })
+      //cntrldGoto.addEventListener('click', function () { apiNavDemo.openStep(cntrldGotoInput.value) })
+   });
+	function validationFunction(stepperForm, activeStepContent) {
+	   // You can use the 'stepperForm' to valide the whole form around the stepper:
+	   someValidationPlugin(stepperForm);
+	   // Or you can do something with just the activeStepContent
+	   someValidationPlugin(activeStepContent);
+	   // Return true or false to proceed or show an error
+	   return true;
+	} */
+	/* function defaultValidationFunction(){
+		//jQuery("#submit-member").trigger('submit');
+	} */
+	/* var validator = $( "#fee_new_form" ).validate();
+	validator.element( "#new_fee_id" );
+    $("#fee_new_form").validate({
+		 rules: {
+				new_fee_id:{
+					required: true,
+				},  
+			},
+        //For custom messages
+        messages: {
+				new_fee_id: {
+					required: "Please Enter Your Title ",
+					
+				},
+			},
+			errorElement: 'div',
+			errorPlacement: function (error, element) {
+				var placement = $(element).data('error');
+				if (placement) {
+					$(placement).append(error)
+				} else {
+					error.insertAfter(element);
+				}
+			}
+	}); */
+    $("#member_formValidate").validate({
+        rules: {
+            member_title:{
+                required: true,
+            },
+            member_number: {
+                required: true,
+            },
+            name: {
+                required: true,
+				minlength:3,
+            },
+            gender: {
+                required: true,
+            },
+            name: {
+                required: true,
+            },
+            mobile: {
+                required: true,
+				number:true,
+				minlength:10,
+				//maxlength:12,
+            },
+            email: {
+                required: true,
+            },
+            doe: {
+                required: true,
+            },
+            designation: {
+                required: true,
+            },
+            race: {
+                required: true,
+            },
+            country: {
+                required: true,
+            },
+            state: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            postal_code: {
+                required: true,
+            },
+            address_one: {
+                required:true,
+            },
+			address_two: {
+                required:true,
+            },
+			address_three: {
+                required:true,
+            },
+            dob: {
+                required:true,
+            }, 
+			doj: {
+                required:true,
+            },
+            new_ic: {
+                required:true,
+                minlength: 3,
+                maxlength: 20,
+            },
+            salary: {
+                required: true,
+            },
+            branch: {
+                required: true,
+            },
+            uname: {
+                required: true,
+                minlength: 5
+            },
+            country_name: {
+                required: true,
+            },
+            state_name: {
+                required: true,
+            },
+            country_id: "required",
+            cemail: {
+                required: true,
+                email: true
+            },
+            city_name : {
+            required: true,
+            },
+            designation_name : {
+            required: true,
+            },  
+			
+        },
+        //For custom messages
+        messages: {
+            member_title: {
+                required: "Please Enter Your Title ",
+                
+            },
+            member_number: {
+                required: "Please Enter Member NUmber",
+                
+            },
+            name: {
+                required: "Please Enter Your Name",
+                
+            },
+            gender: {
+                required: "Please choose Gender",
+            },
+            mobile: {
+                required: "Please Enter your Number",
+                
+            },
+            email: {
+                required: "Please enter valid email",
+                },
+            designation: {
+                required: "Please choose  your Designation",
+            },
+            
+            race: {
+                required: "Please Choose your Race ",
+            },
+            country: {
+                required:"Please choose  your Country",
+            },
+            state: {
+                required:"Please choose  your State",
+            },
+            city: {
+                required:"Please choose  your city",
+            },
+            address_one: {
+                required:"Please Enter your Address",
+            },
+            dob: {
+                required:"Please choose DOB",
+            },
+            new_ic: {
+                required:"Please Enter New Ic Number",
+            },
+            salary: {
+                required:"Please Enter salary Name",
+            },
+            branch: {
+                required:"Please Choose Company Name",
+            },
+            uname: {
+                required: "Enter a username",
+                minlength: "Enter at least 5 characters"
+            },
+            country_name: {
+                required: "Enter a Country Name",
+            },
+            state_name: {
+                required: "Enter a State Name",
+            },
+            city_name: {
+                required: "Enter a City Name",
+            },
+            designation_name: {
+                required: "Enter a Designation Name",
+            },
+			guardian_name: {
+                required: "Enter a Guardian Name",
+            },
+			employee_id: {
+                required: "Enter a Employee ID",
+            },
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+            $(placement).append(error)
+        } else {
+            error.insertAfter(element);
+        }
+        }
+    });
+
+
 $('.modal').modal();
 $("#membership_sidebar_a_id").addClass('active');
 $('#country_id').change(function(){

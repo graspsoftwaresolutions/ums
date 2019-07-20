@@ -71,7 +71,7 @@ class MemberController extends Controller
             'member_number'=>'required',
             'name'=>'required',
             'gender'=>'required',
-            'phone'=>'required',
+            'mobile'=>'required',
             'email'=>'required',
             'doe'=>'required',
             'designation'=>'required',
@@ -91,7 +91,7 @@ class MemberController extends Controller
             'member_number.required'=>'Please Enter Member NUmber',
             'name.required'=>'Please Enter Your Name',
             'gender.required'=>'Please choose Gender',
-            'phone.required'=>'Please Enter Mobile Number',
+            'mobile.required'=>'Please Enter Mobile Number',
             'email.required'=>'Please Enter Email Address',
             'doe.required'=>'Please choose DOE',
             'designation.required'=>'Please choose  your Designation',
@@ -190,7 +190,7 @@ class MemberController extends Controller
 			$member['member_number'] = $request->input('member_number');
 			$member['name'] = $request->input('name');
 			$member['gender'] = $request->input('gender');
-			$member['phone'] = $request->input('phone');
+			$member['mobile'] = $request->input('mobile');
 			$member['email'] = $request->input('email');
 			$member['designation_id'] = $request->input('designation');
 			$member['old_member_number'] = $request->input('old_mumber_number');
@@ -440,7 +440,7 @@ class MemberController extends Controller
                 ])->count();
             if($member_exists){
                 DB::connection()->enableQueryLog();
-                 $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.phone',
+                 $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.mobile',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
                                         'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id')
@@ -489,231 +489,5 @@ class MemberController extends Controller
 			 
 		}
     }
-    
-    public function update(Request $request)
-    {
-        //return $request->all();
-       
-       // die;
-        //return $request->all();
-        if(!empty(Auth::user())){
-            $user_id = Auth::user()->id;
-            $get_roles = User::find($user_id)->roles;
-            $user_role = $get_roles[0]->slug;
-            $id = $request->input('auto_id');
-            
-            $fm_date = explode("/",$request->input('dob'));         							
-            $dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
-            $dob = date('Y-m-d', strtotime($dob1));
-
-            $fmm_date = explode("/",$request->input('doe'));           							
-            $doe1 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
-            $doe = date('Y-m-d', strtotime($doe1));
-            $member['doe'] = $doe;
-
-            $fmmm_date = explode("/",$request->input('doj'));           							
-            $doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-            $doe = date('Y-m-d', strtotime($doj1));
-        
-            $member['member_title_id'] = $request->input('member_title');
-            $member['member_number'] = $request->input('member_number');
-            $member['name'] = $request->input('name');
-            $member['gender'] = $request->input('gender');
-            $member['phone'] = $request->input('phone');
-            //$member['email'] = $request->input('email');
-            $member['designation_id'] = $request->input('designation');
-        // $member['race_id'] = 1;
-            $member['country_id'] = $request->input('country_id');
-            $member['state_id'] = $request->input('state_id');
-            $member['city_id'] = $request->input('city_id');
-            $member['address_one'] = $request->input('address_one');
-            $member['address_two'] = $request->input('address_two');
-            $member['address_three'] = $request->input('address_three');
-            $member['dob'] = $dob;
-            $member['old_ic'] = $request->input('old_ic');
-            $member['new_ic'] = $request->input('new_ic');
-            $member['branch_id'] = $request->input('branch_id');
-            $member['employee_id'] = $request->input('employee_id');
-            if($user_role=='union'){
-                $activate_account = $request->input('activate_account');
-                $activate_account = isset($activate_account) ? 2 : 1;
-                if($activate_account==2){
-                    $member['status_id'] = $activate_account;
-                }
-            }
-            //$member['race_id'] = 1;
-            //return $member;
-
-            $up_id = DB::table('membership')->where('id','=',$id)->update($member);
-            //return redirect('membership')->with('message','Member Details Updated Successfull');
-
-            //Guardian Edit/Insert
-            $member_guardian_id = $id;
-            $guardian['member_id'] = $member_guardian_id;
-            $guardian['guardian_name'] = $request->input('guardian_name');
-            $guardian['gender'] = $request->input('guardian_sex');
-            $guardian['relationship_id'] = $request->input('relationship_id');
-            $guardian['nric_n'] = $request->input('nric_n_guardian');
-            $guardian['nric_o'] = $request->input('nric_o_guardian');
-            $guardian['address_one'] = $request->input('guardian_address_one');
-            $guardian['country_id'] = $request->input('guardian_country_id');
-            $guardian['state_id'] = $request->input('guardian_state_id');
-            $guardian['city_id'] = $request->input('guardiancity_id'); 
-            $guardian['address_two'] = $request->input('guardian_address_two');
-            $guardian['postal_code'] = $request->input('guardian_postal_code');
-            $guardian['address_three'] = $request->input('guardian_address_three');
-            $guardian['mobile'] = $request->input('guardian_mobile');
-            $guardian['phone'] = $request->input('guardian_phone');
-            
-            $guardian_dob  = $request->input('gaurdian_dob');
-
-            if($guardian_dob!=""){
-                $fmmm_date = explode("/",$guardian_dob);
-                $dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-                $dob = date('Y-m-d', strtotime($dob1));
-                $guardian['dob'] =  $dob;
-            }
-
-            $check_fee_auto_id = $request->input('fee_auto_id');
-            if( isset($check_fee_auto_id)){
-                $feecount = count($request->input('fee_auto_id'));
-                for($i=0; $i<$feecount; $i++){
-                    $fee_auto_id = $request->input('fee_auto_id')[$i];
-                    $fee_name_id = $request->input('fee_name_id')[$i];
-                    $fee_name_amount = $request->input('fee_name_amount')[$i];
-                    if($fee_auto_id ==null){
-                        $new_fee = new MemberFee();
-                        $new_fee->member_id = $id;
-                        $new_fee->fee_id = $fee_name_id;
-                        $new_fee->fee_amount = $fee_name_amount;
-                        $new_fee->status = 1;
-                        $new_fee->save();
-                    }else{
-                        $old_fee = MemberFee::find($fee_auto_id);
-                        $old_fee->fee_id = $fee_name_id;
-                        $old_fee->fee_amount = $fee_name_amount;
-                        $old_fee->save();
-                    }
-                }
-            }
-            
-            $check_nominee_auto_id = $request->input('nominee_auto_id');
-            if( isset($check_nominee_auto_id)){
-                $nominee_count = count($request->input('nominee_auto_id'));
-                for($j =0; $j<$nominee_count; $j++){
-                    $nominee_auto_id = $request->input('nominee_auto_id')[$j];
-                    $nominee_name = $request->input('nominee_name_value')[$j];
-                    $nominee_age = $request->input('nominee_age_value')[$j];
-                    $nominee_dob = $request->input('nominee_dob_value')[$j];
-                    $nominee_gender = $request->input('nominee_gender_value')[$j];
-                    $nominee_relation = $request->input('nominee_relation_value')[$j];
-                    $nominee_nricn = $request->input('nominee_nricn_value')[$j];
-                    $nominee_nrico = $request->input('nominee_nrico_value')[$j];
-                    $nominee_address_one = $request->input('nominee_addressone_value')[$j];
-                    $nominee_address_two = $request->input('nominee_addresstwo_value')[$j];
-                    $nominee_address_three = $request->input('nominee_addressthree_value')[$j];
-                    $nominee_country = $request->input('nominee_country_value')[$j];
-                    $nominee_state = $request->input('nominee_state_value')[$j];
-                    $nominee_city = $request->input('nominee_city_value')[$j];
-                    $nominee_postalcode = $request->input('nominee_postalcode_value')[$j];
-                    $nominee_mobile = $request->input('nominee_mobile_value')[$j];
-                    $nominee_phone = $request->input('nominee_phone_value')[$j];
-
-                    $nominee_nrico=isset($nominee_nrico) ? $nominee_nrico: '';
-                    
-                    if($nominee_auto_id ==null){
-                        $nominee = new MemberNominees();
-                    }else{
-                        $nominee = MemberNominees::find($nominee_auto_id);
-                    }
-
-                    $nominee->member_id = $id;
-                    $nominee->relation_id = $nominee_relation;
-                    $nominee->nominee_name = $nominee_name;
-                    $nominee->country_id = $nominee_country;
-                    $nominee->state_id = $nominee_state;
-                    $nominee->postal_code = $nominee_postalcode;
-                    $nominee->city_id = $nominee_city;
-                    $nominee->address_one = $nominee_address_one;
-                    $nominee->address_two = $nominee_address_two;
-                    $nominee->address_three = $nominee_address_three;
-                    $nominee->gender = $nominee_gender;
-                    $nominee->nric_n = $nominee_nricn;
-                    $nominee->nric_o = $nominee_nrico;
-                    $nominee->mobile = $nominee_mobile;
-                    $nominee->phone = $nominee_phone;
-                    
-                    if($nominee_dob!=""){
-                        $fmmm_date = explode("/",$nominee_dob);           							
-                        $dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-                        $dob = date('Y-m-d', strtotime($dob1));
-                        $nominee->dob =  $dob;
-                    }
-                
-                    $nominee->save();
-                }
-            }
-            //return $guardian; 
-
-            $id = $this->MemberGuardian->where('member_id','=',$member_guardian_id)->update($guardian);
-            if($user_role=="member"){
-                return redirect('edit-membership-profile')->with('message','Member Details Updated Succesfully');
-            }else{
-                return redirect(app()->getLocale().'/membership')->with('message','Member Details Updated Succesfully');
-            }
-            
-        }else{
-            return redirect('home')->with('message','Invalid access');
-        }
-    }
 	
-	/* public function register(Request $request)
-    {
-		$randompass = CommonHelper::random_password(5,true);
-		
-		$this->validate(request(), [
-			'member_name' => 'required',
-			'phone'=>'required',
-			'company_id'=>'required',
-			'branch_id'=>'required',
-            'email' => 'required|email',
-        ]);
-		
-		$member_role = Role::where('slug', 'member')->first();
-		$status = 0;
-		$new_user = new User();
-	    $new_user->name = $request->member_name;
-	    $new_user->email = $request->email;
-	    $new_user->password = bcrypt($randompass);
-		$new_user->save();
-		$user_id =  $new_user->id;
-
-		$New_member_user = new Membership();
-		$New_member_user->name = $request->member_name;
-		$New_member_user->phone = $request->phone;
-		$New_member_user->branch_id = $request->branch_id;
-		$New_member_user->email = $request->email;
-		$New_member_user->user_id = $user_id;
-		$New_member_user->status = 1;
-		$New_member_user->status_id =1;
-		$New_member_user->save();
-		
-	    $new_user->roles()->attach($member_role);
-		
-		$mail_data = array(
-							'name' => $request->member_name,
-							'email' => $request->email,
-							'password' => $randompass,
-							'site_url' => URL::to("/"),
-						);
-		
-		if(!empty($new_user)){
-			 $status = Mail::to($request->email)->send(new SendMemberMailable($mail_data));
-		}
-		if( count(Mail::failures()) > 0 ) {
-			return redirect('/')->with('message','Account created successfully, Failed to send mail');
-		}else{
-			return redirect('/')->with('message','Account created successfully, please check your mail');
-		}
-    } */
 }

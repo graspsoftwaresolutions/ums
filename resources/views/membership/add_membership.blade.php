@@ -1,43 +1,6 @@
 @extends($data['user_type']==1 ? 'layouts.admin' : 'layouts.new-member')
 @section('headSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/materialize-stepper/materialize-stepper.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
-<style type="text/css">
-	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
-	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
-	.autocomplete-selected { background: #F0F0F0; }
-	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-	.autocomplete-group { padding: 8px 5px; }
-	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-	@media only screen and (min-width: 993px){
-		ul.stepper.horizontal {
-			position: relative;
-			display: flex;
-			justify-content: space-between;
-			height:auto !important;
-			overflow: hidden;
-		}
-	}
-	@media only screen and (min-width: 993px){
-		ul.stepper.horizontal .step .step-content {
-			position: absolute;
-			height: calc(100% - 84px);
-			top: 84px;
-			display: block;
-			left: -100%;
-			width: 100%;
-			overflow-y: auto;
-			overflow-x: hidden;
-			margin: 0;
-			padding: 0 !important;
-			transition: left .4s cubic-bezier(.4,0,.2,1);
-		}
-	}
-	
-</style>
+	@include('membership.member_common_styles');
 @endsection
 @section('headSecondSection')
 @endsection
@@ -183,8 +146,8 @@
 																</div>
 																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s12 m6">
-																	<label for="phone">{{__('Mobile Number') }} *</label>
-																	<input id="phone" name="phone" value="{{ old('phone') }}" type="text" data-error=".errorTxt5">
+																	<label for="mobile">{{__('Mobile Number') }} *</label>
+																	<input id="mobile" name="mobile" value="{{ old('mobile') }}" type="text" data-error=".errorTxt5">
 																	<div class="errorTxt5"></div>
 																</div>
 																<div class="input-field col s12 m6">
@@ -371,7 +334,7 @@
 																		</button>
 																		</div-->
 																	<div class="col m12 s12 mb-3" style="text-align: right;">
-																		<button class="waves-effect waves dark btn btn-primary next-step"
+																		<button id="controlled_next" class="waves-effect waves dark btn btn-primary next-step"
 																			type="submit">
 																		Next
 																		<i class="material-icons right">arrow_forward</i>
@@ -385,7 +348,7 @@
 														</div>
 													</div>
 												</li>
-												<li class="step">
+												<li class="step" onclick="return false">
 													<div class="step-title waves-effect">Additional Details</div>
 													<div class="step-content" style="padding: 50px 50px;">
 														<div class="row">
@@ -708,7 +671,11 @@
 														</div>
 														<div class="row">
 															<div class="col m12 s12 mb-1" style="text-align:right">
-																<button class="waves-effect waves-dark btn btn-primary"
+																<button class="btn btn-light previous-step">
+																	<i class="material-icons left">arrow_back</i>
+																	Prev
+																</button>
+																<button class="waves-effect waves-dark btn btn-primary" onClick="return SubmitMemberForm()"
 																	type="submit">Submit</button>
 															</div>
 														</div>
@@ -743,270 +710,6 @@
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/form-wizard.js') }}" type="text/javascript"></script>
 <script>
-
-$(document).ready(function(){
-      //$('tabs').tabs();
-     
-      $('#member_old_div').hide();
-      $('#rejoined').click(function(){
-        $('#member_old_div').toggle();
-       
-        var  oldMemberID = $('#old_mumber_number').val();
-       
-    });
-      //state
-     
-    //$("#country").trigger('change');
-   // $("#state_id").trigger('change');
-    var horizStepper = document.querySelector('#horizStepper');
-	var horizStepperInstace = new MStepper(horizStepper, {
-		// options
-		firstActive: 0,
-		showFeedbackPreloader: true,
-		autoFormCreation: true,
-		validationFunction: defaultValidationFunction,
-		stepTitleNavigation: true,
-		feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
-	});
-
-	horizStepperInstace.resetStepper();
-	
-   
-});
-   
-</script>
-<script>
-	function defaultValidationFunction(horizStepper, activeStepContent) {
-		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
-		
-	   for (let i = 0; i < inputs.length; i++) 
-	   {
-		   if (!inputs[i].checkValidity()) {
-			   jQuery("#submit-member").trigger('submit');
-			   return false;
-		   }
-	   }
-	   return true;
-	}
-	/* function validationFunction(stepperForm, activeStepContent) {
-	   // You can use the 'stepperForm' to valide the whole form around the stepper:
-	   someValidationPlugin(stepperForm);
-	   // Or you can do something with just the activeStepContent
-	   someValidationPlugin(activeStepContent);
-	   // Return true or false to proceed or show an error
-	   return true;
-	} */
-	/* function defaultValidationFunction(){
-		//jQuery("#submit-member").trigger('submit');
-	} */
-	/* var validator = $( "#fee_new_form" ).validate();
-	validator.element( "#new_fee_id" );
-    $("#fee_new_form").validate({
-		 rules: {
-				new_fee_id:{
-					required: true,
-				},  
-			},
-        //For custom messages
-        messages: {
-				new_fee_id: {
-					required: "Please Enter Your Title ",
-					
-				},
-			},
-			errorElement: 'div',
-			errorPlacement: function (error, element) {
-				var placement = $(element).data('error');
-				if (placement) {
-					$(placement).append(error)
-				} else {
-					error.insertAfter(element);
-				}
-			}
-	}); */
-    $("#member_formValidate").validate({
-        rules: {
-            member_title:{
-                required: true,
-            },
-            member_number: {
-                required: true,
-            },
-            name: {
-                required: true,
-            },
-            gender: {
-                required: true,
-            },
-            name: {
-                required: true,
-            },
-            phone: {
-                required: true,
-            },
-            email: {
-                required: true,
-            },
-            doe: {
-                required: true,
-            },
-            designation: {
-                required: true,
-            },
-            race: {
-                required: true,
-            },
-            country: {
-                required: true,
-            },
-            state: {
-                required: true,
-            },
-            city: {
-                required: true,
-            },
-            postal_code: {
-                required: true,
-            },
-            address_one: {
-                required:true,
-            },
-			address_two: {
-                required:true,
-            },
-			address_three: {
-                required:true,
-            },
-            dob: {
-                required:true,
-            }, 
-			doj: {
-                required:true,
-            },
-            new_ic: {
-                required:true,
-                minlength: 3,
-                maxlength: 20,
-            },
-            salary: {
-                required: true,
-            },
-            branch: {
-                required: true,
-            },
-            uname: {
-                required: true,
-                minlength: 5
-            },
-            country_name: {
-                required: true,
-            },
-            state_name: {
-                required: true,
-            },
-            country_id: "required",
-            cemail: {
-                required: true,
-                email: true
-            },
-            city_name : {
-            required: true,
-            },
-            designation_name : {
-            required: true,
-            },  
-			
-        },
-        //For custom messages
-        messages: {
-            member_title: {
-                required: "Please Enter Your Title ",
-                
-            },
-            member_number: {
-                required: "Please Enter Member NUmber",
-                
-            },
-            name: {
-                required: "Please Enter Your Name",
-                
-            },
-            gender: {
-                required: "Please choose Gender",
-            },
-            phone: {
-                required: "Please Enter your Number",
-                
-            },
-            email: {
-                required: "Please enter valid email",
-                },
-            designation: {
-                required: "Please choose  your Designation",
-            },
-            
-            race: {
-                required: "Please Choose your Race ",
-            },
-            country: {
-                required:"Please choose  your Country",
-            },
-            state: {
-                required:"Please choose  your State",
-            },
-            city: {
-                required:"Please choose  your city",
-            },
-            address_one: {
-                required:"Please Enter your Address",
-            },
-            dob: {
-                required:"Please choose DOB",
-            },
-            new_ic: {
-                required:"Please Enter New Ic Number",
-            },
-            salary: {
-                required:"Please Enter salary Name",
-            },
-            branch: {
-                required:"Please Choose Company Name",
-            },
-            uname: {
-                required: "Enter a username",
-                minlength: "Enter at least 5 characters"
-            },
-            country_name: {
-                required: "Enter a Country Name",
-            },
-            state_name: {
-                required: "Enter a State Name",
-            },
-            city_name: {
-                required: "Enter a City Name",
-            },
-            designation_name: {
-                required: "Enter a Designation Name",
-            },
-			guardian_name: {
-                required: "Enter a Guardian Name",
-            },
-			employee_id: {
-                required: "Enter a Employee ID",
-            },
-        },
-        errorElement: 'div',
-        errorPlacement: function (error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-            $(placement).append(error)
-        } else {
-            error.insertAfter(element);
-        }
-        }
-    });
-
-
     $("#old_mumber_number").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-oldmember-list') }}?serachkey="+ $("#old_mumber_number").val(),

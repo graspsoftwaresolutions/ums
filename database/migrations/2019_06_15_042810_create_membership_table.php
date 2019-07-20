@@ -23,6 +23,7 @@ class CreateMembershipTable extends Migration
             $table->integer('designation_id');
             $table->string('email');
             $table->biginteger('phone');
+            $table->biginteger('mobile');
             $table->integer('country_id');
             $table->integer('state_id');
             $table->string('postal_code');
