@@ -42,16 +42,16 @@ class HomeController extends Controller
         
         $data['union_branch_count'] = '';
         if($user_role=='union'){
-            $union_branch_count = unionBranch::where('is_head',0)->count();
+            $union_branch_count = unionBranch::where('is_head',0)->where('status',1)->count();
             $data['union_branch_count'] = $union_branch_count;
 
-            $member_count = Membership::all()->count();
+            $member_count = Membership::all()->where('status',1)->count();
             $data['total_member_count'] = $member_count;
             
-            $company_count = CompanyBranch::where('is_head',1)->count();
+            $company_count = CompanyBranch::where('is_head',1)->where('status',1)->count();
             $data['total_company_count'] = $company_count;
 
-            $company_branch_count = CompanyBranch::where('is_head',0)->count();
+            $company_branch_count = CompanyBranch::where('status',1)->count();
             $data['total_company_branch_count'] = $company_branch_count;
 
             $total_active_members_count = Membership::where('status_id',2)->count();
@@ -66,7 +66,7 @@ class HomeController extends Controller
 			$member_count = 0;
 			if(count($union_branch_id)>0){
 				$union_branch_id = $union_branch_id[0];
-				$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where union_branch_id=$union_branch_id";
+				$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where c.union_branch_id=$union_branch_id";
 				$results = DB::select( DB::raw($rawQuery));
 				if(!empty($results)){
 					$member_count = $results[0]->count;
@@ -84,7 +84,7 @@ class HomeController extends Controller
 			$member_count = 0;
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-				$company_branch_count = CompanyBranch::where('company_id',$company_id[0])->where('is_head',0)->count();
+				$company_branch_count = CompanyBranch::where('company_id',$company_id[0])->where('status',1)->count();
 				$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where company_id=$companyid";
 				$results = DB::select( DB::raw($rawQuery));
 				if(!empty($results)){

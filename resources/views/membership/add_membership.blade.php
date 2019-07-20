@@ -83,12 +83,16 @@
 												$auth_user = Auth::user();
 												$member_number_readonly = 'readonly';
 												$member_number_hide = 'hide';
+												$companylist = $data['company_view'];
+												$branchlist = [];
+												$companyid = '';
+												$branchid = '';
 												if(!empty($auth_user)){
 													$userid = Auth::user()->id;
 													$get_roles = Auth::user()->roles;
 													$user_role = $get_roles[0]->slug;
-													$company_id = '';
-													$branch_id = '';
+													
+													$companylist = [];
 													
 													if($user_role =='union'){
 														$member_number_readonly = '';
@@ -103,14 +107,19 @@
 														$member_status = 1;
 													} 
 													else if($user_role =='company'){
+														$branchid = CommonHelper::getCompanyBranchID($userid);
 														$companyid = CommonHelper::getCompanyID($userid);
 														$companylist = CommonHelper::getCompanyList($companyid);
+														$branchlist = CommonHelper::getCompanyBranchList($companyid);
+														//print_r($branchlist);die;
 														$member_status = 1;
-														$companylist = $data['company_view'];
 													}
 													else if($user_role =='company-branch'){
+														$branchid = CommonHelper::getCompanyBranchID($userid);
 														$member_status = 1;
-														$companylist = $data['company_view'];
+														$companyid = CommonHelper::getCompanyID($userid);
+														$companylist = CommonHelper::getCompanyList($companyid);
+														$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
 													}  
 												}
 												
@@ -324,7 +333,7 @@
 																	<select name="company_id" id="company" class="error browser-default selectpicker" data-error=".errorTxt22" required >
 																		<option value="">{{__('Select Company') }}</option>
 																		@foreach($companylist as $value)
-																		<option value="{{$value->id}}">{{$value->company_name}}</option>
+																		<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
 																		@endforeach
 																	</select>
 																	<div class="input-field">
@@ -335,6 +344,9 @@
 																	<label>{{__('Branch Name') }}*</label>
 																	<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
 																		<option value="">{{__('Select Branch') }}</option>
+																		@foreach($branchlist as $branch)
+																		<option @if($branchid==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
+																		@endforeach
 																	</select>
 																	<div class="input-field">
 																		<div class="errorTxt23"></div>

@@ -14,19 +14,19 @@
 			<div class="container">
 			 <!-- BEGIN: Page Main-->
 				@role('union')
-					@include('union.dashboard')
+					@include('dashboard.union')
 				@endrole
 				@role('union-branch')
-					@include('unionbranch.dashboard')
+					@include('dashboard.union_branch')
 				@endrole
 				@role('company')
-					@include('company.dashboard')
+					@include('dashboard.company')
 				@endrole
 				@role('company-branch')
-					@include('branch.dashboard')
+					@include('dashboard.company_branch')
 				@endrole
 				@role('member')
-					@include('member.dashboard')
+					@include('dashboard.member')
 				@endrole
 				@include('layouts.right-sidebar')
 			 <!-- END: Page Main-->

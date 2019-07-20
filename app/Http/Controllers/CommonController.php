@@ -800,4 +800,14 @@ class CommonController extends Controller
         return $data;
     }
       //Company Deatils End 
+    public function getConditionalBranchList(Request $request){
+       
+        $companyid = $request->company_id;
+        $unionbranch_id = $request->unionbranch_id;
+        $branch_id = $request->branch_id;
+
+        $res = CommonHelper::getCompanyBranchList($companyid, $branch_id, $unionbranch_id);
+      
+        return response()->json($res);
+    }
 }

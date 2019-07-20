@@ -175,6 +175,26 @@
 	</div>
 	</form>
 </div>
+@php	
+	$ajaxcompanyid = '';
+	$ajaxbranchid = '';
+	$ajaxunionbranchid = '';
+	if(!empty(Auth::user())){
+		$userid = Auth::user()->id;
+		
+		if($user_role =='union'){
+
+		}else if($user_role =='union-branch'){
+			$ajaxunionbranchid = CommonHelper::getUnionBranchID($userid);
+		}else if($user_role =='company'){
+			$ajaxcompanyid = CommonHelper::getCompanyID($userid);
+		}else if($user_role =='company-branch'){
+			$ajaxbranchid = CommonHelper::getCompanyBranchID($userid);
+		}else{
+
+		}
+	}
+@endphp
 <script>
 $('.modal').modal();
 $("#membership_sidebar_a_id").addClass('active');
@@ -241,13 +261,16 @@ $('#state_id').change(function(){
 });
 $('#company').change(function(){
    var CompanyID = $(this).val();
-  
+   var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
+   var ajaxbranchid = '{{ $ajaxbranchid }}';
+   var additional_cond;
    if(CompanyID!='' && CompanyID!='undefined')
    {
+	 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
 	 $.ajax({
 		type: "GET",
 		dataType: "json",
-		url : "{{ URL::to('/get-branch-list') }}?company_id="+CompanyID,
+		url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
 		success:function(res){
 			//console.log(res);
 			if(res)

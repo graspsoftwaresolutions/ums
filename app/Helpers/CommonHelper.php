@@ -7,6 +7,7 @@ use App\Model\FormType;
 use App\Model\AppForm;
 use App\Model\Country;
 use App\Model\UnionBranch;
+use App\Model\CompanyBranch;
 use App\Model\Company;
 use App\User;
 
@@ -181,9 +182,31 @@ class CommonHelper
 	 }
 	 
 	 public static function getCompanyList($companyid){
-		$rawQuery = "SELECT c.id, c.company_name from company_branch as b left join company as c on b.company_id=c.id where b.union_branch_id=$union_branch_id ";
+		//$rawQuery = "SELECT c.id, c.company_name from company_branch as b left join company as c on b.company_id=c.id where b.union_branch_id=$union_branch_id ";
 		//DB::select( DB::raw('set sql_mode='''));
-		return $results = Company::find($companyid);
-	 }
+		return $results = Company::where('id',$companyid)->get();
+     }
+     
+     public static function getCompanyBranchList($companyid,$branchid=false,$unionbranchid=false){
+		//$rawQuery = "SELECT c.id, c.company_name from company_branch as b left join company as c on b.company_id=c.id where b.union_branch_id=$union_branch_id ";
+		//DB::select( DB::raw('set sql_mode='''));
+        $companyBranch = CompanyBranch::where('company_id',$companyid);
+        if($branchid!=false && $branchid!=''){
+            $companyBranch->where('id',$branchid);
+        }
+        if($unionbranchid!=false && $unionbranchid!=''){
+            $companyBranch->where('union_branch_id',$unionbranchid);
+        }
+                              
+        return  $companyBranch->get();
+     }
+     
+     public static function getCompanyBranchID($user_id){
+        $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
+        if(count($branch_id)>0){
+               return $branch_id[0];
+        }
+        return false;
+    }
    
 }

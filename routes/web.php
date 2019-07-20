@@ -47,7 +47,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
-	Route::get('get-branch-list-register','Auth\RegisterController@getBranchList');
+	
 
 	//Race Details 
 	Route::get('race','MasterController@raceList')->name('master.race'); 
@@ -195,6 +195,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 });
 /* Master */
+	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
 	Route::get('membership','MembershipController@index');
 	Route::get('membership_register','MembershipController@addMember');
 	Route::get('membership_list','MembershipController@new_members');
