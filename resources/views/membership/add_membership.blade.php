@@ -1,6 +1,6 @@
 @extends($data['user_type']==1 ? 'layouts.admin' : 'layouts.new-member')
 @section('headSection')
-	@include('membership.member_common_styles');
+	@include('membership.member_common_styles')
 @endsection
 @section('headSecondSection')
 @endsection
@@ -731,5 +731,5 @@
 		$("#old_mumber_number").val('');
 	});
 </script>
-@include('membership.member_common_script');
+@include('membership.member_common_script')
 @endsection

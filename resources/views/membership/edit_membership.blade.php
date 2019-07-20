@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('headSection')
-    @include('membership.member_common_styles');    
+    @include('membership.member_common_styles')
 @endsection
 @section('headSecondSection')
 
@@ -928,5 +928,5 @@
          });
     });
 </script>
-@include('membership.member_common_script');
+@include('membership.member_common_script')
 @endsection
