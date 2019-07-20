@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         // factory(App\User::class, 5000)->create()->each(function ($user) {
 
         // });
-		/* $this->call(PermissionTableSeeder::class);
+		$this->call(PermissionTableSeeder::class);
 		$this->call(RoleTableSeeder::class);
 		$this->call(CountryTableSeeder::class);
         $this->call(StateTableSeeder::class);
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 		$this->call(UserTableSeeder::class);
         $this->call(CompanyTableSeeder::class);
         $this->call(UnionBranchTableSeeder::class);
-        $this->call(CompanyBranchTableSeeder::class); */
+        $this->call(CompanyBranchTableSeeder::class);
 		
 		// new master seeds
         $this->call(RelationshipTableSeeder::class);
