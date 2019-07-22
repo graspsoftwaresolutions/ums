@@ -555,9 +555,6 @@ class CommonController extends Controller
               return "true";
           }
     }
-	
-
-
     //Person Title Details Start
     public function checkTitleNameExists(Request $request)
     { 
@@ -750,6 +747,34 @@ class CommonController extends Controller
         $data = FormType::find($id);
         return $data;
     } 
+    public function checkFormTypeModuleExists(Request $request)
+    {   
+        $module =  $request->input('module');
+        $formtype_id = $request->input('formtype_id');
+
+        if(!empty($formtype_id))
+        {   
+        $module_exists = FormType::where([
+                ['module','=',$module],
+                ['id','!=',$formtype_id],
+                ['status','=',1]
+                ])->count();
+        }
+        else
+        {
+        $module_exists = FormType::where([
+            ['module','=',$module],
+            ['status','=',1]
+            ])->count(); 
+        } 
+        if($module_exists > 0)
+        {
+            return "false";
+        }
+        else{
+            return "true";
+        }
+    }
      //Form Type Deatils End
 
      //Company Deatils Starts 
@@ -810,4 +835,5 @@ class CommonController extends Controller
       
         return response()->json($res);
     }
+    
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use app\Model\FormType;
 
 class Role extends Model
 {
@@ -22,5 +23,7 @@ class Role extends Model
         }
             return $savedata;
     }
-	
+    public function formTypes() {
+        return $this->belongsToMany(FormType::class,'roles_modules','role_id','module_id');
+    }
 }
