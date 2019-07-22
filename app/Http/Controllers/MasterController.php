@@ -785,10 +785,11 @@ class MasterController extends CommonController {
 	// Roles section
 	
 	public function roles_list() {
+
+        $data['roles_modules'] = DB::table('roles_modules')->get();
         $data['form_type'] = FormType::where('status','=','1')->get();
         return view('master.roles.roles')->with('data',$data);
     }
-	
 	public function saveRole(Request $request)
     {
 
@@ -803,14 +804,7 @@ class MasterController extends CommonController {
         
         $data = $request->all();  
         $data['module'] = $request->module_id;  
-        // echo "<pre>";
-        // print_r($data['module']); exit;
         $defdaultLang = app()->getLocale(); 
-        // foreach($data['module'] as $key=>$values)
-        // {
-        //   $data['module'][$key] = $request->module_id; 
-        // }
-
         if(!empty($request->id)){
             $data_exists = $this->mailExists($request->input('name'),$request->id);
         }else{
@@ -825,7 +819,9 @@ class MasterController extends CommonController {
             $saveRole = $this->Role->saveRoledata($data);
             $roles = Role::find($request->id);
            // return $data['module'];
-            $roles->formTypes()->attach($data['module']);
+            $roles->module_id; 
+            
+            $roles->formTypes()->sync($data['module']);
 
             if ($saveRole == true) {
                 return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');

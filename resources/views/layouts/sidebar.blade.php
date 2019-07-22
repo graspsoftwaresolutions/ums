@@ -51,7 +51,7 @@
             <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan " href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a>
           @endif
         @endif
-        
+        <!--
 		@php
 			$form_type_list = CommonHelper::getFormTypes(1);
 			$single_menu_list = CommonHelper::getSingleMenus();
@@ -77,7 +77,7 @@
 		<li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route($form->route,app()->getLocale()) }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __( $form->formname )}}</span></a></li>
     @endif
 		@endforeach
-   
+   -->
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>
     </aside>

@@ -81,14 +81,14 @@
                                             <input id="slug" class="common-input" name="slug" type="text"
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
-                                        </div>
-                                       
+                                        </div>               
+                   
                                        @foreach($data['form_type'] as $value)
                                         <div class="input-field col s12 m6 appform">
                                         <input type="hidden" name="formid" value="{{$value->id}}">
                                         <p>
                                         <label>
-                                            <input type="checkbox" id="module_id" name="module_id[]" class="common-checkbox" id="isactive" value="{{$value->id}}" @isset($values) {{ $values->isactive == '1' ? 'checked' : '' }} @endisset />
+                                            <input type="checkbox" name="module_id[]" class="common-checkbox module_id" id="module_id_{{$value->id}}" value="{{$value->id}}" @isset($value) {{ $value->id == 2 ? 'checked' : '' }} @endisset />
                                             <span class="common-label force-active">{{$value->formname}}</span>
                                         </label>
                                         </p>
@@ -239,19 +239,27 @@ function showeditForm(roleid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.appform').show();
-    $('.modal').modal();
+   
     var url = "{{ url(app()->getLocale().'/role_detail') }}" + '?id=' + roleid;
     $.ajax({
         url: url,
         type: "GET",
-        success: function(result) {
-            console.log(result);
+        success: function(resultdata) {
+            result = resultdata['roles'];
+            //console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#name').val(result.name);
             $('#slug').val(result.slug);
+            $(".module_id").attr('checked',false);
+            $.each(resultdata['roles_module'],function(key,value){
+                var moduleid = value['id'];
+                $("#module_id_"+moduleid).attr('checked',true);
+            });
+            
         }
     });
+    $('.modal').modal();
 }
 </script>
 @endsection

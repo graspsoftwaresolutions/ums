@@ -253,10 +253,11 @@ class CommonController extends Controller
     {
         $id = $request->id;
         $role = new Role();
-        $data = Role::find($id);
+        $roles = Role::find($request->id);
+        $data['roles'] = $roles;
+        $data['roles_module'] =  $roles->formTypes;
         return $data;
     }
-	
 	
     /*
         Input $result = query result (array)

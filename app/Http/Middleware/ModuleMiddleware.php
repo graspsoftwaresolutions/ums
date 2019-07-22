@@ -32,13 +32,13 @@ class ModuleMiddleware
 			foreach($get_roles as $role){
 				$login_role = $role->id;
 				//$controller_name = (class_basename(\Route::current()->controller));
-				// $project_modules = DB::table('form_type')->where('status',1)->where('module',$module)->get();
-				// $role_models = DB::table('roles_modules')->where('role_id',$login_role)->get();
-				// $module_id =$project_modules[0]->id;
-				// $access_count = DB::table('roles_modules')->where('role_id',$login_role)->where('module_id',$module_id)->count();
-				// if($access_count==0){
-				// 	//return redirect($defdaultLang.'/home')->with('error','You are not authorized to access these module'); 
-				// }
+				$project_modules = DB::table('form_type')->where('status',1)->where('module',$module)->get();
+				$role_models = DB::table('roles_modules')->where('role_id',$login_role)->get();
+				$module_id =$project_modules[0]->id;
+				$access_count = DB::table('roles_modules')->where('role_id',$login_role)->where('module_id',$module_id)->count();
+				if($access_count==0){
+					return redirect($defdaultLang.'/home')->with('error','You are not authorized to access these module'); 
+				}
 				/* 	die;
 				foreach($project_modules as $module){
 					

@@ -24,6 +24,6 @@ class Role extends Model
             return $savedata;
     }
     public function formTypes() {
-        return $this->belongsToMany(FormType::class,'roles_modules','role_id','module_id');
+        return $this->belongsToMany('App\Model\FormType','roles_modules','role_id','module_id');
     }
 }
