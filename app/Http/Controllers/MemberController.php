@@ -147,8 +147,8 @@ class MemberController extends Controller
 					$redirect_failurl = app()->getLocale().'/register';
 					$redirect_url = app()->getLocale().'/login';
 					if(!empty(Auth::user())){
-						$redirect_failurl = 'membership_register';
-						$redirect_url = 'membership';
+						$redirect_failurl = app()->getLocale().'/membership_register';
+						$redirect_url = app()->getLocale().'/membership';
 					}
 					
 				}
@@ -162,8 +162,8 @@ class MemberController extends Controller
 					$redirect_failurl = app()->getLocale().'/membership';
 					$redirect_url = app()->getLocale().'/membership';
 					if($user_role=="member"){
-						$redirect_failurl = 'edit-membership-profile';
-						$redirect_url = 'edit-membership-profile';
+						$redirect_failurl = app()->getLocale().'/edit-membership-profile';
+						$redirect_url = app()->getLocale().'/edit-membership-profile';
 					}
 					
 					if($user_role=='union'){
@@ -183,7 +183,7 @@ class MemberController extends Controller
 					} */
 					
 				}else{
-					return redirect('home')->with('message','Invalid access');
+					return redirect(app()->getLocale().'/home')->with('message','Invalid access');
 				}
 			}
 			$member['member_title_id'] = $request->input('member_title');

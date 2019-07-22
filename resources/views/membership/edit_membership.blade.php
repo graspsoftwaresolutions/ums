@@ -46,7 +46,7 @@
 											die;
 										}
                                     @endphp
-									<form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_save') }}">
+									<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 									@csrf
 										<div class="row">
 											<div class="col s12">

@@ -140,35 +140,7 @@ class CommonController extends Controller
         $data = Country::find($id);
         return $data;
     }
-    //Country Name Exists Check
-    public function checkCountryNameExists(Request $request)
-    {
-        $country_name =  $request->input('country_name');
-        $country_id = $request->input('country_id');
-
-        if(!empty($country_id))
-          {
-                 $countryname_exists = Country::where([
-                  ['country_name','=',$country_name],
-                  ['id','!=',$country_id],
-                  ['status','=','1']
-                  ])->count();
-          }
-          else
-          {
-            $countryname_exists = Country::where([
-                ['country_name','=',$country_name],
-                ['status','=','1'],     
-                ])->count(); 
-          } 
-          if($countryname_exists > 0)
-          {
-              return "false";
-          }
-          else{
-              return "true";
-          }
-    }
+    
 	
 	//State Details 
     public function stateDetail(Request $request)
@@ -179,39 +151,7 @@ class CommonController extends Controller
         return $data;
     }
 	
-	//State Name Exists Check
-    public function checkStateNameExists(Request $request)
-    {
-        $state_name =  $request->input('state_name');
-        $state_id = $request->input('state_id');
-        $country_id = $request->input('country_id');
-
-        if(!empty($state_id))
-          {
-				
-                 $statename_exists = State::where([
-                  ['state_name','=',$state_name],
-                  ['country_id','=',$country_id],
-                  ['id','!=',$state_id],
-                  ['status','=','1']
-                  ])->count();
-          }
-          else
-          {
-            $statename_exists = State::where([
-                ['state_name','=',$state_name],
-				['country_id','=',$country_id],
-                ['status','=','1'],     
-                ])->count(); 
-          } 
-          if($statename_exists > 0)
-          {
-              return "false";
-          }
-          else{
-              return "true";
-          }
-    }
+	
 	//City Details 
     public function cityDetail(Request $request)
     {
@@ -220,51 +160,10 @@ class CommonController extends Controller
         $data = City::find($id);
         return $data;
     }
-	//City Name Exists Check
-    public function checkCityNameExists(Request $request)
-    {
-        $city_name =  $request->input('city_name');
-        $city_id = $request->input('city_id');
-        $country_id = $request->input('country_id');
-        $state_id = $request->input('state_id');
-
-        if(!empty($city_id))
-          {
-				
-                 $cityname_exists = City::where([
-                  ['city_name','=',$city_name],
-                  ['country_id','=',$country_id],
-                  ['state_id','=',$state_id],
-                  ['id','!=',$city_id],
-                  ['status','=','1']
-                  ])->count();
-          }
-          else
-          {
-            $cityname_exists = City::where([
-                ['city_name','=',$city_name],
-                ['country_id','=',$country_id],
-				['state_id','=',$state_id],
-                ['status','=','1'],     
-                ])->count(); 
-          } 
-          if($cityname_exists > 0)
-          {
-              return "false";
-          }
-          else{
-              return "true";
-          }
-    }
+	
 	
     //Relation Details Start
-    //Relation Name Exists Check
-    public function checkRelationNameExists(Request $request)
-    {
-        $relation_name =  $request->input('relation_name');
-        $relation_id = $request->input('relation_id');
-        return $this->checkRelationExists($relation_name,$relation_id);
-    }
+    
     public function checkRelationExists($relation_name,$relation_id=false)
     {
 
@@ -302,16 +201,7 @@ class CommonController extends Controller
     //Relation Details End
 
     // Race Details Start
-     //Race Name Exists Check
-     public function checkRaceNameExists(Request $request)
-     {
-         
-         $race_name =  $request->input('race_name');
-         $race_id = $request->input('race_id');
-         
-         return $this->checkRaceExists($race_name,$race_id);
-         //return $race_id;
-     }
+     
      //checkRaceExists
      public function checkRaceExists($race_name,$race_id=false)
      {   
@@ -356,36 +246,7 @@ class CommonController extends Controller
         $data = Fee::find($id);
         return $data;
     }
-	//Fee Name Exists Check
-    public function checkFeeNameExists(Request $request)
-    {
-        $fee_name =  $request->input('fee_name');
-        $fee_id = $request->input('fee_id');
-
-        if(!empty($fee_id))
-          {
-				
-                 $feename_exists = Fee::where([
-                  ['fee_name','=',$fee_name],
-                  ['id','!=',$fee_id],
-                  ['status','=','1']
-                  ])->count();
-          }
-          else
-          {
-            $feename_exists = Fee::where([
-                ['fee_name','=',$fee_name],
-                ['status','=','1'],     
-                ])->count(); 
-          } 
-          if($feename_exists > 0)
-          {
-              return "false";
-          }
-          else{
-              return "true";
-          }
-    }
+	
 	
 	//Role Details 
     public function roleDetail(Request $request)
@@ -395,34 +256,7 @@ class CommonController extends Controller
         $data = Role::find($id);
         return $data;
     }
-	//Role Name Exists Check
-    public function checkRoleNameExists(Request $request)
-    {
-        $name =  $request->input('name');
-        $role_id = $request->input('role_id');
-
-        if(!empty($role_id))
-          {
-				
-            $rolename_exists = Role::where([
-                  ['name','=',$name],
-                  ['id','!=',$role_id]
-                  ])->count();
-          }
-          else
-          {
-            $rolename_exists = Role::where([
-                ['name','=',$name]    
-                ])->count(); 
-          } 
-          if($rolename_exists > 0)
-          {
-              return "false";
-          }
-          else{
-              return "true";
-          }
-    }
+	
 	
     /*
         Input $result = query result (array)
@@ -479,15 +313,7 @@ class CommonController extends Controller
     }
 
     //Reason Details Start
-    //Reason Name Exists Check
-    public function checkReasonNameExists(Request $request)
-    { 
-        $reason_name =  $request->input('reason_name');
-        $reason_id = $request->input('reason_id');
-        
-        return $this->checkReasonExists($reason_name,$reason_id);
-        //return $race_id;
-    }
+    
      //checkReasonExists
      public function checkReasonExists($reason_name,$reason_id=false)
      {   
@@ -523,49 +349,7 @@ class CommonController extends Controller
           return $data;
       }
     //Reason Details End
-	
-	
-     //Appform
-     public function checkAppformExists(Request $request)
-     {   
-         $formname =  $request->input('formname');
-        $formname_id = $request->input('formname_id');
-
-        if(!empty($formname_id))
-          {
-				
-            $formname_exists = AppForm::where([
-                  ['formname','=',$formname],
-                  ['id','!=',$formname_id],
-                  ['status','=',1]
-                  ])->count();
-          }
-          else
-          {
-            $formname_exists = AppForm::where([
-                ['formname','=',$formname],
-				['status','=',1]
-                ])->count(); 
-          } 
-          if($formname_exists > 0)
-          {
-              return "false";
-          }
-          else{
-              return "true";
-          }
-    }
-	
-
-
-    //Person Title Details Start
-    public function checkTitleNameExists(Request $request)
-    { 
-        $person_title =  $request->input('person_title');
-        $persontitle_id = $request->input('persontitle_id');
-        
-        return $this->checkPersonTitleExists($person_title,$persontitle_id);
-    }
+    
      //checkPerson Title Exists
      public function checkPersonTitleExists($person_title,$persontitle_id=false)
      {   
@@ -602,14 +386,7 @@ class CommonController extends Controller
     } 
     //Person Title Details End
 
-     //Designation Details Start
-     public function checkDesignationNameExists(Request $request)
-     { 
-         $designation_name =  $request->input('designation_name');
-         $designation_id = $request->input('designation_id');
-         
-         return $this->checkDesignationExists($designation_name,$designation_id);
-     }
+     
      //checkDesignation Exists
      public function checkDesignationExists($designation_name,$designation_id=false)
      {   
@@ -669,13 +446,7 @@ class CommonController extends Controller
     }
     //Branch End
 
-    //Status Details Start  
-    public function checkStatusNameExists(Request $request)
-    {
-        $status_name =  $request->input('status_name');
-        $status_id = $request->input('status_id');   
-        return $this->checkStatusExists($status_name,$status_id);
-    }
+    
 	public function checkStatusExists($status_name,$status_id=false)
      {   
          if(!empty($status_id))
@@ -710,14 +481,7 @@ class CommonController extends Controller
     } 
     //Status Details End
 
-    //Form Type Deatils Start
-    public function checkFormTypeNameExists(Request $request)
-    {
-        //dd($request->all());
-        $formname =  $request->input('formname');
-        $formtype_id = $request->input('formtype_id');   
-        return $this->checkFormTyNameExists($formname,$formtype_id);
-    }
+    
     public function checkFormTyNameExists($formname,$formtype_id=false)
     {   
          if(!empty($formtype_id))
@@ -752,14 +516,7 @@ class CommonController extends Controller
     } 
      //Form Type Deatils End
 
-     //Company Deatils Starts 
-    public function checkCompanyNameExists(Request $request)
-    {
-        $company_name =  $request->input('company_name');
-        $company_id = $request->input('company_id'); 
-      
-        return $this->checkCompanyExists($company_name,$company_id);
-    }
+    
     public function checkCompanyExists($company_name,$company_id=false)
     {   
          if(!empty($company_id))

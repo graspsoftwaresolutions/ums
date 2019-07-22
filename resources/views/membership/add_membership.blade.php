@@ -40,7 +40,7 @@
 											<div class="card-header">
 												<h4 class="card-title">{{__('New Membership') }}</h4>
 											</div>
-											<form class="formValidate" id="member_formValidate" method="post" action="{{ url('membership_save') }}">
+											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 											@csrf
 											@php 
 												$auth_user = Auth::user();

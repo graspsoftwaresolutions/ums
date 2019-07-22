@@ -95,7 +95,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       <div class="clearfix" style="clear:both"></div>
                                       <div class="col s12 m6">
                                           <label
-                                              class="common-label">{{__('Head of Company') }}*</label>
+                                              class="common-label">{{__('Head of Company') }}</label>
                                           <select id="head_of_company" name="head_of_company"
                                               class="error browser-default common-select add-select">
                                               <option value="">{{__('Select Company') }}</option>
@@ -256,6 +256,7 @@ $.ajax({
   success: function(res) {
       $('#short_code').empty();
       $('#head_of_company').empty();
+      $('#head_of_company').append($('<option></option>').attr('value','').text('Select'));
       $.each(res['company'], function(key, entry) {
           $('#head_of_company').append($('<option></option>').attr('value', entry
               .id).text(entry.company_name));
@@ -281,6 +282,7 @@ $.ajax({
       $('#company_name').val(result.company_name);
       $('#short_code').val(result.short_code);
       $('#head_of_company').empty();
+      $('#head_of_company').append($('<option></option>').attr('value','').text('Select'));
       $.each(resultdata['head_company'], function(key, entry) {
           $('#head_of_company').append($('<option></option>').attr('value', entry
               .id).text(entry.company_name));
