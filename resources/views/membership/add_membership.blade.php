@@ -158,7 +158,7 @@
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<input type="text" class="datepicker" id="doe" value="{{ old('doe') }}" name="doe">
-																	<label for="doe">{{__('Date of Emp') }}</label>
+																	<label for="doe">{{__('Date of Emp') }}*</label>
 																	<div class="errorTxt7"></div>
 																</div>
 																<div class="col s12 m6">

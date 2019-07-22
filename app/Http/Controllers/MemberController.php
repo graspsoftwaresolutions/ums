@@ -269,7 +269,7 @@ class MemberController extends Controller
 			if($auto_id==''){
 				$gaurdian_id = $this->MemberGuardian->StoreMemberGaurdian($guardian);
 			}else{
-				$update_gaurd_id = $this->MemberGuardian->where('member_id','=',$auto_id)->update($guardian);
+				$update_gaurd_id = $this->MemberGuardian->where('member_id','=',$member_id)->update($guardian);
 			}
 			$check_fee_auto_id = $request->input('fee_auto_id');
 			if( isset($check_fee_auto_id)){
@@ -325,7 +325,7 @@ class MemberController extends Controller
 						$nominee = MemberNominees::find($nominee_auto_id);
 					}
 
-					$nominee->member_id = $auto_id;
+					$nominee->member_id = $member_id;
 					$nominee->relation_id = $nominee_relation;
 					$nominee->nominee_name = $nominee_name;
 					$nominee->country_id = $nominee_country;
