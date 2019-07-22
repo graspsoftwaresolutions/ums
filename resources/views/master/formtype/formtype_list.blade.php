@@ -84,6 +84,14 @@
                                             <div class="errorTxt2"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
+                                        <div class="input-field col s12 m6">
+                                            <label for="module"
+                                                class="common-label force-active">{{__('Module') }}*</label>
+                                            <input id="module" class="common-input" name="module" type="text"
+                                                data-error=".errorTxt3">
+                                            <div class="errorTxt3"></div>
+                                        </div>
+                                        <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
@@ -182,6 +190,20 @@ $("#FormTypeformValidate").validate({
                 type: "post",
             },
         },
+        module : {
+            required: true,
+            remote: {
+                url: "{{ url(app()->getLocale().'/formtype_moduleexists')}}",
+                data: {
+                    formtype_id: function() {
+                        return $("#updateid").val();
+                    },
+                    _token: "{{csrf_token()}}",
+                    module: $(this).data('module'),
+                },
+                type: "post",
+            },
+        },
     },
     //For custom messages
     messages: {
@@ -189,6 +211,10 @@ $("#FormTypeformValidate").validate({
         formname: {
             required: '{{__("Please enter Form name") }}',
             remote: '{{__("Form name Already Exists") }}',
+        },
+        module: {
+            required: '{{__("Please enter Module name") }}',
+            remote: '{{__("Form Module Already Exists") }}',
         },
     },
     errorElement: 'div',
@@ -213,6 +239,7 @@ function showaddForm() {
     $('.edit_hide_btn').hide();
     $('#formname').val("");
     $('#orderno').val("");
+    $('#module').val("");
     $('.modal').modal();
 }
 
@@ -231,6 +258,7 @@ function showeditForm(formtypeid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#formname').val(result.formname);
             $('#orderno').val(result.orderno);
+            $('#module').val(result.module);
         }
     });
 }

@@ -785,7 +785,8 @@ class MasterController extends CommonController {
 	// Roles section
 	
 	public function roles_list() {
-        return view('master.roles.roles');
+        $data['form_type'] = FormType::where('status','=','1')->get();
+        return view('master.roles.roles')->with('data',$data);
     }
 	
 	public function saveRole(Request $request)
@@ -798,8 +799,17 @@ class MasterController extends CommonController {
             'name.required' => 'please enter name',
 			'slug.required' => 'please enter slug',
         ]);
-        $data = $request->all();   
-        $defdaultLang = app()->getLocale();
+       // $data[]
+        
+        $data = $request->all();  
+        $data['module'] = $request->module_id;  
+        // echo "<pre>";
+        // print_r($data['module']); exit;
+        $defdaultLang = app()->getLocale(); 
+        // foreach($data['module'] as $key=>$values)
+        // {
+        //   $data['module'][$key] = $request->module_id; 
+        // }
 
         if(!empty($request->id)){
             $data_exists = $this->mailExists($request->input('name'),$request->id);
@@ -811,8 +821,11 @@ class MasterController extends CommonController {
             return  redirect($defdaultLang.'/roles')->with('error','User Email Already Exists'); 
         }
         else{
-            //dd($data);
+            
             $saveRole = $this->Role->saveRoledata($data);
+            $roles = Role::find($request->id);
+           // return $data['module'];
+            $roles->formTypes()->attach($data['module']);
 
             if ($saveRole == true) {
                 return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');

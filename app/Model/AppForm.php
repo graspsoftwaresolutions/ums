@@ -3,11 +3,11 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Role;
 class AppForm extends Model
 {
     protected $table = "app_form";
-    protected $fillable = ['id','formname','formtype','orderno',
+    protected $fillable = ['id','formname','formtype_id','orderno',
                         'route','isactive','isinsert','isupdate','isdelete','ismenu','description','status'];
  
     public $timestamps = true;
@@ -26,4 +26,5 @@ class AppForm extends Model
         }
         return $savedata;
     }
+   
 }

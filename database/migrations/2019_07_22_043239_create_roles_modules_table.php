@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFormTypeTable extends Migration
+class CreateRolesModulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateFormTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_type', function (Blueprint $table) {
+        Schema::create('roles_modules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('formname');
-            $table->string('module');
-            $table->string('orderno')->nullable();
+            $table->integer('module_id'); 
+            $table->integer('role_id');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->nullable();  
-            $table->integer('status')->default(1);
+
         });
     }
 
@@ -31,6 +30,6 @@ class CreateFormTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('form_type');
+        Schema::dropIfExists('roles_modules');
     }
 }

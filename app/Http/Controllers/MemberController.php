@@ -346,8 +346,7 @@ class MemberController extends Controller
 						$dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
 						$dob = date('Y-m-d', strtotime($dob1));
 						$nominee->dob =  $dob;
-					}
-				
+                    }
 					$nominee->save();
 				}
 			}

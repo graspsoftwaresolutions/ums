@@ -82,6 +82,18 @@
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>
+                                       
+                                       @foreach($data['form_type'] as $value)
+                                        <div class="input-field col s12 m6 appform">
+                                        <input type="hidden" name="formid" value="{{$value->id}}">
+                                        <p>
+                                        <label>
+                                            <input type="checkbox" id="module_id" name="module_id[]" class="common-checkbox" id="isactive" value="{{$value->id}}" @isset($values) {{ $values->isactive == '1' ? 'checked' : '' }} @endisset />
+                                            <span class="common-label force-active">{{$value->formname}}</span>
+                                        </label>
+                                        </p>
+                                        </div>
+                                        @endforeach
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
@@ -216,15 +228,17 @@ function showaddForm() {
     $('.edit_hide').show();
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
+    $('.appform').hide();
     $('#name').val("");
+    $('#form_id').val("");
     $('#slug').val("");
     $('.modal').modal();
 }
-
 function showeditForm(roleid) {
     $('.edit_hide').hide();
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
+    $('.appform').show();
     $('.modal').modal();
     var url = "{{ url(app()->getLocale().'/role_detail') }}" + '?id=' + roleid;
     $.ajax({

@@ -514,7 +514,7 @@ class CommonController extends Controller
         $data = FormType::find($id);
         return $data;
     } 
-     //Form Type Deatils End
+   
 
     
     public function checkCompanyExists($company_name,$company_id=false)
@@ -567,4 +567,5 @@ class CommonController extends Controller
       
         return response()->json($res);
     }
+    
 }

@@ -1458,4 +1458,73 @@ class AjaxController extends CommonController
 		}
 		//return Response::json($return_status);
     }
+
+     //Appform
+     public function checkAppformExists(Request $request)
+     {   
+         $formname =  $request->input('formname');
+        $formname_id = $request->input('formname_id');
+
+        if(!empty($formname_id))
+          {
+				
+            $formname_exists = AppForm::where([
+                  ['formname','=',$formname],
+                  ['id','!=',$formname_id],
+                  ['status','=',1]
+                  ])->count();
+          }
+          else
+          {
+            $formname_exists = AppForm::where([
+                ['formname','=',$formname],
+				['status','=',1]
+                ])->count(); 
+          } 
+          if($formname_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+    //Person Title Details Start
+    public function checkTitleNameExists(Request $request)
+    { 
+        $person_title =  $request->input('person_title');
+        $persontitle_id = $request->input('persontitle_id');
+        
+        return $this->checkPersonTitleExists($person_title,$persontitle_id);
+    }
+
+    public function checkFormTypeModuleExists(Request $request)
+    {   
+        $module =  $request->input('module');
+        $formtype_id = $request->input('formtype_id');
+
+        if(!empty($formtype_id))
+        {   
+        $module_exists = FormType::where([
+                ['module','=',$module],
+                ['id','!=',$formtype_id],
+                ['status','=',1]
+                ])->count();
+        }
+        else
+        {
+        $module_exists = FormType::where([
+            ['module','=',$module],
+            ['status','=',1]
+            ])->count(); 
+        } 
+        if($module_exists > 0)
+        {
+            return "false";
+        }
+        else{
+            return "true";
+        }
+    }
+     //Form Type Deatils End
 }
