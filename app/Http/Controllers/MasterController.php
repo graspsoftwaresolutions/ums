@@ -35,6 +35,7 @@ class MasterController extends CommonController {
 
     public function __construct() {
         $this->middleware('auth');
+        $this->middleware('module:master');
         $this->Country = new Country;
         $this->state = new state;
         $this->City = new City;

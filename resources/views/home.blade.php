@@ -12,6 +12,17 @@
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 		<div class="col s12">
 			<div class="container">
+				@if (session()->has('error'))
+					<div class="card-alert card red">
+						<div class="card-content white-text">
+						  <p>
+							<i class="material-icons">error</i> {{__('Error') }}: {{__(session('error')) }}</p>
+						</div>
+						<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+						  <span aria-hidden="true">×</span>
+						</button>
+					 </div>
+				@endif
 			 <!-- BEGIN: Page Main-->
 				@role('union')
 					@include('dashboard.union')
