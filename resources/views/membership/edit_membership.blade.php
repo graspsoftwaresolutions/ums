@@ -772,10 +772,10 @@
 																					</div>
 																					<div class="col s12 m4">
 																						 <label class="force-active">City Name*</label>
-																						<select name="guardiancity_id" id="guardian_city_id"  class="error browser-default selectpicker">
+																						<select name="guardian_city_id" id="guardian_city_id"  class="error browser-default selectpicker">
 																							<option value="" >Select</option>
 																							@foreach($data['city_view'] as $key=>$value)
-																							<option value="{{$value->id}}" @php if($value->id == $gardian_row->city_id) { echo "selected";} @endphp>{{$values->city_name}}</option>
+																							<option value="{{$value->id}}" @php if($value->id == $gardian_row->city_id) { echo "selected"; } @endphp>{{$value->city_name}}</option>
 																							@endforeach
 																						</select>
 																						<div class="input-field">

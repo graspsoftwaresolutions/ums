@@ -93,7 +93,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Route::resource('formtype','FormTypeController');
 	Route::post('formtype_nameexists','AjaxController@checkFormTypeNameExists');  
 	Route::get('formtype','MasterController@formTypeList')->name('master.formtype'); 
-	Route::post('ajax_formtype_list','MasterController@ajax_formtype_list')->name('master.ajaxformtypelist'); 
+	Route::post('ajax_formtype_list','AjaxController@ajax_formtype_list')->name('master.ajaxformtypelist'); 
 	Route::post('formtype_moduleexists','AjaxController@checkFormTypeModuleExists');
 	Route::post('saveFormType','MasterController@formTypeSave')->name('master.saveFormType');  
 	Route::get('formtype_detail','CommonController@formTypeDetail'); 
