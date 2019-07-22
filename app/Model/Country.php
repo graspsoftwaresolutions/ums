@@ -20,12 +20,7 @@ class Country extends Model
         }
         return $savedata;
     }
-    public function states(){
-        // return $this->hasManyThrough(
-        //     'App\Model\City', 'App\Model\State',
-        //     'country_id', 'city_id', 'id'
-        // );
-        //return $this->hasManyThrough('App\State', 'App\City');
+    public function states(){   
         return $this->hasMany('App\Model\State');
     }
     public function cities(){
@@ -33,8 +28,5 @@ class Country extends Model
             'App\Model\City', 'App\Model\State',
             'country_id', 'state_id', 'id'
         );
-        //return $this->hasManyThrough('App\State', 'App\City');
-        //return $this->hasMany('App\Model\State');
     }
-    
 }

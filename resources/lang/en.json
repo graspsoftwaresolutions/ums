@@ -16,6 +16,8 @@
   "Add Country" : "Add Country_en",
   "Country List": "Country List_en",
   "Profile" : "Profile_en",
+  "Please Choose Country Name" : "Please Choose Country Name_en",
+  "Please enter State Name" : "Please enter State Name_en",
   "Country Name" : "Country Name_en",
   "Save" : "Save_en",
   "Add New Country" : "Add New Country_en",
@@ -26,6 +28,7 @@
   "Action" : "Action_en",
   "Edit" : "Edit_en",
   "Delete" : "Delete_en",
+  "Close" : "Close_en",
   "Country Name Already Exists" : "Country Name Already Exists_en",
   "Country Name Added Succesfully" : "Country Name Added Succesfully_en",
   "Country Details Updated Succesfully" : "Country Details Updated Succesfully_en",
@@ -36,6 +39,7 @@
   "Membership" : "Membership_en",
   "All rights reserved" : "All rights reserved_en",
   "Logout" : "Logout_en",
+
 
   "State Details" : "State Details_en",
   "State List" : "State List_en",
@@ -288,7 +292,8 @@
   "Role Details Deleted Successfully!!" : "Role Details Deleted Successfully!!_en",
 
   "Users List" : "Users List_en",
-  "Users" : "users_en",
+  "Users" : "Users_en",
+  "Add" : "Add_en",
   "Add New User" : "Add New User_en",
   "User Name" : "User Name_en",
   "Name" : "Name_en",

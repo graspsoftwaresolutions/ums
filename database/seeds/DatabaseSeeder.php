@@ -32,7 +32,5 @@ class DatabaseSeeder extends Seeder
         $this->call(PersonTitleTableSeeder::class);
         $this->call(StatusTableSeeder::class);
         $this->call(FormTypeTableSeeder::class);
-        
-        
     }
 }

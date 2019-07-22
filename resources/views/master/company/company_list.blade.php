@@ -30,7 +30,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
   </div>
   <div class="col s2 m6 l6">
       <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger"
-          onClick='showaddForm();' href="#modal_add_edit"">{{__('Add New Company') }}</a>
+          onClick='showaddForm();' href="#modal_add_edit">{{__('Add') }}</a>
 </div>
 </div>
 </div>
@@ -50,7 +50,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                           <table id="page-length-option" class="display">
                                               <thead>
                                                   <tr>
-                                                      <td>{{__('Company Name') }}</td>
+                                                      <th>{{__('Company Name') }}</th>
                                                       <th>{{__('Short Name') }}</th>
                                                       <th> {{__('Action') }}</th>
                                                   </tr>
@@ -64,7 +64,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       </div>
                       <div id="modal_add_edit" class="modal">
                           <div class="modal-content">
-                              <h4>Company Details</h4>
+                              <h4>{{__('Company Details') }}</h4>
                               <form class="formValidate" id="company_formValidate" method="post"
                                   action="{{ route('master.saveCompany',app()->getLocale()) }}">
                                   @csrf
@@ -79,19 +79,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       </div>
                                       <div class="input-field col s12 m6">
                                           <label for="company_name"
-                                              class="common-label force-active">{{__('Short Code') }}*</label>
+                                              class="common-label force-active">{{__('Short Code') }}</label>
                                           <input id="short_code" class="common-input"
                                               name="short_code" type="text" data-error=".errorTxt2">
                                       </div>
-                                      <!--div class="input-field col s12 m6">
-                                  <select name="country_id" id="country_id" class="error browser-default common-select selelctpicker-modal" data-error=".errorTxt101">
-                                  <option value="">{{__('Select Country') }}</option>
-                                      <option value="1"  >India</option>  
-                                  </select>
-                                <div class="input-field">        
-                                <div class="errorTxt101"></div>
-                                </div>
-                          </div-->
                                       <div class="clearfix" style="clear:both"></div>
                                       <div class="col s12 m6">
                                           <label
@@ -105,7 +96,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       <div class="clearfix" style="clear:both"></div>
                                       <div class="input-field col s12">
                                           <a href="#!"
-                                              class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                              class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                           <button
                                               class="btn waves-effect waves-light right submit edit_hide_btn "
                                               type="submit" name="action">{{__('Update')}}

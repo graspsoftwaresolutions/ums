@@ -548,13 +548,16 @@ class CommonController extends Controller
         $id = $request->id;
         $Company = new Company();
         $data['company'] = Company::find($id);
-        $data['head_company'] = Company::where('id','!=',$id)->get();
+        $data['head_company'] = Company::where([
+            ['id','!=',$id],
+            ['status','=',1]
+            ])->get();
         return $data;
     } 
     public function saveCompanyDetail(Request $request)
     {
         $Company = new Company();
-        $data['company'] = Company::all();
+        $data['company'] = Company::where('status','=',1)->get();
         return $data;
     }
       //Company Deatils End 

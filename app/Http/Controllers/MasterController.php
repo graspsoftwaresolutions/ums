@@ -86,7 +86,16 @@ class MasterController extends CommonController {
             $saveCountry = $this->Country->saveCountrydata($data);
 
             if ($saveCountry == true) {
-                return redirect($defdaultLang . '/country')->with('message', 'Country Name Added Succesfully');
+
+                if(!empty($request->id))
+                {
+                    return redirect($defdaultLang . '/country')->with('message', 'Country Name Updated Succesfully');
+                }
+                else
+                {
+                    return redirect($defdaultLang . '/country')->with('message', 'Country Name Added Succesfully');
+                }
+                
             }
         }
     }
@@ -101,12 +110,9 @@ class MasterController extends CommonController {
 	}
 
     public function stateList()
-    {
-		
-		$data['country_view'] = Country::all();
+    {	
+		$data['country_view'] = Country::where('status','=','1')->get();
         return view('master.state.state_list')->with('data',$data);
-        //return view('master.state.state_list');
-
     }
 	
 	
@@ -135,9 +141,16 @@ class MasterController extends CommonController {
         else{
 
             $saveState = $this->state->saveStatedata($data);
-
+            
             if ($saveState == true) {
-                return redirect($defdaultLang . '/state')->with('message', 'State Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                    return redirect($defdaultLang . '/state')->with('message', 'State Name Updated Succesfully');
+                }
+                else
+                {
+                    return redirect($defdaultLang . '/state')->with('message', 'State Name Added Succesfully');
+                }
             }
         }
     }
@@ -155,8 +168,8 @@ class MasterController extends CommonController {
 	
 	public function cityList()
     {
-        $data['country_view'] = Country::all();
-        $data['state_view'] = State::all();
+        $data['country_view'] = Country::where('status','=','1')->get();
+        $data['state_view'] = State::where('status','=','1')->get();
         return view('master.city.city_list',compact('data',$data));
     }
 	
@@ -189,7 +202,14 @@ class MasterController extends CommonController {
             $saveCity = $this->City->saveCitydata($data);
 
             if ($saveCity == true) {
-                return redirect($defdaultLang . '/city')->with('message', 'City Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                    return redirect($defdaultLang . '/city')->with('message', 'City Name Updated Succesfully');
+                }
+                else
+                {
+                    return redirect($defdaultLang . '/city')->with('message', 'City Name Added Succesfully');
+                }
             }
         }
     }
@@ -241,7 +261,13 @@ class MasterController extends CommonController {
 
             $saveUser = $this->User->saveUserdata($updata);
             if ($saveUser == true) {
-                return redirect($defdaultLang . '/users')->with('message', 'User Updated Succesfully');
+                if(!empty($request->id))
+                {
+                    return redirect($defdaultLang . '/users')->with('message', 'User Updated Succesfully');
+                }
+                else{
+                    return redirect($defdaultLang . '/users')->with('message', 'User Added Succesfully');
+                }
             }
         }
     }
@@ -294,7 +320,13 @@ class MasterController extends CommonController {
            
             if($saveRelation == true)
             {
-                return  redirect($defdaultLang.'/relation')->with('message','Relation Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                 return  redirect($defdaultLang.'/relation')->with('message','Relation Name Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/relation')->with('message','Relation Name Added Succesfully');
+                }
             }
         }
     }
@@ -339,7 +371,13 @@ class MasterController extends CommonController {
            
             if($saveRace == true)
             {
-                return  redirect($defdaultLang.'/race')->with('message','Race Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                    return  redirect($defdaultLang.'/race')->with('message','Race Name Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/race')->with('message','Race Name Added Succesfully');
+                }
             }
         }
     }
@@ -385,7 +423,13 @@ class MasterController extends CommonController {
            
             if($saveReason == true)
             {
-                return  redirect($defdaultLang.'/reason')->with('message','Reason Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                     return  redirect($defdaultLang.'/reason')->with('message','Reason Name Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/reason')->with('message','Reason Name Added Succesfully');
+                }
             }
         }
     }
@@ -431,7 +475,13 @@ class MasterController extends CommonController {
             
              if($savePersonTitle == true)
              {
-                 return  redirect($defdaultLang.'/persontitle')->with('message','Person Title Added Succesfully');
+                if(!empty($request->id))
+                {
+                     return  redirect($defdaultLang.'/persontitle')->with('message','Person Title Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/persontitle')->with('message','Person Title Added Succesfully');
+                }
              }
          }
      }
@@ -477,7 +527,14 @@ class MasterController extends CommonController {
             
              if($saveDesignation == true)
              {
-                 return  redirect($defdaultLang.'/designation')->with('message','Designation Added Succesfully');
+                if(!empty($request->id))
+                {
+                    return  redirect($defdaultLang.'/designation')->with('message','Designation Updated Succesfully');
+                }
+                else
+                {
+                    return  redirect($defdaultLang.'/designation')->with('message','Designation Added Succesfully');
+                }
              }
          }
      }
@@ -702,7 +759,13 @@ class MasterController extends CommonController {
             $saveFee = $this->Fee->saveFeedata($data);
 
             if ($saveFee == true) {
-                return redirect($defdaultLang . '/fee')->with('message', 'Fee Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                    return redirect($defdaultLang . '/fee')->with('message', 'Fee Name Updated Succesfully');
+                }
+                else{
+                    return redirect($defdaultLang . '/fee')->with('message', 'Fee Name Added Succesfully');
+                }
             }
         }
     }
@@ -740,8 +803,7 @@ class MasterController extends CommonController {
          ]);
          $data = $request->all();   
          $defdaultLang = app()->getLocale();
-        // var_dump($data);
-		// exit;
+       
          if(!empty($request->id)){
              $data_exists = $this->checkDesignationExists($request->input('formname'),$request->id);
          }else{
@@ -753,12 +815,15 @@ class MasterController extends CommonController {
          }
          else{
              $saveAppForm = $this->AppForm->saveAppFormdata($data);
-          //  dd($saveAppForm);
              if($saveAppForm == true)
              {
-			//return  redirect back();
-                 return  redirect($defdaultLang.'/appform')->with('message','AppForm Added Succesfully');
-				 //return  redirect($defdaultLang.'/roles')->with('error','User Email Already Exists'); 
+                if(!empty($request->id))
+                {
+                    return  redirect($defdaultLang.'/appform')->with('message','AppForm Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/appform')->with('message','AppForm Added Succesfully');
+                }
              }
          }
      }
@@ -824,7 +889,13 @@ class MasterController extends CommonController {
             $roles->formTypes()->sync($data['module']);
 
             if ($saveRole == true) {
-                return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');
+                if(!empty($request->id))
+                {
+                     return redirect($defdaultLang . '/roles')->with('message', 'Role Name Updated Succesfully');
+                }
+                else{
+                    return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');
+                }
             }
         }
     }
@@ -871,7 +942,13 @@ class MasterController extends CommonController {
            
             if($saveStatus == true)
             {
-                return  redirect($defdaultLang.'/status')->with('message','Status Added Succesfully');
+                if(!empty($request->id))
+                {
+                   return  redirect($defdaultLang.'/status')->with('message','Status Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/status')->with('message','Status Added Succesfully');
+                }
             }
         }
     }
@@ -923,7 +1000,14 @@ class MasterController extends CommonController {
             
              if($saveFormType == true)
              {
-                 return  redirect($defdaultLang.'/formtype')->with('message','Form Type Added Succesfully');
+                if(!empty($request->id))
+                {
+                  return  redirect($defdaultLang.'/formtype')->with('message','Form Type Updated Succesfully');
+                }
+                else
+                {
+                    return  redirect($defdaultLang.'/formtype')->with('message','Form Type Added Succesfully');
+                }
              }
         }
      }
@@ -940,7 +1024,7 @@ class MasterController extends CommonController {
      //Company Details Starts
      public function companyList()
      {
-        $data['company_view'] = Company::all();
+        $data['company_view'] = Company::where('status','=','1')->get();
         return view('master.company.company_list')->with('data',$data);
      } 
     
@@ -971,7 +1055,14 @@ public function companySave(Request $request)
        
         if($saveCompany == true)
         {
-            return  redirect($defdaultLang.'/company')->with('message','Company Added Succesfully');
+            if(!empty($request->id))
+            {
+                return  redirect($defdaultLang.'/company')->with('message','Company Updated Succesfully');
+            }
+            else
+            {
+                return  redirect($defdaultLang.'/company')->with('message','Company Added Succesfully');
+            }
         }
    }
 } 

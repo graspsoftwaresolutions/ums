@@ -62,13 +62,14 @@
                         </div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>State Details</h4>
+                                <h4>{{__('State Details')}}</h4>
                                 <form class="formValidate" id="stateformValidate" method="post"
                                     action="{{ route('master.savestate',app()->getLocale()) }}">
                                     @csrf
                                     <input type="hidden" name="id" id="updateid">
                                     <div class="row">
                                         <div class="input-field col s12 m6">
+                                        <label class="force-active">{{__('Country Name') }}*</label>
                                             <select class="error browser-default" class="common-select" id="country_id"
                                                 name="country_id" data-error=".errorTxt1">
                                                 <option value="">{{__('Select country')}}</option>
@@ -93,7 +94,7 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                             <button class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
@@ -176,6 +177,9 @@ function ConfirmDeletion() {
 // Form Validation
 $("#stateformValidate").validate({
     rules: {
+        country_id: {
+            required: true,
+        },
         state_name: {
             required: true,
             remote: {
@@ -196,6 +200,9 @@ $("#stateformValidate").validate({
     },
     //For custom messages
     messages: {
+        country_id: {
+            required: '{{__("Please Choose Country Name") }}',
+        },
         state_name: {
             required: '{{__("Please enter State Name") }}',
             remote: '{{__("State Name Already exists") }}',
