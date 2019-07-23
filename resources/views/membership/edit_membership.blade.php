@@ -365,7 +365,7 @@
 																			Next
 																			<i class="material-icons right">arrow_forward</i>
 																			</button>
-																			<button id="submit-member" class="waves-effect waves-dark btn btn-primary"
+																			<button id="submit-member" class="waves-effect waves-dark btn btn-primary form-save-btn"
 																		type="submit">Submit</button>
 																		</div>
 																	</div>
@@ -830,7 +830,7 @@
 																		<i class="material-icons left">arrow_back</i>
 																		Prev
 																	</button>
-																	<button class="waves-effect waves-dark btn btn-primary" onClick="return SubmitMemberForm()" 
+																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
 																		type="submit">Submit</button>
 																</div>
 															</div>

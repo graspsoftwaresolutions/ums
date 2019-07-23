@@ -556,7 +556,9 @@ class MasterController extends CommonController {
     }
 	public function addUnionBranch()
     {
+        $Defcountry = CommonHelper::DefaultCountry();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['state_view'] = State::where('status','=','1')->where('country_id',$Defcountry)->get();
         return view('master.unionbranch.unionbranch_details')->with('data',$data);
     }
 

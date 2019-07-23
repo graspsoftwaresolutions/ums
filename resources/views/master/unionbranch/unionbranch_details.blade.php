@@ -68,16 +68,18 @@
                                                         type="text" data-error=".errorTxt1">
                                                     <div class="errorTxt1"></div>
                                                 </div>
-                                                <div class="input-field col s12 m6">
+                                                <div class="col s12 m6">
+                                                    <label class="common-label">{{__('Country Name') }}*</label>
                                                     <select name="country_id" id="country_id"
                                                         class="error browser-default common-select selectpicker"
                                                         data-error=".errorTxt101">
                                                         <option value="">{{__('Select Country') }}</option>
                                                         @php
-                                                        $data1 = CommonHelper::DefaultCountry();
+                                                        $Defcountry = CommonHelper::DefaultCountry();
                                                         @endphp
                                                         @foreach($data['country_view'] as $value)
-                                                        <option value="{{$value->id}}" @if($data1==$value->id) selected @endif >
+                                                        <option value="{{$value->id}}" @isset($values) @php if($value->
+                                                            id == $values->country_id) { echo "selected";} @endphp @endisset @if($Defcountry==$value->id) selected @endif >
                                                     {{$value->country_name}}</option>
                                                         @endforeach
                                                     </select>
@@ -85,12 +87,13 @@
                                                         <div class="errorTxt101"></div>
                                                     </div>
                                                 </div>
-
+                                                <div class="clearfix"></div>
                                                 <div class="col s12 m6">
                                                     <label class="common-label">{{__('State Name') }}*</label>
                                                     <select class="error browser-default common-select selectpicker"
                                                         id="state_id" name="state_id" aria-required="true"
                                                         data-error=".errorTxt102" required>
+                                                        <option value="">{{__('Select City') }}</option>
                                                         @isset($data['state_view'])
                                                         @foreach($data['state_view'] as $value)
                                                         <option value="{{$value->id}}" @isset($values) @php if($value->
@@ -103,6 +106,7 @@
                                                         <div class="errorTxt102"></div>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col s12 m6">
                                                     <label class="common-label">{{__('City Name') }}*</label>
                                                     <select name="city_id" id="city_id"
@@ -120,6 +124,7 @@
                                                         <div class="errorTxt103"></div>
                                                     </div>
                                                 </div>
+                                                <div class="clearfix"></div>
                                                 <div class="input-field col s12 m6">
                                                     <label for="postal_code" class="common-label">{{__('Postal Code') }}
                                                         *</label>
@@ -136,6 +141,7 @@
                                                         type="text" data-error=".errorTxt14">
                                                     <div class="errorTxt14"></div>
                                                 </div>
+                                                <div class="clearfix"></div>
                                                 <div class="input-field col s12 m6">
                                                     <label for="address_two"
                                                         class="common-label">{{__('Address Line 2') }}</label>
@@ -144,6 +150,7 @@
                                                         type="text" data-error=".errorTxt15">
                                                     <div class="errorTxt15"></div>
                                                 </div>
+                                                
                                                 <div class="input-field col s12 m6">
                                                     <label for="address_three"
                                                         class="common-label">{{__('Address Line 3') }}</label>
@@ -152,6 +159,7 @@
                                                         type="text" data-error=".errorTxt15">
                                                     <div class="errorTxt15"></div>
                                                 </div>
+                                                <div class="clearfix"></div>
                                                 <div class="input-field col s12 m6">
                                                     <label for="phone" class="common-label">{{__('Phone') }} *</label>
                                                     <input id="phone" name="phone" type="text" class="common-input"
@@ -212,17 +220,18 @@
                                                             <span>{{__('Head') }}</span>
                                                         </label>
                                                     </p>
-                                                    <div class="clearfix" style="clear:both"></div>
-                                                    <div class="input-field col s12">
-                                                        <button class="btn waves-effect waves-light right submit"
-                                                            type="submit" name="action">
-                                                            @if(isset($values))
-                                                            {{__('Update') }}
-                                                            @else{{__('Save') }}
-                                                            @endif
-                                                        </button>
-                                                    </div>
+                                                    
                                                 </div>
+												<div class="clearfix" style="clear:both"></div>
+												<div class="input-field col s12">
+													<button id="form-save-btn" class="btn waves-effect waves-light right submit"
+														type="submit" name="action">
+														@if(isset($values))
+														{{__('Update') }}
+														@else{{__('Save') }}
+														@endif
+													</button>
+												</div>
                                         </form>
                                     </div>
                                 </div>
@@ -241,6 +250,7 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 @endsection
 @section('footerSecondSection')
+
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
@@ -329,14 +339,19 @@ $("#unionbranch_formValidate").validate({
         },
         phone: {
             required: true,
-            digits: true,
+            number: true,
+            minlength:10,
+            maxlength:15,
         },
         mobile: {
             required: true,
-            digits: true,
+            number: true,
+            minlength:10,
+            maxlength:13,
         },
         email: {
             required: true,
+            email:true,
             remote: {
                 url: "{{ url(app()->getLocale().'/branch_emailexists')}}",
                 data: {
@@ -360,7 +375,9 @@ $("#unionbranch_formValidate").validate({
         },
         postal_code: {
             required: true,
-            digits: true,
+            number: true,
+            minlength:6,
+            maxlength:8,
         },
         address_one: {
             required: true,
@@ -409,6 +426,9 @@ $("#unionbranch_formValidate").validate({
             error.insertAfter(element);
         }
     }
+});
+$(document).on('submit','form#unionbranch_formValidate',function(){
+    $("#form-save-btn").prop('disabled',true);
 });
 </script>
 @endsection

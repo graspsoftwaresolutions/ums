@@ -10,6 +10,8 @@
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 		<div class="col s12">
 			<div class="container">
+				<div class="loading-overlay"></div>
+				
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">
@@ -40,6 +42,9 @@
 											<div class="card-header">
 												<h4 class="card-title">{{__('New Membership') }}</h4>
 											</div>
+											<div class="loading-overlay-image-container">
+					<img src="{{ asset('public/images/loading.gif') }}" class="loading-overlay-img"/>
+				</div>
 											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 											@csrf
 											@php 
@@ -334,12 +339,12 @@
 																		</button>
 																		</div-->
 																	<div class="col m12 s12 mb-3" style="text-align: right;">
-																		<button id="controlled_next" class="waves-effect waves dark btn btn-primary next-step"
+																		<button id="controlled_next" class="waves-effect waves dark btn btn-primary next-step "
 																			type="submit">
 																		Next
 																		<i class="material-icons right">arrow_forward</i>
 																		</button>
-																		<button id="submit-member" class="waves-effect waves-dark btn btn-primary"
+																		<button id="submit-member" class="waves-effect waves-dark btn btn-primary form-save-btn"
 																	type="submit">Submit</button>
 																	</div>
 																</div>
@@ -675,7 +680,7 @@
 																	<i class="material-icons left">arrow_back</i>
 																	Prev
 																</button>
-																<button class="waves-effect waves-dark btn btn-primary" onClick="return SubmitMemberForm()"
+																<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()"
 																	type="submit">Submit</button>
 															</div>
 														</div>

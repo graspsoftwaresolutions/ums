@@ -1486,4 +1486,17 @@ class AjaxController extends CommonController
         }
     }
      //Form Type Deatils End
+
+     public function checkCompanyBranchemailExists(Request $request){
+		//return $request->all();
+		$email =  $request->input('email');
+        $db_autoid = $request->input('db_autoid');
+		if($db_autoid=='' || $db_autoid==null)
+        {
+			return $branchexists = $this->CompanyBranchmailExists($email);
+		}else{
+			return $branchexists = $this->CompanyBranchmailExists($email,$db_autoid);
+		}
+		//return Response::json($return_status);
+    }
 }

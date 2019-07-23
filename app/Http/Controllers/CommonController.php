@@ -16,6 +16,7 @@ use App\Model\Status;
 use App\Model\Persontitle;
 use App\Model\Designation;
 use App\Model\UnionBranch;
+use App\Model\CompanyBranch;
 use App\Model\Fee;
 use App\Model\FormType;
 use App\Model\AppForm;
@@ -447,6 +448,28 @@ class CommonController extends Controller
     }
     //Branch End
 
+    public function CompanyBranchmailExists($email,$autoid=false){
+        //  return $userid;
+        if(!empty($autoid))
+        {
+            $useremail_exists = CompanyBranch::where([
+                ['email','=',$email],
+                ['id','!=',$autoid]
+                ])->count(); 
+        }
+        else
+        {
+            $useremail_exists = CompanyBranch::where('email','=',$email)->count(); 
+        } 
+        if($useremail_exists > 0)
+        {
+            return "false";
+        }
+        else{
+            return "true";
+        }
+  }
+
     
 	public function checkStatusExists($status_name,$status_id=false)
      {   
@@ -572,5 +595,27 @@ class CommonController extends Controller
       
         return response()->json($res);
     }
+
+    public function membermailExists($email,$autoid=false){
+        //  return $userid;
+        if(!empty($autoid))
+        {
+            $useremail_exists = Membership::where([
+                ['email','=',$email],
+                ['id','!=',$autoid]
+                ])->count(); 
+        }
+        else
+        {
+            $useremail_exists = Membership::where('email','=',$email)->count(); 
+        } 
+        if($useremail_exists > 0)
+        {
+            return "false";
+        }
+        else{
+            return "true";
+        }
+  }
     
 }

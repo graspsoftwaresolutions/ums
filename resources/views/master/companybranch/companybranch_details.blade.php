@@ -106,12 +106,15 @@
                                                         class="common-label">{{__('Branch Name') }}*</label>
                                                 </div>
                                                 <div class="input-field col s12 m6">
+													@php
+													$Defcountry = CommonHelper::DefaultCountry();
+													@endphp
                                                     <select name="country_id" id="country_id" data-error=".errorTxt4"
                                                         class="error browser-default common-select selectpicker">
                                                         <option value="">{{__('Select country') }}</option>
                                                         @foreach($data['country_view'] as $value)
                                                         <option value="{{$value->id}}" @isset($row) @php if($value->id
-                                                            == $row->country_id) { echo "selected";} @endphp @endisset
+                                                            == $row->country_id) { echo "selected";} @endphp @endisset @if($Defcountry==$value->id) selected @endif
                                                             >{{$value->country_name}}</option>
                                                         @endforeach
                                                     </select>
@@ -232,7 +235,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="input-field col s12">
-                                                    <button class="btn waves-effect waves-light right submit"
+                                                    <button id="form-save-btn" class="btn waves-effect waves-light right submit"
                                                         type="submit" name="action">
                                                         @if(isset($row))
                                                         {{__('Update') }}
@@ -356,15 +359,36 @@ $("#branchformValidate").validate({
         },
         phone: {
             required: true,
+			number: true,
+            minlength:10,
+            maxlength:15,
         },
         mobile: {
             required: true,
+			number: true,
+            minlength:10,
+            maxlength:13,
         },
         email: {
             required: true,
+            email:true,
+            remote: {
+                url: "{{ url(app()->getLocale().'/companybranch_emailexists')}}",
+                data: {
+                    db_autoid: function() {
+                        return $("#auto_id").val();
+                    },
+                    _token: "{{csrf_token()}}",
+                    email: $(this).data('email')
+                },
+                type: "post",
+            },
         },
         postal_code: {
             required: true,
+			number: true,
+            minlength:6,
+            maxlength:8,
         },
         address_one: {
             required: true,
@@ -402,6 +426,7 @@ $("#branchformValidate").validate({
         },
         email: {
             required: '{{__("Please enter valid email") }}',
+			remote: '{{__("Email Already exists") }}',
         },
         country_id: {
             required: '{{__("Please choose  your Country") }}',
@@ -428,6 +453,9 @@ $("#branchformValidate").validate({
             error.insertAfter(element);
         }
     }
+});
+$(document).on('submit','form#branchformValidate',function(){
+    $("#form-save-btn").prop('disabled',true);
 });
 </script>
 @endsection

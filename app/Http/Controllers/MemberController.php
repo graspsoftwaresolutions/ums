@@ -23,7 +23,7 @@ use URL;
 use Auth;
 
 
-class MemberController extends Controller
+class MemberController extends CommonController
 {
     /**
      * Create a new controller instance.
@@ -487,6 +487,19 @@ class MemberController extends Controller
             }
 			 
 		}
+	}
+	
+	public function checkMemberemailExists(Request $request){
+		//return $request->all();
+		$email =  $request->input('email');
+        $db_autoid = $request->input('db_autoid');
+		if($db_autoid=='' || $db_autoid==null)
+        {
+			return $memberexists = $this->membermailExists($email);
+		}else{
+			return $memberexists = $this->membermailExists($email,$db_autoid);
+		}
+		//return Response::json($return_status);
     }
 	
 }

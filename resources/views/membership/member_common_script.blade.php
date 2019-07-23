@@ -301,12 +301,25 @@
             },
             mobile: {
                 required: true,
-				number:true,
+				number: true,
 				minlength:10,
+				maxlength:13,
 				//maxlength:12,
             },
             email: {
                 required: true,
+				email:true,
+				remote: {
+					url: "{{ url(app()->getLocale().'/member_emailexists')}}",
+					data: {
+						db_autoid: function() {
+							return $("#auto_id").val();
+						},
+						_token: "{{csrf_token()}}",
+						email: $(this).data('email')
+					},
+					type: "post",
+				},
             },
             doe: {
                 required: true,
@@ -328,6 +341,9 @@
             },
             postal_code: {
                 required: true,
+				number: true,
+				minlength:6,
+				maxlength:8,
             },
             address_one: {
                 required:true,
@@ -401,7 +417,8 @@
             },
             email: {
                 required: "Please enter valid email",
-                },
+				remote: '{{__("Email Already exists") }}',
+            },
             designation: {
                 required: "Please choose  your Designation",
             },
@@ -1241,4 +1258,58 @@ $('#guardian_state_id').change(function(){
 	   $('#guardian_city_id').empty();
    }
 });
+
+$(document).on('submit','form#member_formValidate',function(){
+    $(".form-save-btn").prop('disabled',true);
+	loader.showLoader();
+});
+
+/**
+ * Handle loading overlays
+ *
+ * @author Justin Stolpe
+ */
+var loader = {
+	/**
+	 * Initialize our loading overlays for use
+	 *
+	 * @params void
+	 *
+	 * @return void
+	 */
+	initialize : function () {
+		var html = 
+			'<div class="loading-overlay"></div>' +
+			'<div class="loading-overlay-image-container">' +
+				'<img src="assets/loading.gif" class="loading-overlay-img"/>' +
+			'</div>';
+
+		// append our html to the DOM body
+		$( 'body' ).append( html );
+	},
+
+	/**
+	 * Show the loading overlay
+	 *
+	 * @params void
+	 *
+	 * @return void
+	 */
+	showLoader : function () {
+		jQuery( '.loading-overlay' ).show();
+		jQuery( '.loading-overlay-image-container' ).show();
+	},
+
+	/**
+	 * Hide the loading overlay
+	 *
+	 * @params void
+	 *
+	 * @return void
+	 */
+	hideLoader : function () {
+		jQuery( '.loading-overlay' ).hide();
+		jQuery( '.loading-overlay-image-container' ).hide();
+	}
+}
 </script>

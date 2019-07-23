@@ -157,6 +157,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('branch-edit/{parameter}','MasterController@EditCompanyBranch')->name('master.editbranch');
 	Route::get('branch-delete/{id}','MasterController@deleteCompanyBranch')->name('master.deletebranch');
 	Route::post('ajax-company-branchlist','AjaxController@AjaxCompanyBranchList')->name('master.company_branch_list');
+	Route::post('companybranch_emailexists','AjaxController@checkCompanyBranchemailExists');
 
 	//App Form
 	Route::get('appform','MasterController@appFormList')->name('master.appform');
@@ -191,6 +192,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership_list','MembershipController@new_members')->name('master.membershipnew');
 	Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
 	Route::post('membership_save','MemberController@Save')->name('member.savemembership');
+	Route::post('member_emailexists','MemberController@checkMemberemailExists');
 
 });
 /* Master */
