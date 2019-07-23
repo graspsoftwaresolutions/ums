@@ -8,7 +8,7 @@
         </li>
 		<li class="bold"><a id="dashboard_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('home',app()->getLocale()) }}"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="">{{ __('Dashboard') }}</span></a>
         </li>
-		@role('union')
+        @if(CommonHelper::checkModuleAccess('master')==1)
         <li id="masters_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">dvr	</i><span class="menu-title" data-i18n="">{{ __('Masters') }}</span></a>
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
@@ -35,7 +35,7 @@
           </div>
         </li>
         
-        @endrole
+        @endif
         @if(!empty(Auth::user()))
           @php
             $user_id = Auth::user()->id;

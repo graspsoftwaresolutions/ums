@@ -10,6 +10,7 @@ use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
 use App\Model\Company;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class CommonHelper
 {
@@ -208,5 +209,21 @@ class CommonHelper
         }
         return false;
     }
+
+    public static function checkModuleAccess($module){
+		$access_count = 0;
+		if(auth()->check()) :
+		$get_roles = auth()->user()->roles; 
+		$login_role = $get_roles[0]->id;
+		//$module = str_replace("'", "", $module);
+		$project_modules = DB::table('form_type')->where('status',1)->where('module',$module)->get(); 
+			$role_models = DB::table('roles_modules')->where('role_id',$login_role)->get();
+			if(!empty($project_modules)) :
+				$module_id =$project_modules[0]->id;
+				$access_count = DB::table('roles_modules')->where('role_id',$login_role)->where('module_id',$module_id)->count();
+			endif; 
+		endif;
+		return $access_count;
+	}
    
 }
