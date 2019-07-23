@@ -128,6 +128,7 @@
   "Relation Name Added Succesfully" : "Relation Name Added Succesfully_en",
   "Relation Name Updated Succesfully" : "Relation Name Updated Succesfully_en",
   "Relation Deleted Succesfully" : "Relation Deleted Succesfully_en",
+  "Relation Name Already exists" : "Relation Name Already exists_en",
   
   "Person Title Details" : "Person Title Details_en",
   "Person Title List" : "Person Title List_en",
@@ -141,6 +142,7 @@
   "Title Name Added Succesfully" : "Title Name Added Succesfully_en",
   "Title Name Updated Succesfully" : "Title Name Updated Succesfully_en",
   "Title Deleted Succesfully" : "Title Deleted Succesfully_en",
+  "Person Title Already exists" : "Person Title Already exists_en",
   
   "Reason Details" : "Reason Details_en",
   "Reason List" : "Reason List_en",
@@ -201,6 +203,7 @@
   "Designation Name Added Succesfully" : "Designation Name Added Succesfully_en",
   "Designation Name Updated Succesfully" : "Designation Name Updated Succesfully_en",
   "Designation Deleted Succesfully" : "Designation Deleted Succesfully_en",
+  "Designation Already exists" : "Designation Already exists_en",
   
   "Status Details" : "Status Details_en",
   "Status List" : "Status List_en",
@@ -354,5 +357,16 @@
   "Total Transaction" : "Total Transaction_en",
   "Active Members" : "Active Members_en",
   "This month transaction" : "This month transaction_en",
-  "New Members" : "New Members_en"
+  "New Members" : "New Members_en",
+
+  "Form Type List" : "Form Type List_en",
+  "Form Type Details" : "Form Type Details_en",
+  "Form Type Name" : "Form Type Name_en",
+  "Form Order No" : "Form Order No_en",
+  "Form Name" : "Form Name_en",
+  "Module" : "Module_en",
+  "Please enter Form name" : "Please enter Form name_en",
+  "Please enter Module name" : "Please enter Module name_en",
+  "Form name Already Exists" : "Form name Already Exists_en",
+  "Form Module Already Exists" : "Form Module Already Exists_en"
 }

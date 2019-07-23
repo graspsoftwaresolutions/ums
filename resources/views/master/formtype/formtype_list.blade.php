@@ -35,7 +35,7 @@
                                     <div class="col s2 m6 l6 ">
                                         <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger"
                                             onClick='showaddForm();'
-                                            href="#modal_add_edit">{{__('Add New Form Type') }}</a>
+                                            href="#modal_add_edit">{{__('Add') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
                         </div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Form Type Details</h4>
+                                <h4>{{__('Form Type Details')}}</h4>
                                 <form class="formValidate" id="FormTypeformValidate" method="post"
                                     action="{{ route('master.saveFormType',app()->getLocale()) }}">
                                     @csrf
@@ -94,7 +94,7 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                             <button class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>

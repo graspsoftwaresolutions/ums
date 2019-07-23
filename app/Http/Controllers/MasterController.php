@@ -883,9 +883,6 @@ class MasterController extends CommonController {
             
             $saveRole = $this->Role->saveRoledata($data);
             $roles = Role::find($request->id);
-           // return $data['module'];
-            $roles->module_id; 
-            
             $roles->formTypes()->sync($data['module']);
 
             if ($saveRole == true) {

@@ -70,13 +70,15 @@
                                                 </div>
                                                 <div class="input-field col s12 m6">
                                                     <select name="country_id" id="country_id"
-                                                        class="error browser-default common-select selectpicker"
+                                                        class="error browser-default common-select"
                                                         data-error=".errorTxt101">
                                                         <option value="">{{__('Select Country') }}</option>
+                                                        @php
+                                                        $data1 = CommonHelper::DefaultCountry();
+                                                        @endphp
                                                         @foreach($data['country_view'] as $value)
-                                                        <option value="{{$value->id}}" @isset($values) @php if($value->
-                                                            id == $values->country_id) { echo "selected";} @endphp
-                                                            @endisset >{{$value->country_name}}</option>
+                                                        <option value="{{$value->id}}" @if($data1==$value->id) selected @endif >
+                                                    {{$value->country_name}}</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-field">

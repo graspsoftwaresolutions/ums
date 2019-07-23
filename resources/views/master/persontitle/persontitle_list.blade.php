@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="col s2 m6 l6 ">
                                         <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger"
-                                            onClick='showaddForm();' href="#modal_add_edit">{{__('Add New Title') }}</a>
+                                            onClick='showaddForm();' href="#modal_add_edit">{{__('Add') }}</a>
 
                                     </div>
                                 </div>
@@ -43,7 +43,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{ __('Person Title List') }}</h4>
+                                    <h4 class="card-title">{{__('Person Title List') }}</h4>
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">
@@ -52,7 +52,7 @@
                                                     <tr>
                                                         <th>{{ __('Title Name') }}</th>
 
-                                                        <th style="text-align:center"> {{ __('Action') }}</th>
+                                                        <th> {{ __('Action') }}</th>
                                                     </tr>
                                                 </thead>
 
@@ -64,7 +64,7 @@
                         </div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Person Title Details</h4>
+                                <h4>{{__('Person Title Details') }}</h4>
                                 <form class="formValidate" id="title_formValidate" method="post"
                                     action="{{ route('master.savepersontitle',app()->getLocale()) }}">
                                     @csrf
@@ -80,7 +80,7 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                             <button class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
