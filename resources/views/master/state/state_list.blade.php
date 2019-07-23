@@ -39,7 +39,29 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
                         <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                            <h4 class="card-title">{{__('State List')}}</h4>
+                            <div class="row">
+                                <div class="col s12">
+                                <table id="page-length-option" class="display">
+                                    <thead>
+                                    <tr>
+                                    <th>{{__('Country Name')}}</th>
+                                    <th>{{__('State Name')}}</th>
+                                    <th>{{__('Action')}}</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                        <!-- <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('State List')}}</h4>
@@ -59,7 +81,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
                                 <h4>{{__('State Details')}}</h4>

@@ -250,18 +250,15 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 @endsection
 @section('footerSecondSection')
-
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
 $("#unionbranch_sidebar_li_id").addClass('active');
 $("#unionbranch_sidebar_a_id").addClass('active');
 $(document).ready(function() {
-    
     //state
     $('#country_id').change(function() {
         var countryID = $(this).val();
-
         if (countryID) {
             $.ajax({
                 type: "GET",
@@ -284,7 +281,6 @@ $(document).ready(function() {
                             // var select = $("#state");
                             // select.material_select('destroy');
                             //select.empty();
-
                         });
                     } else {
                         $("#state_id").empty();
@@ -301,7 +297,6 @@ $(document).ready(function() {
     // $("#state_id").trigger('change');
     $('#state_id').change(function() {
         var StateId = $(this).val();
-
         if (StateId != '' && StateId != 'undefined') {
             $.ajax({
                 type: "GET",
@@ -328,10 +323,9 @@ $(document).ready(function() {
             $('#city_id').empty();
         }
     });
-
 });
-$('#country_id').trigger('change');
-    $('#state_id').trigger('change');
+//$('#country_id').trigger('change');
+    //$('#state_id').trigger('change');
 $("#unionbranch_formValidate").validate({
     rules: {
         branch_name: {
