@@ -423,6 +423,8 @@ $("#unionbranch_formValidate").validate({
 });
 $(document).on('submit','form#unionbranch_formValidate',function(){
     $("#form-save-btn").prop('disabled',true);
+    loader.showLoader();
 });
+
 </script>
 @endsection
