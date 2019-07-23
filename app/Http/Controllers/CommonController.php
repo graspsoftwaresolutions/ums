@@ -263,7 +263,7 @@ class CommonController extends Controller
     /*
         Input $result = query result (array)
         Input $deleteRoute = Delete Route Name (string)
-        deletetype : 0 => post , 1 => get
+        deletetype : 0 => post , 1 => get, 2 => hide
         edittype : 0 => popup , 1 => page
     */
     public function CommonAjaxReturn($result, $deletetype, $deleteRoute,$edittype,$editRoute=false){

@@ -148,7 +148,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('role_save','MasterController@saveRole')->name('master.saverole');
 	Route::post('roles_nameexists','AjaxController@checkRoleNameExists');
 	Route::get('role_detail','CommonController@roleDetail');
-	//Route::delete('roles-delete/{id}','MasterController@roledestroy')->name('master.rolesdestroy');
+	Route::delete('roles-delete/{id}','MasterController@roledestroy')->name('master.rolesdestroy');
 	
 	//Branch Details
 	Route::get('branch','MasterController@CompanyBranchList')->name('master.branch');

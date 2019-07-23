@@ -76,10 +76,11 @@ class MasterController extends CommonController {
             $data_exists = $this->mailExists($request->input('country_name'),$request->id);
         }else{
             $data_exists = $this->mailExists($request->input('country_name'));
+            $data_exists = Country::where('country_name','=',$request->country_name)->count();
         }
         if($data_exists>0)
         {
-            return  redirect($defdaultLang.'/country')->with('error','User Email Already Exists'); 
+            return  redirect($defdaultLang.'/country')->with('error','Country Already Exists'); 
         }
         else{
 
@@ -132,7 +133,7 @@ class MasterController extends CommonController {
         if(!empty($request->id)){
             $data_exists = $this->mailExists($request->input('state_name'),$request->id);
         }else{
-            $data_exists = $this->mailExists($request->input('state_name'));
+            $data_exists = $this->mailExists($request->input('state_name'));       
         }
         if($data_exists>0)
         {
@@ -361,6 +362,9 @@ class MasterController extends CommonController {
             $data_exists = $this->checkRaceExists($request->input('race_name'),$request->id);
         }else{
             $data_exists = $this->checkRaceExists($request->input('race_name'));
+            $data_exists = Race::where([
+                ['race_name','=',$request->input('race_name')],['status','=','1']
+            ])->count();
         }
         if($data_exists>0)
         {
@@ -413,6 +417,9 @@ class MasterController extends CommonController {
             $data_exists = $this->checkReasonExists($request->input('reason_name'),$request->id);
         }else{
             $data_exists = $this->checkReasonExists($request->input('reason_name'));
+            $data_exists = Reason::where([
+                ['reason_name','=',$request->input('reason_name')],['status','=','1']
+            ])->count();
         }
         if($data_exists>0)
         {
@@ -465,6 +472,9 @@ class MasterController extends CommonController {
              $data_exists = $this->checkPersonTitleExists($request->input('person_title'),$request->id);
          }else{
              $data_exists = $this->checkPersonTitleExists($request->input('person_title'));
+             $data_exists = Persontitle::where([
+                ['person_title','=',$request->input('person_title')],['status','=','1']
+            ])->count();
          }
          if($data_exists>0)
          {
@@ -517,6 +527,9 @@ class MasterController extends CommonController {
              $data_exists = $this->checkDesignationExists($request->input('designation_name'),$request->id);
          }else{
              $data_exists = $this->checkDesignationExists($request->input('designation_name'));
+             $data_exists = Designation::where([
+                ['designation_name','=',$request->input('designation_name')],['status','=','1']
+            ])->count();
          }
          if($data_exists>0)
          {
@@ -739,7 +752,7 @@ class MasterController extends CommonController {
 
         $request->validate([
             'fee_name' => 'required',
-			'fee_amount' => 'required',
+			'fee_amount' => 'required | numeric',
                 ], [
             'fee_name.required' => 'please enter Fee name',
 			'fee_amount.required' => 'please enter Fee Amount',
@@ -751,6 +764,9 @@ class MasterController extends CommonController {
             $data_exists = $this->mailExists($request->input('fee_name'),$request->id);
         }else{
             $data_exists = $this->mailExists($request->input('fee_name'));
+            $data_exists = Fee::where([
+                ['fee_name','=',$request->input('fee_name')],['status','=','1']
+            ])->count();
         }
         if($data_exists>0)
         {
@@ -876,6 +892,7 @@ class MasterController extends CommonController {
             $data_exists = $this->mailExists($request->input('name'),$request->id);
         }else{
             $data_exists = $this->mailExists($request->input('name'));
+            $data_exists = Role::where('name','=',$request->input('name'))->count();
         }
         if($data_exists>0)
         {
@@ -884,9 +901,12 @@ class MasterController extends CommonController {
         else{
             
             $saveRole = $this->Role->saveRoledata($data);
-            $roles = Role::find($request->id);
-            $roles->formTypes()->sync($data['module']);
 
+            if(!empty($request->id))
+            {
+                $roles = Role::find($request->id);
+                $roles->formTypes()->sync($data['module']);
+            }
             if ($saveRole == true) {
                 if(!empty($request->id))
                 {
@@ -929,8 +949,11 @@ class MasterController extends CommonController {
         
         if(!empty($request->id)){
             $data_exists = $this->checkStatusExists($request->input('status_name'),$request->id);
-        }else{
+        }else{       
             $data_exists = $this->checkStatusExists($request->input('status_name'));
+            $data_exists = Status::where([
+                ['status_name','=',$request->input('status_name')],['status','=','1']
+            ])->count();
         }
         if($data_exists>0)
         {
@@ -989,6 +1012,9 @@ class MasterController extends CommonController {
              $data_exists = $this->checkFormTyNameExists($request->input('formname'),$request->id);
          }else{
              $data_exists = $this->checkFormTyNameExists($request->input('formname'));
+             $data_exists = FormType::where([
+                ['formname','=',$request->input('formname')],['status','=','1']
+            ])->count();
          }
          if($data_exists>0)
          {
@@ -1044,12 +1070,14 @@ public function companySave(Request $request)
         $data_exists = $this->checkCompanyExists($request->input('company_name'),$request->id);
     }else{
         $data_exists = $this->checkCompanyExists($request->input('company_name'));
+        $data_exists = Company::where('company_name','=',$request->company_name)->count();
     }
     if($data_exists>0)
     {
         return  redirect($defdaultLang.'/company')->with('error','Company Name Already Exists'); 
     }
     else{
+
         $saveCompany = $this->Company->saveCompanydata($data);
        
         if($saveCompany == true)

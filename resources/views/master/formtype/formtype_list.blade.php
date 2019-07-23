@@ -78,7 +78,7 @@
                                         </div>
                                         <div class="input-field col s12 m6">
                                             <label for="orderno"
-                                                class="common-label force-active">{{__('Order No') }}*</label>
+                                                class="common-label force-active">{{__('Order No') }}</label>
                                             <input id="orderno" class="common-input" name="orderno" type="text"
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
@@ -95,10 +95,10 @@
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
@@ -204,6 +204,9 @@ $("#FormTypeformValidate").validate({
                 type: "post",
             },
         },
+        orderno: {
+            digits: true,
+        },
     },
     //For custom messages
     messages: {
@@ -215,6 +218,9 @@ $("#FormTypeformValidate").validate({
         module: {
             required: '{{__("Please enter Module name") }}',
             remote: '{{__("Form Module Already Exists") }}',
+        },
+        orderno: {
+            digits: '{{__("Enter Numbes only") }}',
         },
     },
     errorElement: 'div',
@@ -262,5 +268,9 @@ function showeditForm(formtypeid) {
         }
     });
 }
+$(document).on('submit','form#FormTypeformValidate',function(){
+    $("#modal-save-btn").prop('disabled',true);
+    $("#modal-update-btn").prop('disabled',true);
+});
 </script>
 @endsection

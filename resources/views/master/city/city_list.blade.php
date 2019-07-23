@@ -113,10 +113,10 @@
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
@@ -301,5 +301,9 @@ function showeditForm(cityid) {
         }
     });
 }
+$(document).on('submit','form#cityformValidate',function(){
+    $("#modal-save-btn").prop('disabled',true);
+    $("#modal-update-btn").prop('disabled',true);
+});
 </script>
 @endsection
