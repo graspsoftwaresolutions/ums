@@ -49,4 +49,7 @@
 	.loading-overlay-img {
 		border-radius: 5px;
 	}
+	.select2-container{
+		width:100% !important; 
+	}
 </style>

@@ -177,3 +177,8 @@ $(document).ready(function(){
         }
     }
 </style>
+<script>
+$('.selectpickermodal').select2({
+   dropdownParent: $('#modal_add_edit')
+});
+</script>

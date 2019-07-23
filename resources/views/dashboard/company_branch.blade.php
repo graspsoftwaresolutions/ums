@@ -9,7 +9,7 @@
               
             </div>
             <div class="card-action red">
-               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url('membership')}}">Members List</a></div>
+               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/membership')}}">Members List</a></div>
             </div>
          </div>
       </div>

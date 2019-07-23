@@ -456,6 +456,7 @@ $("#branchformValidate").validate({
 });
 $(document).on('submit','form#branchformValidate',function(){
     $("#form-save-btn").prop('disabled',true);
+    loader.showLoader();
 });
 </script>
 @endsection
