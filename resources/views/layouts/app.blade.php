@@ -54,5 +54,36 @@
     <script src="{{ asset('public/assets/js/plugins.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/assets/js/custom/custom-script.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/assets/js/scripts/ui-alerts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+    <script>
+        $("#LoginformValidate").validate({
+            rules: {
+                email: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                },
+            },
+            //For custom messages
+            messages: {
+                email: {
+                    required: '{{__("Please Enter Valid Email Address") }}',
+                },
+                password: {
+                    required: '{{__("Please Enter Password") }}',
+                }
+            },
+            errorElement: 'div',
+            errorPlacement: function(error, element) {
+                var placement = $(element).data('error');
+                if (placement) {
+                    $(placement).append(error)
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+    </script>
 </body>
 </html>

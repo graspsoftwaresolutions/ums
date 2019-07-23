@@ -6,7 +6,7 @@
 		<div class="container">
 			<div id="login-page" class="row">
 				<div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
-					<form method="POST" action="{{ route('password.email', app()->getLocale()) }}">
+					<form method="POST" id="LoginformValidate" action="{{ route('password.email', app()->getLocale()) }}">
                         @csrf
 						<div class="row">
 							<div class="input-field col s12">
