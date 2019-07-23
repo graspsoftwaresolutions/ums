@@ -70,7 +70,7 @@
                                                 </div>
                                                 <div class="input-field col s12 m6">
                                                     <select name="country_id" id="country_id"
-                                                        class="error browser-default common-select"
+                                                        class="error browser-default common-select selectpicker"
                                                         data-error=".errorTxt101">
                                                         <option value="">{{__('Select Country') }}</option>
                                                         @php
@@ -247,6 +247,7 @@ $("#masters_sidebars_id").addClass('active');
 $("#unionbranch_sidebar_li_id").addClass('active');
 $("#unionbranch_sidebar_a_id").addClass('active');
 $(document).ready(function() {
+    
     //state
     $('#country_id').change(function() {
         var countryID = $(this).val();
@@ -319,6 +320,8 @@ $(document).ready(function() {
     });
 
 });
+$('#country_id').trigger('change');
+    $('#state_id').trigger('change');
 $("#unionbranch_formValidate").validate({
     rules: {
         branch_name: {

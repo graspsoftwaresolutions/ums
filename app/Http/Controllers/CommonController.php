@@ -552,6 +552,7 @@ class CommonController extends Controller
             ['id','!=',$id],
             ['status','=',1]
             ])->get();
+           // print_r($data['head_company']); exit;
         return $data;
     } 
     public function saveCompanyDetail(Request $request)

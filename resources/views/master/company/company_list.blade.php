@@ -97,11 +97,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       <div class="input-field col s12">
                                           <a href="#!"
                                               class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                          <button
+                                          <button id="modal-update-btn"
                                               class="btn waves-effect waves-light right submit edit_hide_btn "
                                               type="submit" name="action">{{__('Update')}}
                                           </button>
-                                          <button
+                                          <button id="modal-save-btn"
                                               class="btn waves-effect waves-light right submit add_hide"
                                               style="display:none;" type="submit"
                                               name="action">{{__('Save')}}
@@ -237,6 +237,7 @@ $('.edit_hide').show();
 $('.add_hide').show();
 $('.edit_hide_btn').hide();
 $('#company_name').val("");
+$('#updateid').val("");
 $('#short_code').val("");
 $('.modal').modal();
 var url = "{{ url(app()->getLocale().'/save_company_detail') }}";
@@ -272,14 +273,24 @@ $.ajax({
       $('#updateid').attr('data-autoid', result.id);
       $('#company_name').val(result.company_name);
       $('#short_code').val(result.short_code);
+
       $('#head_of_company').empty();
       $('#head_of_company').append($('<option></option>').attr('value','').text('Select'));
       $.each(resultdata['head_company'], function(key, entry) {
+        console.log(resultdata);
           $('#head_of_company').append($('<option></option>').attr('value', entry
               .id).text(entry.company_name));
       });
+      $("#head_of_company").val(result.head_of_company);
+    //  console.log(resultdata);
+     // $('#head_of_company').val(result.head_of_company);
   }
 });
 }
+$(document).on('submit','form#company_formValidate',function(){
+    $("#modal-save-btn").prop('disabled',true);
+    $("#modal-update-btn").prop('disabled',true);
+});
+
 </script>
 @endsection
