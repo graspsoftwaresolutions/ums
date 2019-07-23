@@ -62,7 +62,7 @@
                         </div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Role Details</h4>
+                                <h4>{{__('Role Details') }}</h4>
                                 <form class="formValidate" id="rolesformValidate" method="post"
                                     action="{{ route('master.saverole', app()->getLocale()) }}">
                                     @csrf
@@ -97,11 +97,11 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
-                                            <button class="btn waves-effect waves-light right submit edit_hide_btn "
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
@@ -260,5 +260,9 @@ function showeditForm(roleid) {
     });
     $('.modal').modal();
 }
+$(document).on('submit','form#rolesformValidate',function(){
+    $("#modal-save-btn").prop('disabled',true);
+    $("#modal-update-btn").prop('disabled',true);
+});
 </script>
 @endsection

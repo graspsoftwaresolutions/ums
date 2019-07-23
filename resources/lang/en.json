@@ -368,5 +368,9 @@
   "Please enter Form name" : "Please enter Form name_en",
   "Please enter Module name" : "Please enter Module name_en",
   "Form name Already Exists" : "Form name Already Exists_en",
-  "Form Module Already Exists" : "Form Module Already Exists_en"
+  "Form Module Already Exists" : "Form Module Already Exists_en",
+  "Designation Name" : "Designation Name_en",
+  "Race Name" : "Race Name_en",
+  "Race Name Already exists" : "Race Name Already exists_en",
+  "Role Details" : "Role Details_en"
 }

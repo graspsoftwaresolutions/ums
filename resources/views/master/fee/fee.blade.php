@@ -88,10 +88,10 @@
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close') }}</a>
-                                            <button class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
@@ -187,6 +187,7 @@ $("#feeformValidate").validate({
         },
         fee_amount: {
             required: true,
+            digits : true,
         },
     },
     //For custom messages
@@ -197,6 +198,7 @@ $("#feeformValidate").validate({
         },
         fee_amount: {
             required: '{{__("Enter a Fee Amount") }}',
+            digits : '{{__("Enter Numbers only") }}',
         },
     },
     errorElement: 'div',
@@ -243,5 +245,9 @@ function showeditForm(feeid) {
         }
     });
 }
+$(document).on('submit','form#feeformValidate',function(){
+    $("#modal-save-btn").prop('disabled',true);
+    $("#modal-update-btn").prop('disabled',true);
+});
 </script>
 @endsection
