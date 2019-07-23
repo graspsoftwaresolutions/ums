@@ -58,6 +58,7 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
+														<th>{{__('Branch Name') }}</th>
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Email') }}</th>
 														<th>{{__('Mobile') }}</th>
@@ -70,10 +71,10 @@
 												<tbody>
 													@foreach($data['member_view'] as $key=>$value)
 													<tr>
-													<?php
-													
-													 $parameter = Crypt::encrypt($value->id);  
-													 ?>
+													 @php
+														$parameter = Crypt::encrypt($value->id);  
+													 @endphp
+														<td>{{ CommonHelper::getBranchName($value->branch_id) }}</td>
 														<td>{{$value->name}}</td>
 														<td>{{$value->email}}</td>
 														<td>{{$value->mobile}}</td>

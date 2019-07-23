@@ -311,6 +311,18 @@
 																				 <div class="errorTxt15"></div>
 																			</div>
 																		</div>
+																		@if($branch_hide=='hide')
+																			<div class=" col s12 m6 ">
+																			<label>Branch Name*</label>
+																			</br>
+																			<p style="margin-top:10px;font-weight:bold;">
+																				{{ CommonHelper::getBranchName($values->branch_id) }}
+																			</p>
+																			<div class="input-field">           
+																				 <div class="errorTxt15"></div>
+																			</div>
+																		</div>
+																		@endif
 																		<div class="input-field col s12 m6">
 																			<label for="employee_id" class="force-active">Employee ID</label>
 																			<input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
@@ -336,15 +348,18 @@
 																		@endphp
 																		<div class="col s12 m6 ">
 																			<label>Status*</label>
-																			<span class="badge red">Account is not verified</span>
+																			<p style="margin-top:10px;">
+																				<span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Account is not verified</span>
+																			</p>
 																		</div>
 																		@php												
 																		}else{
 																		@endphp
 																		<div class="col s12 m6 ">
 																			<label>Status*</label>
-																			<span class=" badge gradient-45deg-light-blue-cyan">{{ CommonHelper::getStatusName($values->status_id) }}</span>
-																			
+																			<p style="margin-top:10px;">
+																				<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ CommonHelper::getStatusName($values->status_id) }}</span>
+																			</p>
 																		</div>
 																		@php												
 																		}

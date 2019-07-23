@@ -225,5 +225,13 @@ class CommonHelper
 		endif;
 		return $access_count;
 	}
+	
+	public static function getBranchName($branchid){
+		$branch_name = CompanyBranch::where('id',$branchid)->pluck('branch_name');
+        if(count($branch_name)>0){
+            return $branch_name[0];
+        }
+        return false;
+	}
    
 }
