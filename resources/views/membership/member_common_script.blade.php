@@ -202,6 +202,7 @@
 	});
 
 	$(document).ready(function(){
+		//loader.showLoader();
 		$('#member_old_div').hide();
 		var horizStepper = document.querySelector('#horizStepper');
 		var horizStepperInstace = new MStepper(horizStepper, {
@@ -1051,6 +1052,7 @@ $(document.body).on('click', '.edit_nominee_row' ,function(){
 		}
 	 }); */
 });
+
  $("#nominee_formValidate").validate({
 	rules: {
 		edit_nominee_name: {
@@ -1278,10 +1280,11 @@ var loader = {
 	 * @return void
 	 */
 	initialize : function () {
+		var load_image_path = '{{ asset('public/images/loading.gif') }}';
 		var html = 
 			'<div class="loading-overlay"></div>' +
 			'<div class="loading-overlay-image-container">' +
-				'<img src="assets/loading.gif" class="loading-overlay-img"/>' +
+				'<img src="'+load_image_path+'" class="loading-overlay-img"/>' +
 			'</div>';
 
 		// append our html to the DOM body

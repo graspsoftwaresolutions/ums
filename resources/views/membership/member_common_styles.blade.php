@@ -60,28 +60,27 @@
 		}
 		
 		.loading-overlay {
-	display: none;
-	background: rgba( 26, 26, 26, 0.7 );
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	z-index: 5;
-	top: 0;
-}
+			display: none;
+			background: rgba( 26, 26, 26, 0.7 );
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			z-index: 9999;
+			top: 0;
+			left: 0;
+		}
 
-.loading-overlay-image-container {
-	display: none;
-	position: fixed;
-	z-index: 7;
-	top: 50%;
-	left: 50%;
-	transform: translate( -50%, -50% );
-}
+		.loading-overlay-image-container {
+			display: none;
+			position: fixed;
+			z-index: 7;
+			top: 50%;
+			left: 50%;
+			transform: translate( -50%, -50% );
+		}
 
-.loading-overlay-img {
-	width: 50px;
-	height: 50px;
-	border-radius: 5px;
-}
+		.loading-overlay-img {
+			border-radius: 5px;
+		}
 			
 </style>

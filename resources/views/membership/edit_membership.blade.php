@@ -12,6 +12,10 @@
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 		<div class="col s12">
 			<div class="container">
+				<div class="loading-overlay"></div>
+				<div class="loading-overlay-image-container">
+					<img src="{{ asset('public/images/loading.gif') }}" class="loading-overlay-img"/>
+				</div>
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">

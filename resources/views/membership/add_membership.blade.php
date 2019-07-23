@@ -11,7 +11,9 @@
 		<div class="col s12">
 			<div class="container">
 				<div class="loading-overlay"></div>
-				
+				<div class="loading-overlay-image-container">
+					<img src="{{ asset('public/images/loading.gif') }}" class="loading-overlay-img"/>
+				</div>
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">
@@ -42,9 +44,7 @@
 											<div class="card-header">
 												<h4 class="card-title">{{__('New Membership') }}</h4>
 											</div>
-											<div class="loading-overlay-image-container">
-					<img src="{{ asset('public/images/loading.gif') }}" class="loading-overlay-img"/>
-				</div>
+											
 											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 											@csrf
 											@php 
