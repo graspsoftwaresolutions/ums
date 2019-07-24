@@ -2,7 +2,9 @@
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
 <link rel="stylesheet" type="text/css"
-href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
+href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}"> 
+<link rel="stylesheet" type="text/css"
+href="{{ asset('public/assets/vendors/data-tables/css/select.dataTables.min.css') }}"> 
 <link rel="stylesheet" type="text/css"
 href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 @endsection
@@ -290,6 +292,7 @@ $.ajax({
 $(document).on('submit','form#company_formValidate',function(){
     $("#modal-save-btn").prop('disabled',true);
     $("#modal-update-btn").prop('disabled',true);
+    //loader.showLoader();
 });
 
 </script>

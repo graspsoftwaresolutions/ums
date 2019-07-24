@@ -304,6 +304,7 @@ function showeditForm(cityid) {
 $(document).on('submit','form#cityformValidate',function(){
     $("#modal-save-btn").prop('disabled',true);
     $("#modal-update-btn").prop('disabled',true);
+    //loader.showLoader();
 });
 </script>
 @endsection
