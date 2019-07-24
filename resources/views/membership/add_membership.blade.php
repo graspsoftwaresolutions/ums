@@ -43,7 +43,7 @@
 										<div class="card-content pb-0">
 											<div class="card-header">
 												<h4 class="card-title">{{__('New Membership') }}</h4>
-												<h4 class="card-title" style="align:right">{{__('New Membership') }}</h4>
+												
 											</div>
 											
 											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
