@@ -394,6 +394,7 @@ $("#unionbranch_formValidate").validate({
         },
         email: {
             remote: '{{__("Email Already exists") }}',
+            required: '{{__("Please enter valid email") }}',
         },
         country_id: {
             required: '{{__("Please choose Country") }}',
