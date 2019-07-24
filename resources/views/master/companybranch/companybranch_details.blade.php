@@ -387,7 +387,7 @@ $("#branchformValidate").validate({
         postal_code: {
             required: true,
 			number: true,
-            minlength:6,
+            minlength:5,
             maxlength:8,
         },
         address_one: {
