@@ -92,7 +92,7 @@
                                     <div class="row">
                                         <div class="input-field col s12 m6">
                                         <label class="force-active">{{__('Country Name') }}*</label>
-                                            <select class="error browser-default" class="common-select" id="country_id"
+                                            <select class="error browser-default common-select" id="country_id"
                                                 name="country_id" data-error=".errorTxt1">
                                                 <option value="">{{__('Select country')}}</option>
                                                 @php
@@ -277,5 +277,6 @@ $(document).on('submit','form#stateformValidate',function(){
     $("#modal-save-btn").prop('disabled',true);
     $("#modal-update-btn").prop('disabled',true);
 });
+
 </script>
 @endsection

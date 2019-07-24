@@ -8,7 +8,7 @@
 			   <h4 class="card-stats-number white-text">{{ $data['total_company_branch_count'] }}</h4>
 			</div>
 			<div class="card-action green">
-			   <div id="invoice-line" class="center-align"><a style="color:white" href="{{ route('master.branch', app()->getLocale()) }}"> {{__('Company Branches List') }}</a></div>
+			   <div id="invoice-line" class="center-align"><a style="color:white" href="#"> {{__('Company Branches List') }}</a></div>
 			</div>
 		 </div>
 		</div>
@@ -20,7 +20,7 @@
 			  
 			</div>
 			<div class="card-action red">
-			   <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url('membership')}}">{{ __('Members List') }}</a></div>
+			   <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/membership')}}">{{ __('Members List') }}</a></div>
 			</div>
 		 </div>
 		</div>
