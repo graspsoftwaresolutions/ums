@@ -86,6 +86,7 @@
                                        @foreach($data['form_type'] as $value)
                                         <div class="input-field col s12 m6 appform">
                                         <input type="hidden" name="formid" value="{{$value->id}}">
+                                        <h6>Modules</h6>
                                         <p>
                                         <label>
                                             <input type="checkbox" name="module_id[]" class="common-checkbox module_id" id="module_id_{{$value->id}}" value="{{$value->id}}" @isset($value) {{ $value->id == 2 ? 'checked' : '' }} @endisset />
