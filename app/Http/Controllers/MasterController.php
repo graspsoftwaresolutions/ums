@@ -296,7 +296,6 @@ class MasterController extends CommonController {
     {
         return view('master.relation.relation_list');
     }
-    
     //Relation Save and Update
     public function Relationsave(Request $request)
     {   
@@ -1182,10 +1181,8 @@ public function companyDestroy($lang,$id)
             $randompass = CommonHelper::random_password(5,true);
 
             $data_exists_branchemail = DB::table('company_branch')->where([
-                ['email','=',$branch['email']
-                ['staus','=','1']
-                ]
-                ])->count();
+                ['email','=',$branch['email']],
+                ['status','=','1'] ])->count();
             $data_exists_usersemail = DB::table('users')->where('email','=',$branch['email'])->count();
             if($data_exists_branchemail > 0 ||  $data_exists_usersemail > 0)
             {
