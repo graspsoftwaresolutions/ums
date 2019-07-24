@@ -235,6 +235,7 @@ function showaddForm() {
     $('#form_id').val("");
     $('#slug').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 function showeditForm(roleid) {
     $('.edit_hide').hide();

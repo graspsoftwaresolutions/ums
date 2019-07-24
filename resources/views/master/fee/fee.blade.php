@@ -225,6 +225,7 @@ function showaddForm() {
     $('#fee_name').val("");
     $('#fee_amount').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 
 function showeditForm(feeid) {
