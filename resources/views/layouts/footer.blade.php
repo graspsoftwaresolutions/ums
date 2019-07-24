@@ -80,8 +80,8 @@ var loader = {
 @section('footerSecondSection')
 @show
 <script>
-$(".card-alert").fadeTo(2000, 500).slideUp(500, function () {
-    $(".card-alert").slideUp(500);
+$(".card-alert").fadeTo(3000, 1000).slideUp(1000, function () {
+    $(".card-alert").slideUp(1000);
 });
 </script>
 <script>
