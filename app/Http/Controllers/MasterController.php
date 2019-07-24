@@ -313,6 +313,9 @@ class MasterController extends CommonController {
             $data_exists = $this->checkRelationExists($request->input('relation_name'),$request->id);
         }else{
             $data_exists = $this->checkRelationExists($request->input('relation_name'));
+            $data_exists = Relation::where([
+                ['relation_name','=',$request->relation_name],['status','=','1']
+                ])->count();
         }
         if($data_exists>0)
         {
@@ -1053,11 +1056,11 @@ class MasterController extends CommonController {
      {
         $data['company_view'] = Company::where('status','=','1')->get();
         return view('master.company.company_list')->with('data',$data);
-     } 
+     }
     
 //Company Save and Update
 public function companySave(Request $request)
-{  
+{
     $request->validate([
         'company_name'=>'required',
         'short_code'=>'required',
@@ -1074,7 +1077,10 @@ public function companySave(Request $request)
         $data_exists = $this->checkCompanyExists($request->input('company_name'),$request->id);
     }else{
         $data_exists = $this->checkCompanyExists($request->input('company_name'));
-        $data_exists = Company::where('company_name','=',$request->company_name)->count();
+        $data_exists = Company::where([
+            ['company_name','=',$request->company_name],
+            ['status','=','1']
+            ])->count();
     }
     if($data_exists>0)
     {
@@ -1176,7 +1182,9 @@ public function companyDestroy($lang,$id)
             $randompass = CommonHelper::random_password(5,true);
 
             $data_exists_branchemail = DB::table('company_branch')->where([
-                ['email','=',$branch['email']]
+                ['email','=',$branch['email']
+                ['staus','=','1']
+                ]
                 ])->count();
             $data_exists_usersemail = DB::table('users')->where('email','=',$branch['email'])->count();
             if($data_exists_branchemail > 0 ||  $data_exists_usersemail > 0)
