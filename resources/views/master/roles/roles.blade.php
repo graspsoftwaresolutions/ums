@@ -81,8 +81,10 @@
                                             <input id="slug" class="common-input" name="slug" type="text"
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
-                                        </div>               
-                   
+                                        </div>
+                                        <div class=" col s12 m12 appform">          
+                                        <h6>Modules</h6>
+                                        </div>
                                        @foreach($data['form_type'] as $value)
                                         <div class="input-field col s12 m6 appform">
                                         <input type="hidden" name="formid" value="{{$value->id}}">
