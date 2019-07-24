@@ -76,7 +76,9 @@ class MasterController extends CommonController {
             $data_exists = $this->mailExists($request->input('country_name'),$request->id);
         }else{
             $data_exists = $this->mailExists($request->input('country_name'));
-            $data_exists = Country::where('country_name','=',$request->country_name)->count();
+            $data_exists = Country::where([
+                ['country_name','=',$request->country_name],['status','=','1']
+                ])->count();
         }
         if($data_exists>0)
         {
