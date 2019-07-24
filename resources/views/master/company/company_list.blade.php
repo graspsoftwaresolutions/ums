@@ -285,6 +285,7 @@ $.ajax({
               .id).text(entry.company_name));
       });
       $("#head_of_company").val(result.head_of_company);
+      $("#modal_add_edit").modal('open');
     //  console.log(resultdata);
      // $('#head_of_company').val(result.head_of_company);
   }

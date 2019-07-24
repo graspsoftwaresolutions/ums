@@ -272,6 +272,7 @@ function showeditForm(countryid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#country_id').val(result.country_id);
             $('#state_name').val(result.state_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

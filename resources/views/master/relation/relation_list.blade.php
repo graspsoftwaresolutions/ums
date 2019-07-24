@@ -218,6 +218,7 @@ function showeditForm(relationid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#relation_name').val(result.relation_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

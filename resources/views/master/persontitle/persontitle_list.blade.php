@@ -219,6 +219,7 @@ function showeditForm(Persontitle) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#person_title').val(result.person_title);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

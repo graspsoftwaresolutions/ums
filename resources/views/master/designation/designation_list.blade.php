@@ -220,6 +220,7 @@ function showeditForm(designationid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#designation_name').val(result.designation_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }
