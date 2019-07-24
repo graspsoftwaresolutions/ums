@@ -51,7 +51,7 @@
                                                     <tr>
                                                         <th>{{__('Race Name') }}</th>
 
-                                                        <th style="text-align:center"> {{__('Action') }}</th>
+                                                        <th> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

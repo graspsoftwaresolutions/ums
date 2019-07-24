@@ -53,7 +53,7 @@
                                                         <th>{{__('Union Branch Name') }}</th>
                                                         <th>{{__('Head') }}</th>
                                                         <th>{{__('Email') }}</th>
-                                                        <th style="text-align:center">{{__('Action') }}</th>
+                                                        <th>{{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

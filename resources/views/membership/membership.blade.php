@@ -65,7 +65,7 @@
 														@if($data['member_type'] ==1) 
 														<th>{{__('Status') }}</th>
 														@endif
-														<th style="text-align:center"> {{__('Action') }}</th>
+														<th> {{__('Action') }}</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -81,7 +81,7 @@
 														@if($data['member_type'] ==1)
 														<td>{{ CommonHelper::get_member_status_name($value->status_id) }}</td>
 														@endif
-														<td>	<a class="btn-small waves-effect waves-light cyan" href="{{ route('master.editmembership', [app()->getLocale(),$parameter]) }}">{{__('Edit') }}</a>	<!--a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a--></td>
+														<td>	<a class="btn-floating waves-effect waves-light cyan" href="{{ route('master.editmembership', [app()->getLocale(),$parameter]) }}"><i class='material-icons'>edit</i></a>	<!--a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a--></td>
 													</tr>
 													@endforeach
 												</tbody>
