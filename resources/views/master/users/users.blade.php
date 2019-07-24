@@ -77,7 +77,7 @@
                                         <div class="input-field col s12 m6">
                                             <label for="email"
                                                 class="common-label force-active">{{__('email') }}*</label>
-                                            <input id="email" data-autoid="" class="common-input" name="email"
+                                            <input id="email" data-autoid="" readonly class="common-input" name="email"
                                                 type="email" data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>

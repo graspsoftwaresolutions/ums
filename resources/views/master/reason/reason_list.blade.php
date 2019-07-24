@@ -200,6 +200,7 @@ function showaddForm() {
     $('.edit_hide_btn').hide();
     $('#reason_name').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 
 function showeditForm(relationid) {

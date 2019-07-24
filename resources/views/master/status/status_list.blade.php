@@ -201,6 +201,7 @@ function showaddForm() {
     $('.edit_hide_btn').hide();
     $('#status_name').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 
 function showeditForm(stateid) {

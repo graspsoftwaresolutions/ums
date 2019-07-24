@@ -247,6 +247,7 @@ function showaddForm() {
     $('#orderno').val("");
     $('#module').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 
 function showeditForm(formtypeid) {

@@ -280,6 +280,7 @@ function showaddForm() {
     $('.edit_hide_btn').hide();
     $('#city_name').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 
 function showeditForm(cityid) {

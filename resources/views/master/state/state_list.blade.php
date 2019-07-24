@@ -254,6 +254,7 @@ function showaddForm() {
     $('.edit_hide_btn').hide();
     $('#state_name').val("");
     $('.modal').modal();
+    $('#updateid').val("");
 }
 
 function showeditForm(countryid) {

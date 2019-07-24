@@ -200,12 +200,15 @@ function showaddForm() {
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
     $('#designation_name').val("");
+    $('#updateid').val("");
     $('.modal').modal();
+
 }
 
 function showeditForm(designationid) {
     $('.edit_hide').hide();
     $('.add_hide').hide();
+    $('#designation_name').val("");
     $('.edit_hide_btn').show();
     $('.modal').modal();
     var url = "{{ url(app()->getLocale().'/designation_detail') }}" + '?id=' + designationid;
