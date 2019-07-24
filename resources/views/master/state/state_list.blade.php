@@ -44,6 +44,7 @@
                         <div class="card">
                             <div class="card-content">
                             <h4 class="card-title">{{__('State List')}}</h4>
+                            @include('includes.messages')
                             <div class="row">
                                 <div class="col s12">
                                 <table id="page-length-option" class="display">
