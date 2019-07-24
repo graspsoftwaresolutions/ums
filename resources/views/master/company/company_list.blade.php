@@ -81,9 +81,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       </div>
                                       <div class="input-field col s12 m6">
                                           <label for="company_name"
-                                              class="common-label force-active">{{__('Short Code') }}</label>
+                                              class="common-label force-active">{{__('Short Code') }}*</label>
                                           <input id="short_code" class="common-input"
                                               name="short_code" type="text" data-error=".errorTxt2">
+                                              <div class="errorTxt2"></div>
                                       </div>
                                       <div class="clearfix" style="clear:both"></div>
                                       <div class="col s12 m6">

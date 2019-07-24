@@ -1060,9 +1060,11 @@ public function companySave(Request $request)
 {  
     $request->validate([
         'company_name'=>'required',
+        'short_code'=>'required',
     ],
     [
         'company_name.required'=>'Please enter Company name',
+        'short_code.required'=>'Please enter Short Code',
     ]);
     $data = $request->all();  
     
