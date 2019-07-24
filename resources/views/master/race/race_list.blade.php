@@ -218,6 +218,7 @@ function showeditForm(raceid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#race_name').val(result.race_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

@@ -266,6 +266,7 @@ function showeditForm(formtypeid) {
             $('#formname').val(result.formname);
             $('#orderno').val(result.orderno);
             $('#module').val(result.module);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

@@ -218,6 +218,7 @@ function showeditForm(stateid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#status_name').val(result.status_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

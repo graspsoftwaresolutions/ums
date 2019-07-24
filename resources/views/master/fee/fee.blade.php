@@ -243,6 +243,7 @@ function showeditForm(feeid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#fee_name').val(result.fee_name);
             $('#fee_amount').val(result.fee_amount);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

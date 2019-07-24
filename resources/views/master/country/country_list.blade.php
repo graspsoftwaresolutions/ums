@@ -220,6 +220,7 @@ function showeditForm(countryid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#country_name').val(result.country_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

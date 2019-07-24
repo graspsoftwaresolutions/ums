@@ -259,6 +259,7 @@ function showeditForm(roleid) {
                 var moduleid = value['id'];
                 $("#module_id_"+moduleid).attr('checked',true);
             });
+            $("#modal_add_edit").modal('open');
         }
     });
     $('.modal').modal();

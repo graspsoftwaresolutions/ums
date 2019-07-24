@@ -288,7 +288,7 @@ class CommonController extends Controller
                 $delete =  route($deleteRoute, [app()->getLocale(),$autoid]) ;
 				}
                 if($edittype==0){
-                    $edit =  "#modal_add_edit";
+                    $edit =  "#";
                 }else{
                     $edit =  route($editRoute,[app()->getLocale(),$enc_id]);
                 }

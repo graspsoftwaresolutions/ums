@@ -299,6 +299,7 @@ function showeditForm(cityid) {
             $('#country_id').val(result.country_id);
             $('#state_id').val(result.state_id);
             $('#city_name').val(result.city_name);
+            $("#modal_add_edit").modal('open');
         }
     });
 }

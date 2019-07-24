@@ -202,7 +202,6 @@ function showaddForm() {
     $('.modal').modal();
     $('#updateid').val("");
 }
-
 function showeditForm(relationid) {
     $('.edit_hide').hide();
     $('.add_hide').hide();
@@ -217,8 +216,10 @@ function showeditForm(relationid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#reason_name').val(result.reason_name);
+            $("#modal_add_edit").modal('open');
         }
     });
+    //$('.edit_hide_btn').show();
 }
 $(document).on('submit','form#add_formValidate',function(){
     $("#modal-save-btn").prop('disabled',true);
