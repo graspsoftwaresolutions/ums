@@ -455,7 +455,7 @@ class MembershipController extends Controller
                 $enc_id = Crypt::encrypt($member->id);
 				$delete = "";
                 
-                    $edit = '';
+                    $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
                 
 
                 $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
