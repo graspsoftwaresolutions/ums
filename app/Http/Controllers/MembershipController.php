@@ -287,6 +287,194 @@ class MembershipController extends Controller
         echo json_encode($returndata);
     }
 
+    //Company Details End
+    public function AjaxmembersList(Request $request,$lang, $type){
+        DB::enableQueryLog();
+		$sl=0;
+		$columns[$sl++] = 'm.branch_id';
+		$columns[$sl++] = 'm.name';
+		$columns[$sl++] = 'm.email';
+		$columns[$sl++] = 'm.mobile';
+		if($type==1){
+			$columns[$sl++] = 'm.status_id';
+		}
+		$columns[$sl++] = 'm.id';
+        /* $columns = array( 
+            0 => 'company_id', 
+            1 => 'branch_name',
+            2 => 'email',
+            3 => 'is_head',
+            4 => 'id'
+        ); */
+		if($type==1){
+			$status_cond = '!=';
+		}else{
+			$status_cond = '=';
+		}
+		
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+		$user_id = Auth::user()->id;
+		$member_qry = '';
+		if($user_role=='union'){
+			$member_qry = DB::table('membership as m')
+				->where('m.status_id',$status_cond,'1');
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+			if(count($union_branch_id)>0){
+				$union_branch_id = $union_branch_id[0];
+				$member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['c.union_branch_id','=',$union_branch_id],
+                    ['m.status_id',$status_cond,'1']
+                    ]);
+			}
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+			if(count($company_id)>0){
+				$companyid = $company_id[0];
+				$member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['c.company_id','=',$companyid],
+                    ['m.status_id',$status_cond,'1']
+                    ]);
+			}
+		}else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
+			if(count($branch_id)>0){
+				$branchid = $branch_id[0];
+				$member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->orderBy('m.id','DESC')
+                ->where([
+                    ['m.branch_id','=',$branchid],
+                    ['m.status_id',$status_cond,'1']
+                    ]);
+			}
+		}
+		$totalData = 0;
+		if($member_qry!=""){
+			$totalData = $member_qry->count();
+		}
+								
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+           $compQuery = DB::table('company_branch as c')
+				->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name')
+                ->join('membership as m','c.id','=','m.branch_id')
+				->leftjoin('status as s','s.id','=','m.status_id')
+                ->where('m.status_id',$status_cond,'1');
+				if($user_role=='union-branch'){
+					$compQuery =  $compQuery->where([
+                    ['c.union_branch_id','=',$union_branch_id]
+                    ]);
+				}
+				if($user_role=='company'){
+					$compQuery =  $compQuery->where([
+                    ['c.company_id','=',$companyid]
+                    ]);
+				}
+				if($user_role=='company-branch'){
+					$compQuery =  $compQuery->where([
+                    ['m.branch_id','=',$branchid]
+                    ]);
+				}
+			if( $limit != -1){
+				$compQuery = $compQuery->offset($start)
+				->limit($limit);
+			}
+			$memberslist = $compQuery->orderBy($order,$dir)
+			->get()->toArray(); 
+        
+        }
+        else {
+            $search = $request->input('search.value'); 
+        
+			$compQuery = DB::table('company_branch as c')
+							->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name')
+							->join('membership as m','c.id','=','m.branch_id')
+							->leftjoin('status as s','s.id','=','m.status_id')
+							->where('m.status_id',$status_cond,'1');
+							if($user_role=='union-branch'){
+								$compQuery =  $compQuery->where([
+								['c.union_branch_id','=',$union_branch_id]
+								]);
+							}
+							if($user_role=='company'){
+								$compQuery =  $compQuery->where([
+								['c.company_id','=',$companyid]
+								]);
+							}
+							if($user_role=='company-branch'){
+								$compQuery =  $compQuery->where([
+								['m.branch_id','=',$branchid]
+								]);
+							}
+                            $compQuery =  $compQuery->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                ->orWhere('m.name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.email', 'LIKE',"%{$search}%")
+                                ->orWhere('m.mobile', 'LIKE',"%{$search}%")
+                                ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
+                                ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                            });
+			if( $limit != -1){
+				$compQuery = $compQuery->offset($start)
+				->limit($limit);
+			}
+			$memberslist = $compQuery
+			->orderBy($order,$dir)
+			->get()->toArray();
+
+             $totalFiltered = $compQuery->count();
+          
+    }
+	$data = array();
+        if(!empty($memberslist))
+        {
+            foreach ($memberslist as $member)
+            {
+                $nestedData['branch_name'] = $member->branch_name;
+                $nestedData['name'] = $member->name;
+                $nestedData['email'] = $member->email;
+                $nestedData['mobile'] = $member->mobile;
+                $nestedData['status'] = $member->status_name;
+                
+                $enc_id = Crypt::encrypt($member->id);
+				$delete = "";
+                
+                    $edit = '';
+                
+
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+                                
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
+    
+         $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    } 
+
     
 
     

@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
 			$default_lang = app()->getLocale();
-            return redirect($default_lang.'/home');
+           // return redirect($default_lang.'/home');
         }
 
         return $next($request);

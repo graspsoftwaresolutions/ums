@@ -36,7 +36,7 @@ class RoleMiddleware
 				$module_id =$project_modules[0]->id;
 				$access_count = DB::table('role_modules')->where('role_id',$login_role)->where('module_id',$module_id)->count();
 				if($access_count==0){
-					return redirect('en/home');
+					//return redirect('en/home');
 				}
 				/* 	die;
 				foreach($project_modules as $module){

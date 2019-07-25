@@ -702,24 +702,29 @@
 																			<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">filter_center_focus</i>{{__('Guardian Details') }}</div>
 																			<div class="collapsible-body">
 																				<div class="row">
-																					@php $gardian_row = $data['gardian_view'][0];  @endphp
+																					@php 
+																					if(count($data['gardian_view'])>0) {
+																						$gardian_row = $data['gardian_view'][0];  
+																					}
+																					
+																					@endphp
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_name" class="force-active">Guardian name* </label>
-																						<input id="guardian_name" name="guardian_name" value="@php echo $gardian_row->guardian_name; @endphp"  type="text" >
+																						<input id="guardian_name" name="guardian_name" value="@isset($gardian_row) @php echo $gardian_row->guardian_name; @endphp @endisset"  type="text" >
 																					</div>
 																					<div class="col s12 m4">
 																						<div class="row">
 																							<div class=" col s12 m8">
 																								<p>
 																									<label for="gaurdian_dob" class="force-active">DOB *</label>
-																									<input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="{{ date('d/M/Y',strtotime($gardian_row->dob)) }}" class="datepicker"  type="text"> 
+																									<input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="@isset($gardian_row) {{ date('d/M/Y',strtotime($gardian_row->dob)) }} @endisset" class="datepicker"  type="text"> 
 																									
 																								</p>
 																							</div>
 																							<div class="col s12 m4">
 																								<label for="gaurdian_age" class="force-active">Age</label>
 																								<span> 
-																								<input type="text" id="gaurdian_age" value="{{ CommonHelper::calculate_age($gardian_row->dob) }}" readonly >
+																								<input type="text" id="gaurdian_age" value="@isset($gardian_row) {{ CommonHelper::calculate_age($gardian_row->dob) }} @endisset" readonly >
 																								</span>
 																							</div>
 																						</div>
@@ -728,8 +733,8 @@
 																						<label for="guardian_sex" class="force-active">SEX *</label>
 																						<select name="guardian_sex" id="guardian_sex" class="error browser-default selectpicker">
 																							<option value="">Select</option>
-																							<option @php echo $gardian_row->gender=='male' ? 'selected': ''; @endphp value="male" >Male</option>
-																							<option @php echo $gardian_row->gender=='female' ? 'selected': ''; @endphp value="female" >Female</option>
+																							<option @isset($gardian_row) @php echo $gardian_row->gender=='male' ? 'selected': ''; @endphp @endisset value="male" >Male</option>
+																							<option @isset($gardian_row) @php echo $gardian_row->gender=='female' ? 'selected': ''; @endphp @endisset value="female" >Female</option>
 																						</select>
 																						
 																					</div>
@@ -739,7 +744,7 @@
 																						 <label>Relationship*</label>
 																							<select name="relationship_id" id="gaurd_relationship" data-error=".errorTxt31"  class="error browser-default selectpicker">
 																							   <option value="" >Select</option> @foreach($data['relationship_view'] as $key=>$value)
-																									<option @php echo $gardian_row->relationship_id==$value->id ? 'selected': ''; @endphp value="{{$value->id}}" >{{$value->relation_name}}</option>
+																									<option @isset($gardian_row) @php echo $gardian_row->relationship_id==$value->id ? 'selected': ''; @endphp @endisset value="{{$value->id}}" >{{$value->relation_name}}</option>
 																								@endforeach
 																						   </select>
 																							   
@@ -750,12 +755,12 @@
 																					</div>
 																					<div class="input-field col s12 m4">
 																						<label for="nric_n_guardian" class="force-active">NRIC-N *</label>
-																						<input id="nric_n_guardian" name="nric_n_guardian" value="@php echo $gardian_row->nric_n; @endphp"  type="text">
+																						<input id="nric_n_guardian" name="nric_n_guardian" value="@isset($gardian_row) @php echo $gardian_row->nric_n; @endphp @endisset"  type="text">
 																						
 																					</div>
 																					<div class="input-field col s12 m4">
 																						<label for="nric_o_guardian" class="force-active">NRIC-O </label>
-																						<input id="nric_o_guardian" name="nric_o_guardian" value="@php echo $gardian_row->nric_o; @endphp"  type="text">
+																						<input id="nric_o_guardian" name="nric_o_guardian" value="@isset($gardian_row) @php echo $gardian_row->nric_o; @endphp @endisset"  type="text">
 																						
 																					</div>
 																					<div class="clearfix"> </div>
@@ -765,7 +770,7 @@
 																						<select name="guardian_country_id" id="guardian_country_id"  class="error browser-default selectpicker">
 																							<option value="" >Select</option>
 																							@foreach($data['country_view'] as $value)
-																								<option @php echo $gardian_row->country_id == $value->id ? 'selected' : ''; @endphp value="{{$value->id}}" >{{$value->country_name}}</option>
+																								<option @isset($gardian_row) @php echo $gardian_row->country_id == $value->id ? 'selected' : ''; @endphp @endisset value="{{$value->id}}" >{{$value->country_name}}</option>
 																							@endforeach
 																						</select>
 																						<div class="input-field">
@@ -778,7 +783,7 @@
 																						<select name="guardian_state_id" id="guardian_state_id"  class="error browser-default selectpicker">
 																							<option value="" >Select</option>
 																							@foreach($data['state_view'] as $key=>$value)
-																								<option value="{{$value->id}}" @php if($value->id == $gardian_row->state_id) { echo "selected";} @endphp>{{$value->state_name}}</option>
+																								<option value="{{$value->id}}" @isset($gardian_row) @php if($value->id == $gardian_row->state_id) { echo "selected";} @endphp @endisset>{{$value->state_name}}</option>
 																							@endforeach
 																						</select>
 																						<div class="input-field">
@@ -791,7 +796,7 @@
 																						<select name="guardian_city_id" id="guardian_city_id"  class="error browser-default selectpicker">
 																							<option value="" >Select</option>
 																							@foreach($data['city_view'] as $key=>$value)
-																							<option value="{{$value->id}}" @php if($value->id == $gardian_row->city_id) { echo "selected"; } @endphp>{{$value->city_name}}</option>
+																							<option value="{{$value->id}}" @isset($gardian_row) @php if($value->id == $gardian_row->city_id) { echo "selected"; } @endphp @endisset>{{$value->city_name}}</option>
 																							@endforeach
 																						</select>
 																						<div class="input-field">
@@ -802,17 +807,17 @@
 																					<div class="clearfix"> </div>
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_postal_code" class="force-active">Postal code*</label>
-																						<input id="guardian_postal_code" name="guardian_postal_code" type="text" value="@php echo $gardian_row->postal_code; @endphp" >
+																						<input id="guardian_postal_code" name="guardian_postal_code" type="text" value="@isset($gardian_row) @php echo $gardian_row->postal_code; @endphp @endisset" >
 																						 
 																					</div>
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_address_one" class="force-active">Address Line 1*</label>
-																						<input id="guardian_address_one" name="guardian_address_one" type="text" value="@php echo $gardian_row->guardian_name; @endphp" >
+																						<input id="guardian_address_one" name="guardian_address_one" type="text" value="@isset($gardian_row) @php echo $gardian_row->guardian_name; @endphp @endisset" >
 																						 
 																					</div>
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_address_two" class="force-active">Address Line 2*</label>
-																						<input id="guardian_address_two" name="guardian_address_two" type="text" value="@php echo $gardian_row->address_two; @endphp" >
+																						<input id="guardian_address_two" name="guardian_address_two" type="text" value="@isset($gardian_row) @php echo $gardian_row->address_two; @endphp @endisset" >
 																						 
 																					</div>
 																					
@@ -820,17 +825,17 @@
 																					<div class="clearfix"> </div>
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_address_three" class="force-active">Address Line 3*</label>
-																						<input id="guardian_address_three" name="guardian_address_three" type="text" value="@php echo $gardian_row->address_three; @endphp" >
+																						<input id="guardian_address_three" name="guardian_address_three" type="text" value="@isset($gardian_row) @php echo $gardian_row->address_three; @endphp @endisset" >
 																						 
 																					</div>
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_mobile" class="force-active">Mobile No*</label>
-																						<input id="guardian_mobile" name="guardian_mobile" type="text" value="@php echo $gardian_row->mobile; @endphp" >
+																						<input id="guardian_mobile" name="guardian_mobile" type="text" value="@isset($gardian_row) @php echo $gardian_row->mobile; @endphp @endisset" >
 																						 
 																					</div>
 																					<div class="input-field col s12 m4">
 																						<label for="guardian_phone" class="force-active">Phone No</label>
-																						<input id="guardian_phone" name="guardian_phone" type="text" value="@php echo $gardian_row->phone; @endphp" >
+																						<input id="guardian_phone" name="guardian_phone" type="text" value="@isset($gardian_row) @php echo $gardian_row->phone; @endphp @endisset" >
 																						 
 																					</div>
 																					<div class="clearfix"> </div>

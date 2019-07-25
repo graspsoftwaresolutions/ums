@@ -245,6 +245,7 @@ function showeditForm(userid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/users_detail') }}" + '?id=' + userid;
     $.ajax({
         url: url,
@@ -256,6 +257,8 @@ function showeditForm(userid) {
             $('#name').val(result.name);
             $('#email').val(result.email);
             $('#email').attr('data-autoid', result.id);
+            loader.hideLoader();
+            $("#modal_add_edit").modal('open');
         }
     });
 }

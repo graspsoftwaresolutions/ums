@@ -68,23 +68,6 @@
 														<th> {{__('Action') }}</th>
 													</tr>
 												</thead>
-												<tbody>
-													@foreach($data['member_view'] as $key=>$value)
-													<tr>
-													 @php
-														$parameter = Crypt::encrypt($value->id);  
-													 @endphp
-														<td>{{ CommonHelper::getBranchName($value->branch_id) }}</td>
-														<td>{{$value->name}}</td>
-														<td>{{$value->email}}</td>
-														<td>{{$value->mobile}}</td>
-														@if($data['member_type'] ==1)
-														<td>{{ CommonHelper::get_member_status_name($value->status_id) }}</td>
-														@endif
-														<td>	<a class="btn-floating waves-effect waves-light cyan" href="{{ route('master.editmembership', [app()->getLocale(),$parameter]) }}"><i class='material-icons'>edit</i></a>	<!--a class="btn-small waves-effect waves-light amber darken-4" href="{{url('membership-delete/').'/'.$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;">Delete</a--></td>
-													</tr>
-													@endforeach
-												</tbody>
 												
 											</table>
 										</div>
@@ -112,12 +95,31 @@
  $("#membership_sidebar_a_id").addClass('active');
  $(function () {
     $('#page-length-option').DataTable({
-        "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],   
-	});
+			"responsive": true,
+			"lengthMenu": [
+				[10, 25, 50, -1],
+				[10, 25, 50, "All"]
+			],
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "{{ url(app()->getLocale().'/ajax_members_list/'.$data['member_type']) }}",
+				"dataType": "json",
+				"type": "POST",
+				"data": {_token: "{{csrf_token()}}"}
+			},
+			"columns": [
+				{"data": "branch_name"},
+				{"data": "name"},
+				{"data": "email"},
+				{"data": "mobile"},
+				@if($data['member_type'] ==1) 
+				{"data": "status"},
+				@endif
+				{"data": "options"}
+			]
+
+		});
 });
  </script>
 @endsection

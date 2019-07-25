@@ -269,7 +269,13 @@ class MemberController extends CommonController
 			if($auto_id==''){
 				$gaurdian_id = $this->MemberGuardian->StoreMemberGaurdian($guardian);
 			}else{
-				$update_gaurd_id = $this->MemberGuardian->where('member_id','=',$member_id)->update($guardian);
+				$gaurdian_count = MemberGuardian::where('member_id','=',$member_id)->count();
+				if($gaurdian_count>0){
+					$update_gaurd_id = $this->MemberGuardian->where('member_id','=',$member_id)->update($guardian);
+				}else{
+					$gaurdian_id = $this->MemberGuardian->StoreMemberGaurdian($guardian);
+				}
+				
 			}
 			$check_fee_auto_id = $request->input('fee_auto_id');
 			if( isset($check_fee_auto_id)){
@@ -500,6 +506,8 @@ class MemberController extends CommonController
 			return $memberexists = $this->membermailExists($email,$db_autoid);
 		}
 		//return Response::json($return_status);
-    }
+	}
+	
+
 	
 }

@@ -181,4 +181,12 @@ $(document).ready(function(){
 $('.selectpickermodal').select2({
    dropdownParent: $('#modal_add_edit')
 });
+function convertToSlug(Text)
+{
+    return Text
+        .toLowerCase()
+        .replace(/ /g,'-')
+        .replace(/[^\w-]+/g,'')
+        ;
+}
 </script>

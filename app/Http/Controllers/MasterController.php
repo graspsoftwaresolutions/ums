@@ -280,10 +280,16 @@ class MasterController extends CommonController {
     {
         $User = new User();
         $User = User::find($id);
-        $User->delete();
-
         $defdaultLang = app()->getLocale();
-        return redirect($defdaultLang.'/users')->with('message','User Details Deleted Successfully!!');
+        return redirect($defdaultLang.'/users')->with('error','user cannot be deleted!!');
+        if($id!=1){
+            $User->delete();
+            return redirect($defdaultLang.'/users')->with('message','User Details Deleted Successfully!!');
+        }else{
+            return redirect($defdaultLang.'/users')->with('error','Union user cannot be deleted!!');
+        }
+       
+       
     }
 
     public function users_list()

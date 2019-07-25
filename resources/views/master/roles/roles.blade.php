@@ -71,7 +71,7 @@
                                         <div class="input-field col s12 m6">
                                             <label for="fee_name"
                                                 class="common-label force-active">{{__('Role Name') }}*</label>
-                                            <input id="name" class="common-input" name="name" type="text"
+                                            <input id="name" class="common-input rolename" name="name" type="text"
                                                 data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
@@ -279,5 +279,10 @@ $(document).on('submit','form#rolesformValidate',function(){
     $("#modal-save-btn").prop('disabled',true);
     $("#modal-update-btn").prop('disabled',true);
 });
+$(document).on('keyup','.rolename',function(){
+    var rolename = $(this).val();
+    $("#slug").val(convertToSlug(rolename));
+});
+
 </script>
 @endsection
