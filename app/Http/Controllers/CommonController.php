@@ -39,7 +39,7 @@ class CommonController extends Controller
 {
 	public function __construct()
     {
-		
+        ini_set('memory_limit', '-1');
 	}
 	public function userDetail(Request $request)
     {
