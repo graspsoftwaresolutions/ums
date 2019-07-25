@@ -209,6 +209,7 @@ function showeditForm(raceid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/race_detail') }}" + '?id=' + raceid;
     $.ajax({
         url: url,
@@ -218,6 +219,7 @@ function showeditForm(raceid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#race_name').val(result.race_name);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

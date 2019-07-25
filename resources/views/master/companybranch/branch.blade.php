@@ -54,8 +54,6 @@
 														<th style="">{{__('Action') }}</th>
 													</tr>
 												</thead>
-												
-												
 											</table>
 										</div>
 									</div>

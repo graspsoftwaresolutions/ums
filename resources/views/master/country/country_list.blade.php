@@ -211,6 +211,7 @@ function showeditForm(countryid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/country_detail') }}" + '?id=' + countryid;
     $.ajax({
         url: url,
@@ -220,6 +221,7 @@ function showeditForm(countryid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#country_name').val(result.country_name);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

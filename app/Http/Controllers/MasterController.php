@@ -879,7 +879,6 @@ class MasterController extends CommonController {
     }
 	public function saveRole(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
 			'slug' => 'required',
@@ -919,6 +918,9 @@ class MasterController extends CommonController {
                 else{
                     return redirect($defdaultLang . '/roles')->with('message', 'Role Name Added Succesfully');
                 }
+            }
+            else{
+                return redirect($defdaultLang . '/roles')->with('error', 'Union Role Cannot be modified!');
             }
         }
     }

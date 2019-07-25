@@ -288,6 +288,7 @@ function showeditForm(cityid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/city_detail') }}" + '?id=' + cityid;
     $.ajax({
         url: url,
@@ -299,6 +300,7 @@ function showeditForm(cityid) {
             $('#country_id').val(result.country_id);
             $('#state_id').val(result.state_id);
             $('#city_name').val(result.city_name);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

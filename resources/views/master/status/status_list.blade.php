@@ -209,6 +209,7 @@ function showeditForm(stateid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/status_details') }}" + '?id=' + stateid;
     $.ajax({
         url: url,
@@ -218,6 +219,7 @@ function showeditForm(stateid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#status_name').val(result.status_name);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

@@ -203,6 +203,7 @@ function showaddForm() {
     $('#person_title').val("");
     $('.modal').modal();
     $('#updateid').val("");
+    
 }
 
 function showeditForm(Persontitle) {
@@ -210,6 +211,7 @@ function showeditForm(Persontitle) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/persontitle_detail') }}" + '?id=' + Persontitle;
     $.ajax({
         url: url,
@@ -219,6 +221,7 @@ function showeditForm(Persontitle) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#person_title').val(result.person_title);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

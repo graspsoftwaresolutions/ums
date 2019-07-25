@@ -16,8 +16,16 @@ class Role extends Model
 	
 	public function saveRoledata($data=array())
     {
+
         if (!empty($data['id'])) {
-            $savedata = Role::find($data['id'])->update($data);
+            if($data['id'] ==1)
+            {
+                $savedata = 0;
+            }
+            else{
+                $savedata = Role::find($data['id'])->update($data);
+            }
+            
         } else {
             $savedata = Role::create($data);
         }

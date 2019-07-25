@@ -207,6 +207,7 @@ function showeditForm(relationid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/reason_detail') }}" + '?id=' + relationid;
     $.ajax({
         url: url,
@@ -216,6 +217,7 @@ function showeditForm(relationid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#reason_name').val(result.reason_name);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

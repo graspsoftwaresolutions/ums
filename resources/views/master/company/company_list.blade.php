@@ -266,6 +266,7 @@ $('.edit_hide').hide();
 $('.add_hide').hide();
 $('.edit_hide_btn').show();
 $('.modal').modal();
+loader.showLoader();
 var url = "{{ url(app()->getLocale().'/company_detail') }}" + '?id=' + companyid;
 $.ajax({
   url: url,
@@ -285,6 +286,7 @@ $.ajax({
               .id).text(entry.company_name));
       });
       $("#head_of_company").val(result.head_of_company);
+      loader.hideLoader();
       $("#modal_add_edit").modal('open');
     //  console.log(resultdata);
      // $('#head_of_company').val(result.head_of_company);

@@ -255,6 +255,7 @@ function showeditForm(formtypeid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/formtype_detail') }}" + '?id=' + formtypeid;
     $.ajax({
         url: url,
@@ -266,6 +267,7 @@ function showeditForm(formtypeid) {
             $('#formname').val(result.formname);
             $('#orderno').val(result.orderno);
             $('#module').val(result.module);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

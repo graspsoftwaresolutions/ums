@@ -211,6 +211,7 @@ function showeditForm(designationid) {
     $('#designation_name').val("");
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/designation_detail') }}" + '?id=' + designationid;
     $.ajax({
         url: url,
@@ -220,6 +221,7 @@ function showeditForm(designationid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#designation_name').val(result.designation_name);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

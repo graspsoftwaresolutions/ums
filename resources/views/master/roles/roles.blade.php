@@ -100,9 +100,12 @@
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
+                                            
+                                            
                                             <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
+
                                             <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
@@ -242,7 +245,7 @@ function showeditForm(roleid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.appform').show();
-   
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/role_detail') }}" + '?id=' + roleid;
     $.ajax({
         url: url,
@@ -251,6 +254,13 @@ function showeditForm(roleid) {
             result = resultdata['roles'];
             //console.log(result);
             $('#updateid').val(result.id);
+            if(result.id == 1)
+            {
+                $('#modal-update-btn').attr('disabled',true);
+            }
+            else{
+                $('#modal-update-btn').attr('disabled',false);
+            }
             $('#updateid').attr('data-autoid', result.id);
             $('#name').val(result.name);
             $('#slug').val(result.slug);
@@ -259,6 +269,7 @@ function showeditForm(roleid) {
                 var moduleid = value['id'];
                 $("#module_id_"+moduleid).attr('checked',true);
             });
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });

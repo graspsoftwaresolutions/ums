@@ -233,6 +233,7 @@ function showeditForm(feeid) {
     $('.add_hide').hide();
     $('.edit_hide_btn').show();
     $('.modal').modal();
+    loader.showLoader();
     var url = "{{ url(app()->getLocale().'/fee_detail') }}" + '?id=' + feeid;
     $.ajax({
         url: url,
@@ -243,6 +244,7 @@ function showeditForm(feeid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#fee_name').val(result.fee_name);
             $('#fee_amount').val(result.fee_amount);
+            loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
     });
