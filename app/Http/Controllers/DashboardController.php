@@ -14,6 +14,9 @@ use App\User;
 
 class DashboardController extends Controller
 {   
+   public function __construct() {
+        ini_set('memory_limit', '-1');
+   }
    public function unionBranchCount()
    {
         echo '<pre>';

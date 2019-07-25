@@ -32,6 +32,9 @@ use Response;
 
 class AjaxController extends CommonController
 {
+    public function __construct() {
+        ini_set('memory_limit', '-1');
+    }
     //Ajax Datatable Countries List //Users List 
     public function ajax_countries_list(Request $request){
         $columns = array( 

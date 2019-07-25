@@ -34,6 +34,7 @@ use Response;
 class MasterController extends CommonController {
 
     public function __construct() {
+        ini_set('memory_limit', '-1');
         $this->middleware('auth');
         $this->middleware('module:master');
         $this->Country = new Country;
