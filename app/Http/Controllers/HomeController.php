@@ -55,10 +55,10 @@ class HomeController extends Controller
             $company_branch_count = CompanyBranch::where('status',1)->count();
             $data['total_company_branch_count'] = $company_branch_count;
 
-            $total_active_members_count = Membership::where('status_id',2)->count();
-            $data['total_active_members_count'] = $total_active_members_count;
-            $total_new_members_count = Membership::where('status_id',1)->count();
-            $data['total_new_members_count'] = $total_new_members_count;
+            $total_approved_members_count = Membership::where('is_request_approved',1)->count();
+            $data['total_approved_members_count'] = $total_approved_members_count;
+            $total_pending_members_count = Membership::where('is_request_approved',0)->count();
+            $data['total_pending_members_count'] = $total_pending_members_count;
 
 
         }else if($user_role=='union-branch'){
@@ -107,7 +107,6 @@ class HomeController extends Controller
 			}
 			$data['total_member_count'] = $member_count;
 		}
-        
         return view('home')->with('data',$data);
     }
 	public function redirectTo()

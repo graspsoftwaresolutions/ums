@@ -41,15 +41,15 @@
 								<div class="card-content">
 									<h4 class="card-title">
 										@if($data['member_type'] ==1)
-											Active
+											Approved
 										@else
-											New
+											Pending
 										@endif
 										 Membership List
 										@if($data['member_type'] ==1) 
-											<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('New members list') }}</a>
+											<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('Pending members list') }}</a>
 										@else
-											<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Active members list') }}</a>
+											<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Approved members list') }}</a>
 										@endif
 									</h4>
 									@include('includes.messages')
@@ -62,10 +62,8 @@
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Email') }}</th>
 														<th>{{__('Mobile') }}</th>
-														@if($data['member_type'] ==1) 
 														<th>{{__('Status') }}</th>
-														@endif
-														<th> {{__('Action') }}</th>
+														<th>{{__('Action') }}</th>
 													</tr>
 												</thead>
 												
@@ -113,9 +111,7 @@
 				{"data": "name"},
 				{"data": "email"},
 				{"data": "mobile"},
-				@if($data['member_type'] ==1) 
 				{"data": "status"},
-				@endif
 				{"data": "options"}
 			]
 

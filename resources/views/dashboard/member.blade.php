@@ -3,9 +3,9 @@
     <div class="col s12 m6 l8">
         @php
         $user_id = Auth::user()->id;
-        $accountstatus = CommonHelper::getaccountStatus($user_id);
+        $accountstatus = CommonHelper::getapprovedStatus($user_id);
         @endphp
-        @if($accountstatus==1)
+        @if($accountstatus==0)
         <div class="card-alert-nonclose card red">
             <div class="card-content white-text">
                 <p>SUCCESS : Your account is waiting for approval.</p>
@@ -15,7 +15,7 @@
             </button>
         </div>
         @endif
-        @if($accountstatus==2)
+        @if($accountstatus==1)
         <div class="card-alert-nonclose card green">
             <div class="card-content white-text">
                 <p>SUCCESS : Your account is Verified.</p>

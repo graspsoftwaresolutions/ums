@@ -107,6 +107,14 @@ class CommonHelper
         return '';
     }
 
+    public static function getapprovedStatus($user_id){
+        $status_data = DB::table('membership')->where('user_id', $user_id)->pluck('is_request_approved');
+         if(count($status_data)>0){
+             return $status_data[0];
+         }
+         return '';
+     }
+
     
     public static function get_branch_by_unionbranch($branch_id){
         DB::connection()->enableQueryLog();

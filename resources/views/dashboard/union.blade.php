@@ -88,8 +88,8 @@
 				
                <div id="current-balance-donut-chart" class="current-balance-shadow"></div>
             </div>
-            <h5 class="center-align">{{ $data['total_active_members_count'] }}</h5>
-            <p class="medium-small center-align">{{__('Active Members') }}</p>
+            <h5 class="center-align">{{ $data['total_approved_members_count'] }}</h5>
+            <p class="medium-small center-align">{{__('Approved Members') }}</p>
          </div>
       </div>
    </div>
@@ -285,7 +285,7 @@
 			"#current-balance-donut-chart",
 			{
 				labels: [1, 2],
-				series: [{ meta: "Active members", value: {{ $data['total_active_members_count'] }} }, { meta: "Defaulter", value: {{ $data['total_new_members_count'] }} }]
+				series: [{ meta: "Approved members", value: {{ $data['total_approved_members_count'] }} }, { meta: "Pending", value: {{ $data['total_pending_members_count'] }} }]
 			},
 			{
 				donut: true,
@@ -296,7 +296,7 @@
 					Chartist.plugins.fillDonut({
 						items: [
 							{
-								content: '<p class="small">{{__("Defaulter") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_new_members_count']}}+'</h5>'
+								content: '<p class="small">{{__("Pending") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_pending_members_count']}}+'</h5>'
 							}
 						]
 					})

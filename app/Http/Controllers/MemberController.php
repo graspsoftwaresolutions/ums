@@ -138,13 +138,21 @@ class MemberController extends CommonController
 					$member_user->roles()->attach($member_role);
 					// return $member_user;die;
 					$member['user_id'] = $member_user->id;
-
 					
+				
 					if($user_role == 'union'){
-						$member['status_id'] = 2;
-					}else{
+						$member['is_request_approved'] = 1;
 						$member['status_id'] = 1;
+					}else{
+						$member['is_request_approved'] = 0;
+						$member['status_id'] = NUll;
 					}
+					
+					// if($user_role == 'union'){
+					// 	$member['status_id'] = 2;
+					// }else{
+					// 	$member['status_id'] = 1;
+					// }
 					$redirect_failurl = app()->getLocale().'/register';
 					$redirect_url = app()->getLocale().'/login';
 					if(!empty(Auth::user())){
@@ -169,9 +177,9 @@ class MemberController extends CommonController
 					
 					if($user_role=='union'){
 						$activate_account = $request->input('activate_account');
-						$activate_account = isset($activate_account) ? 2 : 1;
-						if($activate_account==2){
-							$member['status_id'] = $activate_account;
+						$activate_account = isset($activate_account) ? 1 : 0;
+						if($activate_account==1){
+							$member['is_request_approved'] = $activate_account;
 						}
 					}
 					
@@ -449,7 +457,7 @@ class MemberController extends CommonController
                  $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.mobile',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
-                                        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id')
+                                        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved')
                                 ->leftjoin('country','membership.country_id','=','country.id')
                                 ->leftjoin('state','membership.state_id','=','state.id')
                                 ->leftjoin('city','membership.city_id','=','city.id')

@@ -325,7 +325,7 @@
 																			<input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
 																		</div>
 																		@php
-																		if($values->status_id==1 && $check_union==1){
+																		if($values->is_request_approved==0 && $check_union==1){
 																		@endphp
 																		<div class="col s12 m6 ">
 																			<label>Status*</label>
@@ -341,12 +341,12 @@
 																		}
 																		@endphp
 																		@php
-																		if($values->status_id==1){
+																		if($values->is_request_approved==0){
 																		@endphp
 																		<div class="col s12 m6 ">
 																			<label>Status*</label>
 																			<p style="margin-top:10px;">
-																				<span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Account is not verified</span>
+																				<span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Pending</span>
 																			</p>
 																		</div>
 																		@php												
@@ -354,8 +354,14 @@
 																		@endphp
 																		<div class="col s12 m6 ">
 																			<label>Status*</label>
-																			<p style="margin-top:10px;">
-																				<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ CommonHelper::getStatusName($values->status_id) }}</span>
+																			<p style="margin-top:10px;">.
+																				@php
+																				$status_val = CommonHelper::getStatusName($values->status_id);
+																				if($status_val ==''){
+																					$status_val = 'Pending';
+																				}
+																				@endphp
+																				<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ $status_val }}</span>
 																			</p>
 																		</div>
 																		@php												

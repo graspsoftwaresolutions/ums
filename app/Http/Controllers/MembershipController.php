@@ -38,7 +38,8 @@ class MembershipController extends Controller
     }
     public function index()
     {
-		return $this->CommonMembershipList(1);
+        $data['member_type'] = 1;
+        return view('membership.membership')->with('data',$data); 
     }
 	public function CommonMembershipList($type){
 		$get_roles = Auth::user()->roles;
@@ -160,7 +161,7 @@ class MembershipController extends Controller
          $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.mobile',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
-                                        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id')
+                                        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved')
                                 ->leftjoin('country','membership.country_id','=','country.id')
                                 ->leftjoin('state','membership.state_id','=','state.id')
                                 ->leftjoin('city','membership.city_id','=','city.id')
@@ -213,7 +214,8 @@ class MembershipController extends Controller
     
 
     public function new_members(){
-		return $this->CommonMembershipList(0);
+        $data['member_type'] = 0;
+        return view('membership.membership')->with('data',$data); 
     }
 
     public function getNomineeData(Request $request){
@@ -290,15 +292,15 @@ class MembershipController extends Controller
 
     //Company Details End
     public function AjaxmembersList(Request $request,$lang, $type){
-        DB::enableQueryLog();
+       
 		$sl=0;
 		$columns[$sl++] = 'm.branch_id';
 		$columns[$sl++] = 'm.name';
 		$columns[$sl++] = 'm.email';
 		$columns[$sl++] = 'm.mobile';
-		if($type==1){
+		//if($type==1){
 			$columns[$sl++] = 'm.status_id';
-		}
+		//}
 		$columns[$sl++] = 'm.id';
         /* $columns = array( 
             0 => 'company_id', 
@@ -308,9 +310,9 @@ class MembershipController extends Controller
             4 => 'id'
         ); */
 		if($type==1){
-			$status_cond = '!=';
+			$approved_cond = 1;
 		}else{
-			$status_cond = '=';
+			$approved_cond = 0;
 		}
 		
 		$get_roles = Auth::user()->roles;
@@ -319,7 +321,7 @@ class MembershipController extends Controller
 		$member_qry = '';
 		if($user_role=='union'){
 			$member_qry = DB::table('membership as m')
-				->where('m.status_id',$status_cond,'1');
+				->where('m.is_request_approved','=',$approved_cond);
 		}else if($user_role=='union-branch'){
 			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
 			if(count($union_branch_id)>0){
@@ -329,7 +331,7 @@ class MembershipController extends Controller
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['c.union_branch_id','=',$union_branch_id],
-                    ['m.status_id',$status_cond,'1']
+                    ['m.is_request_approved','=',$approved_cond]
                     ]);
 			}
 		}else if($user_role=='company'){
@@ -341,7 +343,7 @@ class MembershipController extends Controller
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['c.company_id','=',$companyid],
-                    ['m.status_id',$status_cond,'1']
+                    ['m.is_request_approved','=',$approved_cond]
                     ]);
 			}
 		}else if($user_role=='company-branch'){
@@ -353,7 +355,7 @@ class MembershipController extends Controller
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['m.branch_id','=',$branchid],
-                    ['m.status_id',$status_cond,'1']
+                    ['m.is_request_approved','=',$approved_cond]
                     ]);
 			}
 		}
@@ -375,7 +377,7 @@ class MembershipController extends Controller
 				->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name')
                 ->join('membership as m','c.id','=','m.branch_id')
 				->leftjoin('status as s','s.id','=','m.status_id')
-                ->where('m.status_id',$status_cond,'1');
+                ->where('m.is_request_approved','=',$approved_cond);
 				if($user_role=='union-branch'){
 					$compQuery =  $compQuery->where([
                     ['c.union_branch_id','=',$union_branch_id]
@@ -400,13 +402,14 @@ class MembershipController extends Controller
         
         }
         else {
+            DB::enableQueryLog();
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
 							->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name')
 							->join('membership as m','c.id','=','m.branch_id')
-							->leftjoin('status as s','s.id','=','m.status_id')
-							->where('m.status_id',$status_cond,'1');
+                            ->leftjoin('status as s','s.id','=','m.status_id')
+                            ->where('m.is_request_approved','=',$approved_cond);
 							if($user_role=='union-branch'){
 								$compQuery =  $compQuery->where([
 								['c.union_branch_id','=',$union_branch_id]
@@ -439,6 +442,9 @@ class MembershipController extends Controller
 			->get()->toArray();
 
              $totalFiltered = $compQuery->count();
+
+             $queries = DB::getQueryLog();
+             // dd($queries);
           
     }
 	$data = array();
