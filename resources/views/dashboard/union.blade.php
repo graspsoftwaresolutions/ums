@@ -69,7 +69,6 @@
 <!--card stats end-->
  <!-- Current balance & total transactions cards-->
 <div class="row mt-4">
-	
    <div class="col s12 m4 l4">
       <!-- Current Balance -->
 		<div id="ct9-chart" class="ct-chart card hide">

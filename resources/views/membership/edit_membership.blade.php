@@ -89,14 +89,14 @@
 																			</div>
 																			<div class="col s12 m4">
 																				<label>
-																					<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="female" {{ $values->gender == 'female' ? 'checked' : '' }}>
+																					<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="Female" {{ $values->gender == 'Female' ? 'checked' : '' }}>
 																					<span>Female</span>
 																				</label>  
 																			</div>
 																			<div class="col s12 m4">
 																				<p>
 																					<label>
-																					<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="male" {{ $values->gender == 'male' ? 'checked' : '' }}>
+																					<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="Male" {{ $values->gender == 'Male' ? 'checked' : '' }}>
 																					<span>Male</span>
 																					</label>
 																				</p>
@@ -511,8 +511,8 @@
 																					   <label for="years">Sex *</label>
 																						<select name="sex" id="sex" class="error browser-default selectpicker">
 																							<option value="">Select</option>
-																							<option value="male" >Male</option>
-																							<option value="female" >Female</option>
+																							<option value="Male" >Male</option>
+																							<option value="Female" >Female</option>
 																						</select>
 																						<div class="input-field">
 																							 <div class="errorTxt50"></div>
@@ -739,8 +739,8 @@
 																						<label for="guardian_sex" class="force-active">SEX *</label>
 																						<select name="guardian_sex" id="guardian_sex" class="error browser-default selectpicker">
 																							<option value="">Select</option>
-																							<option @isset($gardian_row) @php echo $gardian_row->gender=='male' ? 'selected': ''; @endphp @endisset value="male" >Male</option>
-																							<option @isset($gardian_row) @php echo $gardian_row->gender=='female' ? 'selected': ''; @endphp @endisset value="female" >Female</option>
+																							<option @isset($gardian_row) @php echo $gardian_row->gender=='Male' ? 'selected': ''; @endphp @endisset value="Male" >Male</option>
+																							<option @isset($gardian_row) @php echo $gardian_row->gender=='Female' ? 'selected': ''; @endphp @endisset value="Female" >Female</option>
 																						</select>
 																						
 																					</div>
