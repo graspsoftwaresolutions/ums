@@ -134,14 +134,14 @@
 																		</div>
 																		<div class="col s12 m4">
 																			<label>
-																			<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="female">
+																			<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="Female">
 																			<span>{{__('Female') }}</span>
 																			</label>  
 																		</div>
 																		<div class="col s12 m4">
 																			<p>
 																				<label>
-																				<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="male">
+																				<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
 																				<span>{{__('Male') }}</span>
 																				</label>
 																			</p>
@@ -442,8 +442,8 @@
 																					<label for="years">Sex *</label>
 																					<select name="sex" id="sex" class="error browser-default selectpicker">
 																						<option value="">Select</option>
-																						<option value="male" >Male</option>
-																						<option value="female" >Female</option>
+																						<option value="Male" >Male</option>
+																						<option value="Female" >Female</option>
 																					</select>
 																					<div class="input-field">
 																						<div class="errorTxt50"></div>
@@ -586,8 +586,8 @@
 																					<label for="guardian_sex">SEX *</label>
 																					<select name="guardian_sex" id="guardian_sex" class="error browser-default selectpicker">
 																						<option value="">Select</option>
-																						<option value="male" >Male</option>
-																						<option value="female" >Female</option>
+																						<option value="Male" >Male</option>
+																						<option value="Female" >Female</option>
 																					</select>
 																				</div>
 																				<div class="clearfix"> </div>
