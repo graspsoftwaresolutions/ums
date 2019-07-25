@@ -285,7 +285,7 @@
 			"#current-balance-donut-chart",
 			{
 				labels: [1, 2],
-				series: [{ meta: "Active members", value: {{ $data['total_active_members_count'] }} }, { meta: "New Members", value: {{ $data['total_new_members_count'] }} }]
+				series: [{ meta: "Active members", value: {{ $data['total_active_members_count'] }} }, { meta: "Defaulter", value: {{ $data['total_new_members_count'] }} }]
 			},
 			{
 				donut: true,
@@ -296,7 +296,7 @@
 					Chartist.plugins.fillDonut({
 						items: [
 							{
-								content: '<p class="small">{{__("New Members") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_new_members_count']}}+'</h5>'
+								content: '<p class="small">{{__("Defaulter") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_new_members_count']}}+'</h5>'
 							}
 						]
 					})
