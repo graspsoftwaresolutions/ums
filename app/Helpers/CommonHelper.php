@@ -240,6 +240,10 @@ class CommonHelper
             return $branch_name[0];
         }
         return false;
-	}
+    }
+    
+    public static function getStateList($countryid){
+        return DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$countryid)->get();
+    }
    
 }
