@@ -22,4 +22,9 @@ class Status extends Model
         }
         return $savedata;
     }
+
+    public function Members()
+    {
+        return $this->hasMany('App\Modal\Membership','status_id')->count();
+    }
 }

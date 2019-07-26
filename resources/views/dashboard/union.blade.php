@@ -111,6 +111,9 @@ canvas#custom-line-chart-sample-three {
          </div>
       </div> 
    </div>
+   @php
+   $data_status = CommonHelper::getStatus();
+   @endphp
 </div>
 @section('footerSecondSection')
 <script>
@@ -150,7 +153,6 @@ canvas#custom-line-chart-sample-three {
 			}
 		)
    })(window, document, jQuery);
- 
    //Sampel Line Chart Three
     // Options
     var SLOption = {
@@ -186,10 +188,9 @@ canvas#custom-line-chart-sample-three {
             text: "82%"
         }
     };
-    var SLlabels = ["ACTIVE", "DEFAULTER", "RESIGNED", "STRUCKOFF"];
-
+ 
+    var SLlabels = @php echo json_encode($data_status) @endphp;
     var LineSL3ctx = document.getElementById("custom-line-chart-sample-three").getContext("2d");
-
     var gradientStroke = LineSL3ctx.createLinearGradient(500, 0, 0, 200);
     gradientStroke.addColorStop(0, "#8133ff");
     gradientStroke.addColorStop(1, "#ff4bac");

@@ -11,6 +11,7 @@ use App\Model\Membership;
 use App\Model\Company;
 use App\Model\CompanyBranch;
 use App\Model\Branch;
+use App\Model\Status;
 use App\User;
 use DB;
 
@@ -66,6 +67,7 @@ class HomeController extends Controller
             $member_count = $total_approved_members_count + $total_pending_members_count;
             $data['total_member_count'] = $member_count;
 
+            
 
         }else if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
