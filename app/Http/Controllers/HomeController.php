@@ -46,6 +46,7 @@ class HomeController extends Controller
             $union_branch_count = unionBranch::where('is_head','!=',1)->where('status',1)->count();
             $data['union_branch_count'] = $union_branch_count;
 
+            //$member_count=0;
             $member_count = Membership::all()->where('status',1)->count();
             $data['total_member_count'] = $member_count;
 

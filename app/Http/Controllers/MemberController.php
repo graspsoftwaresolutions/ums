@@ -372,7 +372,7 @@ class MemberController extends CommonController
 					'password' => $randompass,
 					'site_url' => URL::to("/"),
 				);
-				$status = Mail::to($member_email)->send(new SendMemberMailable($mail_data));
+				$status = Mail::to($member_email)->cc([env("MAIL_CC")])->send(new SendMemberMailable($mail_data));
 
 				if( count(Mail::failures()) > 0 ) {
 					return redirect($redirect_url)->with('message','Member Account created successfully, Failed to send mail');
