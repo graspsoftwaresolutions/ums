@@ -48,8 +48,10 @@ class HomeController extends Controller
 
             $member_count = Membership::all()->where('status',1)->count();
             $data['total_member_count'] = $member_count;
+
+            $company_count = Company::where('status',1)->count();
             
-            $company_count = CompanyBranch::where('is_head',1)->where('status',1)->count();
+            //$company_count = CompanyBranch::where('is_head',1)->where('status',1)->count();
             $data['total_company_count'] = $company_count;
 
             $company_branch_count = CompanyBranch::where('status',1)->count();
