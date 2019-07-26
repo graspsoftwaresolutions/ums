@@ -912,7 +912,6 @@
             dataType: "json",
             url : "{{ URL::to('/delete-nominee-data') }}?nominee_id="+nominee_id,
             success:function(res){
-                console.log(res);
                 if(res)
                 {
                     parrent.remove(); 
@@ -924,7 +923,6 @@
                         html: res.message
                     });
                 }
-               // console.log(res);
             }
          });
     });
@@ -938,7 +936,6 @@
             dataType: "json",
             url : "{{ URL::to('/delete-fee-data') }}?fee_id="+fee_id,
             success:function(res){
-                console.log(res);
                 if(res)
                 {
                     parrent.remove(); 
@@ -950,7 +947,6 @@
                         html: res.message
                     });
                 }
-               // console.log(res);
             }
          });
     });

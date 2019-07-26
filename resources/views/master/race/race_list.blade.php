@@ -215,7 +215,6 @@ function showeditForm(raceid) {
         url: url,
         type: "GET",
         success: function(result) {
-            console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#race_name').val(result.race_name);

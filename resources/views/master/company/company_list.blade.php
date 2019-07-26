@@ -281,14 +281,12 @@ $.ajax({
       $('#head_of_company').empty();
       $('#head_of_company').append($('<option></option>').attr('value','').text('Select'));
       $.each(resultdata['head_company'], function(key, entry) {
-        console.log(resultdata);
           $('#head_of_company').append($('<option></option>').attr('value', entry
               .id).text(entry.company_name));
       });
       $("#head_of_company").val(result.head_of_company);
       loader.hideLoader();
       $("#modal_add_edit").modal('open');
-    //  console.log(resultdata);
      // $('#head_of_company').val(result.head_of_company);
   }
 });

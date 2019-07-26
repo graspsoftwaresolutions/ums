@@ -215,7 +215,6 @@ function showeditForm(relationid) {
         url: url,
         type: "GET",
         success: function(result) {
-            console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#relation_name').val(result.relation_name);

@@ -283,8 +283,6 @@ $(document).ready(function() {
                 url: " {{ URL::to('/get-state-list') }}?country_id=" + countryID,
                 success: function(res) {
                     if (res) {
-                        // console.log(res);
-                        //console.log('hi test');
                         $("#state_id").empty();
                         $("#city_id").empty();
                         $("#state_id").append($('<option></option>').attr('value', '').text(
@@ -322,7 +320,6 @@ $(document).ready(function() {
                 dataType: "json",
                 url: "{{ URL::to('/get-cities-list') }}?State_id=" + StateId,
                 success: function(res) {
-                    console.log(res);
                     if (res) {
                         $('#city_id').empty();
                         $("#city_id").append($('<option></option>').attr('value', '').text(
@@ -335,7 +332,6 @@ $(document).ready(function() {
                     } else {
                         $('#city_id').empty();
                     }
-                    // console.log(res);
                 }
             });
         } else {

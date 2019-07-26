@@ -722,7 +722,6 @@
         type:'GET',
         //callback just to show it's working
         onSelect: function (suggestion) {
-             console.log('You selected: ' + suggestion.value + ', ' + suggestion.number);
 			 $("#old_mumber_number").val(suggestion.number);
         },
         showNoSuggestionNotice: true,

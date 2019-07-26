@@ -94,7 +94,6 @@ $(document).ready(function(){
             dataType: "json",
             url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID,
             success:function(res){
-                //console.log(res);
                 if(res)
                 {
                     $('#branch').empty();
@@ -105,7 +104,6 @@ $(document).ready(function(){
                 }else{
                     $('#branch').empty();
                 }
-                console.log(res);
             }
          });
        }else{

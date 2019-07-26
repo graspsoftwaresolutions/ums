@@ -268,7 +268,6 @@ function showeditForm(countryid) {
         url: url,
         type: "GET",
         success: function(result) {
-            console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#country_id').val(result.country_id);

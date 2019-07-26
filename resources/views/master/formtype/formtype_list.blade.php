@@ -261,7 +261,6 @@ function showeditForm(formtypeid) {
         url: url,
         type: "GET",
         success: function(result) {
-            console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#formname').val(result.formname);

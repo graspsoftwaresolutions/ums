@@ -252,7 +252,6 @@ function showeditForm(roleid) {
         type: "GET",
         success: function(resultdata) {
             result = resultdata['roles'];
-            //console.log(result);
             $('#updateid').val(result.id);
             if(result.id == 1)
             {
