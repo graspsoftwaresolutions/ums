@@ -81,7 +81,7 @@
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class=" waves-effect waves-light right submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
                                             <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"

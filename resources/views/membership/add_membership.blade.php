@@ -310,7 +310,7 @@
 																	</div>
 																</div>
 																<div class="col s12 m6 union-data ">
-																	<label>{{__('Branch Name') }}*</label>
+																	<label>{{__('Company Branch Name') }}*</label>
 																	<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
 																		<option value="">{{__('Select Branch') }}</option>
 																		@foreach($branchlist as $branch)
