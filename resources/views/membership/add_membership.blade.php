@@ -211,20 +211,29 @@
 																<div class="clearfix" ></div>
 																<div class="col s12 m6">
 																	<label>{{__('Country Name') }}*</label>
+																	@php
+																	$Defcountry = CommonHelper::DefaultCountry();
+																	@endphp
 																	<select name="country_id" id="country_id" class="error browser-default selectpicker" data-error=".errorTxt10">
 																		<option value="">{{__('Select Country') }}</option>
 																		@foreach($data['country_view'] as $value)
-																		<option value="{{$value->id}}">{{$value->country_name}}</option>
+																		<option @if($Defcountry==$value->id) selected @endif value="{{$value->id}}">{{$value->country_name}}</option>
 																		@endforeach
 																	</select>
 																	<div class="input-field">
 																		<div class="errorTxt10"></div>
 																	</div>
 																</div>
+																@php
+																$statelist = CommonHelper::getStateList($Defcountry);
+																@endphp
 																<div class="col s12 m6">
 																	<label>{{__('State Name') }}*</label>
 																	<select class="error browser-default selectpicker" id="state_id" name="state_id" data-error=".errorTxt11" aria-required="true" required>
 																		<option value="" selected>{{__('State Name') }}</option>
+																		@foreach($statelist as $key=>$value)
+																			<option value="{{$value->id}}" >{{$value->state_name}}</option>
+																		@endforeach
 																	</select>
 																	<div class="input-field">
 																		<div class="errorTxt11"></div>

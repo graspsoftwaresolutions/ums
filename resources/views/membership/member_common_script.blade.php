@@ -596,7 +596,7 @@ $('#add_fee').click(function(){
 		var new_row = '<tr>';
 		new_row += '<td><span id="fee_name_label_'+fee_row_id+'">'+new_fee_name+'</span><input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_'+fee_row_id+'"></input><input type="text" name="fee_name_id[]" class="hide" id="fee_name_id_'+fee_row_id+'" value="'+new_fee_id+'"></input></td>';
 		new_row += '<td><span id="fee_amount_label_'+fee_row_id+'">'+fee_amount+'</span><input type="text" name="fee_name_amount[]" class="hide" id="fee_name_amount_'+fee_row_id+'" value="'+fee_amount+'"></input></td>';
-		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_nominee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
+		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_fee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
 		new_row += '</tr>';
 		$("#fee_amount").val('');
 		//$('#test3').find('input:text').val('');    
@@ -875,6 +875,7 @@ $('#edit_nominee_state_id').change(function(e, data){
 					
 				});
 				if(typeof data !='undefined'){
+					loader.hideLoader();
 					$('#edit_nominee_city_id').val(data.city_id);
 				}
 				
