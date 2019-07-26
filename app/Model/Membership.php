@@ -20,5 +20,9 @@ class Membership extends Model
     /* one to many */
 	public function nominees(){
 		return $this->hasMany(MemberNominees::class, 'member_id');
-	}
+    }
+    public function Status()
+    {
+        return $this->belongsTo('App\Model\Status');
+    }
 }
