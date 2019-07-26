@@ -189,4 +189,11 @@ function convertToSlug(Text)
         .replace(/[^\w-]+/g,'')
         ;
 }
+
+$(document).ready(function() {
+    loader.hideLoader();
+    window.onload = function () {
+        //loader.showLoader();
+    }
+});
 </script>
