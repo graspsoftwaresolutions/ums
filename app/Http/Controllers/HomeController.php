@@ -47,8 +47,8 @@ class HomeController extends Controller
             $data['union_branch_count'] = $union_branch_count;
 
             //$member_count=0;
-            $member_count = Membership::all()->where('status',1)->count();
-            $data['total_member_count'] = $member_count;
+            //$member_count = Membership::where('status',1)->count();
+            //$data['total_member_count'] = $member_count;
 
             $company_count = Company::where('status',1)->count();
             
@@ -62,6 +62,9 @@ class HomeController extends Controller
             $data['total_approved_members_count'] = $total_approved_members_count;
             $total_pending_members_count = Membership::where('is_request_approved',0)->count();
             $data['total_pending_members_count'] = $total_pending_members_count;
+
+            $member_count = $total_approved_members_count + $total_pending_members_count;
+            $data['total_member_count'] = $member_count;
 
 
         }else if($user_role=='union-branch'){
