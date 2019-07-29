@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class MonthlySubscriptionMember extends Model
 {
-    protected $table = "monthlysubscriptionmember";
+    protected $table = "mon_sub_member";
     protected $fillable = ['id','MonthlySubscriptionCompanyId','MemberCode','StatusId','NRIC'];
-    public $timestamps = true;
+    public $timestamps = false;
     //save 
     public function save_monthly_subMember($data=array())
     {

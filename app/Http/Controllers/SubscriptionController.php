@@ -36,9 +36,12 @@ use Response;
 use App\Exports\SubscriptionExport;
 use App\Imports\SubscriptionImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class SubscriptionController extends Controller
@@ -70,12 +73,12 @@ class SubscriptionController extends Controller
     }
 	
 	public function subscribeDownload(Request $request){
+        $file_name = '';
+        $fmmm_date = explode("/",$request->entry_date);  
+        $file_name .= $fmmm_date[0];
+        $file_name .= $fmmm_date[1];
+        $file_name .= str_replace(' ', '-', CommonHelper::getComapnyName($request->sub_company)); 
         if($request->type==0){
-            $file_name = '';
-            $fmmm_date = explode("/",$request->entry_date);  
-            $file_name .= $fmmm_date[0];
-            $file_name .= $fmmm_date[1];
-            $file_name .= str_replace(' ', '-', CommonHelper::getComapnyName($request->sub_company)); 
             return Excel::download(new SubscriptionExport, $file_name.'.xlsx');
         }else{
             $rules = array(
@@ -89,7 +92,9 @@ class SubscriptionController extends Controller
             else
             {
                 if(Input::hasFile('file')){
-                    Excel::import(new SubscriptionImport,request()->file('file'));
+                    $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
+                    //$data = Excel::toArray(new SubscriptionImport, $file);
+                    Excel::import(new SubscriptionImport($request->all()), $file);
                     return back();
                 }
             }
