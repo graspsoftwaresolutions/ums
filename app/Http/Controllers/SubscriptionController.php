@@ -57,19 +57,16 @@ class SubscriptionController extends Controller
     }
     //excel file download and upload it
     public function index() {
-        $data = "";
-        $status_all = Status::all();
-        foreach($status_all as $stat){
-            //var_dump($stat->status_name); 
-           // var_dump($stat->Subscription_members->count());
-           //foreach($stat->Subscription_members as $memberstat){
-            
-          //var_dump($memberstat->count());
-           
-          // }
-        }
-       // dd($data);
-       return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
+        $status_all = Status::all();       
+        $data['member_stat'] = $status_all;
+        isset($data['member_stat']) ? $data['member_stat'] : "";       
+        return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
+    }
+    public function sub_company() {
+        $status_all = Status::all();       
+        $data['member_stat'] = $status_all;
+        isset($data['member_stat']) ? $data['member_stat'] : "";       
+        return view('subscription.sub_fileupload.sub_company')->with('data', $data);
     }
 	
 	public function subscribeDownload(Request $request){

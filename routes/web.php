@@ -195,9 +195,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('member_emailexists','MemberController@checkMemberemailExists');
 
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
+	//subscription
 	Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
 	Route::post('subscribe_download','SubscriptionController@subscribeDownload')->name('subscription.sub_filedownload');
-
+	Route::get('sub_company','SubscriptionController@sub_company')->name('subscription.sub_fileupload.sub_company');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
@@ -227,11 +228,6 @@ Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
-
-
-//subscription
-
-	
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');

@@ -44,8 +44,7 @@
         </div>
 <!--sfsdgfdg-->
 	<div class="clearfix"></div>
-
-	<div class="col s12">
+    <div class="col s12">
 		<div id="validations" class="card card-tabs">
 			<div class="card-content">
 				<div class="card-title">
@@ -110,41 +109,110 @@
 								
 							</div>
 						</div>
-						<div class="row">
-							<div class="col s12 m6">
-								<div class="card blue-grey darken-1">
-									<div class="card-content white-text">
-										<span class="card-title">Card Title</span>
-										<p>I am a very simple card. I am good at containing small bits of information.
-											I am convenient because I require little markup to use effectively.
-										</p>
-									</div>
-									<div class="card-action">
-										<a href="#">This is a link</a>
-										<a href="#">This is a link</a>
-									</div>
-								</div>
-							</div>
-							<div class="col s12 m6">
-								<div class="card blue-grey darken-1">
-									<div class="card-content white-text">
-										<span class="card-title">Card Title</span>
-										<p>I am a very simple card. I am good at containing small bits of information.
-											I am convenient because I require little markup to use effectively.
-										</p>
-									</div>
-									<div class="card-action">
-										<a href="#">This is a link</a>
-										<a href="#">This is a link</a>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+    <div class="col s12">
+      <div id="validations" class="card card-tabs">
+        <div class="card-content">
+          <div class="card-title">
+            <div class="row">
+              <div class="col s12 m6 l10">
+              <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s4">
+                        <!--Month and year-->
+                        
+                        </div>
+                        <div class="input-field col s4">
+                        <select name="sub_company" class="error browser-default selectpicker">
+						<option value="" disabled selected>Choose Company</option>
+                        			
+						</select>
+                        
+                        </div>
+                        <div class="input-field  file-field col s4">
+                        
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                        
+                    </div>               
+                </form>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                <div class="card darken-1">                    
+                    <span style="text-align:center;padding:5px;" class="card-title">Status</span>
+                    <table class="collection">
+                    <tr style="background:#3f51b5;color:white;text-align:center;" class="collection-item avatar">
+                    <td>Sl No</td>
+                    <td>Status</td>
+                    <td>Count</td>
+                    <td>Amount</td>
+                    </tr>
+                    @php 
+                    isset($data['member_stat']) ? $data['member_stat'] : "";                   
+                    @endphp 
+                    @foreach($data['member_stat'] as  $key => $stat)
+                    <tr>
+                    <td>{{ $key+1 }} </td>
+                    <td>{{ $stat->status_name }}</td>                   
+                    <td>{{ $stat->Subscription_members->count() }}</td>
+                    <td>{{ $stat->Subscription_members->sum('Amount') }}</td>
+                    </tr>                  
+                    @endforeach
+                    </table>
+
+                   </div> 
+                </div>
+                <!--Approval Status-->
+                <div class="col s12 m6">
+                <div class="card darken-1">
+                    
+                    <span style="text-align:center;padding:5px;" class="card-title">Approval Status</span>
+                    <table class="collection">
+                    <tr style="background:#3f51b5;color:white;text-align:center;" class="collection-item avatar">
+                    <td>Sl No</td>
+                    <td>Description</td>
+                    <td>Count</td>
+                    <td>Approved</td>
+                    <td>Pending</td>
+                    </tr>
+                    @php 
+                    isset($data['member_stat']) ? $data['member_stat'] : "";                   
+                    @endphp 
+                    @foreach($data['member_stat'] as  $key => $stat)
+                    <tr>
+                    <td>{{ $key+1 }} </td>
+                    <td>{{ $stat->status_name }}</td>                   
+                    <td>{{ $stat->Subscription_members->count() }}</td>
+                    <td>{{ $stat->Subscription_members->sum('Amount') }}</td>
+                    <td>{{ $stat->Subscription_members->sum('Amount') }}</td>
+                    </tr>                  
+                    @endforeach
+                    </table>
+
+                   </div> 
+                </div>
+                </div>
+                
+            </div>
+          
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!--dgfdgfdg-->
 

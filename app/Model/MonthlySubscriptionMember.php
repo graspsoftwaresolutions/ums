@@ -23,4 +23,8 @@ class MonthlySubscriptionMember extends Model
     {
         return $this->belongsTo('App\Model\Status');
     }
+    public function CompanyId()
+    {
+        return $this->belongsTo('App\Model\Status');
+    }
 }
