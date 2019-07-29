@@ -33,6 +33,15 @@ use Mail;
 use App\Role;
 use URL;
 use Response;
+use App\Exports\SubscriptionExport;
+use App\Imports\SubscriptionImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class SubscriptionController extends Controller
@@ -59,4 +68,34 @@ class SubscriptionController extends Controller
         isset($data['member_stat']) ? $data['member_stat'] : "";       
         return view('subscription.sub_fileupload.sub_company')->with('data', $data);
     }
+	
+	public function subscribeDownload(Request $request){
+        $file_name = '';
+        $fmmm_date = explode("/",$request->entry_date);  
+        $file_name .= $fmmm_date[0];
+        $file_name .= $fmmm_date[1];
+        $file_name .= str_replace(' ', '-', CommonHelper::getComapnyName($request->sub_company)); 
+        if($request->type==0){
+            return Excel::download(new SubscriptionExport, $file_name.'.xlsx');
+        }else{
+            $rules = array(
+                        'file' => 'required|mimes:xls,xlsx',
+                    );
+            $validator = Validator::make(Input::all(), $rules);
+            if($validator->fails())
+            {
+                return back()->withErrors($validator);
+            }
+            else
+            {
+                if(Input::hasFile('file')){
+                    $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
+                    //$data = Excel::toArray(new SubscriptionImport, $file);
+                    Excel::import(new SubscriptionImport($request->all()), $file);
+                    return back();
+                }
+            }
+        }
+    }
+  
 }

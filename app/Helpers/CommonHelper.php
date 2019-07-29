@@ -253,5 +253,17 @@ class CommonHelper
     public static function getStateList($countryid){
         return DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$countryid)->get();
     }
+
+    public static function getCompanyListAll(){
+		return $results = Company::where('status',1)->get();
+     }
+
+    public static function getComapnyName($companyid){
+		$company_name = Company::where('id',$companyid)->pluck('company_name');
+        if(count($company_name)>0){
+            return $company_name[0];
+        }
+        return false;
+    }
    
 }

@@ -68,8 +68,18 @@ class HomeController extends Controller
             $data['total_member_count'] = $member_count;
 
           
-           $status_members = Membership::where('status_id',1)->count();
-          // dd($status_members);
+           $status_active_members = Membership::where([ ['status_id',1],['status','=','1'] ])->count();
+           $data['totla_active_member_count'] = $status_active_members;
+
+           $status_defaulter_members = Membership::where([ ['status_id',2],['status','=','1'] ])->count();
+           $data['totla_defaulter_member_count'] = $status_defaulter_members;
+
+           $status_struckoff_members = Membership::where([ ['status_id',3],['status','=','1'] ])->count();
+           $data['totla_struckoff_member_count'] = $status_struckoff_members;
+
+           $status_resigned_members = Membership::where([ ['status_id',4],['status','=','1'] ])->count();
+           $data['totla_resigned_member_count'] = $status_resigned_members;
+          
 
         }else if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
