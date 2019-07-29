@@ -102,7 +102,6 @@ canvas#custom-line-chart-sample-three {
             <span class="new badge gradient-45deg-indigo-purple gradient-shadow mt-2 mr-2">+ $900</span>
             <p class="mt-2 mb-0 font-weight-600">Total Members</p>
             <p class="no-margin grey-text lighten-3">$40,512 avg</p>
-            <h5>$ 22,300</h5>
          </div>
          <div class="row">
             <div class="sample-chart-wrapper card-gradient-chart">
