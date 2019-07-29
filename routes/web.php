@@ -195,6 +195,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('member_emailexists','MemberController@checkMemberemailExists');
 
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
+	Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
+	Route::post('subscribe_download','SubscriptionController@subscribeDownload')->name('subscription.sub_filedownload');
 
 });
 /* Master */
@@ -228,7 +230,7 @@ Route::get('delete-fee-data','MembershipController@deleteFee');
 
 
 //subscription
-Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
+
 	
 
 Route::get('/maintenance', function () {
