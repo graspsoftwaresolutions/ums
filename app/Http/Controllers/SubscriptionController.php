@@ -40,7 +40,7 @@ class SubscriptionController extends Controller
     public function __construct() {
         ini_set('memory_limit', '-1');
         $this->middleware('auth');
-        $this->middleware('module:master');       
+        //$this->middleware('module:master');       
         $this->Company = new Company;
         $this->MonthlySubscription = new MonthlySubscription;
         $this->MonthlySubscriptionMember = new MonthlySubscriptionMember;
