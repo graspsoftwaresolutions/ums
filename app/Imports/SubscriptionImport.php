@@ -18,7 +18,8 @@ class SubscriptionImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-		//print_r($row); die;
+
+		print_r($row); die;
 		/* if($row['name']!=''){
 			return new User([
 				'name'  => $row['name'],

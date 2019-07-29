@@ -89,7 +89,8 @@ class SubscriptionController extends Controller
             else
             {
                 if(Input::hasFile('file')){
-                    return 'upload';
+                    Excel::import(new SubscriptionImport,request()->file('file'));
+                    return back();
                 }
             }
         }
