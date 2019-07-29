@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMonthlysubscriptionmemberTable extends Migration
+class CreateMonSubCompanyattachTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,19 @@ class CreateMonthlysubscriptionmemberTable extends Migration
      */
     public function up()
     {
-        Schema::create('MonthlySubscriptionMember', function (Blueprint $table) {
+        Schema::create('mon_sub_companyattach', function (Blueprint $table) {
             $table->bigIncrements('id');
 			$table->unsignedBigInteger('MonthlySubscriptionCompanyId')->nullable();
-			$table->string('MemberCode')->nullable();
-			$table->string('NRIC')->nullable();
-			$table->string('Name')->nullable();
-			$table->float('Amount', 8, 2);
-            $table->integer('StatusId')->nullable(); 
+			$table->unsignedBigInteger('MonthlySubscriptonFileTypeId')->nullable();
+			$table->string('FilePath')->nullable();
+			$table->string('FileContent')->nullable();
             $table->integer('created_by')->nullable(); 
 			$table->integer('updated_by')->nullable(); 
 			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->timestamp('created_on')->nullable();
 			
-			$table->foreign('MonthlySubscriptionCompanyId')->references('id')->on('monthlysubscriptioncompany')->onDelete('cascade');
-		    $table->foreign('MemberCode')->references('member_number')->on('membership')->onDelete('cascade');
+			$table->foreign('MonthlySubscriptionCompanyId')->references('id')->on('mon_sub_company')->onDelete('cascade');
+		    $table->foreign('MonthlySubscriptonFileTypeId')->references('id')->on('mon_sub_filetype')->onDelete('cascade');
         });
     }
 
@@ -38,6 +36,6 @@ class CreateMonthlysubscriptionmemberTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('MonthlySubscriptionMember');
+        Schema::dropIfExists('mon_sub_companyattach');
     }
 }
