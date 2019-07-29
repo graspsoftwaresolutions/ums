@@ -99,9 +99,9 @@ canvas#custom-line-chart-sample-three {
 
       <div id="chartjs" class="card pt-0 pb-0 animate fadeLeft">
          <div class="padding-2 ml-2">
-            <span class="new badge gradient-45deg-indigo-purple gradient-shadow mt-2 mr-2">+ $900</span>
+            <span class=" badge gradient-45deg-indigo-purple gradient-shadow mt-2 mr-2">{{$data['totla_active_member_count']}} Active Members</span>
             <p class="mt-2 mb-0 font-weight-600">Total Members</p>
-            <p class="no-margin grey-text lighten-3">$40,512 avg</p>
+            <p class="no-margin grey-text lighten-3">{{ $data['total_member_count']}}</p>
          </div>
          <div class="row">
             <div class="sample-chart-wrapper card-gradient-chart">
@@ -188,7 +188,8 @@ canvas#custom-line-chart-sample-three {
         }
     };
  
-    var SLlabels = @php echo json_encode($data_status) @endphp;
+    // var SLlabels = @php echo json_encode($data_status) @endphp;
+   var SLlabels = ['x','ACTIVE','DEFAULTER','STRUCKOFF','RESIGNED','y'];
     var LineSL3ctx = document.getElementById("custom-line-chart-sample-three").getContext("2d");
     var gradientStroke = LineSL3ctx.createLinearGradient(500, 0, 0, 200);
     gradientStroke.addColorStop(0, "#8133ff");
@@ -218,7 +219,7 @@ canvas#custom-line-chart-sample-three {
                     fill: true,
                     backgroundColor: gradientFill,
                     borderWidth: 1,
-                    data: [24, 18, 20, 30, 40, 43]
+                    data: [0, @php echo  $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp,0]
                 }
             ]
         },
