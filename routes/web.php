@@ -229,7 +229,7 @@ Route::get('delete-fee-data','MembershipController@deleteFee');
 
 //subscription
 Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
-	
+Route::get('sub_company','SubscriptionController@sub_company')->name('subscription.sub_fileupload.sub_company');	
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');

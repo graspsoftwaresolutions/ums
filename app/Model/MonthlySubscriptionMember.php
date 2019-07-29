@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MonthlySubscriptionMember extends Model
 {
-    protected $table = "monthlysubscriptionmember";
+    protected $table = "mon_sub_member";
     protected $fillable = ['id','MonthlySubscriptionCompanyId','MemberCode','StatusId','NRIC'];
     public $timestamps = true;
     //save 
@@ -20,6 +20,10 @@ class MonthlySubscriptionMember extends Model
         return $savedata;
     }
     public function status()
+    {
+        return $this->belongsTo('App\Model\Status');
+    }
+    public function CompanyId()
     {
         return $this->belongsTo('App\Model\Status');
     }
