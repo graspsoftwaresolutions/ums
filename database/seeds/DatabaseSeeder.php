@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PersonTitleTableSeeder::class);
         $this->call(StatusTableSeeder::class);
         $this->call(FormTypeTableSeeder::class); */
-		$this->call(CreatedByColumnUpdateSeeder::class);
+        //$this->call(CreatedByColumnUpdateSeeder::class);
+        
+        $this->call(MonthlySubMatchTypeTableSeeder::class);
     }
 }
