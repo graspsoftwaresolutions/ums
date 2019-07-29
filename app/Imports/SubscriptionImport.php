@@ -8,13 +8,17 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\ToArray;
+use App\User;
 use App\Model\MonthlySubscription;
 use App\Model\MonthlySubscriptionMember;
 use App\Model\MonthlySubscriptionCompany;
 use Auth;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use App\Helpers\CommonHelper;
 
 
-class SubscriptionImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
+class SubscriptionImport implements ToCollection, WithCalculatedFormulas
 {
     /**
     * @param array $row
@@ -52,27 +56,92 @@ class SubscriptionImport implements ToModel, WithHeadingRow, WithCalculatedFormu
         $this->company_auto_id =  $subscription_company->id;
     }
 
-    public function model($row)
+    public function collection(Collection $rows)
     {
+        $totalcount=count($rows);
+        
+        $count=0;
+        foreach ($rows as $key=>$row) 
+        {
+            // if($count<=5 && $count>=3){
+                
+            // }
+            // if( $count==5){
+            //     return $subscription_member->id;
+            //    die;
+            // }
+            // $count++;
 
-		$icno = $row['icno'];
-		$nric = $row['nric'];
-		$membername = $row['membername'];
-		$amount = $row['amount'];
-        $department = $row['department'];
-        print_r($icno);die;
+            // User::create([
+            //     'name' => 'testabc'.$count,
+            //     'email' => 'testabc'.$count.'@gmail.com',
+            //     'password' => 'testabc',
+            // ]);
+            // die;
+            print_r($row[$count]);
+           
+           
+           /* if($row[0]!='ID'){
+                
+                 $icno = $row[1];
+                 $nric = $row[2];
+                 $membername = $row[3];
+                 $amount = $row[4];
+                
+                $subscription_member = new MonthlySubscriptionMember();
+                $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+                $subscription_member->NRIC = $nric;
+                $subscription_member->Name = $membername;
+                $subscription_member->Amount = $amount;
+                $subscription_member->StatusId = 1;
+                $subscription_member->MemberCode = 35280;
+                $subscription_member->created_by = Auth::user()->id;
+                $subscription_member->created_on = date('Y-m-d');
+                $subscription_member->save();
+                if($count==3){
+                    print_r($subscription_member->id);
+                    die;
+                }
+               
+               
 
-        $subscription_member = new MonthlySubscriptionMember();
+            }*/
+            // if($count==10){
+            //     die;
+            // }
+            $count++;
+        }
+        die;
+        //print_r($rows);die;
+        // if($row[0]!='ID'){
+        //     $icno = $row[0];
+        //     $nric = $row[2];
+        //     $membername = $row[3];
+        //     $amount = $row[4];
+        //     $department = $row[5];
+            
 
+        //     $subscription_member = new MonthlySubscriptionMember();
+        //     $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+        //     $subscription_member->NRIC = $nric;
+        //     $subscription_member->Name = $membername;
+        //     $subscription_member->Amount = $amount;
+        //     $subscription_member->created_by = Auth::user()->id;
+        //     $subscription_member->created_on = date('Y-m-d');
+        //     $subscription_member->save();
 
-        return new MonthlySubscriptionMember([
-                'MonthlySubscriptionCompanyId'  =>  $this->company_auto_id,
-                'NRIC' => $nric,
-                'Name' => $membername,
-                'Amount' => $amount,
-                'created_by' => Auth::user()->id,
-                'created_on' => date('Y-m-d')
-            ]);
+        //     //print_r( $subscription_member); die;
+
+        //     return $subscription_member;
+        // }
+        // return new MonthlySubscriptionMember([
+        //         'MonthlySubscriptionCompanyId'  =>  $this->company_auto_id,
+        //         'NRIC' => $nric,
+        //         'Name' => $membername,
+        //         'Amount' => $amount,
+        //         'created_by' => Auth::user()->id,
+        //         'created_on' => date('Y-m-d')
+        //     ]);
         
 		
     }
