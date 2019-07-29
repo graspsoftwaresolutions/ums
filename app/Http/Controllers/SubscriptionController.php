@@ -33,6 +33,12 @@ use Mail;
 use App\Role;
 use URL;
 use Response;
+use App\Exports\SubscriptionExport;
+use App\Imports\SubscriptionImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 
 class SubscriptionController extends Controller
@@ -62,5 +68,31 @@ class SubscriptionController extends Controller
        // dd($data);
        return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
     }
-
+	
+	public function subscribeDownload(Request $request){
+        if($request->type==0){
+            $file_name = '';
+            $fmmm_date = explode("/",$request->entry_date);  
+            $file_name .= $fmmm_date[0];
+            $file_name .= $fmmm_date[1];
+            $file_name .= str_replace(' ', '-', CommonHelper::getComapnyName($request->sub_company)); 
+            return Excel::download(new SubscriptionExport, $file_name.'.xlsx');
+        }else{
+            $rules = array(
+                        'file' => 'required|mimes:xls,xlsx',
+                    );
+            $validator = Validator::make(Input::all(), $rules);
+            if($validator->fails())
+            {
+                return back()->withErrors($validator);
+            }
+            else
+            {
+                if(Input::hasFile('file')){
+                    return 'upload';
+                }
+            }
+        }
+    }
+  
 }
