@@ -227,6 +227,10 @@ Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
 
 
+//subscription
+Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
+	
+
 Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });

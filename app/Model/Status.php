@@ -27,4 +27,8 @@ class Status extends Model
     {
         return $this->hasMany('App\Modal\Membership','status_id')->count();
     }
+    public function Subscription_members()
+    {
+        return $this->hasMany('App\Model\MonthlySubscriptionMember','StatusId');
+    }
 }
