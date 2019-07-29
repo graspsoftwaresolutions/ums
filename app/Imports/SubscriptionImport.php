@@ -58,11 +58,32 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
 
     public function collection(Collection $rows)
     {
-        $totalcount=count($rows);
-        
-        $count=0;
-        foreach ($rows as $key=>$row) 
-        {
+        $totalcount=count($rows);      
+        foreach($rows as $key=>$row1){
+            if($rows[$key] != $rows[0]){
+                $icno = $row1[1];
+                $nric = $row1[2];
+                $membername = $row1[3];
+                $amount = $row1[4];
+                $subscription_member = new MonthlySubscriptionMember();
+                $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+                $subscription_member->NRIC = $nric;
+                $subscription_member->Name = $membername;
+                $subscription_member->Amount = $amount;
+                $subscription_member->StatusId = 1;
+                $subscription_member->MemberCode = 35280;
+                $subscription_member->created_by = Auth::user()->id;
+                $subscription_member->created_on = date('Y-m-d');
+                $subscription_member->save();
+
+            }
+        }
+       
+       //$count=0;
+      //  dd($rows);
+       // foreach ($rows as $key=>$row) 
+       // {
+          
             // if($count<=5 && $count>=3){
                 
             // }
@@ -78,7 +99,7 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
             //     'password' => 'testabc',
             // ]);
             // die;
-            print_r($row[$count]);
+          //  print_r($row[$count]);
            
            
            /* if($row[0]!='ID'){
@@ -109,9 +130,9 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
             // if($count==10){
             //     die;
             // }
-            $count++;
-        }
-        die;
+         //   $count++;
+       // }
+       // die;
         //print_r($rows);die;
         // if($row[0]!='ID'){
         //     $icno = $row[0];
