@@ -60,6 +60,7 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
     {
         $totalcount=count($rows);      
         foreach($rows as $key=>$row1){
+            
             if($rows[$key] != $rows[0]){
                 $icno = $row1[1];
                 $nric = $row1[2];
@@ -70,101 +71,14 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
                 $subscription_member->NRIC = $nric;
                 $subscription_member->Name = $membername;
                 $subscription_member->Amount = $amount;
-                $subscription_member->StatusId = 1;
-                $subscription_member->MemberCode = 35280;
+                $subscription_member->StatusId = null;
+                $subscription_member->MemberCode = null;
                 $subscription_member->created_by = Auth::user()->id;
                 $subscription_member->created_on = date('Y-m-d');
                 $subscription_member->save();
 
             }
         }
-       
-       //$count=0;
-      //  dd($rows);
-       // foreach ($rows as $key=>$row) 
-       // {
-          
-            // if($count<=5 && $count>=3){
-                
-            // }
-            // if( $count==5){
-            //     return $subscription_member->id;
-            //    die;
-            // }
-            // $count++;
-
-            // User::create([
-            //     'name' => 'testabc'.$count,
-            //     'email' => 'testabc'.$count.'@gmail.com',
-            //     'password' => 'testabc',
-            // ]);
-            // die;
-          //  print_r($row[$count]);
-           
-           
-           /* if($row[0]!='ID'){
-                
-                 $icno = $row[1];
-                 $nric = $row[2];
-                 $membername = $row[3];
-                 $amount = $row[4];
-                
-                $subscription_member = new MonthlySubscriptionMember();
-                $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
-                $subscription_member->NRIC = $nric;
-                $subscription_member->Name = $membername;
-                $subscription_member->Amount = $amount;
-                $subscription_member->StatusId = 1;
-                $subscription_member->MemberCode = 35280;
-                $subscription_member->created_by = Auth::user()->id;
-                $subscription_member->created_on = date('Y-m-d');
-                $subscription_member->save();
-                if($count==3){
-                    print_r($subscription_member->id);
-                    die;
-                }
-               
-               
-
-            }*/
-            // if($count==10){
-            //     die;
-            // }
-         //   $count++;
-       // }
-       // die;
-        //print_r($rows);die;
-        // if($row[0]!='ID'){
-        //     $icno = $row[0];
-        //     $nric = $row[2];
-        //     $membername = $row[3];
-        //     $amount = $row[4];
-        //     $department = $row[5];
-            
-
-        //     $subscription_member = new MonthlySubscriptionMember();
-        //     $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
-        //     $subscription_member->NRIC = $nric;
-        //     $subscription_member->Name = $membername;
-        //     $subscription_member->Amount = $amount;
-        //     $subscription_member->created_by = Auth::user()->id;
-        //     $subscription_member->created_on = date('Y-m-d');
-        //     $subscription_member->save();
-
-        //     //print_r( $subscription_member); die;
-
-        //     return $subscription_member;
-        // }
-        // return new MonthlySubscriptionMember([
-        //         'MonthlySubscriptionCompanyId'  =>  $this->company_auto_id,
-        //         'NRIC' => $nric,
-        //         'Name' => $membername,
-        //         'Amount' => $amount,
-        //         'created_by' => Auth::user()->id,
-        //         'created_on' => date('Y-m-d')
-        //     ]);
-        
-		
     }
 	// public function headingRow(): int
     // {

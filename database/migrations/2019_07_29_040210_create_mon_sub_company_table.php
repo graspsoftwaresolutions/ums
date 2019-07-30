@@ -22,8 +22,8 @@ class CreateMonSubCompanyTable extends Migration
 			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->timestamp('created_on')->nullable();
 			
-			$table->foreign('MonthlySubscriptionId')->references('id')->on('mon_sub')->onDelete('cascade');
-		    $table->foreign('CompanyCode')->references('id')->on('company')->onDelete('cascade');
+			//$table->foreign('MonthlySubscriptionId')->references('id')->on('mon_sub')->onDelete('cascade');
+		    //$table->foreign('CompanyCode')->references('id')->on('company')->onDelete('cascade');
         });
     }
 

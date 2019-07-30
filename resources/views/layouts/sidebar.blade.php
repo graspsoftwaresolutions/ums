@@ -52,14 +52,12 @@
           @endif
         @endif
 
-         <li id="masters_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="monetization_on">	</i><span class="menu-title" data-i18n="">{{ __('Subscription') }}</span></a>
+         <li id="subscriptions_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">subscriptions</i><span class="menu-title" data-i18n="">{{ __('Subscription') }}</span></a>
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+              <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Details') }}</span></a></li>
 
-              <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="monetization_on">radio_button_unchecked</i><span>{{ __('Subscription Details') }}</span></a></li>
-              <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Company') }}</span></a></li>
-
-              </ul>
+            </ul>
           </div>
         </li>
         <!--
