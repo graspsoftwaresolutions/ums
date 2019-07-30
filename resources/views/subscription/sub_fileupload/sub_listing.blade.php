@@ -47,12 +47,11 @@
     <div class="col s12">
 		<div id="validations" class="card card-tabs">
 			<div class="card-title">
-			
+				@include('includes.messages')
 			</div>
 			<div class="card-content">
-				
 					<div class="row">
-						<div class="col s12 m6 l10">
+						<div class="col s12 m12">
 							<div class="row">
 								<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
 									@csrf
@@ -71,7 +70,7 @@
 										@endif
 										<div class="input-field col s4">
 											<label for="doe">{{__('Date of Entry') }}*</label>
-											<input type="text" name="entry_date" id="entry_date" class="datepicker-custom" />
+											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
 										</div>
 										<div class="input-field col s4">
 											@php
@@ -88,7 +87,7 @@
 										<div class="input-field col s2">
 											 <select id="type" name="type"
 											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
-												<option value="0">{{__('Download') }}</option>
+												<option value="0">{{__('Download Empty File') }}</option>
 												<option value="1">{{__('Upload') }}</option>
 										     </select>
 										</div>
@@ -102,7 +101,13 @@
 												<input class="file-path validate" type="text">
 											</div>
 										</div>
-										<div class="input-field col s4 right">
+										
+									</div>
+									<div class="row">
+										<div class="col s8">
+											
+										</div>
+										<div class="col s4 right">
 											<button id="submit-download" class="waves-effect waves-dark btn btn-primary form-download-btn" type="submit">Download/Upload</button>
 											
 										</div>
@@ -172,7 +177,25 @@
 	</div>
 
 <!--dgfdgfdg-->
-
+	 <div id="modal_subscription" class="modal">
+		<div class="modal-content">
+			<p>{{__('Company Data Already Exists, Are you sure you want to download existance data') }}</p>
+			<div class="row">
+				<div class="input-field col s12 m6">
+					<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn " onClick="return DownloadExistance(1)"
+						type="button" name="action">{{__('Yes')}}
+					</button>
+				</div>
+				<div class="input-field col s12 m6 right">
+					<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn" onClick="return DownloadExistance(0)"
+						type="button" name="action">{{__('No')}}
+					</button>
+				</div>
+				<div class="clearfix" style="clear:both"></div>
+				
+			</div>
+		</div>
+	</div>
 
     </div>
 </div> 
@@ -196,10 +219,16 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
+$(document).ready(function() {
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+});
      $(document).ready(function(){
         $(".datepicker-custom").datepicker({
             autoclose: true,
-            format: "mmm/yyyy"
+            format: "mmm/yyyy",
+			/* today: 'Today',
+			defaultDate: '01/Jul/2019', */
         });
     });
 	$("#subscribe_formValidate").validate({
@@ -240,11 +269,41 @@
     });
 	
 	function FileUploadEnable(type){
-		if(type == 0){
-			$("#file-upload-div").addClass('hide');
-		}else{
+		if(type == 1){
 			$("#file-upload-div").removeClass('hide');
+		}else{
+			$("#file-upload-div").addClass('hide');
 		}
+	}
+	$(document).on('change','#entry_date,#sub_company',function(){
+		var entry_date = $("#entry_date").val();
+		var sub_company = $("#sub_company").val();
+		if(sub_company!="" && sub_company!=""){
+			loader.showLoader();
+			var url = "{{ url(app()->getLocale().'/check-subscription-exists') }}" + '?entry_date=' + entry_date + "&sub_company=" + sub_company;
+			$.ajax({
+				url: url,
+				type: "GET",
+				success: function(result) {
+					loader.hideLoader();
+					if(result.status==1){
+						$("#modal_subscription").modal('open');
+						$("#type option[value='2']").remove();
+						$("#type").append('<option value="2">Download Existance data</option>');
+					}else{
+						
+					}
+				}
+			});
+		}
+	});
+	function DownloadExistance(existance){
+		if(existance==1){
+			$("#type").val(2);
+		}else{
+			//$("#type option[value='2']").remove();
+		}
+		$("#modal_subscription").modal('close');
 	}
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');

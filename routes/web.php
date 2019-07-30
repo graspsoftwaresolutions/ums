@@ -199,6 +199,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
 	Route::post('subscribe_download','SubscriptionController@subscribeDownload')->name('subscription.sub_filedownload');
 	Route::get('sub_company','SubscriptionController@sub_company')->name('subscription.sub_fileupload.sub_company');
+	Route::get('check-subscription-exists','SubscriptionController@getSubscriptionStatus')->name('subscription.getstatus');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

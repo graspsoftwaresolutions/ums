@@ -26,6 +26,7 @@ use App\Model\Company;
 use App\Mail\UnionBranchMailable;
 use App\Mail\CompanyBranchMailable;
 use App\Model\MonthlySubscription;
+use App\Model\MonthlySubscriptionCompany;
 use App\Model\MonthlySubscriptionMember;
 use DB;
 use View;
@@ -83,8 +84,20 @@ class SubscriptionController extends Controller
         $file_name .= $fmmm_date[0];
         $file_name .= $fmmm_date[1];
         $file_name .= str_replace(' ', '-', CommonHelper::getComapnyName($request->sub_company)); 
-        if($request->type==0){
-            return Excel::download(new SubscriptionExport, $file_name.'.xlsx');
+        if($request->type!=1){
+            $company_auto_id = '';
+            if($request->type==2){
+                $company_auto_id = $this->getCommonStatus($request->entry_date,$request->sub_company);
+            }
+            $request->request->add(['company_id' => $company_auto_id]);
+            if($company_auto_id==''){
+                $newtype =0;
+            }else{
+                $newtype =2;
+            }
+            //print_r($request->all());die;
+            
+            return Excel::download(new SubscriptionExport($newtype,$request->all()), $file_name.'.xlsx');
         }else{
             $rules = array(
                         'file' => 'required|mimes:xls,xlsx',
@@ -100,10 +113,52 @@ class SubscriptionController extends Controller
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
-                    return back()->with('message', 'File Updated Successfully');;
+                    return back()->with('message', 'File Uploaded Successfully');;
                 }
             }
         }
+    }
+
+    public function getSubscriptionStatus(Request $request){
+        $entry_date = $request->entry_date;
+        $sub_company = $request->sub_company;
+        $data =[];
+
+        $company_auto_id = '';
+        $company_auto_id = $this->getCommonStatus($entry_date,$sub_company);
+
+        
+        if($company_auto_id!=''){
+            $data =['status' =>1 ,'message'  => 'Data already uploaded for this company'];
+        }else{
+            $data =['status' =>0 ,'message'  => 'No data found'];
+        }
+
+        return $data;
+    }
+
+    public function getCommonStatus($entry_date,$sub_company){
+        $datearr = explode("/",$entry_date);  
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $company_auto_id = '';
+        $month_auto_id = '';
+
+        $subscription_qry = MonthlySubscription::where('Date','=',$form_date);
+        $subscription_count = $subscription_qry->count();
+        if($subscription_count>0){
+            $subscription_month = $subscription_qry->get();
+            $month_auto_id = $subscription_month[0]->id;
+
+            $subscription_company_qry = MonthlySubscriptionCompany::where('MonthlySubscriptionId','=',$month_auto_id)->where('CompanyCode',$sub_company);
+            $subscription_company_count = $subscription_company_qry->count();
+            if($subscription_company_count>0){
+                $subscription_company =$subscription_company_qry->get();
+                $company_auto_id = $subscription_company[0]->id;
+            }
+        }
+        return $company_auto_id;
     }
   
 }
