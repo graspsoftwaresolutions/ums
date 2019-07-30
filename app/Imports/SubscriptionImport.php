@@ -76,6 +76,7 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
                 $subscription_member->created_by = Auth::user()->id;
                 $subscription_member->created_on = date('Y-m-d');
                 $subscription_member->save();
+                return $subscription_member;
 
             }
         }

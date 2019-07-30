@@ -103,7 +103,7 @@
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
-$("#subscription_sidebars_id").addClass('active');
+$("#subscriptions_sidebars_id").addClass('active');
 $("#subcomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
 /*
@@ -179,7 +179,6 @@ function showeditForm(countryid) {
         }
     });
 }
-
 
 </script>
 @endsection

@@ -46,8 +46,11 @@
 	<div class="clearfix"></div>
     <div class="col s12">
 		<div id="validations" class="card card-tabs">
+			<div class="card-title">
+			
+			</div>
 			<div class="card-content">
-				<div class="card-title">
+				
 					<div class="row">
 						<div class="col s12 m6 l10">
 							<div class="row">
@@ -111,7 +114,7 @@
 						</div>
 						
 					</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>

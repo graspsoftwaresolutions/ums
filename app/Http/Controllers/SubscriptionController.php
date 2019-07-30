@@ -92,7 +92,7 @@ class SubscriptionController extends Controller
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
-                    return back();
+                    return back()->with('message', 'File Updated Successfully');;
                 }
             }
         }
