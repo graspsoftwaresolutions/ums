@@ -114,7 +114,6 @@
 				{"data": "status"},
 				{"data": "options"}
 			]
-
 		});
 });
  </script>

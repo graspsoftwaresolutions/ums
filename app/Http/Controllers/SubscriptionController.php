@@ -73,7 +73,6 @@ class SubscriptionController extends Controller
                                             ->join('company','company.id','=','mon_sub_company.CompanyCode')
                                             ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
                                             ->where('mon_sub_member.StatusId','=','1')->get();
-        
 
         $data['member_stat'] = $status_all;
         isset($data['member_stat']) ? $data['member_stat'] : "";       
@@ -205,6 +204,11 @@ class SubscriptionController extends Controller
         }
         return back()->with('message', 'File Uploaded Successfully');
         return '--scaninng completed';
+    }
+
+    public function submember($lang,$id)
+    {
+        return view('subscription.sub_member');
     }
   
 }
