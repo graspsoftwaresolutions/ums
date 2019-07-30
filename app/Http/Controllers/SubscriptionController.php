@@ -59,11 +59,19 @@ class SubscriptionController extends Controller
     public function index() {
         $status_all = Status::all();       
         $data['member_stat'] = $status_all;
+
         isset($data['member_stat']) ? $data['member_stat'] : "";       
         return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
-    }
+    }   
     public function sub_company() {
-        $status_all = Status::all();       
+        $status_all = Status::all();   
+         $data['company_subscription_list'] = DB::table('mon_sub')->select('*')
+                                            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+                                            ->join('company','company.id','=','mon_sub_company.CompanyCode')
+                                            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+                                            ->where('mon_sub_member.StatusId','=','1')->get();
+        
+
         $data['member_stat'] = $status_all;
         isset($data['member_stat']) ? $data['member_stat'] : "";       
         return view('subscription.sub_fileupload.sub_company')->with('data', $data);
