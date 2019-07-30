@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
     <div class="row">
         <div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">

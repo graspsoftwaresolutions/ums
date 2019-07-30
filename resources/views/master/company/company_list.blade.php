@@ -12,7 +12,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
 <div class="row">
 <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">

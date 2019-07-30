@@ -8,10 +8,12 @@
 		<div class="loading-overlay-image-container">
 			<img src="{{ asset('public/images/loading.gif') }}" class="loading-overlay-img"/>
 		</div>
-		@include('layouts.header')
-		@include('layouts.sidebar')
-		@section('main-content')
-			@show
-		@include('layouts.footer')
+		<div id="main" class="main-full">
+			@include('layouts.header')
+			@include('layouts.sidebar')
+			@section('main-content')
+				@show
+			@include('layouts.footer')
+		</div>
     </body>
 </html>
