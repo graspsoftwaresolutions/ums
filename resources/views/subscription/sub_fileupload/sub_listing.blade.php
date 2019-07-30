@@ -68,14 +68,39 @@
 											 </div>
 											
 										@endif
+										@php 
+											$auth_user = Auth::user();
+											$companylist = [];
+											$companyid = '';
+											if(!empty($auth_user)){
+												$userid = Auth::user()->id;
+												$get_roles = Auth::user()->roles;
+												$user_role = $get_roles[0]->slug;
+												
+												if($user_role =='union'){
+													$companylist = CommonHelper::getCompanyListAll();
+												}
+												else if($user_role =='union-branch'){
+													$unionbranchid = CommonHelper::getUnionBranchID($userid);
+													$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+												} 
+												else if($user_role =='company'){
+													$companyid = CommonHelper::getCompanyID($userid);
+													$companylist = CommonHelper::getCompanyList($companyid);
+												}
+												else if($user_role =='company-branch'){
+													$companyid = CommonHelper::getCompanyID($userid);
+													$companylist = CommonHelper::getCompanyList($companyid);
+												}  
+											}
+											
+										@endphp
 										<div class="input-field col s4">
 											<label for="doe">{{__('Date of Entry') }}*</label>
 											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
 										</div>
-										<div class="input-field col s4">
-											@php
-											$companylist = CommonHelper::getCompanyListAll();
-											@endphp
+										<div class="col s4">
+											<label for="sub_company">{{__('Company') }}*</label>
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>Choose Company</option>
 												@foreach($companylist as $value)
@@ -84,11 +109,12 @@
 											</select>
 											<div class="errorTxt6"></div>
 										</div>
-										<div class="input-field col s2">
+										<div class="col s2">
+											<label for="type">{{__('Type') }}*</label>
 											 <select id="type" name="type"
-											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
+											  class="error browser-default common-select add-select selectpicker" onChange="return FileUploadEnable(this.value)">
 												<option value="0">{{__('Download Empty File') }}</option>
-												<option value="1">{{__('Upload') }}</option>
+												<option value="1">{{__('Upload File') }}</option>
 										     </select>
 										</div>
 										<div id="file-upload-div" class="input-field  file-field col s2 hide">
@@ -187,7 +213,7 @@
 					</button>
 				</div>
 				<div class="input-field col s12 m6 right">
-					<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn" onClick="return DownloadExistance(0)"
+					<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn right" onClick="return DownloadExistance(0)"
 						type="button" name="action">{{__('No')}}
 					</button>
 				</div>
@@ -280,6 +306,7 @@ $(document).ready(function() {
 		var sub_company = $("#sub_company").val();
 		if(sub_company!="" && sub_company!=""){
 			loader.showLoader();
+			$("#type option[value='2']").remove();
 			var url = "{{ url(app()->getLocale().'/check-subscription-exists') }}" + '?entry_date=' + entry_date + "&sub_company=" + sub_company;
 			$.ajax({
 				url: url,
@@ -288,7 +315,6 @@ $(document).ready(function() {
 					loader.hideLoader();
 					if(result.status==1){
 						$("#modal_subscription").modal('open');
-						$("#type option[value='2']").remove();
 						$("#type").append('<option value="2">Download Existance data</option>');
 					}else{
 						
@@ -300,11 +326,19 @@ $(document).ready(function() {
 	function DownloadExistance(existance){
 		if(existance==1){
 			$("#type").val(2);
+			$('#subscribe_formValidate').trigger('submit');
 		}else{
 			//$("#type option[value='2']").remove();
 		}
 		$("#modal_subscription").modal('close');
 	}
+	$(document).on('submit','form#subscribe_formValidate',function(){
+		var type = $("#type").val();
+		if(type==1){
+			loader.showLoader();
+		}
+		//$("#submit-download").prop('disabled',true);
+	});
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');
 	$("#subscription_sidebar_a_id").addClass('active');
