@@ -41,6 +41,10 @@
                         <div class="card">
                             <div class="card-content">
                             <h4 class="card-title">{{__('Company Member List')}}</h4>
+                            <h4 class="card-title">{{__('Current Month :')}} July 2019</h4>
+                            <h4 class="card-title">{{__('Total Members Count :')}} 3000</h4>
+                            <h4 class="card-title">{{__('Company Name : ')}} xxx</h4>
+                            <h4 class="card-title">{{__('Company Code : ')}} xxx</h4>
                             @include('includes.messages')
                             <div class="row">
                                 <div class="col s12">
