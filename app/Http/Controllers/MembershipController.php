@@ -367,19 +367,21 @@ class MembershipController extends Controller
                 $nestedData['status'] = $member->status_name;
                 
                 $enc_id = Crypt::encrypt($member->id);
-				$delete = "";
+                $delete = "";
+                               
+                $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
+                $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
                 
-                    $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+                $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light cyan' href='$histry'><i class='material-icons'>history</i>History</a>";
                 
+                //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
 
-                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
-                                
                 $nestedData['options'] = $actions;
                 $data[] = $nestedData;
 
             }
         }
-    
          $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
