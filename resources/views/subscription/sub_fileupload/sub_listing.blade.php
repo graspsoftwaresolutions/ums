@@ -90,7 +90,6 @@
 											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
 												<option value="0">{{__('Download') }}</option>
 												<option value="1">{{__('Upload') }}</option>
-
 										     </select>
 										</div>
 										<div id="file-upload-div" class="input-field  file-field col s2 hide">
