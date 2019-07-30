@@ -39,21 +39,37 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
         $monthname = $datearr[0];
         $year = $datearr[1];
         $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
-        $subscription_month = new MonthlySubscription();
-        $subscription_month->Date = $form_date;
-        $subscription_month->created_by = Auth::user()->id;
-        $subscription_month->created_on = date('Y-m-d');
-        $subscription_month->save();
-        $this->month_auto_id =  $subscription_month->id;
 
-        $subscription_company = new MonthlySubscriptionCompany();
-        $subscription_company->MonthlySubscriptionId = $this->month_auto_id;
-        $subscription_company->CompanyCode = $sub_company;
-        $subscription_company->created_by = $this->month_auto_id;
-        $subscription_company->created_on = date('Y-m-d');
-        $subscription_company->save();
-
-        $this->company_auto_id =  $subscription_company->id;
+        $subscription_qry = MonthlySubscription::where('Date','=',$form_date);
+        $subscription_count = $subscription_qry->count();
+        if($subscription_count>0){
+            $subscription_month = $subscription_qry->get();
+            $this->month_auto_id = $subscription_month[0]->id;
+        }else{
+            $subscription_month = new MonthlySubscription();
+            $subscription_month->Date = $form_date;
+            $subscription_month->created_by = Auth::user()->id;
+            $subscription_month->created_on = date('Y-m-d');
+            $subscription_month->save();
+            $this->month_auto_id =  $subscription_month->id;
+        }
+        
+        $subscription_company_qry = MonthlySubscriptionCompany::where('MonthlySubscriptionId','=',$this->month_auto_id)->where('CompanyCode',$sub_company);
+        $subscription_company_count = $subscription_company_qry->count();
+        if($subscription_company_count>0){
+            $subscription_company =$subscription_company_qry->get();
+            $this->company_auto_id = $subscription_company[0]->id;
+        }else{
+            $subscription_company = new MonthlySubscriptionCompany();
+            $subscription_company->MonthlySubscriptionId = $this->month_auto_id;
+            $subscription_company->CompanyCode = $sub_company;
+            $subscription_company->created_by = Auth::user()->id;
+            $subscription_company->created_on = date('Y-m-d');
+            $subscription_company->save();
+    
+            $this->company_auto_id =  $subscription_company->id;
+        }
+       
     }
 
     public function collection(Collection $rows)
@@ -66,8 +82,19 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
                 $nric = $row1[2];
                 $membername = $row1[3];
                 $amount = $row1[4];
-                $subscription_member = new MonthlySubscriptionMember();
-                $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+
+                $subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
+                                            ->where('NRIC',$nric);
+                $subscription_member_count = $subscription_member_qry->count();
+                if($subscription_member_count>0){
+                    $subscription_member_res = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
+                    ->where('NRIC',$nric)->get();
+                    $company_member_id = $subscription_member_res[0]->id;
+                    $subscription_member = MonthlySubscriptionMember::find($company_member_id);
+                }else{
+                    $subscription_member = new MonthlySubscriptionMember();
+                    $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+                }
                 $subscription_member->NRIC = $nric;
                 $subscription_member->Name = $membername;
                 $subscription_member->Amount = $amount;
@@ -76,6 +103,7 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
                 $subscription_member->created_by = Auth::user()->id;
                 $subscription_member->created_on = date('Y-m-d');
                 $subscription_member->save();
+              
                 //return $subscription_member;
 
             }
