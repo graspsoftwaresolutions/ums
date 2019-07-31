@@ -13,6 +13,12 @@
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
+<style>
+.filter{
+    padding-top: 9px;
+    background-color: #dad1d1c7;
+}
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -53,22 +59,21 @@
                             <h4 class="card-title">{{__('Status :')}} XXXX</h4>
                             <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
                             <h4 class="card-title">{{__('Amount Paid :')}} 3000</h4>
-                            <div class="card" style="padding-top: 9px;">
+                            <div class="card filter">
                             <form method="post" action="">
                             <div class="row">
-                                <div class="col sm4 m4">
-                                <label for="doj">{{__('From Date') }}*</label>
-                                    <input type="text" class="datepicker"  name="from_date">
-                                   
+                                <div class="input-field col s4">
+                                    <i class="material-icons prefix">date_range</i>
+                                    <input id="icon_prefix" type="text" class="validate datepicker" name="form_date">
+                                    <label for="icon_prefix">From date</label>
                                 </div>
-                                <div class="col sm4 m4">
-                                <label for="doj">{{__('To date') }}*</label>
-                                    <input type="text"  class="datepicker"  name="to_date">
-                                    
+                                <div class="input-field col s4">
+                                    <i class="material-icons prefix">date_range</i>
+                                    <input id="icon_telephone" type="tel" class="validate datepicker" name="to_date">
+                                    <label for="icon_telephone">To Date</label>
                                 </div>
-                                <div class="col sm4 m4">
-                                <br>
-                                     <input type="submit"  class="btn" name="Search" value="Search">
+                                <div class="input-field col s4">
+                                <input type="submit"  class="btn" name="Search" value="Search">
                                 </div>
                             </div>
                             </form>  
