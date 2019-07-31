@@ -156,6 +156,9 @@
                     @include('layouts.right-sidebar')
                 </div>
             </div>
+            </div>
+            </div>
+            </div>
         </div>
     </div>
 </div>
