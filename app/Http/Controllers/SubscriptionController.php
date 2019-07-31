@@ -180,12 +180,9 @@ class SubscriptionController extends CommonController
         return $company_auto_id;
     }
 
-    public function scanSubscriptions($date, $company){
-        $datearr = explode("/",$date);  
-        $monthname = $datearr[0];
-        $year = $datearr[1];
-        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
-        $company_auto_id = $this->getCommonStatus($date, $company);
+    public function scanSubscriptions(Request $request){
+        $company_auto_id = $request->company_auto_id;
+        $return_data = ['status' => 0 ,'message' => ''];
         if($company_auto_id!=""){
             $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
@@ -216,9 +213,11 @@ class SubscriptionController extends CommonController
                 }
                 $count++;
             }
+            $return_data = ['status' => 1 ,'message' => 'status and member code updated successfully, Redirecting to subscription details...','redirect_url' =>  URL::to('/'.app()->getLocale().'/subscription')];
+        }else{
+            $return_data = ['status' => 0 ,'message' => 'Invalid company id'];
         }
-        return back()->with('message', 'File Uploaded Successfully');
-        return '--scaninng completed';
+       echo json_encode($return_data);
     }
 
     public function submember($lang,$id)
@@ -226,8 +225,10 @@ class SubscriptionController extends CommonController
         return view('subscription.sub_member');
     }
     
-    public function viewScanSubscriptions()
+    public function viewScanSubscriptions($lang,$id)
     {
-        return view('subscription.scan-subcription');
+        $company_auto_id = Crypt::decrypt($id);
+        $data['company_auto_id'] = $company_auto_id;
+        return view('subscription.scan-subcription')->with('data',$data);
     }
 }
