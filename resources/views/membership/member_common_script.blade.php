@@ -300,11 +300,7 @@
                 required: true,
             },
             mobile: {
-                required: true,
-				number: true,
-				minlength:10,
-				maxlength:13,
-				//maxlength:12,
+                required: true,	
             },
             email: {
                 required: true,

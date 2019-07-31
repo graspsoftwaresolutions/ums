@@ -328,16 +328,10 @@ $("#unionbranch_formValidate").validate({
             required: true,
         },
         phone: {
-            required: true,
-            number: true,
-            minlength:10,
-            maxlength:15,
+            required: true,     
         },
         mobile: {
             required: true,
-            number: true,
-            minlength:10,
-            maxlength:13,
         },
         email: {
             required: true,
@@ -380,13 +374,9 @@ $("#unionbranch_formValidate").validate({
         },
         phone: {
             required: '{{__("Please Enter your Phone Number") }}',
-            digits: '{{__("Enter Numbers only") }}',
-
         },
         mobile: {
             required: '{{__("Please Enter your Mobile Number") }}',
-            digits: '{{__("Enter Numbers only") }}',
-
         },
         email: {
             remote: '{{__("Email Already exists") }}',
