@@ -8,6 +8,8 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -83,9 +85,11 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div id="modal_add_edit" class="modal">
-                            <div class="modal-content">
-                                <h4>{{__('State Details')}}</h4>
+                        <div id="modal_add_edit" class="modal modal-fixed-header">
+                        <div class="modal-header" id="modal-header">
+                                <h4>{{__('State Details')}}</h4></div>
+                                <div class="modal-content">
+                                    <center>
                                 <form class="formValidate" id="stateformValidate" method="post"
                                     action="{{ route('master.savestate',app()->getLocale()) }}">
                                     @csrf
@@ -112,21 +116,24 @@
                                             <input id="state_name" name="state_name" class="common-text" type="text"
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
-                                            <label for="icon_room" class="force-active">{{__('State Name')}}</label>
+                                            <label for="icon_room" class="common-label">{{__('State Name')}}</label>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
-                                        <div class="input-field col s12">
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
                                     </div>
                                 </form>
+</center>
                             </div>
                         </div>
                     </div>
@@ -255,6 +262,7 @@ function showaddForm() {
     $('#state_name').val("");
     $('.modal').modal();
     $('#updateid').val("");
+    $('.common-label').removeClass('force-active');
 }
 
 function showeditForm(countryid) {
@@ -273,7 +281,9 @@ function showeditForm(countryid) {
             $('#country_id').val(result.country_id);
             $('#state_name').val(result.state_name);
             loader.hideLoader();
+            $('.common-label').addClass('force-active');
             $("#modal_add_edit").modal('open');
+            
         }
     });
 }
