@@ -93,7 +93,7 @@
 						$('#scanning-details').html(result.message);
 						setTimeout(function(){
 						  window.location.href = result.redirect_url;
-						}, 500);
+						}, 1500);
 					}else{
 						
 					}
