@@ -289,12 +289,20 @@ class CommonController extends Controller
 				}
                 if($edittype==0){
                     $edit =  "#";
+                }
+				else if($edittype==2){
+                    $edit =  "#";
                 }else{
                     $edit =  route($editRoute,[app()->getLocale(),$enc_id]);
                 }
+				$actions ='';
+				
+				if($edittype!=2){
+					$actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+				}
                
 
-                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+                
                 if($deletetype==0){
                     $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
                     $actions .="<button  type='submit' class='btn-floating waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'><i class='material-icons'>delete</i></button> </form>";

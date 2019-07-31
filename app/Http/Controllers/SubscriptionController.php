@@ -67,21 +67,12 @@ class SubscriptionController extends CommonController
         return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
     }   
     public function sub_company() {
-        $status_all = Status::all();   
-         $data['company_subscription_list'] = DB::table('mon_sub')->select('*')
-                                            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                                            ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                                            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                                            //->join('status','status.id','=','mon_sub_member.StatusId')
-                                           // ->where('mon_sub_member.StatusId','=',NULL)->get();
-                                           ->get();
-        isset($data['company_subscription_list']) ? $data['company_subscription_list'] : "";      
-       // dd($data['company_subscription_list']);
-        $data['tot_count'] = $data['company_subscription_list']->count();
-        $data['member_stat'] = $status_all;
-        isset($data['member_stat']) ? $data['member_stat'] : "";   
+        $data['company_list'] = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
+        ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        ->get();
 
-        return view('subscription.sub_fileupload.sub_company')->with('data', $data);
+        return view('subscription.sub_company_list')->with('data', $data);
     }
 	
 	public function subscribeDownload(Request $request){

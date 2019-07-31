@@ -45,7 +45,7 @@
                             <div class="card-content">
                             <h4 class="card-title">{{__('Company Member List')}}</h4>
                            
-                            <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y'); @endphp</h4>
+                            <h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
                             <h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
                             <h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
                             
