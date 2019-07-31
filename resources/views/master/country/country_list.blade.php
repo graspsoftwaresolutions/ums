@@ -8,9 +8,11 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
@@ -18,7 +20,7 @@
                 <div class="section section-data-tables">
                     <!-- BEGIN: Page Main-->
                     <div class="row">
-                        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+                        <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
                             <!-- Search for small screen-->
                             <div class="container">
                                 <div class="row">
@@ -62,15 +64,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="modal_add_edit" class="modal">
-                            <div class="modal-content">
+                        <div id="modal_add_edit" class="modal modal-fixed-header">
+                            <div class="modal-header" id="modal-header">
                                 <h4>{{__('Country Details') }}</h4>
+                            </div>
+                                <div class="modal-content">
                                 <form class="formValidate" id="countryformValidate" method="post"
                                     action="{{ route('master.savecountry',app()->getLocale()) }}">
                                     @csrf
                                     <input type="hidden" name="id" id="updateid">
                                     <div class="row">
-                                        <div class="input-field col s12 m6">
+                                        <div class="input-field col s12">
                                             <label for="name"
                                                 class="common-label force-active">{{__('Country Name') }}*</label>
                                             <input id="country_name" class="common-input" name="country_name"
@@ -78,13 +82,15 @@
                                             <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
-                                        <div class="input-field col s12">
-                                            <a href="#!"
+                                        </div>
+                                        </div>
+                                       <div class="modal-footer">
+                                       <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
@@ -204,6 +210,7 @@ function showaddForm() {
     $('#country_name').val("");
     $('.modal').modal();
     $('#updateid').val("");
+    $('.common-label').removeClass('force-active');
 }
 
 function showeditForm(countryid) {
@@ -217,12 +224,12 @@ function showeditForm(countryid) {
         url: url,
         type: "GET",
         success: function(result) {
-            console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#country_name').val(result.country_name);
             loader.hideLoader();
             $("#modal_add_edit").modal('open');
+            $('.common-label').addClass('force-active');
         }
     });
 }

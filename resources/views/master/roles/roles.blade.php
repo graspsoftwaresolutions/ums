@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
@@ -18,7 +18,7 @@
                 <div class="section section-data-tables">
                     <!-- BEGIN: Page Main-->
                     <div class="row">
-                        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+                        <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
                             <!-- Search for small screen-->
                             <div class="container">
                                 <div class="row">
@@ -252,7 +252,6 @@ function showeditForm(roleid) {
         type: "GET",
         success: function(resultdata) {
             result = resultdata['roles'];
-            //console.log(result);
             $('#updateid').val(result.id);
             if(result.id == 1)
             {

@@ -4,7 +4,7 @@
 @section('headSecondSection')
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
@@ -12,16 +12,16 @@
                 <div class="section section-data-tables">
                     <!-- BEGIN: Page Main-->
                     <div class="row">
-                        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+                        <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
                             <!-- Search for small screen-->
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
                                         <h5 class="breadcrumbs-title mt-0 mb-0">
                                             @if(isset($data['branch_view']))
-                                            {{__('Edit Company Branch Details')}}
+                                            {{__('Edit Bank Branch Details')}}
                                             @else
-                                            {{__('Add Company Branch Details')}}
+                                            {{__('Add Bank Branch Details')}}
                                             @endif
                                         </h5>
                                         <ol class="breadcrumbs mb-0">
@@ -44,9 +44,9 @@
                                 <div class="card-content">
                                     <h4 class="card-title">
                                         @if(isset($data['branch_view']))
-                                        {{__('Edit Company Branch')}}
+                                        {{__('Edit Bank Branch')}}
                                         @else
-                                        {{__('Add Company Branch')}}
+                                        {{__('Add Bank Branch')}}
                                         @endif
                                     </h4>
                                     @php
@@ -283,8 +283,6 @@ $(document).ready(function() {
                 url: " {{ URL::to('/get-state-list') }}?country_id=" + countryID,
                 success: function(res) {
                     if (res) {
-                        // console.log(res);
-                        //console.log('hi test');
                         $("#state_id").empty();
                         $("#city_id").empty();
                         $("#state_id").append($('<option></option>').attr('value', '').text(
@@ -322,7 +320,6 @@ $(document).ready(function() {
                 dataType: "json",
                 url: "{{ URL::to('/get-cities-list') }}?State_id=" + StateId,
                 success: function(res) {
-                    console.log(res);
                     if (res) {
                         $('#city_id').empty();
                         $("#city_id").append($('<option></option>').attr('value', '').text(
@@ -335,7 +332,6 @@ $(document).ready(function() {
                     } else {
                         $('#city_id').empty();
                     }
-                    // console.log(res);
                 }
             });
         } else {
@@ -359,15 +355,11 @@ $("#branchformValidate").validate({
         },
         phone: {
             required: true,
-			number: true,
-            minlength:10,
-            maxlength:15,
+			
         },
         mobile: {
             required: true,
-			number: true,
-            minlength:10,
-            maxlength:13,
+			
         },
         email: {
             required: true,

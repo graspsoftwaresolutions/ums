@@ -4,7 +4,7 @@
 @section('headSecondSection')
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
@@ -12,7 +12,7 @@
                 <div class="section ">
                     <!-- BEGIN: Page Main-->
                     <div class="row">
-                        <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+                        <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
                             <!-- Search for small screen-->
                             <div class="container">
                                 <div class="row">
@@ -266,8 +266,6 @@ $(document).ready(function() {
                 url: " {{ URL::to('/get-state-list') }}?country_id=" + countryID,
                 success: function(res) {
                     if (res) {
-                        // console.log(res);
-                        //console.log('hi test');
                         $("#city_id").empty();
                         $("#state_id").empty();
                         $("#city_id").append($('<option></option>').attr('value', '').text(
@@ -285,7 +283,6 @@ $(document).ready(function() {
                     } else {
                         $("#state_id").empty();
                     }
-                    console.log(res);
                 }
             });
         } else {
@@ -303,7 +300,6 @@ $(document).ready(function() {
                 dataType: "json",
                 url: "{{ URL::to('/get-cities-list') }}?State_id=" + StateId,
                 success: function(res) {
-                    console.log(res);
                     if (res) {
                         $('#city_id').empty();
                         $("#city_id").append($('<option></option>').attr('value', '').text(
@@ -332,16 +328,10 @@ $("#unionbranch_formValidate").validate({
             required: true,
         },
         phone: {
-            required: true,
-            number: true,
-            minlength:10,
-            maxlength:15,
+            required: true,     
         },
         mobile: {
             required: true,
-            number: true,
-            minlength:10,
-            maxlength:13,
         },
         email: {
             required: true,
@@ -384,13 +374,9 @@ $("#unionbranch_formValidate").validate({
         },
         phone: {
             required: '{{__("Please Enter your Phone Number") }}',
-            digits: '{{__("Enter Numbers only") }}',
-
         },
         mobile: {
             required: '{{__("Please Enter your Mobile Number") }}',
-            digits: '{{__("Enter Numbers only") }}',
-
         },
         email: {
             remote: '{{__("Email Already exists") }}',

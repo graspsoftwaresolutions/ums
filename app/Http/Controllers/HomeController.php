@@ -11,6 +11,7 @@ use App\Model\Membership;
 use App\Model\Company;
 use App\Model\CompanyBranch;
 use App\Model\Branch;
+use App\Model\Status;
 use App\User;
 use DB;
 
@@ -40,14 +41,15 @@ class HomeController extends Controller
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
         //return $get_union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
-        
+       
         $data['union_branch_count'] = '';
         if($user_role=='union'){
             $union_branch_count = unionBranch::where('is_head','!=',1)->where('status',1)->count();
             $data['union_branch_count'] = $union_branch_count;
-
-            $member_count = Membership::all()->where('status',1)->count();
-            $data['total_member_count'] = $member_count;
+            
+            //$member_count=0;
+            //$member_count = Membership::where('status',1)->count();
+            //$data['total_member_count'] = $member_count;
 
             $company_count = Company::where('status',1)->count();
             
@@ -62,6 +64,22 @@ class HomeController extends Controller
             $total_pending_members_count = Membership::where('is_request_approved',0)->count();
             $data['total_pending_members_count'] = $total_pending_members_count;
 
+            $member_count = $total_approved_members_count + $total_pending_members_count;
+            $data['total_member_count'] = $member_count;
+
+          
+           $status_active_members = Membership::where([ ['status_id',1],['status','=','1'] ])->count();
+           $data['totla_active_member_count'] = $status_active_members;
+
+           $status_defaulter_members = Membership::where([ ['status_id',2],['status','=','1'] ])->count();
+           $data['totla_defaulter_member_count'] = $status_defaulter_members;
+
+           $status_struckoff_members = Membership::where([ ['status_id',3],['status','=','1'] ])->count();
+           $data['totla_struckoff_member_count'] = $status_struckoff_members;
+
+           $status_resigned_members = Membership::where([ ['status_id',4],['status','=','1'] ])->count();
+           $data['totla_resigned_member_count'] = $status_resigned_members;
+          
 
         }else if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');

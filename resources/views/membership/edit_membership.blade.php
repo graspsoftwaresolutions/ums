@@ -7,7 +7,7 @@
 @endsection
 @section('main-content')
 
-<div id="main">
+<div id="">
 	<div class="row">
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 		<div class="col s12">
@@ -16,7 +16,7 @@
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">
-						<!--div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+						<!--div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
@@ -912,7 +912,6 @@
             dataType: "json",
             url : "{{ URL::to('/delete-nominee-data') }}?nominee_id="+nominee_id,
             success:function(res){
-                console.log(res);
                 if(res)
                 {
                     parrent.remove(); 
@@ -924,7 +923,6 @@
                         html: res.message
                     });
                 }
-               // console.log(res);
             }
          });
     });
@@ -938,7 +936,6 @@
             dataType: "json",
             url : "{{ URL::to('/delete-fee-data') }}?fee_id="+fee_id,
             success:function(res){
-                console.log(res);
                 if(res)
                 {
                     parrent.remove(); 
@@ -950,7 +947,6 @@
                         html: res.message
                     });
                 }
-               // console.log(res);
             }
          });
     });

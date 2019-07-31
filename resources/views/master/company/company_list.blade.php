@@ -10,12 +10,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
 <div class="row">
 <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
-<div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+<div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
 <!-- Search for small screen-->
 <div class="container">
 <div class="row">
@@ -65,8 +67,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                           </div>
                       </div>
                       <div id="modal_add_edit" class="modal">
-                          <div class="modal-content">
-                              <h4>{{__('Company Details') }}</h4>
+                      <div class="modal-header" id="modal-header">
+                              <h4>{{__('Company Details') }}</h4></div>
+                              <div class="modal-content">
                               <form class="formValidate" id="company_formValidate" method="post"
                                   action="{{ route('master.saveCompany',app()->getLocale()) }}">
                                   @csrf
@@ -89,7 +92,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       <div class="clearfix" style="clear:both"></div>
                                       <div class="col s12 m6">
                                           <label
-                                              class="common-label">{{__('Head of Company') }}</label>
+                                              class="common-label  force-active">{{__('Head of Company') }}</label>
                                           <select id="head_of_company" name="head_of_company"
                                               class="error browser-default common-select add-select">
                                               <option value="">{{__('Select Company') }}</option>
@@ -97,19 +100,20 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                           </select>
                                       </div>
                                       <div class="clearfix" style="clear:both"></div>
-                                      <div class="input-field col s12">
+                                        </div></div>
+                                        <div class="modal-footer">
                                           <a href="#!"
                                               class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                           <button id="modal-update-btn"
-                                              class="btn waves-effect waves-light right submit edit_hide_btn "
+                                              class="btn waves-effect waves-light  submit edit_hide_btn "
                                               type="submit" name="action">{{__('Update')}}
                                           </button>
                                           <button id="modal-save-btn"
-                                              class="btn waves-effect waves-light right submit add_hide"
+                                              class="btn waves-effect waves-light  submit add_hide"
                                               style="display:none;" type="submit"
                                               name="action">{{__('Save')}}
                                           </button>
-                                      </div>
+                                     
                                   </div>
                               </form>
                           </div>
@@ -243,6 +247,7 @@ $('#company_name').val("");
 $('#updateid').val("");
 $('#short_code').val("");
 $('.modal').modal();
+$('.common-label').removeClass('force-active');
 var url = "{{ url(app()->getLocale().'/save_company_detail') }}";
 $.ajax({
   url: url,
@@ -281,14 +286,13 @@ $.ajax({
       $('#head_of_company').empty();
       $('#head_of_company').append($('<option></option>').attr('value','').text('Select'));
       $.each(resultdata['head_company'], function(key, entry) {
-        console.log(resultdata);
           $('#head_of_company').append($('<option></option>').attr('value', entry
               .id).text(entry.company_name));
       });
       $("#head_of_company").val(result.head_of_company);
       loader.hideLoader();
+      $('.common-label').addClass('force-active');
       $("#modal_add_edit").modal('open');
-    //  console.log(resultdata);
      // $('#head_of_company').val(result.head_of_company);
   }
 });

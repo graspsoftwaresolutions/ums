@@ -195,6 +195,17 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('member_emailexists','MemberController@checkMemberemailExists');
 
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
+	//subscription
+	Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
+	Route::get('subscription-submember/{parameter}','SubscriptionController@submember')->name('subscription.submember');
+	Route::post('subscribe_download','SubscriptionController@subscribeDownload')->name('subscription.sub_filedownload');
+	Route::get('sub_company','SubscriptionController@sub_company')->name('subscription.sub_fileupload.sub_company');
+	Route::get('check-subscription-exists','SubscriptionController@getSubscriptionStatus')->name('subscription.getstatus');
+	
+	Route::post('ajax_submember_list','SubscriptionAjaxController@ajax_submember_list');
+	Route::get('scan-subscription/{parameter}','SubscriptionController@viewScanSubscriptions')->name('subscription.viewscan');
+	Route::get('process-scanning','SubscriptionController@scanSubscriptions')->name('subscription.scan');
+	Route::get('sub-company-members/{parameter}','SubscriptionController@companyMembers')->name('subscription.members');
 
 });
 /* Master */
@@ -225,7 +236,6 @@ Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
-
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');

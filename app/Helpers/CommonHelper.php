@@ -9,6 +9,7 @@ use App\Model\Country;
 use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
 use App\Model\Company;
+use App\Model\Status;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -106,6 +107,13 @@ class CommonHelper
         }
         return '';
     }
+
+    public static function getStatus()
+    {
+        $status = DB::table('status')->where('status','=','1')->pluck('status_name');
+        return $status;
+    }
+
 
     public static function getapprovedStatus($user_id){
         $status_data = DB::table('membership')->where('user_id', $user_id)->pluck('is_request_approved');
@@ -240,6 +248,26 @@ class CommonHelper
             return $branch_name[0];
         }
         return false;
-	}
+    }
+    
+    public static function getStateList($countryid){
+        return DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$countryid)->get();
+    }
+
+    public static function getCompanyListAll(){
+		return $results = Company::where('status',1)->get();
+     }
+
+    public static function getComapnyName($companyid){
+		$company_name = Company::where('id',$companyid)->pluck('company_name');
+        if(count($company_name)>0){
+            return $company_name[0];
+        }
+        return false;
+    }
+    public static function getCCTestMail(){
+        $ccmail = env("MAIL_CC",'membership@gmail.com');
+        return $ccmail;
+    }
    
 }

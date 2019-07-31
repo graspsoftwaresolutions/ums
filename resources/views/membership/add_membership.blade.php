@@ -5,7 +5,7 @@
 @section('headSecondSection')
 @endsection
 @section('main-content')
-<div id="main">
+<div id="">
 	<div class="row">
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 		<div class="col s12">
@@ -18,7 +18,7 @@
 					<!-- BEGIN: Page Main-->
 					<div class="row">
 						@if($data['user_type']==1)
-						<!--div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+						<!--div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
@@ -211,20 +211,29 @@
 																<div class="clearfix" ></div>
 																<div class="col s12 m6">
 																	<label>{{__('Country Name') }}*</label>
+																	@php
+																	$Defcountry = CommonHelper::DefaultCountry();
+																	@endphp
 																	<select name="country_id" id="country_id" class="error browser-default selectpicker" data-error=".errorTxt10">
 																		<option value="">{{__('Select Country') }}</option>
 																		@foreach($data['country_view'] as $value)
-																		<option value="{{$value->id}}">{{$value->country_name}}</option>
+																		<option @if($Defcountry==$value->id) selected @endif value="{{$value->id}}">{{$value->country_name}}</option>
 																		@endforeach
 																	</select>
 																	<div class="input-field">
 																		<div class="errorTxt10"></div>
 																	</div>
 																</div>
+																@php
+																$statelist = CommonHelper::getStateList($Defcountry);
+																@endphp
 																<div class="col s12 m6">
 																	<label>{{__('State Name') }}*</label>
 																	<select class="error browser-default selectpicker" id="state_id" name="state_id" data-error=".errorTxt11" aria-required="true" required>
 																		<option value="" selected>{{__('State Name') }}</option>
+																		@foreach($statelist as $key=>$value)
+																			<option value="{{$value->id}}" >{{$value->state_name}}</option>
+																		@endforeach
 																	</select>
 																	<div class="input-field">
 																		<div class="errorTxt11"></div>
@@ -310,7 +319,7 @@
 																	</div>
 																</div>
 																<div class="col s12 m6 union-data ">
-																	<label>{{__('Branch Name') }}*</label>
+																	<label>{{__('Company Branch Name') }}*</label>
 																	<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
 																		<option value="">{{__('Select Branch') }}</option>
 																		@foreach($branchlist as $branch)
@@ -722,7 +731,6 @@
         type:'GET',
         //callback just to show it's working
         onSelect: function (suggestion) {
-             console.log('You selected: ' + suggestion.value + ', ' + suggestion.number);
 			 $("#old_mumber_number").val(suggestion.number);
         },
         showNoSuggestionNotice: true,

@@ -9,7 +9,7 @@ class Status extends Model
 {
     protected $table = 'status';
     protected $fillable = [
-        'id','country_id','status_name','status',
+        'id','status_name','status',
     ];
     public $timestamps = true;
 
@@ -21,5 +21,14 @@ class Status extends Model
             $savedata = Status::create($data);
         }
         return $savedata;
+    }
+
+    public function Members()
+    {
+        return $this->hasMany('App\Modal\Membership','status_id');
+    }
+    public function Subscription_members()
+    {
+        return $this->hasMany('App\Model\MonthlySubscriptionMember','StatusId');
     }
 }

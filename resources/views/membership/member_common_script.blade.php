@@ -65,8 +65,8 @@
 				<label for="edit_sex">Sex *</label>
 				<select name="edit_sex" id="edit_sex" class="error browser-default">
 					<option value="">Select</option>
-					<option value="male" >Male</option>
-					<option value="female" >Female</option>
+					<option value="Male" >Male</option>
+					<option value="Female" >Female</option>
 				</select>
 				<div class="input-field">
 						<div class="errorTxt50"></div>
@@ -224,7 +224,6 @@
 		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
 	   for (let i = 0; i < inputs.length; i++) 
 	   {
-			//console.log(inputs[i].checkValidity());
 		   if (!inputs[i].checkValidity()) {
 			   jQuery("#submit-member").trigger('submit');
 			   return false;
@@ -301,11 +300,7 @@
                 required: true,
             },
             mobile: {
-                required: true,
-				number: true,
-				minlength:10,
-				maxlength:13,
-				//maxlength:12,
+                required: true,	
             },
             email: {
                 required: true,
@@ -500,7 +495,6 @@ $('#country_id').change(function(){
 			if(res){
 				$("#state_id").empty();
 				$("#state_id").append($('<option></option>').attr('value', '').text("Select"));
-				//console.log('hi test');
 				$.each(res,function(key,entry){
 					$("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
 				   // var select = $("#state");
@@ -512,7 +506,6 @@ $('#country_id').change(function(){
 			}else{
 			  $("#state_id").empty();
 			}
-			console.log(res);
 		}
 		});
 	}else{
@@ -530,7 +523,6 @@ $('#state_id').change(function(){
 		dataType: "json",
 		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
 		success:function(res){
-			console.log(res);
 			if(res)
 			{
 				$('#city_id').empty();
@@ -542,7 +534,6 @@ $('#state_id').change(function(){
 			}else{
 				$('#city_id').empty();
 			}
-		   // console.log(res);
 		}
 	 });
    }else{
@@ -562,7 +553,6 @@ $('#company').change(function(){
 		dataType: "json",
 		url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
 		success:function(res){
-			//console.log(res);
 			if(res)
 			{
 				$('#branch').empty();
@@ -573,7 +563,6 @@ $('#company').change(function(){
 			}else{
 				$('#branch').empty();
 			}
-			console.log(res);
 		}
 	 });
    }else{
@@ -603,7 +592,7 @@ $('#add_fee').click(function(){
 		var new_row = '<tr>';
 		new_row += '<td><span id="fee_name_label_'+fee_row_id+'">'+new_fee_name+'</span><input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_'+fee_row_id+'"></input><input type="text" name="fee_name_id[]" class="hide" id="fee_name_id_'+fee_row_id+'" value="'+new_fee_id+'"></input></td>';
 		new_row += '<td><span id="fee_amount_label_'+fee_row_id+'">'+fee_amount+'</span><input type="text" name="fee_name_amount[]" class="hide" id="fee_name_amount_'+fee_row_id+'" value="'+fee_amount+'"></input></td>';
-		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_nominee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
+		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_fee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
 		new_row += '</tr>';
 		$("#fee_amount").val('');
 		//$('#test3').find('input:text').val('');    
@@ -687,7 +676,6 @@ $(document.body).on('click', '.edit_fee_row' ,function(){
 			dataType: "json",
 			url : "{{ URL::to('/get-fee-options') }}",
 			success:function(res){
-				console.log(res);
 				if(res)
 				{
 					$('#edit_fee_name').empty();
@@ -699,7 +687,6 @@ $(document.body).on('click', '.edit_fee_row' ,function(){
 				}else{
 					$('#edit_fee_name').empty();
 				}
-				// console.log(res);
 			}
 		});
 		$('#edit_fee_amount').val(edit_fee_amount);
@@ -749,7 +736,6 @@ $('#nominee_dob, #gaurdian_dob, #dob, #edit_nominee_dob').change(function(){
 		success:function(res){               
 			if(res){
 				$("#nominee_state_id").empty();
-				//console.log('hi test');
 				$("#nominee_state_id").append($('<option></option>').attr('value', '').text("Select State"));
 				$.each(res,function(key,entry){
 				  
@@ -764,7 +750,6 @@ $('#nominee_dob, #gaurdian_dob, #dob, #edit_nominee_dob').change(function(){
 			}else{
 			  $("#nominee_state_id").empty();
 			}
-			console.log(res);
 		}
 		});
 	}else{
@@ -782,7 +767,6 @@ $('#nominee_state_id').change(function(){
 		dataType: "json",
 		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
 		success:function(res){
-			console.log(res);
 			if(res)
 			{
 				$('#nominee_city_id').empty();
@@ -794,7 +778,6 @@ $('#nominee_state_id').change(function(){
 			}else{
 				$('#nominee_city_id').empty();
 			}
-		   // console.log(res);
 		}
 	 });
    }else{
@@ -859,42 +842,7 @@ $('#nominee_state_id').change(function(){
 		});
 		$("#add_nominee").attr('disabled',false);
 		$("#nominee_row_id").val(nominee_row_id);
-		/* $.ajax({
-			method: 'POST', // Type of response and matches what we said in the route
-			url: "{{ URL::to('/add-nominee') }}", // This is the url we gave in the route
-			data: { 
-				'auto_id' : auto_id,
-				'nominee_name' : nominee_name,
-				'nominee_dob' : nominee_dob,
-				'nominee_sex' : nominee_sex,
-				'nominee_relationship' : nominee_relationship,
-				'nric_n' : nric_n,
-				'nric_o' : nric_o,
-				'nominee_address_one' : nominee_address_one,
-				'nominee_country_id' : nominee_country_id,
-				'nominee_state_id' : nominee_state_id,
-				'nominee_address_two' : nominee_address_two,
-				'nominee_city_id' : nominee_city_id,
-				'nominee_postal_code' : nominee_postal_code,
-				'nominee_address_three' : nominee_address_three,
-				'nominee_mobile' : nominee_mobile,
-				'nominee_phone' : nominee_phone,
-			}, // a JSON object to send back
-			dataType: "json",
-			success: function(response){ // What to do if we succeed
-				$("#add_nominee").attr('disabled',false);
-				var alert_confirm = "confirm('Are you sure you want to delete?')";
-				console.log(response.data); 
-				if(response.status ==1){
-					
-				}
-				console.log(response.data); 
-			},
-			error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-				console.log(JSON.stringify(jqXHR));
-				console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-			}
-		}); */
+		
 	}
 	else{
 		$("#add_nominee").attr('disabled',false);
@@ -906,7 +854,6 @@ $('#nominee_state_id').change(function(){
 
 $('#edit_nominee_state_id').change(function(e, data){
    var StateId = $(this).val();
-	console.log(StateId);
   
    if(StateId!='' && StateId!='undefined')
    {
@@ -915,7 +862,6 @@ $('#edit_nominee_state_id').change(function(e, data){
 		dataType: "json",
 		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
 		success:function(res){
-			console.log(res);
 			if(res)
 			{
 				$('#edit_nominee_city_id').empty();
@@ -925,13 +871,13 @@ $('#edit_nominee_state_id').change(function(e, data){
 					
 				});
 				if(typeof data !='undefined'){
+					loader.hideLoader();
 					$('#edit_nominee_city_id').val(data.city_id);
 				}
 				
 			}else{
 				$('#edit_nominee_city_id').empty();
 			}
-		   // console.log(res);
 		}
 	 });
    }else{
@@ -951,7 +897,6 @@ $('#edit_nominee_state_id').change(function(e, data){
 		success:function(res){               
 			if(res){
 				$("#edit_nominee_state_id").empty();
-				//console.log('hi test');
 				$("#edit_nominee_state_id").append($('<option></option>').attr('value', '').text("Select State"));
 				$.each(res,function(key,entry){
 				  
@@ -969,7 +914,6 @@ $('#edit_nominee_state_id').change(function(e, data){
 			}else{
 			  $("#edit_nominee_state_id").empty();
 			}
-			//console.log(res);
 		}
 		});
 	}else{
@@ -1019,38 +963,6 @@ $(document.body).on('click', '.edit_nominee_row' ,function(){
 	$("#edit_nominee_mobile").val( nominee_mobile );
 	$("#edit_nominee_phone").val( nominee_phone );
 	$("#edit_nominee_age").val( nominee_age );
-	/* $.ajax({
-		type: "GET",
-		dataType: "json",
-		url : "{{ URL::to('/get-nominee-data') }}?nominee_id="+nominee_id,
-		success:function(res){
-			console.log(res);
-			if(res)
-			{
-				$("#edit_nominee_id").val(res.id);
-				$("#edit_nominee_name").val(res.nominee_name);
-				$("#edit_nominee_dob").val(res.dob);
-				$("#edit_sex").val(res.gender);
-				$("#edit_relationship").val(res.relation_id);
-				$("#edit_nric_n").val(res.nric_n);
-				$("#edit_nric_o").val(res.nric_o);
-				$("#edit_nominee_address_one").val(res.address_one);
-				$("#edit_nominee_country_id").val(res.country_id);
-				$("#edit_nominee_state_id").val(res.state_id);
-				$("#edit_nominee_address_two").val(res.address_two);
-				$("#edit_nominee_city_id").val(res.city_id);
-				$("#edit_nominee_postal_code").val(res.postal_code);
-				$("#edit_nominee_address_three").val(res.address_three);
-				$("#edit_nominee_mobile").val(res.mobile);
-				$("#edit_nominee_phone").val(res.phone);
-				console.log(res.dob);
-				$('#modal_nominee').modal('open'); 
-			}else{
-				
-			}
-		   // console.log(res);
-		}
-	 }); */
 });
 
  $("#nominee_formValidate").validate({
@@ -1157,33 +1069,6 @@ $(document.body).on('click', '.edit_nominee_row' ,function(){
 		$("#nominee_mobile_value_"+row_id).val(mobile);
 		$("#nominee_phone_value_"+row_id).val(phone);
 		$('#modal_nominee').modal('close'); 
-		/* $.ajax({
-			method: 'POST', // Type of response and matches what we said in the route
-			url: "{{ URL::to('/update-nominee') }}", // This is the url we gave in the route
-			data: formData, // a JSON object to send back
-			dataType: "json",
-			success: function(response){ // What to do if we succeed
-				$("#update_nominee").attr('disabled',false);
-				
-				console.log(response.data); 
-				if(response.status ==1){
-					var row_id = response.data.nominee_id;
-					$("#nominee_name_"+row_id).html(response.data.name);
-					$("#nominee_age_"+row_id).html(response.data.age);
-					$("#nominee_gender_"+row_id).html(response.data.gender);
-					$("#nominee_relation_"+row_id).html(response.data.relationship);
-					$("#nominee_nricn_"+row_id).html(response.data.nric_n);
-					$("#nominee_nrico_"+row_id).html(response.data.nric_o);
-					$('#modal_nominee').modal('close'); 
-				}
-			   
-				console.log(response.data); 
-			},
-			error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-				console.log(JSON.stringify(jqXHR));
-				console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-			}
-		}); */
 	}
 });
 $(document.body).on('click', '.delete_nominee' ,function(){
@@ -1208,7 +1093,6 @@ $('#guardian_country_id').change(function(){
 		success:function(res){               
 			if(res){
 				$("#guardian_state_id").empty();
-				//console.log('hi test');
 				$("#guardian_state_id").append($('<option></option>').attr('value', '').text("Select State"));
 				$.each(res,function(key,entry){
 				  
@@ -1223,7 +1107,6 @@ $('#guardian_country_id').change(function(){
 			}else{
 			  $("#guardian_state_id").empty();
 			}
-			console.log(res);
 		}
 		});
 	}else{
@@ -1241,7 +1124,6 @@ $('#guardian_state_id').change(function(){
 		dataType: "json",
 		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
 		success:function(res){
-			console.log(res);
 			if(res)
 			{
 				$('#guardian_city_id').empty();
@@ -1253,7 +1135,6 @@ $('#guardian_state_id').change(function(){
 			}else{
 				$('#guardian_city_id').empty();
 			}
-		   // console.log(res);
 		}
 	 });
    }else{
