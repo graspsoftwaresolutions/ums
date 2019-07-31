@@ -8,6 +8,8 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -60,15 +62,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="modal_add_edit" class="modal">
-                            <div class="modal-content">
+                        <div id="modal_add_edit" class="modal modal-fixed-header">
+                        <div class="modal-header" id="modal-header">                            
                                 <h4>{{__('Status Details') }}</h4>
+                            </div>
+                            <div class="modal-content">
                                 <form class="formValidate" id="status_formValidate" method="post"
                                     action="{{ route('master.saveStatus',app()->getLocale()) }}">
                                     @csrf
                                     <input type="hidden" name="id" id="updateid">
                                     <div class="row">
-                                        <div class="input-field col s12 m6">
+                                        <div class="input-field col s12">
                                             <label for="status_name"
                                                 class="common-label force-active">{{__('Status Name') }}*</label>
                                             <input id="status_name" name="status_name" class="common-input" type="text"
@@ -76,16 +80,17 @@
                                             <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
-                                        <div class="input-field col s12">
+                                        </div></div>
+                                        <div class="modal-footer">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close') }}</a>
-                                            <button  id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button  id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button id="modal-save-btn" class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
-                                        </div>
+                                        
                                     </div>
                                 </form>
                             </div>
@@ -202,6 +207,7 @@ function showaddForm() {
     $('#status_name').val("");
     $('.modal').modal();
     $('#updateid').val("");
+    $('.common-label').removeClass('force-active');
 }
 
 function showeditForm(stateid) {
@@ -219,6 +225,7 @@ function showeditForm(stateid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#status_name').val(result.status_name);
             loader.hideLoader();
+            $('.common-label').addClass('force-active');
             $("#modal_add_edit").modal('open');
         }
     });
