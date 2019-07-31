@@ -18,7 +18,7 @@
 					<!-- BEGIN: Page Main-->
 					<div class="row">
 						@if($data['user_type']==1)
-						<!--div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
+						<!--div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
