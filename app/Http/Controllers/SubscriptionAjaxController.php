@@ -52,104 +52,117 @@ class SubscriptionAjaxController extends CommonController
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){
         $columns = array( 
-            0 => 'member_name', 
-            1 => 'member_code', 
+            0 => 'Name', 
+            1 => 'membercode', 
             2 => 'nric', 
             3 => 'amount', 
-            4 => 'due', 
-            5 => 'status', 
-            6 => 'id',
+            4 => 'statusId', 
+            5 => 'id',
         );
-        $totalData = DB::table('mon_sub')->select('*')
+        $totalData = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-        //->join('status','status.id','=','mon_sub_member.StatusId')
+         //->join('status','status.id','=','mon_sub_member.StatusId')
        // ->where('mon_sub_member.StatusId','=',NULL)->get();
        ->get()  
         ->count();
-var_dump($totalData);
-exit;
-        $totalFiltered = $totalData; 
-        $limit = $request->input('length');
         
-        $start = $request->input('start');
+        $totalFiltered = $totalData; 
+        
+       $limit = $request->input('length');
+       $start = $request->input('start');
+      //var_dump($start);
+      //exit;
         $order = $columns[$request->input('order.0.column')];
+     
         $dir = $request->input('order.0.dir');
-
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $sub_mem = DB::table('mon_sub')->select('*')
+                $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub.id','mon_sub_company.MonthlySubscriptionId',
+                'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
                 ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
                 ->join('company','company.id','=','mon_sub_company.CompanyCode')
                 ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
+       
+                  //->join('status','status.id','=','mon_sub_member.StatusId')
                // ->where('mon_sub_member.StatusId','=',NULL)->get();
                ->orderBy($order,$dir)
                ->get()->toArray();
-
+               
                
             }else{
-                $sub_mem = DB::table('mon_sub')->select('*')
+                $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+                'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
                 ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
                 ->join('company','company.id','=','mon_sub_company.CompanyCode')
                 ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
+       
+                 //->join('status','status.id','=','mon_sub_member.StatusId')
                // ->where('mon_sub_member.StatusId','=',NULL)->get();
                ->limit($limit)
                ->orderBy($order,$dir)
                ->get()->toArray();
 
             }
-        
+           
         }
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $sub_mem = DB::table('mon_sub')->select('*')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+            $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+            'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
+            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+            ->join('company','company.id','=','mon_sub_company.CompanyCode')
+            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+       
                 //->join('status','status.id','=','mon_sub_member.StatusId')
                // ->where('mon_sub_member.StatusId','=',NULL)->get();
                ->where('id','LIKE',"%{$search}%")
-               ->orWhere('mon_sub_member.name', 'LIKE',"%{$search}%")
+               ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
                ->limit($limit)
                ->orderBy($order,$dir)
                ->get()->toArray();
 
         }else{
-            $sub_mem = DB::table('mon_sub')->select('*')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
+            $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+            'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
+            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+            ->join('company','company.id','=','mon_sub_company.CompanyCode')
+            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+       
+               //->join('status','status.id','=','mon_sub_member.StatusId')
                // ->where('mon_sub_member.StatusId','=',NULL)->get();
                ->where('id','LIKE',"%{$search}%")
-               ->orWhere('mon_sub_member.name', 'LIKE',"%{$search}%")
+               ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
                ->offset($start)
                ->limit($limit)
                ->orderBy($order,$dir)
                ->get()->toArray();
         
         }
-        $totalFiltered =  DB::table('mon_sub')->select('*')
+        $totalFiltered =  DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name',
+        'mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+       
         //->join('status','status.id','=','mon_sub_member.StatusId')
        // ->where('mon_sub_member.StatusId','=',NULL)->get();
        ->where('id','LIKE',"%{$search}%")
-       ->orWhere('mon_sub_member.name', 'LIKE',"%{$search}%")
+       ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
        ->count();
         
         
         }
-        
+        //var_dump($sub_mem);
+       // exit;
         
         $data = $this->CommonAjaxReturn($sub_mem, 0, '',0); 
-       
+      
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
