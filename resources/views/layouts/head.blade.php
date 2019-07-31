@@ -52,4 +52,15 @@
 	.select2-container{
 		width:100% !important; 
 	}
+	.footer {
+	   position: fixed;
+	   left: 0;
+	   bottom: 0;
+	   width: 100%;
+	   height:auto;
+	   background-color: red;
+	   color: white;
+	   text-align: center;
+	}
+	  
 </style>
