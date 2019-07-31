@@ -48,7 +48,7 @@
                             <h4 class="card-title">{{__('State List')}}</h4>
                             @include('includes.messages')
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col s12 responsive-table">
                                 <table id="page-length-option" class="display">
                                     <thead>
                                     <tr>
@@ -164,16 +164,38 @@ $("#state_sidebar_a_id").addClass('active');
 
 $(function() {
     $('#page-length-option').DataTable({
-        "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-        /* "lengthMenu": [
-        	[10, 25, 50, -1],
-        	[10, 25, 50, "All"]
-        ], */
-        "processing": true,
+    
+    "columnDefs": [{
+      "visible": false,
+      "targets": 0
+    }],
+    "order": [
+      [0, 'asc']
+    ],
+	"lengthMenu": [
+		[10, 25, 50, 100],
+		[10, 25, 50, 100]
+	],
+    "drawCallback": function (settings) {
+      var api = this.api();
+      var rows = api.rows({
+        page: 'current'
+      }).nodes();
+      var last = null;
+
+      api.column(0, {
+        page: 'current'
+      }).data().each(function (group, i) {
+        if (last !== group) {
+          $(rows).eq(i).before(
+            '<tr class="group"><td colspan="2">' + group + '</td></tr>'
+          );
+
+          last = group;
+        }
+      });
+    },
+	"processing": true,
         "serverSide": true,
         "ajax": {
             "url": "{{ url(app()->getLocale().'/ajax_state_list') }}",
@@ -193,7 +215,8 @@ $(function() {
                 "data": "options"
             }
         ]
-    });
+  });
+
 });
 
 function ConfirmDeletion() {
