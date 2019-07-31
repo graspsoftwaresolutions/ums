@@ -48,8 +48,31 @@
 									</br>
 									</br>
 									<div id="scanning-details" class="hide gradient-45deg-amber-amber padding-1 medium-small" style="color:#fff">
-										Updating Member status and member code, please dont refresh page....
+										Updating Member details, please dont refresh page....
 									</div>
+									<table width="100%">	
+										<thead>
+											<tr>
+												<th width="80%">Total number of members</th>
+												<th>Updated</th>
+											</tr>
+										</thead>
+										<tbody>
+											@php
+												$lastrow=0;
+											@endphp
+											@for ($i = 0; $i <= $data['row_count']; $i+=200)
+												<tr>
+													<th>{{ $i }}-{{ $i+200 }}</th>
+													<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
+												</tr>
+												@php
+													$lastrow+=200;
+												@endphp
+											@endfor
+											
+										</tbody>
+									</table>
                                 </div>
                             </div>
                         </div>
@@ -73,27 +96,36 @@
 		$("#scanning-details").removeClass('hide');
 		setTimeout(function(){
 		  loader.showLoader();
-		  ScanMembership({{ $company_auto_id }});
+		  ScanMembership({{ $company_auto_id }},0);
 		}, 1500);
 	});
 	
 	
-	function ScanMembership(company_id){
+	function ScanMembership(company_id,start){
+		var lastrow ={{$lastrow}};
 		if(company_id!=""){
-			var url = "{{ url(app()->getLocale().'/process-scanning') }}" + '?company_auto_id=' + company_id;
+		var url = "{{ url(app()->getLocale().'/process-scanning') }}" + '?company_auto_id=' + company_id+ '&start='+start;
 			$.ajax({
 				url: url,
 				type: "GET",
 				dataType: 'JSON',
 				success: function(result) {
-					loader.hideLoader();
+					
 					if(result.status==1){
 						$('#scanning-details').removeClass('gradient-45deg-amber-amber');
 						$('#scanning-details').addClass('gradient-45deg-green-teal ');
-						$('#scanning-details').html(result.message);
-						setTimeout(function(){
-						  window.location.href = result.redirect_url;
-						}, 1500);
+						if(start!=lastrow){
+							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
+							ScanMembership(company_id,parseInt(start+200));
+						}else{
+							$('#scanning-details').html(result.message);
+							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
+							loader.hideLoader();
+							setTimeout(function(){
+								window.location.href = result.redirect_url;
+							}, 1500);
+						}
+						
 					}else{
 						
 					}

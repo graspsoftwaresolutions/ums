@@ -181,11 +181,15 @@ class SubscriptionController extends CommonController
     }
 
     public function scanSubscriptions(Request $request){
+        $limit = 200;
         $company_auto_id = $request->company_auto_id;
+        $start =  $request->start;
         $return_data = ['status' => 0 ,'message' => ''];
         if($company_auto_id!=""){
             $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
+                                                            ->offset($start)
+                                                            ->limit($limit)
                                                             ->get();
             $row_count = count($subscription_data);
             $count =0;
@@ -229,6 +233,8 @@ class SubscriptionController extends CommonController
     {
         $company_auto_id = Crypt::decrypt($id);
         $data['company_auto_id'] = $company_auto_id;
+        $memberrowcount = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->count();
+        $data['row_count'] = $memberrowcount;
         return view('subscription.scan-subcription')->with('data',$data);
     }
 }

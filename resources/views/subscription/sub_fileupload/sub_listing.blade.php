@@ -112,7 +112,7 @@
 										<div class="col s2">
 											<label for="type">{{__('Type') }}*</label>
 											 <select id="type" name="type"
-											  class="error browser-default common-select add-select selectpicker" onChange="return FileUploadEnable(this.value)">
+											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
 												<option value="0">{{__('Download Empty File') }}</option>
 												<option value="1">{{__('Upload File') }}</option>
 										     </select>
