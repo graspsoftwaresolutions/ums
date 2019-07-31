@@ -45,7 +45,7 @@ use Illuminate\Support\Facades\Storage;
 
 
 
-class SubscriptionController extends Controller
+class SubscriptionController extends CommonController
 {
     public function __construct() {
         ini_set('memory_limit', '-1');
@@ -70,11 +70,15 @@ class SubscriptionController extends Controller
                                             ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
                                             ->join('company','company.id','=','mon_sub_company.CompanyCode')
                                             ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                                            ->where('mon_sub_member.StatusId','=','1')->get();
-        
-
+                                            //->join('status','status.id','=','mon_sub_member.StatusId')
+                                           // ->where('mon_sub_member.StatusId','=',NULL)->get();
+                                           ->get();
+        isset($data['company_subscription_list']) ? $data['company_subscription_list'] : "";      
+       // dd($data['company_subscription_list']);
+        $data['tot_count'] = $data['company_subscription_list']->count();
         $data['member_stat'] = $status_all;
-        isset($data['member_stat']) ? $data['member_stat'] : "";       
+        isset($data['member_stat']) ? $data['member_stat'] : "";   
+
         return view('subscription.sub_fileupload.sub_company')->with('data', $data);
     }
 	
