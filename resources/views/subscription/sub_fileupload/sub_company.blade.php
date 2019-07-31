@@ -54,10 +54,10 @@
                             <div class="row">
                             <div class="col s12">  
                                 <ul class="tabs">  
-                                <li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">Inbox</a></li>  
-                                <li class="tab col s3"><a class="tab_status" href="#unread" id="1">Unread</a></li>  
-                                <li class="tab col s3"><a class="tab_status" href="#outbox" id="2">Disabled Tab</a></li>  
-                                <li class="tab col s3"><a class="tab_status" href="#sentitems" id="3">Sent Items</a></li>  
+                                <li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
+                                @foreach($data['company_subscription_list'] as  $key => $member_stat)
+                                <li class="tab col s3"><a class="tab_status" href="#{{ $key }}" id="3">{{ isset($member_stat->StatusId) ? CommonHelper::get_member_status_name($member_stat->StatusId) : "" }}</a></li>  
+                               @endforeach
                                 </ul>  
                             </div>  
                                 <div id="inbox" class="col s12">
@@ -69,7 +69,6 @@
                                                         <th>{{__('Member Code')}}</th>
                                                         <th>{{__('NRIC')}}</th>
                                                         <th>{{__('Amount')}}</th>
-                                                        <th>{{__('Due')}}</th>
                                                         <th>{{__('Status')}}</th>
                                                         <th>{{__('Action')}}</th>
                                                         </tr>
@@ -78,9 +77,10 @@
                                                     </table>
 													</div>	
                                 </div>  
-                                <div id="unread" class="col s12">Unread</div>  
-                                <div id="outbox" class="col s12">Outbox</div>  
-                                <div id="sentitems" class="col s12">Sent Items</div>  
+                                @foreach($data['company_subscription_list'] as  $key => $member_stat)
+                                <div id="{{ $key }}" class="col s12"></div>   
+                               @endforeach
+                               
                                 
                                <!-- <div class="col s12">-->
                                 <!-- tabs-->
@@ -164,8 +164,7 @@
 </div>
 @endsection
 @section('footerSection')
-@endsection
-@section('footerSection')
+
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript">
 </script>
 <script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
@@ -241,10 +240,10 @@ $(function() {
             }
         },
         "columns": [{
-                "data": "member_name"
+                "data": "Name"
             },
             {
-                "data": "member_code"
+                "data": "membercode"
             },
             {
                 "data": "nric"
@@ -252,11 +251,9 @@ $(function() {
             {
                 "data": "amount"
             },
+            
             {
-                "data": "due"
-            },
-            {
-                "data": "status"
+                "data": "statusId"
             },
             {
                 "data": "options"
