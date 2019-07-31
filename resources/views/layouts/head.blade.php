@@ -52,8 +52,14 @@
 	.select2-container{
 		width:100% !important; 
 	}
+	/* #main.main-full {
+		height:740px;
+		overflow: auto;
+	}
+	
 	.footer {
 	   position: fixed;
+	   margin-top:50px;
 	   left: 0;
 	   bottom: 0;
 	   width: 100%;
@@ -61,6 +67,6 @@
 	   background-color: red;
 	   color: white;
 	   text-align: center;
-	}
+	} */
 	  
 </style>

@@ -203,6 +203,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('check-subscription-exists','SubscriptionController@getSubscriptionStatus')->name('subscription.getstatus');
 	
 	Route::post('ajax_submember_list','SubscriptionAjaxController@ajax_submember_list');
+	Route::get('scan-subscription/{parameter}','SubscriptionController@viewScanSubscriptions')->name('subscription.viewscan');
 
 });
 /* Master */

@@ -690,7 +690,8 @@ class MasterController extends CommonController {
                     'site_url' => URL::to("/"),
                     'union_type' => $union_type,
                 );
-                $status = Mail::to($union['email'])->cc([env("MAIL_CC")])->send(new UnionBranchMailable($mail_data));
+                $cc_mail = CommonHelper::getCCTestMail();
+                $status = Mail::to($union['email'])->cc([ $cc_mail ])->send(new UnionBranchMailable($mail_data));
 
                 if( count(Mail::failures()) > 0 ) {
                     return redirect($redirect_url)->with('message','Union Account created successfully, Failed to send mail');
@@ -1133,6 +1134,7 @@ public function companyDestroy($lang,$id)
     }
 
     public function CompanyBranchsave(Request $request){
+        
         $redirect_failurl = app()->getLocale().'/branch';
         $redirect_url = app()->getLocale().'/branch';
         $defdaultLang = app()->getLocale();
@@ -1224,7 +1226,8 @@ public function companyDestroy($lang,$id)
                     'site_url' => URL::to("/"),
                     'company_type' => $company_type,
                 );
-                $status = Mail::to($branch['email'])->cc([env("MAIL_CC")])->send(new CompanyBranchMailable($mail_data));
+                $cc_mail = CommonHelper::getCCTestMail();
+                $status = Mail::to($branch['email'])->cc([$cc_mail])->send(new CompanyBranchMailable($mail_data));
     
                 if( count(Mail::failures()) > 0 ) {
                     return redirect($redirect_url)->with('message','Company Account created successfully, Failed to send mail');
