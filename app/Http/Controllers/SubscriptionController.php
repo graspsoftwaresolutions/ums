@@ -116,13 +116,23 @@ class SubscriptionController extends CommonController
             else
             {
                 if(Input::hasFile('file')){
+                    $data['entry_date'] = $request->entry_date;
+                    $data['sub_company'] = $request->sub_company;
+                   
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
                     //return back()->with('message', 'File Uploaded Successfully');
-                    echo 'upload success';
-                   
-                    return $this->scanSubscriptions($request->entry_date,$request->sub_company);
+                    //echo 'upload success';
+                    $company_auto_id = $this->getCommonStatus($request->entry_date, $request->sub_company);
+                    if( $company_auto_id!=""){
+                        $enc_id = Crypt::encrypt($company_auto_id);
+                        return redirect(app()->getLocale().'/scan-subscription/'.$enc_id)->with('message', 'File Uploaded Successfully');
+                    }else{
+                        return redirect(app()->getLocale().'home');
+                    }
+                    
+                    //return $this->scanSubscriptions($request->entry_date,$request->sub_company);
                 }
             }
         }
@@ -215,5 +225,9 @@ class SubscriptionController extends CommonController
     {
         return view('subscription.sub_member');
     }
-  
+    
+    public function viewScanSubscriptions()
+    {
+        return view('subscription.scan-subcription');
+    }
 }
