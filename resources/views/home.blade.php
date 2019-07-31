@@ -7,7 +7,7 @@
 @endsection
 
 @section('main-content')
-<div id="main">
+<div id="">
 	<div class="row">
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 		<div class="col s12">

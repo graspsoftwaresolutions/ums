@@ -28,6 +28,8 @@ use App\Mail\CompanyBranchMailable;
 use App\Model\MonthlySubscription;
 use App\Model\MonthlySubscriptionCompany;
 use App\Model\MonthlySubscriptionMember;
+use App\Model\MonSubCompanyAttach;
+use App\Model\Membership;
 use DB;
 use View;
 use Mail;
@@ -48,7 +50,7 @@ use Illuminate\Support\Facades\Storage;
 class SubscriptionController extends CommonController
 {
     public function __construct() {
-        ini_set('memory_limit', '-1');
+        ini_set('memory_limit', -1);
         $this->middleware('auth');
         //$this->middleware('module:master');       
         $this->Company = new Company;
@@ -117,7 +119,10 @@ class SubscriptionController extends CommonController
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
-                    return back()->with('message', 'File Uploaded Successfully');;
+                    //return back()->with('message', 'File Uploaded Successfully');
+                    echo 'upload success';
+                   
+                    return $this->scanSubscriptions($request->entry_date,$request->sub_company);
                 }
             }
         }
@@ -163,6 +168,52 @@ class SubscriptionController extends CommonController
             }
         }
         return $company_auto_id;
+    }
+
+    public function scanSubscriptions($date, $company){
+        $datearr = explode("/",$date);  
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $company_auto_id = $this->getCommonStatus($date, $company);
+        if($company_auto_id!=""){
+            $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')
+                                                            ->where('MonthlySubscriptionCompanyId',$company_auto_id)
+                                                            ->get();
+            $row_count = count($subscription_data);
+            $count =0;
+            foreach($subscription_data as $subscription){
+                $nric = $subscription->NRIC;
+                DB::enableQueryLog();
+               
+                $subscription_qry =  DB::table('membership as m')
+                                    ->where(function($query) use ($nric){
+                                        $query->orWhere('m.old_ic','=',$nric);
+                                        $query->orWhere('m.new_ic', '=',$nric);
+                                    });
+                                   // $queries = DB::getQueryLog();
+                                    //dd($queries);
+                if($subscription_qry->count() > 0){
+                    $memberdata = $subscription_qry->select('status_id','member_number')->get();
+                    if(count($memberdata)>0){
+                        $status_id = $memberdata[0]->status_id;
+                        $member_code = $memberdata[0]->member_number;
+                        $updata = ['MemberCode' => $member_code, 'StatusId' => $status_id];
+                        $savedata = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId',$company_auto_id)
+                        ->where('NRIC',$nric)->update($updata);
+                        //die;
+                    }
+                }
+                $count++;
+            }
+        }
+        return back()->with('message', 'File Uploaded Successfully');
+        return '--scaninng completed';
+    }
+
+    public function submember($lang,$id)
+    {
+        return view('subscription.sub_member');
     }
   
 }

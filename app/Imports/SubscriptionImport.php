@@ -12,6 +12,7 @@ use App\User;
 use App\Model\MonthlySubscription;
 use App\Model\MonthlySubscriptionMember;
 use App\Model\MonthlySubscriptionCompany;
+use App\Model\MonSubCompanyAttach;
 use Auth;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -31,6 +32,8 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
 
     public function __construct($requestinfo)
     {
+        ini_set('max_execution_time', 3600);
+        ini_set('memory_limit', -1);
         $this->request_data = $requestinfo;
         $entry_date = $this->request_data['entry_date'];
         $sub_company = $this->request_data['sub_company'];
@@ -69,12 +72,25 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
     
             $this->company_auto_id =  $subscription_company->id;
         }
+
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->id;
+
+        $attachment = new MonSubCompanyAttach();
+        $attachment->MonthlySubscriptionCompanyId = $this->company_auto_id;
+        $attachment->MonthlySubscriptonFileTypeId = $user_role;
+        $attachment->FilePath = 'subscription';
+        $attachment->created_by = Auth::user()->id;
+        $attachment->created_on = date('Y-m-d');
+        $attachment->save();
        
     }
 
     public function collection(Collection $rows)
     {
+        
         $totalcount=count($rows);      
+        $count=0;
         foreach($rows as $key=>$row1){
             
             if($rows[$key] != $rows[0]){
@@ -83,30 +99,33 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
                 $membername = $row1[3];
                 $amount = $row1[4];
 
-                $subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
-                                            ->where('NRIC',$nric);
-                $subscription_member_count = $subscription_member_qry->count();
-                if($subscription_member_count>0){
-                    $subscription_member_res = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
-                    ->where('NRIC',$nric)->get();
-                    $company_member_id = $subscription_member_res[0]->id;
-                    $subscription_member = MonthlySubscriptionMember::find($company_member_id);
-                }else{
-                    $subscription_member = new MonthlySubscriptionMember();
-                    $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+                if($icno!='' && $nric!="" && $membername!="" && $amount!=""){
+
+                    $subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
+                                                ->where('NRIC',$nric);
+                    $subscription_member_count = $subscription_member_qry->count();
+                    if($subscription_member_count>0){
+                        $subscription_member_res = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
+                        ->where('NRIC',$nric)->get();
+                        $company_member_id = $subscription_member_res[0]->id;
+                        $subscription_member = MonthlySubscriptionMember::find($company_member_id);
+                    }else{
+                        $subscription_member = new MonthlySubscriptionMember();
+                        $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
+                    }
+                    $subscription_member->NRIC = $nric;
+                    $subscription_member->Name = $membername;
+                    $subscription_member->Amount = $amount;
+                    $subscription_member->StatusId = null;
+                    $subscription_member->MemberCode = null;
+                    $subscription_member->created_by = Auth::user()->id;
+                    $subscription_member->created_on = date('Y-m-d');
+                    $subscription_member->save();
                 }
-                $subscription_member->NRIC = $nric;
-                $subscription_member->Name = $membername;
-                $subscription_member->Amount = $amount;
-                $subscription_member->StatusId = null;
-                $subscription_member->MemberCode = null;
-                $subscription_member->created_by = Auth::user()->id;
-                $subscription_member->created_on = date('Y-m-d');
-                $subscription_member->save();
-              
                 //return $subscription_member;
 
             }
+            $count++;
         }
     }
 	// public function headingRow(): int
