@@ -351,8 +351,8 @@
   "No of Union Branch" : "No of Union Branches",
   "No of Members" : "No of Members",
   "Members List" : "Members List",
-  "No of Companies" : "No of Companies",
-  "Companies List" : "Companies List",
+  "No of Companies" : "No of Banks",
+  "Companies List" : "Banks List",
   "No of Company Branches" : "No of Bank Branches",
   "Company Branches List" : "Bank Branch List",
   "Total Members" : "Total Members",
@@ -374,5 +374,6 @@
   "Designation Name" : "Designation Name",
   "Race Name" : "Race Name",
   "Race Name Already exists" : "Race Name Already exists",
-  "Role Details" : "Role Details"
+  "Role Details" : "Role Details",
+  "Company Branch Name" : "Bank Branch Name"
 }

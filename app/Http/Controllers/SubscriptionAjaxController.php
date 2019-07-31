@@ -51,6 +51,7 @@ class SubscriptionAjaxController extends CommonController
     }
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){
+		$companyid = $request->company_id;
         $columns = array( 
             0 => 'Name', 
             1 => 'membercode', 
@@ -59,104 +60,55 @@ class SubscriptionAjaxController extends CommonController
             4 => 'statusId', 
             5 => 'id',
         );
-        $totalData = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
         'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-         //->join('status','status.id','=','mon_sub_member.StatusId')
-       // ->where('mon_sub_member.StatusId','=',NULL)->get();
-       ->get()  
-        ->count();
+        ->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
+		
+        $totalData = $commonqry->count();
         
         $totalFiltered = $totalData; 
         
        $limit = $request->input('length');
        $start = $request->input('start');
-      //var_dump($start);
-      //exit;
+		  //var_dump($start);
+		  //exit;
         $order = $columns[$request->input('order.0.column')];
      
         $dir = $request->input('order.0.dir');
         if(empty($request->input('search.value')))
         {            
-            if( $limit == -1){
-                $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub.id','mon_sub_company.MonthlySubscriptionId',
-                'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-       
-                  //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-               
-               
-            }else{
-                $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-                'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-       
-                 //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->limit($limit)
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-
-            }
-           
+            $sub_mem = $commonqry;
+			if( $limit != -1){
+				$sub_mem = $sub_mem->offset($start)
+							->limit($limit);
+			}
+			$sub_mem = $sub_mem->orderBy($order,$dir)
+			->get()->toArray();
         }
         else {
-        $search = $request->input('search.value'); 
-        if( $limit == -1){
-            $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-            'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
-            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-            ->join('company','company.id','=','mon_sub_company.CompanyCode')
-            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-       
-                //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->where('id','LIKE',"%{$search}%")
-               ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
-               ->limit($limit)
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-
-        }else{
-            $sub_mem = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-            'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
-            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-            ->join('company','company.id','=','mon_sub_company.CompanyCode')
-            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-       
-               //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->where('id','LIKE',"%{$search}%")
-               ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
-               ->offset($start)
-               ->limit($limit)
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-        
-        }
-        $totalFiltered =  DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name',
-        'mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
-        ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-        ->join('company','company.id','=','mon_sub_company.CompanyCode')
-        ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-       
-        //->join('status','status.id','=','mon_sub_member.StatusId')
-       // ->where('mon_sub_member.StatusId','=',NULL)->get();
-       ->where('id','LIKE',"%{$search}%")
-       ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
-       ->count();
-        
-        
+			$search = $request->input('search.value'); 
+			$sub_mem = $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
+		    if( $limit != -1){
+			   $sub_mem = $sub_mem->offset($start)
+						->limit($limit);
+		    }
+		    $sub_mem = $sub_mem->orderBy($order,$dir)
+					  ->get()->toArray();
+			
+			
+			$totalFiltered =  $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+							    ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%")
+							   ->count();
         }
         //var_dump($sub_mem);
        // exit;
