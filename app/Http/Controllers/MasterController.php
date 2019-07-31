@@ -690,7 +690,8 @@ class MasterController extends CommonController {
                     'site_url' => URL::to("/"),
                     'union_type' => $union_type,
                 );
-                $status = Mail::to($union['email'])->cc([env("MAIL_CC")])->send(new UnionBranchMailable($mail_data));
+                $cc_mail = CommonHelper::getCCTestMail();
+                $status = Mail::to($union['email'])->cc([ $cc_mail ])->send(new UnionBranchMailable($mail_data));
 
                 if( count(Mail::failures()) > 0 ) {
                     return redirect($redirect_url)->with('message','Union Account created successfully, Failed to send mail');
@@ -1102,11 +1103,11 @@ public function companySave(Request $request)
         {
             if(!empty($request->id))
             {
-                return  redirect($defdaultLang.'/company')->with('message','Company Updated Succesfully');
+                return  redirect($defdaultLang.'/company')->with('message','Bank Updated Succesfully');
             }
             else
             {
-                return  redirect($defdaultLang.'/company')->with('message','Company Added Succesfully');
+                return  redirect($defdaultLang.'/company')->with('message','Bank Added Succesfully');
             }
         }
    }
@@ -1117,7 +1118,7 @@ public function companyDestroy($lang,$id)
     $Company = Company::find($id);
     $Company->where('id','=',$id)->update(['status'=>'0']);
     $defdaultLang = app()->getLocale();
-    return redirect($defdaultLang.'/company')->with('message','Company Details Deleted Successfully!!');
+    return redirect($defdaultLang.'/company')->with('message','Bank Deleted Successfully!!');
 }
      
     public function CompanyBranchList(){
@@ -1133,6 +1134,7 @@ public function companyDestroy($lang,$id)
     }
 
     public function CompanyBranchsave(Request $request){
+        
         $redirect_failurl = app()->getLocale().'/branch';
         $redirect_url = app()->getLocale().'/branch';
         $defdaultLang = app()->getLocale();
@@ -1224,12 +1226,13 @@ public function companyDestroy($lang,$id)
                     'site_url' => URL::to("/"),
                     'company_type' => $company_type,
                 );
-                $status = Mail::to($branch['email'])->cc([env("MAIL_CC")])->send(new CompanyBranchMailable($mail_data));
+                $cc_mail = CommonHelper::getCCTestMail();
+                $status = Mail::to($branch['email'])->cc([$cc_mail])->send(new CompanyBranchMailable($mail_data));
     
                 if( count(Mail::failures()) > 0 ) {
-                    return redirect($redirect_url)->with('message','Company Account created successfully, Failed to send mail');
+                    return redirect($redirect_url)->with('message','Bank Account created successfully, Failed to send mail');
                 }else{
-                    return redirect($redirect_url)->with('message','Company Account created successfully, password sent to mail');
+                    return redirect($redirect_url)->with('message','Bank Account created successfully, password sent to mail');
                 }
             }
         }else{
@@ -1246,7 +1249,7 @@ public function companyDestroy($lang,$id)
                 $rold_id_2 = DB::table('users_roles')->where('role_id','=','4')->where('user_id','=',$user_id)->update(['role_id'=>'3']);
              }
 
-            return redirect($defdaultLang.'/branch')->with('message','Company Branch Details Updated Succesfully');
+            return redirect($defdaultLang.'/branch')->with('message','Bank Branch Details Updated Succesfully');
         }
     }
 
@@ -1255,7 +1258,7 @@ public function companyDestroy($lang,$id)
         //$id = Crypt::decrypt($id);
         $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
         $defdaultLang = app()->getLocale();
-		return redirect($defdaultLang.'/branch')->with('message','Company Branch Deleted Succesfully');
+		return redirect($defdaultLang.'/branch')->with('message','Bank Branch Deleted Succesfully');
 	} 
 
     public function EditCompanyBranch($lang,$id){

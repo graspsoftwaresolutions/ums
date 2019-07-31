@@ -19,9 +19,9 @@
                                     <div class="col s10 m6 l6">
                                         <h5 class="breadcrumbs-title mt-0 mb-0">
                                             @if(isset($data['branch_view']))
-                                            {{__('Edit Company Branch Details')}}
+                                            {{__('Edit Bank Branch Details')}}
                                             @else
-                                            {{__('Add Company Branch Details')}}
+                                            {{__('Add Bank Branch Details')}}
                                             @endif
                                         </h5>
                                         <ol class="breadcrumbs mb-0">
@@ -44,9 +44,9 @@
                                 <div class="card-content">
                                     <h4 class="card-title">
                                         @if(isset($data['branch_view']))
-                                        {{__('Edit Company Branch')}}
+                                        {{__('Edit Bank Branch')}}
                                         @else
-                                        {{__('Add Company Branch')}}
+                                        {{__('Add Bank Branch')}}
                                         @endif
                                     </h4>
                                     @php
@@ -355,15 +355,11 @@ $("#branchformValidate").validate({
         },
         phone: {
             required: true,
-			number: true,
-            minlength:10,
-            maxlength:15,
+			
         },
         mobile: {
             required: true,
-			number: true,
-            minlength:10,
-            maxlength:13,
+			
         },
         email: {
             required: true,

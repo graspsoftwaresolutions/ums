@@ -265,5 +265,9 @@ class CommonHelper
         }
         return false;
     }
+    public static function getCCTestMail(){
+        $ccmail = env("MAIL_CC",'membership@gmail.com');
+        return $ccmail;
+    }
    
 }

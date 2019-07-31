@@ -61,7 +61,6 @@
 														<th>{{__('Branch Name') }}</th>
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Email') }}</th>
-														<th>{{__('Mobile') }}</th>
 														<th>{{__('Status') }}</th>
 														<th>{{__('Action') }}</th>
 													</tr>
@@ -110,7 +109,6 @@
 				{"data": "branch_name"},
 				{"data": "name"},
 				{"data": "email"},
-				{"data": "mobile"},
 				{"data": "status"},
 				{"data": "options"}
 			]
