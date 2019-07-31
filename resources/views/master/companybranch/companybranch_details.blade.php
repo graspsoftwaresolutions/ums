@@ -355,15 +355,11 @@ $("#branchformValidate").validate({
         },
         phone: {
             required: true,
-			number: true,
-            minlength:10,
-            maxlength:15,
+			
         },
         mobile: {
             required: true,
-			number: true,
-            minlength:10,
-            maxlength:13,
+			
         },
         email: {
             required: true,
