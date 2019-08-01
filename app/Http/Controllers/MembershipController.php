@@ -376,8 +376,8 @@ class MembershipController extends Controller
                 
                // DB::enableQueryLog();
                $history_list = DB::table('mon_sub_member')
-                                      ->join('membership','mon_sub_member.MemberCode','=','membership.member_number')
-                                      ->where('membership.member_number','=',$member->member_number)->get();
+                                      ->join('membership','mon_sub_member.MemberCode','=','membership.member_number')->get();
+                                      //->where('membership.member_number','=',$member->member_number)->get();
               
                                     //    $queries = DB::getQueryLog();
                                     //    dd($queries);
