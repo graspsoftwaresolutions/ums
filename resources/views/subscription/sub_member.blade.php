@@ -107,11 +107,12 @@
                                             <th>Status</th>
                                             </tr>
                                             </tr>  
+                                            
                                                 @foreach($data['member_subscription_list'] as $key=> $values)
                                                         <tr> 
-                                                        <td> {{ isset($values->Date) ? $row->Date : "Nill" }}  </td>
-                                                        <td> {{ isset($values->Amount) ? $row->Amount : "Nill" }} </td>
-                                                        <td> {{ isset($values->status_name) ? $row->status_name : "Nill" }} </td>
+                                                        <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
+                                                        <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
+                                                        <td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} </td>
                                                         </tr>  
                                                 @endforeach
                                             </thead>

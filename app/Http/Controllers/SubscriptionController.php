@@ -270,6 +270,7 @@ class SubscriptionController extends CommonController
                                             ->leftjoin('membership','membership.member_number','=','mon_sub_member.MemberCode')
                                             ->where('membership.id','=',	
                                             $id)->get(); 
+        //dd($data['member_subscription_list']);
            
         return view('subscription.sub_member')->with('data',$data);
           
@@ -307,13 +308,12 @@ class SubscriptionController extends CommonController
         //$queries = DB::getQueryLog();
         
                                             
-        if(isset($data['member_subscription_list'][0]))
+        if(isset($data['member_subscription_list']))
         {
             return view('subscription.sub_member')->with('data',$data);
         }
         else{ 
-
-            
+               
             DB::enableQueryLog();
             $data['member_subscription_list'] =  DB::table('mon_sub')->select('*','membership.id as memberid','membership.name as membername')
                                 ->leftjoin('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
@@ -325,7 +325,7 @@ class SubscriptionController extends CommonController
              // $queries = DB::getQueryLog();
              //dd($queries);
             return view('subscription.sub_member')->with('data',$data);
-        }
+       }
       
     }
     
