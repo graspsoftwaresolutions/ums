@@ -8,6 +8,7 @@ use App\Model\AppForm;
 use App\Model\Country;
 use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
+use App\Model\Membership;
 use App\Model\Company;
 use App\Model\Status;
 use App\User;
@@ -268,6 +269,14 @@ class CommonHelper
     public static function getCCTestMail(){
         $ccmail = env("MAIL_CC",'membership@gmail.com');
         return $ccmail;
+    }
+	
+	 public static function getmemberid_bycode($membercode){
+		$autoid = Membership::where('member_number',$membercode)->pluck('id');
+        if(count($autoid)>0){
+            return $autoid[0];
+        }
+        return false;
     }
    
 }

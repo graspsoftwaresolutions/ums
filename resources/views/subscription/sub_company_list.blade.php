@@ -33,9 +33,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
       </ol>
   </div>
   <div class="col s2 m6 l6">
-      <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger"
-          onClick='showaddForm();' href="#modal_add_edit">{{__('Add') }}</a>
-</div>
+     
+  </div>
 </div>
 </div>
 </div>

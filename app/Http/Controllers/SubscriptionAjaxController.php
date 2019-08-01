@@ -52,20 +52,34 @@ class SubscriptionAjaxController extends CommonController
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){
 		$companyid = $request->company_id;
-        $columns = array( 
-            0 => 'Name', 
-            1 => 'membercode', 
-            2 => 'nric', 
-            3 => 'amount', 
-            4 => 'statusId', 
-            5 => 'id',
-        );
+        $status = $request->status;
+        $sl=0;
+		$columns[$sl++] = 'Name';
+		$columns[$sl++] = 'membercode';
+		$columns[$sl++] = 'nric';
+        $columns[$sl++] = 'amount';
+        if($status!='all'){
+          $columns[$sl++] = 'statusId';
+        }
+		$columns[$sl++] = 'id';
+        // $columns = array( 
+        //     0 => 'Name', 
+        //     1 => 'membercode', 
+        //     2 => 'nric', 
+        //     3 => 'amount', 
+        //     4 => 'statusId', 
+        //     5 => 'id',
+        // );
 		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','mon_sub_member.created_by')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-        ->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
+        ->leftjoin('status','mon_sub_member.StatusId','=','status.id');
+        if($status!='all'){
+            $commonqry = $commonqry->where('mon_sub_member.StatusId','=',$status);
+        }
+        $commonqry = $commonqry->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
 		
         $totalData = $commonqry->count();
         
@@ -112,8 +126,48 @@ class SubscriptionAjaxController extends CommonController
         }
         //var_dump($sub_mem);
        // exit;
+        $result = $sub_mem;
+
+        $data = array();
+        if(!empty($result))
+        {
+            foreach ($result as $resultdata)
+            {
+                $autoid = $resultdata->id;
+                // foreach($resultdata as $newkey => $newvalue){
+                //     if($newkey=='id'){
+                //         $autoid = $newvalue;
+                //     }else{
+                //         $nestedData[$newkey] = $newvalue;
+                //     }
+                // }
+                $nestedData['Name'] = $resultdata->Name;
+                $nestedData['membercode'] = $resultdata->membercode;
+                $nestedData['nric'] = $resultdata->nric;
+                $nestedData['amount'] = $resultdata->amount;
+                if($status=='all'){
+                    $nestedData['statusId'] = $resultdata->statusId;
+                }
+
+                $memberid = CommonHelper::getmemberid_bycode($resultdata->membercode);
+                
+                $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
+				
+                $actions ='';
+                $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
+                if($resultdata->membercode!=''){
+                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
+                }
+                
+				
+                
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
         
-        $data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+        //$data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  

@@ -69,5 +69,8 @@
 	   text-align: center;
 	   z-index:999;
 	} 
+	.sidenav-main{
+		z-index:9999;
+	}
 	  
 </style>
