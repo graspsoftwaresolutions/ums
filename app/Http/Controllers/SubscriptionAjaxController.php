@@ -148,10 +148,17 @@ class SubscriptionAjaxController extends CommonController
                 if($status=='all'){
                     $nestedData['statusId'] = $resultdata->statusId;
                 }
+
+                $memberid = CommonHelper::getmemberid_bycode($resultdata->membercode);
                 
-                $enc_id = Crypt::encrypt($autoid);
+                $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
 				
-				$actions ='';
+                $actions ='';
+                $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
+                if($resultdata->membercode!=''){
+                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
+                }
+                
 				
                 
                 $nestedData['options'] = $actions;

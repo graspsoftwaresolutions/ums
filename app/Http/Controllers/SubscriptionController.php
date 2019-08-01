@@ -261,7 +261,7 @@ class SubscriptionController extends CommonController
     {
         $id = Crypt::decrypt($id);
        // return $id;
-       DB::enableQueryLog();
+       
         $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
@@ -270,14 +270,16 @@ class SubscriptionController extends CommonController
                                             ->where('s.Date','=',date('Y-m-01'))
                                             ->where('m.id','=',$id)->get();
 
-          
+                                            DB::enableQueryLog();
         $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
                                             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
                                             ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
-                                            ->where('m.id','=',$id)->get(); 
-      
+                                            ->where('m.id','=',$id)
+                                            ->groupBY('s.id')->get(); 
+                                            //$queries = DB::getQueryLog();
+                                           // dd($queries);
         // $data['member_subscription_list'] = DB::table('mon_sub as s')->select('sm.Amount','s')
         //                                     ->leftjoin('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         //                                     ->leftjoin('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
@@ -325,7 +327,7 @@ class SubscriptionController extends CommonController
                                 ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
                                 ->where('s.Date','>=', $from)
                                 ->where('s.Date', '<=', $to)
-                                ->where('sm.MemberCode','=',$member_code)->get();         
+                                ->where('sm.MemberCode','=',$member_code)->groupBY('s.id')->get();         
         }else{
             $data['member_subscription_list'] = [];
         }
