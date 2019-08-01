@@ -130,7 +130,8 @@
 										</div>
 										<div class="col s3 " >
 											</br>
-											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn" type="button">Download Sample</button>
+											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Upload</button>
+											
 										</div>
 										
 									</div>
@@ -139,7 +140,7 @@
 											
 										</div>
 										<div class="col s4 right">
-											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Upload</button>
+											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn" type="button">Download Sample</button>
 											
 										</div>
 									</div>
