@@ -270,17 +270,10 @@ class SubscriptionController extends CommonController
                                             ->leftjoin('membership','membership.member_number','=','mon_sub_member.MemberCode')
                                             ->where('membership.id','=',	
                                             $id)->get(); 
-
-           if(isset($data['member_subscription_list'][0]))
-           {
-                return view('subscription.sub_member')->with('data',$data);
-           }
-           else{           
-                $data['member_subscription_list'] =  DB::table('membership')->select('*','membership.id as memberid','membership.name as membername')
-                                                     ->leftjoin('status','status.id','=','membership.status_id')
-                                                    ->where('membership.id','=',$id)->get(); 
-                return view('subscription.sub_member')->with('data',$data);
-           }
+        //dd($data['member_subscription_list']);
+           
+        return view('subscription.sub_member')->with('data',$data);
+          
     }
 
     public function memberfilter(Request $request)
@@ -308,18 +301,19 @@ class SubscriptionController extends CommonController
                                             ->leftjoin('mon_sub','mon_sub_company.MonthlySubscriptionId','=','mon_sub.id') 
                                             ->leftjoin('status','status.id','=','mon_sub_member.StatusId')
                                             ->where('mon_sub_member.MemberCode','=',$member_code)
-                                            ->whereBetween('Date', [$from, $to])
+                                            ->where('mon_sub.Date','>=', $from)
+                                            ->where('mon_sub.Date', '<=', $to)
+                                            //->whereBetween('Date', [$from, $to])
                                             ->get();
         //$queries = DB::getQueryLog();
         
                                             
-        if(isset($data['member_subscription_list'][0]))
+        if(isset($data['member_subscription_list']))
         {
             return view('subscription.sub_member')->with('data',$data);
         }
         else{ 
-
-            
+               
             DB::enableQueryLog();
             $data['member_subscription_list'] =  DB::table('mon_sub')->select('*','membership.id as memberid','membership.name as membername')
                                 ->leftjoin('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
@@ -331,7 +325,7 @@ class SubscriptionController extends CommonController
              // $queries = DB::getQueryLog();
              //dd($queries);
             return view('subscription.sub_member')->with('data',$data);
-        }
+       }
       
     }
     

@@ -314,7 +314,7 @@ class MembershipController extends Controller
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
-							->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name')
+							->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number')
 							->join('membership as m','c.id','=','m.branch_id')
                             ->leftjoin('status as s','s.id','=','m.status_id')
                             ->where('m.is_request_approved','=',$approved_cond);
@@ -374,21 +374,19 @@ class MembershipController extends Controller
                 
                 $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 
-               // DB::enableQueryLog();
-               $history_list = DB::table('mon_sub_member')
-                                      ->join('membership','mon_sub_member.MemberCode','=','membership.member_number')->get();
-                                      //->where('membership.member_number','=',$member->member_number)->get();
+
+                DB::enableQueryLog();
+                $history_list = DB::table('mon_sub_member')
+                                    ->where('MemberCode','=',$member->member_number)->get();
               
-                                    //    $queries = DB::getQueryLog();
-                                    //    dd($queries);
-                                 
-                 if(!empty($history_list))
-                 {
+                           
+                if(count($history_list)!=0)
+                {
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
-                 }
+                }
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
-
+               
                 $nestedData['options'] = $actions;
                 $data[] = $nestedData;
 
