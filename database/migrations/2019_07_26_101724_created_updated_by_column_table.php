@@ -31,7 +31,7 @@ class CreatedUpdatedByColumnTable extends Migration
      */
     public function down()
     {
-         Schema::table('app_form', function ($table) {
+        Schema::table('app_form', function ($table) {
             $table->dropColumn(['created_by','updated_by']);
         });
     }

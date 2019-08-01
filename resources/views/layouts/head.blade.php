@@ -52,8 +52,8 @@
 	.select2-container{
 		width:100% !important; 
 	}
-	/* #main.main-full {
-		height:740px;
+	#main.main-full {
+		height: 750px;
 		overflow: auto;
 	}
 	
@@ -67,6 +67,7 @@
 	   background-color: red;
 	   color: white;
 	   text-align: center;
-	} */
+	   z-index:999;
+	} 
 	  
 </style>

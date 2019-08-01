@@ -92,6 +92,7 @@
 													$companyid = CommonHelper::getCompanyID($userid);
 													$companylist = CommonHelper::getCompanyList($companyid);
 												}  
+												$company_count = count($companylist);
 											}
 											
 										@endphp
@@ -112,7 +113,7 @@
 										<div class="col s2">
 											<label for="type">{{__('Type') }}*</label>
 											 <select id="type" name="type"
-											  class="error browser-default common-select add-select selectpicker" onChange="return FileUploadEnable(this.value)">
+											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
 												<option value="0">{{__('Download Empty File') }}</option>
 												<option value="1">{{__('Upload File') }}</option>
 										     </select>
@@ -149,7 +150,7 @@
 		</div>
 	</div>
     <div class="row">
-		<div class="col s12 m6">
+		<!--<div class="col s12 m6">
 			<div class="card darken-1">
 				<span style="text-align:center;padding:5px;" class="card-title">Status</span>
 				<table class="collection">
@@ -172,9 +173,9 @@
 					@endforeach
 				</table>
 			</div>
-		</div>
+		</div>-->
 		<!--Approval Status-->
-		<div class="col s12 m6">
+		<!--<div class="col s12 m6">
 			<div class="card darken-1">
 				<span style="text-align:center;padding:5px;" class="card-title">Approval Status</span>
 				<table class="collection">
@@ -199,7 +200,7 @@
 					@endforeach
 				</table>
 			</div>
-		</div>
+		</div>-->
 	</div>
 
 <!--dgfdgfdg-->

@@ -32,6 +32,7 @@
                                             </li>
                                         </ol>
                                     </div>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -44,7 +45,7 @@
                             <div class="card-content">
                             <h4 class="card-title">{{__('Company Member List')}}</h4>
                            
-                            <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y'); @endphp</h4>
+                            <h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
                             <h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
                             <h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
                             
@@ -53,10 +54,10 @@
                             <div class="row">
                             <div class="col s12">  
                                 <ul class="tabs">  
-                                <li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
-                                @foreach($data['company_subscription_list'] as  $key => $member_stat)
-                                <li class="tab col s3"><a class="tab_status" href="#{{ $key }}" id="3">{{ isset($member_stat->StatusId) ? CommonHelper::get_member_status_name($member_stat->StatusId) : "" }}</a></li>  
-                               @endforeach
+									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
+									@foreach($data['member_stat'] as  $key => $member_stat)
+									<li class="tab col s3"><a class="tab_status" href="#{{ $key }}" id="3">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
+									@endforeach
                                 </ul>  
                             </div>  
                                 <div id="inbox" class="col s12">
@@ -76,75 +77,10 @@
                                                     </table>
 													</div>	
                                 </div>  
-                                @foreach($data['company_subscription_list'] as  $key => $member_stat)
+                                @foreach($data['member_stat'] as  $key => $member_stat)
                                 <div id="{{ $key }}" class="col s12"></div>   
-                               @endforeach
+                                @endforeach
                                
-                                
-                               <!-- <div class="col s12">-->
-                                <!-- tabs-->
-                       
-                                    <!-- Horizontal Stepper -->
-								<!--	<div class="card">
-										<div class="card-content pb-0">
-											<div class="card-header">-->
-												<!-- <h4 class="card-title">Horizontal Stepper</h4> -->
-											<!--</div>
-											<ul class="stepper horizontal" id="horizStepper">
-                                               
-                                               
-                                                
-												<li class="step active" >
-                                                <form method="post" id="status_id">
-                                                <input type="hidden" name="status_id" value="">
-													<div class="step-title waves-effect">All</div>
-													<div class="step-content">
-                                                    <div class="col sm12 m12">
-                                                    <table id="page-length-option" class="display ">
-                                                        <thead>
-                                                        <tr>
-                                                        <th>{{__('SL No')}}</th>
-                                                        <th>{{__('Member Name')}}</th>
-                                                        <th>{{__('Member Code')}}</th>
-                                                        <th>{{__('NRIC')}}</th>
-                                                        <th>{{__('Amount')}}</th>
-                                                        <th>{{__('Due')}}</th>
-                                                        <th>{{__('Status')}}</th>
-                                                        <th>{{__('Action')}}</th>
-                                                        </tr>
-                                                        </tr>
-                                                        @php 
-                                                        isset($data['company_subscription_list']) ? $data['company_subscription_list'] : "";                   
-                                                        @endphp 
-                                                        @foreach($data['company_subscription_list'] as  $key => $member_stat)
-                                                        <tr>
-                                                        <td>{{ $key+1 }} </td>
-                                                        <td>{{ $member_stat->Name}} </td>
-                                                        <td>{{ $member_stat->MemberCode }} </td>                   
-                                                        <td>{{ $member_stat->NRIC }} </td>
-                                                        <td>{{ $member_stat->Amount }} </td>
-                                                        <td></td>
-                                                        <td>{{ isset($member_stat->StatusId) ? CommonHelper::get_member_status_name($member_stat->StatusId) : "" }} </td>
-                                                        <td><a></a></td>
-                                                        </tr>                  
-                                                        @endforeach
-                                                        </thead>
-                                                    </table>
-													</div>	
-                                                        <div class="step-actions">
-                                                      
-														</div>
-													</div>
-                                                    </form>
-												</li>
-                                              
-                                               
-											</ul>
-										</div>
-									</div>
-
-                               
-									</div>-->
 								</div>
                             </div>
                           </div>
@@ -231,7 +167,7 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}},
             "dataType": "json",
             "type": "POST",
             "data": {

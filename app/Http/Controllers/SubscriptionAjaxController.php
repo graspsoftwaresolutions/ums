@@ -51,105 +51,70 @@ class SubscriptionAjaxController extends CommonController
     }
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){
+		$companyid = $request->company_id;
         $columns = array( 
-            0 => 'member_name', 
-            1 => 'member_code', 
+            0 => 'Name', 
+            1 => 'membercode', 
             2 => 'nric', 
             3 => 'amount', 
-            4 => 'due', 
-            5 => 'status', 
-            6 => 'id',
+            4 => 'statusId', 
+            5 => 'id',
         );
-        $totalData = DB::table('mon_sub')->select('*')
+		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-        //->join('status','status.id','=','mon_sub_member.StatusId')
-       // ->where('mon_sub_member.StatusId','=',NULL)->get();
-       ->get()  
-        ->count();
-var_dump($totalData);
-exit;
-        $totalFiltered = $totalData; 
-        $limit = $request->input('length');
+        ->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
+		
+        $totalData = $commonqry->count();
         
-        $start = $request->input('start');
+        $totalFiltered = $totalData; 
+        
+       $limit = $request->input('length');
+       $start = $request->input('start');
+		  //var_dump($start);
+		  //exit;
         $order = $columns[$request->input('order.0.column')];
+     
         $dir = $request->input('order.0.dir');
-
         if(empty($request->input('search.value')))
         {            
-            if( $limit == -1){
-                $sub_mem = DB::table('mon_sub')->select('*')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-
-               
-            }else{
-                $sub_mem = DB::table('mon_sub')->select('*')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->limit($limit)
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-
-            }
-        
+            $sub_mem = $commonqry;
+			if( $limit != -1){
+				$sub_mem = $sub_mem->offset($start)
+							->limit($limit);
+			}
+			$sub_mem = $sub_mem->orderBy($order,$dir)
+			->get()->toArray();
         }
         else {
-        $search = $request->input('search.value'); 
-        if( $limit == -1){
-            $sub_mem = DB::table('mon_sub')->select('*')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->where('id','LIKE',"%{$search}%")
-               ->orWhere('mon_sub_member.name', 'LIKE',"%{$search}%")
-               ->limit($limit)
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-
-        }else{
-            $sub_mem = DB::table('mon_sub')->select('*')
-                ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-                ->join('company','company.id','=','mon_sub_company.CompanyCode')
-                ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-                //->join('status','status.id','=','mon_sub_member.StatusId')
-               // ->where('mon_sub_member.StatusId','=',NULL)->get();
-               ->where('id','LIKE',"%{$search}%")
-               ->orWhere('mon_sub_member.name', 'LIKE',"%{$search}%")
-               ->offset($start)
-               ->limit($limit)
-               ->orderBy($order,$dir)
-               ->get()->toArray();
-        
+			$search = $request->input('search.value'); 
+			$sub_mem = $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
+		    if( $limit != -1){
+			   $sub_mem = $sub_mem->offset($start)
+						->limit($limit);
+		    }
+		    $sub_mem = $sub_mem->orderBy($order,$dir)
+					  ->get()->toArray();
+			
+			
+			$totalFiltered =  $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+							    ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%")
+							   ->count();
         }
-        $totalFiltered =  DB::table('mon_sub')->select('*')
-        ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-        ->join('company','company.id','=','mon_sub_company.CompanyCode')
-        ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-        //->join('status','status.id','=','mon_sub_member.StatusId')
-       // ->where('mon_sub_member.StatusId','=',NULL)->get();
-       ->where('id','LIKE',"%{$search}%")
-       ->orWhere('mon_sub_member.name', 'LIKE',"%{$search}%")
-       ->count();
+        //var_dump($sub_mem);
+       // exit;
         
-        
-        }
-        
-        
-        $data = $this->CommonAjaxReturn($sub_mem, 0, '',0); 
-       
+        $data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+      
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
