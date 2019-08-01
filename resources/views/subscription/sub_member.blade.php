@@ -79,12 +79,12 @@
                                     <div class="input-field col s4">
                                         <i class="material-icons prefix">date_range</i>
                                         <input id="icon_prefix" type="text" class="validate datepicker" name="from_date">
-                                        <label for="icon_prefix">From date</label>
+                                        <label for="icon_prefix">From Month and Year</label>
                                     </div>
                                     <div class="input-field col s4">
                                         <i class="material-icons prefix">date_range</i>
                                         <input id="icon_telephone" type="tel" class="validate datepicker" name="to_date">
-                                        <label for="icon_telephone">To Date</label>
+                                        <label for="icon_telephone">To Month and Year</label>
                                     </div>
                                     <div class="input-field col s4">
                                     <input type="submit"  class="btn" name="search" value="Search">
@@ -102,7 +102,7 @@
                                         <table id="page-length-option" class="display ">
                                             <thead>
                                             <tr>
-                                            <th>Date</th>
+                                            <th>Month and Year</th>
                                             <th>Amount</th>
                                             <th>Status</th>
                                             </tr>
