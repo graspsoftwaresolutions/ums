@@ -41,15 +41,36 @@
                         <div class="card">
                         @php
                         $datacmpy = $data['company_subscription_list'][0];   
+						$enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
                         @endphp
                             <div class="card-content">
-                            <h4 class="card-title">{{__('Company Member List')}}</h4>
-                           
-                            <h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
-                            <h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
-                            <h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
-                            
-                            <h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
+								<div class="row">
+									<div class="col m6">
+										<h4 class="card-title">{{__('Company Member List')}}</h4>
+										<h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
+										<h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
+										<h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
+										
+										<h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
+									</div>
+									@if($data['non_updated_rows']>0)
+									<div class="col m6">
+										<div class="row">
+											<div class="col m6">
+												<div id="scanning-details" class="gradient-45deg-amber-amber padding-3 medium-small" style="color:#fff">
+													Please update membership details
+													
+												</div>
+												
+											</div>
+											<div class="col m6">
+												<a id="submit-download" href="{{ route('subscription.viewscan', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">Update details</a>
+											</div>
+										</div>
+									</div>
+									@endif
+								</div>
+								
                             @include('includes.messages')
                             <div class="row">
                             <div class="col s12">  

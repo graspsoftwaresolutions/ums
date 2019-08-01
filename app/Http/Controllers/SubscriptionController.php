@@ -359,6 +359,7 @@ class SubscriptionController extends CommonController
        $data['company_subscription_list'] = isset($data['company_subscription_list']) ? $data['company_subscription_list'] : [];      
       // dd($data['company_subscription_list']);
        $data['tot_count'] = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->count();
+       $data['non_updated_rows'] = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->where('update_status','=',0)->count();
        $data['member_stat'] = $status_all;
       // $data['member_stat'] = isset($data['member_stat']) ? $data['member_stat'] : [];   
 	  // return  $data;
