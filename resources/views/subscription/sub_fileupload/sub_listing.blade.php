@@ -92,6 +92,7 @@
 													$companyid = CommonHelper::getCompanyID($userid);
 													$companylist = CommonHelper::getCompanyList($companyid);
 												}  
+												$company_count = count($companylist);
 											}
 											
 										@endphp

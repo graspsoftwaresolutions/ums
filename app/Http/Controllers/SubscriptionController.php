@@ -44,12 +44,15 @@ use Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use Log;
+use Auth;
 
 
 
 class SubscriptionController extends CommonController
 {
     public function __construct() {
+        
         ini_set('memory_limit', -1);
         $this->middleware('auth');
         //$this->middleware('module:master');       
@@ -67,11 +70,32 @@ class SubscriptionController extends CommonController
         return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
     }   
     public function sub_company() {
-        $data['company_list'] = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
+        $userid = Auth::user()->id;
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $common_qry = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
         ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
-        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
-        ->get();
-
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode');
+        if($user_role == 'union'){
+            $company_list = $common_qry->get();
+        }else if($user_role =='union-branch'){
+            $unionbranchid = CommonHelper::getUnionBranchID($userid);
+            $rawQuery = "SELECT s.Date as date,c.company_name as company_name,sc.id as id FROM `mon_sub_company` AS sc JOIN company_branch AS cb ON sc.CompanyCode = cb.company_id LEFT JOIN mon_sub AS s ON s.id = sc.MonthlySubscriptionId LEFT JOIN company AS c on c.id = sc.CompanyCode WHERE cb.union_branch_id = $unionbranchid GROUP BY sc.id";
+            $company_list = DB::select( DB::raw($rawQuery));
+        } 
+        else if($user_role =='company'){
+            $companyid = CommonHelper::getCompanyID($userid);
+            $rawQuery = "SELECT s.Date as date,c.company_name as company_name,sc.id as id FROM `mon_sub_company` AS sc JOIN company_branch AS cb ON sc.CompanyCode = cb.company_id LEFT JOIN mon_sub AS s ON s.id = sc.MonthlySubscriptionId LEFT JOIN company AS c on c.id = sc.CompanyCode WHERE cb.company_id = $companyid GROUP BY sc.id";
+            $company_list = DB::select( DB::raw($rawQuery));
+        }
+        else if($user_role =='company-branch'){
+            $rawQuery = "SELECT s.Date as date,c.company_name as company_name,sc.id as id FROM `mon_sub_company` AS sc JOIN company_branch AS cb ON sc.CompanyCode = cb.company_id LEFT JOIN mon_sub AS s ON s.id = sc.MonthlySubscriptionId LEFT JOIN company AS c on c.id = sc.CompanyCode WHERE cb.user_id = $userid GROUP BY sc.id";
+            $company_list = DB::select( DB::raw($rawQuery));
+        } 
+         
+        $data['company_list'] = $company_list;
+       
+        
         return view('subscription.sub_company_list')->with('data', $data);
     }
 	
@@ -172,21 +196,27 @@ class SubscriptionController extends CommonController
     }
 
     public function scanSubscriptions(Request $request){
+        ini_set('memory_limit', -1);
         $limit = 200;
         $company_auto_id = $request->company_auto_id;
         $start =  $request->start;
         $return_data = ['status' => 0 ,'message' => ''];
         if($company_auto_id!=""){
+           
             $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
-                                                            ->offset($start)
+                                                            ->where('update_status','=',0)
+                                                            ->offset(0)
                                                             ->limit($limit)
                                                             ->get();
+            //$queries = DB::getQueryLog();
+            //Log::info($queries);
+            //dd($queries);
             $row_count = count($subscription_data);
             $count =0;
             foreach($subscription_data as $subscription){
                 $nric = $subscription->NRIC;
-                DB::enableQueryLog();
+               
                
                 $subscription_qry =  DB::table('membership as m')
                                     ->where(function($query) use ($nric){
@@ -195,19 +225,30 @@ class SubscriptionController extends CommonController
                                     });
                                    // $queries = DB::getQueryLog();
                                     //dd($queries);
+                $upstatus=1;
                 if($subscription_qry->count() > 0){
                     $memberdata = $subscription_qry->select('status_id','member_number')->get();
                     if(count($memberdata)>0){
                         $status_id = $memberdata[0]->status_id;
                         $member_code = $memberdata[0]->member_number;
-                        $updata = ['MemberCode' => $member_code, 'StatusId' => $status_id];
+                        $updata = ['MemberCode' => $member_code, 'StatusId' => $status_id, 'update_status' => 1];
+                        //DB::enableQueryLog();
                         $savedata = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId',$company_auto_id)
                         ->where('NRIC',$nric)->update($updata);
+                        $upstatus=0;
                         //die;
                     }
                 }
+                //DB::enableQueryLog();
+                if( $upstatus==1){
+                    $updata = ['update_status' => 1];
+                    $savedata = MonthlySubscriptionMember::where('id',$subscription->id)->update($updata);
+                }
+                
                 $count++;
             }
+            //Log::info($start.'count-'.$count);
+            //Log::Error($start.'rowcount-'.$row_count);
             $enc_id = Crypt::encrypt($company_auto_id);
             $return_data = ['status' => 1 ,'message' => 'status and member code updated successfully, Redirecting to subscription details...','redirect_url' =>  URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id)];
         }else{
@@ -225,7 +266,7 @@ class SubscriptionController extends CommonController
     {
         $company_auto_id = Crypt::decrypt($id);
         $data['company_auto_id'] = $company_auto_id;
-        $memberrowcount = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->count();
+        $memberrowcount = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->where('update_status','=',0)->count();
         $data['row_count'] = $memberrowcount;
         return view('subscription.scan-subcription')->with('data',$data);
     }

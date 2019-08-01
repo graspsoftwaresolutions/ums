@@ -50,29 +50,67 @@
 									<div id="scanning-details" class="hide gradient-45deg-amber-amber padding-1 medium-small" style="color:#fff">
 										Updating Member details, please dont refresh page....
 									</div>
-									<table width="100%">	
-										<thead>
-											<tr>
-												<th width="80%">Total number of members</th>
-												<th>Updated</th>
-											</tr>
-										</thead>
-										<tbody>
-											@php
-												$lastrow=0;
-											@endphp
-											@for ($i = 0; $i <= $data['row_count']; $i+=200)
-												<tr>
-													<th>{{ $i }}-{{ $i+200 }}</th>
-													<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
-												</tr>
-												@php
-													$lastrow+=200;
-												@endphp
-											@endfor
-											
-										</tbody>
-									</table>
+									<div class="row">
+										<div class="col s6">
+											<table width="100%">	
+												<thead>
+													<tr>
+														<th width="80%">Total number of members</th>
+														<th>Updated</th>
+													</tr>
+												</thead>
+												
+												<tbody>
+													@php
+														$lastrow=0;
+														$no_of_rows = $data['row_count']/200;
+														$halfrows = round($no_of_rows/2);
+														$count =0;
+														$half = $data['row_count']%2;
+														//dd($halfrows);
+													@endphp
+													@if($data['row_count']>0)
+													@for ($i = 0; $count <= $halfrows; $i+=200,$count++)
+														<tr>
+															<th>{{ $i }} - @php if( $data['row_count'] < $i+200 ){ echo $i.'++'; }else{ echo $i+200; }  @endphp</th>
+															<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
+														</tr>
+														@php
+															$lastrow+=200;
+														@endphp
+													@endfor
+													@endif
+												</tbody>
+												
+											</table>
+										</div>
+										<div class="col s6">
+											@if($data['row_count']>0)
+											<table width="100%">	
+												<thead>
+													<tr>
+														<th width="80%">Total number of members</th>
+														<th>Updated</th>
+													</tr>
+												</thead>
+												<tbody>
+													
+													@for ( ; $count <= $no_of_rows; $i+=200,$count++)
+														<tr>
+															<th>{{ $i }}- @php if( $data['row_count'] < $i+200 ){ echo $i.'++'; }else{ echo $i+200; }  @endphp</th>
+															<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
+														</tr>
+														@php
+															$lastrow+=200;
+														@endphp
+													@endfor
+													
+												</tbody>
+											</table>
+											@endif
+										</div>
+									</div>
+									
                                 </div>
                             </div>
                         </div>
@@ -94,10 +132,16 @@
 	$("#subscription_sidebar_a_id").addClass('active');
 	$(document).ready(function() {
 		$("#scanning-details").removeClass('hide');
-		setTimeout(function(){
-		  loader.showLoader();
-		  ScanMembership({{ $company_auto_id }},0);
-		}, 1500);
+		var row_count = {{ $data['row_count'] }};
+		if(row_count>0){
+			setTimeout(function(){
+			  loader.showLoader();
+			  ScanMembership({{ $company_auto_id }},0);
+			}, 1500);
+		}else{
+			$('#scanning-details').addClass('gradient-45deg-green-teal ');
+			$('#scanning-details').html('Mebership details already updated');
+		}
 	});
 	
 	
@@ -112,13 +156,15 @@
 				success: function(result) {
 					
 					if(result.status==1){
-						$('#scanning-details').removeClass('gradient-45deg-amber-amber');
-						$('#scanning-details').addClass('gradient-45deg-green-teal ');
+						
+						
 						if(start!=lastrow){
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
 							ScanMembership(company_id,parseInt(start+200));
 						}else{
 							$('#scanning-details').html(result.message);
+							$('#scanning-details').removeClass('gradient-45deg-amber-amber');
+							$('#scanning-details').addClass('gradient-45deg-green-teal ');
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
 							loader.hideLoader();
 							setTimeout(function(){
