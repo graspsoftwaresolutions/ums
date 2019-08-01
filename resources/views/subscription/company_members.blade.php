@@ -56,29 +56,31 @@
                                 <ul class="tabs">  
 									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
 									@foreach($data['member_stat'] as  $key => $member_stat)
-									<li class="tab col s3"><a class="tab_status" href="#{{ $key }}" id="3">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
+									<li class="tab col s3"><a class="tab_status" href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
 									@endforeach
                                 </ul>  
                             </div>  
                                 <div id="inbox" class="col s12">
-                                <div class="col sm12 m12">
-                                                    <table id="page-length-option" class="display ">
-                                                        <thead>
-                                                        <tr>
-                                                        <th>{{__('Member Name')}}</th>
-                                                        <th>{{__('Member Code')}}</th>
-                                                        <th>{{__('NRIC')}}</th>
-                                                        <th>{{__('Amount')}}</th>
-                                                        <th>{{__('Status')}}</th>
-                                                        <th>{{__('Action')}}</th>
-                                                        </tr>
-                                                        </thead>                                                        
-                                                       
-                                                    </table>
-													</div>	
+									<div class="col sm12 m12">
+										<table id="page-length-option" class="display ">
+											<thead>
+											<tr>
+											<th>{{__('Member Name')}}</th>
+											<th>{{__('Member Code')}}</th>
+											<th>{{__('NRIC')}}</th>
+											<th>{{__('Amount')}}</th>
+											<th>{{__('Status')}}</th>
+											<th>{{__('Action')}}</th>
+											</tr>
+											</thead>                                                        
+										   
+										</table>
+									</div>	
                                 </div>  
                                 @foreach($data['member_stat'] as  $key => $member_stat)
-                                <div id="{{ $key }}" class="col s12"></div>   
+                                <div id="member{{ $member_stat->id }}" class="col s12">
+									
+								</div>   
                                 @endforeach
                                
 								</div>

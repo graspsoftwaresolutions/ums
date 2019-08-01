@@ -47,7 +47,18 @@
     <div class="col s12">
 		<div id="validations" class="card card-tabs">
 			<div class="card-title">
-				@include('includes.messages')
+				@if ($errors->any())
+						<div class="card-alert card gradient-45deg-red-pink">
+							<div class="card-content white-text">
+							  <p>
+								<i class="material-icons">check</i> {{ __('Error') }} : {{ implode('', $errors->all(':message')) }}</p>
+							</div>
+							<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+							  <span aria-hidden="true">×</span>
+							</button>
+						 </div>
+						
+					@endif
 			</div>
 			<div class="card-content">
 					<div class="row">
@@ -56,18 +67,7 @@
 								<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
 									@csrf
 									<div class="row">
-										@if ($errors->any())
-											<div class="card-alert card gradient-45deg-red-pink">
-												<div class="card-content white-text">
-												  <p>
-													<i class="material-icons">check</i> {{ __('Error') }} : {{ implode('', $errors->all(':message')) }}</p>
-												</div>
-												<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-												  <span aria-hidden="true">×</span>
-												</button>
-											 </div>
-											
-										@endif
+										
 										@php 
 											$auth_user = Auth::user();
 											$companylist = [];
@@ -96,11 +96,11 @@
 											}
 											
 										@endphp
-										<div class="input-field col s4">
+										<div class="input-field col s3">
 											<label for="doe">{{__('Date of Entry') }}*</label>
 											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
 										</div>
-										<div class="col s4">
+										<div class="col s3">
 											<label for="sub_company">{{__('Company') }}*</label>
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>Choose Company</option>
@@ -110,15 +110,15 @@
 											</select>
 											<div class="errorTxt6"></div>
 										</div>
-										<div class="col s2">
+										<div class="col s2 hide" >
 											<label for="type">{{__('Type') }}*</label>
 											 <select id="type" name="type"
 											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
 												<option value="0">{{__('Download Empty File') }}</option>
-												<option value="1">{{__('Upload File') }}</option>
+												<option value="1" selected>{{__('Upload File') }}</option>
 										     </select>
 										</div>
-										<div id="file-upload-div" class="input-field  file-field col s2 hide">
+										<div id="file-upload-div" class="input-field  file-field col s2">
 											
 											<div class="btn ">
 												<span>File</span>
@@ -128,6 +128,10 @@
 												<input class="file-path validate" type="text">
 											</div>
 										</div>
+										<div class="col s3 " >
+											</br>
+											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn" type="button">Download Sample</button>
+										</div>
 										
 									</div>
 									<div class="row">
@@ -135,7 +139,7 @@
 											
 										</div>
 										<div class="col s4 right">
-											<button id="submit-download" class="waves-effect waves-dark btn btn-primary form-download-btn" type="submit">Download/Upload</button>
+											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Upload</button>
 											
 										</div>
 									</div>
@@ -266,9 +270,9 @@ $(document).ready(function() {
 				sub_company:{
 					required: true,
 				},
-				file:{
+				/* file:{
 					required: true,
-				},
+				}, */
 			 },
         //For custom messages
         messages: {
@@ -280,9 +284,9 @@ $(document).ready(function() {
 						required: "Please choose company",
 						
 					},
-					file:{
+					/* file:{
 						required: 'required',
-					},
+					}, */
 				},
         errorElement: 'div',
         errorPlacement: function (error, element) {
@@ -339,6 +343,15 @@ $(document).ready(function() {
 			loader.showLoader();
 		}
 		//$("#submit-download").prop('disabled',true);
+	});
+	$(document).on('click','#submit-download',function(){
+		$("#type").val(0);
+		$('#subscribe_formValidate').trigger('submit');
+	});
+	$(document).on('click','#submit-upload',function(){
+		$("#type").val(1);
+		$('#subscribe_formValidate').trigger('submit');
+		
 	});
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');
