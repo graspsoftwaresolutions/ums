@@ -57,7 +57,7 @@
                         <div class="col s12">
                         <div class="card">
                             @php 
-                            //print_r($data['member_subscription_list']); die;
+                           
                             if(isset($data['member_subscription_list'])){
                                 $row =  $data['member_subscription_list'][0]; 
                             }
