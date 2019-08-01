@@ -57,10 +57,7 @@
                         <div class="col s12">
                         <div class="card">
                             @php 
-                           
-                            if(isset($data['member_subscription_list'])){
-                                $row =  $data['member_subscription_list'][0]; 
-                            }
+                            $row =  $data['member_subscription_details'][0]; 
                             @endphp
                             <div class="card-content">
                             <h4 class="card-title">{{__('Member Subscription List')}}  </h4> 
@@ -71,6 +68,7 @@
                           
                             <h4 class="card-title">{{__('Amount Paid :')}}   {{ isset($row->Amount) ? $row->Amount : "No Amount" }}</h4>
                             <div class="card filter">
+                            
                             <form method="post" action="{{route('subscription.memberfilter',app()->getLocale())}}">
                             @csrf  
                             <input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
@@ -107,14 +105,26 @@
                                             <th>Status</th>
                                             </tr>
                                             </tr>  
-                                            
-                                                @foreach($data['member_subscription_list'] as $key=> $values)
+                                                @php if(count($data['member_subscription_list'])!=0 )
+                                                {
+                                                    foreach($data['member_subscription_list'] as $key=> $values)
+                                                    {
+                                                        @endphp
                                                         <tr> 
                                                         <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
                                                         <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
                                                         <td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} </td>
-                                                        </tr>  
-                                                @endforeach
+                                                        </tr> 
+                                                     @php
+                                                    }
+                                                }
+                                                else{ 
+                                                    @endphp
+                                                    <td><div calss="row"></td>
+                                                @php
+                                                }
+                                                @endphp
+                                                
                                             </thead>
                                         </table>
                                         </div>          
