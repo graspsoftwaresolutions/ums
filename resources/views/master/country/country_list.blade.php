@@ -12,6 +12,7 @@
     href="{{ asset('public/assets/custom_respon.css') }}">
 @endsection
 @section('main-content')
+
 <div id="">
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
@@ -55,7 +56,7 @@
                                                     <tr>
                                                         <th>{{__('Country Name') }}</th>
 
-                                                        <th> {{__('Action') }}</th>
+                                                        <th style="text-align:center !important;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

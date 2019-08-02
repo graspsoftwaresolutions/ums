@@ -54,7 +54,7 @@
                                                     <tr>
                                                         <th>{{__('Designation Name') }}</th>
 
-                                                        <th> {{__('Action') }}</th>
+                                                        <th  style="text-align:center;">  {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

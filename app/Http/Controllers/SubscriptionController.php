@@ -53,7 +53,6 @@ use Auth;
 class SubscriptionController extends CommonController
 {
     public function __construct() {
-        
         ini_set('memory_limit', -1);
         $this->middleware('auth');
         //$this->middleware('module:master');       
@@ -204,7 +203,7 @@ class SubscriptionController extends CommonController
         $return_data = ['status' => 0 ,'message' => ''];
         if($company_auto_id!=""){
            
-            $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')
+            $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount','MonthlySubscriptionCompanyId')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
                                                             ->where('update_status','=',0)
                                                             ->offset(0)
@@ -232,14 +231,17 @@ class SubscriptionController extends CommonController
                     $memberdata = $subscription_new_qry->select('status_id','member_number')->get();
                     $up_sub_member =1;
                     $subMemberMatch->match_id = 1;
+                   
                 }else if($subscription_old_qry->count() > 0){
                     $up_sub_member =1;
                     $memberdata = $subscription_old_qry->select('status_id','member_number')->get();
                     $subMemberMatch->match_id = 8;
-                }else{
+                }
+               
+                else{
                     $subMemberMatch->match_id = 2;
                 }
-                $subMemberMatch->save();
+                
                 $upstatus=1;
                 if($up_sub_member ==1){
                     if(count($memberdata)>0){
@@ -251,7 +253,28 @@ class SubscriptionController extends CommonController
                         ->where('NRIC',$nric)->update($updata);
                         $upstatus=0;
                     }
+                    $company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
+                    $member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
+                
+                    if($company_code == $member_company_id){
+                        $subMemberMatch->match_id = 9;
+                    }
+                    else if ( $company_code != $member_company_id){
+                        $subMemberMatch->match_id = 4;
+                    }
+                    
+                    if($memberdata[0]->name != $subscription->Name){
+                        $subMemberMatch->match_id = 3;
+                    }
+                    
+                    if($memberdata[0]->status_id ==3){
+                        $subMemberMatch->match_id = 6;
+                    }else if($memberdata[0]->status_id ==4){
+                        $subMemberMatch->match_id = 7;
+                    }
                 }
+
+                $subMemberMatch->save();
                 
                
                 if( $upstatus==1){
@@ -274,6 +297,9 @@ class SubscriptionController extends CommonController
     public function submember($lang,$id)
     {
         $id = Crypt::decrypt($id);
+       //  $year =2019;
+       // $month =8;
+
        // return $id;
        
        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
@@ -327,8 +353,10 @@ class SubscriptionController extends CommonController
         //return $memberid;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-
-        if($from_date!="" && $to_date!=""){
+        $data['member_subscription_list']=$data['member_subscription_details'];
+        if($from_date!=""  && $to_date!=""){
+           // var_dump("scvgdffd");
+           // exit;
             $fmmm_date = explode("/",$from_date);
             $fmdate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $from = date('Y-m-d', strtotime($fmdate));
@@ -336,6 +364,8 @@ class SubscriptionController extends CommonController
             $fmmm_date = explode("/",$to_date);
             $todate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $to = date('Y-m-d', strtotime($todate));
+
+            
             DB::enableQueryLog();
             $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
                                 ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
@@ -348,8 +378,10 @@ class SubscriptionController extends CommonController
                                 //->groupBY('s.id')
                                 ->get();         
         }else{
-            $data['member_subscription_list'] = [];
+            $data['member_subscription_list'] = $data['member_subscription_details'];
         }
+        //var_dump($data['member_subscription_list']);
+       // exit;
         return view('subscription.sub_member')->with('data',$data);
       
     }

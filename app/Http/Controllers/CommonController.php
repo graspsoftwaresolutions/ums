@@ -298,20 +298,20 @@ class CommonController extends Controller
 				$actions ='';
 				
 				if($edittype!=2){
-					$actions ="<a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+					$actions ="<label style='width:100% !important;float:left;text-align:center;'><a style='' id='$edit' onClick='showeditForm($autoid);' class='' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 				}
                
 
                 
                 if($deletetype==0){
-                    $actions .="<a><form style='float: left;margin-left:5px;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-                    $actions .="<button  type='submit' class='btn-floating waves-effect waves-light amber darken-4'  onclick='return ConfirmDeletion()'><i class='material-icons'>delete</i></button> </form>";
+                    $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                    $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
                 }
 				else if($deletetype==2){
                     $actions .="";
                 }
 				else{
-                    $actions .="&nbsp; <a class='btn-floating waves-effect waves-light amber darken-4' href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons'>delete</i></a>";
+                    $actions .="&nbsp; <a href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons' style='color:red;'>delete</i></a></label>";
                 }
                 
                 $nestedData['options'] = $actions;
