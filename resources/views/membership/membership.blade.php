@@ -58,9 +58,14 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<th>{{__('Branch Name') }}</th>
+													    <th>{{__('Member Code') }}</th>
 														<th>{{__('Member Name') }}</th>
-														<th>{{__('Email') }}</th>
+														<th>{{__('Type')}} </th>
+														<th>{{__('Gender')}}</th>
+														<th>{{__('Bank') }}</th>
+														<th>{{__('Branch Name') }}</th>
+														<th>{{__('DOJ')}}</th>
+														<!-- <th>{{__('Email') }}</th> -->
 														<th>{{__('Status') }}</th>
 														<th  style="text-align:center;">{{__('Action') }}</th>
 													</tr>
@@ -106,9 +111,13 @@
 				"data": {_token: "{{csrf_token()}}"}
 			},
 			"columns": [
-				{"data": "branch_name"},
+				{"data" : "member_number"},
 				{"data": "name"},
-				{"data": "email"},
+				{"data" : "designation_id"},
+				{"data" : "gender"},
+				{"data" : "company_name"},
+				{"data": "branch_name"},
+				{"data": "doj"},
 				{"data": "status"},
 				{"data": "options"}
 			]

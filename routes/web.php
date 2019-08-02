@@ -207,7 +207,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('scan-subscription/{parameter}','SubscriptionController@viewScanSubscriptions')->name('subscription.viewscan');
 	Route::get('process-scanning','SubscriptionController@scanSubscriptions')->name('subscription.scan');
 	Route::get('sub-company-members/{parameter}','SubscriptionController@companyMembers')->name('subscription.members');
+	Route::get('pending-members-details/{parameter}','SubscriptionController@pendingMembers')->name('subscription.pendingmembers');
+	
+	Route::post('ajax_pending_member_list','SubscriptionAjaxController@ajax_pending_member_list');
 
+
+	
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

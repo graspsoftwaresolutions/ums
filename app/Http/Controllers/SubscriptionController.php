@@ -117,8 +117,8 @@ class SubscriptionController extends CommonController
                 $newtype =2;
             }
             //print_r($request->all());die;
-            $Sub_typet = new SubscriptionExport($newtype,$request->all());
-            return Excel::download($Sub_typet, $file_name.'.xlsx');
+            $s = new SubscriptionExport($newtype,$request->all());
+            return Excel::download($s, $file_name.'.xlsx');
         }else{
             $rules = array(
                         'file' => 'required|mimes:xls,xlsx',
@@ -133,7 +133,7 @@ class SubscriptionController extends CommonController
                 if(Input::hasFile('file')){
                     $data['entry_date'] = $request->entry_date;
                     $data['sub_company'] = $request->sub_company;
-                   
+                
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
@@ -421,5 +421,22 @@ class SubscriptionController extends CommonController
       // $data['member_stat'] = isset($data['member_stat']) ? $data['member_stat'] : [];   
 	  // return  $data;
        return view('subscription.company_members')->with('data', $data);
+    }
+
+    public function pendingMembers($lang,$id)
+    {
+        $company_auto_id = Crypt::decrypt($id);
+        $data['company_auto_id'] = $company_auto_id;
+
+
+            $data['pending_members_list'] = DB::table('mon_sub_member as msm')->select('*')
+                                           ->join('mon_sub_company as msc', 'msm.MonthlySubscriptionCompanyId' ,'=','msc.id')
+                                           ->join('company','company.id','=','msc.CompanyCode')
+                                           ->where('msc.id','=',$company_auto_id)
+                                           ->where('msm.update_status','=','0')
+                                           ->get();
+
+        
+        return view('subscription.pending_members')->with('data', $data);
     }
 }
