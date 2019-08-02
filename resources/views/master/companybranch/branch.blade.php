@@ -51,7 +51,7 @@
 														<th>{{__('Branch Name') }}</th>
 														<th>{{__('Email') }}</th>
 														<th>{{__('Head') }}</th>
-														<th style="">{{__('Action') }}</th>
+														<th style="text-align:center;">{{__('Action') }}</th>
 													</tr>
 												</thead>
 											</table>

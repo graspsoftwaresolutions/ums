@@ -16,8 +16,11 @@
 #modal_add_edit{
 	width:40% !important;
 }
+ul.stepper .step .step-title:hover {
+	background:none !important;
+}
 
-
+	
 }
 @media only screen and (min-width: 601px) and (max-width: 900px)
 {
@@ -36,7 +39,12 @@
             padding-top:3%;
             height: 56px;
             width: 100%;
-        }
+		}
+		
+	
+	ul.stepper .step .step-title:hover {
+		background:none !important;
+		}
 }
 @media only screen and (max-width: 600px)
 {
@@ -56,4 +64,8 @@
 			text-align:center;
 			font-size:24px !important;
 		}	
+	
+	ul.stepper .step .step-title:hover {
+		background:none !important;
+		}
 }

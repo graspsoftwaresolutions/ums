@@ -53,7 +53,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>{{__('Status Name') }}</th>
-                                                        <th> {{__('Action') }}</th>
+                                                        <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

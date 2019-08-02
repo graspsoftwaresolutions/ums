@@ -55,7 +55,7 @@
                                                         <th>{{__('Country Name') }}</th>
                                                         <th>{{__('State Name') }}</th>
                                                         <th>{{__('City Name') }}</th>
-                                                        <th> {{__('Action') }}</th>
+                                                        <th style="text-align:center !important;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
 

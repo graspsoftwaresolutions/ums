@@ -21,7 +21,7 @@
     background-image: none !important;
 }
 
-#main .section-data-tables .dataTables_wrapper table.dataTable th,
+/*#main .section-data-tables .dataTables_wrapper table.dataTable th,
 #main .section-data-tables .dataTables_wrapper table.dataTable td
 {
     font-weight: 300;
@@ -31,6 +31,28 @@
     white-space: nowrap; 
 
     border-bottom: 1px solid #cfd8dc;
+}*/
+#main .section-data-tables .dataTables_wrapper table.dataTable th{
+	font-size:16px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody tr:first-child td {
+  border-top:0px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody tr td 
+{
+ border-top:1px solid lightgrey !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable th,
+#main .section-data-tables .dataTables_wrapper table.dataTable td
+{
+    padding: 8px 14px;
+
+    white-space: nowrap; 
+ 
+	color:black;
+	
 }
 
 #main .section-data-tables .dataTables_wrapper table.dataTable tbody
@@ -40,13 +62,18 @@
     max-width: 100%;
     height: 300px;
 }
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody th{
+	font-size:14px !important;
+	font-weight:bold !important;
+	text-align:left;
+}
 #main .section-data-tables .dataTables_wrapper table.dataTable tbody th,
 #main .section-data-tables .dataTables_wrapper table.dataTable tbody td
 {
     padding: 8px 14px;
-
+	font-size:12px;
     white-space: nowrap; 
-
+	text-transform:Uppercase;
     border: none !important;
 }
 #main .section-data-tables .dataTables_wrapper table.dataTable tbody tr td:before,
@@ -87,7 +114,7 @@
 #main .section-data-tables .dataTables_wrapper table.dataTable.stripe tbody tr .odd > .sorting_1,
 #main .section-data-tables .dataTables_wrapper table.dataTable.display tbody tr .odd > .sorting_1
 {
-    background-color: transparent;
+    xbackground-color: transparent;
 }
 #main .section-data-tables .dataTables_wrapper table.dataTable.stripe tbody tr .odd.selected,
 #main .section-data-tables .dataTables_wrapper table.dataTable.display tbody tr .odd.selected

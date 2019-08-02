@@ -29,6 +29,7 @@ use App\Model\MonthlySubscription;
 use App\Model\MonthlySubscriptionCompany;
 use App\Model\MonthlySubscriptionMember;
 use App\Model\MonSubCompanyAttach;
+use App\Model\MonthlySubMemberMatch;
 use App\Model\Membership;
 use DB;
 use View;
@@ -117,8 +118,8 @@ class SubscriptionController extends CommonController
                 $newtype =2;
             }
             //print_r($request->all());die;
-            
-            return Excel::download(new SubscriptionExport($newtype,$request->all()), $file_name.'.xlsx');
+            $s = new SubscriptionExport($newtype,$request->all());
+            return Excel::download($s, $file_name.'.xlsx');
         }else{
             $rules = array(
                         'file' => 'required|mimes:xls,xlsx',
@@ -133,7 +134,7 @@ class SubscriptionController extends CommonController
                 if(Input::hasFile('file')){
                     $data['entry_date'] = $request->entry_date;
                     $data['sub_company'] = $request->sub_company;
-                   
+                
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
@@ -197,7 +198,7 @@ class SubscriptionController extends CommonController
 
     public function scanSubscriptions(Request $request){
         ini_set('memory_limit', -1);
-        $limit = 200;
+        $limit = 100;
         $company_auto_id = $request->company_auto_id;
         $start =  $request->start;
         $return_data = ['status' => 0 ,'message' => ''];
@@ -217,17 +218,30 @@ class SubscriptionController extends CommonController
             foreach($subscription_data as $subscription){
                 $nric = $subscription->NRIC;
                
-               
-                $subscription_qry =  DB::table('membership as m')
-                                    ->where(function($query) use ($nric){
-                                        $query->orWhere('m.old_ic','=',$nric);
-                                        $query->orWhere('m.new_ic', '=',$nric);
-                                    });
-                                   // $queries = DB::getQueryLog();
-                                    //dd($queries);
+                $sub_table = DB::table('membership as m');
+                $subscription_new_qry =  $sub_table->where('m.new_ic', '=',$nric);
+                
+                $subscription_old_qry =  $sub_table->where('m.old_ic', '=',$nric);
+                
+                $up_sub_member =0;
+                $subMemberMatch = new MonthlySubMemberMatch();
+                $subMemberMatch->mon_sub_member_id = $subscription->id;
+                $subMemberMatch->created_by = Auth::user()->id;
+                $subMemberMatch->created_on = date('Y-m-d');
+                if($subscription_new_qry->count() > 0){
+                    $memberdata = $subscription_new_qry->select('status_id','member_number')->get();
+                    $up_sub_member =1;
+                    $subMemberMatch->match_id = 1;
+                }else if($subscription_old_qry->count() > 0){
+                    $up_sub_member =1;
+                    $memberdata = $subscription_old_qry->select('status_id','member_number')->get();
+                    $subMemberMatch->match_id = 8;
+                }else{
+                    $subMemberMatch->match_id = 2;
+                }
+                $subMemberMatch->save();
                 $upstatus=1;
-                if($subscription_qry->count() > 0){
-                    $memberdata = $subscription_qry->select('status_id','member_number')->get();
+                if($up_sub_member ==1){
                     if(count($memberdata)>0){
                         $status_id = $memberdata[0]->status_id;
                         $member_code = $memberdata[0]->member_number;
@@ -236,10 +250,10 @@ class SubscriptionController extends CommonController
                         $savedata = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId',$company_auto_id)
                         ->where('NRIC',$nric)->update($updata);
                         $upstatus=0;
-                        //die;
                     }
                 }
-                //DB::enableQueryLog();
+                
+               
                 if( $upstatus==1){
                     $updata = ['update_status' => 1];
                     $savedata = MonthlySubscriptionMember::where('id',$subscription->id)->update($updata);
@@ -260,24 +274,34 @@ class SubscriptionController extends CommonController
     public function submember($lang,$id)
     {
         $id = Crypt::decrypt($id);
+       //  $year =2019;
+       // $month =8;
+
        // return $id;
-       DB::enableQueryLog();
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+       //$data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+      // var_dump($data['member_subscription_details']);
+      //  exit;
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
-                                            ->where('s.Date','=',date('Y-m-01'))
+                                           // ->where('s.Date','=',date('Y-m-01'))
+                                           //  ->whereYear('s.Date', '=', $year)
+                                            //->whereMonth('s.Date', '=', $month)
                                             ->where('m.id','=',$id)->get();
 
-          
+        DB::enableQueryLog();
         $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
                                             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
                                             ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
-                                            ->where('m.id','=',$id)->get(); 
-      
+                                            ->where('m.id','=',$id)
+                                            //->groupBY('s.id')
+                                            ->get(); 
+                                            //$queries = DB::getQueryLog();
+                                           // dd($queries);
         // $data['member_subscription_list'] = DB::table('mon_sub as s')->select('sm.Amount','s')
         //                                     ->leftjoin('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         //                                     ->leftjoin('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
@@ -297,19 +321,21 @@ class SubscriptionController extends CommonController
     { 
         $member_code = $request->id;   
         $memberid = $request->memberid;
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
             ->leftjoin('status as status','status.id','=','sm.StatusId')
-            ->where('s.Date','=',date('Y-m-01'))
+            //->where('s.Date','=',date('Y-m-01'))
             ->where('m.id','=',$memberid)->get();
 
         //return $memberid;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-
-        if($from_date!="" && $to_date!=""){
+        $data['member_subscription_list']=$data['member_subscription_details'];
+        if($from_date!=""  && $to_date!=""){
+           // var_dump("scvgdffd");
+           // exit;
             $fmmm_date = explode("/",$from_date);
             $fmdate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $from = date('Y-m-d', strtotime($fmdate));
@@ -317,6 +343,8 @@ class SubscriptionController extends CommonController
             $fmmm_date = explode("/",$to_date);
             $todate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $to = date('Y-m-d', strtotime($todate));
+
+            
             DB::enableQueryLog();
             $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
                                 ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
@@ -325,10 +353,14 @@ class SubscriptionController extends CommonController
                                 ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
                                 ->where('s.Date','>=', $from)
                                 ->where('s.Date', '<=', $to)
-                                ->where('sm.MemberCode','=',$member_code)->get();         
+                                ->where('sm.MemberCode','=',$member_code)
+                                //->groupBY('s.id')
+                                ->get();         
         }else{
-            $data['member_subscription_list'] = [];
+            $data['member_subscription_list'] = $data['member_subscription_details'];
         }
+        //var_dump($data['member_subscription_list']);
+       // exit;
         return view('subscription.sub_member')->with('data',$data);
       
     }

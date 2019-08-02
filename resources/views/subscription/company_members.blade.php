@@ -103,7 +103,20 @@
                                 </div>  
                                 @foreach($data['member_stat'] as  $key => $member_stat)
                                 <div id="member{{ $member_stat->id }}" class="col s12">
-									
+									<div class="col sm12 m12">
+										<table id="page-length-option-{{ $member_stat->id }}" class="display">
+											<thead>
+											<tr>
+											<th>{{__('Member Name')}}</th>
+											<th>{{__('Member Code')}}</th>
+											<th>{{__('NRIC')}}</th>
+											<th>{{__('Amount')}}</th>
+											<th>{{__('Action')}}</th>
+											</tr>
+											</thead>                                                        
+										   
+										</table>
+									</div>	
 								</div>   
                                 @endforeach
                                
@@ -193,7 +206,7 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}},
+            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=all",
             "dataType": "json",
             "type": "POST",
             "data": {
@@ -221,6 +234,46 @@ $(function() {
             }
         ]
     });
+	 @foreach($data['member_stat'] as  $key => $member_stat)
+	 $('#page-length-option-{{$member_stat->id}}').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+        /* "lengthMenu": [
+        	[10, 25, 50, -1],
+        	[10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+		"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status="+{{$member_stat->id}},
+            "dataType": "json",
+            "type": "POST",
+            "data": {
+                _token: "{{csrf_token()}}"
+            }
+        },
+        "columns": [{
+                "data": "Name"
+            },
+            {
+                "data": "membercode"
+            },
+            {
+                "data": "nric"
+            },
+            {
+                "data": "amount"
+            },
+            
+            {
+                "data": "options"
+            }
+        ]
+    });
+	@endforeach
 });
 
 function ConfirmDeletion() {

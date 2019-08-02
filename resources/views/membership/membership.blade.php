@@ -67,7 +67,7 @@
 														<th>{{__('DOJ')}}</th>
 														<!-- <th>{{__('Email') }}</th> -->
 														<th>{{__('Status') }}</th>
-														<th>{{__('Action') }}</th>
+														<th  style="text-align:center;">{{__('Action') }}</th>
 													</tr>
 												</thead>
 												

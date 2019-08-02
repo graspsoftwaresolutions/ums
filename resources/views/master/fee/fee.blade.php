@@ -54,7 +54,7 @@
                                                     <tr>
                                                         <th>{{__('Fee Name') }}</th>
                                                         <th>{{__('Fee Amount') }}</th>
-                                                        <th> {{__('Action') }}</th>
+                                                        <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
 
