@@ -154,8 +154,8 @@ class SubscriptionAjaxController extends CommonController
                 $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
 				
                 $actions ='';
-                $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
-                if($resultdata->membercode!=''){
+                $histry = $memberid!='' ? route('subscription.submember', [app()->getLocale(),$enc_id]) : '#';
+                if($memberid!=''){
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
                 }
                 

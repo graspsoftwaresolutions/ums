@@ -144,7 +144,7 @@ class SubscriptionController extends CommonController
                         $enc_id = Crypt::encrypt($company_auto_id);
                         return redirect(app()->getLocale().'/scan-subscription/'.$enc_id)->with('message', 'File Uploaded Successfully');
                     }else{
-                        return redirect(app()->getLocale().'home');
+                        return redirect(app()->getLocale().'/home');
                     }
                     
                     //return $this->scanSubscriptions($request->entry_date,$request->sub_company);
@@ -217,30 +217,41 @@ class SubscriptionController extends CommonController
             foreach($subscription_data as $subscription){
                 $nric = $subscription->NRIC;
                
-                $sub_table = DB::table('membership as m');
-                $subscription_new_qry =  $sub_table->where('m.new_ic', '=',$nric);
+                $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric);
                 
-                $subscription_old_qry =  $sub_table->where('m.old_ic', '=',$nric);
+                $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric);
                 
                 $up_sub_member =0;
-                $subMemberMatch = new MonthlySubMemberMatch();
+                $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->count();
+                if($match_count>0){
+                    $match_res =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->get();
+                    $matchid = $match_res[0]->id;
+                    $subMemberMatch = MonthlySubMemberMatch::find($matchid);
+                }else{
+                    $subMemberMatch = new MonthlySubMemberMatch();
+                }
+                
                 $subMemberMatch->mon_sub_member_id = $subscription->id;
                 $subMemberMatch->created_by = Auth::user()->id;
                 $subMemberMatch->created_on = date('Y-m-d');
+               // DB::enableQueryLog();
                 if($subscription_new_qry->count() > 0){
-                    $memberdata = $subscription_new_qry->select('status_id','member_number')->get();
+                   
+                    $memberdata = $subscription_new_qry->select('status_id','member_number','branch_id','name')->get();
                     $up_sub_member =1;
                     $subMemberMatch->match_id = 1;
                    
                 }else if($subscription_old_qry->count() > 0){
+                    
                     $up_sub_member =1;
-                    $memberdata = $subscription_old_qry->select('status_id','member_number')->get();
+                    $memberdata = $subscription_old_qry->select('status_id','member_number','branch_id','name')->get();
                     $subMemberMatch->match_id = 8;
                 }
                
                 else{
                     $subMemberMatch->match_id = 2;
                 }
+               
                 
                 $upstatus=1;
                 if($up_sub_member ==1){
