@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Crypt;
-
 use Illuminate\Http\Request;
 use App\Model\Membership;
 use App\Model\Country;
@@ -139,7 +138,6 @@ class MemberController extends CommonController
 					// return $member_user;die;
 					$member['user_id'] = $member_user->id;
 					
-				
 					if($user_role == 'union'){
 						$member['is_request_approved'] = 1;
 						$member['status_id'] = 1;

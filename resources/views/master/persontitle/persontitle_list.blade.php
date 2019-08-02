@@ -7,6 +7,8 @@
     href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 @endsection
 @section('headSecondSection')
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 @endsection
 @section('main-content')
@@ -62,32 +64,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="modal_add_edit" class="modal">
-                            <div class="modal-content">
+                        <div id="modal_add_edit" class="modal modal-fixed-header">
+                        <div class="modal-header" id="modal-header" >
                                 <h4>{{__('Person Title Details') }}</h4>
+                            </div>
+                                <div class="modal-content">
                                 <form class="formValidate" id="title_formValidate" method="post"
                                     action="{{ route('master.savepersontitle',app()->getLocale()) }}">
                                     @csrf
                                     <input type="hidden" name="id" id="updateid">
                                     <div class="row">
-                                        <div class="input-field col s12 m6">
+                                        <div class="input-field col s12">
                                             <label for="person_title"
-                                                class="common-label force-active">{{ __('Title Name') }}*</label>
+                                                class="common-label">{{ __('Title Name') }}*</label>
                                             <input id="person_title" class="common-input" name="person_title"
                                                 type="text" data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
-                                        <div class="input-field col s12">
+                                        </div></div>
+                                        <div class="modal-footer">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button id="modal-update-btn" class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button id="modal-save-btn"  class="btn waves-effect waves-light right submit add_hide"
+                                            <button id="modal-save-btn"  class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
-                                        </div>
+</div>
                                     </div>
                                 </form>
                             </div>
@@ -203,6 +208,7 @@ function showaddForm() {
     $('#person_title').val("");
     $('.modal').modal();
     $('#updateid').val("");
+    $('.common-label').removeClass('force-active');
     
 }
 
@@ -221,6 +227,7 @@ function showeditForm(Persontitle) {
             $('#updateid').attr('data-autoid', result.id);
             $('#person_title').val(result.person_title);
             loader.hideLoader();
+            $('.common-label').addClass('force-active');
             $("#modal_add_edit").modal('open');
         }
     });
