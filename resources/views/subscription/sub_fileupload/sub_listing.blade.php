@@ -66,9 +66,10 @@
 												  <span aria-hidden="true">×</span>
 												</button>
 											 </div>
-											
+										
 										@endif
 										@php 
+									
 											$auth_user = Auth::user();
 											$companylist = [];
 											$companyid = '';
@@ -100,7 +101,7 @@
 											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
 										</div>
 										<div class="col s4">
-											<label for="sub_company">{{__('Company') }}*</label>
+											<label for="sub_company">{{__('Company')   }}{{ realpath(sys_get_temp_dir()) }}*</label>
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>Choose Company</option>
 												@foreach($companylist as $value)

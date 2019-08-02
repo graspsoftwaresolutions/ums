@@ -93,8 +93,8 @@ class SubscriptionController extends CommonController
                 $newtype =2;
             }
             //print_r($request->all());die;
-            
-            return Excel::download(new SubscriptionExport($newtype,$request->all()), $file_name.'.xlsx');
+            $s = new SubscriptionExport($newtype,$request->all());
+            return Excel::download($s, $file_name.'.xlsx');
         }else{
             $rules = array(
                         'file' => 'required|mimes:xls,xlsx',
@@ -109,7 +109,7 @@ class SubscriptionController extends CommonController
                 if(Input::hasFile('file')){
                     $data['entry_date'] = $request->entry_date;
                     $data['sub_company'] = $request->sub_company;
-                   
+                
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
