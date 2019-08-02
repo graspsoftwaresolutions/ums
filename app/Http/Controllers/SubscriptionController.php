@@ -53,7 +53,6 @@ use Auth;
 class SubscriptionController extends CommonController
 {
     public function __construct() {
-        
         ini_set('memory_limit', -1);
         $this->middleware('auth');
         //$this->middleware('module:master');       
@@ -145,7 +144,7 @@ class SubscriptionController extends CommonController
                         $enc_id = Crypt::encrypt($company_auto_id);
                         return redirect(app()->getLocale().'/scan-subscription/'.$enc_id)->with('message', 'File Uploaded Successfully');
                     }else{
-                        return redirect(app()->getLocale().'home');
+                        return redirect(app()->getLocale().'/home');
                     }
                     
                     //return $this->scanSubscriptions($request->entry_date,$request->sub_company);
@@ -204,7 +203,7 @@ class SubscriptionController extends CommonController
         $return_data = ['status' => 0 ,'message' => ''];
         if($company_auto_id!=""){
            
-            $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')
+            $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount','MonthlySubscriptionCompanyId')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
                                                             ->where('update_status','=',0)
                                                             ->offset(0)
@@ -218,28 +217,42 @@ class SubscriptionController extends CommonController
             foreach($subscription_data as $subscription){
                 $nric = $subscription->NRIC;
                
-                $sub_table = DB::table('membership as m');
-                $subscription_new_qry =  $sub_table->where('m.new_ic', '=',$nric);
+                $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric);
                 
-                $subscription_old_qry =  $sub_table->where('m.old_ic', '=',$nric);
+                $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric);
                 
                 $up_sub_member =0;
-                $subMemberMatch = new MonthlySubMemberMatch();
+                $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->count();
+                if($match_count>0){
+                    $match_res =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->get();
+                    $matchid = $match_res[0]->id;
+                    $subMemberMatch = MonthlySubMemberMatch::find($matchid);
+                }else{
+                    $subMemberMatch = new MonthlySubMemberMatch();
+                }
+                
                 $subMemberMatch->mon_sub_member_id = $subscription->id;
                 $subMemberMatch->created_by = Auth::user()->id;
                 $subMemberMatch->created_on = date('Y-m-d');
+               // DB::enableQueryLog();
                 if($subscription_new_qry->count() > 0){
-                    $memberdata = $subscription_new_qry->select('status_id','member_number')->get();
+                   
+                    $memberdata = $subscription_new_qry->select('status_id','member_number','branch_id','name')->get();
                     $up_sub_member =1;
                     $subMemberMatch->match_id = 1;
+                   
                 }else if($subscription_old_qry->count() > 0){
+                    
                     $up_sub_member =1;
-                    $memberdata = $subscription_old_qry->select('status_id','member_number')->get();
+                    $memberdata = $subscription_old_qry->select('status_id','member_number','branch_id','name')->get();
                     $subMemberMatch->match_id = 8;
-                }else{
+                }
+               
+                else{
                     $subMemberMatch->match_id = 2;
                 }
-                $subMemberMatch->save();
+               
+                
                 $upstatus=1;
                 if($up_sub_member ==1){
                     if(count($memberdata)>0){
@@ -251,7 +264,28 @@ class SubscriptionController extends CommonController
                         ->where('NRIC',$nric)->update($updata);
                         $upstatus=0;
                     }
+                    $company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
+                    $member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
+                
+                    if($company_code == $member_company_id){
+                        $subMemberMatch->match_id = 9;
+                    }
+                    else if ( $company_code != $member_company_id){
+                        $subMemberMatch->match_id = 4;
+                    }
+                    
+                    if($memberdata[0]->name != $subscription->Name){
+                        $subMemberMatch->match_id = 3;
+                    }
+                    
+                    if($memberdata[0]->status_id ==3){
+                        $subMemberMatch->match_id = 6;
+                    }else if($memberdata[0]->status_id ==4){
+                        $subMemberMatch->match_id = 7;
+                    }
                 }
+
+                $subMemberMatch->save();
                 
                
                 if( $upstatus==1){
@@ -278,18 +312,16 @@ class SubscriptionController extends CommonController
        // $month =8;
 
        // return $id;
-       //$data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
-      // var_dump($data['member_subscription_details']);
-      //  exit;
-       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+       
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
-                                           // ->where('s.Date','=',date('Y-m-01'))
-                                           //  ->whereYear('s.Date', '=', $year)
-                                            //->whereMonth('s.Date', '=', $month)
-                                            ->where('m.id','=',$id)->get();
+                                            //->where('s.Date','=',date('Y-m-01'))
+                                            ->orderBY('s.Date','desc')
+                                            ->where('m.id','=',$id)
+                                            ->get();
 
         DB::enableQueryLog();
         $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
@@ -326,7 +358,7 @@ class SubscriptionController extends CommonController
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
             ->leftjoin('status as status','status.id','=','sm.StatusId')
-            //->where('s.Date','=',date('Y-m-01'))
+            ->orderBY('s.Date','desc')
             ->where('m.id','=',$memberid)->get();
 
         //return $memberid;

@@ -64,10 +64,10 @@
                             <h4 class="card-title">{{__('Member Name : ')}}  {{ isset($row->membername) ? $row->membername : "Nill" }} </h4>
                             <h4 class="card-title">{{__('Status :')}}  {{ isset($row->status_name) ? $row->status_name : "Nill" }}</h4>
                                                                    
-                           <!-- <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
+                           <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
                           
-                            <h4 class="card-title">{{__('Amount Paid :')}}   {{ isset($row->Amount) ? $row->Amount : "No Amount" }}</h4>
---><div class="card filter">
+                            <h4 class="card-title">{{__('Amount Paid :')}}   {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</h4>
+                            <div class="card filter">
                             
                             <form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
                             @csrf  
