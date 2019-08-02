@@ -23,67 +23,37 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Company Subscription List')}}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Pending Members List')}}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('Subscription')}}
+                                            <li class="breadcrumb-item active">{{__('Members List')}}
                                             </li>
                                         </ol>
                                     </div>
-                                  
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                         <div class="col s12">
                         <div class="card">
-                        @php
-                        $datacmpy = $data['company_subscription_list'][0];   
-						$enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
-                        @endphp
+                        
                             <div class="card-content">
-								<div class="row">
-									<div class="col m6">
-										<h4 class="card-title">{{__('Company Member List')}}</h4>
-										<h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
-										<h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
-										<h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
-										
-										<h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
-									</div>
-									@if($data['non_updated_rows']>0)
-									<div class="col m6">
-										<div class="row">
-											<div class="col m4">
-												<div id="scanning-details" class="gradient-45deg-amber-amber padding-3 medium-small" style="color:#fff">
-													Please update membership details
-													
-												</div>
-												
-											</div>
-											<div class="col m3">
-												<a id="submit-download" href="{{ route('subscription.viewscan', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">Update details</a>
-											</div>
-                                            <div class="col m5">
-												<a id="pending_members" href="{{ route('subscription.pendingmembers', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light btn btn-primary form-download-btn right" type="button">Pending Members </a>
-											</div>
-										</div>
-									</div>
-									@endif
-								</div>
+							
 								
                             @include('includes.messages')
                             <div class="row">
                             <div class="col s12">  
                                 <ul class="tabs">  
 									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
-									@foreach($data['member_stat'] as  $key => $member_stat)
-									<li class="tab col s3"><a class="tab_status" href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
-									@endforeach
+									
                                 </ul>  
-                            </div>  
+                            </div>
+                            @php
+                            $datacmpy = $data['pending_members_list'][0];   
+                            $enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
+                            @endphp  
                                 <div id="inbox" class="col s12">
 									<div class="col sm12 m12">
 										<table id="page-length-option" class="display ">
@@ -96,17 +66,13 @@
 											<th>{{__('Status')}}</th>
 											<th>{{__('Action')}}</th>
 											</tr>
-											</thead>                                                        
+											</thead> 
+                                            <tbody>
+                                            </tbody>                                                       
 										   
 										</table>
 									</div>	
                                 </div>  
-                                @foreach($data['member_stat'] as  $key => $member_stat)
-                                <div id="member{{ $member_stat->id }}" class="col s12">
-									
-								</div>   
-                                @endforeach
-                               
 								</div>
                             </div>
                           </div>
@@ -146,39 +112,6 @@ $(document).ready(function(){
         console.log($(this).attr('id'));
     });
 });
-	/*$(document).ready(function(){
-		//loader.showLoader();
-		var horizStepper = document.querySelector('#horizStepper');
-		var horizStepperInstace = new MStepper(horizStepper, {
-			// options
-			firstActive: 0,
-			showFeedbackPreloader: true,
-			autoFormCreation: true,
-			validationFunction: defaultValidationFunction,
-			stepTitleNavigation: true,
-			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
-		});
-
-		horizStepperInstace.resetStepper();
-		
-	
-	});
-	function defaultValidationFunction(horizStepper, activeStepContent) {
-      //  $statid =$(this).closest($('#status_id').val());
-       // console.log($statid);
-		
-		/* var inputs = activeStepContent.querySelectorAll('input, textarea, select');
-	   for (let i = 0; i < inputs.length; i++) 
-	   {
-		   if (!inputs[i].checkValidity()) {
-			   jQuery("#submit-member").trigger('submit');
-			   return false;
-		   }
-	   } */
-	  
-	  // return true;
-   // }*/
-
 $(function() {
     $('#page-length-option').DataTable({
         "responsive": true,
@@ -193,7 +126,7 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}},
+            "url": "{{ url(app()->getLocale().'/ajax_pending_member_list') }}?company_id="+{{$data['company_auto_id']}},
             "dataType": "json",
             "type": "POST",
             "data": {
@@ -222,45 +155,6 @@ $(function() {
         ]
     });
 });
-
-function ConfirmDeletion() {
-    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
-function showaddForm() {
-    $('.edit_hide').show();
-    $('.add_hide').show();
-    $('.edit_hide_btn').hide();
-    $('#state_name').val("");
-    $('.modal').modal();
-    $('#updateid').val("");
-}
-
-function showeditForm(countryid) {
-    $('.edit_hide').hide();
-    $('.add_hide').hide();
-    $('.edit_hide_btn').show();
-    $('.modal').modal();
-    loader.showLoader();
-    var url = "{{ url(app()->getLocale().'/state_detail') }}" + '?id=' + countryid;
-    $.ajax({
-        url: url,
-        type: "GET",
-        success: function(result) {
-            $('#updateid').val(result.id);
-            $('#updateid').attr('data-autoid', result.id);
-            $('#country_id').val(result.country_id);
-            $('#state_name').val(result.state_name);
-            loader.hideLoader();
-            $("#modal_add_edit").modal('open');
-        }
-    });
-}
 
 </script>
 @endsection
