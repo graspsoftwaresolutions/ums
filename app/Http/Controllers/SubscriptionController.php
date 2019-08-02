@@ -118,13 +118,8 @@ class SubscriptionController extends CommonController
                 $newtype =2;
             }
             //print_r($request->all());die;
-<<<<<<< HEAD
             $s = new SubscriptionExport($newtype,$request->all());
             return Excel::download($s, $file_name.'.xlsx');
-=======
-            $Sub_typet = new SubscriptionExport($newtype,$request->all());
-            return Excel::download($Sub_typet, $file_name.'.xlsx');
->>>>>>> d4db4d10b9350e7997dd4b81bb6cf11789047591
         }else{
             $rules = array(
                         'file' => 'required|mimes:xls,xlsx',

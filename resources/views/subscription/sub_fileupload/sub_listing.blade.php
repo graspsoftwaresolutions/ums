@@ -67,22 +67,7 @@
 								<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
 									@csrf
 									<div class="row">
-<<<<<<< HEAD
-										@if ($errors->any())
-											<div class="card-alert card gradient-45deg-red-pink">
-												<div class="card-content white-text">
-												  <p>
-													<i class="material-icons">check</i> {{ __('Error') }} : {{ implode('', $errors->all(':message')) }}</p>
-												</div>
-												<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-												  <span aria-hidden="true">×</span>
-												</button>
-											 </div>
 										
-										@endif
-=======
-										
->>>>>>> d4db4d10b9350e7997dd4b81bb6cf11789047591
 										@php 
 									
 											$auth_user = Auth::user();
