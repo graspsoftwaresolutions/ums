@@ -61,7 +61,7 @@
 																	<div class="col s12 m6">
 																	<input id="auto_id" name="auto_id" value="{{$values->mid}}"  type="text" class="hide">
 																		<label>Member Title*</label>
-																		<select name="member_title" id="member_title" data-error=".errorTxt1"  class="error browser-default selectpicker">
+																		<select name="member_title" id="member_title" data-error=".errorTxt1"  required class="validate error browser-default selectpicker">
 																			<option value="" disabled selected>Choose your option</option>
 																			@foreach($data['title_view'] as $key=>$value)
 																			<option value="{{$value->id}}" @php if($value->id == $values->member_title_id) { echo "selected";} @endphp>{{$value->person_title}}</option>
@@ -108,7 +108,7 @@
 																	<div class="clearfix" style="clear:both"></div>
 																	<div class="input-field col s12 m6">
 																	  <label for="mobile" class="force-active">Mobile Number *</label>
-																	  <input id="mobile" name="mobile" value="{{$values->mobile}}" type="text" data-error=".errorTxt24">
+																	  <input id="mobile" name="mobile" value="{{$values->mobile}}" required type="text"  data-error=".errorTxt24">
 																	  <div class="errorTxt24"></div>
 																	</div>
 																	<div class="input-field col s12 m6">
@@ -219,17 +219,17 @@
 																		</div>
 																		<div class="input-field col s12 m6">
 																		<label for="address_one" class="force-active">Address Line 1*</label>
-																			<input id="address_one" name="address_one" type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
+																			<input id="address_one" name="address_one" required type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
 																			<div class="errorTxt8"></div>
 																		</div>
 																		<div class="input-field col s12 m6">
 																		<label for="address_two" class="force-active">Address Line 2*</label>
-																			<input id="address_two" name="address_two" type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
+																			<input id="address_two" name="address_two" required  type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
 																			<div class="errorTxt9"></div>
 																		</div>
 																		<div class="input-field col s12 m6">
 																		<label for="address_three" class="force-active">Address Line 3*</label>
-																			<input id="address_three" name="address_three" type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
+																			<input id="address_three" name="address_three" required  type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
 																			<div class="errorTxt10"></div>
 																		</div>
 																		<div class="col s12 m6">
@@ -253,7 +253,7 @@
 																		
 																		<div class="input-field col s12 m6">
 																		<label for="salary" class="force-active">Salary</label>
-																			<input id="salary" name="salary" value="{{$values->salary}}" type="text" data-error=".errorTxt11">
+																			<input id="salary" name="salary" value="{{$values->salary}}" required  type="text" data-error=".errorTxt11">
 																			<div class="errorTxt11"></div>
 																		</div>
 																		<div class="input-field col s12 m6">
@@ -382,7 +382,7 @@
 																			</button>
 																			</div-->
 																		<div class="col m12 s12 mb-3" style="text-align: right;">
-																			<button id="controlled_next" class="waves-effect waves dark btn btn-primary next-step"
+																			<button id="controlled_next"  class="waves-effect waves dark btn btn-primary next-step"
 																				type="submit">
 																			Next
 																			<i class="material-icons right">arrow_forward</i>
@@ -950,6 +950,12 @@
             }
          });
     });
+	
+	function nextBtn() {
+		 $("#controlled_next").trigger('submit');
+		 return false;
+		
+}
 </script>
 @include('membership.member_common_script')
 @endsection

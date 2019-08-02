@@ -51,7 +51,7 @@
                                                     <tr>
                                                         <th>{{__('User Name') }}</th>
                                                         <th>{{__('Email') }}</th>
-                                                        <th style="margin-left:20px"> {{__('Action') }}</th>
+                                                        <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

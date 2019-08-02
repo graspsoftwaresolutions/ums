@@ -1,3 +1,4 @@
+
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
@@ -21,8 +22,12 @@
 </style>
 @endsection
 @section('main-content')
+@php 
+
+@endphp
 <div id="">
     <div class="row">
+   
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
             <div class="container">
@@ -46,36 +51,43 @@
                                   
                                 </div>
                             </div>
+                           
                         </div>
                         <div class="row">
                         <div class="col s12">
                         <div class="card">
-                        
+                            @php 
+                            $row =  isset($data['member_subscription_details'][0]) ? $data['member_subscription_details'][0]:""; 
+                            @endphp
                             <div class="card-content">
-                            <h4 class="card-title">{{__('Member Subscription List')}}</h4>
-                            <h4 class="card-title">{{__('Member Name : ')}} Mounika </h4>
-                            <h4 class="card-title">{{__('Company Name & Code : ')}} XXXX:1234 </h4>
-                            <h4 class="card-title">{{__('Company Branch :')}} XXX</h4>
-                            <h4 class="card-title">{{__('Status :')}} XXXX</h4>
-                            <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
-                            <h4 class="card-title">{{__('Amount Paid :')}} 3000</h4>
-                            <div class="card filter">
-                            <form method="post" action="">
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <i class="material-icons prefix">date_range</i>
-                                    <input id="icon_prefix" type="text" class="validate datepicker" name="form_date">
-                                    <label for="icon_prefix">From date</label>
+                            <h4 class="card-title">{{__('Member Subscription List')}}  </h4> 
+                            <h4 class="card-title">{{__('Member Name : ')}}  {{ isset($row->membername) ? $row->membername : "Nill" }} </h4>
+                            <h4 class="card-title">{{__('Status :')}}  {{ isset($row->status_name) ? $row->status_name : "Nill" }}</h4>
+                                                                   
+                           <!-- <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
+                          
+                            <h4 class="card-title">{{__('Amount Paid :')}}   {{ isset($row->Amount) ? $row->Amount : "No Amount" }}</h4>
+--><div class="card filter">
+                            
+                            <form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
+                            @csrf  
+                            <input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
+                            <input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
+                                <div class="row">                          
+                                    <div class="input-field col s4">
+                                        <i class="material-icons prefix">date_range</i>
+                                        <input id="from_date" type="text" required class="validate datepicker" name="from_date">
+                                        <label for="from_date">From Month and Year</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <i class="material-icons prefix">date_range</i>
+                                        <input id="to_date" type="text" required class="validate datepicker" name="to_date">
+                                        <label for="to_date">To Month and Year</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                    <input type="submit"  class="btn" name="search" value="Search">
+                                    </div>
                                 </div>
-                                <div class="input-field col s4">
-                                    <i class="material-icons prefix">date_range</i>
-                                    <input id="icon_telephone" type="tel" class="validate datepicker" name="to_date">
-                                    <label for="icon_telephone">To Date</label>
-                                </div>
-                                <div class="input-field col s4">
-                                <input type="submit"  class="btn" name="Search" value="Search">
-                                </div>
-                            </div>
                             </form>  
                             </div>
                             @include('includes.messages')
@@ -84,25 +96,43 @@
                                     <!-- Horizontal Stepper -->
 									<div class="card">
                                     <div class="col sm12 m12">
-                                                    <table id="page-length-option" class="display ">
-                                                        <thead>
-                                                        <tr>
-                                                        <th>Date</th>
-                                                        <th>Amount</th>
-                                                        <th>Due</th>
-                                                        <th>Status</th>
-                                                        </tr>
-                                                        </tr>
-                                                       
-                                                        <tr>
-                                                        <td>Jul 2019</td>
-                                                        <td>200</td>
-                                                        <td>xxx</td>
-                                                        <td>xxx</td>
-                                                        </tr>    
-                                                        </thead>
-                                                    </table>
-													</div>          
+                                       
+                                        <table id="page-length-option" class="display ">
+                                            <thead>
+                                            <tr>
+                                            <th>Month and Year</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            </tr>
+                                            </tr>  
+                                                @php if(count($data['member_subscription_list'])!=0 )
+                                                {
+                                                    foreach($data['member_subscription_list'] as $key=> $values)
+                                                    {
+                                                        $monthyear1 = explode("-",$values->Date);
+                                                        $monthyear =$monthyear1[0].$monthyear1[1];
+                                                        //$ctyear = date('Ym');
+                                                        $ctyear = "201907";
+                                                        if($ctyear == $monthyear){ $act = "Active"; } else{ $act =""; }
+                                                        @endphp
+                                                        <tr> 
+                                                        <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
+                                                        <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
+                                                    <td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
+                                                        </tr> 
+                                                     @php
+                                                    }
+                                                }
+                                                else{ 
+                                                    @endphp
+                                                    <td><div calss="row"></td>
+                                                @php
+                                                }
+                                                @endphp
+                                                
+                                            </thead>
+                                        </table>
+                                        </div>          
 									</div>
 									</div>
 								</div>
@@ -173,6 +203,36 @@ $("#subcomp_sidebar_a_id").addClass('active');
 	  
 	   return true;
 	}
+    $("#filtersubmit").validate({
+    rules: {
+        from_date: {
+        required: true,
+        
+      },
+      to_date: {
+        required: true,
+        
+      },
+      
+      //For custom messages
+      messages: {
+        from_date:{
+        required: "Enter From Date"
+      },
+      to_date:{
+        required: "Enter To Date"
+      },
+      
+      errorElement : 'div',
+      errorPlacement: function(error, element) {
+        var placement = $(element).data('error');
+        if (placement) {
+          $(placement).append(error)
+        } else {
+      error.insertAfter(element);
+      }
+    }
+  });
 /*
 
 </script>

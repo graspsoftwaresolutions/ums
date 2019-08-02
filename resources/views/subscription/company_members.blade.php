@@ -41,44 +41,80 @@
                         <div class="card">
                         @php
                         $datacmpy = $data['company_subscription_list'][0];   
+						$enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
                         @endphp
                             <div class="card-content">
-                            <h4 class="card-title">{{__('Company Member List')}}</h4>
-                           
-                            <h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
-                            <h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
-                            <h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
-                            
-                            <h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
+								<div class="row">
+									<div class="col m6">
+										<h4 class="card-title">{{__('Company Member List')}}</h4>
+										<h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
+										<h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
+										<h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
+										
+										<h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
+									</div>
+									@if($data['non_updated_rows']>0)
+									<div class="col m6">
+										<div class="row">
+											<div class="col m6">
+												<div id="scanning-details" class="gradient-45deg-amber-amber padding-3 medium-small" style="color:#fff">
+													Please update membership details
+													
+												</div>
+												
+											</div>
+											<div class="col m6">
+												<a id="submit-download" href="{{ route('subscription.viewscan', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">Update details</a>
+											</div>
+										</div>
+									</div>
+									@endif
+								</div>
+								
                             @include('includes.messages')
                             <div class="row">
                             <div class="col s12">  
                                 <ul class="tabs">  
 									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
 									@foreach($data['member_stat'] as  $key => $member_stat)
-									<li class="tab col s3"><a class="tab_status" href="#{{ $key }}" id="3">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
+									<li class="tab col s3"><a class="tab_status" href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
 									@endforeach
                                 </ul>  
                             </div>  
                                 <div id="inbox" class="col s12">
-                                <div class="col sm12 m12">
-                                                    <table id="page-length-option" class="display ">
-                                                        <thead>
-                                                        <tr>
-                                                        <th>{{__('Member Name')}}</th>
-                                                        <th>{{__('Member Code')}}</th>
-                                                        <th>{{__('NRIC')}}</th>
-                                                        <th>{{__('Amount')}}</th>
-                                                        <th>{{__('Status')}}</th>
-                                                        <th>{{__('Action')}}</th>
-                                                        </tr>
-                                                        </thead>                                                        
-                                                       
-                                                    </table>
-													</div>	
+									<div class="col sm12 m12">
+										<table id="page-length-option" class="display ">
+											<thead>
+											<tr>
+											<th>{{__('Member Name')}}</th>
+											<th>{{__('Member Code')}}</th>
+											<th>{{__('NRIC')}}</th>
+											<th>{{__('Amount')}}</th>
+											<th>{{__('Status')}}</th>
+											<th>{{__('Action')}}</th>
+											</tr>
+											</thead>                                                        
+										   
+										</table>
+									</div>	
                                 </div>  
                                 @foreach($data['member_stat'] as  $key => $member_stat)
-                                <div id="{{ $key }}" class="col s12"></div>   
+                                <div id="member{{ $member_stat->id }}" class="col s12">
+									<div class="col sm12 m12">
+										<table id="page-length-option-{{ $member_stat->id }}" class="display">
+											<thead>
+											<tr>
+											<th>{{__('Member Name')}}</th>
+											<th>{{__('Member Code')}}</th>
+											<th>{{__('NRIC')}}</th>
+											<th>{{__('Amount')}}</th>
+											<th>{{__('Action')}}</th>
+											</tr>
+											</thead>                                                        
+										   
+										</table>
+									</div>	
+								</div>   
                                 @endforeach
                                
 								</div>
@@ -167,7 +203,7 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}},
+            "url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=all",
             "dataType": "json",
             "type": "POST",
             "data": {
@@ -195,6 +231,46 @@ $(function() {
             }
         ]
     });
+	 @foreach($data['member_stat'] as  $key => $member_stat)
+	 $('#page-length-option-{{$member_stat->id}}').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+        /* "lengthMenu": [
+        	[10, 25, 50, -1],
+        	[10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+		"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status="+{{$member_stat->id}},
+            "dataType": "json",
+            "type": "POST",
+            "data": {
+                _token: "{{csrf_token()}}"
+            }
+        },
+        "columns": [{
+                "data": "Name"
+            },
+            {
+                "data": "membercode"
+            },
+            {
+                "data": "nric"
+            },
+            {
+                "data": "amount"
+            },
+            
+            {
+                "data": "options"
+            }
+        ]
+    });
+	@endforeach
 });
 
 function ConfirmDeletion() {

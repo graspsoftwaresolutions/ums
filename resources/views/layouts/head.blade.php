@@ -32,7 +32,7 @@
 		position: fixed;
 		width: 100%;
 		height: 100%;
-		z-index: 9999;
+		z-index: 99999;
 		top: 0;
 		left: 0;
 	}
@@ -52,8 +52,8 @@
 	.select2-container{
 		width:100% !important; 
 	}
-	/* #main.main-full {
-		height:740px;
+	#main.main-full {
+		height: 750px;
 		overflow: auto;
 	}
 	
@@ -67,6 +67,10 @@
 	   background-color: red;
 	   color: white;
 	   text-align: center;
-	} */
+	   z-index:999;
+	} 
+	.sidenav-main{
+		z-index:9999;
+	}
 	  
 </style>
