@@ -34,7 +34,7 @@
                                         </ol>
                                     </div>
 									<div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('subscription.xlsx')}}</a>
+                                        <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
                                     </div>                                    
                                 </div>
                             </div>

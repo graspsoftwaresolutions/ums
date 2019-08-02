@@ -459,6 +459,6 @@ class SubscriptionController extends CommonController
 
     public function downloadSubscription($lang){
         $s = new SubscriptionExport(0,[]);
-        return Excel::download($s, 'subscription-sample.xlsx');
+        return Excel::download($s, 'subscription.xlsx');
     }
 }
