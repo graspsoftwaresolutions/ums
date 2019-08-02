@@ -63,20 +63,21 @@
 												<tbody>
 													@php
 														$lastrow=0;
-														$no_of_rows = $data['row_count']/200;
+														$limit=100;
+														$no_of_rows = $data['row_count']/$limit;
 														$halfrows = round($no_of_rows/2);
 														$count =0;
 														$half = $data['row_count']%2;
 														//dd($halfrows);
 													@endphp
 													@if($data['row_count']>0)
-													@for ($i = 0; $count <= $halfrows; $i+=200,$count++)
+													@for ($i = 0; $count <= $halfrows; $i+=$limit,$count++)
 														<tr>
-															<th>{{ $i }} - @php if( $data['row_count'] < $i+200 ){ echo $i.'++'; }else{ echo $i+200; }  @endphp</th>
+															<th>{{ $i }} - @php if( $data['row_count'] < $i+$limit ){ echo $i.'++'; }else{ echo $i+$limit; }  @endphp</th>
 															<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
 														</tr>
 														@php
-															$lastrow+=200;
+															$lastrow+=$limit;
 														@endphp
 													@endfor
 													@endif
@@ -95,13 +96,13 @@
 												</thead>
 												<tbody>
 													
-													@for ( ; $count <= $no_of_rows; $i+=200,$count++)
+													@for ( ; $count <= $no_of_rows; $i+=$limit,$count++)
 														<tr>
-															<th>{{ $i }}- @php if( $data['row_count'] < $i+200 ){ echo $i.'++'; }else{ echo $i+200; }  @endphp</th>
+															<th>{{ $i }}- @php if( $data['row_count'] < $i+$limit ){ echo $i.'++'; }else{ echo $i+$limit; }  @endphp</th>
 															<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
 														</tr>
 														@php
-															$lastrow+=200;
+															$lastrow+=$limit;
 														@endphp
 													@endfor
 													
@@ -159,8 +160,9 @@
 						
 						
 						if(start!=lastrow){
+							var limit = {{ $limit }};
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
-							ScanMembership(company_id,parseInt(start+200));
+							ScanMembership(company_id,parseInt(start+limit));
 						}else{
 							$('#scanning-details').html(result.message);
 							$('#scanning-details').removeClass('gradient-45deg-amber-amber');

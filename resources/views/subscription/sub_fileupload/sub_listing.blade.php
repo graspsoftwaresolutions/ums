@@ -69,6 +69,7 @@
 									<div class="row">
 										
 										@php 
+									
 											$auth_user = Auth::user();
 											$companylist = [];
 											$companyid = '';

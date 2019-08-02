@@ -201,9 +201,15 @@ class MembershipController extends Controller
     //Company Details End
     public function AjaxmembersList(Request $request,$lang, $type){
        
-		$sl=0;
-		$columns[$sl++] = 'm.branch_id';
-		$columns[$sl++] = 'm.name';
+        $sl=0;
+        $columns[$sl++] = 'm.member_number';
+        $columns[$sl++] = 'm.name';
+        $columns[$sl++] = 'm.designation_id';
+        $columns[$sl++] = 'm.gender';
+        $columns[$sl++] = 'm.company_name';
+        $columns[$sl++] = 'm.branch_id';
+		$columns[$sl++] = 'm.doj';
+		
 		$columns[$sl++] = 'm.email';
 		$columns[$sl++] = 'm.mobile';
 		//if($type==1){
@@ -228,17 +234,28 @@ class MembershipController extends Controller
 		$user_id = Auth::user()->id;
 		$member_qry = '';
 		if($user_role=='union'){
-			$member_qry = DB::table('membership as m')
-				->where('m.is_request_approved','=',$approved_cond);
+            $member_qry = DB::table('membership as m')->select('m.member_number','m.id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj',
+                        'c.branch_name','c.id','com.id','com.company_name' ,'d.designation_name')
+                        ->leftjoin('designation as d','m.designation_id','=','d.id')
+                        ->leftjoin('company_branch as c','m.branch_id','=','c.id')
+                        ->leftjoin('company as com','com.id','=','c.company_id')   
+                        ->where('m.is_request_approved','=',$approved_cond);
+                        
 		}else if($user_role=='union-branch'){
-			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+            DB::enableQueryLog();
+           
+            $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+            $union_branch_id_val = '';
 			if(count($union_branch_id)>0){
-				$union_branch_id = $union_branch_id[0];
-				$member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id')
+                $union_branch_id_val = $union_branch_id[0];
+                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.status_id as status_id','m.branch_id as branch_id',
+                'm.member_number','m.designation_id','d.id','d.designation_name','m.gender','com.company_name','m.doj')
                 ->join('membership as m','c.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->orderBy('m.id','DESC')
                 ->where([
-                    ['c.union_branch_id','=',$union_branch_id],
+                    ['c.union_branch_id','=',$union_branch_id_val],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
 			}
@@ -246,8 +263,11 @@ class MembershipController extends Controller
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-				$member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id')
+                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj')
                 ->join('membership as m','c.id','=','m.branch_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->leftjoin('company as com','com.id','=','c.company_id')
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['c.company_id','=',$companyid],
@@ -258,18 +278,22 @@ class MembershipController extends Controller
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
-				$member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id')
+                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj')
                 ->join('membership as m','c.id','=','m.branch_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->leftjoin('company as com','com.id','=','c.company_id')
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['m.branch_id','=',$branchid],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
 			}
-		}
+        }
 		$totalData = 0;
 		if($member_qry!=""){
-			$totalData = $member_qry->count();
+            $totalData = $member_qry->count();
+           
 		}
 								
         $totalFiltered = $totalData; 
@@ -280,15 +304,17 @@ class MembershipController extends Controller
         $dir = $request->input('order.0.dir');
 
         if(empty($request->input('search.value')))
-        {            
+        {
            $compQuery = DB::table('company_branch as c')
-				->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number')
+				->select('c.id as cid','m.name','m.email','m.id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj')
                 ->join('membership as m','c.id','=','m.branch_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->leftjoin('company as com','com.id','=','c.company_id')
 				->leftjoin('status as s','s.id','=','m.status_id')
                 ->where('m.is_request_approved','=',$approved_cond);
 				if($user_role=='union-branch'){
 					$compQuery =  $compQuery->where([
-                    ['c.union_branch_id','=',$union_branch_id]
+                    ['c.union_branch_id','=',$union_branch_id_val]
                     ]);
 				}
 				if($user_role=='company'){
@@ -314,8 +340,10 @@ class MembershipController extends Controller
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
-							->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number')
-							->join('membership as m','c.id','=','m.branch_id')
+							->select('c.id as cid','m.name','m.email','m.id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj')
+                            ->join('membership as m','c.id','=','m.branch_id')
+                            ->leftjoin('designation as d','m.designation_id','=','d.id')
+                            ->leftjoin('company as com','com.id','=','c.company_id')
                             ->leftjoin('status as s','s.id','=','m.status_id')
                             ->where('m.is_request_approved','=',$approved_cond);
 							if($user_role=='union-branch'){
@@ -335,9 +363,14 @@ class MembershipController extends Controller
 							}
                             $compQuery =  $compQuery->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
+                                ->orWhere('com.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.gender', 'LIKE',"%{$search}%")
+                                ->orWhere('m.doj', 'LIKE',"%{$search}%")
                                 ->orWhere('m.name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.email', 'LIKE',"%{$search}%")
-                                ->orWhere('m.mobile', 'LIKE',"%{$search}%")
+                               // ->orWhere('m.email', 'LIKE',"%{$search}%")
+                               // ->orWhere('m.mobile', 'LIKE',"%{$search}%")
                                 ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
                                 ->orWhere('s.status_name', 'LIKE',"%{$search}%");
                             });
@@ -351,8 +384,8 @@ class MembershipController extends Controller
 
              $totalFiltered = $compQuery->count();
 
-             $queries = DB::getQueryLog();
-             // dd($queries);
+            // $queries = DB::getQueryLog();
+             //  dd($queries);
           
     }
 	$data = array();
@@ -360,10 +393,15 @@ class MembershipController extends Controller
         {
             foreach ($memberslist as $member)
             {
-                $nestedData['branch_name'] = $member->branch_name;
+                $nestedData['member_number'] = $member->member_number;
                 $nestedData['name'] = $member->name;
-                $nestedData['email'] = $member->email;
-                $nestedData['mobile'] = $member->mobile;
+                $nestedData['designation_id'] = $member->designation_name;
+                $nestedData['gender'] = $member->gender;
+                $nestedData['company_name'] = $member->company_name;
+                $nestedData['branch_name'] = $member->branch_name;
+                $nestedData['doj'] = $member->doj;
+                // $nestedData['email'] = $member->email;
+                // $nestedData['mobile'] = $member->mobile;
                 $nestedData['status'] = $member->status_name;
                 
                 $enc_id = Crypt::encrypt($member->id);

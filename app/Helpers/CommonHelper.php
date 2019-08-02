@@ -11,6 +11,7 @@ use App\Model\CompanyBranch;
 use App\Model\Membership;
 use App\Model\Company;
 use App\Model\Status;
+use App\Model\MonthlySubscriptionCompany;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -271,10 +272,26 @@ class CommonHelper
         return $ccmail;
     }
 	
-	 public static function getmemberid_bycode($membercode){
+	public static function getmemberid_bycode($membercode){
 		$autoid = Membership::where('member_number',$membercode)->pluck('id');
         if(count($autoid)>0){
             return $autoid[0];
+        }
+        return false;
+    }
+	
+	public static function getcompanyidbyBranchid($branchid){
+		$company_id = CompanyBranch::where('id',$branchid)->pluck('company_id');
+        if(count($company_id)>0){
+            return $company_id[0];
+        }
+        return false;
+    }
+	
+	public static function getcompanyidOfsubscribeCompanyid($companyid){
+		$company_id = MonthlySubscriptionCompany::where('id',$companyid)->pluck('CompanyCode');
+        if(count($company_id)>0){
+            return $company_id[0];
         }
         return false;
     }

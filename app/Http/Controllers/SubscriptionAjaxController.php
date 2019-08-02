@@ -154,8 +154,8 @@ class SubscriptionAjaxController extends CommonController
                 $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
 				
                 $actions ='';
-                $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
-                if($resultdata->membercode!=''){
+                $histry = $memberid!='' ? route('subscription.submember', [app()->getLocale(),$enc_id]) : '#';
+                if($memberid!=''){
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
                 }
                 
@@ -168,6 +168,89 @@ class SubscriptionAjaxController extends CommonController
         }
         
         //$data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+      
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+
+    public function ajax_pending_member_list(Request $request)
+    {
+        // echo "hii";
+        // die;
+        $companyid = $request->company_id;
+
+        $columns = array( 
+            0 => 'Name', 
+            1 => 'membercode', 
+            2 => 'nric', 
+            3 => 'amount', 
+            4 => 'statusId', 
+            5 => 'id',
+        );
+        DB::enableQueryLog();
+            $commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+            'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','mon_sub_member.statusId','mon_sub_member.created_by')
+            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+            ->join('company','company.id','=','mon_sub_company.CompanyCode')
+            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+            ->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid)
+            ->where('mon_sub_member.update_status','=','0');
+        
+        //  $queries = DB::getQueryLog();
+        //  dd($queries);
+        $totalData = $commonqry->count();
+        
+        $totalFiltered = $totalData; 
+        
+       $limit = $request->input('length');
+       $start = $request->input('start');
+		  //var_dump($start);
+		  //exit;
+        $order = $columns[$request->input('order.0.column')];
+     
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            $sub_mem = $commonqry;
+			if( $limit != -1){
+				$sub_mem = $sub_mem->offset($start)
+							->limit($limit);
+			}
+			$sub_mem = $sub_mem->orderBy($order,$dir)
+			->get()->toArray();
+        }
+        else {
+			$search = $request->input('search.value'); 
+			$sub_mem = $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+					   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
+		    if( $limit != -1){
+			   $sub_mem = $sub_mem->offset($start)
+						->limit($limit);
+		    }
+		    $sub_mem = $sub_mem->orderBy($order,$dir)
+					  ->get()->toArray();
+			
+			
+			$totalFiltered =  $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+							    ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+							   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%")
+							   ->count();
+        }
+        //var_dump($sub_mem);
+       // exit;
+        
+        $data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
