@@ -101,7 +101,7 @@ canvas#custom-line-chart-sample-three {
          <div class=" ml-2">
              <span class="badge gradient-shadow mt-2 mr-2" style="color:purple;">{{$data['totla_active_member_count']}} Active</span>
 			 <span class="badge gradient-shadow mt-2 mr-2" style="color:blue">{{$data['totla_defaulter_member_count']}} Deaulter</span> 
-			 <span class=" badge gradient-shadow mt-2 mr-2" style="color:pink">{{$data['totla_struckoff_member_count']}} Strukoff</span> <span class=" badge  gradient-shadow mt-2 mr-2" style="color:orange">{{$data['totla_resigned_member_count']}} Resigned</span>
+			 <span class=" badge gradient-shadow mt-2 mr-2" style="color:#e75480">{{$data['totla_struckoff_member_count']}} Strukoff</span> <span class=" badge  gradient-shadow mt-2 mr-2" style="color:orange">{{$data['totla_resigned_member_count']}} Resigned</span>
 			
           <p class="mt-2 mb-0 font-weight-600">Total Members</p>
             <p class="no-margin grey-text lighten-3">{{ $data['total_member_count']}}</p> 
