@@ -72,5 +72,8 @@
 	.sidenav-main{
 		z-index:9999;
 	}
+	.dtr-data a{
+		float : none !important;
+	}
 	  
 </style>
