@@ -46,12 +46,32 @@
                             <div class="card-content">
 								<div class="row">
 									<div class="col m6">
-										<h4 class="card-title">{{__('Company Member List')}}</h4>
-										<h4 class="card-title">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
-										<h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
-										<h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
+                                      <h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Company Member List')}}</h4>
+                                    <!-- <div class="col s12">
+                                      <label>   {{__('Month :')}} </label>
+                                    <div class="input-field inline">
+                                      @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp
+                                   
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <label>   {{__('Total Members Count :')}} </label>
+                                        <div class="input-field inline">
+                                                {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}
+                                        </div>
+                                    </div>  
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <label>   {{__('Company :')}} </label>
+                                        <div class="input-field inline">
+                                        {{ isset($datacmpy) ? $datacmpy->short_code : ""}} - {{ isset($datacmpy) ? $datacmpy->company_name : ""}}
+                                        </div>
+                                    </div> -->
 										
-										<h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
+										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
+										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
+										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Company : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}} - {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
 									</div>
 									@if($data['non_updated_rows']>0)
 									<div class="col m6">

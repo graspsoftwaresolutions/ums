@@ -47,7 +47,7 @@
                            
                             <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y'); @endphp</h4>
                             <h4 class="card-title">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
-                            <h4 class="card-title">{{__('Company Name : ')}} {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
+                            <h4 class="card-title">{{__('Company  : ')}}  {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
                             
                             <h4 class="card-title">{{__('Company Code : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}}</h4>
                             @include('includes.messages')
