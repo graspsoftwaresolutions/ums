@@ -363,7 +363,7 @@
 														</div>
 													</div>
 												</li>
-												<li class="step" onclick="return false">
+												<li class="step" onclick="return SubmitMemberForm()">
 													<div class="step-title waves-effect">Additional Details</div>
 													<div class="step-content" style="padding: 50px 50px;">
 														<div class="row">
