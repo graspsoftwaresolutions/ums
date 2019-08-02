@@ -23,7 +23,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Company Subscription List')}}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Bank Subscription List')}}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
@@ -46,7 +46,7 @@
                             <div class="card-content">
 								<div class="row">
 									<div class="col m6">
-                                      <h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Company Member List')}}</h4>
+                                      <h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Bank Member List')}}</h4>
                                     <!-- <div class="col s12">
                                       <label>   {{__('Month :')}} </label>
                                     <div class="input-field inline">
@@ -71,7 +71,7 @@
 										
 										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
 										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
-										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Company : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}} - {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
+										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Bank : ')}} {{ isset($datacmpy) ? $datacmpy->short_code : ""}} - {{ isset($datacmpy) ? $datacmpy->company_name : ""}} </h4>
 									</div>
 									@if($data['non_updated_rows']>0)
 									<div class="col m6">
