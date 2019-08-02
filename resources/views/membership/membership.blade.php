@@ -62,7 +62,7 @@
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Email') }}</th>
 														<th>{{__('Status') }}</th>
-														<th>{{__('Action') }}</th>
+														<th  style="text-align:center;">{{__('Action') }}</th>
 													</tr>
 												</thead>
 												

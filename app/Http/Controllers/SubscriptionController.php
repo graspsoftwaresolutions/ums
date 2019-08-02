@@ -260,14 +260,21 @@ class SubscriptionController extends CommonController
     public function submember($lang,$id)
     {
         $id = Crypt::decrypt($id);
+       //  $year =2019;
+       // $month =8;
+
        // return $id;
-       
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+       //$data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+      // var_dump($data['member_subscription_details']);
+      //  exit;
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
-                                            ->where('s.Date','=',date('Y-m-01'))
+                                           // ->where('s.Date','=',date('Y-m-01'))
+                                           //  ->whereYear('s.Date', '=', $year)
+                                            //->whereMonth('s.Date', '=', $month)
                                             ->where('m.id','=',$id)->get();
 
                                             DB::enableQueryLog();
@@ -299,19 +306,21 @@ class SubscriptionController extends CommonController
     { 
         $member_code = $request->id;   
         $memberid = $request->memberid;
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
             ->leftjoin('status as status','status.id','=','sm.StatusId')
-            ->where('s.Date','=',date('Y-m-01'))
+            //->where('s.Date','=',date('Y-m-01'))
             ->where('m.id','=',$memberid)->get();
 
         //return $memberid;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-
-        if($from_date!="" && $to_date!=""){
+        $data['member_subscription_list']=$data['member_subscription_details'];
+        if($from_date!=""  && $to_date!=""){
+           // var_dump("scvgdffd");
+           // exit;
             $fmmm_date = explode("/",$from_date);
             $fmdate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $from = date('Y-m-d', strtotime($fmdate));
@@ -319,6 +328,8 @@ class SubscriptionController extends CommonController
             $fmmm_date = explode("/",$to_date);
             $todate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $to = date('Y-m-d', strtotime($todate));
+
+            
             DB::enableQueryLog();
             $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
                                 ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
@@ -329,8 +340,10 @@ class SubscriptionController extends CommonController
                                 ->where('s.Date', '<=', $to)
                                 ->where('sm.MemberCode','=',$member_code)->groupBY('s.id')->get();         
         }else{
-            $data['member_subscription_list'] = [];
+            $data['member_subscription_list'] = $data['member_subscription_details'];
         }
+        //var_dump($data['member_subscription_list']);
+       // exit;
         return view('subscription.sub_member')->with('data',$data);
       
     }
