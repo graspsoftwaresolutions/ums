@@ -51,7 +51,6 @@
                                 </ul>  
                             </div>
                             @php
-                            $datacmpy = $data['pending_members_list'][0];   
                             $enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
                             @endphp  
                                 <div id="inbox" class="col s12">
