@@ -277,7 +277,8 @@ class SubscriptionController extends CommonController
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
                                             ->where('m.id','=',$id)
-                                            ->groupBY('s.id')->get(); 
+                                            //->groupBY('s.id')
+                                            ->get(); 
                                             //$queries = DB::getQueryLog();
                                            // dd($queries);
         // $data['member_subscription_list'] = DB::table('mon_sub as s')->select('sm.Amount','s')
@@ -327,7 +328,9 @@ class SubscriptionController extends CommonController
                                 ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
                                 ->where('s.Date','>=', $from)
                                 ->where('s.Date', '<=', $to)
-                                ->where('sm.MemberCode','=',$member_code)->groupBY('s.id')->get();         
+                                ->where('sm.MemberCode','=',$member_code)
+                                //->groupBY('s.id')
+                                ->get();         
         }else{
             $data['member_subscription_list'] = [];
         }

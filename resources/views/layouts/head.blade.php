@@ -32,7 +32,7 @@
 		position: fixed;
 		width: 100%;
 		height: 100%;
-		z-index: 9999;
+		z-index: 99999;
 		top: 0;
 		left: 0;
 	}
