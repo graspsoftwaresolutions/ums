@@ -98,10 +98,13 @@ canvas#custom-line-chart-sample-three {
    <div class="col s12 m8 l8 animate fadeRight">
 
       <div id="chartjs" class="card pt-0 pb-0 animate fadeLeft">
-         <div class="padding-2 ml-2">
-            <span class=" badge gradient-45deg-indigo-purple gradient-shadow mt-2 mr-2">{{$data['totla_active_member_count']}} Active Members</span>
-            <p class="mt-2 mb-0 font-weight-600">Total Members</p>
-            <p class="no-margin grey-text lighten-3">{{ $data['total_member_count']}}</p>
+         <div class=" ml-2">
+             <span class="badge gradient-shadow mt-2 mr-2" style="color:purple;">{{$data['totla_active_member_count']}} Active</span>
+			 <span class="badge gradient-shadow mt-2 mr-2" style="color:blue">{{$data['totla_defaulter_member_count']}} Deaulter</span> 
+			 <span class=" badge gradient-shadow mt-2 mr-2" style="color:pink">{{$data['totla_struckoff_member_count']}} Strukoff</span> <span class=" badge  gradient-shadow mt-2 mr-2" style="color:orange">{{$data['totla_resigned_member_count']}} Resigned</span>
+			
+          <p class="mt-2 mb-0 font-weight-600">Total Members</p>
+            <p class="no-margin grey-text lighten-3">{{ $data['total_member_count']}}</p> 
          </div>
          <div class="row">
             <div class="sample-chart-wrapper card-gradient-chart">
