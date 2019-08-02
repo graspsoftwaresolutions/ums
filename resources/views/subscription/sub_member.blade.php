@@ -66,7 +66,7 @@
                                                                    
                             <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
                           
-                            <h4 class="card-title">{{__('Amount Paid :')}}   {{ isset($row->Amount) ? $row->Amount : "No Amount" }}</h4>
+                            <h4 class="card-title">{{__('Amount Paid :')}}   {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</h4>
                             <div class="card filter">
                             
                             <form method="post" action="{{route('subscription.memberfilter',app()->getLocale())}}">

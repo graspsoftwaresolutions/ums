@@ -276,13 +276,15 @@ class SubscriptionController extends CommonController
         $id = Crypt::decrypt($id);
        // return $id;
        
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
                                             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
-                                            ->where('s.Date','=',date('Y-m-01'))
-                                            ->where('m.id','=',$id)->get();
+                                            //->where('s.Date','=',date('Y-m-01'))
+                                            ->orderBY('s.Date','desc')
+                                            ->where('m.id','=',$id)
+                                            ->get();
 
         DB::enableQueryLog();
         $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
@@ -314,12 +316,12 @@ class SubscriptionController extends CommonController
     { 
         $member_code = $request->id;   
         $memberid = $request->memberid;
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name')
+        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
             ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
             ->leftjoin('status as status','status.id','=','sm.StatusId')
-            ->where('s.Date','=',date('Y-m-01'))
+            ->orderBY('s.Date','desc')
             ->where('m.id','=',$memberid)->get();
 
         //return $memberid;
