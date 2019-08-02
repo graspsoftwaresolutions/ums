@@ -32,6 +32,9 @@
                                                 <li class="breadcrumb-item active">{{__('Subscription') }}
                                                 </li>
                                         </ol>
+                                    </div>
+									<div class="col s2 m6 l6 ">
+                                        <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('subscription.xlsx')}}</a>
                                     </div>                                    
                                 </div>
                             </div>
@@ -98,10 +101,10 @@
 											
 										@endphp
 										<div class="input-field col s3">
-											<label for="doe">{{__('Date of Entry') }}*</label>
+											<label for="doe">{{__('Subscription Month') }}*</label>
 											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
 										</div>
-										<div class="col s3">
+										<div class="col s4">
 											<label for="sub_company">{{__('Company') }}*</label>
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>Choose Company</option>
@@ -131,17 +134,18 @@
 										</div>
 										<div class="col s3 " >
 											</br>
-											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Upload</button>
+											
 											
 										</div>
 										
 									</div>
 									<div class="row">
-										<div class="col s8">
+										<div class="col s7">
 											
 										</div>
-										<div class="col s4 right">
-											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn" type="button">Download Sample</button>
+										<div class="col s4 ">
+											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Submit</button>
+											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">Download Sample</button>
 											
 										</div>
 									</div>
@@ -156,11 +160,11 @@
 		</div>
 	</div>
     <div class="row">
-		<!--<div class="col s12 m6">
+		<div class="col s12 m6">
 			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">Status</span>
+				<span style="text-align:center;padding:5px;" class="card-title">Member Status</span>
 				<table class="collection">
-					<tr style="background:#3f51b5;color:white;text-align:center;" class="collection-item avatar">
+					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
 						<td>Sl No</td>
 						<td>Status</td>
 						<td>Count</td>
@@ -174,41 +178,39 @@
 						<td>{{ $key+1 }} </td>
 						<td>{{ $stat->status_name }}</td>
 						<td>{{ $stat->Subscription_members->count() }}</td>
-						<td>{{ $stat->Subscription_members->sum('Amount') }}</td>
+						<td>{{ number_format($stat->Subscription_members->sum('Amount'), 2) }}</td>
 					</tr>
 					@endforeach
 				</table>
 			</div>
-		</div>-->
+		</div>
 		<!--Approval Status-->
-		<!--<div class="col s12 m6">
+		<div class="col s12 m6">
 			<div class="card darken-1">
 				<span style="text-align:center;padding:5px;" class="card-title">Approval Status</span>
 				<table class="collection">
-					<tr style="background:#3f51b5;color:white;text-align:center;" class="collection-item avatar">
+					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
 						<td>Sl No</td>
 						<td>Description</td>
 						<td>Count</td>
-						<td>Approved</td>
-						<td>Pending</td>
 					</tr>
 					@php 
-					isset($data['member_stat']) ? $data['member_stat'] : "";                   
+					isset($data['approval_status']) ? $data['approval_status'] : "";                   
 					@endphp 
-					@foreach($data['member_stat'] as  $key => $stat)
+					@foreach($data['approval_status'] as  $key => $stat)
 					<tr>
 						<td>{{ $key+1 }} </td>
-						<td>{{ $stat->status_name }}</td>
-						<td>{{ $stat->Subscription_members->count() }}</td>
-						<td>{{ $stat->Subscription_members->sum('Amount') }}</td>
-						<td>{{ $stat->Subscription_members->sum('Amount') }}</td>
+						<td>{{ $stat->match_name }}</td>
+						<td>{{ $stat->count }}</td>
 					</tr>
 					@endforeach
 				</table>
 			</div>
-		</div>-->
+		</div>
+		
 	</div>
-
+	</br>
+	</br>
 <!--dgfdgfdg-->
 	 <div id="modal_subscription" class="modal">
 		<div class="modal-content">

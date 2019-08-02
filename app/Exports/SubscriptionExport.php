@@ -27,13 +27,15 @@ class SubscriptionExport implements FromCollection, WithHeadings, WithEvents
     {
         $this->export_type = $export_type;
         $this->request_data = $requestinfo;
-        $entry_date = $this->request_data['entry_date'];
-        $sub_company = $this->request_data['sub_company'];
+        if( $this->export_type ==2){
+            $entry_date = $this->request_data['entry_date'];
+            $sub_company = $this->request_data['sub_company'];
 
-        $datearr = explode("/",$entry_date);  
-        $monthname = $datearr[0];
-        $year = $datearr[1];
-        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+            $datearr = explode("/",$entry_date);  
+            $monthname = $datearr[0];
+            $year = $datearr[1];
+            $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        }
     }
 
     public function collection()
