@@ -101,13 +101,8 @@
 											<label for="doe">{{__('Date of Entry') }}*</label>
 											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
 										</div>
-<<<<<<< HEAD
-										<div class="col s4">
-											<label for="sub_company">{{__('Company')   }}{{ realpath(sys_get_temp_dir()) }}*</label>
-=======
 										<div class="col s3">
 											<label for="sub_company">{{__('Company') }}*</label>
->>>>>>> d4db4d10b9350e7997dd4b81bb6cf11789047591
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>Choose Company</option>
 												@foreach($companylist as $value)
