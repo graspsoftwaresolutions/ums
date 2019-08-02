@@ -51,7 +51,7 @@
                                                     <tr>
                                                         <th>{{__('Roles Name') }}</th>
                                                         <th>{{__('Slug') }}</th>
-                                                        <th> {{__('Action') }}</th>
+                                                        <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>

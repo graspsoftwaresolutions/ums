@@ -65,6 +65,11 @@ class SubscriptionController extends CommonController
     public function index() {
         $status_all = Status::all();       
         $data['member_stat'] = $status_all;
+        $data['approval_status'] = DB::table('mon_sub_match_table as mt')
+                                    ->select('mt.id as id','mt.match_name as match_name',DB::raw('count(mm.match_id) as count'))
+                                    ->leftjoin('mon_sub_member_match as mm', 'mm.match_id' ,'=','mt.id')
+                                    ->groupBy('mm.match_id')
+                                    ->get();
 
         isset($data['member_stat']) ? $data['member_stat'] : "";       
         return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
@@ -237,14 +242,14 @@ class SubscriptionController extends CommonController
                // DB::enableQueryLog();
                 if($subscription_new_qry->count() > 0){
                    
-                    $memberdata = $subscription_new_qry->select('status_id','member_number','branch_id','name')->get();
+                    $memberdata = $subscription_new_qry->select('status_id','id','branch_id','name')->get();
                     $up_sub_member =1;
                     $subMemberMatch->match_id = 1;
                    
                 }else if($subscription_old_qry->count() > 0){
                     
                     $up_sub_member =1;
-                    $memberdata = $subscription_old_qry->select('status_id','member_number','branch_id','name')->get();
+                    $memberdata = $subscription_old_qry->select('status_id','id','branch_id','name')->get();
                     $subMemberMatch->match_id = 8;
                 }
                
@@ -257,7 +262,7 @@ class SubscriptionController extends CommonController
                 if($up_sub_member ==1){
                     if(count($memberdata)>0){
                         $status_id = $memberdata[0]->status_id;
-                        $member_code = $memberdata[0]->member_number;
+                        $member_code = $memberdata[0]->id;
                         $updata = ['MemberCode' => $member_code, 'StatusId' => $status_id, 'update_status' => 1];
                         //DB::enableQueryLog();
                         $savedata = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId',$company_auto_id)
@@ -450,5 +455,10 @@ class SubscriptionController extends CommonController
 
         
         return view('subscription.pending_members')->with('data', $data);
+    }
+
+    public function downloadSubscription($lang){
+        $s = new SubscriptionExport(0,[]);
+        return Excel::download($s, 'subscription-sample.xlsx');
     }
 }

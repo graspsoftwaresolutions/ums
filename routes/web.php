@@ -208,6 +208,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('process-scanning','SubscriptionController@scanSubscriptions')->name('subscription.scan');
 	Route::get('sub-company-members/{parameter}','SubscriptionController@companyMembers')->name('subscription.members');
 	Route::get('pending-members-details/{parameter}','SubscriptionController@pendingMembers')->name('subscription.pendingmembers');
+	Route::get('subscription-download','SubscriptionController@downloadSubscription')->name('subscription.download');
 	
 	Route::post('ajax_pending_member_list','SubscriptionAjaxController@ajax_pending_member_list');
 

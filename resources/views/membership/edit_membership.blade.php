@@ -396,7 +396,7 @@
 															</div>
 														</div>
 													</li>
-													<li class="step" onclick="return false">
+													<li class="step" id="steptrigger" onclick="return SubmitMemberForm()">
 														<div class="step-title waves-effect">Additional Details</div>
 														<div class="step-content" style="padding: 50px 50px;">
 															<div class="row">
@@ -560,7 +560,7 @@
 																					</div>
 																					<div class="col s12 m4">
 																						 <label class="force-active">State Name*</label>
-																						<select name="nominee_state_id" id="nominee_state_id"  class="error browser-default selectpicker">
+																						<select name="nominee_state_id" required id="nominee_state_id"  class="error browser-default selectpicker">
 																							<option value="" >Select</option>
 																							@foreach($data['state_view'] as $key=>$value)
 																								<option value="{{$value->id}}" @php if($value->id == $values->state_id) { echo "selected";} @endphp>{{$value->state_name}}</option>
@@ -573,7 +573,7 @@
 																					</div>
 																					<div class="col s12 m4">
 																						 <label class="force-active">City Name*</label>
-																						<select name="nominee_city_id" id="nominee_city_id"  class="error browser-default selectpicker">
+																						<select name="nominee_city_id" required id="nominee_city_id"  class="error browser-default selectpicker">
 																							<option value="" >Select</option>
 																							@foreach($data['city_view'] as $key=>$value)
 																							<option value="{{$value->id}}" @php if($value->id == $values->city_id) { echo "selected";} @endphp>{{$values->city_name}}</option>
@@ -951,11 +951,11 @@
          });
     });
 	
+
 	function nextBtn() {
 		 $("#controlled_next").trigger('submit');
-		 return false;
-		
-}
+		 return false;		
+       }
 </script>
 @include('membership.member_common_script')
 @endsection

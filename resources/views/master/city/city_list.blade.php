@@ -52,7 +52,7 @@
                                             <table id="page-length-option" class="display">
                                                 <thead>
                                                     <tr>
-                                                        <th>{{__('Country Name') }}</th>
+                                                       <!-- <th>{{__('Country Name') }}</th>-->
                                                         <th>{{__('State Name') }}</th>
                                                         <th>{{__('City Name') }}</th>
                                                         <th style="text-align:center !important;"> {{__('Action') }}</th>
@@ -173,19 +173,40 @@ $(function() {
         });
     });
 });
-
 $(function() {
     $('#page-length-option').DataTable({
-        "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-        /* "lengthMenu": [
-        	[10, 25, 50, -1],
-        	[10, 25, 50, "All"]
-        ], */
-        "processing": true,
+    
+    "columnDefs": [{
+      "visible": false,
+      "targets": 0
+    }],
+    "order": [
+      [0, 'asc']
+    ],
+	"lengthMenu": [
+		[10, 25, 50, 100],
+		[10, 25, 50, 100]
+	],
+    "drawCallback": function (settings) {
+      var api = this.api();
+      var rows = api.rows({
+        page: 'current'
+      }).nodes();
+      var last = null;
+
+      api.column(0, {
+        page: 'current'
+      }).data().each(function (group, i) {
+        if (last !== group) {
+          $(rows).eq(i).before(
+            '<tr class="group"><td colspan="2">' + group + '</td></tr>'
+          );
+
+          last = group;
+        }
+      });
+    },
+	"processing": true,
         "serverSide": true,
         "ajax": {
             "url": "{{ url(app()->getLocale().'/ajax_city_list') }}",
@@ -195,9 +216,9 @@ $(function() {
                 _token: "{{csrf_token()}}"
             }
         },
-        "columns": [{
+        "columns": [ /* {
                 "data": "country_name"
-            },
+            },*/
             {
                 "data": "state_name"
             },
@@ -208,8 +229,11 @@ $(function() {
                 "data": "options"
             }
         ]
-    });
+  });
+
 });
+
+
 
 function ConfirmDeletion() {
     if (confirm("{{ __('Are you sure you want to delete?') }}")) {
