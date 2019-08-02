@@ -424,7 +424,7 @@ class MembershipController extends Controller
 
                 DB::enableQueryLog();
                 $history_list = DB::table('mon_sub_member')
-                                    ->where('MemberCode','=',$member->member_number)->get();
+                                    ->where('MemberCode','=',$member->id)->get();
               
                            
                 if(count($history_list)!=0)

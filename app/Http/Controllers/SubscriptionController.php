@@ -318,8 +318,8 @@ class SubscriptionController extends CommonController
 
        // return $id;
        
-       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
-                                            ->leftjoin('membership as m','m.member_number','=','sm.MemberCode') 
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+                                            ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
@@ -333,7 +333,7 @@ class SubscriptionController extends CommonController
                                             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
                                             ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
-                                            ->leftjoin('membership as m','m.member_number','=','sm.MemberCode')
+                                            ->leftjoin('membership as m','m.id','=','sm.MemberCode')
                                             ->where('m.id','=',$id)
                                             //->groupBY('s.id')
                                             ->get(); 
@@ -359,7 +359,7 @@ class SubscriptionController extends CommonController
         $member_code = $request->id;   
         $memberid = $request->memberid;
 
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.member_number as MemberCode','sm.Amount','status.status_name','s.Date')
+        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
             ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 

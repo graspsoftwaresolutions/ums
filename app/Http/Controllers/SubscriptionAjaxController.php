@@ -149,7 +149,7 @@ class SubscriptionAjaxController extends CommonController
                     $nestedData['statusId'] = $resultdata->statusId;
                 }
 
-                $memberid = CommonHelper::getmemberid_bycode($resultdata->membercode);
+                $memberid = $resultdata->membercode;
                 
                 $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
 				
