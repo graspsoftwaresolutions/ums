@@ -318,33 +318,38 @@ class CommonHelper
 			$members_count = DB::table('mon_sub_member as m')->where('m.StatusId','=',$status_id)->count();
 		}else if($user_role=='union-branch'){
 			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
-			$members_count = DB::table('membership as m')
-								->join('company_branch as c','c.id','=','m.branch_id')
-								->where('c.union_branch_id','=',$union_branch_id)
-								->where('status_id','=',$status_id)->count();
+			$members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.union_branch_id="'.$union_branch_id.'")'));
+			$members_count = $members_qry[0]->count;
 		}else if($user_role=='company'){
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'")'));
+			$members_count = $members_qry[0]->count;
         }else if($user_role=='company-branch'){
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+			$members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.id="'.$branch_id.'")'));
+			$members_count = $members_qry[0]->count;
         }
 		return $members_count;
 	}
 	
-	/* public static function statusMembersAmount($status_id, $user_role, $user_id){
+	public static function statusMembersAmount($status_id, $user_role, $user_id){
 		if($user_role=='union'){
-			$members_count = DB::table('membership as m')->select(DB::raw('m.'))->where('status_id','=',$status_id)->count();
+			$members_qry = DB::table('mon_sub_member as m')->select(DB::raw('sum(`m`.`Amount`) as amount'))->where('m.StatusId','=',$status_id)->get();
+			$members_amount = $members_qry[0]->amount;
 		}else if($user_role=='union-branch'){
 			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
-			$members_count = DB::table('membership as m')
-								->join('company_branch as c','c.id','=','m.branch_id')
-								->where('c.union_branch_id','=',$union_branch_id)
-								->where('status_id','=',$status_id)->count();
+			$members_qry = DB::select(DB::raw('select count(m.Amount) as amount from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.union_branch_id="'.$union_branch_id.'")'));
+			$members_amount = $members_qry[0]->amount;
 		}else if($user_role=='company'){
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$members_qry = DB::select(DB::raw('select count(m.Amount) as amount from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'")'));
+			$members_amount = $members_qry[0]->amount;
         }else if($user_role=='company-branch'){
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+			$members_qry = DB::select(DB::raw('select count(m.Amount) as amount from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.id="'.$branch_id.'")'));
+			$members_amount = $members_qry[0]->amount;
         }
-		return $members_count;
-	} */
+		return $members_amount;
+	}
    
 }

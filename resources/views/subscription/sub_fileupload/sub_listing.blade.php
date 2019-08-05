@@ -180,7 +180,7 @@
 						<td>{{ $key+1 }} </td>
 						<td>{{ $stat->status_name }}</td>
 						<td>{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
-						<td>{{ number_format($stat->Subscription_members->sum('Amount'), 2) }}</td>
+						<td>{{ number_format(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 2) }} </td>
 					</tr>
 					@endforeach
 				</table>

@@ -212,7 +212,7 @@ $(document).ready(function(){
 	  // return true;
    // }*/
 
-$(function() {
+$(document).ready(function(){
     $('#page-length-option').DataTable({
         "responsive": true,
         "lengthMenu": [

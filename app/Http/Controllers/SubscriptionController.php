@@ -438,7 +438,7 @@ class SubscriptionController extends CommonController
     public function companyMembers($lang,$id){
         $company_auto_id = Crypt::decrypt($id);
         $data['company_auto_id'] = $company_auto_id;
-        $status_all = Status::all();   
+        $status_all = Status::where('status','=',1)->get();   
 		DB::enableQueryLog();
       /*  $data['company_subscription_list'] = DB::table('mon_sub_member')->select('*')
                                          ->leftjoin('mon_sub_company', 'mon_sub_company.id' ,'=','mon_sub_member.MonthlySubscriptionCompanyId')
