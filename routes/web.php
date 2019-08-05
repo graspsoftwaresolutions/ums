@@ -211,6 +211,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription-download','SubscriptionController@downloadSubscription')->name('subscription.download');
 	
 	Route::post('ajax_pending_member_list','SubscriptionAjaxController@ajax_pending_member_list');
+	Route::post('ajax_subcompany_list','SubscriptionAjaxController@ajax_sub_company_list');
 
 
 	

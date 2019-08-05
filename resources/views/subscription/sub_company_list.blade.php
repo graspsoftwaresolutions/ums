@@ -58,18 +58,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th> {{__('Action') }}</th>
                                                   </tr>
                                               </thead>
-                                              <tbody>
-												   @foreach($data['company_list'] as  $key => $company)
-														<tr>
-														  <td>{{ date('M/Y',strtotime($company->date)) }}</td>
-														  <td>{{ $company->company_name }}</td>
-														  @php
-															 $company_enc_id = Crypt::encrypt($company->id);
-														  @endphp
-														  <td> <a style='float: left;' id='$edit' onClick='showeditForm($autoid);' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='sub-company-members/{{ $company_enc_id }}'>View Members</a> </td>
-														</tr>
-												   @endforeach
-                                              </tbody>
+                                             
                                           </table>
                                       </div>
                                   </div>
@@ -111,9 +100,39 @@ $("#subcomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
 
 //Data table Ajax call
+//Data table Ajax call
 $(function() {
-
-	$('#page-length-option').DataTable({});
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+        /* "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajax_subcompany_list') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {
+                _token: "{{csrf_token()}}"
+            }
+        },
+        "columns": [{
+                "data": "month_year"
+            },
+            {
+                "data": "company_name"
+            },
+            {
+                "data": "options"
+            }
+        ]
+    });
 });
 
 

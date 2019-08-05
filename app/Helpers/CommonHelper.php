@@ -295,5 +295,56 @@ class CommonHelper
         }
         return false;
     }
+	
+	public static function statusMembersCount($status_id, $user_role, $user_id){
+		if($user_role=='union'){
+			$members_count = DB::table('membership as m')->where('status_id','=',$status_id)->count();
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			$members_count = DB::table('membership as m')
+								->join('company_branch as c','c.id','=','m.branch_id')
+								->where('c.union_branch_id','=',$union_branch_id)
+								->where('status_id','=',$status_id)->count();
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+        }else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+        }
+		return $members_count;
+	}
+	
+	public static function statusSubsMembersCount($status_id, $user_role, $user_id){
+		if($user_role=='union'){
+			$members_count = DB::table('mon_sub_member as m')->where('m.StatusId','=',$status_id)->count();
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			$members_count = DB::table('membership as m')
+								->join('company_branch as c','c.id','=','m.branch_id')
+								->where('c.union_branch_id','=',$union_branch_id)
+								->where('status_id','=',$status_id)->count();
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+        }else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+        }
+		return $members_count;
+	}
+	
+	/* public static function statusMembersAmount($status_id, $user_role, $user_id){
+		if($user_role=='union'){
+			$members_count = DB::table('membership as m')->select(DB::raw('m.'))->where('status_id','=',$status_id)->count();
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			$members_count = DB::table('membership as m')
+								->join('company_branch as c','c.id','=','m.branch_id')
+								->where('c.union_branch_id','=',$union_branch_id)
+								->where('status_id','=',$status_id)->count();
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+        }else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+        }
+		return $members_count;
+	} */
    
 }

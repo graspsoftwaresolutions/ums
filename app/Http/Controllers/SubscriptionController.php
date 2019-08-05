@@ -63,15 +63,38 @@ class SubscriptionController extends CommonController
     }
     //excel file download and upload it
     public function index() {
-        $status_all = Status::all();       
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $status_all = Status::where('status',1)->get();
+        // foreach($status_all as $key => $value){
+        //     //$status_id = $value->id;
+        // }  
+        // if($user_role=='union'){
+
+        // }else if($user_role=='union-branch'){
+        //     $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+        //     return $member_qry = DB::table('status as s')->join('membership as m','c.id','=','m.branch_id')
+        //     return $member_qry = DB::table('company_branch as c')->join('membership as m','c.id','=','m.branch_id')
+        //                     ->orderBy('m.id','DESC')
+        //                     ->where([
+        //                         ['c.union_branch_id','=',$union_branch_id]])->count();
+        // }else if($user_role=='company'){
+
+        // }else if($user_role=='company-branch'){
+
+        // }
+
+        
+        
         $data['member_stat'] = $status_all;
         $data['approval_status'] = DB::table('mon_sub_match_table as mt')
                                     ->select('mt.id as id','mt.match_name as match_name',DB::raw('count(mm.match_id) as count'))
                                     ->leftjoin('mon_sub_member_match as mm', 'mm.match_id' ,'=','mt.id')
-                                    ->groupBy('mm.match_id')
+                                    ->groupBy('mt.id')
                                     ->get();
 
-        isset($data['member_stat']) ? $data['member_stat'] : "";       
+        //isset($data['member_stat']) ? $data['member_stat'] : "";       
         return view('subscription.sub_fileupload.sub_listing')->with('data', $data);
     }   
     public function sub_company() {

@@ -171,13 +171,15 @@
 						<td>Amount</td>
 					</tr>
 					@php 
-					isset($data['member_stat']) ? $data['member_stat'] : "";                   
+						$get_roles = Auth::user()->roles;
+						$user_role = $get_roles[0]->slug;
+						$user_id = Auth::user()->id;
 					@endphp 
 					@foreach($data['member_stat'] as  $key => $stat)
 					<tr>
 						<td>{{ $key+1 }} </td>
 						<td>{{ $stat->status_name }}</td>
-						<td>{{ $stat->Subscription_members->count() }}</td>
+						<td>{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
 						<td>{{ number_format($stat->Subscription_members->sum('Amount'), 2) }}</td>
 					</tr>
 					@endforeach
@@ -195,7 +197,7 @@
 						<td>Count</td>
 					</tr>
 					@php 
-					isset($data['approval_status']) ? $data['approval_status'] : "";                   
+					//isset($data['approval_status']) ? $data['approval_status'] : "";                   
 					@endphp 
 					@foreach($data['approval_status'] as  $key => $stat)
 					<tr>

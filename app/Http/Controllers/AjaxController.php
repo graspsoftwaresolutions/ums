@@ -29,6 +29,7 @@ use Mail;
 use App\Role;
 use URL;
 use Response;
+use Auth;
 
 class AjaxController extends CommonController
 {
@@ -892,7 +893,10 @@ class AjaxController extends CommonController
 
      //Ajax Datatable Status List
      public function ajax_status_list(Request $request){
-
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+		$user_id = Auth::user()->id;
+		
         $columns = array(
             0 => 'status_name', 
             1 => 'id',
@@ -941,7 +945,34 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Status->toArray(), 0, 'master.statusdestroy', 0);
+		
+		//<span class="badge badge pill light-blue float-right mr-10">5.1</span>
+		$result = $Status->toArray();
+		$data = array();
+        if(!empty($result))
+        {
+			
+            foreach ($result as $resultdata)
+            {
+				//$nestedData = array();
+				$actions ='';
+				$autoid = $resultdata['id'];
+				$membershiplink =  route('master.membership', [app()->getLocale()]) ;
+				$delete =  route('master.statusdestroy', [app()->getLocale(),$autoid]) ;
+				$enc_id = Crypt::encrypt($autoid);
+				$edit =  "#";
+				$actions ="<label style='width:100% !important;float:left;text-align:center;'><a style='' id='$edit' onClick='showeditForm($autoid);' class='' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+				$actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
+				
+				$memberscount = CommonHelper::statusMembersCount($resultdata['id'], $user_role, $user_id);
+				$nestedData['status_name'] = $resultdata['status_name'].'<a href="'.$membershiplink.'"><span class="badge badge pill light-blue float-right mr-10">'.$memberscount.'</span></a>';
+				$nestedData['options'] = $actions;
+                $data[] = $nestedData;
+			}
+		}
+		
+       //$data = $this->CommonAjaxReturn($Status->toArray(), 0, 'master.statusdestroy', 0);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  

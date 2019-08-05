@@ -127,7 +127,7 @@ $("#status_formValidate").validate({
             remote: {
                 url: "{{ url(app()->getLocale().'/status_nameexists')}}",
                 data: {
-                    race_id: function() {
+                    status_id: function() {
                         return $("#updateid").val();
                     },
                     _token: "{{csrf_token()}}",
