@@ -54,7 +54,7 @@
                             <div class="row">
                             <div class="col s12">  
                                 <ul class="tabs">  
-                                <li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
+                                <li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">{{__('All')}}</a></li>  
                                 @foreach($data['company_subscription_list'] as  $key => $member_stat)
                                 <li class="tab col s3"><a class="tab_status" href="#{{ $key }}" id="3">{{ isset($member_stat->StatusId) ? CommonHelper::get_member_status_name($member_stat->StatusId) : "" }}</a></li>  
                                @endforeach

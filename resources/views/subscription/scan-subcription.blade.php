@@ -39,24 +39,24 @@
                                     <h4 class="card-title">{{__('Subscription') }}</h4>
                                     @include('includes.messages')
 									@if (session()->has('success'))
-										File Updated successfully
+									{{__('File Updated successfully') }}
 									@endif
-									File Updated successfully, Scanning process will begin shortly
+									{{__('File Updated successfully, Scanning process will begin shortly') }}
 									@php	
 										$company_auto_id = $data['company_auto_id'];
 									@endphp
 									</br>
 									</br>
 									<div id="scanning-details" class="hide gradient-45deg-amber-amber padding-1 medium-small" style="color:#fff">
-										Updating Member details, please dont refresh page....
+									{{__('Updating Member details, please dont refresh page....') }}
 									</div>
 									<div class="row">
 										<div class="col s6">
 											<table width="100%">	
 												<thead>
 													<tr>
-														<th width="80%">Total number of members</th>
-														<th>Updated</th>
+														<th width="80%">{{__('Total number of members ') }}</th>
+														<th>{{__('Updated ') }}</th>
 													</tr>
 												</thead>
 												
@@ -90,8 +90,8 @@
 											<table width="100%">	
 												<thead>
 													<tr>
-														<th width="80%">Total number of members</th>
-														<th>Updated</th>
+														<th width="80%">{{__('Total number of members') }}</th>
+														<th>{{__('Updated') }}</th>
 													</tr>
 												</thead>
 												<tbody>

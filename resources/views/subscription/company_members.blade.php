@@ -78,16 +78,16 @@
 										<div class="row">
 											<div class="col m4">
 												<div id="scanning-details" class="gradient-45deg-amber-amber padding-3 medium-small" style="color:#fff">
-													Please update membership details
+                                                {{__('Please update membership details')}}
 													
 												</div>
 												
 											</div>
 											<div class="col m3">
-												<a id="submit-download" href="{{ route('subscription.viewscan', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">Update details</a>
+												<a id="submit-download" href="{{ route('subscription.viewscan', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">{{__('Update details')}}</a>
 											</div>
                                             <div class="col m5">
-												<a id="pending_members" href="{{ route('subscription.pendingmembers', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light btn btn-primary form-download-btn right" type="button">Pending Members </a>
+												<a id="pending_members" href="{{ route('subscription.pendingmembers', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light btn btn-primary form-download-btn right" type="button">{{__('Pending Members')}} </a>
 											</div>
 										</div>
 									</div>

@@ -77,15 +77,15 @@
                                     <div class="input-field col s4">
                                         <i class="material-icons prefix">date_range</i>
                                         <input id="from_date" type="text" required class="validate datepicker" name="from_date">
-                                        <label for="from_date">From Month and Year</label>
+                                        <label for="from_date">{{__('From Month and Year')}}</label>
                                     </div>
                                     <div class="input-field col s4">
                                         <i class="material-icons prefix">date_range</i>
                                         <input id="to_date" type="text" required class="validate datepicker" name="to_date">
-                                        <label for="to_date">To Month and Year</label>
+                                        <label for="to_date">{{__('To Month and Year')}}</label>
                                     </div>
                                     <div class="input-field col s4">
-                                    <input type="submit"  class="btn" name="search" value="Search">
+                                    <input type="submit"  class="btn" name="search" value="{{__('Search')}}">
                                     </div>
                                 </div>
                             </form>  
@@ -100,9 +100,9 @@
                                         <table id="page-length-option" class="display ">
                                             <thead>
                                             <tr>
-                                            <th>Month and Year</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
+                                            <th>{{__('Month and Year')}}</th>
+                                            <th>{{__('Amount')}}</th>
+                                            <th>{{__('Status')}}</th>
                                             </tr>
                                             </tr>  
                                                 @php if(count($data['member_subscription_list'])!=0 )

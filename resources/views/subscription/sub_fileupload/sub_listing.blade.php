@@ -107,7 +107,7 @@
 										<div class="col s4">
 											<label for="sub_company">{{__('Company') }}*</label>
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
-												<option value="" selected>Choose Company</option>
+												<option value="" selected>{{__('Choose Company') }}</option>
 												@foreach($companylist as $value)
 												<option value="{{$value->id}}">{{$value->company_name}}</option>
 												@endforeach
@@ -144,8 +144,8 @@
 											
 										</div>
 										<div class="col s4 ">
-											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Submit</button>
-											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">Download Sample</button>
+											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">{{__('Submit') }}</button>
+											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
 											
 										</div>
 									</div>
@@ -162,14 +162,14 @@
     <div class="row">
 		<div class="col s12 m6">
 			<div class="card darken-1" id="member_status_div">
-				<span style="text-align:center;padding:5px;" class="card-title">Member Status <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
+				<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
 				<table class="collection" id="memberstatustable">
 					<thead>
 						<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-							<th>Sl No</th>
-							<th>Status</th>
-							<th>Count</th>
-							<th>Amount</th>
+							<td>{{__('Sl No') }}</td>
+							<td>{{__('Status') }}</td>
+							<td>{{__('Count') }}</td>
+							<td>{{__('Amount') }}</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -193,12 +193,12 @@
 		<!--Approval Status-->
 		<div class="col s12 m6">
 			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">Approval Status <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
+				<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
 				<table class="collection" id="approvalstatustable">
 					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-						<td>Sl No</td>
-						<td>Description</td>
-						<td>Count</td>
+						<td>{{__('Sl No') }}</td>
+						<td>{{__('Description') }}</td>
+						<td>{{__('Count') }}</td>
 					</tr>
 					@php 
 					//isset($data['approval_status']) ? $data['approval_status'] : "";                   

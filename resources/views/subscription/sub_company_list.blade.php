@@ -58,7 +58,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th> {{__('Action') }}</th>
                                                   </tr>
                                               </thead>
-                                             
                                           </table>
                                       </div>
                                   </div>
