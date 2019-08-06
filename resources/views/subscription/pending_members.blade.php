@@ -46,7 +46,7 @@
                             <div class="row">
                             <div class="col s12">  
                                 <ul class="tabs">  
-									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
+									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">{{__('All')}}</a></li>  
 									
                                 </ul>  
                             </div>

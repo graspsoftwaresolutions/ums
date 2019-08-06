@@ -107,7 +107,7 @@
 										<div class="col s4">
 											<label for="sub_company">{{__('Company') }}*</label>
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
-												<option value="" selected>Choose Company</option>
+												<option value="" selected>{{__('Choose Company') }}</option>
 												@foreach($companylist as $value)
 												<option value="{{$value->id}}">{{$value->company_name}}</option>
 												@endforeach
@@ -144,8 +144,8 @@
 											
 										</div>
 										<div class="col s4 ">
-											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">Submit</button>
-											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">Download Sample</button>
+											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">{{__('Submit') }}</button>
+											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
 											
 										</div>
 									</div>
@@ -162,13 +162,13 @@
     <div class="row">
 		<div class="col s12 m6">
 			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">Member Status</span>
+				<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }}</span>
 				<table class="collection">
 					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-						<td>Sl No</td>
-						<td>Status</td>
-						<td>Count</td>
-						<td>Amount</td>
+						<td>{{__('Sl No') }}</td>
+						<td>{{__('Status') }}</td>
+						<td>{{__('Count') }}</td>
+						<td>{{__('Amount') }}</td>
 					</tr>
 					@php 
 						$get_roles = Auth::user()->roles;
@@ -189,12 +189,12 @@
 		<!--Approval Status-->
 		<div class="col s12 m6">
 			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">Approval Status</span>
+				<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }}</span>
 				<table class="collection">
 					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-						<td>Sl No</td>
-						<td>Description</td>
-						<td>Count</td>
+						<td>{{__('Sl No') }}</td>
+						<td>{{__('Description') }}</td>
+						<td>{{__('Count') }}</td>
 					</tr>
 					@php 
 					//isset($data['approval_status']) ? $data['approval_status'] : "";                   
