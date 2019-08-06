@@ -7,8 +7,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <title>{{ config('app.name', 'Membership') }}</title>
-<link rel="apple-touch-icon" href="{{ asset('public/assets/images/favicon/apple-touch-icon-152x152.png') }}">
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/assets/images/favicon/favicon-32x32.png') }}">
+<link rel="apple-touch-icon" href="{{ asset('public/assets/images/logo/logo.png') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/assets/images/logo/logo.png') }}">
 <link href="{{ asset('public/assets/css/google-font.css') }}" rel="stylesheet">
 <!-- BEGIN: VENDOR CSS-->
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/vendors.min.css') }}">
