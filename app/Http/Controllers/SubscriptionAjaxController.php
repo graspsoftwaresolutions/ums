@@ -393,8 +393,10 @@ class SubscriptionAjaxController extends CommonController
             {
                 $nestedData['month_year'] = date('M/Y',strtotime($company->date));
                 $nestedData['company_name'] = $company->company_name;
-				$company_enc_id = Crypt::encrypt($company->id);
-                $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='sub-company-members/{{ $company_enc_id }}'>View Members</a>";
+                $company_enc_id = Crypt::encrypt($company->id);
+                $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
+				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
+                $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>View Members</a>";
 				$data[] = $nestedData;
 
 			}
@@ -408,6 +410,33 @@ class SubscriptionAjaxController extends CommonController
             "data"            => $data   
             );
 
+        echo json_encode($json_data); 
+    }
+
+    public function getDatewiseMember(Request $request){
+        $json_data = ['data' => [], 'status' => 0];
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $entry_date = $request->input('entry_date');
+        $fm_date = explode("/",$entry_date);
+        $dateformat = date('Y-m-01',strtotime('01-'.$fm_date[0].'-'.$fm_date[1]));
+        if($entry_date!=""){
+            $status_all = Status::where('status',1)->get();
+            $status_data = [];
+            $approval_status = DB::table('mon_sub_match_table as mt')
+                                    ->select('mt.id as id','mt.match_name as match_name')
+                                    ->get();
+            $approval_data = [];
+            foreach($status_all as $key => $value){
+                $status_data['count'][$value->id] = CommonHelper::statusSubsMembersCount($value->id, $user_role, $user_id, $dateformat);
+                $status_data['amount'][$value->id] = CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat);
+            }
+            foreach($approval_status as $key => $value){
+                $approval_data['count'][$value->id] = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
+            }
+            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'status' => 1];
+        }
         echo json_encode($json_data); 
     }
 

@@ -161,36 +161,40 @@
 	</div>
     <div class="row">
 		<div class="col s12 m6">
-			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">Member Status</span>
-				<table class="collection">
-					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-						<td>Sl No</td>
-						<td>Status</td>
-						<td>Count</td>
-						<td>Amount</td>
-					</tr>
-					@php 
-						$get_roles = Auth::user()->roles;
-						$user_role = $get_roles[0]->slug;
-						$user_id = Auth::user()->id;
-					@endphp 
-					@foreach($data['member_stat'] as  $key => $stat)
-					<tr>
-						<td>{{ $key+1 }} </td>
-						<td>{{ $stat->status_name }}</td>
-						<td>{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
-						<td>{{ number_format(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 2) }} </td>
-					</tr>
-					@endforeach
+			<div class="card darken-1" id="member_status_div">
+				<span style="text-align:center;padding:5px;" class="card-title">Member Status <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
+				<table class="collection" id="memberstatustable">
+					<thead>
+						<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+							<th>Sl No</th>
+							<th>Status</th>
+							<th>Count</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						@php 
+							$get_roles = Auth::user()->roles;
+							$user_role = $get_roles[0]->slug;
+							$user_id = Auth::user()->id;
+						@endphp 
+						@foreach($data['member_stat'] as  $key => $stat)
+						<tr>
+							<td>{{ $key+1 }} </td>
+							<td>{{ $stat->status_name }}</td>
+							<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
+							<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
+						</tr>
+						@endforeach
+					</tbody>
 				</table>
 			</div>
 		</div>
 		<!--Approval Status-->
 		<div class="col s12 m6">
 			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">Approval Status</span>
-				<table class="collection">
+				<span style="text-align:center;padding:5px;" class="card-title">Approval Status <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
+				<table class="collection" id="approvalstatustable">
 					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
 						<td>Sl No</td>
 						<td>Description</td>
@@ -203,7 +207,7 @@
 					<tr>
 						<td>{{ $key+1 }} </td>
 						<td>{{ $stat->match_name }}</td>
-						<td>{{ $stat->count }}</td>
+						<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
 					</tr>
 					@endforeach
 				</table>
@@ -262,12 +266,27 @@ $(document).ready(function() {
 });
      $(document).ready(function(){
         $(".datepicker-custom").datepicker({
-            autoclose: true,
+            changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			onSelect:function(dateText) {
+				console.log(dateText);	
+			},
+			onDraw:function(dateText) {
+				console.log(dateText);	
+			},
+			onClose: function(dateText, inst) {
+				console.log(inst);				
+				//$(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+			},
+			autoClose: true,
+			weekdaysAbbrev: ['sun'],
             format: "mmm/yyyy",
 			/* today: 'Today',
 			defaultDate: '01/Jul/2019', */
         });
     });
+	
 	$("#subscribe_formValidate").validate({
         rules: {
 				entry_date:{
@@ -315,7 +334,8 @@ $(document).ready(function() {
 	$(document).on('change','#entry_date,#sub_company',function(){
 		var entry_date = $("#entry_date").val();
 		var sub_company = $("#sub_company").val();
-		if(sub_company!="" && sub_company!=""){
+		$(".datamonth").text('['+entry_date+']');
+		if(entry_date!="" && sub_company!=""){
 			loader.showLoader();
 			$("#type option[value='2']").remove();
 			var url = "{{ url(app()->getLocale().'/check-subscription-exists') }}" + '?entry_date=' + entry_date + "&sub_company=" + sub_company;
@@ -327,6 +347,34 @@ $(document).ready(function() {
 					if(result.status==1){
 						$("#modal_subscription").modal('open');
 						$("#type").append('<option value="2">Download Existance data</option>');
+					}else{
+						
+					}
+				}
+			});
+		}
+		if(entry_date!="" && $(this).attr('id')=='entry_date'){
+			$("#memberstatustable").css('opacity',0.5);
+			$("#approvalstatustable").css('opacity',0.5);
+			var url = "{{ url(app()->getLocale().'/get-datewise-status') }}" + '?entry_date=' + entry_date ;
+			$.ajax({
+				url: url,
+				type: "GET",
+				dataType: "json",
+				success: function(result) {
+					if(result.status==1){
+						$.each(result.status_data.count, function(key, entry) {
+							$("#member_status_count_"+key).html(entry);
+                        });
+						$.each(result.status_data.amount, function(key, entry) {
+							$("#member_status_amount_"+key).html(entry);
+                        });
+						$("#memberstatustable").css('opacity',1);
+						$.each(result.approval_data.count, function(key, entry) {
+							$("#approval_status_count_"+key).html(entry);
+                        });
+						$("#approvalstatustable").css('opacity',1);
+						//$("#member_status_count_1").html(5555);
 					}else{
 						
 					}

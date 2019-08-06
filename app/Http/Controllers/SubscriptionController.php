@@ -89,9 +89,9 @@ class SubscriptionController extends CommonController
         
         $data['member_stat'] = $status_all;
         $data['approval_status'] = DB::table('mon_sub_match_table as mt')
-                                    ->select('mt.id as id','mt.match_name as match_name',DB::raw('count(mm.match_id) as count'))
-                                    ->leftjoin('mon_sub_member_match as mm', 'mm.match_id' ,'=','mt.id')
-                                    ->groupBy('mt.id')
+                                    ->select('mt.id as id','mt.match_name as match_name')
+                                    //->leftjoin('mon_sub_member_match as mm', 'mm.match_id' ,'=','mt.id')
+                                    //->groupBy('mt.id')
                                     ->get();
 
         //isset($data['member_stat']) ? $data['member_stat'] : "";       

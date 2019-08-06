@@ -121,6 +121,9 @@
 										</table>
 									</div>	
                                 </div>  
+								@php
+								$loopcount=0;
+								@endphp
                                 @foreach($data['member_stat'] as  $key => $member_stat)
                                 <div id="member{{ $member_stat->id }}" class="col s12">
 									<div class="col sm12 m12">
@@ -138,6 +141,9 @@
 										</table>
 									</div>	
 								</div>   
+								@php
+									$loopcount++;
+								@endphp
                                 @endforeach
                                
 								</div>
@@ -254,8 +260,9 @@ $(document).ready(function(){
             }
         ]
     });
-	 @foreach($data['member_stat'] as  $key => $member_stat)
-	 $('#page-length-option-{{$member_stat->id}}').DataTable({
+	@if($loopcount == count($data['member_stat']))
+	@foreach($data['member_stat'] as  $key => $member_stat)
+	$('#page-length-option-{{$member_stat->id}}').DataTable({
         "responsive": true,
         "lengthMenu": [
             [10, 25, 50, 100],
@@ -293,7 +300,9 @@ $(document).ready(function(){
             }
         ]
     });
+	
 	@endforeach
+	@endif
 });
 
 function ConfirmDeletion() {
