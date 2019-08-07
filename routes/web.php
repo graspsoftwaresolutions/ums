@@ -217,6 +217,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('subscription.sub_payment','SubscriptionController@subPayment')->name('subscription.sub_payment');
 	Route::get('subscription.sub_paymenthistory','SubscriptionController@subPaymentHistory')->name('subscription.sub_paymenthistory');
+	Route::get('member_transfer','MembershipController@memberTransfer')->name('master.transfer');
 
 	
 });
@@ -248,6 +249,8 @@ Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');
 Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
+Route::get('get-auto-member-list','MembershipController@getAutomemberslist');
+Route::get('get-branch-details','MembershipController@getBranchDetails');
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');

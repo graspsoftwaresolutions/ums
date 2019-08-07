@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Model\FormType;
 use App\Model\AppForm;
 use App\Model\Country;
+use App\Model\State;
+use App\Model\City;
 use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
 use App\Model\Membership;
@@ -398,5 +400,22 @@ class CommonHelper
 
     public static function getSubscriptionAmt($memberid){
         return MonthlySubscriptionMember::select('Amount')->where('MemberCode','=',$memberid)->orderBY('id','asc')->first();
+    }
+	
+	public static function getCountryName($countryid){
+		return $country_name = Country::find($countryid)->country_name;
+    }
+	public static function getstateName($stateid){
+		return $state_name = State::find($stateid)->state_name;
+    }
+	public static function getcityName($cityid){
+		return $city_name = City::find($cityid)->city_name;
+    }
+	 public static function getCompanyName($companyid){
+		$company_name = Company::where('id',$companyid)->pluck('company_name');
+        if(count($company_name)>0){
+            return $company_name[0];
+        }
+        return false;
     }
 }

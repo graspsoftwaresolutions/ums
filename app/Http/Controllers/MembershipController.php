@@ -216,13 +216,7 @@ class MembershipController extends Controller
 			$columns[$sl++] = 'm.status_id';
 		//}
 		$columns[$sl++] = 'm.id';
-        /* $columns = array( 
-            0 => 'company_id', 
-            1 => 'branch_name',
-            2 => 'email',
-            3 => 'is_head',
-            4 => 'id'
-        ); */
+        
 		if($type==1){
 			$approved_cond = 1;
 		}else{
@@ -234,13 +228,6 @@ class MembershipController extends Controller
 		$user_id = Auth::user()->id;
 		$member_qry = '';
 		if($user_role=='union'){
-
-        // $member_qry = DB::table('membership as m')->select('m.member_number','m.id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj',
-        //                 'c.branch_name','c.id','com.id','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic')
-        //                 ->leftjoin('designation as d','m.designation_id','=','d.id')
-        //                 ->leftjoin('company_branch as c','m.branch_id','=','c.id')
-        //                 ->leftjoin('company as com','com.id','=','c.company_id')   
-        //                 ->where('m.is_request_approved','=',$approved_cond);
         $member_qry = DB::table('membership as m')->select(DB::raw('if(new_ic = "",old_ic,new_ic) as nric'),'m.member_number','m.id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id','com.id','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic')
                      ->leftjoin('designation as d','m.designation_id','=','d.id')
                      ->leftjoin('company_branch as c','m.branch_id','=','c.id')
@@ -448,6 +435,45 @@ class MembershipController extends Controller
 
         echo json_encode($json_data); 
     } 
+	
+	public function memberTransfer(){
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+		return view('membership.member_transfer')->with('data',$data); 
+    }
+    
+    public function getAutomemberslist(Request $request){
+        $searchkey = $request->input('serachkey');
+        $search = $request->input('query');
+        //DB::enableQueryLog();
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.id) AS value'),'m.id as number','m.branch_id as branch_id')      
+                            ->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+                            })->limit(25)
+                            ->get();        
+        //$queries = DB::getQueryLog();
+                            //  dd($queries);
+         return response()->json($res);
+    }
+
+    public function getBranchDetails(Request $request){
+        $branchid = $request->branchid;
+        $branch_info = CompanyBranch::find($branchid);
+        $return_data = ['status' => 1,'data' => []];
+        if(!empty($branch_info)){
+            $data = $branch_info;
+            $companyid = CommonHelper::getcompanyidbyBranchid($branch_info->id);
+            $data['country_name'] = CommonHelper::getCountryName($branch_info->country_id);
+            $data['state_name'] =  CommonHelper::getstateName($branch_info->state_id);
+            $data['city_name'] =  CommonHelper::getcityName($branch_info->city_id);
+            $data['company_name'] =  CommonHelper::getCompanyName($companyid);
+            //$data['branch_name'] =  $branch_info->branch_name;
+            $return_data = ['status' => 1,'data' => $data];
+        }
+        echo json_encode($return_data);
+    }
 
     
 
