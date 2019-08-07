@@ -215,6 +215,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-datewise-status','SubscriptionAjaxController@getDatewiseMember')->name('subscription.datewisemember');
 
 	
+	Route::get('subscription.sub_payment','SubscriptionController@subPayment')->name('subscription.sub_payment');
+
+	
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
