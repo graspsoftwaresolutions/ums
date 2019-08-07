@@ -484,4 +484,9 @@ class SubscriptionController extends CommonController
         $s = new SubscriptionExport(0,[]);
         return Excel::download($s, 'subscription.xlsx');
     }
+    //Subcription Payment 
+    public function subPayment()
+    {
+        return view('subscription.subscription_payment');
+    }
 }
