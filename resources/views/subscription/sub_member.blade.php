@@ -55,7 +55,17 @@
                         <div class="col s12">
                         <div class="card">
                             @php 
-                            $row =  isset($data['member_subscription_details'][0]) ? $data['member_subscription_details'][0]:""; 
+							$m_dob = $data['member_subscription_details']->doj;
+							$member_id = $data['member_subscription_details']->memberid;
+							$getsubsamount = CommonHelper::getSubscriptionAmt($member_id);
+							$subscriptionamt = 0;
+							$dueoverallamt = 0;
+							if(!empty($getsubsamount)){
+								$subscriptionamt = $getsubsamount['Amount'];	
+								$dueoverallamt = CommonHelper::getOverallDue($member_id, $m_dob, $subscriptionamt);
+							}
+							
+                            $row =  $data['member_subscription_details']; 
                             @endphp
                             <div class="card-content">
                             <h4 class="card-title">{{__('Member Subscription List')}}  </h4> 
@@ -63,19 +73,19 @@
 								<tr>
 									<td width="25%">{{__('Member Name ')}}</td>
 									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }}</td>
-									<td width="25%">{{__('Amount Paid ')}}</td>
+									<td width="25%">{{ __('Current Month Paid Amount')}}</td>
 									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
 								</tr>
 								<tr>
 									<td width="25%">{{__('Status ')}}</td>
 									<td width="25%">: {{ isset($row->status_name) ? $row->status_name : "Nill" }}</td>
-									<td width="25%">{{__('Amount Due')}}</td>
-									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+									<td width="25%">{{__('Overall Due')}}</td>
+									<td width="25%">: {{ $dueoverallamt }}</td>
 									
 								</tr>
 								<tr>
 									<td width="25%">{{__('Current Month ')}}</td>
-									<td width="25%">: @php echo date('M-Y') @endphp</td>
+									<td width="25%">: @php echo date('M/Y') @endphp</td>
 									
 									<td width="25%"></td>
 									<td width="25%"></td>
@@ -120,7 +130,8 @@
                                             <thead>
                                             <tr>
                                             <th>{{__('Month and Year')}}</th>
-                                            <th>{{__('Amount')}}</th>
+                                            <th>{{__('Paid Amount')}}</th>
+                                            <th>{{__('Due Amount')}}</th>
                                             <th>{{__('Status')}}</th>
                                             </tr>
                                             </tr>  
@@ -130,14 +141,14 @@
                                                     {
                                                         $monthyear1 = explode("-",$values->Date);
                                                         $monthyear =$monthyear1[0].$monthyear1[1];
-                                                        //$ctyear = date('Ym');
-                                                        $ctyear = "201907";
+                                                        $ctyear = date("Ym");
                                                         if($ctyear == $monthyear){ $act = "Active"; } else{ $act =""; }
                                                         @endphp
                                                         <tr> 
                                                         <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
                                                         <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
-                                                    <td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
+                                                        <td> {{ $subscriptionamt>0 && $subscriptionamt >($values->Amount) ? $subscriptionamt-($values->Amount) : "Paid" }} </td>
+														<td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
                                                         </tr> 
                                                      @php
                                                     }
