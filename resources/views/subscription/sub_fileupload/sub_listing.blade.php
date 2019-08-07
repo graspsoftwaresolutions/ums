@@ -295,9 +295,9 @@ $(document).ready(function() {
 				sub_company:{
 					required: true,
 				},
-				/* file:{
+				file:{
 					required: true,
-				}, */
+				},
 			 },
         //For custom messages
         messages: {
@@ -309,9 +309,9 @@ $(document).ready(function() {
 						required: "Please choose company",
 						
 					},
-					/* file:{
+					file:{
 						required: 'required',
-					}, */
+					},
 				},
         errorElement: 'div',
         errorPlacement: function (error, element) {
