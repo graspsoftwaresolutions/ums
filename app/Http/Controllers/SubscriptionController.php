@@ -486,7 +486,7 @@ class SubscriptionController extends CommonController
         $member_id = Membership::where('user_id','=',$user_id)->first();
         $id = $member_id->id;
       
-            $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+            $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
             ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
@@ -498,7 +498,7 @@ class SubscriptionController extends CommonController
 
             if(count($data['member_subscription_details']) == 0)
             {
-            return view('subscription.subscription_payment')->with('message','No transaction Done');
+                 return view('subscription.subscription_payment')->with('message','No transaction Done');
             }
  
             DB::enableQueryLog();

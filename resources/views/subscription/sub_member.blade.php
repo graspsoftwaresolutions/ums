@@ -74,7 +74,7 @@
 									<td width="25%">{{__('Member Name ')}}</td>
 									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }}</td>
 									<td width="25%">{{ __('Current Month Paid Amount')}}</td>
-									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $subscriptionamt : "No Amount" }}</td>
 								</tr>
 								<tr>
 									<td width="25%">{{__('Status ')}}</td>
@@ -145,7 +145,7 @@
                                                         if($ctyear == $monthyear){ $act = "Active"; } else{ $act =""; }
                                                         @endphp
                                                         <tr> 
-                                                        <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
+                                                        <td> {{ isset($values->Date) ? date('M/Y', strtotime($values->Date)) : "Nill" }}  </td>
                                                         <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
                                                         <td> {{ $subscriptionamt>0 && $subscriptionamt >($values->Amount) ? $subscriptionamt-($values->Amount) : "Paid" }} </td>
 														<td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
