@@ -489,4 +489,39 @@ class SubscriptionController extends CommonController
     {
         return view('subscription.subscription_payment');
     }
+    public function subPaymentHistory()
+    {
+         $member_id = Auth::user()->id;
+        $id = $member_id;
+       //  $year =2019;
+       // $month =8;
+
+       // return $id;
+       
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+                                            ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
+                                            ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
+                                            ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
+                                            ->leftjoin('status as status','status.id','=','sm.StatusId')
+                                            //->where('s.Date','=',date('Y-m-01'))
+                                            ->orderBY('s.Date','desc')
+                                            ->where('m.id','=',$id)
+                                            ->get();
+
+        if(count($data['member_subscription_details']) == 0)
+        {
+            return view('subscription.subscription_payment')->with('message','No transaction Done');
+        }
+        DB::enableQueryLog();
+        $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
+                                            ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
+                                            ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
+                                            ->leftjoin('status as status','status.id','=','sm.StatusId')
+                                            ->leftjoin('membership as m','m.id','=','sm.MemberCode')
+                                            ->where('m.id','=',$id)
+                                            ->get(); 
+                                            
+
+        return view('subscription.subscription_paymenthistory')->with('data',$data);
+    }
 }

@@ -15,7 +15,10 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
 <style>
-
+.filter{
+    padding-top: 9px;
+    background-color: #dad1d1c7;
+}
 </style>
 @endsection
 @section('main-content')
@@ -36,7 +39,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Member Subscription Payment')}}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Member Subscription History List')}}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
@@ -48,37 +51,74 @@
                                   
                                 </div>
                             </div>
+                           
                         </div>
                         <div class="row">
-                        @include('includes.messages')
                         <div class="col s12">
                         <div class="card">
-                            
-                            
-								<form method="post" id="filtersubmit">
-									@csrf
+                            @php 
+                            $row =  isset($data['member_subscription_details'][0]) ? $data['member_subscription_details'][0]:""; 
+                           
+                            @endphp
+                            <div class="card-content">
+                            <h4 class="card-title">{{__('Member Subscription List')}}  </h4> 
+							<table width="100%" style="font-weight:bold">
+								<tr>
+									<td width="25%">{{__('Member Name ')}}</td>
+									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }}</td>
+									<td width="25%">{{__('Amount Paid ')}}</td>
+									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+								</tr>
+								<tr>
+									<td width="25%">{{__('Status ')}}</td>
+									<td width="25%">: {{ isset($row->status_name) ? $row->status_name : "Nill" }}</td>
+									<td width="25%">{{__('Amount Due')}}</td>
+									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+									
+								</tr>
+								<tr>
+									<td width="25%">{{__('Current Month ')}}</td>
+									<td width="25%">: @php echo date('M-Y') @endphp</td>
+									
+									<td width="25%"></td>
+									<td width="25%"></td>
+								</tr>
+							</table>
+                            <h6 class="">   </h6>
+                            <h6 class="">  </h6>
+                                                                   
+							<h6 class="">  </h6>
+                          
+                            <h6 class="">   </h6>
+                            <div class="card filter">
+								<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
+									@csrf  
+									<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
+									<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
 									<div class="row">                          
 										<div class="input-field col s4">
 											<i class="material-icons prefix">date_range</i>
-											<input id="from_date" type="text" class="validate datepicker" name="from_date">
+											<input id="from_date" type="text" required class="validate datepicker" name="from_date">
 											<label for="from_date">{{__('From Month and Year')}}</label>
 										</div>
 										<div class="input-field col s4">
-											<i class="material-icons prefix">monetization_on</i>
-												<input id="amount" type="text" name="amount" class="">
-											<label for="amount">{{__('Amount')}}</label>
+											<i class="material-icons prefix">date_range</i>
+											<input id="to_date" type="text" required class="validate datepicker" name="to_date">
+											<label for="to_date">{{__('To Month and Year')}}</label>
 										</div>
 										<div class="input-field col s4">
-										<input type="submit"  class="btn" name="pay" value="{{__('Pay')}}">
+										<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
 										</div>
 									</div>
 								</form>  
                             </div>
-							<div class="row hide">
+                            @include('includes.messages')
+                            <div class="row">
                                 <div class="col s12">
                                     <!-- Horizontal Stepper -->
 									<div class="card">
                                     <div class="col sm12 m12">
+                                       
                                         <table id="page-length-option" class="display ">
                                             <thead>
                                             <tr>
@@ -86,11 +126,32 @@
                                             <th>{{__('Amount')}}</th>
                                             <th>{{__('Status')}}</th>
                                             </tr>
-											<tr>
-												<td>xx</td>
-												<td>xx</td>
-												<td>xx</td>
-                                            </tr>
+                                            </tr>  
+                                                @php if(count($data['member_subscription_list'])!=0 )
+                                                {
+                                                    foreach($data['member_subscription_list'] as $key=> $values)
+                                                    {
+                                                        $monthyear1 = explode("-",$values->Date);
+                                                        $monthyear =$monthyear1[0].$monthyear1[1];
+                                                        //$ctyear = date('Ym');
+                                                        $ctyear = "201907";
+                                                        if($ctyear == $monthyear){ $act = "Active"; } else{ $act =""; }
+                                                        @endphp
+                                                        <tr> 
+                                                        <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
+                                                        <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
+                                                    <td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
+                                                        </tr> 
+                                                     @php
+                                                    }
+                                                }
+                                                else{ 
+                                                    @endphp
+                                                    <td><div calss="row"></td>
+                                                @php
+                                                }
+                                                @endphp
+                                                
                                             </thead>
                                         </table>
                                         </div>          
@@ -98,7 +159,7 @@
 									</div>
 								</div>
                             </div>
-                        
+                          </div>
                         </div>
                     </div>
                        
@@ -129,8 +190,8 @@
 <script src="{{ asset('public/assets/js/scripts/form-wizard.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
-$("#subscriptionpayment_sidebar_li_id").addClass('active');
-$("#subscriptionpayment_sidebar_a_id").addClass('active');
+$("#subcomp_sidebar_li_id").addClass('active');
+$("#subcomp_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		//loader.showLoader();
@@ -169,9 +230,8 @@ $("#subscriptionpayment_sidebar_a_id").addClass('active');
         from_date: {
         required: true,
     },
-    amount: {
+    to_date: {
         required: true,
-        digits: true,
     },
     },
     //For custom messages
@@ -179,9 +239,9 @@ $("#subscriptionpayment_sidebar_a_id").addClass('active');
         from_date: {
         required: '{{__("Please select from date") }}',
     },
-    amount: {
-        required: '{{__("Please Enter Amount") }}',
-        digits: '{{__("Numbers only") }}',
+    to_date: {
+        required: '{{__("Please select to date") }}',
+        
     },
     },
     errorElement: 'div',
@@ -194,5 +254,6 @@ $("#subscriptionpayment_sidebar_a_id").addClass('active');
     }
     }
 });
+
 </script>
 @endsection
