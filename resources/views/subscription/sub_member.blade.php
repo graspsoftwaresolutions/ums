@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/materialize-stepper/materialize-stepper.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css"
@@ -13,7 +12,6 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
 <style>
 .filter{
     padding-top: 9px;
@@ -57,7 +55,17 @@
                         <div class="col s12">
                         <div class="card">
                             @php 
-                            $row =  isset($data['member_subscription_details'][0]) ? $data['member_subscription_details'][0]:""; 
+							$m_dob = $data['member_subscription_details']->doj;
+							$member_id = $data['member_subscription_details']->memberid;
+							$getsubsamount = CommonHelper::getSubscriptionAmt($member_id);
+							$subscriptionamt = 0;
+							$dueoverallamt = 0;
+							if(!empty($getsubsamount)){
+								$subscriptionamt = $getsubsamount['Amount'];	
+								$dueoverallamt = CommonHelper::getOverallDue($member_id, $m_dob, $subscriptionamt);
+							}
+							
+                            $row =  $data['member_subscription_details']; 
                             @endphp
                             <div class="card-content">
                             <h4 class="card-title">{{__('Member Subscription List')}}  </h4> 
@@ -65,19 +73,19 @@
 								<tr>
 									<td width="25%">{{__('Member Name ')}}</td>
 									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }}</td>
-									<td width="25%">{{__('Amount Paid ')}}</td>
+									<td width="25%">{{ __('Current Month Paid Amount')}}</td>
 									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
 								</tr>
 								<tr>
 									<td width="25%">{{__('Status ')}}</td>
 									<td width="25%">: {{ isset($row->status_name) ? $row->status_name : "Nill" }}</td>
-									<td width="25%">{{__('Amount Due')}}</td>
-									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+									<td width="25%">{{__('Overall Due')}}</td>
+									<td width="25%">: {{ $dueoverallamt }}</td>
 									
 								</tr>
 								<tr>
 									<td width="25%">{{__('Current Month ')}}</td>
-									<td width="25%">: @php echo date('M-Y') @endphp</td>
+									<td width="25%">: @php echo date('M/Y') @endphp</td>
 									
 									<td width="25%"></td>
 									<td width="25%"></td>
@@ -122,7 +130,8 @@
                                             <thead>
                                             <tr>
                                             <th>{{__('Month and Year')}}</th>
-                                            <th>{{__('Amount')}}</th>
+                                            <th>{{__('Paid Amount')}}</th>
+                                            <th>{{__('Due Amount')}}</th>
                                             <th>{{__('Status')}}</th>
                                             </tr>
                                             </tr>  
@@ -132,14 +141,14 @@
                                                     {
                                                         $monthyear1 = explode("-",$values->Date);
                                                         $monthyear =$monthyear1[0].$monthyear1[1];
-                                                        //$ctyear = date('Ym');
-                                                        $ctyear = "201907";
+                                                        $ctyear = date("Ym");
                                                         if($ctyear == $monthyear){ $act = "Active"; } else{ $act =""; }
                                                         @endphp
                                                         <tr> 
                                                         <td> {{ isset($values->Date) ? $values->Date : "Nill" }}  </td>
                                                         <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
-                                                    <td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
+                                                        <td> {{ $subscriptionamt>0 && $subscriptionamt >($values->Amount) ? $subscriptionamt-($values->Amount) : "Paid" }} </td>
+														<td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
                                                         </tr> 
                                                      @php
                                                     }
@@ -179,82 +188,51 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('public/assets/js/scripts/form-wizard.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
-$("#subcomp_sidebar_li_id").addClass('active');
+$("#subscomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		//loader.showLoader();
-		var horizStepper = document.querySelector('#horizStepper');
-		var horizStepperInstace = new MStepper(horizStepper, {
-			// options
-			firstActive: 0,
-			showFeedbackPreloader: true,
-			autoFormCreation: true,
-			validationFunction: defaultValidationFunction,
-			stepTitleNavigation: true,
-			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
-		});
-
-		horizStepperInstace.resetStepper();
-		
 	
 	});
-	function defaultValidationFunction(horizStepper, activeStepContent) {
-        $statid =$(this).closest($('#status_id').val());
-        console.log($statid);
-		
-		/* var inputs = activeStepContent.querySelectorAll('input, textarea, select');
-	   for (let i = 0; i < inputs.length; i++) 
-	   {
-		   if (!inputs[i].checkValidity()) {
-			   jQuery("#submit-member").trigger('submit');
-			   return false;
-		   }
-	   } */
-	  
-	   return true;
-	}
+	
     $("#filtersubmit").validate({
     rules: {
         from_date: {
-        required: true,
-        
-      },
-      to_date: {
-        required: true,
-        
-      },
-      
+			required: true,
+			
+		  },
+		  to_date: {
+			required: true,
+			
+		  },
+	},
       //For custom messages
       messages: {
-        from_date:{
-        required: "Enter From Date"
+			from_date:{
+			required: "Enter From Date"
+		  },
+		  to_date:{
+			required: "Enter To Date"
+		  },
       },
-      to_date:{
-        required: "Enter To Date"
-      },
-      
       errorElement : 'div',
       errorPlacement: function(error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-          $(placement).append(error)
-        } else {
-      error.insertAfter(element);
-      }
-    }
+			var placement = $(element).data('error');
+			if (placement) {
+			  $(placement).append(error)
+			} else {
+		  error.insertAfter(element);
+		  }
+		}
   });
-/*
+
 
 </script>
 @endsection

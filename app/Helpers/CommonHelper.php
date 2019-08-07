@@ -9,6 +9,7 @@ use App\Model\Country;
 use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
 use App\Model\Membership;
+use App\Model\MonthlySubscriptionMember;
 use App\Model\Company;
 use App\Model\Status;
 use App\Model\MonthlySubscriptionCompany;
@@ -258,7 +259,7 @@ class CommonHelper
 
     public static function getCompanyListAll(){
 		return $results = Company::where('status',1)->get();
-     }
+    }
 
     public static function getComapnyName($companyid){
 		$company_name = Company::where('id',$companyid)->pluck('company_name');
@@ -382,4 +383,20 @@ class CommonHelper
 		return $members_count;
 	}
    
+    public static function getOverallDue($memberid, $doj, $subscriptionamt){
+        //DB::connection()->enableQueryLog();
+        $to = Carbon::createFromFormat('Y-m-d H:s:i', date('Y-m-d H:i:s'));
+        $from = Carbon::createFromFormat('Y-m-d H:s:i', $doj.date('H:i:s'));
+        $diff_in_months = $to->diffInMonths($from);
+        $overall_pay = $diff_in_months*$subscriptionamt;
+       
+        $overall_amt = MonthlySubscriptionMember::select(DB::raw('ifnull(SUM(Amount),0) as amount'))->where('MemberCode','=',$memberid)->get();
+        //$queries = DB::getQueryLog();
+        $paid_amt = $overall_amt[0]->amount;
+        return round($overall_pay-$paid_amt);
+    }
+
+    public static function getSubscriptionAmt($memberid){
+        return MonthlySubscriptionMember::select('Amount')->where('MemberCode','=',$memberid)->orderBY('id','asc')->first();
+    }
 }

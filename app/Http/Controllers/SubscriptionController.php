@@ -341,7 +341,7 @@ class SubscriptionController extends CommonController
 
        // return $id;
        
-       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
                                             ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
@@ -349,7 +349,7 @@ class SubscriptionController extends CommonController
                                             //->where('s.Date','=',date('Y-m-01'))
                                             ->orderBY('s.Date','desc')
                                             ->where('m.id','=',$id)
-                                            ->get();
+                                            ->first();
 
         DB::enableQueryLog();
         $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
@@ -360,18 +360,7 @@ class SubscriptionController extends CommonController
                                             ->where('m.id','=',$id)
                                             //->groupBY('s.id')
                                             ->get(); 
-                                            //$queries = DB::getQueryLog();
-                                           // dd($queries);
-        // $data['member_subscription_list'] = DB::table('mon_sub as s')->select('sm.Amount','s')
-        //                                     ->leftjoin('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
-        //                                     ->leftjoin('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-        //                                     // ->join('company','company.id','=','mon_sub_company.CompanyCode')
-        //                                     // ->join('company_branch','company.id','=','company_branch.company_id')
-        //                                     ->leftjoin('status','status.id','=','mon_sub_member.StatusId')
-        //                                     ->leftjoin('membership','membership.member_number','=','mon_sub_member.MemberCode')
-        //                                     ->where('membership.id','=',	
-        //                                     $id)->get(); 
-        //dd($data['member_subscription_list']);
+                                            
            
         return view('subscription.sub_member')->with('data',$data);
           
@@ -382,13 +371,13 @@ class SubscriptionController extends CommonController
         $member_code = $request->id;   
         $memberid = $request->memberid;
 
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
             ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
             ->leftjoin('status as status','status.id','=','sm.StatusId')
             ->orderBY('s.Date','desc')
-            ->where('m.id','=',$memberid)->get();
+            ->where('m.id','=',$memberid)->first();
 
         //return $memberid;
         $from_date = $request->from_date;
