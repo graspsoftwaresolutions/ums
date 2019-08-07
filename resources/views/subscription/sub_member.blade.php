@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/materialize-stepper/materialize-stepper.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css"
@@ -13,7 +12,6 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/form-wizard.css') }}">
 <style>
 .filter{
     padding-top: 9px;
@@ -179,82 +177,51 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('public/assets/js/scripts/form-wizard.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
-$("#subcomp_sidebar_li_id").addClass('active');
+$("#subscomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		//loader.showLoader();
-		var horizStepper = document.querySelector('#horizStepper');
-		var horizStepperInstace = new MStepper(horizStepper, {
-			// options
-			firstActive: 0,
-			showFeedbackPreloader: true,
-			autoFormCreation: true,
-			validationFunction: defaultValidationFunction,
-			stepTitleNavigation: true,
-			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
-		});
-
-		horizStepperInstace.resetStepper();
-		
 	
 	});
-	function defaultValidationFunction(horizStepper, activeStepContent) {
-        $statid =$(this).closest($('#status_id').val());
-        console.log($statid);
-		
-		/* var inputs = activeStepContent.querySelectorAll('input, textarea, select');
-	   for (let i = 0; i < inputs.length; i++) 
-	   {
-		   if (!inputs[i].checkValidity()) {
-			   jQuery("#submit-member").trigger('submit');
-			   return false;
-		   }
-	   } */
-	  
-	   return true;
-	}
+	
     $("#filtersubmit").validate({
     rules: {
         from_date: {
-        required: true,
-        
-      },
-      to_date: {
-        required: true,
-        
-      },
-      
+			required: true,
+			
+		  },
+		  to_date: {
+			required: true,
+			
+		  },
+	},
       //For custom messages
       messages: {
-        from_date:{
-        required: "Enter From Date"
+			from_date:{
+			required: "Enter From Date"
+		  },
+		  to_date:{
+			required: "Enter To Date"
+		  },
       },
-      to_date:{
-        required: "Enter To Date"
-      },
-      
       errorElement : 'div',
       errorPlacement: function(error, element) {
-        var placement = $(element).data('error');
-        if (placement) {
-          $(placement).append(error)
-        } else {
-      error.insertAfter(element);
-      }
-    }
+			var placement = $(element).data('error');
+			if (placement) {
+			  $(placement).append(error)
+			} else {
+		  error.insertAfter(element);
+		  }
+		}
   });
-/*
+
 
 </script>
 @endsection
