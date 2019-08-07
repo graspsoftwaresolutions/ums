@@ -951,7 +951,11 @@ class AjaxController extends CommonController
 		$data = array();
         if(!empty($result))
         {
-			
+            $font_color = Status::where('status','=','1')->where('status_name','=','Active')->first();
+            if($font_color->font_color == 'Green')
+            {
+                $color = "style('color:Green')";
+            }
             foreach ($result as $resultdata)
             {
 				//$nestedData = array();

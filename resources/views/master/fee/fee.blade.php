@@ -89,6 +89,15 @@
                                             <div class="errorTxt2"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
+                                        <div class="input-field col s12 m6">
+                                            <p>
+                                                <label>
+                                                    <input type="checkbox" name="is_monthly_payment"
+                                                        class="common-checkbox" id="is_monthly_payment" value="1"> 
+                                                    <span>{{__('Is Monthly payment') }}</span>
+                                                </label>
+                                            </p>
+                                        </div>
                                         </div></div>
                                         <div class="modal-footer">
                                             <a href="#!"
@@ -229,6 +238,7 @@ function showaddForm() {
     $('.edit_hide_btn').hide();
     $('#fee_name').val("");
     $('#fee_amount').val("");
+    $('#is_monthly_payment').val("1");
     $('.modal').modal();
     $('#updateid').val("");
     $('.common-label').removeClass('force-active');
@@ -249,6 +259,13 @@ function showeditForm(feeid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#fee_name').val(result.fee_name);
             $('#fee_amount').val(result.fee_amount);
+            if(result.is_monthly_payment)
+            {
+                $('#is_monthly_payment').prop('checked', true);
+            }
+            else{
+                $('#is_monthly_payment').prop('checked', false);
+            }
             $('.common-label').addClass('force-active');
             loader.hideLoader();
             $("#modal_add_edit").modal('open');

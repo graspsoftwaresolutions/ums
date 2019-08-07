@@ -508,11 +508,7 @@ class SubscriptionController extends CommonController
                     ->leftjoin('status as status','status.id','=','sm.StatusId')
                     ->leftjoin('membership as m','m.id','=','sm.MemberCode')
                     ->where('m.id','=',$id)
-                    ->get(); 
-                    
-
+                    ->get();  
             return view('subscription.subscription_paymenthistory')->with('data',$data);
-        
-      
     }
 }

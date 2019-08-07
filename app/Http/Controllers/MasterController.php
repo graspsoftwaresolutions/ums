@@ -761,7 +761,7 @@ class MasterController extends CommonController {
 
 	public function saveFee(Request $request)
     {
-
+       // return $request->all();
         $request->validate([
             'fee_name' => 'required',
 			'fee_amount' => 'required | numeric',
@@ -954,9 +954,11 @@ class MasterController extends CommonController {
     {   
         $request->validate([
             'status_name'=>'required',
+            'font_color'=>'required',
         ],
         [
             'status_name.required'=>'please enter Status name',
+            'font_color.required'=>'please enter Font Color',
         ]);
         $data = $request->all();   
         $defdaultLang = app()->getLocale();
