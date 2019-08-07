@@ -79,6 +79,13 @@
                                                 data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
+                                        <div class="input-field col s12">
+                                            <label for="font_color"
+                                                class="common-label force-active">{{__('Font Color') }}*</label>
+                                            <input id="font_color" name="font_color" class="common-input" type="text"
+                                                data-error=".errorTxt2">
+                                            <div class="errorTxt2"></div>
+                                        </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         </div></div>
                                         <div class="modal-footer">
@@ -136,12 +143,18 @@ $("#status_formValidate").validate({
                 type: "post",
             },
         },
+        font_color: {
+            required: true,
+        },
     },
     //For custom messages
     messages: {
         status_name: {
             required: '{{__("Enter the Status Name") }}',
             remote: '{{__("Status Name Already exists") }}',
+        },
+        font_color: {
+            required: '{{__("Enter the Color Code") }}',
         },
     },
     errorElement: 'div',
@@ -205,6 +218,7 @@ function showaddForm() {
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
     $('#status_name').val("");
+    $('#font_color').val("");
     $('.modal').modal();
     $('#updateid').val("");
     $('.common-label').removeClass('force-active');
@@ -224,6 +238,7 @@ function showeditForm(stateid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#status_name').val(result.status_name);
+            $('#font_color').val(result.font_color);
             loader.hideLoader();
             $('.common-label').addClass('force-active');
             $("#modal_add_edit").modal('open');

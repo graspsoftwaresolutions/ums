@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Fee extends Model {
 
     protected $table = 'fee';
-    protected $fillable = ['id', 'fee_name', 'fee_amount', 'status'];
+    protected $fillable = ['id', 'fee_name', 'fee_amount','is_monthly_payment' ,'status'];
     public $timestamps = true;
 
     public function saveFeedata($data=array())
