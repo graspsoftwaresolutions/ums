@@ -61,34 +61,55 @@
                             @endphp
                             <div class="card-content">
                             <h4 class="card-title">{{__('Member Subscription List')}}  </h4> 
-                            <h4 class="card-title">{{__('Member Name : ')}}  {{ isset($row->membername) ? $row->membername : "Nill" }} </h4>
-                            <h4 class="card-title">{{__('Status :')}}  {{ isset($row->status_name) ? $row->status_name : "Nill" }}</h4>
+							<table width="100%" style="font-weight:bold">
+								<tr>
+									<td width="25%">{{__('Member Name ')}}</td>
+									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }}</td>
+									<td width="25%">{{__('Amount Paid ')}}</td>
+									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+								</tr>
+								<tr>
+									<td width="25%">{{__('Status ')}}</td>
+									<td width="25%">: {{ isset($row->status_name) ? $row->status_name : "Nill" }}</td>
+									<td width="25%">{{__('Amount Due')}}</td>
+									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</td>
+									
+								</tr>
+								<tr>
+									<td width="25%">{{__('Current Month ')}}</td>
+									<td width="25%">: @php echo date('M-Y') @endphp</td>
+									
+									<td width="25%"></td>
+									<td width="25%"></td>
+								</tr>
+							</table>
+                            <h6 class="">   </h6>
+                            <h6 class="">  </h6>
                                                                    
-                           <h4 class="card-title">{{__('Current Month :')}} @php echo date('M-Y') @endphp </h4>
+							<h6 class="">  </h6>
                           
-                            <h4 class="card-title">{{__('Amount Paid :')}}   {{ $row->Date==date('Y-m-01') ? $row->Amount : "No Amount" }}</h4>
+                            <h6 class="">   </h6>
                             <div class="card filter">
-                            
-                            <form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
-                            @csrf  
-                            <input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
-                            <input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
-                                <div class="row">                          
-                                    <div class="input-field col s4">
-                                        <i class="material-icons prefix">date_range</i>
-                                        <input id="from_date" type="text" required class="validate datepicker" name="from_date">
-                                        <label for="from_date">{{__('From Month and Year')}}</label>
-                                    </div>
-                                    <div class="input-field col s4">
-                                        <i class="material-icons prefix">date_range</i>
-                                        <input id="to_date" type="text" required class="validate datepicker" name="to_date">
-                                        <label for="to_date">{{__('To Month and Year')}}</label>
-                                    </div>
-                                    <div class="input-field col s4">
-                                    <input type="submit"  class="btn" name="search" value="{{__('Search')}}">
-                                    </div>
-                                </div>
-                            </form>  
+								<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
+									@csrf  
+									<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
+									<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
+									<div class="row">                          
+										<div class="input-field col s4">
+											<i class="material-icons prefix">date_range</i>
+											<input id="from_date" type="text" required class="validate datepicker" name="from_date">
+											<label for="from_date">{{__('From Month and Year')}}</label>
+										</div>
+										<div class="input-field col s4">
+											<i class="material-icons prefix">date_range</i>
+											<input id="to_date" type="text" required class="validate datepicker" name="to_date">
+											<label for="to_date">{{__('To Month and Year')}}</label>
+										</div>
+										<div class="input-field col s4">
+										<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
+										</div>
+									</div>
+								</form>  
                             </div>
                             @include('includes.messages')
                             <div class="row">
