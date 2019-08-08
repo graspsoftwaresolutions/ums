@@ -52,7 +52,7 @@ class MemberController extends CommonController
 	public function Save(Request $request)
     {
         //return count($request->input('nominee_auto_id'));
-        //return $request->all();
+       // return $request->all();
 		$auto_id = $request->input('auto_id');
 		$user_role = '';
 		$redirect_failurl = app()->getLocale().'/membership';
@@ -210,7 +210,10 @@ class MemberController extends CommonController
 			$member['address_one'] = $request->input('address_one');
 			$member['address_two'] = $request->input('address_two');
 			$member['address_three'] = $request->input('address_three');
-			//$member['status_id'] = $request->input('status_id');
+			$member['levy'] = $request->input('levy');
+			$member['levy_amount'] = $request->input('levy_amount');
+			$member['tdf'] = $request->input('tdf');
+			$member['tdf_amount'] = $request->input('tdf_amount');
 			
 			$member['employee_id'] =  $request->input('employee_id');
 			$member['status'] = 1;
@@ -440,7 +443,7 @@ class MemberController extends CommonController
     }
 	
 	public function editMemberProfile(){
-
+ 
 		$auth_user = Auth::user();
 		$auth_user_id = Auth::user()->id;
 		$check_member = $auth_user->hasRole('member');
@@ -456,7 +459,8 @@ class MemberController extends CommonController
                  $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.mobile',
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
-                                        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved')
+										'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved',
+										'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount')
                                 ->leftjoin('country','membership.country_id','=','country.id')
                                 ->leftjoin('state','membership.state_id','=','state.id')
                                 ->leftjoin('city','membership.city_id','=','city.id')
@@ -466,10 +470,11 @@ class MemberController extends CommonController
                                 ->leftjoin('designation','membership.designation_id','=','designation.id')
                                 ->where([
                                    ['membership.user_id','=',$auth_user_id]
-                                ])->get();
-
-                               // $queries = DB::getQueryLog();
-                              // dd($queries);
+								])->get();
+								
+					//dd($data['member_view']);
+                            //    $queries = DB::getQueryLog();
+                            //   dd($queries);
 
                     $country_id = $data['member_view'][0]->country_id;
                     $member_id = $data['member_view'][0]->mid;
@@ -494,7 +499,7 @@ class MemberController extends CommonController
                     $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
                     
                     $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$member_id)->get();
-                // return  $data; 
+               
                     return view('membership.edit_membership')->with('data',$data); 
             }else{
                 return redirect( app()->getLocale().'/home'); 

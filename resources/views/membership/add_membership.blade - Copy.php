@@ -45,6 +45,7 @@
 												<h4 class="card-title">{{__('New Membership') }}</h4>
 												
 											</div>
+											
 											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 											@csrf
 											@php 
@@ -99,7 +100,7 @@
 														<div style="box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);padding:50px 50px;">
 															<div class="row">
 																<div class="col s12 m6">
-																	<label >{{__('Member Title') }}*</label>
+																	<label>{{__('Member Title') }}*</label>
 																	<select name="member_title" id="member_title" required data-error=".errorTxt1" class="error browser-default selectpicker">
 																		<option value="" disabled selected>{{__('Choose your option') }}</option>
 																		@foreach($data['title_view'] as $key=>$value)
@@ -122,7 +123,7 @@
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<label for="name" class="force-active">{{__('Member Name') }} *</label>
+																	<label for="name">{{__('Member Name') }} *</label>
 																	<input id="name" name="name" type="text" class="validate" value="{{ old('name') }}" data-error=".errorTxt3">
 																	<div class="errorTxt3"></div>
 																</div>
@@ -151,19 +152,19 @@
 																</div>
 																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s12 m6">
-																	<label for="mobile" class="force-active">{{__('Mobile Number') }} *</label>
+																	<label for="mobile">{{__('Mobile Number') }} *</label>
 																	<input id="mobile" name="mobile" value="{{ old('mobile') }}" type="text" data-error=".errorTxt5">
 																	<div class="errorTxt5"></div>
 																</div>
 																<div class="input-field col s12 m6">
-																	<label for="email" class="force-active">{{__('Email') }} *</label>
+																	<label for="email">{{__('Email') }} *</label>
 																	<input id="email" name="email" value="{{ old('email') }}" type="email" data-error=".errorTxt6">
 																	<div class="errorTxt6"></div>
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<input type="text" class="datepicker" id="doe" value="{{ old('doe') }}" name="doe">
-																	<label for="doe" class="force-active">{{__('Date of Emp') }}*</label>
+																	<label for="doe">{{__('Date of Emp') }}*</label>
 																	<div class="errorTxt7"></div>
 																</div>
 																<div class="col s12 m6">
@@ -249,31 +250,31 @@
 																	</div>
 																</div>
 																<div class="input-field col s12 m6">
-																	<label for="postal_code" class="force-active">{{__('Postal Code') }} *</label>
+																	<label for="postal_code">{{__('Postal Code') }} *</label>
 																	<input id="postal_code" name="postal_code" class="padding-top-6" value="{{ old('postal_code') }}" type="text" data-error=".errorTxt13">
 																	<div class="errorTxt13"></div>
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<label for="address_one" class="force-active">{{__('Address Line 1') }}*</label>
+																	<label for="address_one">{{__('Address Line 1') }}*</label>
 																	<input id="address_one" name="address_one" value="{{ old('address_one') }}" type="text" data-error=".errorTxt14">
 																	<div class="errorTxt14"></div>
 																</div>
 																<div class="input-field col s12 m6">
-																	<label for="address_two" class="force-active">{{__('Address Line 2') }}*</label>
+																	<label for="address_two">{{__('Address Line 2') }}*</label>
 																	<input id="address_two" name="address_two" value="{{ old('address_two') }}" type="text" data-error=".errorTxt15">
 																	<div class="errorTxt15"></div>
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<label for="address_three" class="force-active">{{__('Address Line 3') }}*</label>
+																	<label for="address_three">{{__('Address Line 3') }}*</label>
 																	<input id="address_three" name="address_three" value="{{ old('address_three') }}" type="text" data-error=".errorTxt16">
 																	<div class="errorTxt16"></div>
 																</div>
 																<div class="col s12 m6">
 																	<div class="row">
 																		<div class="input-field col s12 m8">
-																			<label for="dob" class="force-active">{{__('Date of Birth') }} *</label>
+																			<label for="dob">{{__('Date of Birth') }} *</label>
 																			<input id="dob" name="dob" value="{{ old('dob') }}" data-reflectage="member_age" value="{{ old('dob') }}" class="datepicker"  type="text"> 
 																		</div>
 																		<div class="input-field col s12 m4">
@@ -285,22 +286,22 @@
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<input type="text" class="datepicker" id="doj" value="{{ old('doj') }}" name="doj" data-error=".errorTxt18">
-																	<label for="doj" class="force-active">{{__('Date of Joining') }}*</label>
+																	<label for="doj">{{__('Date of Joining') }}*</label>
 																	<div class="errorTxt18"></div>
 																</div>
 																<div class="input-field col s12 m6">
-																	<label for="salary" class="force-active">{{__('Salary') }}*</label>
+																	<label for="salary">{{__('Salary') }}*</label>
 																	<input id="salary" name="salary" value="{{ old('salary') }}" type="text" data-error=".errorTxt19">
 																	<div class="errorTxt19"></div>
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<label for="salary" class="force-active">{{__('Old IC Number') }}</label>
+																	<label for="salary">{{__('Old IC Number') }}</label>
 																	<input id="old_ic" name="old_ic" type="text" value="{{ old('old_ic') }}" data-error=".errorTxt20">
 																	<div class="errorTxt20"></div>
 																</div>
 																<div class="input-field col s12 m6">
-																	<label for="new_ic" class="force-active">{{__('New IC Number') }}*</label>
+																	<label for="new_ic">{{__('New IC Number') }}*</label>
 																	<input id="new_ic" name="new_ic" type="text" value="{{ old('new_ic') }}" data-error=".errorTxt21">
 																	<div class="errorTxt21"></div>
 																</div>
@@ -317,7 +318,6 @@
 																		<div class="errorTxt22"></div>
 																	</div>
 																</div>
-
 																<div class="col s12 m6 union-data ">
 																	<label>{{__('Company Branch Name') }}*</label>
 																	<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
@@ -330,39 +330,9 @@
 																		<div class="errorTxt23"></div>
 																	</div>
 																</div>
-																<div class="clearfix" ></div>	
-																<div class="col s12 m6">
-																<label>{{__('Levy') }}</label>
-																  <select name="levy" id="levy" class="error browser-default selectpicker" data-error=".errorTxt22" required >
-																		<option value="">{{__('Select levy') }}</option>
-																		<option value="Not Applicable">N/A</option>
-																		<option value="Yes">Yes</option>
-																		<option value="NO">No</option>
-																	</select>
-																</div>
+																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s12 m6">
-																<input id="levy_amount" name="levy_amount" type="text">
-																	<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
-																	<div class="errorTxt2"></div>
-																</div>
-																<div class="clearfix" ></div>
-
-																<div class="col s12 m6">
-																<label>{{__('TDF') }}</label>
-																  <select name="tdf" id="tdf" class="error browser-default selectpicker" data-error=".errorTxt22" required >
-																		<option value="">{{__('Select TDF') }}</option>
-																		<option value="Not Applicable">N/A</option>
-																		<option value="Yes">Yes</option>
-																		<option value="NO">No</option>
-																	</select>
-																</div>
-																<div class="input-field col s12 m6">
-																<input id="tdf_amount" name="tdf_amount" type="text">
-																	<label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
-																</div>
-																<div class="clearfix" ></div>
-																<div class="input-field col s12 m6">
-																	<label for="employee_id" class="force-active">{{__('Employee ID') }}</label>
+																	<label for="employee_id">{{__('Employee ID') }}</label>
 																	<input id="employee_id" name="employee_id" value="{{ old('employee_id') }}" type="text">
 																</div>
 																<div class="clearfix" style="clear:both"></div>

@@ -41,6 +41,7 @@
 										$get_roles = Auth::user()->roles;
 										$user_role = $get_roles[0]->slug;
 										if(isset($data['member_view'])){
+											
 											$values = $data['member_view'][0];
 										}else{
 											echo 'invalid access';
@@ -320,6 +321,36 @@
 																			</div>
 																		</div>
 																		@endif
+																		
+																		<div class="col s12 m6">
+																		<label>{{__('Levy') }}</label>
+																			<select name="levy" id="levy" class="error browser-default selectpicker" data-error=".errorTxt22" required >
+																				<option value="">{{__('Select levy') }}</option>
+																				<option value="Not Applicable" {{ $values->levy == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
+																				<option value="Yes" {{ $values->levy == 'Yes' ? 'selected' : '' }}>Yes</option>
+																				<option value="NO" {{ $values->levy == 'NO' ? 'selected' : '' }}>No</option>
+																			</select>
+																		</div>
+																		<div class="clearfix" ></div>
+																		<div class="input-field col s12 m6">
+																		<input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
+																			<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
+																			<div class="errorTxt2"></div>
+																		</div>
+																		<div class="col s12 m6">
+																		<label>{{__('TDF') }}</label>
+																		<select name="tdf" id="tdf" class="error browser-default selectpicker" data-error=".errorTxt22" required >	
+																				<option value="0">Select TDF</option>
+																				<option value="Not Applicable" {{ $values->tdf == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
+																				<option value="Yes" {{ $values->tdf == 'Yes' ? 'selected' : '' }}>Yes</option>
+																				<option value="NO" {{ $values->tdf == 'NO' ? 'selected' : '' }}>No</option>
+																			</select>
+																		</div>
+																		<div class="clearfix" ></div>
+																	<div class="input-field col s12 m6">
+																	<input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
+																		<label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
+																	</div>
 																		<div class="input-field col s12 m6">
 																			<label for="employee_id" class="force-active">Employee ID</label>
 																			<input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
