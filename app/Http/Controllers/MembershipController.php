@@ -88,7 +88,7 @@ class MembershipController extends Controller
       
         $state_id = $data['member_view'][0]->state_id;
         $city_id = $data['member_view'][0]->city_id;
-       
+      
         $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -479,12 +479,23 @@ class MembershipController extends Controller
        $member_id = $request->input('transfer_member_code');
        $old_branch_id = $request->input('transfer_member_branch_id');
        $new_branch_id = $request->input('new_branch');
-       $member_data = Membership::where('id', '=', $member_id)->where('branch_id', '=', $old_branch_id)->update(array('branch_id' => $new_branch_id));
-       if($member_data){
-            return redirect(app()->getLocale().'/member_transfer')->with('message','Member Transfered Succesfully');
-       }else{
-            return redirect(app()->getLocale().'/member_transfer')->with('error','Failed to transfer');
-       }
+      // DB::enableQueryLog();
+       if($old_branch_id!= $new_branch_id){
+            $member_data = Membership::where('id', '=', $member_id)->where('branch_id', '=', $old_branch_id)->update(array('branch_id' => $new_branch_id));
+           
+            if($member_data){
+                DB::table('member_transfer_history')->insert(
+                    ['MemberCode' => $member_id, 'old_branch_id' => $old_branch_id, 'new_branch_id' => $new_branch_id, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
+                );
+                return redirect(app()->getLocale().'/member_transfer')->with('message','Member Transfered Succesfully');
+            }else{
+                return redirect(app()->getLocale().'/member_transfer')->with('error','Failed to transfer');
+            }
+        }else{
+            return redirect(app()->getLocale().'/member_transfer')->with('error','Old branch and new branch should not same');
+        }
+      
+      
     }
 
     

@@ -38,15 +38,20 @@
 									<h4 class="card-title">Edit Membership</h4>
 									@include('includes.messages')
                                     @php
+										
 										$get_roles = Auth::user()->roles;
 										$user_role = $get_roles[0]->slug;
+										
 										if(isset($data['member_view'])){
+											
 											$values = $data['member_view'][0];
 										}else{
 											echo 'invalid access';
 											die;
 										}
+										
                                     @endphp
+									
 									<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 									@csrf
 										<div class="row">
@@ -80,8 +85,7 @@
 																	  <input id="name" name="name" value="{{$values->name}}" type="text" data-error=".errorTxt30">
 																	  <div class="errorTxt30"></div>
 																	</div>
-																	@php
-																	@endphp
+																	
 																	<div class="input-field col s12 m6">
 																	<div class="col s12 row">
 																			<div class="col s12 m4">
@@ -212,6 +216,7 @@
 																				 <div class="errorTxt6"></div>
 																			</div>   
 																		</div>
+																		
 																		<div class="input-field col s12 m6">
 																		<label for="postal_code" class="force-active">Postal Code *</label>
 																			<input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt7">
@@ -367,6 +372,7 @@
 																		@php												
 																		}
 																		@endphp
+																		
 																	</div>
 																	<div class="clearfix" style="clear:both"></div>
 																	<div class="row">
@@ -482,6 +488,7 @@
 																				</div>
 																			</div>
 																		</li>
+																		
 																		<li >
 																			<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">details</i> {{__('Nominee Details') }}</div>
 																			<div class="collapsible-body">
@@ -640,13 +647,14 @@
 																								<th data-field="action" width="25%">Action</th>
 																								</tr>
 																							</thead>
+																							
 																						<tbody>
 																							@php
 																							{{ $sl = 0; }}
 																							@endphp
 																							@foreach($data['nominee_view'] as $key=>$value)
 																							<tr>
-
+																								
 																								<td>
 																								<span id="nominee_name_label_{{ $sl }}">{{$value->nominee_name}}</span><input type="text" name="nominee_auto_id[]" class="hide" id="nominee_auto_id_{{ $sl }}" value="{{$value->id}}" ><input class="hide" type="text" name="nominee_name_value[]" id="nominee_name_value_{{ $sl }}" value="{{$value->nominee_name}}">
 																								</td>
@@ -692,6 +700,7 @@
 																								<a class="btn-floating waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
 																								<a class="btn-floating waves-effect waves-light amber darken-4 delete_nominee_db" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
 																								</td>
+																								
 																							</tr>
 																							@php
 																							{{ $sl++; }}
