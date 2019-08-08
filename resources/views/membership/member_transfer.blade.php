@@ -29,54 +29,54 @@
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">
-						<div class="col s1">
-						</div>
-						<div class="col s10">
+						
+						<div class="col s12">
 							<!--h4 class="card-title">{{__('New Membership') }}</h4-->
 							@include('includes.messages')
-							<div class="card filter">
-								<form method="post" id="member_filter" action="#">
-									@csrf  
-									<div class="row">     
-										@php
-											$url_member_id = '';
-											$url_branch_id = '';
-											$url_member_name = '';
-											if(isset($data['member_id'])){
-												$url_member_id = $data['member_id'];
-												$url_branch_id = $data['branch_id'];
-												$url_member_name = $data['member_data']->name;
-											}
-											
-										@endphp
-										<div class="col s4">
-											<label for="member_search">{{__('member Name')}}</label>
-											<input id="member_search" type="text" required class="validate " value="{{ $url_member_name }}" name="member_search">
-											
-										</div>
-										<div class=" col s4">
-											<label for="member_code">{{__('Member Code')}}</label>
-											<input id="member_code" type="text" required class="validate " value="{{ $url_member_id }}" name="member_code" readonly >
-											<input id="member_branch_id" type="text" required class="validate hide" value="{{ $url_branch_id }}" name="member_branch_id" readonly >
-											
-										</div>
-										
-										<div class="input-field col s4 hide">
-											<input type="submit" id="getbranchbutton" class="btn" name="search" value="{{__('Get Branch Details')}}">
-										</div>
-									</div>
-								</form>  
-                            </div>
+                            
 						</div>
 					</div>
 					<div class="row">
-						<div class="col s1">
+						<form class="formValidate" id="transferformValidate" method="post" action="{{ route('master.changebranch', app()->getLocale()) }}">
+						@csrf
+						<div class="card filter">
+							<div class="">     
+								@php
+									$url_member_id = '';
+									$url_branch_id = '';
+									$url_member_name = '';
+									if(isset($data['member_id'])){
+										$url_member_id = $data['member_id'];
+										$url_branch_id = $data['branch_id'];
+										$url_member_name = $data['member_data']->name;
+									}
+									
+								@endphp
+								<div class="col s4">
+									<label for="member_search">{{__('member Name')}}</label>
+									<input id="member_search" type="text" required readonly class="validate " value="{{ $url_member_name }}" name="member_search">
+									
+								</div>
+								<div class=" col s4">
+									<label for="member_code">{{__('Member Code')}}</label>
+									<input id="transfer_member_code" type="text" required class="validate " name="transfer_member_code" value="{{ $url_member_id }}" readonly >
+									<input id="transfer_member_branch_id" type="text" required class="validate hide" value="{{ $url_branch_id }}" name="transfer_member_branch_id" readonly >
+									
+								</div>
+								<div class=" col s4">
+									<label for="transfer_date">{{__('Transfer Date')}}</label>
+									<input id="transfer_date" type="text" class=" datepicker" value="{{ date('d/M/Y') }}" name="transfer_date"  >
+									
+								</div>
+								
+								
+							</div>
 						</div>
-						<div class="col s11">
-							<form class="formValidate" id="transferformValidate" method="post" action="{{ route('master.changebranch', app()->getLocale()) }}">
-							 @csrf
-							<input id="transfer_member_code" type="text" required class="validate hide" name="transfer_member_code" value="{{ $url_member_id }}" readonly >
-							<input id="transfer_member_branch_id" type="text" required class="validate hide" value="{{ $url_branch_id }}" name="transfer_member_branch_id" readonly >
+						
+						<div class="col s12">
+							
+							
+							
 							<div class="row">
 								<div class="col s5">
 									<div class="card-body">
@@ -295,8 +295,10 @@
 									<input type="submit"  class="btn waves-effect waves-light green darken-1" name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
 								</div>
 							</div>
-							</form>
+							
 						</div>
+						</form>
+						
 					</div>
 					<!-- END: Page Main-->
 					@include('layouts.right-sidebar')
@@ -478,6 +480,9 @@
 			old_branch: {
 				required: true,
 			},
+			transfer_date: {
+				required: true,
+			},
 			
 		},
 		//For custom messages
@@ -493,6 +498,9 @@
 			},
 			old_branch: {
 				required: '{{__("Please select member") }}',
+			},
+			transfer_date: {
+				required: '{{__("Please Choose date") }}',
 			},
 		},
 		errorElement: 'div',
