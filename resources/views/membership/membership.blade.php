@@ -58,6 +58,7 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
+													<th  style="text-align:center;">{{__('Action') }}</th>
 													    <th>{{__('Member ID') }}</th>
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Type')}} </th>
@@ -77,7 +78,7 @@
 														<!-- <th>{{__('Race Short Code') }}</th>
 														<th>{{__('Union Branch Name') }}</th> -->
 														<th>{{__('Status') }}</th>
-														<th  style="text-align:center;">{{__('Action') }}</th>
+														
 													</tr>
 												</thead>
 												
@@ -121,6 +122,7 @@
 				"data": {_token: "{{csrf_token()}}"}
 			},
 			"columns": [
+				{"data": "options"},
 				{"data" : "member_number"},
 				{"data": "name"},
 				{"data" : "designation_id"},
@@ -137,8 +139,8 @@
 				{"data": "old_ic"},
 				{"data": "new_ic"},
 				{"data": "mobile"},
-				{"data": "status"},
-				{"data": "options"}
+				{"data": "status"}
+				
 			]
 		});
 });
