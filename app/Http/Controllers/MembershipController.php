@@ -238,7 +238,7 @@ class MembershipController extends Controller
 		$member_qry = '';
 		if($user_role=='union'){
             //DB::enableQueryLog();
-        $member_qry = DB::table('membership as m')->select('m.member_number','m.id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id','com.id','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id','cit.city_name','st.id','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code')
+        $member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code')
                      ->leftjoin('designation as d','m.designation_id','=','d.id')
                      ->leftjoin('company_branch as c','m.branch_id','=','c.id')
                      ->leftjoin('company as com','com.id','=','c.company_id')
@@ -421,7 +421,7 @@ class MembershipController extends Controller
         {
             foreach ($memberslist as $member)
             {
-                $nestedData['member_number'] = $member->member_number;
+                $nestedData['member_number'] = $member->id;
                 $nestedData['name'] = $member->name;
                 $designation = $member->designation_name[0];
                 $nestedData['designation_id'] = $designation;
@@ -499,6 +499,7 @@ class MembershipController extends Controller
                 $branchdata['company_name'] =  CommonHelper::getCompanyName($companyid);
             }
             $data['current_branch_data'] = $branchdata;
+            return  $data;
         }
       
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();

@@ -47,6 +47,9 @@
 												$url_branch_id = $data['branch_id'];
 												$url_member_name = $data['member_data']->name;
 											}
+											echo '<pre>';
+											print_r($data['member_id']);
+											die;
 										@endphp
 										<div class="col s4">
 											<label for="member_search">{{__('member Name')}}</label>
