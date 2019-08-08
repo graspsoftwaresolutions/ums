@@ -37,31 +37,21 @@
 							<div class="card filter">
 								<form method="post" id="member_filter" action="#">
 									@csrf  
-									<div class="row">     
-										@php
-											$url_member_id = '';
-											$url_branch_id = '';
-											$url_member_name = '';
-											if(isset($data['member_id'])){
-												$url_member_id = $data['member_id'];
-												$url_branch_id = $data['branch_id'];
-												$url_member_name = $data['member_data']->name;
-											}
-										@endphp
+									<div class="row">                          
 										<div class="col s4">
-											<label for="member_search">{{__('member Name')}}</label>
-											<input id="member_search" type="text" required class="validate " value="{{ $url_member_name }}" name="member_search">
+											<label for="member_search">{{__('member Name/Member Code')}}</label>
+											<input id="member_search" type="text" required class="validate " name="member_search">
 											
 										</div>
 										<div class=" col s4">
 											<label for="member_code">{{__('Member Code')}}</label>
-											<input id="member_code" type="text" required class="validate " value="{{ $url_member_id }}" name="member_code" readonly >
-											<input id="member_branch_id" type="text" required class="validate hide" value="{{ $url_branch_id }}" name="member_branch_id" readonly >
+											<input id="member_code" type="text" required class="validate " name="member_code" readonly >
+											<input id="member_branch_id" type="text" required class="validate hide" name="member_branch_id" readonly >
 											
 										</div>
 										
-										<div class="input-field col s4 hide">
-											<input type="submit" id="getbranchbutton" class="btn" name="search" value="{{__('Get Branch Details')}}">
+										<div class="input-field col s4">
+											<input type="submit"  class="btn" name="search" value="{{__('Get Branch Details')}}">
 										</div>
 									</div>
 								</form>  
@@ -74,8 +64,8 @@
 						<div class="col s11">
 							<form class="formValidate" id="transferformValidate" method="post" action="{{ route('master.changebranch', app()->getLocale()) }}">
 							 @csrf
-							<input id="transfer_member_code" type="text" required class="validate hide" name="transfer_member_code" value="{{ $url_member_id }}" readonly >
-							<input id="transfer_member_branch_id" type="text" required class="validate hide" value="{{ $url_branch_id }}" name="transfer_member_branch_id" readonly >
+							<input id="transfer_member_code" type="text" required class="validate hide" name="transfer_member_code" readonly >
+							<input id="transfer_member_branch_id" type="text" required class="validate hide" name="transfer_member_branch_id" readonly >
 							<div class="row">
 								<div class="col s5">
 									<div class="card-body">
@@ -86,13 +76,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_company" name="old_company" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->company_name}}@endisset" class="validate" readonly >
+																<input placeholder="" id="old_company" name="old_company" type="text" class="validate" readonly >
 																<label for="old_company" class="active">Old Company</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_branch" name="old_branch" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->branch_name}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_branch" name="old_branch" type="text" readonly class="validate">
 																<label for="old_branch" class="active">Old Branch</label>
 															</div>
 														</div>
@@ -101,13 +91,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_country" name="old_country" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->country_name}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_country" name="old_country" type="text" readonly class="validate">
 																<label for="old_country" class="active">{{__('Country') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_state" name="old_state" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->state_name}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_state" name="old_state" type="text" readonly class="validate">
 																<label for="old_state" class="active">{{__('State') }}</label>
 															</div>
 														</div>
@@ -115,13 +105,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_city" name="old_city" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->city_name}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_city" name="old_city" type="text" readonly class="validate">
 																<label for="old_city" class="active">{{__('City') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_postal" name="old_postal" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->postal_code}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_postal" name="old_postal" type="text" readonly class="validate">
 																<label for="old_postal" class="active">{{__('Postal code') }}</label>
 															</div>
 															
@@ -130,13 +120,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_address_one" name="old_address_one" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->address_one}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_address_one" name="old_address_one" type="text" readonly class="validate">
 																<label for="old_address_one" class="active">{{__('Address line 1') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_address_two" name="old_address_two" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->address_two}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_address_two" name="old_address_two" type="text" readonly class="validate">
 																<label for="old_address_two" class="active">{{__('Address line 2') }}</label>
 															</div>
 															
@@ -145,13 +135,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_address_three" name="old_address_three" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->address_three}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_address_three" name="old_address_three" type="text" readonly class="validate">
 																<label for="old_address_three" class="active">{{__('Address line 3') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_phone" name="old_phone" type="text" readonly value="@isset($data['current_branch_data']){{$data['current_branch_data']->phone}}@endisset" class="validate">
+																<input placeholder="" id="old_phone" name="old_phone" type="text" readonly class="validate">
 																<label for="old_phone" class="active">{{__('Phone number') }}</label>
 															</div>
 															
@@ -160,13 +150,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_mobile" name="old_mobile" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->mobile}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_mobile" name="old_mobile" type="text" readonly class="validate">
 																<label for="old_mobile" class="active">{{__('Mobile number') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="old_email" name="old_email" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->email}}@endisset" readonly class="validate">
+																<input placeholder="" id="old_email" name="old_email" type="text" readonly class="validate">
 																<label for="old_email" class="active">{{__('Email') }}</label>
 															</div>
 														</div>
@@ -336,9 +326,8 @@
 @endsection
 @section('footerSecondSection')
 <script>
-	//$("#member_filter").trigger('click');
 	$("#member_transfer_sidebar_a_id").addClass('active');
-    /* $("#member_search").devbridgeAutocomplete({
+    $("#member_search").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
         type:'GET',
@@ -362,7 +351,7 @@
 				$('#old_companyinfo').find('input:text').val('');  
 			}
 		}
-    }); */
+    });
 	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 		$("#member_search").val('');
 	});

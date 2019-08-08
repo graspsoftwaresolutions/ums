@@ -419,6 +419,9 @@ class MembershipController extends Controller
                 {
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
                 }
+                $baseurl = URL::to('/');
+                $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
+                $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='btn-floating waves-effect waves-light amber darken-4' href='$member_transfer_link'><i class='material-icons'>transfer_within_a_station</i>Transfer</a>";
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
                
@@ -437,7 +440,27 @@ class MembershipController extends Controller
         echo json_encode($json_data); 
     } 
 	
-	public function memberTransfer(){
+	public function memberTransfer(Request $request){
+        $request_data = $request->all();
+        if(!empty($request_data)){
+            $enc_member_id = $request->input('member_id');
+            $enc_branch_id = $request->input('branch_id');
+            $data['member_id'] = Crypt::decrypt($enc_member_id);
+            $data['branch_id'] = Crypt::decrypt($enc_branch_id);
+            $data['member_data'] = Membership::find($data['member_id']);
+            $branch_info = CompanyBranch::find($data['branch_id']);
+            $branchdata = [];
+            if(!empty($branch_info)){
+                $branchdata = $branch_info;
+                $companyid = CommonHelper::getcompanyidbyBranchid($branch_info->id);
+                $branchdata['country_name'] = CommonHelper::getCountryName($branch_info->country_id);
+                $branchdata['state_name'] =  CommonHelper::getstateName($branch_info->state_id);
+                $branchdata['city_name'] =  CommonHelper::getcityName($branch_info->city_id);
+                $branchdata['company_name'] =  CommonHelper::getCompanyName($companyid);
+            }
+            $data['current_branch_data'] = $branchdata;
+        }
+      
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		return view('membership.member_transfer')->with('data',$data); 
