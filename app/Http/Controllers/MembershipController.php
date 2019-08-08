@@ -470,13 +470,21 @@ class MembershipController extends Controller
             $data['city_name'] =  CommonHelper::getcityName($branch_info->city_id);
             $data['company_name'] =  CommonHelper::getCompanyName($companyid);
             //$data['branch_name'] =  $branch_info->branch_name;
-            $return_data = ['status' => 1,'data' => $data];
+            echo json_encode($return_data);
         }
         echo json_encode($return_data);
     }
 
     public function ChangeMemberBranch(Request $request){
-        return $request->all();
+       $member_id = $request->input('transfer_member_code');
+       $old_branch_id = $request->input('transfer_member_branch_id');
+       $new_branch_id = $request->input('new_branch');
+       $member_data = Membership::where('id', '=', $member_id)->where('branch_id', '=', $old_branch_id)->update(array('branch_id' => $new_branch_id));
+       if($member_data){
+            return redirect(app()->getLocale().'/member_transfer')->with('message','Member Transfered Succesfully');
+       }else{
+            return redirect(app()->getLocale().'/member_transfer')->with('error','Failed to transfer');
+       }
     }
 
     
