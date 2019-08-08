@@ -220,6 +220,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('member_transfer','MembershipController@memberTransfer')->name('master.transfer');
 	Route::get('transfer_history','MembershipController@memberTransferHistory')->name('transfer.history');
 	Route::post('change-branch','MembershipController@ChangeMemberBranch')->name('master.changebranch');
+	Route::post('ajax_transfer_list','MembershipController@ajax_transfer_list');
 
 	
 });

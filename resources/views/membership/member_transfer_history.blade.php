@@ -30,7 +30,7 @@
 										</ol>
 									</div>
 									<div class="col s2 m6 l6 ">
-										<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.addmembership', app()->getLocale())  }}">{{__('New Registration') }}</a>
+										<a class="btn waves-effect waves-light breadcrumbs-btn hide right" href="{{ route('master.addmembership', app()->getLocale())  }}">{{__('New Registration') }}</a>
 										
 									</div>
 								</div>
@@ -48,10 +48,10 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-													    <th>{{__('Member ID') }}</th>
 														<th>{{__('Member Name') }}</th>
-														<th>{{__('Type')}} </th>
-														<th>{{__('M/F')}}</th>
+														<th>{{__('From bank')}} </th>
+														<th>{{__('To Bank')}}</th>
+														<th>{{__('Date')}}</th>
 														<th  style="text-align:center;">{{__('Action') }}</th>
 													</tr>
 												</thead>
@@ -90,30 +90,17 @@
 			"processing": true,
 			"serverSide": true,
 			"ajax": {
-				"url": "{{ url(app()->getLocale().'/ajax_members_list/') }}",
+				"url": "{{ url(app()->getLocale().'/ajax_transfer_list/') }}",
 				"dataType": "json",
 				"type": "POST",
 				"data": {_token: "{{csrf_token()}}"}
 			},
 			"columns": [
-				{"data" : "member_number"},
-				{"data": "name"},
-				{"data" : "designation_id"},
-				{"data" : "gender"},
-				{"data" : "short_code"},
-				{"data": "branch_name"},
-				{"data": "levy"},
-				{"data": "levy_amount"},	
-				{"data": "tdf"},
-				{"data": "tdf_amount"},
-				{"data": "doj"},
-				{"data": "city_id"},
-				{"data": "state_id"},
-				{"data": "old_ic"},
-				{"data": "new_ic"},
-				{"data": "mobile"},
-				{"data": "status"},
-				{"data": "options"}
+				{"data" : "member_name"},
+				{"data":  "frombank"},
+				{"data" : "tobank"},
+				{"data" : "transfer_date"},
+				{"data":  "options"}
 			]
 		});
 });
