@@ -470,7 +470,7 @@ class MembershipController extends Controller
             $data['city_name'] =  CommonHelper::getcityName($branch_info->city_id);
             $data['company_name'] =  CommonHelper::getCompanyName($companyid);
             //$data['branch_name'] =  $branch_info->branch_name;
-            echo json_encode($return_data);
+            $return_data = ['status' => 1,'data' => $data];
         }
         echo json_encode($return_data);
     }
