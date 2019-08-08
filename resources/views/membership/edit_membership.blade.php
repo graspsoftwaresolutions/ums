@@ -299,6 +299,7 @@
 																				$branch_hide = 'hide';
 																				$branch_id = $auth_user->branch_id;
 																			}
+																			$branch_hide = 'hide';
 																		@endphp
 																		
 																		<div class=" col s12 m6 {{ $branch_hide }}">

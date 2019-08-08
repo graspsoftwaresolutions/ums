@@ -970,7 +970,7 @@ class AjaxController extends CommonController
                 $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
 				
 				$memberscount = CommonHelper::statusMembersCount($resultdata['id'], $user_role, $user_id);
-				$nestedData['status_name'] = $resultdata['status_name'].'<a href="'.$membershiplink.'"><span class="badge badge pill light-blue float-right mr-10">'.$memberscount.'</span></a>';
+				$nestedData['status_name'] = $resultdata['status_name'].'<a href="'.$membershiplink.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$memberscount.'</span></a>';
 				$nestedData['options'] = $actions;
                 $data[] = $nestedData;
 			}
