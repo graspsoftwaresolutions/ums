@@ -13,7 +13,7 @@ class Fee extends Model {
 
     public function saveFeedata($data=array())
     {
-        if (!empty($data['id'])) {
+        if (!empty($data['id'])) {            
             $savedata = Fee::find($data['id'])->update($data);
         } else {
             $savedata = Fee::create($data);

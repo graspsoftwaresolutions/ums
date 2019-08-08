@@ -115,7 +115,8 @@
                                             <p>
                                                 <label>
                                                     <input type="checkbox" name="is_monthly_payment"
-                                                        class="common-checkbox" id="is_monthly_payment" value="1"> 
+                                                        class="common-checkbox" id="is_monthly_payment" 
+                                                        > 
                                                     <span>{{__('Is Monthly payment') }}</span>
                                                 </label>
                                             </p>
@@ -277,6 +278,7 @@ function showeditForm(feeid) {
         url: url,
         type: "GET",
         success: function(result) {
+           // console.log(result);
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#fee_name').val(result.fee_name);
@@ -289,6 +291,7 @@ function showeditForm(feeid) {
                 $('#is_monthly_payment').prop('checked', false);
             }
             $('.common-label').addClass('force-active');
+            
             loader.hideLoader();
             $("#modal_add_edit").modal('open');
         }
