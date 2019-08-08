@@ -63,10 +63,12 @@ class CommonHelper
      }
 
      public static function get_relationship_name($relationship_id){
-        $status_data = DB::table('relation')->where('relation.id','=',$relationship_id)->pluck('relation_name');
-        if(!empty($status_data)){
-            return $status_data[0];
-        }
+		if($relationship_id!=""){
+			$status_data = DB::table('relation')->where('relation.id','=',$relationship_id)->pluck('relation_name');
+			if(!empty($status_data)){
+				return $status_data[0];
+			}
+		}
         return '';
      }
 

@@ -94,7 +94,7 @@
 		@endforeach
    -->
       @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
-      <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.transfer',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer') }}</span></a>
+      <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.transfer',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer') }}</span></a>
       @endif
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

@@ -326,6 +326,7 @@
 @endsection
 @section('footerSecondSection')
 <script>
+	$("#member_transfer_sidebar_a_id").addClass('active');
     $("#member_search").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),

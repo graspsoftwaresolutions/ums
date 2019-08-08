@@ -430,7 +430,7 @@ class SubscriptionAjaxController extends CommonController
             $approval_data = [];
             foreach($status_all as $key => $value){
                 $status_data['count'][$value->id] = CommonHelper::statusSubsMembersCount($value->id, $user_role, $user_id, $dateformat);
-                $status_data['amount'][$value->id] = CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat);
+                $status_data['amount'][$value->id] = round(CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat), 0);
             }
             foreach($approval_status as $key => $value){
                 $approval_data['count'][$value->id] = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
