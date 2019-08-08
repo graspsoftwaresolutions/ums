@@ -81,8 +81,8 @@
                                         </div>
                                         <div class="input-field col s12">
                                             <label for="font_color"
-                                                class="common-label force-active">{{__('Font Color') }}*</label>
-                                            <input id="font_color" name="font_color" class="common-input" type="text"
+                                                class="common-label">{{__('Font Color') }}*</label>
+                                            <input id="font_color" name="font_color" class="common-input" type="color"
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>
