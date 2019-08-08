@@ -63,9 +63,9 @@
                             </div>
                         </div>
                         <div id="modal_add_edit" class="modal modal-fixed-header">
-                        <div class="modal-header" id="modal-header">
-                                <h4>{{__('Race Details') }}</h4>
-                                </div>
+							    <div class="modal-header" id="modal-header">
+									<h4>{{__('Race Details') }}</h4>
+								</div>
                                 <div class="modal-content">
                                 <form class="formValidate" id="race_formValidate" method="post"
                                     action="{{ route('master.saverace',app()->getLocale()) }}">
@@ -79,19 +79,26 @@
                                                 data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
+										<div class="input-field col s12">
+                                            <label for="short_code"
+                                                class="common-label force-active">{{ __('Short Code') }}*</label>
+                                            <input id="short_code" class="common-input" name="short_code" type="text"
+                                                data-error=".errorTxt2">
+                                            <div class="errorTxt2"></div>
+                                        </div>
                                         <div class="clearfix" style="clear:both"></div>
-                                        </div></div>
-                                        <div class="modal-footer">
-                                            <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
-                                            <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
-                                                type="submit" name="action">{{__('Update')}}
-                                            </button>
-                                            <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
-                                                style="display:none;" type="submit" name="action">{{__('Save')}}
-                                            </button>
-                                        
-                                    </div>
+                                        </div>
+								</div>
+								<div class="modal-footer">
+									<a href="#!"
+										class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
+									<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
+										type="submit" name="action">{{__('Update')}}
+									</button>
+									<button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
+										style="display:none;" type="submit" name="action">{{__('Save')}}
+									</button>
+								</div>
                                 </form>
                             </div>
                         </div>
@@ -176,6 +183,9 @@ $("#race_formValidate").validate({
                 type: "post",
             },
         },
+		short_code: {
+			required: true,
+		},
     },
     //For custom messages
     messages: {
@@ -183,6 +193,9 @@ $("#race_formValidate").validate({
             required: '{{__("Enter a Race Name") }}',
             remote: '{{__("Race Name Already exists") }}',
         },
+		short_code: {
+			required: '{{__("Enter a Short Code") }}',
+		},
     },
     errorElement: 'div',
     errorPlacement: function(error, element) {
@@ -205,6 +218,7 @@ function showaddForm() {
     $('.add_hide').show();
     $('.edit_hide_btn').hide();
     $('#race_name').val("");
+	$('#short_code').val("");
     $('.modal').modal();
     $('#updateid').val("");
     $('.common-label').removeClass('force-active');
@@ -224,6 +238,7 @@ function showeditForm(raceid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#race_name').val(result.race_name);
+			$('#short_code').val(result.short_code);
             loader.hideLoader();
             $('.common-label').addClass('force-active');
             $("#modal_add_edit").modal('open');

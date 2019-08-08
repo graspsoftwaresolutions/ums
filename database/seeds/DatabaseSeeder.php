@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
     //    $this->call(RelationshipTableSeeder::class);
     //     $this->call(FeeTableSeeder::class);
     //     $this->call(DesignationTableSeeder::class);
-    //     $this->call(RaceTableSeeder::class);
+         $this->call(RaceTableSeeder::class);
     //     $this->call(PersonTitleTableSeeder::class);
     //     $this->call(StatusTableSeeder::class);
     //     $this->call(FormTypeTableSeeder::class); 
