@@ -11,7 +11,7 @@
     href="{{ asset('public/assets/custom_respon.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <style>
-	/* #main.main-full {
+	#main.main-full {
 		height: 750px;
 		overflow: auto;
 	}
@@ -30,7 +30,7 @@
 	} 
 	.sidenav-main{
 		z-index:9999;
-	} */
+	}
 </style>
 @endsection
 @section('main-content')

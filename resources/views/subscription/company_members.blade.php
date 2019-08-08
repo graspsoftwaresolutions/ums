@@ -106,7 +106,7 @@
                             </div>  
                                 <div id="inbox" class="col s12">
 									<div class="col sm12 m12">
-										<table id="page-length-option" class="display ">
+										<table id="page-length-option" class="datatable-display">
 											<thead>
 											<tr>
 											<th>{{__('Member Name')}}</th>
@@ -127,7 +127,7 @@
                                 @foreach($data['member_stat'] as  $key => $member_stat)
                                 <div id="member{{ $member_stat->id }}" class="col s12">
 									<div class="col sm12 m12">
-										<table id="page-length-option-{{ $member_stat->id }}" class="display">
+										<table id="page-length-option" class="datatable-display-{{ $member_stat->id }}" width="100%">
 											<thead>
 											<tr>
 											<th>{{__('Member Name')}}</th>
@@ -219,7 +219,7 @@ $(document).ready(function(){
    // }*/
 
 $(document).ready(function(){
-    $('#page-length-option').DataTable({
+    $('.datatable-display').DataTable({
         "responsive": true,
         "lengthMenu": [
             [10, 25, 50, 100],
@@ -262,7 +262,7 @@ $(document).ready(function(){
     });
 	@if($loopcount == count($data['member_stat']))
 	@foreach($data['member_stat'] as  $key => $member_stat)
-	$('#page-length-option-{{$member_stat->id}}').DataTable({
+	$('.datatable-display-{{$member_stat->id}}').DataTable({
         "responsive": true,
         "lengthMenu": [
             [10, 25, 50, 100],
