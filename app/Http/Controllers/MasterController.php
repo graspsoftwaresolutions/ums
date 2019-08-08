@@ -761,7 +761,7 @@ class MasterController extends CommonController {
 
 	public function saveFee(Request $request)
     {
-       // return $request->all();
+        //return $request->all();
         $request->validate([
             'fee_name' => 'required',
 			'fee_amount' => 'required | numeric',
@@ -771,7 +771,14 @@ class MasterController extends CommonController {
         ]);
         $data = $request->all();   
         $defdaultLang = app()->getLocale();
-
+       
+        if(($request->is_monthly_payment)=='on' || ($request->is_monthly_payment)=='1')
+        {
+            $data['is_monthly_payment'] = 1;
+        }
+        else{
+            $data['is_monthly_payment'] = 0;
+        }
         if(!empty($request->id)){
             $data_exists = $this->mailExists($request->input('fee_name'),$request->id);
         }else{
@@ -802,6 +809,7 @@ class MasterController extends CommonController {
 	
 	public function feedestroy($lang,$id)
 	{
+    
         $Fee = new Fee();
         $Fee = Fee::find($id);
         $Fee->where('id','=',$id)->update(['status'=>'0']);
