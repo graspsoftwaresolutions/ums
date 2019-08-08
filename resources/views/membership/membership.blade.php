@@ -59,14 +59,23 @@
 												<thead>
 													<tr>
 													    <th>{{__('Member Number') }}</th>
-														<th>{{__('NRIC') }}</th>
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Type')}} </th>
-														<th>{{__('Gender')}}</th>
-														<th>{{__('Bank') }}</th>
+														<th>{{__('M/F')}}</th>
+														<th>{{__('Bank Short Code') }}</th>
 														<th>{{__('Branch Name') }}</th>
+														<th>{{__('Levy') }}</th>
+														<th>{{__('Levy Amount') }}</th>
+														<th>{{__('TDF') }}</th>
+														<th>{{__('TDF Amount') }}</th>
 														<th>{{__('DOJ')}}</th>
-														<!-- <th>{{__('Email') }}</th> -->
+														<th>{{__('City') }}</th>
+														<th>{{__('State') }}</th>
+														<th>{{__('NRIC Old') }}</th>
+														<th>{{__('NRIC New') }}</th>
+														<th>{{__('Mobile') }}</th>
+														<!-- <th>{{__('Race Short Code') }}</th>
+														<th>{{__('Union Branch Name') }}</th> -->
 														<th>{{__('Status') }}</th>
 														<th  style="text-align:center;">{{__('Action') }}</th>
 													</tr>
@@ -113,13 +122,21 @@
 			},
 			"columns": [
 				{"data" : "member_number"},
-				{"data": "nric"},
 				{"data": "name"},
 				{"data" : "designation_id"},
 				{"data" : "gender"},
-				{"data" : "company_name"},
+				{"data" : "short_code"},
 				{"data": "branch_name"},
+				{"data": "levy"},
+				{"data": "levy_amount"},	
+				{"data": "tdf"},
+				{"data": "tdf_amount"},
 				{"data": "doj"},
+				{"data": "city_id"},
+				{"data": "state_id"},
+				{"data": "old_ic"},
+				{"data": "new_ic"},
+				{"data": "mobile"},
 				{"data": "status"},
 				{"data": "options"}
 			]
