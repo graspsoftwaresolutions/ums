@@ -475,6 +475,10 @@ class MembershipController extends Controller
         echo json_encode($return_data);
     }
 
+    public function ChangeMemberBranch(Request $request){
+        return $request->all();
+    }
+
     
 
     

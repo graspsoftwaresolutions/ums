@@ -52,7 +52,7 @@
 	.select2-container{
 		width:100% !important; 
 	}
-	#main.main-full {
+	/* #main.main-full {
 		height: 750px;
 		overflow: auto;
 	}
@@ -71,7 +71,7 @@
 	} 
 	.sidenav-main{
 		z-index:9999;
-	}
+	} */
 	.dtr-data a{
 		float : none !important;
 	}

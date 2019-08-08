@@ -51,7 +51,7 @@
 										</div>
 										
 										<div class="input-field col s4">
-											<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
+											<input type="submit"  class="btn" name="search" value="{{__('Get Branch Details')}}">
 										</div>
 									</div>
 								</form>  
@@ -61,204 +61,104 @@
 					<div class="row">
 						<div class="col s1">
 						</div>
-						<div class="row">
-							<div class="col s5">
-								<div class="card-body">
-									<div id="basic-form" class="card card card-default scrollspy">
-										<div class="card-content">
-											<h4 class="card-title">Current Branch Details</h4>
-											<div id="old_companyinfo" class="row">
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_company" name="old_company" type="text" class="validate" readonly >
-															<label for="old_company" class="active">Old Company</label>
+						<div class="col s11">
+							<form class="formValidate" id="transferformValidate" method="post" action="{{ route('master.changebranch', app()->getLocale()) }}">
+							 @csrf
+							<input id="transfer_member_code" type="text" required class="validate hide" name="transfer_member_code" readonly >
+							<input id="transfer_member_branch_id" type="text" required class="validate hide" name="transfer_member_branch_id" readonly >
+							<div class="row">
+								<div class="col s5">
+									<div class="card-body">
+										<div id="basic-form" class="card card card-default scrollspy">
+											<div class="card-content">
+												<h4 class="card-title">Current Branch Details</h4>
+												<div id="old_companyinfo" class="row">
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_company" name="old_company" type="text" class="validate" readonly >
+																<label for="old_company" class="active">Old Company</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_branch" name="old_branch" type="text" readonly class="validate">
+																<label for="old_branch" class="active">Old Branch</label>
+															</div>
 														</div>
 													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_branch" name="old_branch" type="text" readonly class="validate">
-															<label for="old_branch" class="active">Old Branch</label>
+													
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_country" name="old_country" type="text" readonly class="validate">
+																<label for="old_country" class="active">{{__('Country') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_state" name="old_state" type="text" readonly class="validate">
+																<label for="old_state" class="active">{{__('State') }}</label>
+															</div>
 														</div>
 													</div>
-												</div>
-												
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_country" name="old_country" type="text" readonly class="validate">
-															<label for="old_country" class="active">{{__('Country') }}</label>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_city" name="old_city" type="text" readonly class="validate">
+																<label for="old_city" class="active">{{__('City') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_postal" name="old_postal" type="text" readonly class="validate">
+																<label for="old_postal" class="active">{{__('Postal code') }}</label>
+															</div>
+															
 														</div>
 													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_state" name="old_state" type="text" readonly class="validate">
-															<label for="old_state" class="active">{{__('State') }}</label>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_address_one" name="old_address_one" type="text" readonly class="validate">
+																<label for="old_address_one" class="active">{{__('Address line 1') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_address_two" name="old_address_two" type="text" readonly class="validate">
+																<label for="old_address_two" class="active">{{__('Address line 2') }}</label>
+															</div>
+															
 														</div>
 													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_city" name="old_city" type="text" readonly class="validate">
-															<label for="old_city" class="active">{{__('City') }}</label>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_address_three" name="old_address_three" type="text" readonly class="validate">
+																<label for="old_address_three" class="active">{{__('Address line 3') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_phone" name="old_phone" type="text" readonly class="validate">
+																<label for="old_phone" class="active">{{__('Phone number') }}</label>
+															</div>
+															
 														</div>
 													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_postal" name="old_postal" type="text" readonly class="validate">
-															<label for="old_postal" class="active">{{__('Postal code') }}</label>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_mobile" name="old_mobile" type="text" readonly class="validate">
+																<label for="old_mobile" class="active">{{__('Mobile number') }}</label>
+															</div>
 														</div>
-														
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_address_one" name="old_address_one" type="text" readonly class="validate">
-															<label for="old_address_one" class="active">{{__('Address line 1') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_address_two" name="old_address_two" type="text" readonly class="validate">
-															<label for="old_address_two" class="active">{{__('Address line 2') }}</label>
-														</div>
-														
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_address_three" name="old_address_three" type="text" readonly class="validate">
-															<label for="old_address_three" class="active">{{__('Address line 3') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_phone" name="old_phone" type="text" readonly class="validate">
-															<label for="old_phone" class="active">{{__('Phone number') }}</label>
-														</div>
-														
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_mobile" name="old_mobile" type="text" readonly class="validate">
-															<label for="old_mobile" class="active">{{__('Mobile number') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="old_email" name="old_email" type="text" readonly class="validate">
-															<label for="old_email" class="active">{{__('Email') }}</label>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col s5">
-								<div class="card-body">
-									<div id="basic-form" class="card card card-default scrollspy">
-										<div class="card-content">
-											<h4 class="card-title">New Branch Details</h4>
-											<div id="newbranchinfo" class="row">
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<select class="error browser-default selectpicker" id="new_company" name="new_company" data-error=".errorTxt6">
-																 <option value="">{{__('Select company') }}</option>
-																@foreach($data['company_view'] as $values)
-																	<option value="{{$values->id}}">{{$values->company_name}}</option>
-																@endforeach
-															</select>
-															<label for="new_company" class="active">New Company</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<select class="error browser-default selectpicker" id="new_branch" name="new_branch" data-error=".errorTxt6">
-																<option value="">{{__('Select Branch') }}</option>
-															</select>
-															<label for="new_company" class="active">New Branch</label>
-														</div>
-													</div>
-												</div>
-												
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_country" name="new_country" type="text" readonly class="validate">
-															<label for="new_country" class="active">{{__('Country') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_state" name="new_state" type="text" readonly class="validate">
-															<label for="new_state" class="active">{{__('State') }}</label>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_city" name="new_city" type="text" readonly class="validate">
-															<label for="new_city" class="active">{{__('City') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_postal" name="new_postal" type="text" readonly class="validate">
-															<label for="new_postal" class="active">{{__('Postal code') }}</label>
-														</div>
-														
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_address_one" name="new_address_one" type="text" readonly class="validate">
-															<label for="new_address_one" class="active">{{__('Address line 1') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_address_two" name="new_address_two" type="text" readonly class="validate">
-															<label for="new_address_two" class="active">{{__('Address line 2') }}</label>
-														</div>
-														
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_address_three" name="new_address_three" type="text" readonly class="validate">
-															<label for="new_address_three" class="active">{{__('Address line 3') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_phone" name="new_phone" type="text" readonly class="validate">
-															<label for="new_phone" class="active">{{__('Phone number') }}</label>
-														</div>
-														
-													</div>
-												</div>
-												<div class="row">
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_mobile" name="new_mobile" type="text" readonly class="validate">
-															<label for="new_mobile" class="active">{{__('Mobile number') }}</label>
-														</div>
-													</div>
-													<div class="col s6">
-														<div class="input-field">
-															<input placeholder="" id="new_email" name="new_email" type="text" readonly class="validate">
-															<label for="new_email" class="active">{{__('Email') }}</label>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="old_email" name="old_email" type="text" readonly class="validate">
+																<label for="old_email" class="active">{{__('Email') }}</label>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -266,7 +166,125 @@
 										</div>
 									</div>
 								</div>
+								<div class="col s5">
+									<div class="card-body">
+										<div id="basic-form" class="card card card-default scrollspy">
+											<div class="card-content">
+												<h4 class="card-title">New Branch Details</h4>
+												<div id="newbranchinfo" class="row">
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<select class="error browser-default selectpicker" id="new_company" name="new_company" data-error=".errorTxt1">
+																	 <option value="">{{__('Select company') }}</option>
+																	@foreach($data['company_view'] as $values)
+																		<option value="{{$values->id}}">{{$values->company_name}}</option>
+																	@endforeach
+																</select>
+																<label for="new_company" class="active">New Company</label>
+																<div class="input-field">
+																	<div class="errorTxt1"></div>
+																</div>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<select class="error browser-default selectpicker" id="new_branch" name="new_branch" data-error=".errorTxt2">
+																	<option value="">{{__('Select Branch') }}</option>
+																</select>
+																<label for="new_company" class="active">New Branch</label>
+																<div class="input-field">
+																	<div class="errorTxt2"></div>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_country" name="new_country" type="text" readonly class="validate">
+																<label for="new_country" class="active">{{__('Country') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_state" name="new_state" type="text" readonly class="validate">
+																<label for="new_state" class="active">{{__('State') }}</label>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_city" name="new_city" type="text" readonly class="validate">
+																<label for="new_city" class="active">{{__('City') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_postal" name="new_postal" type="text" readonly class="validate">
+																<label for="new_postal" class="active">{{__('Postal code') }}</label>
+															</div>
+															
+														</div>
+													</div>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_address_one" name="new_address_one" type="text" readonly class="validate">
+																<label for="new_address_one" class="active">{{__('Address line 1') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_address_two" name="new_address_two" type="text" readonly class="validate">
+																<label for="new_address_two" class="active">{{__('Address line 2') }}</label>
+															</div>
+															
+														</div>
+													</div>
+													<div class="row">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_address_three" name="new_address_three" type="text" readonly class="validate">
+																<label for="new_address_three" class="active">{{__('Address line 3') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_phone" name="new_phone" type="text" readonly class="validate">
+																<label for="new_phone" class="active">{{__('Phone number') }}</label>
+															</div>
+															
+														</div>
+													</div>
+													<div class="row" style="padding-bottom:10px;">
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_mobile" name="new_mobile" type="text" readonly class="validate">
+																<label for="new_mobile" class="active">{{__('Mobile number') }}</label>
+															</div>
+														</div>
+														<div class="col s6">
+															<div class="input-field">
+																<input placeholder="" id="new_email" name="new_email" type="text" readonly class="validate">
+																<label for="new_email" class="active">{{__('Email') }}</label>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col s2">
+									<div style="margin-bottom:150px;">&nbsp;</br></div>
+									<input type="submit"  class="btn waves-effect waves-light green darken-1" name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
+								</div>
 							</div>
+							</form>
 						</div>
 					</div>
 					<!-- END: Page Main-->
@@ -316,7 +334,9 @@
         onSelect: function (suggestion) {
 			 $("#member_search").val(suggestion.value);
 			 $("#member_code").val(suggestion.number);
+			 $("#transfer_member_code").val(suggestion.number);
 			 $("#member_branch_id").val(suggestion.branch_id);
+			 $("#transfer_member_branch_id").val(suggestion.branch_id);
 			 $('#old_companyinfo').find('input:text').val('');  
         },
         showNoSuggestionNotice: true,
@@ -325,6 +345,8 @@
 			if(!suggestions.length){
 				$("#member_code").val('');
 				$("#member_branch_id").val('');
+				$("#member_branch_id").val('');
+			    $("#transfer_member_branch_id").val('');
 				$('#old_companyinfo').find('input:text').val('');  
 			}
 		}
@@ -427,6 +449,48 @@
 	   }else{
 		   
 	   }
+	});
+	$("#transferformValidate").validate({
+		rules: {
+			new_company: {
+				required: true,
+			},
+			new_branch: {
+				required: true,
+			},
+			
+			old_company: {
+				required: true,
+			},
+			old_branch: {
+				required: true,
+			},
+			
+		},
+		//For custom messages
+		messages: {
+			new_company: {
+				required: '{{__("Select company") }}',
+			},
+			new_branch: {
+				required: '{{__("Select New Branch") }}',
+			},
+			old_company: {
+				required: '{{__("Please select member") }}',
+			},
+			old_branch: {
+				required: '{{__("Please select member") }}',
+			},
+		},
+		errorElement: 'div',
+		errorPlacement: function(error, element) {
+			var placement = $(element).data('error');
+			if (placement) {
+				$(placement).append(error)
+			} else {
+				error.insertAfter(element);
+			}
+		}
 	});
 </script>
 @endsection
