@@ -320,7 +320,7 @@ class MembershipController extends Controller
         if(empty($request->input('search.value')))
         {
            $compQuery = DB::table('company_branch as c')
-				->select('c.id as cid','m.name','m.email','m.id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile')
+				->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -356,7 +356,7 @@ class MembershipController extends Controller
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
-							->select('c.id as cid','m.name','m.email','m.id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id','cit.city_name','st.id','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic')
+							->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic')
                             ->join('membership as m','c.id','=','m.branch_id')
                             ->leftjoin('designation as d','m.designation_id','=','d.id')
                             ->leftjoin('company as com','com.id','=','c.company_id')
@@ -499,7 +499,6 @@ class MembershipController extends Controller
                 $branchdata['company_name'] =  CommonHelper::getCompanyName($companyid);
             }
             $data['current_branch_data'] = $branchdata;
-            return  $data;
         }
       
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -544,23 +543,38 @@ class MembershipController extends Controller
        $member_id = $request->input('transfer_member_code');
        $old_branch_id = $request->input('transfer_member_branch_id');
        $new_branch_id = $request->input('new_branch');
+       $transfer_date = $request->input('transfer_date');
+       if($transfer_date!=""){
+            $fmmm_date = explode("/",$transfer_date);
+            $fmdate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+            $transfer_date = date('Y-m-d', strtotime($fmdate));
+       }else{
+            $transfer_date = date('Y-m-d');
+       }
+      
+      //return $request->all();
       // DB::enableQueryLog();
        if($old_branch_id!= $new_branch_id){
             $member_data = Membership::where('id', '=', $member_id)->where('branch_id', '=', $old_branch_id)->update(array('branch_id' => $new_branch_id));
            
             if($member_data){
                 DB::table('member_transfer_history')->insert(
-                    ['MemberCode' => $member_id, 'old_branch_id' => $old_branch_id, 'new_branch_id' => $new_branch_id, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
+                    ['MemberCode' => $member_id, 'old_branch_id' => $old_branch_id, 'new_branch_id' => $new_branch_id, 'transfer_date' => $transfer_date, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
                 );
-                return redirect(app()->getLocale().'/member_transfer')->with('message','Member Transfered Succesfully');
+                return redirect(app()->getLocale().'/transfer_history')->with('message','Member Transfered Succesfully');
             }else{
-                return redirect(app()->getLocale().'/member_transfer')->with('error','Failed to transfer');
+                return redirect(app()->getLocale().'/transfer_history')->with('error','Failed to transfer');
             }
         }else{
-            return redirect(app()->getLocale().'/member_transfer')->with('error','Old branch and new branch should not same');
+            return redirect(app()->getLocale().'/transfer_history')->with('error','Old branch and new branch should not same');
         }
       
       
+    }
+
+
+    public function memberTransferHistory(){
+        return view('membership.member_transfer_history');
     }
 
     
