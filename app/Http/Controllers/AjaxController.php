@@ -912,11 +912,11 @@ class AjaxController extends CommonController
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $Status = Status::select('id','status_name')->orderBy($order,$dir)
+                $Status = Status::select('id','status_name','font_color')->orderBy($order,$dir)
                 ->where('status','=','1')
                 ->get();
             }else{
-                $Status = Status::select('id','status_name')->offset($start)
+                $Status = Status::select('id','status_name','font_color')->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
                 ->where('status','=','1')
@@ -926,13 +926,13 @@ class AjaxController extends CommonController
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $Status     =  Status::select('id','status_name')->where('id','LIKE',"%{$search}%")
+            $Status     =  Status::select('id','status_name','font_color')->where('id','LIKE',"%{$search}%")
                         ->orWhere('status_name', 'LIKE',"%{$search}%")
                         ->where('status','=','1')
                         ->orderBy($order,$dir)
                         ->get();
         }else{
-            $Status      = Status::select('id','status_name')->where('id','LIKE',"%{$search}%")
+            $Status      = Status::select('id','status_name','font_color')->where('id','LIKE',"%{$search}%")
                         ->orWhere('status_name', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
@@ -951,11 +951,6 @@ class AjaxController extends CommonController
 		$data = array();
         if(!empty($result))
         {
-            $font_color = Status::where('status','=','1')->where('status_name','=','Active')->first();
-            if($font_color->font_color == 'Green')
-            {
-                $color = "style('color:Green')";
-            }
             foreach ($result as $resultdata)
             {
 				//$nestedData = array();
@@ -964,13 +959,13 @@ class AjaxController extends CommonController
 				$membershiplink =  route('master.membership', [app()->getLocale()]) ;
 				$delete =  route('master.statusdestroy', [app()->getLocale(),$autoid]) ;
 				$enc_id = Crypt::encrypt($autoid);
-				$edit =  "#";
+                $edit =  "#";
 				$actions ="<label style='width:100% !important;float:left;text-align:center;'><a style='' id='$edit' onClick='showeditForm($autoid);' class='' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 				$actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
                 $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
 				
 				$memberscount = CommonHelper::statusMembersCount($resultdata['id'], $user_role, $user_id);
-				$nestedData['status_name'] = $resultdata['status_name'].'<a href="'.$membershiplink.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$memberscount.'</span></a>';
+				$nestedData['status_name'] = "<span style='color:".$resultdata['font_color']."'>".$resultdata['status_name'].'</span> <a href="'.$membershiplink.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$memberscount.'</span></a>';
 				$nestedData['options'] = $actions;
                 $data[] = $nestedData;
 			}
