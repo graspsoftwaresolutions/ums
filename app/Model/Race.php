@@ -8,7 +8,7 @@ use DB;
 class Race extends Model
 {
     protected $table = 'race';
-    protected $fillable = ['id','race_name','status'];
+    protected $fillable = ['id','race_name','status','short_code'];
     public $timestamps = true;
 
     public function saveRacedata($data=array())

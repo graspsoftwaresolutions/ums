@@ -13,7 +13,8 @@ class RaceTableSeeder extends Seeder
     public function run()
     {
         $race = new Race();
-	    $race->race_name = 'Chineese';
+        $race->race_name = 'Chineese';
+        $race->short_code = 'CHI';
 	    $race->status = 1;
 	    $race->save();
     }
