@@ -58,7 +58,7 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-													    <th>{{__('Member Number') }}</th>
+													    <th>{{__('Member ID') }}</th>
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Type')}} </th>
 														<th>{{__('M/F')}}</th>
