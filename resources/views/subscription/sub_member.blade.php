@@ -145,10 +145,10 @@
                                                         if($ctyear == $monthyear){ $act = "Active"; } else{ $act =""; }
                                                         @endphp
                                                         <tr> 
-                                                        <td> {{ isset($values->Date) ? date('M/Y', strtotime($values->Date)) : "Nill" }}  </td>
-                                                        <td> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
-                                                        <td> {{ $subscriptionamt>0 && $subscriptionamt >($values->Amount) ? $subscriptionamt-($values->Amount) : "Paid" }} </td>
-														<td> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
+                                                        <td style="color:{{$row->font_color}}"> {{ isset($values->Date) ? date('M/Y', strtotime($values->Date)) : "Nill" }}  </td>
+                                                        <td style="color:{{$row->font_color}}"> {{ isset($values->Amount) ? $values->Amount : "Nill" }} </td>
+                                                        <td style="color:{{$row->font_color}}"> {{ $subscriptionamt>0 && $subscriptionamt >($values->Amount) ? $subscriptionamt-($values->Amount) : "Paid" }} </td>
+														<td style="color:{{$row->font_color}}"> {{ isset($values->status_name) ? $values->status_name : "Nill" }} <!--<span class="new" style "color:white;background:green;padding:2px"> {{ isset($act) ? $act:""  }}</span>--></td>
                                                         </tr> 
                                                      @php
                                                     }
@@ -159,7 +159,6 @@
                                                 @php
                                                 }
                                                 @endphp
-                                                
                                             </thead>
                                         </table>
                                         </div>          

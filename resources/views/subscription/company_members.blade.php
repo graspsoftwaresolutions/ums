@@ -299,7 +299,6 @@ $(document).ready(function(){
             {
                 "data": "amount"
             },
-            
             {
                 "data": "options"
             }
