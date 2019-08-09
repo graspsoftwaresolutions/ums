@@ -87,13 +87,13 @@
 									<div class="card-body">
 										<div id="basic-form" class="card card card-default scrollspy">
 											<div class="card-content">
-												<h4 class="card-title">Current Branch Details</h4>
+												<h4 class="card-title">Current Bank Branch Details</h4>
 												<div id="old_companyinfo" class="row">
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
 																<input placeholder="" id="old_company" name="old_company" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->company_name}}@endisset" class="validate" readonly >
-																<label for="old_company" class="active">Old Company</label>
+																<label for="old_company" class="active">Old Bank</label>
 															</div>
 														</div>
 														<div class="col s6">
@@ -186,7 +186,7 @@
 									<div class="card-body">
 										<div id="basic-form" class="card card card-default scrollspy">
 											<div class="card-content">
-												<h4 class="card-title">New Branch Details</h4>
+												<h4 class="card-title">New Bank Branch Details</h4>
 												<div id="newbranchinfo" class="row">
 													<div class="row">
 														<div class="col s6">
@@ -197,7 +197,7 @@
 																		<option value="{{$values->id}}">{{$values->company_name}}</option>
 																	@endforeach
 																</select>
-																<label for="new_company" class="active">New Company</label>
+																<label for="new_company" class="active">New Bank</label>
 																<div class="input-field">
 																	<div class="errorTxt1"></div>
 																</div>
