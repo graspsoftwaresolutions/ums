@@ -55,10 +55,10 @@
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
-											<table id="page-length-option" class="display">
+											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
-													<th  style="text-align:center;">{{__('Action') }}</th>
+														<th width="30%" style="text-align:center;">{{__('Action') }}</th>
 													    <th>{{__('Member ID') }}</th>
 														<th>{{__('Member Name') }}</th>
 														<th>{{__('Type')}} </th>
@@ -143,25 +143,9 @@
 				{"data": "status"}
 				
 			],
-			 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-				 console.log(aData.status);
-				  if ( aData[1] == "FAILURE" )
-				  {
-					$('td', nRow).css('color', '#f2dede' );
-				  }
-				  else if ( aData[1] == "SUCCESS" )
-				  {
-					$('td', nRow).css('color', '#dff0d8');
-				  }
-				  else if ( aData[1] == "UNSTABLE" )
-				  {
-					$('td', nRow).css('color', '#fcf8e3');
-				  }
-				  else
-				  {
-					$('td', nRow).css('color', '#d9edf7');
-				  }
-				}
+			"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				$('td', nRow).css('color', aData.font_color );
+			}
 		});
 });
  </script>

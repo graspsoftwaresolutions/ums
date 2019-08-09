@@ -454,6 +454,7 @@ class MembershipController extends Controller
                 $nestedData['race_id'] = $member->raceshortcode;
                 $nestedData['status'] = $member->status_name;
                 $font_color = $member->font_color;
+                $nestedData['font_color'] = $font_color;
                 
                 $enc_id = Crypt::encrypt($member->id);
                 $delete = "";
