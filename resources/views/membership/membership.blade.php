@@ -116,7 +116,7 @@
 			"processing": true,
 			"serverSide": true,
 			"ajax": {
-				"url": "{{ url(app()->getLocale().'/ajax_members_list/'.$data['member_type']) }}",
+				"url": "{{ url(app()->getLocale().'/ajax_members_list/'.$data['member_type']) }}?status={{$data['member_status']}}",
 				"dataType": "json",
 				"type": "POST",
 				"data": {_token: "{{csrf_token()}}"}

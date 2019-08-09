@@ -36,8 +36,12 @@ class MembershipController extends Controller
         $this->Membership = new Membership;
         $this->MemberGuardian = new MemberGuardian;       
     }
-    public function index()
+    public function index(Request $request)
     {
+        $data['member_status'] = 'all';
+        if(!empty($request->all())){
+            $data['member_status'] = $request->input('status');
+        }
         $data['member_type'] = 1;
         return view('membership.membership')->with('data',$data); 
     }
@@ -122,7 +126,11 @@ class MembershipController extends Controller
     }
     
 
-    public function new_members(){
+    public function new_members(Request $request){
+        $data['member_status'] = 'all';
+        if(!empty($request->all())){
+            $data['member_status'] = $request->input('status');
+        }
         $data['member_type'] = 0;
         return view('membership.membership')->with('data',$data); 
     }
@@ -201,7 +209,7 @@ class MembershipController extends Controller
 
     //Company Details End
     public function AjaxmembersList(Request $request,$lang, $type){
-       
+        $member_status = $request->input('status');
         $sl=0;
         $columns[$sl++] = 'm.member_number';
         $columns[$sl++] = 'm.name';

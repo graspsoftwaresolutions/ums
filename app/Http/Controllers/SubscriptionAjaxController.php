@@ -163,12 +163,13 @@ class SubscriptionAjaxController extends CommonController
 				
                 $actions ='';
                 $baseurl = URL::to('/');
-                $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($enc_id).'&branch_id='.Crypt::encrypt($branchid);
+                $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.$enc_id.'&branch_id='.Crypt::encrypt($branchid);
                 $histry = $memberid!='' ? route('subscription.submember', [app()->getLocale(),$enc_id]) : '#';
                 if($memberid!=''){
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
+                    $actions .="<a style='float: left; margin-left: 10px;' title='Member Transcation'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
                 }
-                $actions .="<a style='float: left; margin-left: 10px;' title='Member Transcation'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+                
 				
                 
                 $nestedData['options'] = $actions;

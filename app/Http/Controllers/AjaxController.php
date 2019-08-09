@@ -956,7 +956,9 @@ class AjaxController extends CommonController
 				//$nestedData = array();
 				$actions ='';
 				$autoid = $resultdata['id'];
-				$membershiplink =  route('master.membership', [app()->getLocale()]) ;
+				$baseurl = URL::to('/');
+				$membershiplink =  $baseurl.'/'.app()->getLocale().'/membership?status='.$resultdata['id'];
+				//$membershiplink =  route('master.membership?status=1', [app()->getLocale()]) ;
 				$delete =  route('master.statusdestroy', [app()->getLocale(),$autoid]) ;
 				$enc_id = Crypt::encrypt($autoid);
                 $edit =  "#";
