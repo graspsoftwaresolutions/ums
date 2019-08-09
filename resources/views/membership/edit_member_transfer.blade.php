@@ -307,7 +307,8 @@
 									<input type="submit" style="color: #fff !important;" class="btn waves-effect waves-light green darken-1"  name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
 									</br>
 									</br>
-									<a href="#" class="btn waves-effect waves-light danger darken-1 hide" onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
+									
+									<a href="{{ route('transfer.delete', [app()->getLocale(),Crypt::encrypt($data['historydata']->id)]) }}" class="btn waves-effect waves-light danger darken-1 " onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
 								</div>
 							</div>
 							

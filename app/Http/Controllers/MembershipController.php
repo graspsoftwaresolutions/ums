@@ -826,6 +826,23 @@ class MembershipController extends Controller
        
      }
 
+     public function deletememberTransfer($lang,$enchistoryid){
+        $history_id = Crypt::decrypt($enchistoryid);
+        $historydata = DB::table('member_transfer_history')->where('id','=',$history_id)->first();
+        $memberid = $historydata->MemberCode;
+        $old_branch_id = $historydata->old_branch_id;
+        $new_branch_id = $historydata->new_branch_id;
+        $member_data = Membership::where('id', '=', $memberid)->where('branch_id', '=', $new_branch_id)->update(array('branch_id' => $old_branch_id));
+        if($member_data){
+            $historyresult = DB::table('member_transfer_history')
+                            ->where('id','=',$history_id)
+                            ->delete();
+            return redirect(app()->getLocale().'/transfer_history')->with('message','Transfer deleted Succesfully');
+        }else{
+            return redirect(app()->getLocale().'/transfer_history')->with('error','Failed to delete');
+        }
+     }
+
     
 
     
