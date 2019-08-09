@@ -420,4 +420,18 @@ class CommonHelper
         }
         return false;
     }
+	
+	public static function ChecklastTranfer($histry_id,$memberid){
+		
+		$commonselect = DB::table('member_transfer_history as h')->select('h.id')
+						->where('h.MemberCode','=',$memberid)
+						->OrderBy('transfer_date','desc')
+						->limit(1)->first();
+		if(!empty($commonselect)){
+			if($commonselect->id == $histry_id){
+				return 1;
+			}
+		}
+		return 0;
+	}
 }
