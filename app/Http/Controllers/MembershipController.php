@@ -715,8 +715,8 @@ class MembershipController extends Controller
                 if($is_last_transfer==1){
                     $editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
                     $baseurl = URL::to('/');
-                    $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($company->MemberCode).'&branch_id='.Crypt::encrypt($company->new_branch_id);
-                    $actions ="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='btn-floating waves-effect waves-light amber darken-4' href='$member_transfer_link'><i class='material-icons'>transfer_within_a_station</i>Transfer</a>";
+                    $member_transfer_link = $baseurl.'/'.app()->getLocale().'/edit_member_transfer?history_id='.Crypt::encrypt($company->id);
+                    $actions ="<a style='float: left; margin-left: 10px;' title='Edit transfer'  class='btn-floating waves-effect waves-light amber darken-4' href='$member_transfer_link'><i class='material-icons'>transfer_within_a_station</i>Transfer</a>";
                 }else{
                     $actions ='';
                 }
@@ -736,7 +736,95 @@ class MembershipController extends Controller
             );
 
         echo json_encode($json_data); 
-	}
+    }
+    
+    public function editmemberTransfer(Request $request){
+        $request_data = $request->all();
+        if(!empty($request_data)){
+            $enc_history_id = $request->input('history_id');
+            $history_id = Crypt::decrypt($enc_history_id);
+            $historydata = DB::table('member_transfer_history')->where('id','=',$history_id)->first();
+            $data['member_id'] = $historydata->MemberCode;
+            $data['old_branch_id'] = $historydata->old_branch_id;
+            $data['to_branch_id'] = $historydata->new_branch_id;
+           
+            $data['historydata'] = $historydata;
+            $data['member_data'] = Membership::find($data['member_id']);
+            $branch_info = CompanyBranch::find($data['old_branch_id']);
+            $branchdata = [];
+            if(!empty($branch_info)){
+                $branchdata = $branch_info;
+                $companyid = CommonHelper::getcompanyidbyBranchid($branch_info->id);
+                $branchdata['country_name'] = CommonHelper::getCountryName($branch_info->country_id);
+                $branchdata['state_name'] =  CommonHelper::getstateName($branch_info->state_id);
+                $branchdata['city_name'] =  CommonHelper::getcityName($branch_info->city_id);
+                $branchdata['company_name'] =  CommonHelper::getCompanyName($companyid);
+            }
+            $data['current_branch_data'] = $branchdata;
+        }
+      
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $to_branch_info = CompanyBranch::find($data['to_branch_id']);
+        $tobranchdata = [];
+        if(!empty($to_branch_info)){
+            $tobranchdata = $to_branch_info;
+            $data['to_company_id'] = CommonHelper::getcompanyidbyBranchid($data['to_branch_id']);
+            $tobranchdata['country_name'] = CommonHelper::getCountryName($to_branch_info->country_id);
+            $tobranchdata['state_name'] =  CommonHelper::getstateName($to_branch_info->state_id);
+            $tobranchdata['city_name'] =  CommonHelper::getcityName($to_branch_info->city_id);
+        }
+        $data['to_branch_data'] = $tobranchdata;
+        $data['to_branch_view'] = DB::table('company_branch')->where('company_id','=',$data['to_company_id'])->get();
+		return view('membership.edit_member_transfer')->with('data',$data); 
+    }
+
+    public function updatememberTransfer(Request $request){
+        $history_id = $request->input('history_id');
+        $member_id = $request->input('transfer_member_code');
+        $old_branch_id = $request->input('transfer_member_branch_id');
+        $new_branch_id = $request->input('new_branch');
+        $transfer_date = $request->input('transfer_date');
+        if($transfer_date!=""){
+                $fmmm_date = explode("/",$transfer_date);
+                $fmdate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+                $transfer_date = date('Y-m-d', strtotime($fmdate));
+        }else{
+                $transfer_date = date('Y-m-d');
+        }
+        $historydata = DB::table('member_transfer_history')->where([
+            ['id','=',$history_id],
+            ['MemberCode','=',$member_id],
+            ['old_branch_id','=',$old_branch_id],
+            ['new_branch_id','=',$new_branch_id]
+            ])->first();
+        if(!empty($historydata)){
+            $historyresult = DB::table('member_transfer_history')->where('id','=',$historydata->id)->update(['transfer_date' => $transfer_date]);
+            return redirect(app()->getLocale().'/transfer_history')->with('message','Member Transfered Succesfully');
+        }else{
+            $historydata = DB::table('member_transfer_history')->where('id','=',$history_id)->first();
+            if($old_branch_id!= $new_branch_id){
+                $member_data = Membership::where('id', '=', $member_id)->update(array('branch_id' => $new_branch_id));
+               
+                if($member_data){
+                    $historyresult = DB::table('member_transfer_history')
+                                    ->where('id','=',$historydata->id)
+                                    ->update(['MemberCode' => $member_id, 'old_branch_id' => $old_branch_id, 'new_branch_id' => $new_branch_id, 'transfer_date' => $transfer_date, 'updated_by' => Auth::user()->id, 'updated_at' => date('Y-m-d')]);
+                    return redirect(app()->getLocale().'/transfer_history')->with('message','Member Transfered Succesfully');
+                }else{
+                    return redirect(app()->getLocale().'/transfer_history')->with('error','Failed to transfer');
+                }
+            }else{
+                return redirect(app()->getLocale().'/transfer_history')->with('error','Old branch and new branch should not same');
+            }
+        }
+       
+       //return $request->all();
+       // DB::enableQueryLog();
+        
+       
+       
+     }
 
     
 
