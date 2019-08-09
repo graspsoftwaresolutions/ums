@@ -593,6 +593,22 @@ class MembershipController extends Controller
     }
 	
 	public function ajax_transfer_list(Request $request){
+         $datefilter = $request->input('datefilter');
+         $dateformat = '';  
+         $yearformat = '';  
+         $monthformat = '';  
+        if(preg_match("^[a-z]{3}/[0-9]{4}^", $datefilter)==true || preg_match("^[A-Z]{3}/[0-9]{4}^", strtoupper($datefilter))==true ){
+            $fm_date = explode("/",$datefilter);
+            $dateformat = date('Y-m',strtotime('01-'.$fm_date[0].'-'.$fm_date[1]));
+        }
+        if(preg_match("^[a-z]{3}^", $datefilter)==true || preg_match("^[A-Z]{3}^", $datefilter)==true ){
+            $fm_date = explode("/",$datefilter);
+            $monthformat = date('m',strtotime('01-'.$fm_date[0].'-2019'));
+        }	
+        if(preg_match("^[0-9]{4}^", $datefilter)==true){
+            $fm_date = explode("/",$datefilter);
+            $yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
+        }
 		 $columns = array( 
             0 => 'h.MemberCode', 
             1 => 'h.old_branch_id',
@@ -600,10 +616,14 @@ class MembershipController extends Controller
             3 => 'h.transfer_date',
             4 => 'h.id',
         );
-        $commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id');
+        $commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode');
         $commoncount = DB::table('member_transfer_history as h');
-        $commonselect = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->count();
-        $totalData = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->count();
+        $commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+        //DB::enableQueryLog();
+        $commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+        $totalData = $commoncountqry->count();
+       // $queries = DB::getQueryLog();
+        //dd($queries);
 
         $totalFiltered = $totalData; 
 
@@ -613,105 +633,41 @@ class MembershipController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
+        
+
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-                $historylist = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
-							->leftjoin('membership as m','m.id','=','h.MemberCode')
-							->get();
+                $historylist = $commonselectqry->get();
             }else{
-                $historylist = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
-							 ->leftjoin('membership as m','m.id','=','h.MemberCode')
-							 ->offset($start)
-							->limit($limit)
-							->orderBy($order,$dir)
-							->get();
+                $historylist = $commonselectqry->offset($start)
+                                            ->limit($limit)
+                                            ->orderBy($order,$dir)
+                                            ->get();
             }
         
         }
         else {
         $search = $request->input('search.value'); 
-        $dateformat = '';  
-        $yearformat = '';  
-        $monthformat = '';  
-        if(preg_match("^[0-9]{2}/[a-z]{3}/[0-9]{4}^", $search)==true || preg_match("^[0-9]{2}/[A-Z]{3}/[0-9]{4}^", $search)==true ){
-            $fm_date = explode("/",$search);
-            $dateformat = date('Y-m-d',strtotime($fm_date[2].'-'.$fm_date[1].'-'.$fm_date[0]));
-        }
-        if(preg_match("^[a-z]{3}^", $search)==true || preg_match("^[A-Z]{3}^", $search)==true ){
-            $fm_date = explode("/",$search);
-            $monthformat = date('m',strtotime('01-'.$fm_date[0].'-2019'));
-        }	
-        if(preg_match("^[0-9]{4}^", $search)==true){
-            $fm_date = explode("/",$search);
-            $yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
-        }	
-        if( $limit == -1){
-            $historylist =  DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
-                             ->leftjoin('membership as m','m.id','=','h.MemberCode')
-                             ->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
-                             ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
-							 ->where('h.id','LIKE',"%{$search}%")
-                             ->orWhere('h.transfer_date', 'LIKE',"%{$search}%")
-                             ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
-                             ->orWhere('cbone.branch_name', 'LIKE',"%{$search}%")
-                             ->orWhere('m.name', 'LIKE',"%{$search}%");
-                             if($monthformat!=''){
-                                $historylist = $historylist->orWhere(DB::raw('month(h.`transfer_date`)'), '=',"{$monthformat}");
-                            }
-                            if($yearformat!=''){
-                                $historylist = $historylist->orWhere(DB::raw('year(h.`transfer_date`)'), '=',"{$yearformat}");
-                            }
+      
+        	
+        $historylist =  $commonselectqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+                                ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
+                               
                             //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
-                            if($dateformat!=''){
-                                $historylist = $historylist->orWhere('h.transfer_date', 'LIKE',"%{$dateformat}%");
+                            
+                            
+                            if( $limit != -1){
+                                $historylist = $historylist->offset($start)->limit($limit);
                             }
                             $historylist = $historylist->orderBy($order,$dir)
-							 ->get();
-        }else{
-            $historylist =  DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
-                             ->leftjoin('membership as m','m.id','=','h.MemberCode')
-                             ->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
-                             ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
-							 ->where('h.id','LIKE',"%{$search}%")
-							 ->orWhere('h.transfer_date', 'LIKE',"%{$search}%")
-                             ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
-                             ->orWhere('cbone.branch_name', 'LIKE',"%{$search}%")
-                             ->orWhere('m.name', 'LIKE',"%{$search}%");
-                             if($monthformat!=''){
-                                $historylist = $historylist->orWhere(DB::raw('month(h.`transfer_date`)'), '=',"{$monthformat}");
-                            }
-                            if($yearformat!=''){
-                                $historylist = $historylist->orWhere(DB::raw('year(h.`transfer_date`)'), '=',"{$yearformat}");
-                            }
+                                ->get();
+
+        $historycount = $commoncountqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+                             ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
+							
                             //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
-                            if($dateformat!=''){
-                                $historylist = $historylist->orWhere('h.transfer_date', 'LIKE',"%{$dateformat}%");
-                            }
-                            $historylist = $historylist->offset($start)
-							->limit($limit)
-							->orderBy($order,$dir)
-							->get();
-        }
-        $historycount = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
-                             ->leftjoin('membership as m','m.id','=','h.MemberCode')
-                             ->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
-                             ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
-							 ->where('h.id','LIKE',"%{$search}%")
-                             ->orWhere('h.transfer_date', 'LIKE',"%{$search}%")
-                             ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
-                             ->orWhere('cbone.branch_name', 'LIKE',"%{$search}%")
-                             ->orWhere('m.name', 'LIKE',"%{$search}%");
-                             if($monthformat!=''){
-                                $historycount = $historycount->orWhere(DB::raw('month(h.`transfer_date`)'), '=',"{$monthformat}");
-                            }
-                            if($yearformat!=''){
-                                $historycount = $historycount->orWhere(DB::raw('year(h.`transfer_date`)'), '=',"{$yearformat}");
-                            }
-                            //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
-                            if($dateformat!=''){
-                                $historycount = $historycount->orWhere('h.transfer_date', 'LIKE',"%{$dateformat}%");
-                            }
+                           
                             $totalFiltered = $historycount->count();
         }
         
@@ -728,13 +684,22 @@ class MembershipController extends Controller
                 $nestedData['transfer_date'] = $company->transfer_date!="0000-00-00" ? date('d/M/Y', strtotime($company->transfer_date)) : '';
                 $company_enc_id = Crypt::encrypt($company->id);
                 $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
+                $is_last_transfer = CommonHelper::ChecklastTranfer($company->id,$company->MemberCode);
+                if($is_last_transfer==1){
+                    $editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
+                    $baseurl = URL::to('/');
+                    $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($company->MemberCode).'&branch_id='.Crypt::encrypt($company->new_branch_id);
+                    $actions ="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='btn-floating waves-effect waves-light amber darken-4' href='$member_transfer_link'><i class='material-icons'>transfer_within_a_station</i>Transfer</a>";
+                }else{
+                    $actions ='';
+                }
+               
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
-                $nestedData['options'] = "";
+                $nestedData['options'] = $actions;
 				$data[] = $nestedData;
 
 			}
         }
-       // $data = $this->CommonAjaxReturn($country, 0, 'master.countrydestroy',0); 
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
