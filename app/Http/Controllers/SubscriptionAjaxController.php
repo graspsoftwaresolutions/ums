@@ -161,6 +161,7 @@ class SubscriptionAjaxController extends CommonController
                 }
 
                 $memberid = $resultdata->membercode;
+                $font_color = $resultdata->font_color;
                 
                 $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
                  $branchid = $resultdata->branch_id;

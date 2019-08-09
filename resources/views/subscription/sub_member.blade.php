@@ -78,9 +78,9 @@
 								</tr>
 								<tr>
 									<td width="25%">{{__('Status ')}}</td>
-									<td width="25%">: {{ isset($row->status_name) ? $row->status_name : "Nill" }}</td>
+									<td width="25%" style="color:{{$row->font_color}}">: {{ isset($row->status_name) ? $row->status_name : "Nill" }}</td>
 									<td width="25%">{{__('Overall Due')}}</td>
-									<td width="25%">: {{ $dueoverallamt }}</td>
+									<td width="25%" style="color:{{$row->font_color}}">: {{ $dueoverallamt }}</td>
 									
 								</tr>
 								<tr>
