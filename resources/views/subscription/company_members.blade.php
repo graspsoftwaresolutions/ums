@@ -225,6 +225,7 @@ $(document).ready(function(){
             [10, 25, 50, 100],
             [10, 25, 50, 100]
         ],
+        
         /* "lengthMenu": [
         	[10, 25, 50, -1],
         	[10, 25, 50, "All"]
@@ -272,6 +273,7 @@ $(document).ready(function(){
         	[10, 25, 50, -1],
         	[10, 25, 50, "All"]
         ], */
+          
         "processing": true,
         "serverSide": true,
         "ajax": {
