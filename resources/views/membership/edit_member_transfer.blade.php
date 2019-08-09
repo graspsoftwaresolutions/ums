@@ -37,7 +37,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<form class="formValidate" id="transferformValidate" method="post" action="{{ route('master.changebranch', app()->getLocale()) }}">
+						<form class="formValidate" id="transferformValidate" method="post" action="{{ route('transfer.updatebranch', app()->getLocale()) }}">
 						@csrf
 						<div class="card filter">
 							<div class="">     
@@ -49,8 +49,8 @@
 									if(isset($data['member_id'])){
 										
 										$url_member_id = $data['member_id'];
-										if(isset($data['branch_id'])){
-											$url_branch_id = $data['branch_id'];
+										if(isset($data['old_branch_id'])){
+											$url_branch_id = $data['old_branch_id'];
 										}
 										if(isset($data['member_data'])){
 										$url_member_name = $data['member_data']->name; }
@@ -70,7 +70,8 @@
 								</div>
 								<div class=" col s4">
 									<label for="transfer_date">{{__('Transfer Date')}}</label>
-									<input id="transfer_date" type="text" class=" datepicker" value="{{ date('d/M/Y') }}" name="transfer_date"  >
+									<input id="transfer_date" type="text" class=" datepicker" value="{{ date('d/M/Y', strtotime($data['historydata']->transfer_date)) }}" name="transfer_date"  >
+									<input id="history_id" type="text" class=" " value="{{ $data['historydata']->id }}" name="history_id"  >
 									
 								</div>
 								
@@ -194,7 +195,7 @@
 																<select class="error browser-default selectpicker" id="new_company" name="new_company" data-error=".errorTxt1">
 																	 <option value="">{{__('Select company') }}</option>
 																	@foreach($data['company_view'] as $values)
-																		<option value="{{$values->id}}">{{$values->company_name}}</option>
+																		<option @if($data['to_company_id']==$values->id) selected @endif value="{{$values->id}}">{{$values->company_name}}</option>
 																	@endforeach
 																</select>
 																<label for="new_company" class="active">New Bank</label>
@@ -207,6 +208,9 @@
 															<div class="input-field">
 																<select class="error browser-default selectpicker" id="new_branch" name="new_branch" data-error=".errorTxt2">
 																	<option value="">{{__('Select Branch') }}</option>
+																	@foreach($data['to_branch_view'] as $values)
+																		<option @if($data['to_branch_id']==$values->id) selected @endif value="{{$values->id}}">{{$values->branch_name}}</option>
+																	@endforeach
 																</select>
 																<label for="new_company" class="active">New Branch</label>
 																<div class="input-field">
@@ -219,13 +223,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_country" name="new_country" type="text" readonly class="validate">
+																<input placeholder="" id="new_country" name="new_country" type="text" value="{{$data['to_branch_data']->country_name}}" readonly class="validate">
 																<label for="new_country" class="active">{{__('Country') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_state" name="new_state" type="text" readonly class="validate">
+																<input placeholder="" id="new_state" name="new_state" value="{{$data['to_branch_data']->state_name}}" type="text" readonly class="validate">
 																<label for="new_state" class="active">{{__('State') }}</label>
 															</div>
 														</div>
@@ -233,13 +237,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_city" name="new_city" type="text" readonly class="validate">
+																<input placeholder="" id="new_city" name="new_city" value="{{$data['to_branch_data']->city_name}}" type="text" readonly class="validate">
 																<label for="new_city" class="active">{{__('City') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_postal" name="new_postal" type="text" readonly class="validate">
+																<input placeholder="" id="new_postal" name="new_postal" value="{{$data['to_branch_data']->postal_code}}" type="text" readonly class="validate">
 																<label for="new_postal" class="active">{{__('Postal code') }}</label>
 															</div>
 															
@@ -248,13 +252,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_address_one" name="new_address_one" type="text" readonly class="validate">
+																<input placeholder="" id="new_address_one" name="new_address_one" value="{{$data['to_branch_data']->address_one}}" type="text" readonly class="validate">
 																<label for="new_address_one" class="active">{{__('Address line 1') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_address_two" name="new_address_two" type="text" readonly class="validate">
+																<input placeholder="" id="new_address_two" name="new_address_two" value="{{$data['to_branch_data']->address_two}}" type="text" readonly class="validate">
 																<label for="new_address_two" class="active">{{__('Address line 2') }}</label>
 															</div>
 															
@@ -263,13 +267,13 @@
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_address_three" name="new_address_three" type="text" readonly class="validate">
+																<input placeholder="" id="new_address_three" name="new_address_three" value="{{$data['to_branch_data']->address_three}}" type="text" readonly class="validate">
 																<label for="new_address_three" class="active">{{__('Address line 3') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_phone" name="new_phone" type="text" readonly class="validate">
+																<input placeholder="" id="new_phone" name="new_phone" value="{{$data['to_branch_data']->phone}}" type="text" readonly class="validate">
 																<label for="new_phone" class="active">{{__('Phone number') }}</label>
 															</div>
 															
@@ -278,13 +282,13 @@
 													<div class="row" style="padding-bottom:10px;">
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_mobile" name="new_mobile" type="text" readonly class="validate">
+																<input placeholder="" id="new_mobile" name="new_mobile" type="text" value="{{$data['to_branch_data']->mobile}}" readonly class="validate">
 																<label for="new_mobile" class="active">{{__('Mobile number') }}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
-																<input placeholder="" id="new_email" name="new_email" type="text" readonly class="validate">
+																<input placeholder="" id="new_email" name="new_email" type="text" value="{{$data['to_branch_data']->email}}" readonly class="validate">
 																<label for="new_email" class="active">{{__('Email') }}</label>
 															</div>
 														</div>
@@ -298,6 +302,9 @@
 								<div class="col s2">
 									<div style="margin-bottom:150px;">&nbsp;</br></div>
 									<input type="submit"  class="btn waves-effect waves-light green darken-1" name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
+									</br>
+									</br>
+									<a href="#" class="btn waves-effect waves-light danger darken-1 hide" onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
 								</div>
 							</div>
 							
@@ -344,6 +351,13 @@
 @endsection
 @section('footerSecondSection')
 <script>
+	function ConfirmDeletion() {
+		if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+		  return true;
+		} else {
+		  return false;
+		}
+	}
 	//$("#member_filter").trigger('click');
 	$("#member_transfer_sidebar_a_id").addClass('active');
     /* $("#member_search").devbridgeAutocomplete({
