@@ -141,7 +141,26 @@
 				{"data": "mobile"},
 				{"data": "status"}
 				
-			]
+			],
+			 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				 console.log(aData.status);
+				  if ( aData[1] == "FAILURE" )
+				  {
+					$('td', nRow).css('color', '#f2dede' );
+				  }
+				  else if ( aData[1] == "SUCCESS" )
+				  {
+					$('td', nRow).css('color', '#dff0d8');
+				  }
+				  else if ( aData[1] == "UNSTABLE" )
+				  {
+					$('td', nRow).css('color', '#fcf8e3');
+				  }
+				  else
+				  {
+					$('td', nRow).css('color', '#d9edf7');
+				  }
+				}
 		});
 });
  </script>
