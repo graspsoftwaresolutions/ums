@@ -213,6 +213,7 @@ canvas#custom-line-chart-sample-three {
             datasets: [
                 {
                     label: "Members Count",
+                   
                     borderColor: gradientStroke,
                     pointColor: "#fff",
                     pointBorderColor: gradientStroke,
@@ -228,7 +229,8 @@ canvas#custom-line-chart-sample-three {
                     borderWidth: 1,
                     data: [0, @php echo  $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp,0]
                 }
-            ]
+            ],
+            
         },
         options: SLOption
     });
