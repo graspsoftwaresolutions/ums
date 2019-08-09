@@ -256,6 +256,10 @@ class MembershipController extends Controller
                      ->leftjoin('city as cit','cit.id','=','m.city_id')
                      ->leftjoin('race as r','r.id','=','m.race_id')
                      ->where('m.is_request_approved','=',$approved_cond);
+        if($member_status!='all'){
+            $member_qry = $member_qry->where('m.status_id','=',$member_status);
+        }
+                     
         // $queries = DB::getQueryLog();
         // dd($queries);         
          
@@ -281,6 +285,9 @@ class MembershipController extends Controller
                     ['c.union_branch_id','=',$union_branch_id_val],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
+                if($member_status!='all'){
+                    $member_qry = $member_qry->where('m.status_id','=',$member_status);
+                }
 			}
 		}else if($user_role=='company'){
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
@@ -300,6 +307,9 @@ class MembershipController extends Controller
                     ['c.company_id','=',$companyid],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
+                if($member_status!='all'){
+                    $member_qry = $member_qry->where('m.status_id','=',$member_status);
+                }
 			}
 		}else if($user_role=='company-branch'){
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
@@ -319,6 +329,9 @@ class MembershipController extends Controller
                     ['m.branch_id','=',$branchid],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
+                if($member_status!='all'){
+                    $member_qry = $member_qry->where('m.status_id','=',$member_status);
+                }
 			}
         }
 		$totalData = 0;
@@ -346,6 +359,9 @@ class MembershipController extends Controller
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
                 ->where('m.is_request_approved','=',$approved_cond);
+                if($member_status!='all'){
+                    $compQuery = $compQuery->where('m.status_id','=',$member_status);
+                }
 				if($user_role=='union-branch'){
 					$compQuery =  $compQuery->where([
                     ['c.union_branch_id','=',$union_branch_id_val]
@@ -383,6 +399,9 @@ class MembershipController extends Controller
                             ->leftjoin('city as cit','cit.id','=','m.city_id')
                             ->leftjoin('race as r','r.id','=','m.race_id')
                             ->where('m.is_request_approved','=',$approved_cond);
+                            if($member_status!='all'){
+                                $compQuery = $compQuery->where('m.status_id','=',$member_status);
+                            }
 							if($user_role=='union-branch'){
 								$compQuery =  $compQuery->where([
 								['c.union_branch_id','=',$union_branch_id]
