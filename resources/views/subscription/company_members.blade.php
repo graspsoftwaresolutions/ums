@@ -100,7 +100,7 @@
                                 <ul class="tabs">  
 									<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
 									@foreach($data['member_stat'] as  $key => $member_stat)
-									<li class="tab col s3"><a class="tab_status" href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
+									<li class="tab col s3"><a class="tab_status"  href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}" style="color:{{$member_stat->font_color}}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
 									@endforeach
                                 </ul>  
                             </div>  
@@ -259,7 +259,10 @@ $(document).ready(function(){
             {
                 "data": "options"
             }
-        ]
+        ],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				$('td', nRow).css('color', aData.font_color );
+			}
     });
 	@if($loopcount == count($data['member_stat']))
 	@foreach($data['member_stat'] as  $key => $member_stat)
@@ -300,7 +303,10 @@ $(document).ready(function(){
             {
                 "data": "options"
             }
-        ]
+        ],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				$('td', nRow).css('color', aData.font_color );
+			}
     });
 	
 	@endforeach
