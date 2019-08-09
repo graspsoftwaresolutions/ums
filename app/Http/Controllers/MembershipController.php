@@ -462,8 +462,9 @@ class MembershipController extends Controller
                 $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
                 
-                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+              //  $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 
+                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
                 DB::enableQueryLog();
                 $history_list = DB::table('mon_sub_member')
@@ -472,11 +473,11 @@ class MembershipController extends Controller
                            
                 if(count($history_list)!=0)
                 {
-                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
+                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
                 }
                 $baseurl = URL::to('/');
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
-                $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='btn-floating waves-effect waves-light amber darken-4' href='$member_transfer_link'><i class='material-icons'>transfer_within_a_station</i>Transfer</a>";
+                $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
                 $nestedData['options'] = $actions;

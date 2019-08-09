@@ -71,18 +71,24 @@ class SubscriptionAjaxController extends CommonController
         //     4 => 'statusId', 
         //     5 => 'id',
         // );
-		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','mon_sub_member.created_by')
+         DB::enableQueryLog();
+		 $commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','mon_sub_member.created_by','m.branch_id')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
-        ->leftjoin('status','mon_sub_member.StatusId','=','status.id');
+        ->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+        ->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
+        // $queries = DB::getQueryLog();
+        // dd($queries);
+
         if($status!='all'){
             $commonqry = $commonqry->where('mon_sub_member.StatusId','=',$status);
         }
         $commonqry = $commonqry->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
 		
-        $totalData = $commonqry->count();
+         $totalData = $commonqry->count();
         
         $totalFiltered = $totalData; 
         
@@ -153,13 +159,16 @@ class SubscriptionAjaxController extends CommonController
                 $memberid = $resultdata->membercode;
                 
                 $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
+                 $branchid = $resultdata->branch_id;
 				
                 $actions ='';
+                $baseurl = URL::to('/');
+                $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($enc_id).'&branch_id='.Crypt::encrypt($branchid);
                 $histry = $memberid!='' ? route('subscription.submember', [app()->getLocale(),$enc_id]) : '#';
                 if($memberid!=''){
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='btn-floating waves-effect waves-light' href='$histry'><i class='material-icons'>history</i>History</a>";
                 }
-                
+                $actions .="<a style='float: left; margin-left: 10px;' title='Member Transcation'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
 				
                 
                 $nestedData['options'] = $actions;

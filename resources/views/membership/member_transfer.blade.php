@@ -45,10 +45,15 @@
 									$url_member_id = '';
 									$url_branch_id = '';
 									$url_member_name = '';
+									
 									if(isset($data['member_id'])){
+										
 										$url_member_id = $data['member_id'];
-										$url_branch_id = $data['branch_id'];
-										$url_member_name = $data['member_data']->name;
+										if(isset($data['branch_id'])){
+											$url_branch_id = $data['branch_id'];
+										}
+										if(isset($data['member_data'])){
+										$url_member_name = $data['member_data']->name; }
 									}
 									
 								@endphp
