@@ -589,6 +589,102 @@ class MembershipController extends Controller
     public function memberTransferHistory(){
         return view('membership.member_transfer_history');
     }
+	
+	public function ajax_transfer_list(Request $request){
+		 $columns = array( 
+            0 => 'h.MemberCode', 
+            1 => 'h.old_branch_id',
+            2 => 'h.new_branch_id',
+            3 => 'h.transfer_date',
+            4 => 'h.id',
+        );
+
+        $totalData = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
+							 ->leftjoin('membership as m','m.id','=','h.MemberCode')
+							 ->count();
+
+        $totalFiltered = $totalData; 
+
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $historylist = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
+							->leftjoin('membership as m','m.id','=','h.MemberCode')
+							->get();
+            }else{
+                $historylist = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
+							 ->leftjoin('membership as m','m.id','=','h.MemberCode')
+							 ->offset($start)
+							->limit($limit)
+							->orderBy($order,$dir)
+							->get();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $historylist =  DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
+							 ->leftjoin('membership as m','m.id','=','h.MemberCode')
+							 ->where('h.id','LIKE',"%{$search}%")
+							 ->orWhere('h.transfer_date', 'LIKE',"%{$search}%")
+							 ->orderBy($order,$dir)
+							 ->get();
+        }else{
+            $historylist =  DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
+							 ->leftjoin('membership as m','m.id','=','h.MemberCode')
+							 ->where('h.id','LIKE',"%{$search}%")
+							 ->orWhere('h.transfer_date', 'LIKE',"%{$search}%")
+							->offset($start)
+							->limit($limit)
+							->where('status','=','1')
+							->orderBy($order,$dir)
+							->get();
+        }
+        $totalFiltered = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id')
+							 ->leftjoin('membership as m','m.id','=','h.MemberCode')
+							 ->where('h.id','LIKE',"%{$search}%")
+							 ->orWhere('h.transfer_date', 'LIKE',"%{$search}%")
+							->where('status','=','1')
+							->count();
+        }
+        
+        $data = array();
+        if(!empty($historylist))
+        {
+            foreach ($historylist as $company)
+            {
+				
+                //$nestedData['month_year'] = date('M/Y',strtotime($company->name));
+                $nestedData['member_name'] = $company->name;
+                $nestedData['frombank'] = CommonHelper::getBranchName($company->old_branch_id);
+                $nestedData['tobank'] = CommonHelper::getBranchName($company->new_branch_id);
+                $nestedData['transfer_date'] = date('d/M/Y', strtotime($company->transfer_date));
+                $company_enc_id = Crypt::encrypt($company->id);
+                $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
+				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
+                $nestedData['options'] = "";
+				$data[] = $nestedData;
+
+			}
+        }
+       // $data = $this->CommonAjaxReturn($country, 0, 'master.countrydestroy',0); 
+       
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+	}
 
     
 
