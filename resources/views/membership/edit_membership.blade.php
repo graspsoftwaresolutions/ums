@@ -329,7 +329,7 @@
 																		
 																		<div class="col s12 m6">
 																		<label>{{__('Levy') }}</label>
-																			<select name="levy" id="levy" class="error browser-default selectpicker" data-error=".errorTxt22" required >
+																			<select name="levy" id="levy" class="error browser-default selectpicker">
 																				<option value="">{{__('Select levy') }}</option>
 																				<option value="Not Applicable" {{ $values->levy == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
 																				<option value="Yes" {{ $values->levy == 'Yes' ? 'selected' : '' }}>Yes</option>
@@ -340,11 +340,10 @@
 																		<div class="input-field col s12 m6">
 																		<input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
 																			<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
-																			<div class="errorTxt2"></div>
 																		</div>
 																		<div class="col s12 m6">
 																		<label>{{__('TDF') }}</label>
-																		<select name="tdf" id="tdf" class="error browser-default selectpicker" data-error=".errorTxt22" required >	
+																		<select name="tdf" id="tdf" class="error browser-default selectpicker">	
 																				<option value="0">Select TDF</option>
 																				<option value="Not Applicable" {{ $values->tdf == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
 																				<option value="Yes" {{ $values->tdf == 'Yes' ? 'selected' : '' }}>Yes</option>
