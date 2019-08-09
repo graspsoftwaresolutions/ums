@@ -75,8 +75,8 @@
 														<th>{{__('NRIC Old') }}</th>
 														<th>{{__('NRIC New') }}</th>
 														<th>{{__('Mobile') }}</th>
-														<!-- <th>{{__('Race Short Code') }}</th>
-														<th>{{__('Union Branch Name') }}</th> -->
+														<th>{{__('Race Short Code') }}</th>
+														<!-- <th>{{__('Union Branch Name') }}</th> -->
 														<th>{{__('Status') }}</th>
 														
 													</tr>
@@ -139,6 +139,7 @@
 				{"data": "old_ic"},
 				{"data": "new_ic"},
 				{"data": "mobile"},
+				{"data": "race_id"},
 				{"data": "status"}
 				
 			]

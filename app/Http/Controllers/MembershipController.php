@@ -220,7 +220,8 @@ class MembershipController extends Controller
         $columns[$sl++] = 'm.new_ic';
 		
 		$columns[$sl++] = 'm.email';
-		$columns[$sl++] = 'm.mobile';
+        $columns[$sl++] = 'm.mobile';
+        $columns[$sl++] = 'm.race_id';
 		//if($type==1){
 			$columns[$sl++] = 'm.status_id';
 		//}
@@ -238,12 +239,14 @@ class MembershipController extends Controller
 		$member_qry = '';
 		if($user_role=='union'){
             //DB::enableQueryLog();
-        $member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code')
+        $member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
                      ->leftjoin('designation as d','m.designation_id','=','d.id')
                      ->leftjoin('company_branch as c','m.branch_id','=','c.id')
                      ->leftjoin('company as com','com.id','=','c.company_id')
+                     ->leftjoin('status as s','s.id','=','m.status_id')
                      ->leftjoin('state as st','st.id','=','m.state_id')
                      ->leftjoin('city as cit','cit.id','=','m.city_id')
+                     ->leftjoin('race as r','r.id','=','m.race_id')
                      ->where('m.is_request_approved','=',$approved_cond);
         // $queries = DB::getQueryLog();
         // dd($queries);         
@@ -257,12 +260,14 @@ class MembershipController extends Controller
 			if(count($union_branch_id)>0){
                 $union_branch_id_val = $union_branch_id[0];
                 $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
-                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code')
+                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['c.union_branch_id','=',$union_branch_id_val],
@@ -274,12 +279,14 @@ class MembershipController extends Controller
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
                 $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code')
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name as raceshortcode','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['c.company_id','=',$companyid],
@@ -291,12 +298,14 @@ class MembershipController extends Controller
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
                 $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code')
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->where([
                     ['m.branch_id','=',$branchid],
@@ -320,13 +329,14 @@ class MembershipController extends Controller
         if(empty($request->input('search.value')))
         {
            $compQuery = DB::table('company_branch as c')
-				->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile')
+				->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('race as r','r.id','=','m.race_id')
                 ->where('m.is_request_approved','=',$approved_cond);
 				if($user_role=='union-branch'){
 					$compQuery =  $compQuery->where([
@@ -356,13 +366,14 @@ class MembershipController extends Controller
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
-							->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic')
+							->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic','r.race_name','r.short_code as raceshortcode','s.font_color')
                             ->join('membership as m','c.id','=','m.branch_id')
                             ->leftjoin('designation as d','m.designation_id','=','d.id')
                             ->leftjoin('company as com','com.id','=','c.company_id')
                             ->leftjoin('status as s','s.id','=','m.status_id')
                             ->leftjoin('state as st','st.id','=','m.state_id')
                             ->leftjoin('city as cit','cit.id','=','m.city_id')
+                            ->leftjoin('race as r','r.id','=','m.race_id')
                             ->where('m.is_request_approved','=',$approved_cond);
 							if($user_role=='union-branch'){
 								$compQuery =  $compQuery->where([
@@ -399,6 +410,7 @@ class MembershipController extends Controller
                                 ->orWhere('m.tdf_amount', 'LIKE',"%{$search}%")
                                // ->orWhere('m.email', 'LIKE',"%{$search}%")
                                 ->orWhere('m.mobile', 'LIKE',"%{$search}%")
+                                ->orWhere('r.short_code', 'LIKE',"%{$search}%")
                                 ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
                                 ->orWhere('s.status_name', 'LIKE',"%{$search}%");
                             });
@@ -436,10 +448,12 @@ class MembershipController extends Controller
                 $nestedData['doj'] = $member->doj;
                 $nestedData['city_id'] = $member->city_name;
                 $nestedData['state_id'] = $member->state_name;
-                $nestedData['old_ic'] = $member->old_ic;
+                $nestedData['old_ic'] = $member->old_ic; 
                 $nestedData['new_ic'] = $member->new_ic;
                 $nestedData['mobile'] = $member->mobile;
+                $nestedData['race_id'] = $member->raceshortcode;
                 $nestedData['status'] = $member->status_name;
+                $font_color = $member->font_color;
                 
                 $enc_id = Crypt::encrypt($member->id);
                 $delete = "";
@@ -464,7 +478,6 @@ class MembershipController extends Controller
                 $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='btn-floating waves-effect waves-light amber darken-4' href='$member_transfer_link'><i class='material-icons'>transfer_within_a_station</i>Transfer</a>";
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
-               
                 $nestedData['options'] = $actions;
                 $data[] = $nestedData;
 
