@@ -226,6 +226,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('delete_transfer/{parameter}','MembershipController@deletememberTransfer')->name('transfer.delete');
 	Route::post('updatemember_transfer','MembershipController@updatememberTransfer')->name('transfer.updatebranch');
 
+	//IRC
+	Route::get('irc_irc','IrcController@ircIndex')->name('irc.irc');
 	
 });
 /* Master */
