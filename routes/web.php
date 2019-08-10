@@ -228,9 +228,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	//IRC
 	Route::get('irc_irc','IrcController@ircIndex')->name('irc.irc');
-	Route::get('add_irc_account','IRCController@AddIrcAccount')->name('irc.add');
-	Route::get('list_irc_account','IRCController@ListIrcAccount')->name('irc.list');
-	Route::post('save-user-account','IRCController@SaveUserAccount')->name('master.add-irc-account');
+	Route::get('add_irc_account','IrcController@AddIrcAccount')->name('irc.add');
+	Route::get('list_irc_account','IrcController@ListIrcAccount')->name('irc.list');
+	Route::post('save-user-account','IrcController@SaveUserAccount')->name('master.add-irc-account');
 	
 });
 /* Master */
