@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 use App\Role;
 use App\User;
+
 use Illuminate\Http\Request;
+
 class IrcController extends Controller
 {
     public function __construct() {
         
-    }
-
-    public function ircIndex()
-    {
-        return view('IRC.irc');
     }
 	
 	public function index() {
