@@ -124,8 +124,7 @@
                                 <div class="col s12">
                                     <!-- Horizontal Stepper -->
 									<div class="card">
-                                    <div class="col sm12 m12">
-                                       
+                                    <div class="col sm12 m12">   
                                         <table id="page-length-option" class="display ">
                                             <thead>
                                             <tr>
