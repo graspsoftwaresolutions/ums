@@ -136,6 +136,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	</div>
 	<div class=" col s12">
 	  <div class="container">
+	  <form> 
 		 <div class="card">
 		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
 			  <div class="row">
@@ -278,7 +279,67 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</label> 
 						</p>		
 					</div>
+					</div>
+			  </div>
+			  <div class="card">
+			  <h6>BRANCH COMMITEE VERIFICATION</h6>
+				<div class="row">
 					<div class="col s12 m12">
+					<div class="row">
+						<p>
+							<label>
+							<input type="checkbox" class="filled-in" checked="checked" />
+							<span>I have verified the above and confirm that the declaration by the IRC is correct.The messenger/clerical And; </span>
+							</label> 
+						</p>	
+						</div>
+					</div>
+					<div class="col s12 m12">
+					<div class="row">
+						<p>
+							<label>
+							<input type="checkbox" class="filled-in" checked="checked" />
+							<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
+							</label> 
+						</p>
+					</div>						
+					</div>
+					<div class="col s12 m12">
+						<div class="row">
+							<div class="col s12 m4 ">
+								<p>
+									<label>
+									
+									<span>Branch Commitee [Name in full]</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3 ">
+									<input type="text" name="person_name">
+							</div>
+						</div>	
+					</div>
+					<div class="col s12 m12">
+						<div class="row">
+							<div class="col s12 m4 ">
+								<p>
+									<label>
+									<span>Zone</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3 ">
+									<input type="text" name="person_name">
+							</div>
+							<div class="col s12 m3 ">
+							<!--<label>Date</label> -->
+									<input type="text" class="datepicker" palceholder="Date" name="date">
+							</div>
+						</div>	
+					</div>
+				</div>
+			  </div>
+			  <div class="col s12 m12">
 						<div class="row">
 							<div class="input-field col s12 m4">
 							<label for="file_submited" class="force-active">{{__('File Submitted') }} *</label>
@@ -300,8 +361,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</div>
 						</div>
 					</div>
-					</div>
-			  </div>
+				</form>
 		 </div>
 	  </div><!-- START RIGHT SIDEBAR NAV -->
 		  @include('layouts.right-sidebar')
@@ -329,8 +389,8 @@ type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
-$("#company_sidebar_li_id").addClass('active');
-$("#company_sidebar_a_id").addClass('active');
+$("#irc_sidebar_a_id").addClass('active');
+$("#irc_sidebar_a_id").addClass('active');
 
 //Model
 $(document).ready(function() {
