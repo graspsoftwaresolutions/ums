@@ -432,7 +432,8 @@
 															</div>
 														</div>
 													</li>
-													<li class="step" id="steptrigger" onclick="return SubmitMemberForm()">
+													<li class="step" id="steptrigger">
+														<!--onclick="return SubmitMemberForm()"-->
 														<div class="step-title waves-effect">Additional Details</div>
 														<div class="step-content" style="padding: 50px 50px;">
 															<div class="row">
@@ -998,11 +999,41 @@
          });
     });
 	
+	$(document).ready(function(){
+		//loader.showLoader();
+		$('#member_old_div').hide();
+		var horizStepper = document.querySelector('#horizStepper');
+		var horizStepperInstace = new MStepper(horizStepper, {
+			// options
+			firstActive: 0,
+			showFeedbackPreloader: true,
+			autoFormCreation: true,
+			validationFunction: defaultValidationFunction,
+			stepTitleNavigation: true,
+			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
+		});
 
-	function nextBtn() {
+		horizStepperInstace.resetStepper();
+		
+	
+	});
+	function defaultValidationFunction(horizStepper, activeStepContent) {
+		
+		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+	   for (let i = 0; i < inputs.length; i++) 
+	   {
+		   if (!inputs[i].checkValidity()) {
+			   jQuery("#submit-member").trigger('submit');
+			   return false;
+		   }
+	   }
+	  
+	   return true;
+	}
+	/* function nextBtn() {
 		 $("#controlled_next").trigger('submit');
 		 return false;		
-       }
+       } */
 </script>
 @include('membership.member_common_script')
 @endsection
