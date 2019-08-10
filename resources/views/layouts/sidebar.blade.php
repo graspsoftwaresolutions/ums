@@ -102,7 +102,7 @@
       @endif
       
       @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch' || $user_role=='member' )
-      <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons"></i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
+      <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons"></i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
       @endif
       </ul>
       
