@@ -7,6 +7,9 @@
 		.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 		.autocomplete-group { padding: 8px 5px; }
 		.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+		#transfer_member{
+			color:#fff;
+		}
 	</style>
 @endsection
 @section('headSecondSection')
@@ -71,7 +74,7 @@
 								<div class=" col s4">
 									<label for="transfer_date">{{__('Transfer Date')}}</label>
 									<input id="transfer_date" type="text" class=" datepicker" value="{{ date('d/M/Y', strtotime($data['historydata']->transfer_date)) }}" name="transfer_date"  >
-									<input id="history_id" type="text" class=" " value="{{ $data['historydata']->id }}" name="history_id"  >
+									<input id="history_id" type="text" class=" hide" value="{{ $data['historydata']->id }}" name="history_id"  >
 									
 								</div>
 								
@@ -301,10 +304,11 @@
 								</div>
 								<div class="col s2">
 									<div style="margin-bottom:150px;">&nbsp;</br></div>
-									<input type="submit"  class="btn waves-effect waves-light green darken-1" name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
+									<input type="submit" style="color: #fff !important;" class="btn waves-effect waves-light green darken-1"  name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
 									</br>
 									</br>
-									<a href="#" class="btn waves-effect waves-light danger darken-1 hide" onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
+									
+									<a href="{{ route('transfer.delete', [app()->getLocale(),Crypt::encrypt($data['historydata']->id)]) }}" class="btn waves-effect waves-light danger darken-1 " onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
 								</div>
 							</div>
 							

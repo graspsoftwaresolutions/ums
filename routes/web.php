@@ -223,6 +223,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('change-branch','MembershipController@ChangeMemberBranch')->name('master.changebranch');
 	Route::post('ajax_transfer_list','MembershipController@ajax_transfer_list');
 	Route::get('edit_member_transfer','MembershipController@editmemberTransfer')->name('master.edittransfer');
+	Route::get('delete_transfer/{parameter}','MembershipController@deletememberTransfer')->name('transfer.delete');
 	Route::post('updatemember_transfer','MembershipController@updatememberTransfer')->name('transfer.updatebranch');
 
 	
