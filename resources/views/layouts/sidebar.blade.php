@@ -1,7 +1,7 @@
 <!-- BEGIN: SideNav-->
     <aside class="sidenav-main nav-collapsible sidenav-light sidenav-active-square nav-collapsed">
       <div class="brand-sidebar">
-        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="#"><img src="{{ asset('public/assets/images/logo/materialize-logo-color.png') }}" alt="Membership logo"><span class="logo-text hide-on-med-and-down">Membership</span></a><a class="navbar-toggler" href="#"><i class="material-icons">radio_button_checked</i></a></h1>
+        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="#"><img src="{{ asset('public/assets/images/logo/materialize-logo-color.png') }}" alt="Membership logo"><span class="logo-text hide-on-med-and-down">Membership</span></a><a class="navbar-toggler" href="#"><i class="material-icons hide">radio_button_checked</i></a></h1>
       </div>
       <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out" data-menu="menu-navigation" data-collapsible="menu-accordion">
 		<li class="navigation bold hide" style="font:size:8px;"> <center>{{ Auth::user()->name }} </center>
