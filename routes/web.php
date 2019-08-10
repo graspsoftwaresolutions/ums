@@ -225,7 +225,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('edit_member_transfer','MembershipController@editmemberTransfer')->name('master.edittransfer');
 	Route::get('delete_transfer/{parameter}','MembershipController@deletememberTransfer')->name('transfer.delete');
 	Route::post('updatemember_transfer','MembershipController@updatememberTransfer')->name('transfer.updatebranch');
-
+	Route::get('add_irc_account','IRCController@AddIrcAccount')->name('irc.add');
+	Route::get('list_irc_account','IRCController@ListIrcAccount')->name('irc.list');
+	Route::post('save-user-account','IRCController@SaveUserAccount')->name('master.add-irc-account');
 	
 });
 /* Master */
@@ -263,3 +265,4 @@ Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });
 
+Route::get('irc','IRCController@index');

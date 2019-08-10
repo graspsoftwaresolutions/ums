@@ -7,6 +7,9 @@
 		.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 		.autocomplete-group { padding: 8px 5px; }
 		.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+		#transfer_member{
+			color:#fff;
+		}
 	</style>
 @endsection
 @section('headSecondSection')

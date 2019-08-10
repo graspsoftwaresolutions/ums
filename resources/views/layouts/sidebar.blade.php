@@ -51,11 +51,11 @@
             <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan hide" href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a>
           @endif
         @endif
-
+        @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch' || $user_role == 'member')
          <li id="subscriptions_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">subscriptions</i><span class="menu-title" data-i18n="">{{ __('Subscription') }}</span></a>
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-              @if($user_role!='member')
+              @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
               <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Entry') }}</span></a></li>
               <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank') }}</span></a></li>
               @endif
@@ -66,6 +66,7 @@
             </ul>
           </div>
         </li>
+        @endif
         <!--
 		@php
 			$form_type_list = CommonHelper::getFormTypes(1);
@@ -94,7 +95,10 @@
 		@endforeach
    -->
       @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
-      <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
+        <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
+        @if (env('IRC')!='' || env('IRC')!=0)
+        <li class="bold"><a id="irc_account_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.list',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('IRC Account') }}</span></a>
+        @endif
       @endif
       </ul>
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

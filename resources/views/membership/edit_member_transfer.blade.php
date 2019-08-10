@@ -304,11 +304,11 @@
 								</div>
 								<div class="col s2">
 									<div style="margin-bottom:150px;">&nbsp;</br></div>
-									<input type="submit" style="color: #fff !important;" class="btn waves-effect waves-light green darken-1"  name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
+									<input type="submit" style="color: #fff !important;" class="btn waves-effect waves-light green darken-1 col m12"  name="transfer_member" id="transfer_member" value="{{__('Transfer')}}">
 									</br>
 									</br>
 									
-									<a href="{{ route('transfer.delete', [app()->getLocale(),Crypt::encrypt($data['historydata']->id)]) }}" class="btn waves-effect waves-light danger darken-1 " onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
+									<a href="{{ route('transfer.delete', [app()->getLocale(),Crypt::encrypt($data['historydata']->id)]) }}" class="btn waves-effect waves-light danger darken-1 col m12" onclick="return ConfirmDeletion()" name="transfer_member" id="transfer_member" value="">{{__('Delete')}}</a>
 								</div>
 							</div>
 							
