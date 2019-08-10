@@ -23,12 +23,12 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Users List') }}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('IRC Users List') }}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('users') }}
+                                            <li class="breadcrumb-item active">{{__('IRC users') }}
                                             </li>
                                         </ol>
                                     </div>
@@ -42,7 +42,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('Users List') }}</h4>
+                                    <h4 class="card-title">{{__('IRC Users List') }}</h4>
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">
@@ -51,6 +51,7 @@
                                                     <tr>
                                                         <th>{{__('User Name') }}</th>
                                                         <th>{{__('Email') }}</th>
+                                                        <th>{{__('Type') }}</th>
                                                         <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
@@ -131,9 +132,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 var deflanguage = '{{ app()->getLocale() }}';
-$("#masters_sidebars_id").addClass('active');
-$("#users_sidebar_li_id").addClass('active');
-$("#users_sidebar_a_id").addClass('active');
+$("#irc_account_sidebar_a_id").addClass('active');
 
 $("#UsersformValidate").validate({
     rules: {
@@ -202,7 +201,7 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_users_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_irc_users_list') }}",
             "dataType": "json",
             "type": "POST",
             "data": {
@@ -214,6 +213,9 @@ $(function() {
             },
             {
                 "data": "email"
+            },
+			{
+                "data": "account_type"
             },
             {
                 "data": "options"

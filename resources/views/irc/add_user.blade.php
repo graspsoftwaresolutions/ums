@@ -58,7 +58,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<form class="formValidate" id="UsersformValidate" method="post" action="{{ route('master.add-irc-account', app()->getLocale()) }}">
+						<form class="formValidate" id="UsersformValidate" method="post" action="{{ route('irc.add-irc-account', app()->getLocale()) }}">
 						@csrf
 						<div class="col s12">
 							
@@ -106,8 +106,8 @@
 											</div>
 											<div class="input-field col s12 m6">
 												<label for="member_search" class="force-active">{{__('Member Name')}}</label>
-												<input id="member_search" type="text" autocomplete="off" class="validate " value="" name="member_search">
-												<input id="member_code" type="text" autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
+												<input id="member_search" type="text" required autocomplete="off" class="validate " data-error=".errorTxt6" value="" name="member_search">
+												<input id="member_code" type="text" required autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
 												<div class="errorTxt6"></div>
 											</div>
 											<div class="clearfix" style="clear:both"></div>
@@ -164,7 +164,7 @@
 @section('footerSecondSection')
 <script>
 	//$("#member_filter").trigger('click');
-	$("#member_transfer_sidebar_a_id").addClass('active');
+	$("#irc_account_sidebar_a_id").addClass('active');
     $("#member_search").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
@@ -214,9 +214,12 @@
 			account_type: {
 				required: true,
 			},
-			/* member_code: {
+			member_code: {
 				required: true,
-			}, */
+			},
+			member_search: {
+				required: true,
+			},
 		},
 		//For custom messages
 		messages: {
@@ -235,9 +238,9 @@
 			account_type: {
 				required: '{{__("Please select account type") }}',
 			},
-			/* member_code: {
+			member_code: {
 				required: '{{__("Please Pick a name") }}',
-			}, */
+			},
 
 		},
 		errorElement: 'div',

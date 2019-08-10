@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 use App\Role;
 use App\User;
+use DB;
+use Auth;
 
 use Illuminate\Http\Request;
 
-class IrcController extends Controller
+class IrcController extends CommonController
 {
     public function __construct() {
         
@@ -34,6 +36,10 @@ class IrcController extends Controller
 		$member_name = $request->input('name');
         $member_email = $request->input('email');
 		$password = $request->input('password');
+		$member_code = $request->input('member_code');
+		if($member_code==""){
+			return redirect( app()->getLocale().'/add_irc_account')->with('error','Please pick a member'); 
+		}
 		
 		$account_type = $request->input('account_type');
 		$user_role = Role::where('slug', $account_type)->first();
@@ -49,9 +55,88 @@ class IrcController extends Controller
 		$member_user->save();
 		$member_user->roles()->attach($user_role);
 		if($member_user){
+			DB::table('irc_account')->insert(
+				['MemberCode' => $member_code, 'user_id' => $member_user->id,'account_type' => $account_type, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
+			);
 			return redirect( app()->getLocale().'/list_irc_account')->with('message','User account added successfully'); 
 		}else{
 			return redirect( app()->getLocale().'/list_irc_account')->with('error','Failed to add account'); 
 		}
-    }
+	}
+	
+	public function ajax_irc_users_list(Request $request){
+		$columns = array(
+            0 => 'name',
+            1 => 'email',
+            2 => 'id',
+        );
+
+		$totalData = DB::table('irc_account as i')
+					 ->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+					 ->count();
+
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+				$users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type')
+							->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+							->orderBy($order,$dir)
+							->get()->toArray();
+            }else{
+				$users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type')
+						->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+						->offset($start)
+						->limit($limit)
+						->orderBy($order,$dir)
+						->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type')
+						->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+						->where('u.id','LIKE',"%{$search}%")
+                        ->orWhere('u.name', 'LIKE',"%{$search}%")
+                        ->orWhere('u.email', 'LIKE',"%{$search}%")
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }else{
+            $users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type')
+					->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+					->where('u.id','LIKE',"%{$search}%")
+					->orWhere('u.name', 'LIKE',"%{$search}%")
+					->orWhere('u.email', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type')
+							->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+							->where('u.id','LIKE',"%{$search}%")
+							->orWhere('u.name', 'LIKE',"%{$search}%")
+							->orWhere('u.email', 'LIKE',"%{$search}%")
+                   			 ->count();
+        }
+        $data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
+    
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+	}
 }
