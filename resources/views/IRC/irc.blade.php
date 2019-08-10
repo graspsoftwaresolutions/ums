@@ -17,7 +17,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <div id="">
 <div class="row">
 <div class="content-wrapper-before"></div>
+	@php 
+	if(!empty(Auth::user())){
+		
+		$userid = Auth::user()->id;
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+			
+			if($user_role =='irc-confirmation'){
+				$irc_information = 'show';
+				$irc_branch_commitee = 'hide';
+			}
+			else if($user_role =='irc-branch-committee'){
+				$irc_information = 'hide';
+				$irc_branch_commitee = 'show';
+			} 
+		}
 	
+	@endphp
 		<div class="container">
 		<div class="card">
 		<h6> Resignation Member </h6>
@@ -134,10 +151,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 			</div>
 		</div>
 	</div>
-	<div class=" col s12">
+	<div class=" col s12 ">
 	  <div class="container">
 	  <form> 
-		 <div class="card">
+		 <div class="card {{$irc_information}}">
 		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
 			  <div class="row">
 				<div class="input-field col s6">
@@ -281,7 +298,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 					</div>
 			  </div>
-			  <div class="card">
+			  <div class="card {{$irc_branch_commitee}}">
 			  <h6>BRANCH COMMITEE VERIFICATION</h6>
 				<div class="row">
 					<div class="col s12 m12">

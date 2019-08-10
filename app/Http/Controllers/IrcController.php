@@ -26,6 +26,7 @@ class IrcController extends CommonController
 	}
 	
 	public function ListIrcAccount() {
+		
 		return view('irc.users');
     }
 	
