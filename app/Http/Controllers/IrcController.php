@@ -6,7 +6,7 @@ use App\User;
 
 use Illuminate\Http\Request;
 
-class IRCController extends Controller
+class IrcController extends Controller
 {
     public function __construct() {
         
