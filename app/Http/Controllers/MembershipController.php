@@ -64,9 +64,14 @@ class MembershipController extends Controller
     }
     
     
-    public function edit($lang,$id)
+    public function edit(Request $request, $lang,$id)
     {
-       
+		$irc_status = 0;
+        if(!empty($request->all())){
+			if($request->input('status')==1){
+				 $irc_status = 1;
+			}
+	    }
         $id = Crypt::decrypt($id);
         //print_r($id) ;
          DB::connection()->enableQueryLog();
@@ -110,6 +115,7 @@ class MembershipController extends Controller
         $data['gardian_view'] = DB::table('member_guardian')->where('status','=','1')->where('member_id','=',$id)->get();
        
         $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
+        $data['irc_status'] = $irc_status;
         
         $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$id)->get();
       // return  $data; 
@@ -496,6 +502,8 @@ class MembershipController extends Controller
                 DB::enableQueryLog();
                 $history_list = DB::table('mon_sub_member')
                                     ->where('MemberCode','=',$member->id)->get();
+									
+				$ircstatus = CommonHelper::get_irc_confirmation_status($member->id);
               
                            
                 if(count($history_list)!=0)
@@ -503,8 +511,13 @@ class MembershipController extends Controller
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
                 }
                 $baseurl = URL::to('/');
+                $editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
                 $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+				if($ircstatus==1){
+					$actions .= "<a style='float: left; margin-left: 10px;' title='IRC Details'  class='' href='$editmemberirc_link'><i class='material-icons' style='color:#c36ac3'>confirmation_number</i></a>";
+				}
+                
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
                 $nestedData['options'] = $actions;

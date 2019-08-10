@@ -49,7 +49,7 @@
 											echo 'invalid access';
 											die;
 										}
-										
+										$irc_status = $data['irc_status'];
                                     @endphp
 									
 									<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
@@ -902,6 +902,14 @@
 															</div>
 														</div>
 													</li>
+													@if($irc_status==1)
+													<li class="step">
+														<div class="step-title waves-effect">Step 3</div>
+														<div class="step-content">
+															aa
+														</div>
+													</li>
+													@endif
 												</ul>
 											</div>
 										</div>

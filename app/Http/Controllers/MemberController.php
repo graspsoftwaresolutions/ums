@@ -497,6 +497,7 @@ class MemberController extends CommonController
                     $data['gardian_view'] = DB::table('member_guardian')->where('status','=','1')->where('member_id','=',$member_id)->get();
                 
                     $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
+					$data['irc_status'] = 0;
                     
                     $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$member_id)->get();
                
