@@ -6,6 +6,19 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<style>
+	@media (min-width: 1025px) {
+		ul.dtr-details li {
+		  display:inline;
+		  margin-right: 13px;
+		}
+		ul.dtr-details {
+		   width: 1180px; overflow: auto
+		}
+		
+	}
+	
+</style>
 @endsection
 @section('main-content')
 <div id="">

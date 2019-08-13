@@ -508,14 +508,14 @@ class MembershipController extends Controller
                            
                 if(count($history_list)!=0)
                 {
-                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
+                    $actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
                 }
                 $baseurl = URL::to('/');
                 $editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
-                $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+                $actions .="<a style='margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
 				if($ircstatus==1){
-					$actions .= "<a style='float: left; margin-left: 10px;' title='IRC Details'  class='' href='$editmemberirc_link'><i class='material-icons' style='color:#c36ac3'>confirmation_number</i></a>";
+					$actions .= "<a style='margin-left: 10px;' title='IRC Details'  class='' href='$editmemberirc_link'><i class='material-icons' style='color:#c36ac3'>confirmation_number</i></a>";
 				}
                 
                
