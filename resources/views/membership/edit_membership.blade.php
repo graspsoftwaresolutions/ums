@@ -3,7 +3,17 @@
     @include('membership.member_common_styles')
 @endsection
 @section('headSecondSection')
-
+	<style>
+		.padding-left-10{
+			padding-left:10px;
+		}
+		.padding-left-20{
+			padding-left:20px;
+		}
+		.padding-left-40{
+			padding-left:40px;
+		}
+	</style>
 @endsection
 @section('main-content')
 
@@ -897,11 +907,13 @@
 																		<i class="material-icons left">arrow_back</i>
 																		Prev
 																	</button>
+																	@if($irc_status==1)
 																	<button id="controlled_next"  class="waves-effect waves dark btn btn-primary next-step"
 																		type="submit">
 																	Next
 																	<i class="material-icons right">arrow_forward</i>
 																	</button>
+																	@endif
 																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
 																		type="submit">Submit</button>
 																</div>
@@ -913,6 +925,7 @@
 														<div class="step-title waves-effect">IRC Confirmation</div>
 														<div class="step-content">
 															<div class="row">
+																</br>
 																 <div class="input-field col s6">
 																	<label for="member_number"
 																		class="common-label force-active">{{__('Membership Number') }}*</label>
@@ -997,97 +1010,136 @@
 																	</h6>
 																</div>
 																<div class="col s12 m12">
-																	<div class="row">
-																		<div class="col s12 m3 ">
-																			<p>
-																				<label>
+																	<div class="row padding-left-10">
+																		<div class="col s12 m4 input-field inline">
+																			<label>
 																				<input type="checkbox" class="filled-in" checked="checked" />
-																				<span>She/He was</span>
-																				</label> 
-																			</p>	
+																				<span>Name of the Person appliying for BF is</span>
+																			</label> 
 																		</div>
-																		<div class="col s12 m3">
-																				<label >{{__('Reason') }}*</label>
-																				<select name="reason" id="reason">
-																				<option value="">Choose</option>
-																				<option value="">xx</option>
-																				</select>
-																		</div>
-																		<div class="col s12 m3">
-																		<p>
-																			<input type="text"  name="text" />	
-																			</p>
-																		</div>
-																		<div class="col s12 m3">
-																			<label >{{__('garde w.e.f') }}*</label>
-																			<input type="text"  name="text" class="datepicker"/>
+																		<div class="col s12 m3 ">
+																			
+																				<input type="text" name="person_name" style="width:200%">
+																			
 																		</div>
 																	</div>						
 																</div>
 																<div class="col s12 m12">
-																	<p>
+																	<div class="row padding-left-10">
+																		<div class="col s12 m4 input-field inline">
+																			<label>
+																				<input type="checkbox" class="filled-in" checked="checked" />
+																				<span>She/He was promoted to</span>
+																			</label> 
+																		</div>
+																		<div class="col s12 m3 ">
+																			<input type="text" name="person_name" style="width:110%">
+																		</div>
+																		<div class="col s12 m2 input-field inline">
+																			<label>
+																				grade w.e.f.
+																			</label>
+																		</div>
+																		<div class="col s12 m3">
+																			<input type="text"  name="text" placeholder="garde w.e.f" />	
+																		</div>
+																	</div>						
+																</div>
+																
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
 																		<label>
 																		<input type="checkbox" class="filled-in" checked="checked" />
 																		<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 																		</label> 
 																	</p>		
 																</div>
-																<div class="">
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" checked="checked" />
+																		<span>Attached Job function/Description (compulsory). </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" checked="checked" />
+																		<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" checked="checked" />
+																		<span>The messenger clerical position has been filled by</span>
+																		</label> 
+																	</p>	
+																</div>
+																<div class="col s12 m12">
+																	</br>
 																	<h6>BRANCH COMMITEE VERIFICATION</h6>
 																	<div class="row">
 																		<div class="col s12 m12">
+																			<p class="padding-left-20">
+																				<label>
+																				<input type="checkbox" class="filled-in" checked="checked" />
+																				<span>I have verified the above and confirm that the declaration by the IRC is correct.The Messenger/Clerical position has filled by another Messenger/Clerical And; </span>
+																				</label> 
+																			</p>	
+																		</div>
+																		<div class="col s12 m12">
+																			<p class="padding-left-20">
+																				<label>
+																				<input type="checkbox" class="filled-in" checked="checked" />
+																				<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
+																				</label> 
+																			</p>
+																		</div>
+																		</br>
+																		<div class="col s12 m12">	
 																			<div class="row">
-																				<p>
-																					<label>
-																					<input type="checkbox" class="filled-in" checked="checked" />
-																					<span>I have verified the above and confirm that the declaration by the IRC is correct.The Messenger/Clerical position has filled by another Messenger/Clerical And; </span>
-																					</label> 
-																				</p>	
+																				<div class="col s12">
+																				   Branch Commitee [Name in full]
+																				  <div class="input-field inline">
+																					<input id="email_inline" style="width:200%" type="text" class="validate">
+																				  </div>
+																				</div>
 																			</div>
+																			
 																		</div>
-																		<div class="col s12 m12">
+																		<div class="col s12 m8">	
 																			<div class="row">
-																				<p>
-																					<label>
-																					<input type="checkbox" class="filled-in" checked="checked" />
-																					<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
-																					</label> 
-																				</p>
-																			</div>						
+																				<div class="col s12">
+																				   Zone
+																				  <div class="input-field inline">
+																					<input id="email_inline" type="text" style="width:200%" class="validate">
+																				  </div>
+																				</div>
+																			</div>
+																			
 																		</div>
-																		<div class="col s12 m12">
-																			<div class="row">
-																				<div class="col s12 m4 ">
-																					<p>
-																						<label>
-																							<span>Branch Commitee [Name in full]</span>
-																						</label> 
-																					</p>	
-																				</div>
-																				<div class="col s12 m3 ">
-																					<input type="text" name="person_name">
-																				</div>
-																			</div>	
+																		<div class="col s12 m2">
+																			&nbsp;
 																		</div>
-																		<div class="col s12 m12">
-																			<div class="row">
-																				<div class="col s12 m4 ">
-																					<p>
-																						<label>
-																						<span>Zone</span>
-																						</label> 
-																					</p>	
-																				</div>
-																				<div class="col s12 m3 ">
-																					<input type="text" name="person_name">
-																				</div>
-																				<div class="col s12 m3 ">
-																				<!--<label>Date</label> -->
-																					<input type="text" class="datepicker" palceholder="Date" name="date">
-																				</div>
-																			</div>	
+																		<div class="col s12 m2 input-field inline">
+																			<!--<label>Date</label> -->
+																			<input type="text" class="" palceholder="Date" name="date">
 																		</div>
 																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col m12 s12 mb-1" style="text-align:right">
+																	<button class="btn btn-light previous-step">
+																		<i class="material-icons left">arrow_back</i>
+																		Prev
+																	</button>
+																	
+																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
+																		type="submit">Submit</button>
 																</div>
 															</div>
 														</div>
