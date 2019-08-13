@@ -19,6 +19,18 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 	.autocomplete-group { padding: 8px 5px; }
 	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+	.padding-left-10{
+		padding-left:10px;
+	}
+	.padding-left-20{
+		padding-left:20px;
+	}
+	.padding-left-40{
+		padding-left:40px;
+	}
+	#irc_confirmation_area {
+		pointer-events: none;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -254,7 +266,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</h6>
 				</div>
 					<div class="col s12 m12">
-						<div class="row">
+						<div class="row padding-left-20">
 							<div class="col s12 m4 ">
 								<p>
 									<label>
@@ -269,7 +281,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</div>						
 					</div>
 					<div class="col s12 m12">
-						<div class="row">
+						<div class="row padding-left-20">
 							<div class="col s12 m3 ">
 								<p>
 									<label>
@@ -297,15 +309,15 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</div>						
 					</div>
 					<div class="col s12 m12">
-						<p>
+						<p class=" padding-left-20">
 							<label>
 							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox" />
 							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
 					</div>
-					<div class="col s12 m12">
-						<p>
+					<div class="col s12 m12 padding-left-20">
+						<p class=" padding-left-20">
 							<label>
 							<input type="checkbox" name="attached" id="attached" class="common-checkbox" />
 							<span>Attached Job function/Description (compulsory). </span>
@@ -313,7 +325,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</p>		
 					</div>
 					<div class="col s12 m12">
-						<p>
+						<p class=" padding-left-20">
 							<label>
 							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" />
 							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
@@ -321,7 +333,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</p>		
 					</div>
 					<div class="col s12 m12">
-						<div class="row">
+						<div class="row padding-left-20">
 							<div class="col s12 m4 ">
 								<p>
 									<label>

@@ -64,11 +64,12 @@ class IrcController extends CommonController
 		$member_user->name = $member_name;
 		$member_user->email = $member_email;
 		$member_user->password = bcrypt($password);
+		
 		$member_user->save();
 		$member_user->roles()->attach($user_role);
 		if($member_user){
 			DB::table('irc_account')->insert(
-				['MemberCode' => $member_code, 'user_id' => $member_user->id,'account_type' => $account_type, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
+				['MemberCode' => $member_code,'union_branch_id' => $union_branch_id, 'user_id' => $member_user->id,'account_type' => $account_type, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
 			);
 			return redirect( app()->getLocale().'/list_irc_account')->with('message','User account added successfully'); 
 		}else{

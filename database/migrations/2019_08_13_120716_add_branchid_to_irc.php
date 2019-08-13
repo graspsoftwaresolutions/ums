@@ -13,8 +13,8 @@ class AddBranchidToIrc extends Migration
      */
     public function up()
     {
-        Schema::table('irc', function (Blueprint $table) {
-            //
+        Schema::table('irc_account', function (Blueprint $table) {
+             $table->integer('union_branch_id')->nullable()->after('MemberCode');
         });
     }
 
@@ -25,8 +25,8 @@ class AddBranchidToIrc extends Migration
      */
     public function down()
     {
-        Schema::table('irc', function (Blueprint $table) {
-            //
+        Schema::table('irc_account', function (Blueprint $table) {
+            $table->dropColumn('union_branch_id');
         });
     }
 }
