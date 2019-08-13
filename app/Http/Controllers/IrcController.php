@@ -140,4 +140,5 @@ class IrcController extends CommonController
 
         echo json_encode($json_data); 
 	}
+	
 }

@@ -42,7 +42,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number') }}*</label>
-					<input id="member_number" name="member_number"  class="common-input"
+					<input id="member_number" name="member_number"  class="common-input autocomplete"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -240,7 +240,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				</div>
 				<div class="input-field col s12">
 					<h6>Dear Sir,<br><br>
-					The above named IRC hereby Confirmed that the following : [Tick all the boxes as confirmed]
+					I,The above named IRC hereby Confirmed that the following : [Tick all the boxes as confirmation]
 					</h6>
 				</div>
 					<div class="col s12 m12">
@@ -295,6 +295,39 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
+					</div>
+					<div class="col s12 m12">
+						<p>
+							<label>
+							<input type="checkbox" class="filled-in" checked="checked" />
+							<span>Attached Job function/Description (compulsory). </span>
+							</label> 
+						</p>		
+					</div>
+					<div class="col s12 m12">
+						<p>
+							<label>
+							<input type="checkbox" class="filled-in" checked="checked" />
+							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
+							</label> 
+						</p>		
+					</div>
+					<div class="col s12 m12">
+						<div class="row">
+							<div class="col s12 m4 ">
+								<p>
+									<label>
+									<input type="checkbox" class="filled-in" checked="checked" />
+									<span>The messenger clerical position has been filled by</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3 ">
+								
+									<input type="text" name="person_name">
+								
+							</div>
+						</div>						
 					</div>
 					</div>
 			  </div>
@@ -404,6 +437,8 @@ type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
 $("#irc_sidebar_a_id").addClass('active');
@@ -413,6 +448,34 @@ $("#irc_sidebar_a_id").addClass('active');
 $(document).ready(function() {
 // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 $('.modal').modal();
+});
+$("#member_number").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-member-list') }}?searchkey="+ $("#member_number").val(),
+	type:'GET',
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$("#member_number").val(suggestion.number);
+			$.ajax({
+				url: "{{ URL::to('/get-member-list-values') }}?member_id="+ $("#member_number").val(),
+                type: "GET",
+				success: function(result) {
+				 $('#member_number').val(result.id);
+				}
+        
+			});
+			
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#member_number").val('');
+		}
+	}
+});
+$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+	$("#member_number").val('');
 });
 </script>
 @endsection

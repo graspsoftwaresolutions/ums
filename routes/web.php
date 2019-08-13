@@ -255,6 +255,9 @@ Route::get('get-fee-options','CommonController@getFeesList');
 Route::post('add-nominee','MemberController@addNominee');
 Route::get('get-oldmember-list','MemberController@getoldMemberList');
 
+Route::get('get-member-list','MemberController@getMembersList');
+Route::get('get-member-list-values','MemberController@getMembersListValues');
+
 Route::post('membership_update','MemberController@update');
 
 
