@@ -75,5 +75,10 @@
 	.dtr-data a{
 		float : none !important;
 	}
+	.nav-collapsed.sidenav-main {
+		left: -5px;
+		width: 64px;
+	}
+	
 	  
 </style>

@@ -434,4 +434,12 @@ class CommonHelper
 		}
 		return 0;
 	}
+	
+	public static function get_irc_confirmation_status($memberid){
+        $company_data = DB::table('irc_confirmation')->where('resignedmemberno','=',$memberid)->pluck('status');
+        if(count($company_data)>0){
+            return $company_data[0];
+        }
+        return '';
+     }
 }

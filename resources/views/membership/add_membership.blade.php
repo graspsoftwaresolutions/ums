@@ -774,6 +774,37 @@
 	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 		$("#old_mumber_number").val('');
 	});
+	$(document).ready(function(){
+		//loader.showLoader();
+		$('#member_old_div').hide();
+		var horizStepper = document.querySelector('#horizStepper');
+		var horizStepperInstace = new MStepper(horizStepper, {
+			// options
+			firstActive: 0,
+			showFeedbackPreloader: true,
+			autoFormCreation: true,
+			validationFunction: defaultValidationFunction,
+			stepTitleNavigation: false,
+			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
+		});
+
+		horizStepperInstace.resetStepper();
+		
+	
+	});
+	function defaultValidationFunction(horizStepper, activeStepContent) {
+		
+		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+	   for (let i = 0; i < inputs.length; i++) 
+	   {
+		   if (!inputs[i].checkValidity()) {
+			   jQuery("#submit-member").trigger('submit');
+			   return false;
+		   }
+	   }
+	  
+	   return true;
+	}
 </script>
 @include('membership.member_common_script')
 @endsection
