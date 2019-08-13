@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use App\Role;
 use App\User;
+use App\Model\Membership;
 use DB;
+use URL;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -143,6 +145,27 @@ class IrcController extends CommonController
 
 	public function listIrc(Request $request){
 		return view('irc.list_irc');
+	}
+
+	public function getIrcMembersList(Request $request)
+	{
+		DB::connection()->enableQueryLog();
+		$searchkey = $request->input('searchkey');
+        $search = $request->input('query');
+		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number')
+							->leftjoin('membership as m','irc.MemberCode','=','m.id')
+							->where('irc.account_type','=','	
+							irc-confirmation')
+							->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+                            })->limit(25)
+							->get();   
+		// $queries = DB::getQueryLog();
+		// dd($queries);
+         return response()->json($res);
+
 	}
 	
 }

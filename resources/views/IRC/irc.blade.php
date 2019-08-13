@@ -165,16 +165,16 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
 			  <div class="row">
 				<div class="input-field col s6">
-					<label for="remarks"
+					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership No') }}*</label>
-					<input id="remarks"  name="remarks" class="common-input"
+					<input id="irc_member_no"  name="irc_member_no" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
-					<label for="remarks"
+					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-					<input id="remarks"  name="remarks" class="common-input"
+					<input id="irc_name"  name="irc_name" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -209,9 +209,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 				</div>
 				<div class="input-field col s6">
-					<label for="bank"
+					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
-					<input id="bank"  name="bank" class="common-input"
+					<input id="irc_bank"  name="irc_bank" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -503,5 +503,27 @@ $("#member_number").devbridgeAutocomplete({
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
+
+//IRC Member Details 
+$("#irc_member_no").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
+	type:'GET',
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$("#irc_member_no").val(suggestion.member_number);	
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#irc_member_no").val('');
+		}
+	}
+});
+$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+	$("#irc_member_no").val('');
+});
+
 </script>
 @endsection

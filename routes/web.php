@@ -258,6 +258,7 @@ Route::get('get-oldmember-list','MemberController@getoldMemberList');
 
 Route::get('get-member-list','MemberController@getMembersList');
 Route::get('get-member-list-values','MemberController@getMembersListValues');
+Route::get('get-ircmember-list','IrcController@getIrcMembersList');
 
 Route::post('membership_update','MemberController@update');
 
