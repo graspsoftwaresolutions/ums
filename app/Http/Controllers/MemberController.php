@@ -520,7 +520,30 @@ class MemberController extends CommonController
 		}
 		//return Response::json($return_status);
 	}
-	
 
-	
+	//getMembersList
+	public function getMembersList(Request $request)
+	{
+	    $searchkey = $request->input('searchkey');
+        $search = $request->input('query');
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.member_number, " - ", m.id) AS value'),'m.id as number','m.branch_id as branch_id')      
+                            ->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+                            })->limit(25)
+                            ->get();   
+         return response()->json($res);
+	}
+	public function getMembersListValues(Request $request)
+	{
+		$searchkey = $request->input('searchkey');
+		$search = $request->input('query');
+		$res['suggestions'] = DB::table('membership as m')->select(DB::raw("if(count('m.new_ic') > 0  ,'m.new_ic','m.old_ic') as nric"),'m.id as memberid','d.dignation_name as membertype','p.person_title','cb.branch_name','r.race_name')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+							->leftjoin('persontitle as p','p.id','=','m.member_title_id')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('company as c','c.id','=','cb.company_id')
+							->leftjoin('race as r','r.id','=','m.race_id');
+	}
 }
