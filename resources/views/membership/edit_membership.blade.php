@@ -3,7 +3,21 @@
     @include('membership.member_common_styles')
 @endsection
 @section('headSecondSection')
-
+	<style>
+		.padding-left-10{
+			padding-left:10px;
+		}
+		.padding-left-20{
+			padding-left:20px;
+		}
+		.padding-left-40{
+			padding-left:40px;
+		}
+		#irc_confirmation_area {
+			pointer-events: none;
+		}
+		$("#irc_confirmation_area :input").attr("readonly", true);
+	</style>
 @endsection
 @section('main-content')
 
@@ -897,11 +911,13 @@
 																		<i class="material-icons left">arrow_back</i>
 																		Prev
 																	</button>
+																	@if($irc_status==1)
 																	<button id="controlled_next"  class="waves-effect waves dark btn btn-primary next-step"
 																		type="submit">
 																	Next
 																	<i class="material-icons right">arrow_forward</i>
 																	</button>
+																	@endif
 																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
 																		type="submit">Submit</button>
 																</div>
@@ -912,17 +928,18 @@
 													<li class="step">
 														<div class="step-title waves-effect">IRC Confirmation</div>
 														<div class="step-content">
-															<div class="row">
+															<div id="irc_confirmation_area" class="row">
+																</br>
 																 <div class="input-field col s6">
-																	<label for="member_number"
+																	<label for="irc_member_number"
 																		class="common-label force-active">{{__('Membership Number') }}*</label>
-																	<input id="member_number" name="member_number"  class="common-input"
+																	<input id="irc_member_number" name="irc_member_number"  class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="remarks" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-																	<input id="remarks"  name="remarks" class="common-input"
+																	<label for="irc_name_full" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
+																	<input id="irc_name_full"  name="irc_name_full" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
@@ -933,7 +950,7 @@
 																	<div class="col s12 m3">
 																		<p>
 																			<label>
-																			<input class="validate" required="" readonly aria-required="true" id="gender" name="gender" type="radio" value="Female">
+																			<input class="validate" required="" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" value="Female">
 																			<span>{{__('Chairman') }}</span>
 																			</label> 
 																		</p>						
@@ -941,7 +958,7 @@
 																	<div class="col s12 m3">
 																		<p>
 																			<label>
-																			<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" checked="" value="Male">
 																			<span>{{__('Secretary') }}</span>
 																			</label>
 																		</p>
@@ -949,45 +966,45 @@
 																	<div class="col s12 m3">
 																		<p>
 																			<label>
-																			<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" checked="" value="Male">
 																			<span>{{__('Commitee Member') }}</span>
 																			</label>
 																		</p>
 																	</div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="bank"
+																	<label for="irc_bank"
 																		class="common-label force-active">{{__('Bank') }}*</label>
-																	<input id="bank"  name="bank" class="common-input"
+																	<input id="irc_bank"  name="irc_bank" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="bank_address"
+																	<label for="irc_bank_address"
 																		class="common-label force-active">{{__('Bank Address') }}*</label>
-																	<input id="bank_address"  name="bank_address" class="common-input"
+																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="office_telephone_number"
+																	<label for="irc_office_telephone_number"
 																		class="common-label force-active">{{__('Office Number') }}*</label>
-																	<input id="office_telephone_number"  name="office_telephone_number" class="common-input"
+																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s6">
-																	<label for="mobile"
+																	<label for="irc_mobile"
 																		class="common-label force-active">{{__('Mobile') }}*</label>
-																	<input id="mobile"  name="mobile" class="common-input"
+																	<input id="irc_mobile"  name="irc_mobile" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="fax"
+																	<label for="irc_fax"
 																		class="common-label force-active">{{__('Fax') }}*</label>
-																	<input id="fax"  name="fax" class="common-input"
+																	<input id="irc_fax"  name="irc_fax" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
@@ -997,98 +1014,134 @@
 																	</h6>
 																</div>
 																<div class="col s12 m12">
-																	<div class="row">
-																		<div class="col s12 m3 ">
-																			<p>
-																				<label>
+																	<div class="row padding-left-10">
+																		<div class="col s12 m4 input-field inline">
+																			<label>
 																				<input type="checkbox" class="filled-in" checked="checked" />
-																				<span>She/He was</span>
-																				</label> 
-																			</p>	
+																				<span>Name of the Person appliying for BF is</span>
+																			</label> 
 																		</div>
-																		<div class="col s12 m3">
-																				<label >{{__('Reason') }}*</label>
-																				<select name="reason" id="reason">
-																				<option value="">Choose</option>
-																				<option value="">xx</option>
-																				</select>
-																		</div>
-																		<div class="col s12 m3">
-																		<p>
-																			<input type="text"  name="text" />	
-																			</p>
-																		</div>
-																		<div class="col s12 m3">
-																			<label >{{__('garde w.e.f') }}*</label>
-																			<input type="text"  name="text" class="datepicker"/>
+																		<div class="col s12 m3 ">
+																			<input type="text" name="irc_person_name" style="width:200%">
 																		</div>
 																	</div>						
 																</div>
 																<div class="col s12 m12">
-																	<p>
+																	<div class="row padding-left-10">
+																		<div class="col s12 m4 input-field inline">
+																			<label>
+																				<input type="checkbox" class="filled-in" checked="checked" />
+																				<span>She/He was promoted to</span>
+																			</label> 
+																		</div>
+																		<div class="col s12 m3 ">
+																			<input type="text" name="irc_promoted_person" style="width:110%">
+																		</div>
+																		<div class="col s12 m2 input-field inline">
+																			<label>
+																				grade w.e.f.
+																			</label>
+																		</div>
+																		<div class="col s12 m3">
+																			<input type="text" name="irc_grade" name="text" placeholder="garde w.e.f" />	
+																		</div>
+																	</div>						
+																</div>
+																
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
 																		<label>
 																		<input type="checkbox" class="filled-in" checked="checked" />
 																		<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 																		</label> 
 																	</p>		
 																</div>
-																<div class="">
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" checked="checked" />
+																		<span>Attached Job function/Description (compulsory). </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" checked="checked" />
+																		<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" checked="checked" />
+																		<span>The messenger clerical position has been filled by</span>
+																		</label> 
+																	</p>	
+																</div>
+																<div class="col s12 m12">
+																	</br>
 																	<h6>BRANCH COMMITEE VERIFICATION</h6>
 																	<div class="row">
 																		<div class="col s12 m12">
+																			<p class="padding-left-20">
+																				<label>
+																				<input type="checkbox" class="filled-in" checked="checked" />
+																				<span>I have verified the above and confirm that the declaration by the IRC is correct.The Messenger/Clerical position has filled by another Messenger/Clerical And; </span>
+																				</label> 
+																			</p>	
+																		</div>
+																		<div class="col s12 m12">
+																			<p class="padding-left-20">
+																				<label>
+																				<input type="checkbox" class="filled-in" checked="checked" />
+																				<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
+																				</label> 
+																			</p>
+																		</div>
+																		</br>
+																		<div class="col s12 m12">	
 																			<div class="row">
-																				<p>
-																					<label>
-																					<input type="checkbox" class="filled-in" checked="checked" />
-																					<span>I have verified the above and confirm that the declaration by the IRC is correct.The Messenger/Clerical position has filled by another Messenger/Clerical And; </span>
-																					</label> 
-																				</p>	
+																				<div class="col s12">
+																				   Branch Commitee [Name in full]
+																				  <div class="input-field inline">
+																					<input id="irc_branch_committie_name" style="width:200%" type="text" class="validate">
+																				  </div>
+																				</div>
 																			</div>
+																			
 																		</div>
-																		<div class="col s12 m12">
+																		<div class="col s12 m8">	
 																			<div class="row">
-																				<p>
-																					<label>
-																					<input type="checkbox" class="filled-in" checked="checked" />
-																					<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
-																					</label> 
-																				</p>
-																			</div>						
+																				<div class="col s12">
+																				   Zone
+																				  <div class="input-field inline">
+																					<input id="irc_branch_committie_zone" type="text" style="width:200%" class="validate">
+																				  </div>
+																				</div>
+																			</div>
+																			
 																		</div>
-																		<div class="col s12 m12">
-																			<div class="row">
-																				<div class="col s12 m4 ">
-																					<p>
-																						<label>
-																						
-																						<span>Branch Commitee [Name in full]</span>
-																						</label> 
-																					</p>	
-																				</div>
-																				<div class="col s12 m3 ">
-																						<input type="text" name="person_name">
-																				</div>
-																			</div>	
+																		<div class="col s12 m2">
+																			&nbsp;
 																		</div>
-																		<div class="col s12 m12">
-																			<div class="row">
-																				<div class="col s12 m4 ">
-																					<p>
-																						<label>
-																						<span>Zone</span>
-																						</label> 
-																					</p>	
-																				</div>
-																				<div class="col s12 m3 ">
-																						<input type="text" name="person_name">
-																				</div>
-																				<div class="col s12 m3 ">
-																				<!--<label>Date</label> -->
-																						<input type="text" class="datepicker" palceholder="Date" name="date">
-																				</div>
-																			</div>	
+																		<div class="col s12 m2 input-field inline">
+																			<!--<label>Date</label> -->
+																			<input type="text" class="" palceholder="Date" name="date">
 																		</div>
 																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col m12 s12 mb-1" style="text-align:right">
+																	<button class="btn btn-light previous-step">
+																		<i class="material-icons left">arrow_back</i>
+																		Prev
+																	</button>
+																	
+																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
+																		type="submit">Submit</button>
 																</div>
 															</div>
 														</div>
@@ -1192,7 +1245,7 @@
 			showFeedbackPreloader: true,
 			autoFormCreation: true,
 			validationFunction: defaultValidationFunction,
-			stepTitleNavigation: true,
+			stepTitleNavigation: false,
 			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
 		});
 

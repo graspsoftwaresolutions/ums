@@ -45,7 +45,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	@endphp
 		<div class="container">
 		<div class="card">
-		<h6> Resignation Member </h6>
+		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list', 	app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
 			<div class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
