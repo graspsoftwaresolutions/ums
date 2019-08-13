@@ -303,7 +303,13 @@
             state: {
                 required: true,
             },
+			state_id: {
+                required: true,
+            },
             city: {
+                required: true,
+            },
+			city_id: {
                 required: true,
             },
             postal_code: {

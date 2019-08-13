@@ -140,5 +140,9 @@ class IrcController extends CommonController
 
         echo json_encode($json_data); 
 	}
+
+	public function listIrc(Request $request){
+		return view('irc.list_irc');
+	}
 	
 }

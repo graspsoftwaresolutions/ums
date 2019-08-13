@@ -13,6 +13,10 @@
 		.padding-left-40{
 			padding-left:40px;
 		}
+		#irc_confirmation_area {
+			pointer-events: none;
+		}
+		$("#irc_confirmation_area :input").attr("readonly", true);
 	</style>
 @endsection
 @section('main-content')
@@ -924,18 +928,18 @@
 													<li class="step">
 														<div class="step-title waves-effect">IRC Confirmation</div>
 														<div class="step-content">
-															<div class="row">
+															<div id="irc_confirmation_area" class="row">
 																</br>
 																 <div class="input-field col s6">
-																	<label for="member_number"
+																	<label for="irc_member_number"
 																		class="common-label force-active">{{__('Membership Number') }}*</label>
-																	<input id="member_number" name="member_number"  class="common-input"
+																	<input id="irc_member_number" name="irc_member_number"  class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="remarks" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-																	<input id="remarks"  name="remarks" class="common-input"
+																	<label for="irc_name_full" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
+																	<input id="irc_name_full"  name="irc_name_full" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
@@ -946,7 +950,7 @@
 																	<div class="col s12 m3">
 																		<p>
 																			<label>
-																			<input class="validate" required="" readonly aria-required="true" id="gender" name="gender" type="radio" value="Female">
+																			<input class="validate" required="" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" value="Female">
 																			<span>{{__('Chairman') }}</span>
 																			</label> 
 																		</p>						
@@ -954,7 +958,7 @@
 																	<div class="col s12 m3">
 																		<p>
 																			<label>
-																			<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" checked="" value="Male">
 																			<span>{{__('Secretary') }}</span>
 																			</label>
 																		</p>
@@ -962,45 +966,45 @@
 																	<div class="col s12 m3">
 																		<p>
 																			<label>
-																			<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" checked="" value="Male">
 																			<span>{{__('Commitee Member') }}</span>
 																			</label>
 																		</p>
 																	</div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="bank"
+																	<label for="irc_bank"
 																		class="common-label force-active">{{__('Bank') }}*</label>
-																	<input id="bank"  name="bank" class="common-input"
+																	<input id="irc_bank"  name="irc_bank" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="bank_address"
+																	<label for="irc_bank_address"
 																		class="common-label force-active">{{__('Bank Address') }}*</label>
-																	<input id="bank_address"  name="bank_address" class="common-input"
+																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="office_telephone_number"
+																	<label for="irc_office_telephone_number"
 																		class="common-label force-active">{{__('Office Number') }}*</label>
-																	<input id="office_telephone_number"  name="office_telephone_number" class="common-input"
+																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s6">
-																	<label for="mobile"
+																	<label for="irc_mobile"
 																		class="common-label force-active">{{__('Mobile') }}*</label>
-																	<input id="mobile"  name="mobile" class="common-input"
+																	<input id="irc_mobile"  name="irc_mobile" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
 																<div class="input-field col s6">
-																	<label for="fax"
+																	<label for="irc_fax"
 																		class="common-label force-active">{{__('Fax') }}*</label>
-																	<input id="fax"  name="fax" class="common-input"
+																	<input id="irc_fax"  name="irc_fax" class="common-input"
 																		type="text" data-error=".errorTxt1">
 																	<div class="errorTxt1"></div>
 																</div>
@@ -1018,9 +1022,7 @@
 																			</label> 
 																		</div>
 																		<div class="col s12 m3 ">
-																			
-																				<input type="text" name="person_name" style="width:200%">
-																			
+																			<input type="text" name="irc_person_name" style="width:200%">
 																		</div>
 																	</div>						
 																</div>
@@ -1033,7 +1035,7 @@
 																			</label> 
 																		</div>
 																		<div class="col s12 m3 ">
-																			<input type="text" name="person_name" style="width:110%">
+																			<input type="text" name="irc_promoted_person" style="width:110%">
 																		</div>
 																		<div class="col s12 m2 input-field inline">
 																			<label>
@@ -1041,7 +1043,7 @@
 																			</label>
 																		</div>
 																		<div class="col s12 m3">
-																			<input type="text"  name="text" placeholder="garde w.e.f" />	
+																			<input type="text" name="irc_grade" name="text" placeholder="garde w.e.f" />	
 																		</div>
 																	</div>						
 																</div>
@@ -1104,7 +1106,7 @@
 																				<div class="col s12">
 																				   Branch Commitee [Name in full]
 																				  <div class="input-field inline">
-																					<input id="email_inline" style="width:200%" type="text" class="validate">
+																					<input id="irc_branch_committie_name" style="width:200%" type="text" class="validate">
 																				  </div>
 																				</div>
 																			</div>
@@ -1115,7 +1117,7 @@
 																				<div class="col s12">
 																				   Zone
 																				  <div class="input-field inline">
-																					<input id="email_inline" type="text" style="width:200%" class="validate">
+																					<input id="irc_branch_committie_zone" type="text" style="width:200%" class="validate">
 																				  </div>
 																				</div>
 																			</div>
@@ -1243,7 +1245,7 @@
 			showFeedbackPreloader: true,
 			autoFormCreation: true,
 			validationFunction: defaultValidationFunction,
-			stepTitleNavigation: true,
+			stepTitleNavigation: false,
 			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
 		});
 
