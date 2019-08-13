@@ -170,6 +170,8 @@ class IrcController extends CommonController
 	}
 	
 	public function ajax_irc_list(Request $request){
+		$searchfilter = $request->input('searchfilter');
+		$statusfilter = $request->input('statusfilter');
 		$columns = array(
             0 => 'i.id',
             1 => 'i.resignedmemberno',
@@ -182,10 +184,21 @@ class IrcController extends CommonController
             8 => 'i.id',
         );
 
-		$totalData = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
-					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
-					 ->count();
-
+		$totalqry = DB::table('irc_confirmation as i')
+					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
+		if($statusfilter!=''){
+			$totalqry = $totalqry->where('i.status','=',$statusfilter);
+		}
+		
+		$commonselect = DB::table('irc_confirmation as i')
+						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
+		
+		if($statusfilter!=''){
+			$commonselect = $commonselect->where('i.status','=',$statusfilter);
+		}	
+		
+		$totalData = $totalqry->count();
         $totalFiltered = $totalData;
 
         $limit = $request->input('length');
@@ -194,58 +207,45 @@ class IrcController extends CommonController
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        if(empty($request->input('search.value')))
-        {            
-            if( $limit == -1){
-				$users =  DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
-							->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
-							->orderBy($order,$dir)
-							->get()->toArray();
-            }else{
-				$users = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
-						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
-						->offset($start)
-						->limit($limit)
-						->orderBy($order,$dir)
-						->get()->toArray();
-            }
-        
+        if(empty($searchfilter))
+        {       
+			$irclist =  $commonselect;
+			if( $limit != -1){
+				$irclist =  $irclist->offset($start)
+									->limit($limit);
+			}
+			$irclist =  $irclist->orderBy($order,$dir)
+							->get()->toArray();     
         }
         else {
-        $search = $request->input('search.value'); 
-        if( $limit == -1){
-            $users = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
-						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
-						->where('i.id','LIKE',"%{$search}%")
-                        ->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
-                        ->orWhere('1.resignedmembericno', 'LIKE',"%{$search}%")
-                        ->orderBy($order,$dir)
-                        ->get()->toArray();
-        }else{
-            $users =  DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
-						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
-						->where('i.id','LIKE',"%{$search}%")
-                        ->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
-                        ->orWhere('1.resignedmembericno', 'LIKE',"%{$search}%")
-                        ->offset($start)
-                        ->limit($limit)
-                        ->orderBy($order,$dir)
-                        ->get()->toArray();
-        }
-        $totalFiltered = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
-							->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
-							->where('i.id','LIKE',"%{$search}%")
-							->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
-							->orWhere('1.resignedmembericno', 'LIKE',"%{$search}%")
-                   			 ->count();
+			$search = $searchfilter; 
+			$irclist =  $commonselect->where(function($query) use ($search){
+							$query->orWhere('i.id','LIKE',"%{$search}%")
+								->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+								->orWhere('i.resignedmembericno', 'LIKE',"%{$search}%");
+						});
+			
+			if( $limit != -1){
+				$irclist =  $irclist->offset($start)
+									->limit($limit);
+			}
+			
+			$irclist =  $irclist->orderBy($order,$dir)
+							->get()->toArray(); 
+		
+			$totalFiltered =$commonselect->where(function($query) use ($search){
+									$query->orWhere('i.id','LIKE',"%{$search}%")
+										->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+										->orWhere('i.resignedmembericno', 'LIKE',"%{$search}%");
+								})->count();
         }
 		
 		$data = array();
-        if(!empty($users))
+        if(!empty($irclist))
         {
-            foreach ($users as $irc)
+            foreach ($irclist as $irc)
             {
-                $nestedData['status'] = $irc->status;
+                $nestedData['status'] = $irc->status_name;
                 $nestedData['resignedmemberno'] = $irc->resignedmemberno;
                 $nestedData['resignedmembername'] = $irc->resignedmembername;
                 $nestedData['resignedmembericno'] = $irc->resignedmembericno;

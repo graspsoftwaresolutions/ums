@@ -56,10 +56,10 @@
 												<thead>
 													<tr>
 														<td colspan="4">&nbsp;</td>
-														<td colspan="2"><input type="text" id="common-search-input" class="common-search-input " value="" ></td>
+														<td colspan="2"><input type="text" id="common-search-input" class="common-search-input " placeholder="Search here" value="" ></td>
 														<td>Status</td>
 														<td colspan="2" valign="middle">
-															<select class="browser-default">
+															<select id="common-search-status" class="browser-default">
 																<option value="">All</option>
 																<option value="1">Confirm</option>
 																<option value="0">Pending</option>
@@ -124,14 +124,13 @@
 				"dataType": "json",
 				"type": "POST",
 				'data': function(data){
-				  var datefilter = $('.transferdate-search-input').val();
-				  //console.log(datefilter);
-				  // Append to data
-				  //data.search['value'] = datefilter;
-				  data.datefilter = datefilter;
+				  var searchfilter = $('#common-search-input').val();
+				  var statusfilter = $('#common-search-status').val();
+				
+				  data.searchfilter = searchfilter;
+				  data.statusfilter = statusfilter;
 				  data._token = "{{csrf_token()}}";
 			   }
-				//"data": {_token: "{{csrf_token()}}", "datefilter" : $('#transferdate-search-input').val()},
 			},
 			"search-transfer" : 12,
 			"columns": [
@@ -148,34 +147,10 @@
 		});
 		$("#employee-grid_filter").css("display","none");  // hiding global search box
  
-		$('.transferdate-search-input').on( 'keyup click change', function () {
-			var i =$(this).attr('id');  // getting column index
-			var v =$(this).val();  // getting search input value
+		$('#common-search-status,#common-search-input').on( 'keyup change', function () {
 			dataTable.draw();
-			//dataTable.ajax.reload();
-			/* var data = dataTable.data();
-			console.log(data);
-			dataTable.ajax.reload();
-			dataTable.search( v ).draw();
-			dataTable.column(3).search(v).draw() */
-			//data.push.datefilter( v ).draw();
 		} );
 	 
-		 /* $( ".datepicker" ).datepicker({
-			dateFormat: "yy-mm-dd",
-			showOn: "button",
-			showAnim: 'slideDown',
-			showButtonPanel: true ,
-			autoSize: true,
-			buttonImage: "//jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-			buttonImageOnly: true,
-			buttonText: "Select date",
-			closeText: "Clear"
-		}); */
-		/* $(document).on("click", ".ui-datepicker-close", function(){
-			$('.datepicker').val("");
-			dataTable.search( '' ).draw();
-		}); */
 });
  </script>
 @endsection
