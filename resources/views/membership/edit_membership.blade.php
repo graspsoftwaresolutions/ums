@@ -1060,13 +1060,12 @@
 																				<div class="col s12 m4 ">
 																					<p>
 																						<label>
-																						
-																						<span>Branch Commitee [Name in full]</span>
+																							<span>Branch Commitee [Name in full]</span>
 																						</label> 
 																					</p>	
 																				</div>
 																				<div class="col s12 m3 ">
-																						<input type="text" name="person_name">
+																					<input type="text" name="person_name">
 																				</div>
 																			</div>	
 																		</div>
@@ -1080,11 +1079,11 @@
 																					</p>	
 																				</div>
 																				<div class="col s12 m3 ">
-																						<input type="text" name="person_name">
+																					<input type="text" name="person_name">
 																				</div>
 																				<div class="col s12 m3 ">
 																				<!--<label>Date</label> -->
-																						<input type="text" class="datepicker" palceholder="Date" name="date">
+																					<input type="text" class="datepicker" palceholder="Date" name="date">
 																				</div>
 																			</div>	
 																		</div>
