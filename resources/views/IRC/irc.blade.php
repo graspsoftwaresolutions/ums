@@ -45,12 +45,15 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	@endphp
 		<div class="container">
 		<div class="card">
+		<form class="formValidate" id="irc_formValidate" method="post"
+		action="{{ route('irc.saveIrc',app()->getLocale()) }}">
+		@csrf
 		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list', 	app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
 			<div class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number') }}*</label>
-					<input id="member_number" name="member_number"  class="common-input autocompleteoff"
+					<input id="member_number" name="resignedmemberno"  class="common-input autocompleteoff"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -72,21 +75,21 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				 <div class="input-field col s4">
 					<label for="member_name"
 						class="common-label force-active">{{__('Member Name') }}*</label>
-					<input id="member_name" name="member_name" readonly class="common-input"
+					<input id="member_name" name="resignedmembername" readonly class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="bank_name"
 						class="common-label force-active">{{__('Bank') }}*</label>
-					<input id="bank_name" name="bank_name" readonly class="common-input"
+					<input id="bank_name" name="resignedmemberbankname" readonly class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="branch_name"
 						class="common-label force-active">{{__('Bank Branch') }}*</label>
-					<input id="branch_name" name="branch_name" readonly class="common-input"
+					<input id="branch_name" name="resignedmemberbranchname" readonly class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -144,7 +147,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s4">
 					<label for="nric_n"
 						class="common-label force-active">{{__('NRIC-N') }}*</label>
-					<input id="nric_n" readonly name="nric_n" class="common-input"
+					<input id="nric_n" readonly name="resignedmembericno" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -160,33 +163,33 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	</div>
 	<div class=" col s12 ">
 	  <div class="container">
-	  <form> 
+	 
 		 <div class="card {{$irc_information}}">
 		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership No') }}*</label>
-					<input id="irc_member_no"  name="irc_member_no" class="common-input"
+					<input id="irc_member_no"   name="ircmembershipno" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-					<input id="irc_name"  name="irc_name" class="common-input"
+					<input id="irc_name"  readonly name="ircname" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<div class="col s12 m3">
-					 <p>{{__('IRC Position') }}</p>
+					 <p>{{__('IRC Position') }}*</p>
 					</div>
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" required="" readonly aria-required="true" id="gender" name="gender" type="radio" value="Female">
+							<input class="validate" required="" readonly aria-required="true" id="ircposition" name="ircposition" type="radio" value="Female">
 							<span>{{__('Chairman') }}</span>
 							</label> 
 						</p>						
@@ -194,7 +197,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Male">
 							<span>{{__('Secretary') }}</span>
 							</label>
 						</p>
@@ -202,7 +205,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Male">
 							<span>{{__('Commitee Member') }}</span>
 							</label>
 						</p>
@@ -211,37 +214,37 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s6">
 					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
-					<input id="irc_bank"  name="irc_bank" class="common-input"
+					<input id="irc_bank" readonly  name="ircbank" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="bank_address"
-						class="common-label force-active">{{__('Bank Address') }}*</label>
-					<input id="bank_address"  name="bank_address" class="common-input"
+						class="common-label force-active">{{__('Bank Address') }}</label>
+					<input id="bank_address"  name="ircbankaddress" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
-					<label for="office_telephone_number"
-						class="common-label force-active">{{__('Office Number') }}*</label>
-					<input id="office_telephone_number"  name="office_telephone_number" class="common-input"
+					<label for="irctelephoneno"
+						class="common-label force-active">{{__('Office Number') }}</label>
+					<input id="irctelephoneno"  name="irctelephoneno" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
-					<label for="mobile"
-						class="common-label force-active">{{__('Mobile') }}*</label>
-					<input id="mobile"  name="mobile" class="common-input"
+					<label for="ircmobileno"
+						class="common-label force-active">{{__('Mobile') }}</label>
+					<input id="ircmobileno"  name="ircmobileno" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
-					<label for="fax"
-						class="common-label force-active">{{__('Fax') }}*</label>
-					<input id="fax"  name="fax" class="common-input"
+					<label for="ircfaxno"
+						class="common-label force-active">{{__('Fax') }}</label>
+					<input id="ircfaxno"  name="ircfaxno" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -255,15 +258,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m4 ">
 								<p>
 									<label>
-									<input type="checkbox" class="filled-in" checked="checked" />
+									<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  />
 									<span>Name of the Person appliying for BF is</span>
 									</label> 
 								</p>	
 							</div>
-							<div class="col s12 m3 ">
-								
-									<input type="text" name="person_name">
-								
+							<div class="col s12 m3 ">								
+									<input type="text" id="person_name" readonly>
 							</div>
 						</div>						
 					</div>
@@ -272,33 +273,33 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m3 ">
 								<p>
 									<label>
-									<input type="checkbox" class="filled-in" checked="checked" />
+									<input type="checkbox" name="waspromoted" id="waspromoted" class="common-checkbox"  />
 									<span>She/He was</span>
 									</label> 
 								</p>	
 							</div>
 							<div class="col s12 m3">
-									<label >{{__('Reason') }}*</label>
-									<select name="reason" id="reason">
-									<option value="">Choose</option>
-									<option value="">xx</option>
+									<select name="resignedreason" id="reason" class="error browser-default selectpicker">
+									<option value="">Select reason</option>
+										@foreach($data['reason_view'] as $values)
+											<option value="{{$values->id}}">{{$values->reason_name}}</option>
+										@endforeach
 									</select>
 							</div>
 							<div class="col s12 m3">
-							<p>
-								<input type="text"  name="text" />	
-								</p>
+							
+								<input type="text" id="type" readonly name="type" placeholder="">	
+								
 							</div>
 							<div class="col s12 m3">
-								<label >{{__('garde w.e.f') }}*</label>
-								<input type="text"  name="text" class="datepicker"/>
+								<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f" name="text" class="datepicker"/>
 							</div>
 						</div>						
 					</div>
 					<div class="col s12 m12">
 						<p>
 							<label>
-							<input type="checkbox" class="filled-in" checked="checked" />
+							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox" />
 							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
@@ -306,7 +307,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12">
 						<p>
 							<label>
-							<input type="checkbox" class="filled-in" checked="checked" />
+							<input type="checkbox" name="attached" id="attached" class="common-checkbox" />
 							<span>Attached Job function/Description (compulsory). </span>
 							</label> 
 						</p>		
@@ -314,7 +315,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12">
 						<p>
 							<label>
-							<input type="checkbox" class="filled-in" checked="checked" />
+							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" />
 							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
@@ -324,15 +325,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m4 ">
 								<p>
 									<label>
-									<input type="checkbox" class="filled-in" checked="checked" />
+									<input type="checkbox" name="filledby" id="filledby"  class="common-checkbox" />
 									<span>The messenger clerical position has been filled by</span>
 									</label> 
 								</p>	
 							</div>
-							<div class="col s12 m3 ">
-								
-									<input type="text" name="person_name">
-								
+							<div class="col s12 m3 ">				
+									<input type="text" name="nameforfilledby" id="nameforfilledby">
 							</div>
 						</div>						
 					</div>
@@ -398,20 +397,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 			  </div>
 			  <div class="col s12 m12">
 						<div class="row">
+							
 							<div class="input-field col s12 m4">
-							<label for="file_submited" class="force-active">{{__('File Submitted') }} *</label>
-							<input id="file_submited" name="dob" data-reflectage="dob" class="datepicker"  type="text"> 
-						</div>
+							  <i class="material-icons prefix">date_range</i>
+							  <input id="file_submited" name="file_submited" data-reflectage="dob" class="datepicker"  type="text">
+							  <label for="icon_prefix">File Submitted</label>
+							</div> 
+						
 						<div class="input-field col s12 m2">
 							<p>
 							<input type="button" class="btn" id="save" name="save" value="Submit" >
 							</P>
 						</div>	
 						<div class="input-field col s12 m2">
-							<p>
-							<input type="button" class="btn" id="search" name="search" value="Search" >
-							</P>
-						</div><div class="input-field col s12 m2">
 							<p>
 							<input type="button" class="btn" id="cancel" name="cancel" value="Cancel" >
 							</P>
@@ -470,8 +468,10 @@ $("#member_number").devbridgeAutocomplete({
 				success: function(res) {
 					
 					$('#member_type').val(res.membertype);
+					$('#type').val(res.membertype);
 					$('#member_title').val(res.persontitle);
 					$('#member_name').val(res.membername);
+					$('#person_name').val(res.membername);
 					$('#bank_name').val(res.company_name);
 					$('#branch_name').val(res.branch_name);
 					$('#dob').val(res.dob);
@@ -503,7 +503,9 @@ $("#member_number").devbridgeAutocomplete({
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
-
+$('.datepicker').datepicker({
+	format: 'yyyy-mm-dd'
+});
 //IRC Member Details 
 $("#irc_member_no").devbridgeAutocomplete({
 	//lookup: countries,
@@ -511,7 +513,18 @@ $("#irc_member_no").devbridgeAutocomplete({
 	type:'GET',
 	//callback just to show it's working
 	onSelect: function (suggestion) {
-			$("#irc_member_no").val(suggestion.member_number);	
+			$("#irc_member_no").val(suggestion.number);	
+			$.ajax({
+				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
+                type: "GET",
+				dataType: "json",
+				success: function(res) {
+					$('#irc_name').val(res.membername);
+					$('#irc_bank').val(res.bankname);
+				}
+        
+			});
+
 	},
 	showNoSuggestionNotice: true,
 	noSuggestionNotice: 'Sorry, no matching results',
