@@ -120,7 +120,7 @@
 			"processing": true,
 			"serverSide": true,
 			"ajax": {
-				"url": "{{ url(app()->getLocale().'/ajax_transfer_list/') }}",
+				"url": "{{ url(app()->getLocale().'/ajax_irc_list/') }}",
 				"dataType": "json",
 				"type": "POST",
 				'data': function(data){
@@ -135,14 +135,14 @@
 			},
 			"search-transfer" : 12,
 			"columns": [
-				{"data" : "member_name"},
-				{"data":  "frombank"},
-				{"data" : "tobank"},
-				{"data" : "transfer_date"},
-				{"data" : "transfer_date"},
-				{"data" : "transfer_date"},
-				{"data" : "transfer_date"},
-				{"data" : "transfer_date"},
+				{"data" : "status"},
+				{"data":  "resignedmemberno"},
+				{"data":  "resignedmembername"},
+				{"data" : "resignedmembericno"},
+				{"data" : "resignedmemberbankname"},
+				{"data" : "resignedmemberbranchname"},
+				{"data" : "received"},
+				{"data" : "received"},
 				{"data":  "options"}
 			]
 		});

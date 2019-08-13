@@ -233,6 +233,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('save-user-account','IrcController@SaveUserAccount')->name('irc.add-irc-account');
 	Route::post('ajax_irc_users_list','IrcController@ajax_irc_users_list')->name('irc.ajaxuserslist');
 	Route::get('irc_list','IrcController@listIrc')->name('irc.irc_list');
+	Route::post('ajax_irc_list','IrcController@ajax_irc_list')->name('ajax.irc_list');
+	Route::get('edit-irc/{parameter}','IrcController@editIrc')->name('edit.irc');
 	
 });
 /* Master */

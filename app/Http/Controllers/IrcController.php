@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\User;
 use DB;
+use Illuminate\Support\Facades\Crypt;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -143,6 +144,113 @@ class IrcController extends CommonController
 
 	public function listIrc(Request $request){
 		return view('irc.list_irc');
+	}
+	
+	public function ajax_irc_list(Request $request){
+		$columns = array(
+            0 => 'i.id',
+            1 => 'i.resignedmemberno',
+            2 => 'i.resignedmembername',
+            3 => 'i.resignedmembericno',
+            4 => 'i.resignedmemberbankname',
+            5 => 'i.resignedmemberbranchname',
+            6 => 'i.submitted_at',
+            7 => 'i.submitted_at',
+            8 => 'i.id',
+        );
+
+		$totalData = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+					 ->count();
+
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+				$users =  DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+							->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+							->orderBy($order,$dir)
+							->get()->toArray();
+            }else{
+				$users = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+						->offset($start)
+						->limit($limit)
+						->orderBy($order,$dir)
+						->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $users = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+						->where('i.id','LIKE',"%{$search}%")
+                        ->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+                        ->orWhere('1.resignedmembericno', 'LIKE',"%{$search}%")
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }else{
+            $users =  DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+						->where('i.id','LIKE',"%{$search}%")
+                        ->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+                        ->orWhere('1.resignedmembericno', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = DB::table('irc_confirmation as i')->select('i.status','i.resignedmemberno','i.resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+							->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+							->where('i.id','LIKE',"%{$search}%")
+							->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+							->orWhere('1.resignedmembericno', 'LIKE',"%{$search}%")
+                   			 ->count();
+        }
+		
+		$data = array();
+        if(!empty($users))
+        {
+            foreach ($users as $irc)
+            {
+                $nestedData['status'] = $irc->status;
+                $nestedData['resignedmemberno'] = $irc->resignedmemberno;
+                $nestedData['resignedmembername'] = $irc->resignedmembername;
+                $nestedData['resignedmembericno'] = $irc->resignedmembericno;
+                $nestedData['resignedmemberbankname'] = $irc->resignedmemberbankname;
+                $nestedData['resignedmemberbranchname'] = $irc->resignedmemberbranchname;
+                $nestedData['received'] = $irc->received;
+                $company_enc_id = Crypt::encrypt($irc->id);
+                $editurl =  route('edit.irc', [app()->getLocale(),$company_enc_id]) ;
+				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
+                $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>Edit IRC</a>";
+				$data[] = $nestedData;
+
+			}
+        }
+        //$data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
+    
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+	}
+	public function editIrc(Request $request,$lang,$enc_id){
+		$id = Crypt::decrypt($enc_id);
+		return $id;
 	}
 	
 }
