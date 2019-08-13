@@ -35,6 +35,6 @@ class DatabaseSeeder extends Seeder
     //     $this->call(CreatedByColumnUpdateSeeder::class);
         
         //$this->call(MonthlySubMatchTypeTableSeeder::class);
-		$this->call(IRCRolesSeeder::class);
+		//$this->call(IRCRolesSeeder::class);
     }
 }
