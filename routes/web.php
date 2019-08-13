@@ -235,6 +235,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('irc_list','IrcController@listIrc')->name('irc.irc_list');
 	Route::post('ajax_irc_list','IrcController@ajax_irc_list')->name('ajax.irc_list');
 	Route::get('edit-irc/{parameter}','IrcController@editIrc')->name('edit.irc');
+	Route::get('add-irc','IrcController@saveIrc')->name('irc.saveIrc');
+
 	
 });
 /* Master */
@@ -260,10 +262,10 @@ Route::get('get-oldmember-list','MemberController@getoldMemberList');
 
 Route::get('get-member-list','MemberController@getMembersList');
 Route::get('get-member-list-values','MemberController@getMembersListValues');
-Route::get('get-ircmember-list','IrcController@getIrcMembersList');
+Route::get('get-ircmember-list','IrcController@getIrcMembersList'); 
+Route::get('get-ircmember-list-values','IrcController@getIrcMembersListValues');
 
 Route::post('membership_update','MemberController@update');
-
 
 Route::get('get-nominee-data','MembershipController@getNomineeData');
 Route::post('update-nominee','MembershipController@updateNominee');

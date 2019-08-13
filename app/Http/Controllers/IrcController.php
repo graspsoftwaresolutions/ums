@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\User;
 use App\Model\Membership;
+use App\Model\Reason;
 use DB;
 use URL;
 use Illuminate\Support\Facades\Crypt;
@@ -25,7 +26,8 @@ class IrcController extends CommonController
 	
 	public function ircIndex()
     {
-		return view('IRC.irc');
+		$data['reason_view'] = Reason::where('status','=','1')->get();
+		return view('IRC.irc')->with('data',$data);
 	}
 	
 	public function ListIrcAccount() {
@@ -153,20 +155,33 @@ class IrcController extends CommonController
 		DB::connection()->enableQueryLog();
 		$searchkey = $request->input('searchkey');
         $search = $request->input('query');
-		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number')
+		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.id) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
 							->leftjoin('membership as m','irc.MemberCode','=','m.id')
-							->where('irc.account_type','=','	
-							irc-confirmation')
+							->where('irc.account_type','=','irc-confirmation')
 							->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
                                     ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+									->orWhere('m.name', 'LIKE',"%{$search}%")
+									->orWhere('irc.MemberCode', 'LIKE',"%{$search}%");
                             })->limit(25)
 							->get();   
 		// $queries = DB::getQueryLog();
 		// dd($queries);
          return response()->json($res);
 
+	}
+	public function getIrcMembersListValues(Request $request)
+	{
+		$member_id = $request->member_id;
+		$res = DB::table('irc_account as irc')->select('m.id as mid','m.name as membername','c.company_name as bankname')
+				->leftjoin('membership as m','irc.MemberCode','=','m.id')
+				->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+				->leftjoin('company as c','cb.company_id','=','c.id')
+				->where('irc.account_type','=','irc-confirmation')
+				->where('irc.MemberCode','=',$member_id)
+				->first();
+		
+		return response()->json($res);
 	}
 	
 	public function ajax_irc_list(Request $request){
@@ -274,6 +289,11 @@ class IrcController extends CommonController
 	public function editIrc(Request $request,$lang,$enc_id){
 		$id = Crypt::decrypt($enc_id);
 		return $id;
+	}
+
+	public function saveIrc(Request $request)
+	{
+		
 	}
 	
 }
