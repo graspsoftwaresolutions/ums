@@ -355,10 +355,7 @@ class SubscriptionAjaxController extends CommonController
 				$fm_date = explode("/",$search);
 				$yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
 			}			
-			//return date('Y/m/01',strtotime('01/'.$search));
-			//$dateformat = date('Y-m-01',strtotime($search));
-			//$yearformat = date('Y',strtotime('01-08-'.$search));
-			//$monthformat = date('m',strtotime('01-'.$search.'-2019'));
+			
 			$company_qry = $common_qry;
 			if( $limit != -1){
 				$company_qry = $company_qry->offset($start)->limit($limit);
@@ -381,21 +378,7 @@ class SubscriptionAjaxController extends CommonController
 							 //$queries = DB::getQueryLog();
 							//dd($queries);
 			$company_qry = $company_qry->orderBy($order,$dir)->get()->toArray();
-			/* if( $limit == -1){
-				$country =  Country::select('id','country_name')->where('id','LIKE',"%{$search}%")
-							->orWhere('country_name', 'LIKE',"%{$search}%")
-							->where('status','=','1')
-							->orderBy($order,$dir)
-							->get()->toArray();
-			}else{
-				$country =  Country::select('id','country_name')->where('id','LIKE',"%{$search}%")
-							->orWhere('country_name', 'LIKE',"%{$search}%")
-							->offset($start)
-							->limit($limit)
-							->where('status','=','1')
-							->orderBy($order,$dir)
-							->get()->toArray();
-			} */
+			
 			$totalFiltered = $common_qry->count();
         }
         $data = array();
