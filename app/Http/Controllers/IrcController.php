@@ -34,18 +34,24 @@ class IrcController extends CommonController
     }
 	
 	public function AddIrcAccount() {
-		return view('irc.add_user');
+		$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+		return view('irc.add_user')->with('data',$data);
     }
 	public function SaveUserAccount(Request $request) {
 		$member_name = $request->input('name');
         $member_email = $request->input('email');
 		$password = $request->input('password');
 		$member_code = $request->input('member_code');
-		if($member_code==""){
+		$account_type = $request->input('account_type');
+		$union_branch_id = $request->input('union_branch_id');
+		if($account_type=='irc-confirmation' && $member_code==""){
 			return redirect( app()->getLocale().'/add_irc_account')->with('error','Please pick a member'); 
 		}
+		if($account_type=='irc-branch-committee' && $union_branch_id==""){
+			return redirect( app()->getLocale().'/add_irc_account')->with('error','Please select Branch'); 
+		}
 		
-		$account_type = $request->input('account_type');
+		
 		$user_role = Role::where('slug', $account_type)->first();
 		$request->validate([
             'name' => 'required',

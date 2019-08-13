@@ -104,11 +104,28 @@
 													<div class="errorTxt5"></div>
 												</div>
 											</div>
-											<div class="input-field col s12 m6">
+											<div class="input-field col s12 m6 hide" id="memberarea">
 												<label for="member_search" class="force-active">{{__('Member Name')}}</label>
 												<input id="member_search" type="text" required autocomplete="off" class="validate " data-error=".errorTxt6" value="" name="member_search">
 												<input id="member_code" type="text" required autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
 												<div class="errorTxt6"></div>
+											</div>
+											<div class="input-field col s12 m6 hide" id="brancharea">
+												<label for="member_search" class="force-active">{{__('Union Branch Name')}}</label>
+												<select class="error browser-default common-select selectpicker"
+													id="union_branch_id" name="union_branch_id"
+													data-error=".errorTxt7" style="height: 4rem;">
+													<option value="" disabled="" selected="">
+														{{__('Select Union Branch') }}</option>
+													@foreach($data['union_view'] as $value)
+													<option value="{{$value->id}}" @isset($row) @php if($value->id
+														== $row->union_branch_id) { echo "selected";} @endphp
+														@endisset >{{$value->union_branch}}</option>
+													@endforeach
+												</select>
+												 <div class="input-field">
+													<div class="errorTxt7"></div>
+												</div>
 											</div>
 											<div class="clearfix" style="clear:both"></div>
 											<div class="input-field col s12">
@@ -214,12 +231,12 @@
 			account_type: {
 				required: true,
 			},
-			member_code: {
+			/* member_code: {
 				required: true,
 			},
 			member_search: {
 				required: true,
-			},
+			}, */
 		},
 		//For custom messages
 		messages: {
@@ -238,9 +255,9 @@
 			account_type: {
 				required: '{{__("Please select account type") }}',
 			},
-			member_code: {
+			/* member_code: {
 				required: '{{__("Please Pick a name") }}',
-			},
+			}, */
 
 		},
 		errorElement: 'div',
@@ -251,6 +268,19 @@
 			} else {
 				error.insertAfter(element);
 			}
+		}
+	});
+	$(document.body).on('change', '#account_type' ,function(){
+		var acttype = this.value;
+		if(acttype=='irc-confirmation'){
+			$("#memberarea").removeClass('hide');
+			$("#brancharea").addClass('hide');
+		}else if(acttype=='irc-branch-committee'){
+			$("#memberarea").addClass('hide');
+			$("#brancharea").removeClass('hide');
+		}else{
+			$("#memberarea").addClass('hide');
+			$("#brancharea").addClass('hide');
 		}
 	});
 </script>
