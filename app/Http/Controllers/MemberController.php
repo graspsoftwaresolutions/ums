@@ -527,7 +527,7 @@ class MemberController extends CommonController
 	{
 	    $searchkey = $request->input('searchkey');
         $search = $request->input('query');
-        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.member_number, " - ", m.id) AS value'),'m.id as number','m.branch_id as branch_id')      
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number')      
                             ->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
                                     ->orWhere('m.member_number', 'LIKE',"%{$search}%")
@@ -538,13 +538,19 @@ class MemberController extends CommonController
 	}
 	public function getMembersListValues(Request $request)
 	{
-		$searchkey = $request->input('searchkey');
-		$search = $request->input('query');
-		$res['suggestions'] = DB::table('membership as m')->select(DB::raw("if(count('m.new_ic') > 0  ,'m.new_ic','m.old_ic') as nric"),'m.id as memberid','d.dignation_name as membertype','p.person_title','cb.branch_name','r.race_name')
+		DB::connection()->enableQueryLog();
+		$member_id = $request->member_id;
+		
+		$res = DB::table('membership as m')->select(DB::raw("if(count('m.new_ic') > 0  ,m.new_ic,m.old_ic) as nric"),'m.id as memberid','d.designation_name as membertype','p.person_title as persontitle','m.name as membername','cb.branch_name','c.company_name',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(dob, '%Y%m') )) DIV 12 AS age"),'r.race_name')
 							->leftjoin('designation as d','d.id','=','m.designation_id')
 							->leftjoin('persontitle as p','p.id','=','m.member_title_id')
 							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 							->leftjoin('company as c','c.id','=','cb.company_id')
-							->leftjoin('race as r','r.id','=','m.race_id');
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->where('m.member_number','=',$member_id)
+							->first();
+			// $queries = DB::getQueryLog();
+			// dd($queries);
+			return response()->json($res);
 	}
 }

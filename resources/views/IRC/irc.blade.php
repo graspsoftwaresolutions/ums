@@ -12,6 +12,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<style type="text/css">
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -42,7 +50,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number') }}*</label>
-					<input id="member_number" name="member_number"  class="common-input autocomplete"
+					<input id="member_number" name="member_number"  class="common-input autocompleteoff"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -103,7 +111,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" required="" readonly aria-required="true" id="gender" name="gender" type="radio" value="Female">
+							<input class="validate" required="" readonly aria-required="true" id="femalegender" name="gender" type="radio" value="Female">
 							<span>{{__('Female') }}</span>
 							</label> 
 						</p>						
@@ -111,7 +119,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="gender" name="gender" type="radio" checked="" value="Male">
+							<input class="validate" readonly required="" aria-required="true" id="malegender" name="gender" type="radio"  value="Male">
 							<span>{{__('Male') }}</span>
 							</label>
 						</p>
@@ -143,11 +151,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s4">
 					<label for="remarks"
 						class="common-label force-active">{{__('Remarks') }}*</label>
-					<input id="remarks" readonly name="remarks" class="common-input"
+					<input id="remarks" name="remarks" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
-				
 			</div>
 		</div>
 	</div>
@@ -455,12 +462,31 @@ $("#member_number").devbridgeAutocomplete({
 	type:'GET',
 	//callback just to show it's working
 	onSelect: function (suggestion) {
-			$("#member_number").val(suggestion.number);
+			$("#member_number").val(suggestion.member_number);
 			$.ajax({
 				url: "{{ URL::to('/get-member-list-values') }}?member_id="+ $("#member_number").val(),
                 type: "GET",
-				success: function(result) {
-				 $('#member_number').val(result.id);
+				dataType: "json",
+				success: function(res) {
+					
+					$('#member_type').val(res.membertype);
+					$('#member_title').val(res.persontitle);
+					$('#member_name').val(res.membername);
+					$('#bank_name').val(res.company_name);
+					$('#branch_name').val(res.branch_name);
+					$('#dob').val(res.dob);
+					$('#member_age').val(res.age);
+					if(res.gender == 'Male')
+					{
+						$("#malegender").attr("checked",true);
+					}
+					else if(res.gender == 'Female')
+					{
+						$("#femalegender").attr("checked",true);
+					}
+					$('#doj').val(res.doj);
+					$('#race_name').val(res.race_name);
+					$('#nric_n').val(res.nric);
 				}
         
 			});
