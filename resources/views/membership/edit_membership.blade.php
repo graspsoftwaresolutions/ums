@@ -934,14 +934,14 @@
 																	<label for="irc_member_number"
 																		class="common-label force-active">{{__('Membership Number') }}*</label>
 																	<input id="irc_member_number" name="irc_member_number"  class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text">
+																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_name_full" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
 																	<input id="irc_name_full"  name="irc_name_full" class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text">
+																	
 																</div>
 																<div class="input-field col s6">
 																	<div class="col s12 m3">
@@ -976,37 +976,37 @@
 																	<label for="irc_bank"
 																		class="common-label force-active">{{__('Bank') }}*</label>
 																	<input id="irc_bank"  name="irc_bank" class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text" >
+																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_bank_address"
 																		class="common-label force-active">{{__('Bank Address') }}*</label>
 																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text" >
+																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_office_telephone_number"
 																		class="common-label force-active">{{__('Office Number') }}*</label>
 																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text" >
+																	
 																</div>
 																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s6">
 																	<label for="irc_mobile"
 																		class="common-label force-active">{{__('Mobile') }}*</label>
 																	<input id="irc_mobile"  name="irc_mobile" class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text" >
+																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_fax"
 																		class="common-label force-active">{{__('Fax') }}*</label>
 																	<input id="irc_fax"  name="irc_fax" class="common-input"
-																		type="text" data-error=".errorTxt1">
-																	<div class="errorTxt1"></div>
+																		type="text" >
+																	
 																</div>
 																<div class="input-field col s12">
 																	<h6>Dear Sir,<br><br>
