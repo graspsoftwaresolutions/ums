@@ -273,7 +273,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m4 ">
 								<p>
 									<label>
-									<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  />
+									<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
 									<span>Name of the Person appliying for BF is</span>
 									</label> 
 								</p>	
@@ -288,7 +288,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m3 ">
 								<p>
 									<label>
-									<input type="checkbox" name="waspromoted" id="waspromoted" class="common-checkbox"  />
+									<input type="checkbox" name="waspromoted" id="waspromoted" class="common-checkbox"  value="1"/>
 									<span>She/He was</span>
 									</label> 
 								</p>	
@@ -415,10 +415,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							
 							<div class="input-field col s12 m4">
 							  <i class="material-icons prefix">date_range</i>
-							  <input id="file_submited" name="file_submited" data-reflectage="dob" class="datepicker"  type="text">
+							  <input id="submitted_at" name="submitted_at" data-reflectage="dob" class="datepicker"  type="text">
 							  <label for="icon_prefix">File Submitted</label>
 							</div> 
-						
 						<div class="input-field col s12 m2">
 							<p>
 							<input type="submit" class="btn" id="save" name="save" value="Submit" >
@@ -519,7 +518,7 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
 $('.datepicker').datepicker({
-	format: 'yyyy-mm-dd'
+	format: 'dd/mmm/yyyy'
 });
 //IRC Member Details 
 $("#irc_member_no").devbridgeAutocomplete({
