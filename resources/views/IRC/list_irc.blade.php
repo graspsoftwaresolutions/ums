@@ -60,9 +60,9 @@
 														<td>Status</td>
 														<td colspan="2" valign="middle">
 															<select id="common-search-status" class="browser-default">
-																<option value="">All</option>
-																<option value="1">Confirm</option>
-																<option value="0">Pending</option>
+																<option @if($data['irc_status']==""){{ 'selected' }} @endif value="">All</option>
+																<option @if($data['irc_status']==1){{ 'selected' }} @endif value="1">Confirm</option>
+																<option @if($data['irc_status']=="0"){{ 'selected' }} @endif value="0">Pending</option>
 															</select>
 														</td>
 														
@@ -72,7 +72,7 @@
 														<th>{{__('memberId')}} </th>
 														<th>{{__('Full Name')}}</th>
 														<th>{{__('ICNO')}}</th>
-														<th>{{__('Bank Name')}}</th>
+														<th>{{__('Company Name')}}</th>
 														<th>{{__('Branch')}}</th>
 														<th>{{__('Received')}}</th>
 														<th>{{__('Submitted')}}</th>

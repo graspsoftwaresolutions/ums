@@ -30,7 +30,7 @@ canvas#custom-line-chart-sample-three {
       <div class="col s12 m6 l3">
          <div class="card animate fadeLeft">
             <div class="card-content cyan white-text">
-               <p class="card-stats-title"><i class="material-icons">person_outline</i> {{__('No of Union Branch') }}</p>
+               <p class="card-stats-title"> {{__('No of Union Branch') }}</p>
                <h4 class="card-stats-number white-text">{{ $data['union_branch_count'] }}</h4>
                <!-- <p class="card-stats-compare">
                   <i class="mdi-creation"></i> 15%

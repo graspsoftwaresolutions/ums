@@ -61,7 +61,7 @@
 									
 								@endphp
 								<div class="col s4">
-									<label for="member_search">{{__('member Name')}}</label>
+									<label for="member_search">{{__('Member Name')}}</label>
 									<input id="member_search" type="text" required readonly class="validate " value="{{ $url_member_name }}" name="member_search">
 									
 								</div>
@@ -91,19 +91,19 @@
 									<div class="card-body">
 										<div id="basic-form" class="card card card-default scrollspy">
 											<div class="card-content">
-												<h4 class="card-title">From Bank Branch Details</h4>
+												<h4 class="card-title">{{__('From Company Branch Details')}}</h4>
 												<div id="old_companyinfo" class="row">
 													<div class="row">
 														<div class="col s6">
 															<div class="input-field">
 																<input placeholder="" id="old_company" name="old_company" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->company_name}}@endisset" class="validate" readonly >
-																<label for="old_company" class="active">Old Bank</label>
+																<label for="old_company" class="active">{{__('Old Company')}}</label>
 															</div>
 														</div>
 														<div class="col s6">
 															<div class="input-field">
 																<input placeholder="" id="old_branch" name="old_branch" type="text" value="@isset($data['current_branch_data']){{$data['current_branch_data']->branch_name}}@endisset" readonly class="validate">
-																<label for="old_branch" class="active">Old Branch</label>
+																<label for="old_branch" class="active">{{__('Old Branch')}}</label>
 															</div>
 														</div>
 													</div>
@@ -190,7 +190,7 @@
 									<div class="card-body">
 										<div id="basic-form" class="card card card-default scrollspy">
 											<div class="card-content">
-												<h4 class="card-title">To Bank Branch Details</h4>
+												<h4 class="card-title">{{__('To Company Branch Details')}}</h4>
 												<div id="newbranchinfo" class="row">
 													<div class="row">
 														<div class="col s6">
@@ -201,7 +201,7 @@
 																		<option @if($data['to_company_id']==$values->id) selected @endif value="{{$values->id}}">{{$values->company_name}}</option>
 																	@endforeach
 																</select>
-																<label for="new_company" class="active">New Bank</label>
+																<label for="new_company" class="active">{{__('New Company')}}</label>
 																<div class="input-field">
 																	<div class="errorTxt1"></div>
 																</div>
@@ -215,7 +215,7 @@
 																		<option @if($data['to_branch_id']==$values->id) selected @endif value="{{$values->id}}">{{$values->branch_name}}</option>
 																	@endforeach
 																</select>
-																<label for="new_company" class="active">New Branch</label>
+																<label for="new_company" class="active">{{__('New Branch')}}</label>
 																<div class="input-field">
 																	<div class="errorTxt2"></div>
 																</div>

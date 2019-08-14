@@ -39,6 +39,12 @@
 				@role('member')
 					@include('dashboard.member')
 				@endrole
+				@role('irc-confirmation')
+					@include('dashboard.irc_confirmation')
+				@endrole
+				@role('irc-branch-committee')
+					@include('dashboard.irc_confirmation')
+				@endrole
 				@include('layouts.right-sidebar')
 			 <!-- END: Page Main-->
 			</div>

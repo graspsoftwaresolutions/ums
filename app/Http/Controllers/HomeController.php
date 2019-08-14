@@ -12,6 +12,7 @@ use App\Model\Company;
 use App\Model\CompanyBranch;
 use App\Model\Branch;
 use App\Model\Status;
+use App\Model\Irc;
 use App\User;
 use DB;
 
@@ -126,6 +127,22 @@ class HomeController extends Controller
 				}
 			}
 			$data['total_member_count'] = $member_count;
+		}else if($user_role=='irc-confirmation'){
+			$total_ircpending_count = Irc::where('status','=',0)->count();
+			$total_ircconfirm_count = Irc::where('status','=',1)->count();
+			$irc_count = $total_ircpending_count+$total_ircconfirm_count;
+			
+			$data['total_irc_count'] = $irc_count;
+			$data['total_ircpending_count'] = $total_ircpending_count;
+			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
+		}else if($user_role=='irc-branch-committee'){
+			$total_ircpending_count = Irc::where('status','=',0)->count();
+			$total_ircconfirm_count = Irc::where('status','=',1)->count();
+			$irc_count = $total_ircpending_count+$total_ircconfirm_count;
+			
+			$data['total_irc_count'] = $irc_count;
+			$data['total_ircpending_count'] = $total_ircpending_count;
+			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
 		}
         return view('home')->with('data',$data);
     }
