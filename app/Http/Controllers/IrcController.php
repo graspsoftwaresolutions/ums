@@ -308,18 +308,18 @@ class IrcController extends CommonController
 		$defdaultLang = app()->getLocale();
 		
 		$saveIrc = $this->Irc->saveIrcdata($data);
-            
+		
+		
 		if ($saveIrc == true) {
 			if(!empty($request->id))
 			{
-				return view($defdaultLang . '/list_irc')->with('message', 'Irc Updated Succesfully');
+				return redirect(app()->getLocale().'/irc_list')->with('message', 'Irc Updated Succesfully');
 			}
 			else
 			{
-				return view($defdaultLang . '/list_irc')->with('message', 'IRC Name Added Succesfully');
+				return redirect(app()->getLocale().'/irc_list')->with('message', 'IRC Name Added Succesfully');
 			}
 		}
-
 	}
 	
 }
