@@ -60,6 +60,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		<form class="formValidate" id="irc_formValidate" method="post"
 		action="{{ route('irc.saveIrc',app()->getLocale()) }}">
 		@csrf
+		
 		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
 			<div class="row">
 				 <div class="input-field col s4">
@@ -67,6 +68,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						class="common-label force-active">{{__('Membership Number') }}*</label>
 					<input id="member_number" name="resignedmemberno"  class="common-input autocompleteoff"
 						type="text" data-error=".errorTxt1">
+					<input type="hidden" name="resignedmemberno" id="memberid">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s4">
@@ -182,8 +184,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s6">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership No') }}*</label>
-					<input id="irc_member_no"   name="ircmembershipno" class="common-input"
+					<input id="irc_member_no"   name="ircmember" class="common-input"
 						type="text" data-error=".errorTxt1">
+						<input type="hidden" name="ircmembershipno" id="irc_member_code">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
@@ -484,6 +487,7 @@ $("#member_number").devbridgeAutocomplete({
 					$('#member_name').val(res.membername);
 					$('#person_name').val(res.membername);
 					$('#bank_name').val(res.company_name);
+					$('#memberid').val(res.memberid);
 					$('#branch_name').val(res.branch_name);
 					$('#dob').val(res.dob);
 					$('#member_age').val(res.age);
@@ -524,7 +528,7 @@ $("#irc_member_no").devbridgeAutocomplete({
 	type:'GET',
 	//callback just to show it's working
 	onSelect: function (suggestion) {
-			$("#irc_member_no").val(suggestion.number);	
+			$("#irc_member_no").val(suggestion.member_number);	
 			$.ajax({
 				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
                 type: "GET",
@@ -532,6 +536,7 @@ $("#irc_member_no").devbridgeAutocomplete({
 				success: function(res) {
 					$('#irc_name').val(res.membername);
 					$('#irc_bank').val(res.bankname);
+					$('#irc_member_code').val(res.mid);
 				}
         
 			});

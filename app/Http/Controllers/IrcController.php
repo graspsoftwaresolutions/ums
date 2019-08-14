@@ -164,7 +164,7 @@ class IrcController extends CommonController
 		DB::connection()->enableQueryLog();
 		$searchkey = $request->input('searchkey');
         $search = $request->input('query');
-		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.id) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
+		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
 							->leftjoin('membership as m','irc.MemberCode','=','m.id')
 							->where('irc.account_type','=','irc-confirmation')
 							->where(function($query) use ($search){
@@ -187,7 +187,7 @@ class IrcController extends CommonController
 				->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
 				->leftjoin('company as c','cb.company_id','=','c.id')
 				->where('irc.account_type','=','irc-confirmation')
-				->where('irc.MemberCode','=',$member_id)
+				->where('m.member_number','=',$member_id)
 				->first();
 		
 		return response()->json($res);
@@ -312,11 +312,11 @@ class IrcController extends CommonController
 		if ($saveIrc == true) {
 			if(!empty($request->id))
 			{
-				return view($defdaultLang . '/irc_list')->with('message', 'Irc Updated Succesfully');
+				return view($defdaultLang . '/list_irc')->with('message', 'Irc Updated Succesfully');
 			}
 			else
 			{
-				return view($defdaultLang . '/irc_list')->with('message', 'IRC Name Added Succesfully');
+				return view($defdaultLang . '/list_irc')->with('message', 'IRC Name Added Succesfully');
 			}
 		}
 
