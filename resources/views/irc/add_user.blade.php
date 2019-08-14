@@ -181,6 +181,7 @@
 @section('footerSecondSection')
 <script>
 	//$("#member_filter").trigger('click');
+
 	$("#irc_account_sidebar_a_id").addClass('active');
     $("#member_search").devbridgeAutocomplete({
         //lookup: countries,

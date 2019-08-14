@@ -17,6 +17,7 @@ class IrcController extends CommonController
 {
     public function __construct() {
         $this->Irc = new Irc;
+		$this->middleware('auth');
     }
 	
 	public function index() {

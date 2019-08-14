@@ -104,8 +104,9 @@
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
- $("#member_transfer_sidebar_a_id").addClass('active');
- $(function () {
+
+$("#irc_sidebar_a_id").addClass('active');
+$(function () {
 	  $(".datepicker-cutom").datepicker({
 		 autoclose: true,
 		 format: "mmm/yyyy"
