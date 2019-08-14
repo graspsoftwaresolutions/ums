@@ -312,11 +312,11 @@ class IrcController extends CommonController
 		if ($saveIrc == true) {
 			if(!empty($request->id))
 			{
-				return view($defdaultLang . '/list_irc')->with('message', 'Irc Updated Succesfully');
+				return view($defdaultLang . '/irc_list')->with('message', 'Irc Updated Succesfully');
 			}
 			else
 			{
-				return view($defdaultLang . '/list_irc')->with('message', 'IRC Name Added Succesfully');
+				return view($defdaultLang . '/irc_list')->with('message', 'IRC Name Added Succesfully');
 			}
 		}
 
