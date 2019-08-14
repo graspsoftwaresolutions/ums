@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\User;
 use App\Model\Membership;
+use App\Model\Irc;
 use App\Model\Reason;
 use DB;
 use URL;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
 class IrcController extends CommonController
 {
     public function __construct() {
-        
+        $this->Irc = new Irc;
     }
 	
 	public function index() {
@@ -300,7 +301,24 @@ class IrcController extends CommonController
 
 	public function saveIrc(Request $request)
 	{
+		 $data = $request->all();
+		//  echo "<pre>";
+		//  print_r($data); die;   
+		$defdaultLang = app()->getLocale();
 		
+		$saveIrc = $this->Irc->saveIrcdata($data);
+            
+		if ($saveIrc == true) {
+			if(!empty($request->id))
+			{
+				return view($defdaultLang . '/list_irc')->with('message', 'Irc Updated Succesfully');
+			}
+			else
+			{
+				return view($defdaultLang . '/list_irc')->with('message', 'IRC Name Added Succesfully');
+			}
+		}
+
 	}
 	
 }

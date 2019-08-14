@@ -60,7 +60,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		<form class="formValidate" id="irc_formValidate" method="post"
 		action="{{ route('irc.saveIrc',app()->getLocale()) }}">
 		@csrf
-		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list', 	app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
+		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
 			<div class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
@@ -201,7 +201,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" required="" readonly aria-required="true" id="ircposition" name="ircposition" type="radio" value="Female">
+							<input class="validate" required="" readonly aria-required="true" id="ircposition" name="ircposition" type="radio" value="Chairman">
 							<span>{{__('Chairman') }}</span>
 							</label> 
 						</p>						
@@ -209,7 +209,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Male">
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Secretary">
 							<span>{{__('Secretary') }}</span>
 							</label>
 						</p>
@@ -217,7 +217,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Male">
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Commitee-Member">
 							<span>{{__('Commitee Member') }}</span>
 							</label>
 						</p>
@@ -311,7 +311,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12">
 						<p class=" padding-left-20">
 							<label>
-							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox" />
+							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1"/>
 							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
@@ -319,7 +319,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12 padding-left-20">
 						<p class=" padding-left-20">
 							<label>
-							<input type="checkbox" name="attached" id="attached" class="common-checkbox" />
+							<input type="checkbox" name="attached" id="attached" class="common-checkbox" value="1" />
 							<span>Attached Job function/Description (compulsory). </span>
 							</label> 
 						</p>		
@@ -327,7 +327,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12">
 						<p class=" padding-left-20">
 							<label>
-							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" />
+							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" value="1" />
 							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
@@ -337,7 +337,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m4 ">
 								<p>
 									<label>
-									<input type="checkbox" name="filledby" id="filledby"  class="common-checkbox" />
+									<input type="checkbox" name="filledby" id="filledby"  class="common-checkbox" value="1" />
 									<span>The messenger clerical position has been filled by</span>
 									</label> 
 								</p>	
@@ -418,7 +418,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						
 						<div class="input-field col s12 m2">
 							<p>
-							<input type="button" class="btn" id="save" name="save" value="Submit" >
+							<input type="submit" class="btn" id="save" name="save" value="Submit" >
 							</P>
 						</div>	
 						<div class="input-field col s12 m2">
