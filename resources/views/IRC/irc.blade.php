@@ -457,8 +457,7 @@ type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
 <script>
-$("#masters_sidebars_id").addClass('active');
-$("#irc_sidebar_a_id").addClass('active');
+
 $("#irc_sidebar_a_id").addClass('active');
 
 //Model

@@ -132,6 +132,7 @@
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 var deflanguage = '{{ app()->getLocale() }}';
+
 $("#irc_account_sidebar_a_id").addClass('active');
 
 $("#UsersformValidate").validate({

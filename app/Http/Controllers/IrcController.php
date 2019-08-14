@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 class IrcController extends CommonController
 {
     public function __construct() {
-        
+		$this->middleware('auth');
     }
 	
 	public function index() {
