@@ -156,7 +156,11 @@ class IrcController extends CommonController
 	}
 
 	public function listIrc(Request $request){
-		return view('irc.list_irc');
+		$data['irc_status'] = '';
+        if(!empty($request->all())){
+            $data['irc_status'] = $request->input('status');
+        }
+		return view('irc.list_irc')->with('data',$data);
 	}
 
 	public function getIrcMembersList(Request $request)

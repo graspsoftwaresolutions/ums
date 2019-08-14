@@ -63,7 +63,7 @@
                         </div>
                         <div id="modal_add_edit" class="modal">
                             <div class="modal-content">
-                                <h4>Users Details</h4>
+                                <h4>{{ __('Users Details') }}</h4>
                                 <form class="formValidate" id="UsersformValidate" method="post"
                                     action="{{ route('master.saveuser',app()->getLocale()) }}">
                                     @csrf

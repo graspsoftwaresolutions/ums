@@ -1,4 +1,31 @@
-  <!-- card stats start -->
+@section('headSecondSection')
+<style>
+@media (min-height: 100px) and (max-height: 657px) {
+	#main.main-full {
+		height: 657px;
+		//overflow: auto;
+	}
+	
+	.footer {
+	   position: fixed;
+	   margin-top:50px;
+	   left: 0;
+	   bottom: 0;
+	   width: 100%;
+	   height:auto;
+	   background-color: red;
+	   color: white;
+	   text-align: center;
+	   z-index:999;
+	} 
+	.sidenav-main{
+		z-index:9999;
+	}
+}
+
+</style>
+@endsection
+<!-- card stats start -->
 <div id="card-stats">
    <div class="row">
 		<div class="col s12 m6 l3">
