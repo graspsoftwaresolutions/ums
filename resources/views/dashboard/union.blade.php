@@ -11,6 +11,16 @@
 canvas#custom-line-chart-sample-three {
     height: 298px !important;
 }
+@media (max-width: 992px) {
+	.dash-tab-clearfix {
+	  clear:both;
+	}
+}
+@media (max-width: 1024px) {
+	.hide-on-med-and-down {
+	  display:none;
+	}
+}
 
 </style>
 @endsection
@@ -44,6 +54,7 @@ canvas#custom-line-chart-sample-three {
             </div>
          </div>
       </div>
+	  <div class="dash-tab-clearfix"/>
       <div class="col s12 m6 l3">
          <div class="card animate fadeRight">
             <div class="card-content green lighten-1 white-text">
@@ -78,13 +89,14 @@ canvas#custom-line-chart-sample-three {
 		  <div class="card-content">
 			 <h4 class="card-title">{{__('Total members') }}</h4>
 			 <p class="caption">
-				<a href="https://gionkunz.github.io/chartist-js/getting-started.html" target="_blank">Chartist-js</a> A very simple pie chart with label interpolation to show percentage instead of the actual data series value.
+				<a href="" target="_blank">Chartist-js</a> A very simple pie chart with label interpolation to show percentage instead of the actual data series value.
 			 </p>
 		  </div>
 	   </div>
       <div class="card animate fadeLeft">
          <div class="card-content">
             <h4 class="card-title mb-0">{{__('Total Members') }}<i class="material-icons float-right hide">more_vert</i></h4>
+			</br>
 			</br>
             <div class="current-balance-container">
 				
@@ -107,8 +119,8 @@ canvas#custom-line-chart-sample-three {
 			 
 			
 			
-          <p class="mt-2 mb-0 font-weight-600">Total Members</p>
-            <p class="no-margin grey-text lighten-3">{{ $data['total_member_count']}}</p> 
+            <p class="mt-2 mb-0 font-weight-600 hide-on-med-and-down">Total Members</p>
+            <p class="no-margin grey-text lighten-3 hide-on-med-and-down">{{ $data['total_member_count']}}</p> 
          </div>
          <div class="row">
             <div class="sample-chart-wrapper card-gradient-chart">

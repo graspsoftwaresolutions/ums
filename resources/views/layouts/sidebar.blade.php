@@ -96,6 +96,8 @@
    -->
       @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
         <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
+      @endif
+      @if($user_role=='union')
         @if (env('IRC')!='' || env('IRC')!=0)
         <li class="bold"><a id="irc_account_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.list',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('IRC Account') }}</span></a>
         @endif
