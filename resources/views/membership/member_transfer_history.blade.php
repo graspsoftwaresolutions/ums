@@ -6,6 +6,19 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<style>
+	#main .section-data-tables .dataTables_wrapper table.dataTable div.datepicker-calendar th, #main .section-data-tables .dataTables_wrapper table.dataTable  div.datepicker-calendar td {
+		padding: 0;
+		white-space: nowrap;
+		color: black;
+	}
+	.datepicker-date-display .date-text {
+		font-size: 1rem;
+		font-weight: 500;
+		line-height: 47px;
+		display: block;
+	}
+</style>
 @endsection
 @section('main-content')
 <div id="">
