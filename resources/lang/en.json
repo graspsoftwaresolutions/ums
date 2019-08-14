@@ -441,6 +441,11 @@
   "Users Details" : "Users Details_en",
   "IRC Confirmation" : "IRC Confirmation_en",
   "Full Name" : "Full Name_en",
-  "Full Name" : "Full Name_en",
+  "No of Pending IRC" : "No of Pending IRC_en",
+  "No of Confirm IRC" : "No of Confirm IRC_en",
+  "No of IRC" : "No of IRC_en",
+  "Pending IRC List" : "Pending IRC List_en",
+  "Confirm IRC List" : "Confirm IRC List_en",
+  "IRC List" : "IRC List_en",
   "To Company Branch Details" : "To Bank Branch Details_en"
 }

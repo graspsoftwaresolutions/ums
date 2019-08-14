@@ -60,7 +60,7 @@
 		<div class="col s12 m6 l3">
 			<div class="card animate fadeLeft">
 				<div class="card-content red accent-2 white-text">
-				   <p class="card-stats-title"><i class="material-icons"></i>No of IRC</p>
+				   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of IRC') }}</p>
 				   <h4 class="card-stats-number white-text">{{ $data['total_irc_count'] }}</h4>
 				  
 				</div>
