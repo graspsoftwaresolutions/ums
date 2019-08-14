@@ -925,6 +925,9 @@
 														</div>
 													</li>
 													@if($irc_status==1)
+													@php
+														$irc_data = CommonHelper::getIrcDataByMember($values->mid);
+													@endphp
 													<li class="step">
 														<div class="step-title waves-effect">IRC Confirmation</div>
 														<div class="step-content">
@@ -933,13 +936,13 @@
 																 <div class="input-field col s6">
 																	<label for="irc_member_number"
 																		class="common-label force-active">{{__('Membership Number') }}*</label>
-																	<input id="irc_member_number" name="irc_member_number"  class="common-input"
+																	<input id="irc_member_number" name="irc_member_number" value="{{ !empty($irc_data) ? $values->member_number : '' }}" class="common-input"
 																		type="text">
 																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_name_full" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-																	<input id="irc_name_full"  name="irc_name_full" class="common-input"
+																	<input id="irc_name_full"  name="irc_name_full" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircname : '' }}"
 																		type="text">
 																	
 																</div>
@@ -975,21 +978,21 @@
 																<div class="input-field col s6">
 																	<label for="irc_bank"
 																		class="common-label force-active">{{__('Bank') }}*</label>
-																	<input id="irc_bank"  name="irc_bank" class="common-input"
+																	<input id="irc_bank"  name="irc_bank" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbank : '' }}"
 																		type="text" >
 																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_bank_address"
 																		class="common-label force-active">{{__('Bank Address') }}*</label>
-																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input"
+																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbankaddress : '' }}"
 																		type="text" >
 																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_office_telephone_number"
 																		class="common-label force-active">{{__('Office Number') }}*</label>
-																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input"
+																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input" value="{{ !empty($irc_data) ? $irc_data->irctelephoneno : '' }}"
 																		type="text" >
 																	
 																</div>
@@ -997,14 +1000,14 @@
 																<div class="input-field col s6">
 																	<label for="irc_mobile"
 																		class="common-label force-active">{{__('Mobile') }}*</label>
-																	<input id="irc_mobile"  name="irc_mobile" class="common-input"
+																	<input id="irc_mobile"  name="irc_mobile" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircmobileno : '' }}"
 																		type="text" >
 																	
 																</div>
 																<div class="input-field col s6">
 																	<label for="irc_fax"
 																		class="common-label force-active">{{__('Fax') }}*</label>
-																	<input id="irc_fax"  name="irc_fax" class="common-input"
+																	<input id="irc_fax"  name="irc_fax" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircfaxno : '' }}"
 																		type="text" >
 																	
 																</div>
