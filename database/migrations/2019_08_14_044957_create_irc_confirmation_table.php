@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIrcInformationTable extends Migration
+class CreateIrcConfirmationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateIrcInformationTable extends Migration
      */
     public function up()
     {
-        Schema::create('irc_infornation', function (Blueprint $table) {
+        Schema::create('irc_confirmation', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('resignedmemberno');
             $table->string('resignedmembername');
@@ -61,6 +61,6 @@ class CreateIrcInformationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('irc_infornation');
+        Schema::dropIfExists('irc_confirmation');
     }
 }
