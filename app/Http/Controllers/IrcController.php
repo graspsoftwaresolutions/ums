@@ -297,7 +297,23 @@ class IrcController extends CommonController
 	}
 	public function editIrc(Request $request,$lang,$enc_id){
 		$id = Crypt::decrypt($enc_id);
-		return $id;
+
+		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
+									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%b/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%b/%Y') as gradewef"),
+									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommiteedate"))
+									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
+									->leftjoin('designation as d','m.designation_id','=','d.designation_name')
+									->leftjoin('persontitle as p','m.member_title_id','=','p.id')
+									->leftjoin('race as r','m.race_id','=','r.id')
+									->leftjoin('reason as reas','irc.resignedreason','=','reas.id')
+									->where('irc.id','=',$id)
+									->first();
+		//dd($data['resignedmember']);
+		
+		$data['reason_view'] = Reason::where('status','=','1')->get();
+
+
+		return view('IRC.edit_irc')->with('data',$data);
 	}
 
 	public function saveIrc(Request $request)
@@ -320,12 +336,47 @@ class IrcController extends CommonController
 			$submit = date('Y-m-d', strtotime($gradewef));
 			$data['submitted_at'] =  $submit;
 		}
-
 		$data['status'] = 0;
+		if(!empty(Auth::user())){
+		
+			$userid = Auth::user()->id;
+			$get_roles = Auth::user()->roles;
+			$user_role = $get_roles[0]->slug;
+		}
 
 		$defdaultLang = app()->getLocale();
 		
-		$saveIrc = $this->Irc->saveIrcdata($data);
+		if(!empty($request->id))
+		{
+			if($user_role=='irc-confirmation')
+			{		
+				$saveIrc = $this->Irc->saveIrcdata($data);
+				
+			}
+			else if($user_role=='irc-branch-committee')
+			{
+				$saveIrc = $this->Irc->saveIrcdata($data);
+
+			}
+
+			$check_edit = DB::table('irc_confirmation as irc')
+						  ->where('irc.nameofperson','=','1')
+						  ->where('irc.waspromoted','=','1')
+						  ->where('irc.beforepromotion','=','1')
+						  ->where('irc.attached','=','1')
+						  ->where('irc.herebyconfirm','=','1')
+						  ->where('irc.filledby','=','1')
+						  ->where('irc.branchcommitteeverification1','=','1')
+						  ->where('irc.branchcommitteeverification2','=','1')
+						  ->where('irc.id','=',$request->id)
+						  ->update(['status'=>'1']);
+		}
+		else{
+
+			//$data['status'] = 0;
+			$saveIrc = $this->Irc->saveIrcdata($data);
+		}
+	
 		
 		
 		if ($saveIrc == true) {
