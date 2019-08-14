@@ -15,6 +15,7 @@ use App\Model\MonthlySubscriptionMember;
 use App\Model\Company;
 use App\Model\Status;
 use App\Model\MonthlySubscriptionCompany;
+use App\Model\Irc;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -413,7 +414,7 @@ class CommonHelper
 	public static function getcityName($cityid){
 		return $city_name = City::find($cityid)->city_name;
     }
-	 public static function getCompanyName($companyid){
+	public static function getCompanyName($companyid){
 		$company_name = Company::where('id',$companyid)->pluck('company_name');
         if(count($company_name)>0){
             return $company_name[0];
@@ -441,5 +442,8 @@ class CommonHelper
             return $company_data[0];
         }
         return '';
-     }
+    }
+	public static function getIrcDataByMember($memberid){
+		return $irc = Irc::where('resignedmemberno', '=' ,$memberid)->first();
+	}
 }
