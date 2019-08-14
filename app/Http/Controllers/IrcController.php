@@ -302,9 +302,27 @@ class IrcController extends CommonController
 
 	public function saveIrc(Request $request)
 	{
-		 $data = $request->all();
+		$data = $request->all();
 		//  echo "<pre>";
 		//  print_r($data); die;   
+		if($data['gradewef'])
+		{
+			$fmmm_date = explode("/",$data['gradewef']);           							
+			$gradewef = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+			$grade = date('Y-m-d', strtotime($gradewef));
+			$data['gradewef'] =  $grade;
+		}
+
+		if($data['submitted_at'])
+		{
+			$fmmm_date = explode("/",$data['submitted_at']);           							
+			$gradewef = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+			$submit = date('Y-m-d', strtotime($gradewef));
+			$data['submitted_at'] =  $submit;
+		}
+
+		$data['status'] = 0;
+
 		$defdaultLang = app()->getLocale();
 		
 		$saveIrc = $this->Irc->saveIrcdata($data);
