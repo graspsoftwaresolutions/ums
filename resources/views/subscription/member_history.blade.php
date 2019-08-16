@@ -68,9 +68,9 @@
 											</tr>
 											<tr>
 												<td width="25%">{{__('NRIC-NEW')}}</td>
-												<td width="25%" style="color:#000">: {{ $member->new_ic }}</td>
+												<td width="25%" >: {{ $member->new_ic }}</td>
 												<td width="25%">{{__('Bank')}}</td>
-												<td width="25%" style="color:#000">: {{ $member->company_name }}</td>
+												<td width="25%" >: {{ $member->company_name }}</td>
 												
 											</tr>
 											<tr>
