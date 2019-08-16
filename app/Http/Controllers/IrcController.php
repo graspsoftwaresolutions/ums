@@ -331,6 +331,9 @@ class IrcController extends CommonController
 	public function saveIrc(Request $request)
 	{
 		$data = $request->all();
+		$resigned_member = $request->input('resignedmemberno');
+		$ircmembershipno = $request->input('ircmembershipno');
+		
 		if($data['gradewef'])
 		{
 			$fmmm_date = explode("/",$data['gradewef']);           							
@@ -393,6 +396,9 @@ class IrcController extends CommonController
 						  ->update(['status'=>'1']);
 		}
 		else{
+			if($ircmembershipno=='' || $resigned_member==''){
+				return redirect(app()->getLocale().'/irc_list')->with('error', 'Please choose member');
+			}
 			$saveIrc = $this->Irc->saveIrcdata($data);
 		}
 		if ($saveIrc == true) {
