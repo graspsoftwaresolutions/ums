@@ -935,6 +935,7 @@
 													@if($irc_status==1)
 													@php
 														$irc_data = CommonHelper::getIrcDataByMember($values->mid);
+														//dd($irc_data->resignedreason);
 													@endphp
 													<li class="step">
 														<div class="step-title waves-effect">IRC Confirmation</div>

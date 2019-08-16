@@ -453,4 +453,11 @@ class CommonHelper
         }
         return false;
     }
+    public static function getircreason_byid($id){
+		$autoid = Reason::where('id',$id)->pluck('reason_name');
+        if(count($autoid)>0){
+            return $autoid[0];
+        }
+        return false;
+    }
 }

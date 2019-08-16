@@ -330,7 +330,7 @@ class IrcController extends CommonController
 
 	public function saveIrc(Request $request)
 	{
-		  $data = $request->all();
+		$data = $request->all();
 		if($data['gradewef'])
 		{
 			$fmmm_date = explode("/",$data['gradewef']);           							
@@ -346,13 +346,7 @@ class IrcController extends CommonController
 			$submit = date('Y-m-d', strtotime($submittedat));
 			$data['submitted_at'] =  $submit;
 		}
-		if($data['branchcommitteedate'])
-		{
-			$fmmm_date = explode("/",$data['branchcommitteedate']);           							
-			$branch = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-			$branchdate = date('Y-m-d', strtotime($branch));
-			$data['branchcommitteedate'] =  $branchdate;
-		}
+		
 		$data['status'] = 0;
 		if(!empty(Auth::user())){
 		
@@ -365,6 +359,8 @@ class IrcController extends CommonController
 		
 		if(!empty($request->id))
 		{
+			
+
 			if($user_role=='irc-confirmation')
 			{		
 				$saveIrc = $this->Irc->saveIrcdata($data);
@@ -372,6 +368,13 @@ class IrcController extends CommonController
 			}
 			else if($user_role=='irc-branch-committee')
 			{
+				if($data['branchcommitteedate'])
+				{
+					$fmmm_date = explode("/",$data['branchcommitteedate']);           							
+					$branch = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+					$branchdate = date('Y-m-d', strtotime($branch));
+					$data['branchcommitteedate'] =  $branchdate;
+				}
 				$saveIrc = $this->Irc->saveIrcdata($data);
 
 			}
