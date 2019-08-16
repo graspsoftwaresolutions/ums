@@ -51,6 +51,7 @@
                                                     <tr>
                                                         <th>{{__('User Name') }}</th>
                                                         <th>{{__('Email') }}</th>
+                                                        <th>{{__('MemberCode') }}</th>
                                                         <th>{{__('Type') }}</th>
                                                         <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
@@ -214,6 +215,9 @@ $(function() {
             },
             {
                 "data": "email"
+            },
+			{
+                "data": "MemberCode"
             },
 			{
                 "data": "account_type"
