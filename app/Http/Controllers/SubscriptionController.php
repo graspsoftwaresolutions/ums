@@ -529,7 +529,7 @@ class SubscriptionController extends CommonController
 
         $data['member_history'] = DB::table('membermonthendstatus as ms')
                                             ->where('ms.MEMBER_CODE','=',$id)
-                                            ->OrderBy('ms.id','desc')
+                                            ->OrderBy('ms.id','asc')
                                             ->get(); 
                                             
            

@@ -85,7 +85,7 @@
 												<td width="25%">: {{ $member->doj }}</td>
 												
 												<td width="25%">{{__('Last paid Date')}}</td>
-												<td width="25%">{{ date('M/Y',strtotime($data['member_history'][0]->StatusMonth)) }}</td>
+												<td width="25%">{{ date('M/ Y',strtotime($data['member_history'][count($data['member_history'])-1]->StatusMonth)) }}</td>
 											</tr>
 										</table>
 								    </div>
@@ -125,12 +125,12 @@
 													
                                                     @foreach($data['member_history'] as $key=> $values)
 													<tr>  
-														<td>{{ date('M/Y',strtotime($values->StatusMonth)) }}</td>
+														<td>{{ date('M/ Y',strtotime($values->StatusMonth)) }}</td>
 														<td>{{ $values->SUBSCRIPTION_AMOUNT }}</td>
 														<td>{{ $values->BF_AMOUNT }}</td>
 														<td>{{ $values->INSURANCE_AMOUNT }}</td>
 														<td>{{ $values->TOTALMONTHSCONTRIBUTION }}</td>
-														<td>{{ date('M/Y',strtotime($values->LASTPAYMENTDATE)) }}</td>
+														<td>{{ date('M/ Y',strtotime($values->LASTPAYMENTDATE)) }}</td>
 														<td>{{ $values->TOTALMONTHSPAID }}</td>
 														<td>{{ $values->SUBSCRIPTIONDUE }}</td>
 														<td>{{ $values->SUBSCRIPTIONDUE+$values->TOTALMONTHSPAID }}</td>
