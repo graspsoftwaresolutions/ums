@@ -261,7 +261,8 @@ class MembershipController extends Controller
                      ->leftjoin('state as st','st.id','=','m.state_id')
                      ->leftjoin('city as cit','cit.id','=','m.city_id')
                      ->leftjoin('race as r','r.id','=','m.race_id')
-                     ->where('m.is_request_approved','=',$approved_cond);
+                     ->where('m.is_request_approved','=',$approved_cond)
+                     ->orderBy('m.id','DESC');
         if($member_status!='all'){
             $member_qry = $member_qry->where('m.status_id','=',$member_status);
         }
@@ -382,17 +383,24 @@ class MembershipController extends Controller
 					$compQuery =  $compQuery->where([
                     ['m.branch_id','=',$branchid]
                     ]);
-				}
+                }
+                
 			if( $limit != -1){
 				$compQuery = $compQuery->offset($start)
 				->limit($limit);
-			}
-			$memberslist = $compQuery->orderBy($order,$dir)
-			->get()->toArray(); 
+            }
+            if($order =='m.member_number'){
+                $memberslist = $compQuery->orderBy('m.id','desc')
+			        ->get()->toArray(); 
+            }else{
+                $memberslist = $compQuery->orderBy($order,$dir)
+                ->get()->toArray(); 
+            }
+			
         
         }
         else {
-            DB::enableQueryLog();
+           // DB::enableQueryLog();
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
@@ -499,7 +507,7 @@ class MembershipController extends Controller
                 
                 $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
-                DB::enableQueryLog();
+                //DB::enableQueryLog();
                 $history_list = DB::table('mon_sub_member')
                                     ->where('MemberCode','=',$member->id)->get();
 									
