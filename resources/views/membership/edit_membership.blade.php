@@ -71,7 +71,7 @@
 										<div class="row">
 											<div class="col s12">
 												<ul class="stepper horizontal" id="horizStepper">
-													<li class="step active">
+													<li id="memberstepper" class="step active">
 														<div class="step-title waves-effect">Member Details</div>
 														<div class="step-content" >
 															<div style="box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);padding:50px 50px;">
@@ -440,7 +440,7 @@
 																			</button>
 																			</div-->
 																		<div class="col m12 s12 mb-3" style="text-align: right;">
-																			<button id="controlled_next"  class="waves-effect waves dark btn btn-primary next-step"
+																			<button id="controlled_nextone"  class="waves-effect waves dark btn btn-primary next-step"
 																				type="submit">
 																			Next
 																			<i class="material-icons right">arrow_forward</i>
@@ -1268,17 +1268,20 @@
 	
 	});
 	function defaultValidationFunction(horizStepper, activeStepContent) {
-		
-		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
-	   for (let i = 0; i < inputs.length; i++) 
-	   {
-		   if (!inputs[i].checkValidity()) {
-			   jQuery("#submit-member").trigger('submit');
-			   return false;
+		stepper_id = $("#horizStepper li.active").attr('id');
+		if(stepper_id=="memberstepper"){
+			var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+		   for (let i = 0; i < inputs.length; i++) 
+		   {
+			   if (!inputs[i].checkValidity()) {
+				   jQuery("#submit-member").trigger('submit');
+				   return false;
+			   }
 		   }
-	   }
-	  
-	   return true;
+		  
+		   return true;
+		}
+		return true;
 	}
 	/* function nextBtn() {
 		 $("#controlled_next").trigger('submit');
