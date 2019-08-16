@@ -271,7 +271,7 @@
 																		</div>
 																		
 																		<div class="input-field col s12 m6">
-																		<label for="salary" class="force-active">Salary</label>
+																		<label for="salary" class="force-active">Salary*</label>
 																			<input id="salary" name="salary" value="{{$values->salary}}" required  type="text" data-error=".errorTxt11">
 																			<div class="errorTxt11"></div>
 																		</div>
@@ -281,7 +281,7 @@
 																			<div class="errorTxt12"></div>
 																		</div>
 																		<div class="input-field col s12 m6">
-																		<label for="new_ic" class="force-active">New IC Number</label>
+																		<label for="new_ic" class="force-active">New IC Number*</label>
 																			<input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
 																			<div class="errorTxt13"></div>
 																		</div>
@@ -935,7 +935,9 @@
 													@if($irc_status==1)
 													@php
 														$irc_data = CommonHelper::getIrcDataByMember($values->mid);
-														//dd($irc_data->resignedreason);
+														$resignedid = $irc_data->resignedreason;
+														$irc_reason_name = CommonHelper::getircreason_byid($resignedid);
+														
 													@endphp
 													<li class="step">
 														<div class="step-title waves-effect">IRC Confirmation</div>
@@ -1043,7 +1045,7 @@
 																		<div class="col s12 m4 input-field inline">
 																			<label>
 																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->waspromoted==1 ? 'checked' : '' }} />
-																				<span>She/He was promoted to</span>
+																				<span>She/He was @php echo strtolower(!empty($irc_reason_name) ? $irc_reason_name : '<span style="text-decoration:underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>') @endphp to</span>
 																			</label> 
 																		</div>
 																		<div class="col s12 m3 ">
