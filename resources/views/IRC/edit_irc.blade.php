@@ -192,7 +192,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<input id="irc_member_no"  value="{{$value}}" readonly name="ircmember" class="common-input"
 						type="text" data-error=".errorTxt1">
                        
-						<input type="hidden" name="ircmembershipno" id="irc_member_code">
+						<input type="hidden" name="ircmembershipno" value="{{$id}}"  id="irc_member_code">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
