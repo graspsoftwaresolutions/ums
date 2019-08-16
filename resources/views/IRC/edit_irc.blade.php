@@ -189,10 +189,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                         @php $id = $dataresigneddata->ircmembershipno;
                            $value = CommonHelper::getmembercode_byid($id);  
                          @endphp
-					<input id="irc_member_no"  value="{{$value}}" readonly name="ircmember" class="common-input"
+						<input id="irc_member_no"  value="{{$value}}" readonly name="ircmember" class="common-input"
 						type="text" data-error=".errorTxt1">
                        
-						<input type="hidden" name="ircmembershipno" id="irc_member_code">
+						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{$dataresigneddata->ircmembershipno}}">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
