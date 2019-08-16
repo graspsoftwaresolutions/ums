@@ -310,7 +310,7 @@ class IrcController extends CommonController
 	}
 	public function editIrc(Request $request,$lang,$enc_id){
 		$id = Crypt::decrypt($enc_id);
-
+		
 		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
 									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%b/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%b/%Y') as gradewef"),
 									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommitteedate"))

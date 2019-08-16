@@ -1036,7 +1036,7 @@
 																			</label> 
 																		</div>
 																		<div class="col s12 m3 ">
-																			<input type="text" name="irc_person_name" style="width:200%">
+																			<input type="text" name="irc_person_name" style="width:200%" value=" {{ !empty($irc_data) ? $irc_data->ircname : ''}}">
 																		</div>
 																	</div>						
 																</div>
@@ -1049,7 +1049,7 @@
 																			</label> 
 																		</div>
 																		<div class="col s12 m3 ">
-																			<input type="text" name="irc_promoted_person" style="width:110%">
+																			<input type="text" name="irc_promoted_person" style="width:110%" value=" ">
 																		</div>
 																		<div class="col s12 m2 input-field inline">
 																			<label>
@@ -1057,7 +1057,7 @@
 																			</label>
 																		</div>
 																		<div class="col s12 m3">
-																			<input type="text" name="irc_grade" name="text" placeholder="garde w.e.f" />	
+																			<input type="text" name="irc_grade" name="text" value=" {{ !empty($irc_data) ? $irc_data->gradewef : ''}}" placeholder="garde w.e.f" />	
 																		</div>
 																	</div>						
 																</div>

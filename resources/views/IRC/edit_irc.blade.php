@@ -437,7 +437,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<input type="submit" class="btn" id="save" name="save" value="Submit" >
 							</P>
 						</div>	
-						<div class="input-field col s12 m2">
+						<div class="input-field col s12 m2 hide">
 							<p>
 							<input type="button" class="btn" id="cancel" name="cancel" value="Cancel" >
 							</P>
@@ -481,7 +481,7 @@ $(document).ready(function() {
 // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 $('.modal').modal();
 });
-$("#member_number").devbridgeAutocomplete({
+/* $("#member_number").devbridgeAutocomplete({
 	//lookup: countries,
 	serviceUrl: "{{ URL::to('/get-member-list') }}?searchkey="+ $("#member_number").val(),
 	type:'GET',
@@ -527,7 +527,7 @@ $("#member_number").devbridgeAutocomplete({
 			//$("#member_number").val('');
 		}
 	}
-});
+}); */
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
@@ -535,7 +535,7 @@ $('.datepicker').datepicker({
 	format: 'dd/mmm/yyyy'
 });
 //IRC Member Details 
-$("#irc_member_no").devbridgeAutocomplete({
+/* $("#irc_member_no").devbridgeAutocomplete({
 	//lookup: countries,
 	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
 	type:'GET',
@@ -562,7 +562,7 @@ $("#irc_member_no").devbridgeAutocomplete({
 			//$("#irc_member_no").val('');
 		}
 	}
-});
+}); */
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#irc_member_no").val('');
 });

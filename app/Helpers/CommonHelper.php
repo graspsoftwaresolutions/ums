@@ -445,7 +445,8 @@ class CommonHelper
         return '';
     }
 	public static function getIrcDataByMember($memberid){
-		return $irc = Irc::where('resignedmemberno', '=' ,$memberid)->first();
+		$irc = Irc::where('resignedmemberno', '=' ,$memberid)->first();
+		return $irc;
     }
     public static function getmembercode_byid($id){
 		$autoid = Membership::where('id',$id)->pluck('member_number');
