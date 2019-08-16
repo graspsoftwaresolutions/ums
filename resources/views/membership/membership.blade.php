@@ -16,6 +16,11 @@
 		   width: 1180px; overflow: auto
 		}
 		
+		
+	}
+	span.dtr-title{
+		font-weight: bold;
+		color: #5a2da1 !important;
 	}
 	
 </style>
