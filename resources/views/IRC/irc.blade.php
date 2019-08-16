@@ -411,7 +411,7 @@
 						</div>	
 						<div class="input-field col s12 m2">
 							<p>
-							<input type="button" class="btn" id="cancel" name="cancel" value="Cancel" >
+							<input type="button" class="btn" id="clear" name="clear" onClick="refreshPage()" value="Clear" >
 							</P>
 						</div>
 						</div>
@@ -439,6 +439,9 @@ type="text/javascript"></script>
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script>
+function refreshPage(){
+    window.location.reload();
+}
 $("#irc_sidebar_a_id").addClass('active');
 $(document).ready(function() {
 	$("#irc_formValidate").validate({
