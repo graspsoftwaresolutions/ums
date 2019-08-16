@@ -317,7 +317,7 @@ class IrcController extends CommonController
 
 	public function saveIrc(Request $request)
 	{
-		  $data = $request->all();
+		$data = $request->all();
 		if($data['gradewef'])
 		{
 			$fmmm_date = explode("/",$data['gradewef']);           							
