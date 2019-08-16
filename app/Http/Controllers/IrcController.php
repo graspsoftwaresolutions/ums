@@ -352,6 +352,9 @@ class IrcController extends CommonController
 		
 		if(!empty($request->id))
 		{
+			// echo "<pre>";
+			//  print_r($request->all());
+			//  exit;
 			if($user_role=='irc-confirmation')
 			{		
 				$saveIrc = $this->Irc->saveIrcdata($data);
