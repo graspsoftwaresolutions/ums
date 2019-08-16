@@ -229,7 +229,17 @@
                                                                 @isset($row) {{ $row->is_head == '1' ? 'checked' : '' }}
                                                                 @endisset />
                                                             <span>{{__('Head') }}</span>
+															
                                                         </label>
+														 @isset($row)
+																@if($row->is_head == '1')
+																	</br>
+																	</br>
+																	<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">	
+																		If you uncheck Head, please make sure that change another branch as head
+																	</span>
+																@endif
+															 @endisset
                                                     </p>
                                                 </div>
                                             </div>
