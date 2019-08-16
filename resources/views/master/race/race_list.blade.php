@@ -154,7 +154,7 @@ $(function() {
                 "data": "race_name"
             },
             {
-                "data": "options"
+                "data": "options" 
             }
         ]
     });

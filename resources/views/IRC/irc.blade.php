@@ -1,15 +1,9 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css"
-href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}"> 
-<link rel="stylesheet" type="text/css"
-href="{{ asset('public/assets/vendors/data-tables/css/select.dataTables.min.css') }}"> 
-<link rel="stylesheet" type="text/css"
-href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+
 @endsection
 @section('headSecondSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
 <style type="text/css">
@@ -55,19 +49,20 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		}
 	
 	@endphp
-		<div class="container">
-		<div class="card">
 		<form class="formValidate" id="irc_formValidate" method="post"
 		action="{{ route('irc.saveIrc',app()->getLocale()) }}">
 		@csrf
+		<div class="container">
+		<div class="card">
 		
-		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
+		
+			<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
 			<div class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number') }}*</label>
 					<input id="member_number" name="resignedmemberno"  class="common-input autocompleteoff"
-						type="text" data-error=".errorTxt1">
+						type="text" required data-error=".errorTxt1">
 					<input type="hidden" name="resignedmemberno" id="memberid">
 					<div class="errorTxt1"></div>
 				</div>
@@ -75,37 +70,34 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<label for="member_type"
 						class="common-label force-active">{{__('Member Type') }}*</label>
 					<input id="member_type" name="member_type" readonly class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" >
 				</div>
 				<div class="input-field col s4">
 					<label for="member_title"
 						class="common-label force-active">{{__('Member Title') }}*</label>
 					<input id="member_title" name="member_title" readonly class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text">
 				</div>
 				 <div class="clearfix" style="clear:both"></div>
 				 <div class="input-field col s4">
 					<label for="member_name"
 						class="common-label force-active">{{__('Member Name') }}*</label>
 					<input id="member_name" name="resignedmembername" readonly class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" >
 				</div>
 				<div class="input-field col s4">
 					<label for="bank_name"
 						class="common-label force-active">{{__('Bank') }}*</label>
 					<input id="bank_name" name="resignedmemberbankname" readonly class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" data-error=".errorTxt2">
+					<div class="errorTxt2"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="branch_name"
 						class="common-label force-active">{{__('Bank Branch') }}*</label>
 					<input id="branch_name" name="resignedmemberbranchname" readonly class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" data-error=".errorTxt3">
+					<div class="errorTxt3"></div>
 				</div>
 				 <div class="clearfix" style="clear:both"></div>
 				 <div class="input-field col s4">
@@ -119,7 +111,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<input type="text" readonly id="member_age" >
 						</div>
 					</div>
-					<div class="errorTxt1"></div>
+					<div class="errorTxt4"></div>
 				</div>
 				<div class="input-field col s4">
 					<div class="col s12 m4">
@@ -128,7 +120,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" required="" readonly aria-required="true" id="femalegender" name="gender" type="radio" value="Female">
+							<input class="validate"  readonly aria-required="true" id="femalegender" name="gender" type="radio" value="Female">
 							<span>{{__('Female') }}</span>
 							</label> 
 						</p>						
@@ -136,41 +128,39 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="malegender" name="gender" type="radio"  value="Male">
+							<input class="validate" readonly aria-required="true" id="malegender" name="gender" type="radio"  value="Male">
 							<span>{{__('Male') }}</span>
 							</label>
 						</p>
 					</div>
-				<div class="errorTxt1"></div>
+				<div class="errorTxt5"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="doj"
 						class="common-label force-active">{{__('DOJ') }}*</label>
 					<input id="doj" name="doj" readonly class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" data-error=".errorTxt6">
+					<div class="errorTxt6"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s4">
 					<label for="race_name"
 						class="common-label force-active">{{__('Race') }}*</label>
 					<input id="race_name" readonly name="race_name" class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" data-error=".errorTxt7">
+					<div class="errorTxt7"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="nric_n"
 						class="common-label force-active">{{__('NRIC-N') }}*</label>
 					<input id="nric_n" readonly name="resignedmembericno" class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" >
 				</div>
 				<div class="input-field col s4">
 					<label for="remarks"
 						class="common-label force-active">{{__('Remarks') }}*</label>
 					<input id="remarks" name="remarks" class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" >
 				</div>
 			</div>
 		</div>
@@ -185,16 +175,16 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership No') }}*</label>
 					<input id="irc_member_no"   name="ircmember" class="common-input"
-						type="text" data-error=".errorTxt1">
+						type="text" required data-error=".errorTxt8">
 						<input type="hidden" name="ircmembershipno" id="irc_member_code">
-					<div class="errorTxt1"></div>
+					<div class="errorTxt8"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
 					<input id="irc_name"  readonly name="ircname" class="common-input"
-						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
+						type="text" data-error=".errorTxt9">
+					<div class="errorTxt9"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
@@ -225,13 +215,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</label>
 						</p>
 					</div>
+					<div class="errorTxt10"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
 					<input id="irc_bank" readonly  name="ircbank" class="common-input"
 						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
@@ -239,14 +229,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						class="common-label force-active">{{__('Bank Address') }}</label>
 					<input id="bank_address"  name="ircbankaddress" class="common-input"
 						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
 					<input id="irctelephoneno"  name="irctelephoneno" class="common-input"
 						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
@@ -254,14 +242,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						class="common-label force-active">{{__('Mobile') }}</label>
 					<input id="ircmobileno"  name="ircmobileno" class="common-input"
 						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="ircfaxno"
 						class="common-label force-active">{{__('Fax') }}</label>
 					<input id="ircfaxno"  name="ircfaxno" class="common-input"
 						type="text" data-error=".errorTxt1">
-					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s12">
 					<h6>Dear Sir,<br><br>
@@ -430,9 +416,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</div>
 						</div>
 					</div>
-				</form>
 		 </div>
+		
 	  </div><!-- START RIGHT SIDEBAR NAV -->
+	  </form>
 		  @include('layouts.right-sidebar')
 		  <!-- END RIGHT SIDEBAR NAV -->
 
@@ -444,24 +431,45 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <!-- Theme Customizer -->
 @endsection
 @section('footerSection')
-<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}"
-type="text/javascript"></script>
 <script
-src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
-type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}"
 type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
 <script>
-
 $("#irc_sidebar_a_id").addClass('active');
-
+$(document).ready(function() {
+	$("#irc_formValidate").validate({
+		rules: {
+			member_number: {
+				required: true,
+			},
+			irc_member_no: {
+				required: true,
+			},
+		},
+		//For custom messages
+		messages: {
+			member_number: {
+				required: '{{__("Enter a Member Number") }}',
+			},
+			irc_member_no: {
+				required: '{{__("Enter irc Member Number") }}',
+			},
+		},
+		errorElement: 'div',
+		errorPlacement: function(error, element) {
+			var placement = $(element).data('error');
+			if (placement) {
+				$(placement).append(error)
+			} else {
+				error.insertAfter(element);
+			}
+		}
+	});
+});
 //Model
 $(document).ready(function() {
 // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -552,6 +560,5 @@ $("#irc_member_no").devbridgeAutocomplete({
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#irc_member_no").val('');
 });
-
 </script>
 @endsection
