@@ -60,7 +60,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		action="{{ route('irc.updateIrc',app()->getLocale()) }}">
 		@csrf
         @php $dataresigneddata = $data['resignedmember']; 
-           // dd($data->id);
+           // dd($data);
          @endphp
 		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
 			<div class="row"> 
@@ -418,8 +418,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<input type="text" name="branchcommitteeZone" value="{{$dataresigneddata->branchcommitteeZone}}" Placeholder="Zone">
 							</div>
 							<div class="col s12 m3 ">
-							<!--<label>Date</label> -->
-									<input type="text" class="datepicker" Placeholder="Date" value="{{$dataresigneddata->branchcommiteedate}}" name="branchcommitteedate">
+									<input type="text" class="datepicker" Placeholder="Date" value="@isset($dataresigneddata->branchcommitteedate){{$dataresigneddata->branchcommitteedate}}@endisset" name="branchcommitteedate">
 							</div>
 						</div>	
 					</div>
