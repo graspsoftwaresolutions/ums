@@ -130,7 +130,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" required="" readonly aria-required="true" id="femalegender" name="gender" type="radio" value="Female" {{ $dataresigneddata->gender == 'Female' ? 'checked' : '' }} >
+							<input class="validate" required="" disabled="disabled" aria-required="true" id="femalegender" name="gender" type="radio" value="Female" {{ $dataresigneddata->gender == 'Female' ? 'checked' : '' }} >
 							<span>{{__('Female') }}</span>
 							</label> 
 						</p>						
@@ -138,7 +138,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="malegender" name="gender" type="radio"  value="Male" {{ $dataresigneddata->gender == 'Male' ? 'checked' : '' }}>
+							<input class="validate" disabled="disabled" required="" aria-required="true" id="malegender" name="gender" type="radio"  value="Male" {{ $dataresigneddata->gender == 'Male' ? 'checked' : '' }}>
 							<span>{{__('Male') }}</span>
 							</label>
 						</p>
@@ -191,7 +191,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                          @endphp
 						<input id="irc_member_no"  value="{{$value}}" readonly name="ircmember" class="common-input"
 						type="text" data-error=".errorTxt1">
-                       
 						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{$dataresigneddata->ircmembershipno}}">
 					<div class="errorTxt1"></div>
 				</div>

@@ -134,6 +134,7 @@
 																	  <input id="email" name="email" readonly type="text" value="{{$values->email}}" data-error=".errorTxt25">
 																	  <div class="errorTxt25"></div>
 																	</div>
+																	<div class="clearfix" style="clear:both"></div>
 																	<div class="input-field col s12 m6">
 																	  
 																	  <input type="text" value="{{ date('d/M/Y',strtotime($values->doe)) }}"  class="datepicker" id="doe" name="doe">
@@ -236,6 +237,7 @@
 																			<input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt7">
 																			<div class="errorTxt7"></div>
 																		</div>
+																		<div class="clearfix" style="clear:both"></div>
 																		<div class="input-field col s12 m6">
 																		<label for="address_one" class="force-active">Address Line 1*</label>
 																			<input id="address_one" name="address_one" required type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
@@ -246,6 +248,7 @@
 																			<input id="address_two" name="address_two" required  type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
 																			<div class="errorTxt9"></div>
 																		</div>
+																		<div class="clearfix" style="clear:both"></div>
 																		<div class="input-field col s12 m6">
 																		<label for="address_three" class="force-active">Address Line 3*</label>
 																			<input id="address_three" name="address_three" required  type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
@@ -263,7 +266,7 @@
 																				</div>
 																			</div>
 																		</div>
-																		
+																		<div class="clearfix" style="clear:both"></div>
 																		<div class="input-field col s12 m6">
 																			<input type="text" class="datepicker" id="doj" value="{{ date('d/M/Y',strtotime($values->doj)) }}" name="doj">
 																				<label for="doj" class="force-active">Date of Joining</label>
@@ -275,6 +278,7 @@
 																			<input id="salary" name="salary" value="{{$values->salary}}" required  type="text" data-error=".errorTxt11">
 																			<div class="errorTxt11"></div>
 																		</div>
+																		<div class="clearfix" style="clear:both"></div>
 																		<div class="input-field col s12 m6">
 																		<label for="salary" class="force-active">Old IC Number</label>
 																			<input id="old_ic" name="old_ic" value="{{$values->old_ic}}" type="text" data-error=".errorTxt12">
@@ -285,6 +289,7 @@
 																			<input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
 																			<div class="errorTxt13"></div>
 																		</div>
+																		<div class="clearfix" style="clear:both"></div>
 																		<div class="col s12 m6 hide">
 																			<label>Company Name*</label>
 																			<select name="company_id" id="company" class="error browser-default selectpicker">

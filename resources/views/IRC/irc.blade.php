@@ -120,7 +120,7 @@
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate"  readonly aria-required="true" id="femalegender" name="gender" type="radio" value="Female">
+							<input class="validate"   aria-required="true" id="femalegender" name="gender" type="radio" value="Female" disabled="disabled">
 							<span>{{__('Female') }}</span>
 							</label> 
 						</p>						
@@ -128,7 +128,7 @@
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate" readonly aria-required="true" id="malegender" name="gender" type="radio"  value="Male">
+							<input class="validate"  aria-required="true" id="malegender" name="gender" type="radio"  value="Male" disabled="disabled">
 							<span>{{__('Male') }}</span>
 							</label>
 						</p>
