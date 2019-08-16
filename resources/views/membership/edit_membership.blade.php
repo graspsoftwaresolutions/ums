@@ -1086,7 +1086,7 @@
 																<div class="col s12 m12">
 																	<p class="padding-left-20">
 																		<label>
-																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->nameforfilledby==1 ? 'checked' : '' }} />
+																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->filledby==1 ? 'checked' : '' }} />
 																		<span>The messenger clerical position has been filled by</span>
 																		</label> 
 																	</p>	
