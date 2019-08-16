@@ -44,7 +44,7 @@ class SubscriptionExport implements FromCollection, WithHeadings, WithEvents
             return collect([]);
         }else{
             $company_id = $this->request_data['company_id'];
-            $subscription_data = collect(DB::select( DB::raw("SELECT @a:=@a+1 ID, NRIC as ICNO, NRIC as NRIC, Name as MemberName, Amount as Amount,'' as Department FROM mon_sub_member ,(SELECT @a:= 0) AS a WHERE mon_sub_member.MonthlySubscriptionCompanyId = '$company_id'") ));
+            $subscription_data = collect(DB::select( DB::raw("SELECT @a:=@a+1 ID, NRIC as NRIC, Name as MemberName, Amount as Amount,'' as Department FROM mon_sub_member ,(SELECT @a:= 0) AS a WHERE mon_sub_member.MonthlySubscriptionCompanyId = '$company_id'") ));
 
             //$subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount')->where('MonthlySubscriptionCompanyId',$company_id)->get();
             return $subscription_data;
@@ -56,7 +56,6 @@ class SubscriptionExport implements FromCollection, WithHeadings, WithEvents
     {
         return [
             'ID',
-            'ICNO',
             'NRIC',
             'MemberName',
             'Amount',

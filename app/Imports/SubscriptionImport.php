@@ -94,12 +94,11 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
         foreach($rows as $key=>$row1){
             
             if($rows[$key] != $rows[0]){
-                $icno = $row1[1];
-                $nric = $row1[2];
-                $membername = $row1[3];
-                $amount = $row1[4];
+                $nric = $row1[1];
+                $membername = $row1[2];
+                $amount = $row1[3];
 
-                if($icno!='' && $nric!="" && $membername!="" && $amount!=""){
+                if($nric!="" && $membername!="" && $amount!=""){
 
                     $subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$this->company_auto_id)
                                                 ->where('NRIC',$nric);
