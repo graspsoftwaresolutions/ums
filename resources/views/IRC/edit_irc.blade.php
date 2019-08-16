@@ -243,14 +243,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s6">
 					<label for="bank_address"
 						class="common-label force-active">{{__('Bank Address') }}</label>
-					<input id="bank_address" readonly  name="ircbankaddress" value="{{ isset($dataresigneddata->ircbankaddress) ? $dataresigneddata->ircbankaddress : 'Nill' }}" class="common-input"
+					<input id="bank_address" readonly  name="ircbankaddress" value="{{ isset($dataresigneddata->ircbankaddress) ? $dataresigneddata->ircbankaddress : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
-					<input id="irctelephoneno" readonly name="irctelephoneno"  value="{{ isset($dataresigneddata->irctelephoneno) ? $dataresigneddata->irctelephoneno : 'Nill' }}" class="common-input"
+					<input id="irctelephoneno" readonly name="irctelephoneno"  value="{{ isset($dataresigneddata->irctelephoneno) ? $dataresigneddata->irctelephoneno : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -258,14 +258,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s6">
 					<label for="ircmobileno"
 						class="common-label force-active">{{__('Mobile') }}</label>
-					<input id="ircmobileno" readonly name="ircmobileno" value="{{ isset($dataresigneddata->ircmobileno) ? $dataresigneddata->ircmobileno : 'Nill' }}" class="common-input"
+					<input id="ircmobileno" readonly name="ircmobileno" value="{{ isset($dataresigneddata->ircmobileno) ? $dataresigneddata->ircmobileno : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="ircfaxno"
 						class="common-label force-active">{{__('Fax') }}</label>
-					<input id="ircfaxno" readonly name="ircfaxno" value="{{ isset($dataresigneddata->ircfaxno) ? $dataresigneddata->ircfaxno : 'Nill' }}" class="common-input"
+					<input id="ircfaxno" readonly name="ircfaxno" value="{{ isset($dataresigneddata->ircfaxno) ? $dataresigneddata->ircfaxno : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
@@ -279,7 +279,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m4 ">
 								<p>
 									<label>
-									<input type="checkbox"  class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"  {{ $dataresigneddata->nameofperson == '1' ? 'checked' : '' }}/>
+									<input type="hidden" name="nameofperson" value="0">
+									<input type="checkbox"  class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"  @isset($dataresigneddata) {{ $dataresigneddata->nameofperson == '1' ? 'checked' : '' }} @endisset >
+                                                                
 									<span>Name of the Person appliying for BF is</span>
 									</label> 
 								</p>	
@@ -294,6 +296,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m3 ">
 								<p>
 									<label>
+									<input type="hidden" name="waspromoted" value="0">
 									<input type="checkbox"  name="waspromoted" id="waspromoted" class="common-checkbox"  value="1" {{ $dataresigneddata->waspromoted == '1' ? 'checked' : '' }}/>
 									<span>She/He was</span>
 									</label> 
@@ -320,6 +323,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12">
 						<p class=" padding-left-20">
 							<label>
+							<input type="hidden" name="beforepromotion" value="0">
 							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1" {{ $dataresigneddata->beforepromotion == '1' ? 'checked' : '' }}/>
 							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
@@ -328,6 +332,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12 padding-left-20">
 						<p class=" padding-left-20">
 							<label>
+							<input type="hidden" name="attached" value="0">
 							<input type="checkbox" name="attached" id="attached" class="common-checkbox"   value="1"  {{ $dataresigneddata->attached == '1' ? 'checked' : '' }} />
 							<span>Attached Job function/Description (compulsory). </span>
 							</label> 
@@ -336,6 +341,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12 m12">
 						<p class=" padding-left-20">
 							<label>
+							<input type="hidden" name="herebyconfirm" value="0">
 							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" value="1" {{ $dataresigneddata->herebyconfirm == '1' ? 'checked' : '' }}/>
 							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
 							</label> 
@@ -346,6 +352,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m4 ">
 								<p>
 									<label>
+									<input type="hidden" name="filledby" value="0">
 									<input type="checkbox" name="filledby" id="filledby"  class="common-checkbox"  value="1"  {{ $dataresigneddata->filledby == '1' ? 'checked' : '' }}/>
 									<span>The messenger clerical position has been filled by</span>
 									</label> 
@@ -365,6 +372,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="row">
 						<p class="padding-left-20">
 							<label>
+							<input type="hidden" name="branchcommitteeverification1" value="0">
 							<input type="checkbox" name="branchcommitteeverification1" class="common-checkbox"  value="1"  {{ $dataresigneddata->branchcommitteeverification1 == '1' ? 'checked' : '' }}/>
 							<span>I have verified the above and confirm that the declaration by the IRC is correct.The messenger/clerical And; </span>
 							</label> 
@@ -375,6 +383,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="row">
 						<p class="padding-left-20">
 							<label>
+							<input type="hidden" name="branchcommitteeverification2" value="0">
 							<input type="checkbox" id="" name="branchcommitteeverification2" class="common-checkbox"  value="1" {{ $dataresigneddata->branchcommitteeverification2 == '1' ? 'checked' : '' }}/>
 							<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
 							</label> 

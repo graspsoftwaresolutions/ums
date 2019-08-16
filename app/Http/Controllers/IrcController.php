@@ -352,6 +352,10 @@ class IrcController extends CommonController
 		
 		if(!empty($request->id))
 		{
+			//return $data['nameofperson'] = $request->nameofperson;
+			//  echo "<pre>";
+			//  print_r($request->all());
+			//  exit;
 			if($user_role=='irc-confirmation')
 			{		
 				$saveIrc = $this->Irc->saveIrcdata($data);
@@ -376,13 +380,9 @@ class IrcController extends CommonController
 						  ->update(['status'=>'1']);
 		}
 		else{
-
 			//$data['status'] = 0;
 			$saveIrc = $this->Irc->saveIrcdata($data);
 		}
-	
-		
-		
 		if ($saveIrc == true) {
 			if(!empty($request->id))
 			{
