@@ -212,12 +212,22 @@
                                                 <div class="input-field col s12 m6">
                                                     <p>
                                                         <label>
+															@if(Auth::user()->id==$values->user_id && $values->is_head == '1')
+																<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ __('You are head union branch, you cant uncheck here.') }}</span>
+																<input type="checkbox" name="is_head"
+																	class="common-checkbox hide" id="is_head" value="1"
+																	@isset($values)
+																	{{ $values->is_head == '1' ? 'checked' : '' }}
+																	@endisset />
+															@else
                                                             <input type="checkbox" name="is_head"
                                                                 class="common-checkbox" id="is_head" value="1"
                                                                 @isset($values)
                                                                 {{ $values->is_head == '1' ? 'checked' : '' }}
                                                                 @endisset />
                                                             <span>{{__('Head') }}</span>
+															@endif
+															
                                                         </label>
                                                     </p>
                                                     
