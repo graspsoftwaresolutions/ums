@@ -369,50 +369,58 @@
 																	<input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
 																		<label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
 																	</div>
-																		<div class="input-field col s12 m6">
-																			<label for="employee_id" class="force-active">Employee ID</label>
-																			<input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
-																		</div>
+																	<div class="input-field col s12 m6">
+																		<label for="employee_id" class="force-active">Employee ID</label>
+																		<input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
+																	</div>
 																		@php
 																		if($values->is_request_approved==0 && $check_union==1){
 																		@endphp
-																		<div class="col s12 m6 ">
-																			<label>Status*</label>
-																			<label>
-																				<input type="checkbox" id="activate_account" name="activate_account" value='1'/>
-																				&nbsp; <span>Verify account</span>
-																			</label>
-																			<div class="input-field">       
-																				<div class="errorTxt16"></div>
+																			<div class="col s12 m6 ">
+																				<label>Status*</label>
+																				<label>
+																					<input type="checkbox" id="activate_account" name="activate_account" value='1'/>
+																					&nbsp; <span>Verify account</span>
+																				</label>
+																				<div class="input-field">       
+																					<div class="errorTxt16"></div>
+																				</div>
 																			</div>
-																		</div>
 																		@php												
 																		}
 																		@endphp
 																		@php
 																		if($values->is_request_approved==0){
 																		@endphp
-																		<div class="col s12 m6 ">
-																			<label>Status*</label>
-																			<p style="margin-top:10px;">
-																				<span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Pending</span>
-																			</p>
-																		</div>
+																			<div class="col s12 m6 ">
+																				<label>Status*</label>
+																				<p style="margin-top:10px;">
+																					<span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Pending</span>
+																				</p>
+																			</div>
 																		@php												
 																		}else{
 																		@endphp
-																		<div class="col s12 m6 ">
-																			<label>Status*</label>
-																			<p style="margin-top:10px;">.
-																				@php
-																				$status_val = CommonHelper::getStatusName($values->status_id);
-																				if($status_val ==''){
-																					$status_val = 'Pending';
-																				}
-																				@endphp
-																				<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ $status_val }}</span>
-																			</p>
-																		</div>
+																			<div class="col s12 m6 ">
+																				<label>Status*</label>
+																				@if($check_union==1)
+																					<select name="status_id" id="status_id" {{ $branch_disabled }} data-error=".errorTxt16" class="error browser-default">
+																						@foreach($data['status_view'] as $key=>$value)
+																							<option value="{{$value->id}}" <?php if($value->id == $values->status_id) { echo "selected";} ?>>{{$value->status_name}}</option>
+																						@endforeach
+																					</select>
+																				@else
+																				<p style="margin-top:10px;">.
+																					@php
+																					$status_val = CommonHelper::getStatusName($values->status_id);
+																					if($status_val ==''){
+																						$status_val = 'Pending';
+																					}
+																					@endphp
+																					<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ $status_val }}</span>
+																				</p>
+																				@endif
+																			</div>
 																		@php												
 																		}
 																		@endphp

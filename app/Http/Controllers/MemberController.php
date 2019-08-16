@@ -178,6 +178,11 @@ class MemberController extends CommonController
 						$activate_account = isset($activate_account) ? 1 : 0;
 						if($activate_account==1){
 							$member['is_request_approved'] = $activate_account;
+							$member['status_id'] = 1;
+						}
+						$edit_status_id = $request->input('status_id');
+						if(isset($edit_status_id)){
+							$member['status_id'] = $edit_status_id;
 						}
 					}
 					
@@ -393,13 +398,15 @@ class MemberController extends CommonController
 	
 	public function getoldMemberList(Request $request)
     {
-        $search = $request->serachkey;
+        $search = $request->input('query');
        // return $search;
         $res['suggestions'] = DB::table('membership')->select(DB::raw('CONCAT(membership.name, " - ", membership.member_number) AS value'),'membership.member_number as number')
             ->join('status','membership.status_id','=','status.id')        
-        ->where([
-            ['status.status_name','=','Inactive']
-        ])->get();
+        ->where('status.status_name','=','RESIGNED')
+		->where(function($query) use ($search){
+				$query->orWhere('membership.member_number', 'LIKE',"%{$search}%")
+					->orWhere('membership.name', 'LIKE',"%{$search}%");
+		})->limit(20)->get();
         //$res['suggestions'] = [ array('value' => 'United States', 'data' => 'us'), array('value' => 'India', 'data' => 'in') ];
         //echo json_encode($res); die;
         return response()->json($res);
