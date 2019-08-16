@@ -19,7 +19,6 @@ class IrcController extends CommonController
         $this->Irc = new Irc;
 		$this->middleware('auth');
     }
-	
 	public function index() {
 		$irc = env("IRC",'Not set');
 		$irc = $irc=='' ? 0 : $irc;
@@ -167,7 +166,7 @@ class IrcController extends CommonController
 
 	public function getIrcMembersList(Request $request)
 	{
-		DB::connection()->enableQueryLog();
+		
 		$searchkey = $request->input('searchkey');
         $search = $request->input('query');
 		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
@@ -179,9 +178,7 @@ class IrcController extends CommonController
 									->orWhere('m.name', 'LIKE',"%{$search}%")
 									->orWhere('irc.MemberCode', 'LIKE',"%{$search}%");
                             })->limit(25)
-							->get();   
-		// $queries = DB::getQueryLog();
-		// dd($queries);
+							->get(); 
          return response()->json($res);
 
 	}
@@ -293,7 +290,6 @@ class IrcController extends CommonController
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
                 $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>Edit IRC</a>";
 				$data[] = $nestedData;
-
 			}
         }
         //$data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
@@ -312,7 +308,7 @@ class IrcController extends CommonController
 
 		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
 									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%b/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%b/%Y') as gradewef"),
-									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommiteedate"))
+									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommitteedate"))
 									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
 									->leftjoin('designation as d','m.designation_id','=','d.designation_name')
 									->leftjoin('persontitle as p','m.member_title_id','=','p.id')
@@ -320,7 +316,6 @@ class IrcController extends CommonController
 									->leftjoin('reason as reas','irc.resignedreason','=','reas.id')
 									->where('irc.id','=',$id)
 									->first();
-		//dd($data['resignedmember']);
 		
 		$data['reason_view'] = Reason::where('status','=','1')->get();
 
@@ -330,9 +325,7 @@ class IrcController extends CommonController
 
 	public function saveIrc(Request $request)
 	{
-		$data = $request->all();
-		//  echo "<pre>";
-		//  print_r($data); die;   
+		  $data = $request->all();
 		if($data['gradewef'])
 		{
 			$fmmm_date = explode("/",$data['gradewef']);           							
@@ -344,9 +337,16 @@ class IrcController extends CommonController
 		if($data['submitted_at'])
 		{
 			$fmmm_date = explode("/",$data['submitted_at']);           							
-			$gradewef = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-			$submit = date('Y-m-d', strtotime($gradewef));
+			$submittedat = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+			$submit = date('Y-m-d', strtotime($submittedat));
 			$data['submitted_at'] =  $submit;
+		}
+		if($data['branchcommitteedate'])
+		{
+			$fmmm_date = explode("/",$data['branchcommitteedate']);           							
+			$branch = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+			$branchdate = date('Y-m-d', strtotime($branch));
+			$data['branchcommitteedate'] =  $branchdate;
 		}
 		$data['status'] = 0;
 		if(!empty(Auth::user())){
@@ -360,10 +360,6 @@ class IrcController extends CommonController
 		
 		if(!empty($request->id))
 		{
-			//return $data['nameofperson'] = $request->nameofperson;
-			//  echo "<pre>";
-			//  print_r($request->all());
-			//  exit;
 			if($user_role=='irc-confirmation')
 			{		
 				$saveIrc = $this->Irc->saveIrcdata($data);
@@ -374,7 +370,6 @@ class IrcController extends CommonController
 				$saveIrc = $this->Irc->saveIrcdata($data);
 
 			}
-
 			$check_edit = DB::table('irc_confirmation as irc')
 						  ->where('irc.nameofperson','=','1')
 						  ->where('irc.waspromoted','=','1')
@@ -388,7 +383,6 @@ class IrcController extends CommonController
 						  ->update(['status'=>'1']);
 		}
 		else{
-			//$data['status'] = 0;
 			$saveIrc = $this->Irc->saveIrcdata($data);
 		}
 		if ($saveIrc == true) {
