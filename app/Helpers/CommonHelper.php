@@ -8,6 +8,7 @@ use App\Model\AppForm;
 use App\Model\Country;
 use App\Model\State;
 use App\Model\City;
+use App\Model\Reason;
 use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
 use App\Model\Membership;
@@ -454,9 +455,10 @@ class CommonHelper
         return false;
     }
     public static function getircreason_byid($id){
-		$autoid = Reason::where('id',$id)->pluck('reason_name');
-        if(count($autoid)>0){
-            return $autoid[0];
+       // echo $id; die;
+		 $reasonname = Reason::where('id',$id)->pluck('reason_name');
+        if(count($reasonname)>0){
+            return $reasonname[0];
         }
         return false;
     }
