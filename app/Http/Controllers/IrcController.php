@@ -102,13 +102,15 @@ class IrcController extends CommonController
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-				$users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','i.MemberCode')
+				$users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 							->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+							->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
 							->orderBy($order,$dir)
 							->get()->toArray();
             }else{
-				$users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','i.MemberCode')
+				$users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 						->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+						->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
 						->offset($start)
 						->limit($limit)
 						->orderBy($order,$dir)
@@ -119,16 +121,18 @@ class IrcController extends CommonController
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','i.MemberCode')
+            $users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 						->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+						->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
 						->where('u.id','LIKE',"%{$search}%")
                         ->orWhere('u.name', 'LIKE',"%{$search}%")
                         ->orWhere('u.email', 'LIKE',"%{$search}%")
                         ->orderBy($order,$dir)
                         ->get()->toArray();
         }else{
-            $users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','i.MemberCode')
+            $users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 					->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+					->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
 					->where('u.id','LIKE',"%{$search}%")
 					->orWhere('u.name', 'LIKE',"%{$search}%")
 					->orWhere('u.email', 'LIKE',"%{$search}%")
@@ -137,8 +141,9 @@ class IrcController extends CommonController
                         ->orderBy($order,$dir)
                         ->get()->toArray();
         }
-        $totalFiltered = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','i.MemberCode')
+        $totalFiltered = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 							->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+							->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
 							->where('u.id','LIKE',"%{$search}%")
 							->orWhere('u.name', 'LIKE',"%{$search}%")
 							->orWhere('u.email', 'LIKE',"%{$search}%")

@@ -728,7 +728,7 @@ class MasterController extends CommonController {
         DB::connection()->enableQueryLog();
         $id = Crypt::decrypt($id);
         $data['union_branch'] = DB::table('union_branch')->select('union_branch.id as branchid','union_branch.id','union_branch.union_branch','union_branch.is_head','union_branch.country_id','union_branch.state_id','union_branch.city_id','union_branch.postal_code','union_branch.address_one','union_branch.address_two','union_branch.phone','union_branch.email','union_branch.is_head',
-                                            'union_branch.status','union_branch.address_three','union_branch.mobile','union_branch.logo','country.id','country.country_name','country.status','state.id','state.state_name','state.status','city.id','city.city_name','city.status')
+                                            'union_branch.status','union_branch.address_three','union_branch.mobile','union_branch.logo','country.id','country.country_name','country.status','state.id','state.state_name','state.status','city.id','city.city_name','city.status','union_branch.user_id')
                                 ->leftjoin('country','union_branch.country_id','=','country.id')
                                 ->leftjoin('state','union_branch.state_id','=','state.id')
                                 ->leftjoin('city','union_branch.city_id','=','city.id')
