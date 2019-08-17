@@ -448,10 +448,23 @@ class CommonHelper
 		$irc = Irc::where('resignedmemberno', '=' ,$memberid)->first();
 		return $irc;
     }
+
     public static function getmembercode_byid($id){
 		$autoid = Membership::where('id',$id)->pluck('member_number');
         if(count($autoid)>0){
             return $autoid[0];
+        }
+        return false;
+    }
+    public static function getdesignationname($id)
+    {
+        $designation_name = DB::table('membership as m')
+                            ->leftjoin('designation as d','m.designation_id','=','d.id' )
+                            ->where('m.id','=',$id)
+                            ->pluck('d.designation_name');
+       
+        if(count($designation_name)>0){
+            return $designation_name[0];
         }
         return false;
     }

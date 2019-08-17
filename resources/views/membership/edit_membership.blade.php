@@ -940,6 +940,8 @@
 													@if($irc_status==1)
 													@php
 														$irc_data = CommonHelper::getIrcDataByMember($values->mid);
+														$resignedmemberno = $irc_data->resignedmemberno;
+														$member_type = CommonHelper::getdesignationname($resignedmemberno);
 														$resignedid = $irc_data->resignedreason;
 														$irc_reason_name = CommonHelper::getircreason_byid($resignedid);
 														
@@ -1054,7 +1056,7 @@
 																			</label> 
 																		</div>
 																		<div class="col s12 m3 ">
-																			<input type="text" name="irc_promoted_person" style="width:110%" value=" ">
+																			<input type="text" name="irc_promoted_person" style="width:110%" value="{{!empty($member_type) ? $member_type : ''}}">
 																		</div>
 																		<div class="col s12 m2 input-field inline">
 																			<label>

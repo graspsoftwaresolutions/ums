@@ -25,6 +25,10 @@
 	#irc_confirmation_area {
 		pointer-events: none;
 	}
+	.branch 
+	{
+    	pointer-events: none;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -36,18 +40,8 @@
 		
 		$userid = Auth::user()->id;
 		$get_roles = Auth::user()->roles;
-		$user_role = $get_roles[0]->slug;
-			
-			if($user_role =='irc-confirmation'){
-				$irc_information = 'show';
-				$irc_branch_commitee = 'hide';
-			}
-			else if($user_role =='irc-branch-committee'){
-				$irc_information = 'hide';
-				$irc_branch_commitee = 'show';
-			} 
+		$user_role = $get_roles[0]->slug;	
 		}
-	
 	@endphp
 		<form class="formValidate" id="irc_formValidate" method="post"
 		action="{{ route('irc.saveIrc',app()->getLocale()) }}">
@@ -168,7 +162,7 @@
 	<div class=" col s12 ">
 	  <div class="container">
 	 
-		 <div class="card {{$irc_information}}">
+		 <div class="card">
 		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
 			  <div class="row">
 				<div class="input-field col s6">
@@ -338,14 +332,14 @@
 					</div>
 					</div>
 			  </div>
-			  <div class="card {{$irc_branch_commitee}}">
+			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h6>BRANCH COMMITEE VERIFICATION</h6>
 				<div class="row">
 					<div class="col s12 m12">
 					<div class="row">
-						<p>
+						<p class="padding-left-20">
 							<label>
-							<input type="checkbox" class="filled-in" checked="checked" />
+							<input type="checkbox" class="common-checkbox" />
 							<span>I have verified the above and confirm that the declaration by the IRC is correct.The messenger/clerical And; </span>
 							</label> 
 						</p>	
@@ -353,9 +347,9 @@
 					</div>
 					<div class="col s12 m12">
 					<div class="row">
-						<p>
+						<p class="padding-left-20">
 							<label>
-							<input type="checkbox" class="filled-in" checked="checked" />
+							<input type="checkbox" class="common-checkbox"  />
 							<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
 							</label> 
 						</p>
@@ -364,7 +358,7 @@
 					<div class="col s12 m12">
 						<div class="row">
 							<div class="col s12 m4 ">
-								<p>
+								<p >
 									<label>
 									
 									<span>Branch Commitee [Name in full]</span>
@@ -379,7 +373,7 @@
 					<div class="col s12 m12">
 						<div class="row">
 							<div class="col s12 m4 ">
-								<p>
+								<p >
 									<label>
 									<span>Zone</span>
 									</label> 
