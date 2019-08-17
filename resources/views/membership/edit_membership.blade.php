@@ -1164,10 +1164,12 @@ $irc_status = $data['irc_status'];
 					<i class="material-icons left">arrow_back</i>
 					Prev
 				</button>
+				@if($irc_status==1)
 				<button id="controlled_nextone"  class="waves-effect waves dark btn btn-primary next-step" type="submit">
 						Next
 				<i class="material-icons right">arrow_forward</i>
 				</button>
+				@endif
 				<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
 					type="submit">Submit</button>
 			</div>
@@ -1180,13 +1182,13 @@ $irc_status = $data['irc_status'];
 	<div class="step-content">
 		<div  class="row">
 			</br>
-			 <div class=" col s6">
-			 <label for="resign_date" class="force-active">Resign Date</label>
+			 <div class="input-field col s6">
+				<label for="resign_date" class="force-active">Resign Date</label>
 				  <input type="text" class="datepicker" id="resign_date" name="resign_date">
 					
 				  <div class="errorTxt26"></div>
 			 </div>
-			 <div class="input-field col s6">
+			 <div class="col s6">
 				 <div class="row">
 					<div class="input-field col s6">
 						<input type="text" placeholder="Paid Till" id="paid" name="paid">
