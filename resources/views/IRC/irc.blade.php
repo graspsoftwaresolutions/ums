@@ -544,7 +544,6 @@ $("#irc_member_no").devbridgeAutocomplete({
 					$('#irctelephoneno').val(res.phone);
 					$('#ircmobileno').val(res.mobile);
 				}
-        
 			});
 
 	},
