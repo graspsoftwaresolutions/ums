@@ -190,7 +190,7 @@ class IrcController extends CommonController
 	public function getIrcMembersListValues(Request $request)
 	{
 		$member_id = $request->member_id;
-		$res = DB::table('irc_account as irc')->select('m.id as mid','m.name as membername','c.company_name as bankname')
+		$res = DB::table('irc_account as irc')->select('m.id as mid','m.name as membername','c.company_name as bankname','cb.')
 				->leftjoin('membership as m','irc.MemberCode','=','m.id')
 				->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
 				->leftjoin('company as c','cb.company_id','=','c.id')
@@ -315,7 +315,7 @@ class IrcController extends CommonController
 									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%b/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%b/%Y') as gradewef"),
 									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommitteedate"))
 									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
-									->leftjoin('designation as d','m.designation_id','=','d.designation_name')
+									->leftjoin('designation as d','m.designation_id','=','d.id')
 									->leftjoin('persontitle as p','m.member_title_id','=','p.id')
 									->leftjoin('race as r','m.race_id','=','r.id')
 									->leftjoin('reason as reas','irc.resignedreason','=','reas.id')

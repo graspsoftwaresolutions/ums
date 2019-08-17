@@ -31,6 +31,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	#irc_confirmation_area {
 		pointer-events: none;
 	}
+	.branch 
+	{
+    	pointer-events: none;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -44,14 +48,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		$get_roles = Auth::user()->roles;
 		$user_role = $get_roles[0]->slug;
 			
-			if($user_role =='irc-confirmation'){
-				$irc_information = 'show';
-				$irc_branch_commitee = 'hide';
-			}
-			else if($user_role =='irc-branch-committee'){
-				$irc_information = 'hide';
-				$irc_branch_commitee = 'show';
-			} 
 		}
 	@endphp
 		<div class="container">
@@ -178,9 +174,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		</div>
 	</div>
 	<div class=" col s12 ">
-	  <div class="container">
+	  <div class="container"> 
 	 
-		 <div class="card {{$irc_information}}">
+		 <div class="card @php if($user_role =='irc-branch-committee') echo 'branch'; @endphp">
 		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
 			  <div class="row">
 				<div class="input-field col s6">
@@ -364,7 +360,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 					</div>
 			  </div>
-			  <div class="card {{$irc_branch_commitee}}">
+			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h6>BRANCH COMMITEE VERIFICATION</h6>
 				<div class="row">
 					<div class="col s12 m12">
