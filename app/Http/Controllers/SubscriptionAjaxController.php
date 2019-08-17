@@ -73,7 +73,7 @@ class SubscriptionAjaxController extends CommonController
         // );
          DB::enableQueryLog();
 		 $commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id')
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.id as mid')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
@@ -111,7 +111,8 @@ class SubscriptionAjaxController extends CommonController
         }
         else {
 			$search = $request->input('search.value'); 
-			$sub_mem = $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+            $sub_mem = $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+                        ->orWhere('m.id', 'LIKE',"%{$search}%")
 					   ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
 					   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
 					   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
@@ -124,7 +125,9 @@ class SubscriptionAjaxController extends CommonController
 					  ->get()->toArray();
 			
 			
-			$totalFiltered =  $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+            $totalFiltered =  $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
+                             ->orWhere('m.id', 'LIKE',"%{$search}%")
+                            ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
 							    ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
 							   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
 							   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
@@ -149,7 +152,7 @@ class SubscriptionAjaxController extends CommonController
                 //     }
                 // }
                 $nestedData['Name'] = $resultdata->Name;
-                $nestedData['membercode'] = $resultdata->membercode;
+                $nestedData['membercode'] = $resultdata->mid;
                 $nestedData['nric'] = $resultdata->nric;
                 $nestedData['amount'] = $resultdata->amount;
                 $font_color = $resultdata->font_color;
