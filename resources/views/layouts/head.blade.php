@@ -79,6 +79,18 @@
 		text-align: center;
 		color: #fff;
 	}
+	.padding-left-10{
+		padding-left:10px;
+	}
+	.padding-left-20{
+		padding-left:20px;
+	}
+	.padding-left-24{
+		padding-left:24px;
+	}
+	.padding-left-40{
+		padding-left:40px;
+	}
 	
 	  
 </style>

@@ -15,6 +15,7 @@
 		}
 		#irc_confirmation_area {
 			pointer-events: none;
+			background-color: #f4f8fb !important;
 		}
 		$("#irc_confirmation_area :input").attr("readonly", true);
 	</style>

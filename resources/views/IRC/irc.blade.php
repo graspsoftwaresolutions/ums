@@ -19,6 +19,9 @@
 	.padding-left-20{
 		padding-left:20px;
 	}
+	.padding-left-24{
+		padding-left:24px;
+	}
 	.padding-left-40{
 		padding-left:40px;
 	}
@@ -28,6 +31,7 @@
 	.branch 
 	{
     	pointer-events: none;
+		background-color: #f4f8fb !important;
 	}
 </style>
 @endsection
@@ -50,7 +54,7 @@
 		<div class="card">
 		
 		
-			<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
+			<h5 class="padding-left-10"> Resignation Member <a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h5>
 			<div class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
@@ -163,7 +167,7 @@
 	  <div class="container">
 	 
 		 <div class="card">
-		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
+		 <h5 class="padding-left-10">IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
@@ -292,15 +296,17 @@
 						</div>						
 					</div>
 					<div class="col s12 m12">
-						<p class=" padding-left-20">
-							<label>
-							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1"/>
-							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
-							</label> 
-						</p>		
+						<div class="padding-left-24">
+							<p>
+								<label>
+									<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1"/>
+									<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
+								</label> 
+							</p>
+						</div>		
 					</div>
-					<div class="col s12 m12 padding-left-20">
-						<p class=" padding-left-20">
+					<div class="col s12 m12">
+						<p class=" padding-left-24">
 							<label>
 							<input type="checkbox" name="attached" id="attached" class="common-checkbox" value="1" />
 							<span>Attached Job function/Description (compulsory). </span>
@@ -308,7 +314,7 @@
 						</p>		
 					</div>
 					<div class="col s12 m12">
-						<p class=" padding-left-20">
+						<p class="padding-left-24">
 							<label>
 							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" value="1" />
 							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
@@ -333,27 +339,23 @@
 					</div>
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
-			  <h6>BRANCH COMMITEE VERIFICATION</h6>
+			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
 				<div class="row">
 					<div class="col s12 m12">
-					<div class="row">
-						<p class="padding-left-20">
+						<p class="padding-left-24">
 							<label>
 							<input type="checkbox" class="common-checkbox" />
 							<span>I have verified the above and confirm that the declaration by the IRC is correct.The messenger/clerical And; </span>
 							</label> 
 						</p>	
-						</div>
 					</div>
 					<div class="col s12 m12">
-					<div class="row">
-						<p class="padding-left-20">
+						<p class="padding-left-24">
 							<label>
 							<input type="checkbox" class="common-checkbox"  />
 							<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
 							</label> 
 						</p>
-					</div>						
 					</div>
 					<div class="col s12 m12">
 						<div class="row">
@@ -391,25 +393,25 @@
 				</div>
 			  </div>
 			  <div class="col s12 m12">
-						<div class="row">
-							
-							<div class="input-field col s12 m4">
-							  <i class="material-icons prefix">date_range</i>
-							  <input id="submitted_at" name="submitted_at" data-reflectage="dob" class="datepicker"  type="text">
-							  <label for="icon_prefix">File Submitted</label>
-							</div> 
-						<div class="input-field col s12 m2">
-							<p>
-							<input type="submit" class="btn" id="save" name="save" value="Submit" >
-							</P>
-						</div>	
-						<div class="input-field col s12 m2">
-							<p>
-							<input type="button" class="btn" id="clear" name="clear" onClick="refreshPage()" value="Clear" >
-							</P>
-						</div>
-						</div>
+					<div class="row">
+						
+						<div class="input-field col s12 m4">
+						  <i class="material-icons prefix">date_range</i>
+						  <input id="submitted_at" name="submitted_at" data-reflectage="dob" class="datepicker"  type="text">
+						  <label for="icon_prefix">File Submitted</label>
+						</div> 
+					<div class="input-field col s12 m2">
+						<p>
+						<input type="submit" class="btn" id="save" name="save" value="Submit" >
+						</P>
+					</div>	
+					<div class="input-field col s12 m2">
+						<p>
+						<input type="button" class="btn" id="clear" name="clear" onClick="refreshPage()" value="Clear" >
+						</P>
 					</div>
+					</div>
+			   </div>
 		 </div>
 		
 	  </div><!-- START RIGHT SIDEBAR NAV -->
