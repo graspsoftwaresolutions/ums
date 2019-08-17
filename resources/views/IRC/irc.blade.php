@@ -220,21 +220,21 @@
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="bank_address"
-						class="common-label force-active">{{__('Bank Address') }}</label>
-					<input id="bank_address"  name="ircbankaddress" class="common-input"
+						class="common-label force-active">{{__('Bank Branch Address') }}</label>
+					<input id="bank_address" readonly  name="ircbankaddress" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="input-field col s6">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
-					<input id="irctelephoneno"  name="irctelephoneno" class="common-input"
+					<input id="irctelephoneno" readonly name="irctelephoneno" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="ircmobileno"
 						class="common-label force-active">{{__('Mobile') }}</label>
-					<input id="ircmobileno"  name="ircmobileno" class="common-input"
+					<input id="ircmobileno" readonly  name="ircmobileno" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="input-field col s6">
@@ -490,7 +490,6 @@ $("#member_number").devbridgeAutocomplete({
 					$('#member_title').val(res.persontitle);
 					$('#member_name').val(res.membername);
 					$('#person_name').val(res.membername);
-					$('#bank_name').val(res.company_name);
 					$('#memberid').val(res.memberid);
 					$('#branch_name').val(res.branch_name);
 					$('#dob').val(res.dob);
@@ -541,6 +540,9 @@ $("#irc_member_no").devbridgeAutocomplete({
 					$('#irc_name').val(res.membername);
 					$('#irc_bank').val(res.bankname);
 					$('#irc_member_code').val(res.mid);
+					$('#bank_address').val(res.address_one);
+					$('#irctelephoneno').val(res.phone);
+					$('#ircmobileno').val(res.mobile);
 				}
         
 			});
