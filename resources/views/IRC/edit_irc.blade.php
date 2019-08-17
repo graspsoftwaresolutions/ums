@@ -260,7 +260,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="input-field col s6">
 					<label for="ircfaxno"
 						class="common-label force-active">{{__('Fax') }}</label>
-					<input id="ircfaxno" readonly name="ircfaxno" value="{{ isset($dataresigneddata->ircfaxno) ? $dataresigneddata->ircfaxno : '' }}" class="common-input"
+					<input id="ircfaxno" name="ircfaxno" value="{{ isset($dataresigneddata->ircfaxno) ? $dataresigneddata->ircfaxno : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
