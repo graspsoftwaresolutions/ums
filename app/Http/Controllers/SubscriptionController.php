@@ -343,7 +343,7 @@ class SubscriptionController extends CommonController
 
        // return $id;
        
-       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date','status.font_color')
+       $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date','status.font_color','m.member_number')
                                             ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
                                             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
                                             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
@@ -354,7 +354,7 @@ class SubscriptionController extends CommonController
                                             ->first();
 
         DB::enableQueryLog();
-        $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name','status.font_color')
+        $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name','status.font_color','m.member_number')
                                             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
                                             ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
                                             ->leftjoin('status as status','status.id','=','sm.StatusId')
@@ -373,7 +373,7 @@ class SubscriptionController extends CommonController
         $member_code = $request->id;   
         $memberid = $request->memberid;
 
-        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','status.font_color','s.Date','m.member_number')
             ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
             ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
             ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
@@ -398,7 +398,7 @@ class SubscriptionController extends CommonController
 
             
             DB::enableQueryLog();
-            $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
+            $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name','m.member_number')
                                 ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
                                 ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
                                 ->leftjoin('status as status','status.id','=','sm.StatusId')
@@ -515,7 +515,7 @@ class SubscriptionController extends CommonController
 	public function memberHistory($lang,$id){
 	$id = Crypt::decrypt($id);
     
-        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name')
+        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number')
 											->leftjoin('designation as d','d.id','=','m.designation_id')
 											->leftjoin('persontitle as p','p.id','=','m.member_title_id')
 											->leftjoin('company_branch as cb','cb.id','=','m.branch_id')

@@ -1,28 +1,26 @@
 
 @extends('layouts.admin')
 @section('headSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/materialize-stepper/materialize-stepper.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
 <link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
+href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}"> 
 <link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+href="{{ asset('public/assets/vendors/data-tables/css/select.dataTables.min.css') }}"> 
+<link rel="stylesheet" type="text/css"
+href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
 <style>
-.filter{
-    padding-top: 9px;
-    background-color: #dad1d1c7;
-}
+	.memberinfotable tr>td{
+		font-weight: bold;
+		font-size: 16px;
+	}
 </style>
 @endsection
 @section('main-content')
-@php 
 
-@endphp
 <div id="">
     <div class="row">
    
@@ -58,11 +56,11 @@
 										$member = $data['member_details'];
 									@endphp
 									<div class="card-content">
-										<h4 class="card-title">{{__('History')}}  </h4> 
-										<table width="100%" style="font-weight:bold">
+										<h4 class="card-title">{{__('Member Details')}}  </h4> 
+										<table width="100%" class="memberinfotable" style="font-weight: bold; font-size: 16px">
 											<tr>
 												<td width="25%">{{__('Member Name ')}}</td>
-												<td width="25%">: {{ $member->membername }}</td>
+												<td width="25%">: {{ $member->membername }} [{{ $member->member_number }}]</td>
 												<td width="25%">{{ __('NRIC-OLD')}}</td>
 												<td width="25%">: {{ $member->old_ic }}</td>
 											</tr>
@@ -78,14 +76,18 @@
 												<td width="25%">: {{ $member->membertype }}</td>
 												
 												<td width="25%">{{__('Status')}}</td>
-												<td width="25%">{{ $member->status_name }}</td>
+												<td width="25%">: {{ $member->status_name }}</td>
 											</tr>
 											<tr>
 												<td width="25%">{{__('Date of joing')}}</td>
-												<td width="25%">: {{ $member->doj }}</td>
+												<td width="25%">: {{ date('d/M/Y',strtotime($member->doj)) }}</td>
 												
 												<td width="25%">{{__('Last paid Date')}}</td>
-												<td width="25%">{{ date('M/ Y',strtotime($data['member_history'][count($data['member_history'])-1]->StatusMonth)) }}</td>
+												<td width="25%">: 
+												@if(count($data['member_history'])>0)
+												{{ date('M/ Y',strtotime($data['member_history'][count($data['member_history'])-1]->StatusMonth)) }}
+												@endif
+												</td>
 											</tr>
 										</table>
 								    </div>
@@ -96,7 +98,7 @@
 								<div class="card">
                            
 									<div class="card-content">
-                            
+                            <h4 class="card-title">{{__('Member History') }}</h4>
                             @include('includes.messages')
                             <div class="row">
                                 <div class="col s12">
@@ -120,29 +122,7 @@
 													<th>{{__('AccIns')}}</th>
 												</tr>
 											</thead>
-											<tbody>
-												@if(count($data['member_history'])>0 )
-													
-                                                    @foreach($data['member_history'] as $key=> $values)
-													<tr>  
-														<td>{{ date('M/ Y',strtotime($values->StatusMonth)) }}</td>
-														<td>{{ $values->SUBSCRIPTION_AMOUNT }}</td>
-														<td>{{ $values->BF_AMOUNT }}</td>
-														<td>{{ $values->INSURANCE_AMOUNT }}</td>
-														<td>{{ $values->TOTALMONTHSCONTRIBUTION }}</td>
-														<td>{{ date('M/ Y',strtotime($values->LASTPAYMENTDATE)) }}</td>
-														<td>{{ $values->TOTALMONTHSPAID }}</td>
-														<td>{{ $values->SUBSCRIPTIONDUE }}</td>
-														<td>{{ $values->SUBSCRIPTIONDUE+$values->TOTALMONTHSPAID }}</td>
-														<td>{{ $values->ACCSUBSCRIPTION }}</td>
-														<td>{{ $values->ACCBF }}</td>
-														<td>{{ $values->ACCINSURANCE }}</td>
-														
-													</tr>
-													@endforeach
-												@endif
-												
-                                            </tbody>
+											
                                         </table>
                                         </div>          
 									</div>
@@ -162,59 +142,89 @@
 </div>
 @endsection
 @section('footerSection')
-<!--<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script> -->
-<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript">
-</script>
-<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
-    type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}"
+type="text/javascript"></script>
+<script
+src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
+type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}"
+type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
-<script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subscomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
 
-	$(document).ready(function(){
-		//loader.showLoader();
-	
-	});
-	
-    $("#filtersubmit").validate({
-    rules: {
-        from_date: {
-			required: true,
-			
-		  },
-		  to_date: {
-			required: true,
-			
-		  },
-	},
-      //For custom messages
-      messages: {
-			from_date:{
-			required: "Enter From Date"
-		  },
-		  to_date:{
-			required: "Enter To Date"
-		  },
-      },
-      errorElement : 'div',
-      errorPlacement: function(error, element) {
-			var placement = $(element).data('error');
-			if (placement) {
-			  $(placement).append(error)
-			} else {
-		  error.insertAfter(element);
-		  }
+//Data table Ajax call
+$(function() {
+    $('#page-length-option').DataTable({
+        "responsive": true,
+        "searching": false,
+        "lengthMenu": [
+            [10, 25, 50, 100],
+            [10, 25, 50, 100]
+        ],
+        /* "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajax_member_history') }}?member_code="+{{$member->memberid}},
+            "dataType": "json",
+            "type": "POST",
+            "data": {
+                _token: "{{csrf_token()}}"
+            }
+        },
+        "columns": [
+			{
+                "data": "StatusMonth"
+            },
+            {
+                "data": "SUBSCRIPTION_AMOUNT"
+            },
+            {
+                "data": "BF_AMOUNT"
+            },
+            {
+                "data": "INSURANCE_AMOUNT"
+            },
+            {
+                "data": "TOTALMONTHSCONTRIBUTION"
+            },
+            {
+                "data": "LASTPAYMENTDATE"
+            },
+            {
+                "data": "TOTALMONTHSPAID"
+            },
+            {
+                "data": "SUBSCRIPTIONDUE"
+            },
+            {
+                "data": "Total"
+            },
+            {
+                "data": "ACCSUBSCRIPTION"
+            },
+            {
+                "data": "ACCBF"
+            },
+            {
+                "data": "ACCINSURANCE"
+            }
+        ],
+		"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+			$('td', nRow).css('color', aData.font_color );
 		}
-  });
-
+    });
+});
 
 </script>
 @endsection

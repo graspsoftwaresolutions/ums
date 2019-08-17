@@ -434,6 +434,102 @@ class SubscriptionAjaxController extends CommonController
         }
         echo json_encode($json_data); 
     }
+	
+	public function ajax_member_history(Request $request)
+    {
+        $member_code = $request->member_code;
+        $sl=0;
+        $columns = array( 
+            $sl++ => 'ms.StatusMonth', 
+            $sl++ => 'ms.SUBSCRIPTION_AMOUNT', 
+            $sl++ => 'ms.BF_AMOUNT', 
+            $sl++ => 'ms.INSURANCE_AMOUNT', 
+            $sl++ => 'ms.TOTALMONTHSCONTRIBUTION', 
+            $sl++ => 'ms.LASTPAYMENTDATE', 
+            $sl++ => 'ms.TOTALMONTHSPAID',
+            $sl++ => 'ms.SUBSCRIPTIONDUE',
+            $sl++ => 'ms.TOTALMONTHSPAID',
+            $sl++ => 'ms.ACCSUBSCRIPTION',
+            $sl++ => 'ms.ACCBF',
+            $sl++ => 'ms.ACCINSURANCE',
+        );
+		
+		$commonqry = DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+		'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTALMONTHSCONTRIBUTION','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
+		->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+		->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+		->where('m.id','=',$member_code);
+        
+        $totalData = $commonqry->count();
+        
+        $totalFiltered = $totalData; 
+        
+        $limit = $request->input('length');
+        $start = $request->input('start');
+		
+        $order = $columns[$request->input('order.0.column')];
+     
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            $sub_mem = $commonqry;
+			if( $limit != -1){
+				$sub_mem = $sub_mem->offset($start)
+							->limit($limit);
+			}
+			$sub_mem = $sub_mem->orderBy($order,$dir)
+			->get()->toArray();
+        }
+        else {
+			$search = $request->input('search.value'); 
+			$sub_mem = $commonqry->where('m.id','LIKE',"%{$search}%")
+					   ->orWhere('m.member_number', 'LIKE',"%{$search}%");
+		    if( $limit != -1){
+			   $sub_mem = $sub_mem->offset($start)
+						->limit($limit);
+		    }
+		    $sub_mem = $sub_mem->orderBy($order,$dir)
+					  ->get()->toArray();
+			
+			
+			$totalFiltered =  $commonqry->where('m.id','LIKE',"%{$search}%")
+							    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+							   ->count();
+        }
+      
+        $data = array();
+        if(!empty($sub_mem))
+        {
+            foreach ($sub_mem as $history)
+            {
+                $nestedData['StatusMonth'] = date('M/ Y',strtotime($history->StatusMonth));
+                $nestedData['SUBSCRIPTION_AMOUNT'] = $history->SUBSCRIPTION_AMOUNT;
+                $nestedData['BF_AMOUNT'] = $history->BF_AMOUNT;
+                $nestedData['INSURANCE_AMOUNT'] = $history->INSURANCE_AMOUNT;
+                $nestedData['TOTALMONTHSCONTRIBUTION'] = $history->TOTALMONTHSCONTRIBUTION;
+                $nestedData['LASTPAYMENTDATE'] = date('M/ Y',strtotime($history->LASTPAYMENTDATE));
+                $nestedData['TOTALMONTHSPAID'] = $history->TOTALMONTHSPAID;
+                $nestedData['SUBSCRIPTIONDUE'] = $history->SUBSCRIPTIONDUE;
+                $nestedData['Total'] = $history->SUBSCRIPTIONDUE+$history->TOTALMONTHSPAID;
+                $nestedData['ACCSUBSCRIPTION'] = $history->ACCSUBSCRIPTION;
+                $nestedData['ACCBF'] = $history->ACCBF;
+                $nestedData['ACCINSURANCE'] = $history->ACCINSURANCE;
+                $nestedData['font_color'] = $history->font_color;
+               
+				$data[] = $nestedData;
+
+			}
+        }
+      
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
 
   
 }

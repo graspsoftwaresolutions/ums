@@ -239,6 +239,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update-irc','IrcController@saveIrc')->name('irc.updateIrc');
 	
 	Route::get('member-history/{parameter}','SubscriptionController@memberHistory')->name('member.history');
+	Route::post('ajax_member_history','SubscriptionAjaxController@ajax_member_history');
 
 	
 });

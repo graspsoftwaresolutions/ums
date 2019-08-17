@@ -72,7 +72,7 @@
 							<table width="100%" style="font-weight:bold">
 								<tr>
 									<td width="25%">{{__('Member Name ')}}</td>
-									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }}</td>
+									<td width="25%">: {{ isset($row->membername) ? $row->membername : "Nill" }} [{{ $row->member_number }}]</td>
 									<td width="25%">{{ __('Current Month Paid Amount')}}</td>
 									<td width="25%">: {{ $row->Date==date('Y-m-01') ? $subscriptionamt : "No Amount" }}</td>
 								</tr>

@@ -518,7 +518,7 @@ class MembershipController extends Controller
                 {
                    // $actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
                 }
-				$actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
+				$actions .="<a style='margin-left: 10px;' title='Payment History'  class='' href='$histry'><i class='material-icons' style='color:#FF6900;'>history</i></a>";
 				
                 $baseurl = URL::to('/');
                 $editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
