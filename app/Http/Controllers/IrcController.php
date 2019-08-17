@@ -202,6 +202,8 @@ class IrcController extends CommonController
 	}
 	
 	public function ajax_irc_list(Request $request){
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
 		$searchfilter = $request->input('searchfilter');
 		$statusfilter = $request->input('statusfilter');
 		$columns = array(
@@ -218,17 +220,116 @@ class IrcController extends CommonController
 
 		$totalqry = DB::table('irc_confirmation as i')
 					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
-		if($statusfilter!=''){
-			$totalqry = $totalqry->where('i.status','=',$statusfilter);
+		if($user_role=='irc-branch-committee'){
+			if($statusfilter!=''){
+				if($statusfilter==0){
+					  $totalqry = $totalqry->where('i.nameofperson','=','1')
+					  ->where('i.waspromoted','=','1')
+					  ->where('i.beforepromotion','=','1')
+					  ->where('i.attached','=','1')
+					  ->where('i.herebyconfirm','=','1')
+					  ->where('i.filledby','=','1')
+					  ->where('i.status','=',$statusfilter);
+				}else{
+					$totalqry = $totalqry->where('i.status','=',$statusfilter);
+				}
+			}else{
+				 $totalqry = $totalqry->where('i.nameofperson','=','1')
+					  ->where('i.waspromoted','=','1')
+					  ->where('i.beforepromotion','=','1')
+					  ->where('i.attached','=','1')
+					  ->where('i.herebyconfirm','=','1')
+					  ->where('i.filledby','=','1');
+			}
+		}else{
+			if($statusfilter!=''){
+				if($statusfilter==0){
+					   $totalqry = $totalqry->where('i.status','=',0)
+							->where(function($query) use ($statusfilter){
+								$query->orWhere('i.waspromoted','!=','1')
+								  ->orWhere('i.beforepromotion','!=','1')
+								  ->orWhere('i.attached','!=','1')
+								  ->orWhere('i.herebyconfirm','!=','1')
+								  ->orWhere('i.filledby','!=','1')
+								  ->orWhere('i.nameofperson','!=','1')
+								  ->orWhereNull('i.waspromoted')
+								  ->orWhereNull('i.beforepromotion')
+								  ->orWhereNull('i.attached')
+								  ->orWhereNull('i.herebyconfirm')
+								  ->orWhereNull('i.filledby')
+								  ->orWhereNull('i.nameofperson');
+								});
+				}else{
+					 $totalqry = $totalqry->where('i.nameofperson','=','1')
+					  ->where('i.waspromoted','=','1')
+					  ->where('i.beforepromotion','=','1')
+					  ->where('i.attached','=','1')
+					  ->where('i.herebyconfirm','=','1')
+					  ->where('i.filledby','=','1')
+					  ->where('i.status','=','0');
+				}
+			}else{
+				 $totalqry = $totalqry->where('i.status','=','0');
+			}
 		}
+		
 		
 		$commonselect = DB::table('irc_confirmation as i')
 						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
 						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
-		
-		if($statusfilter!=''){
-			$commonselect = $commonselect->where('i.status','=',$statusfilter);
-		}	
+		if($user_role=='irc-branch-committee'){
+			if($statusfilter!=''){
+				if($statusfilter==0){
+					  $commonselect = $commonselect->where('i.nameofperson','=','1')
+					  ->where('i.waspromoted','=','1')
+					  ->where('i.beforepromotion','=','1')
+					  ->where('i.attached','=','1')
+					  ->where('i.herebyconfirm','=','1')
+					  ->where('i.filledby','=','1')
+					  ->where('i.status','=',$statusfilter);
+				}else{
+					$commonselect = $commonselect->where('i.status','=',$statusfilter);
+				}
+			}else{
+				 $commonselect = $commonselect->where('i.nameofperson','=','1')
+					  ->where('i.waspromoted','=','1')
+					  ->where('i.beforepromotion','=','1')
+					  ->where('i.attached','=','1')
+					  ->where('i.herebyconfirm','=','1')
+					  ->where('i.filledby','=','1');
+			}
+		}else{
+			if($statusfilter!=''){
+				if($statusfilter==0){
+					  $commonselect = $commonselect->where('i.status','=',0)
+								->where(function($query) use ($statusfilter){
+									$query->orWhere('i.waspromoted','!=','1')
+									  ->orWhere('i.beforepromotion','!=','1')
+									  ->orWhere('i.attached','!=','1')
+									  ->orWhere('i.herebyconfirm','!=','1')
+									  ->orWhere('i.filledby','!=','1')
+									  ->orWhere('i.nameofperson','!=','1')
+									  ->orWhereNull('i.waspromoted')
+									  ->orWhereNull('i.beforepromotion')
+									  ->orWhereNull('i.attached')
+									  ->orWhereNull('i.herebyconfirm')
+									  ->orWhereNull('i.filledby')
+									  ->orWhereNull('i.nameofperson');
+									});
+					
+				}else{
+					 $commonselect = $commonselect->where('i.nameofperson','=','1')
+					  ->where('i.waspromoted','=','1')
+					  ->where('i.beforepromotion','=','1')
+					  ->where('i.attached','=','1')
+					  ->where('i.herebyconfirm','=','1')
+					  ->where('i.filledby','=','1')
+					  ->where('i.status','=','0');
+				}
+			}else{
+				 $commonselect = $commonselect->where('i.status','=','0');
+			}
+		}
 		
 		$totalData = $totalqry->count();
         $totalFiltered = $totalData;
@@ -283,7 +384,26 @@ class IrcController extends CommonController
         {
             foreach ($irclist as $irc)
             {
-                $nestedData['status'] = $irc->status_name;
+				if($user_role!='irc-branch-committee'){
+					$check_count = DB::table('irc_confirmation as irc')
+							  ->where('irc.nameofperson','=','1')
+							  ->where('irc.waspromoted','=','1')
+							  ->where('irc.beforepromotion','=','1')
+							  ->where('irc.attached','=','1')
+							  ->where('irc.herebyconfirm','=','1')
+							  ->where('irc.filledby','=','1')
+							  ->where('irc.status','=','0')
+							  ->where('irc.id','=',$irc->id)
+							  ->count();
+					if($check_count>0){
+						$nestedData['status'] = 'Confirm';
+					}else{
+						$nestedData['status'] = 'Pending';
+					}
+					
+				}else{
+					$nestedData['status'] = $irc->status_name;
+				}
                 $nestedData['resignedmemberno'] = $irc->resignedmemberno;
                 $nestedData['resignedmembername'] = $irc->resignedmembername;
                 $nestedData['resignedmembericno'] = $irc->resignedmembericno;

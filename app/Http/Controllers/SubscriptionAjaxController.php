@@ -448,7 +448,7 @@ class SubscriptionAjaxController extends CommonController
             $sl++ => 'ms.SUBSCRIPTION_AMOUNT', 
             $sl++ => 'ms.BF_AMOUNT', 
             $sl++ => 'ms.INSURANCE_AMOUNT', 
-            $sl++ => 'ms.TOTALMONTHSCONTRIBUTION', 
+            $sl++ => 'ms.TOTAL_MONTHS', 
             $sl++ => 'ms.LASTPAYMENTDATE', 
             $sl++ => 'ms.TOTALMONTHSPAID',
             $sl++ => 'ms.SUBSCRIPTIONDUE',
@@ -459,7 +459,7 @@ class SubscriptionAjaxController extends CommonController
         );
 		
 		$commonqry = DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-		'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTALMONTHSCONTRIBUTION','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
+		'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
 		->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 		->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 		->where('m.id','=',$member_code);
@@ -510,7 +510,7 @@ class SubscriptionAjaxController extends CommonController
                 $nestedData['SUBSCRIPTION_AMOUNT'] = $history->SUBSCRIPTION_AMOUNT;
                 $nestedData['BF_AMOUNT'] = $history->BF_AMOUNT;
                 $nestedData['INSURANCE_AMOUNT'] = $history->INSURANCE_AMOUNT;
-                $nestedData['TOTALMONTHSCONTRIBUTION'] = $history->TOTALMONTHSCONTRIBUTION;
+                $nestedData['TOTALMONTHSCONTRIBUTION'] = $history->TOTAL_MONTHS;
                 $nestedData['LASTPAYMENTDATE'] = date('M/ Y',strtotime($history->LASTPAYMENTDATE));
                 $nestedData['TOTALMONTHSPAID'] = $history->TOTALMONTHSPAID;
                 $nestedData['SUBSCRIPTIONDUE'] = $history->SUBSCRIPTIONDUE;
