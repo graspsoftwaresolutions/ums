@@ -197,7 +197,7 @@ class IrcController extends CommonController
 				->where('irc.account_type','=','irc-confirmation')
 				->where('m.member_number','=',$member_id)
 				->first();
-		dd($res);
+		//dd($res);
 		return response()->json($res);
 	}
 	
