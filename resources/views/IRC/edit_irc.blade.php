@@ -237,7 +237,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="bank_address"
-						class="common-label force-active">{{__('Bank Address') }}</label>
+						class="common-label force-active">{{__('Bank Branch Address') }}</label>
 					<input id="bank_address" readonly  name="ircbankaddress" value="{{ isset($dataresigneddata->ircbankaddress) ? $dataresigneddata->ircbankaddress : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
