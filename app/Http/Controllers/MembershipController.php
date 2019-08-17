@@ -659,14 +659,16 @@ class MembershipController extends Controller
             $fm_date = explode("/",$datefilter);
             $yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
         }
+        $sl=0;
 		 $columns = array( 
-            0 => 'h.MemberCode', 
-            1 => 'h.old_branch_id',
-            2 => 'h.new_branch_id',
-            3 => 'h.transfer_date',
-            4 => 'h.id',
+            $sl++ => 'h.MemberCode', 
+            $sl++ => 'm.member_number', 
+            $sl++ => 'h.old_branch_id',
+            $sl++ => 'h.new_branch_id',
+            $sl++ => 'h.transfer_date',
+            $sl++ => 'h.id',
         );
-        $commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode');
+        $commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number');
         $commoncount = DB::table('member_transfer_history as h');
         $commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
         //DB::enableQueryLog();
@@ -729,6 +731,7 @@ class MembershipController extends Controller
 				
                 //$nestedData['month_year'] = date('M/Y',strtotime($company->name));
                 $nestedData['member_name'] = $company->name;
+                $nestedData['member_number'] = $company->member_number;
                 $nestedData['frombank'] = CommonHelper::getBranchName($company->old_branch_id);
                 $nestedData['tobank'] = CommonHelper::getBranchName($company->new_branch_id);
                 $nestedData['transfer_date'] = $company->transfer_date!="0000-00-00" ? date('d/M/Y', strtotime($company->transfer_date)) : '';

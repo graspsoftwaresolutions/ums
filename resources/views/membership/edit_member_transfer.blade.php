@@ -48,6 +48,7 @@
 									$url_member_id = '';
 									$url_branch_id = '';
 									$url_member_name = '';
+									$url_member_number = '';
 									
 									if(isset($data['member_id'])){
 										
@@ -56,7 +57,9 @@
 											$url_branch_id = $data['old_branch_id'];
 										}
 										if(isset($data['member_data'])){
-										$url_member_name = $data['member_data']->name; }
+											$url_member_name = $data['member_data']->name;
+											$url_member_number = $data['member_data']->member_number;
+										}
 									}
 									
 								@endphp
@@ -67,7 +70,8 @@
 								</div>
 								<div class=" col s4">
 									<label for="member_code">{{__('Member Code')}}</label>
-									<input id="transfer_member_code" type="text" required class="validate " name="transfer_member_code" value="{{ $url_member_id }}" readonly >
+									<input id="transfer_member_number" type="text" required class="validate " name="transfer_member_number" value="{{ $url_member_number }}" readonly >
+									<input id="transfer_member_code" type="text" required class="validate hide" name="transfer_member_code" value="{{ $url_member_id }}" readonly >
 									<input id="transfer_member_branch_id" type="text" required class="validate hide" value="{{ $url_branch_id }}" name="transfer_member_branch_id" readonly >
 									
 								</div>

@@ -61,13 +61,14 @@
 											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
-														<td colspan="3">&nbsp;</td>
+														<td colspan="4">&nbsp;</td>
 														<td>Date</td>
 														<td valign="middle"><input type="text" id="5" id="transferdate-search-input" class="transferdate-search-input datepicker-cutom" value="{{date('M/Y')}}" ></td>
 														
 													</tr>
 													<tr>
 														<th>{{__('Member Name') }}</th>
+														<th>{{__('MemberID') }}</th>
 														<th>{{__('From bank')}} </th>
 														<th>{{__('To Bank')}}</th>
 														<th>{{__('Date')}}</th>
@@ -131,6 +132,7 @@
 			"search-transfer" : 12,
 			"columns": [
 				{"data" : "member_name"},
+				{"data" : "member_number"},
 				{"data":  "frombank"},
 				{"data" : "tobank"},
 				{"data" : "transfer_date"},
