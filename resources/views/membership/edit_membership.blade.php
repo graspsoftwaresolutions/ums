@@ -3,21 +3,22 @@
 @include('membership.member_common_styles')
 @endsection
 @section('headSecondSection')
-<style>
-.padding-left-10{
-padding-left:10px;
-}
-.padding-left-20{
-padding-left:20px;
-}
-.padding-left-40{
-padding-left:40px;
-}
-#irc_confirmation_area {
-pointer-events: none;
-}
-$("#irc_confirmation_area :input").attr("readonly", true);
-</style>
+	<style>
+		.padding-left-10{
+			padding-left:10px;
+		}
+		.padding-left-20{
+			padding-left:20px;
+		}
+		.padding-left-40{
+			padding-left:40px;
+		}
+		#irc_confirmation_area {
+			pointer-events: none;
+			background-color: #f4f8fb !important;
+		}
+		$("#irc_confirmation_area :input").attr("readonly", true);
+	</style>
 @endsection
 @section('main-content')
 

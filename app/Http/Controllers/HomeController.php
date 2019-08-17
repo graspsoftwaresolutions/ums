@@ -128,16 +128,45 @@ class HomeController extends Controller
 			}
 			$data['total_member_count'] = $member_count;
 		}else if($user_role=='irc-confirmation'){
-			$total_ircpending_count = Irc::where('status','=',0)->count();
-			$total_ircconfirm_count = Irc::where('status','=',1)->count();
+			$total_ircpending_count = DB::table('irc_confirmation as i')
+								->where('i.status','=',0)
+								->where(function($query) use ($user_id){
+									$query->orWhere('i.waspromoted','!=','1')
+									  ->orWhere('i.beforepromotion','!=','1')
+									  ->orWhere('i.attached','!=','1')
+									  ->orWhere('i.herebyconfirm','!=','1')
+									  ->orWhere('i.filledby','!=','1')
+									  ->orWhere('i.nameofperson','!=','1')
+									  ->orWhereNull('i.waspromoted')
+									  ->orWhereNull('i.beforepromotion')
+									  ->orWhereNull('i.attached')
+									  ->orWhereNull('i.herebyconfirm')
+									  ->orWhereNull('i.filledby')
+									  ->orWhereNull('i.nameofperson');
+									})->count();
+								
+			$total_ircconfirm_count = DB::table('irc_confirmation as i')->where('i.nameofperson','=','1')
+									  ->where('i.waspromoted','=','1')
+									  ->where('i.beforepromotion','=','1')
+									  ->where('i.attached','=','1')
+									  ->where('i.herebyconfirm','=','1')
+									  ->where('i.filledby','=','1')
+									  ->where('i.status','=','0')->count();
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count;
 			
 			$data['total_irc_count'] = $irc_count;
 			$data['total_ircpending_count'] = $total_ircpending_count;
 			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
 		}else if($user_role=='irc-branch-committee'){
-			$total_ircpending_count = Irc::where('status','=',0)->count();
-			$total_ircconfirm_count = Irc::where('status','=',1)->count();
+			$total_ircpending_count = DB::table('irc_confirmation as i')
+									->where('i.nameofperson','=','1')
+									->where('i.waspromoted','=','1')
+									->where('i.beforepromotion','=','1')
+									->where('i.attached','=','1')
+									->where('i.herebyconfirm','=','1')
+									->where('i.filledby','=','1')
+									->where('i.status','=',0)->count();
+			$total_ircconfirm_count = DB::table('irc_confirmation as i')->where('i.status','=',1)->count();
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count;
 			
 			$data['total_irc_count'] = $irc_count;

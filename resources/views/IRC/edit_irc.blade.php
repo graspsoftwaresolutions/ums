@@ -19,21 +19,15 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 	.autocomplete-group { padding: 8px 5px; }
 	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-	.padding-left-10{
-		padding-left:10px;
-	}
-	.padding-left-20{
-		padding-left:20px;
-	}
-	.padding-left-40{
-		padding-left:40px;
-	}
-	#irc_confirmation_area {
+	
+	#irc_confirmation_area,#resignation_area {
 		pointer-events: none;
+		background-color: #f4f8fb !important;
 	}
 	.branch 
 	{
     	pointer-events: none;
+		background-color: #f4f8fb !important;
 	}
 </style>
 @endsection
@@ -55,11 +49,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		<form class="formValidate" id="irc_formValidate" method="post"
 		action="{{ route('irc.updateIrc',app()->getLocale()) }}">
 		@csrf
-        @php $dataresigneddata = $data['resignedmember']; 
-           // dd($data);
-         @endphp
-		<h6> Resignation Member <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h6>
-			<div class="row"> 
+        @php 
+			$dataresigneddata = $data['resignedmember']; 
+        @endphp
+		<h5 class="padding-left-10"> Resignation Member 
+			<a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a>
+		</h5>
+			<div class="row" id="resignation_area"> 
             <input type="hidden" name="id" id="ircid" value="{{$dataresigneddata->ircid}}">
 				 <div class="input-field col s4">
 					<label for="member_number"
@@ -177,7 +173,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	  <div class="container"> 
 	 
 		 <div class="card @php if($user_role =='irc-branch-committee') echo 'branch'; @endphp">
-		 <h6>IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h6>
+		 <h5 class="padding-left-10">IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
@@ -291,9 +287,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="col s12 m3 ">
 								<p>
 									<label>
-									<input type="hidden" name="waspromoted" value="0">
-									<input type="checkbox"  name="waspromoted" id="waspromoted" class="common-checkbox"  value="1" {{ $dataresigneddata->waspromoted == '1' ? 'checked' : '' }}/>
-									<span>She/He was</span>
+										<input type="hidden" name="waspromoted" value="0">
+										<input type="checkbox"  name="waspromoted" id="waspromoted" class="common-checkbox"  value="1" {{ $dataresigneddata->waspromoted == '1' ? 'checked' : '' }}/>
+										<span>She/He was</span>
 									</label> 
 								</p>	
 							</div>
@@ -316,16 +312,16 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</div>						
 					</div>
 					<div class="col s12 m12">
-						<p class=" padding-left-20">
+						<p class=" padding-left-24">
 							<label>
-							<input type="hidden" name="beforepromotion" value="0">
-							<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1" {{ $dataresigneddata->beforepromotion == '1' ? 'checked' : '' }}/>
-							<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
+								<input type="hidden" name="beforepromotion" value="0">
+								<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1" {{ $dataresigneddata->beforepromotion == '1' ? 'checked' : '' }}/>
+								<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
 					</div>
 					<div class="col s12 m12 padding-left-20">
-						<p class=" padding-left-20">
+						<p class=" padding-left-24">
 							<label>
 							<input type="hidden" name="attached" value="0">
 							<input type="checkbox" name="attached" id="attached" class="common-checkbox"   value="1"  {{ $dataresigneddata->attached == '1' ? 'checked' : '' }} />
@@ -334,7 +330,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</p>		
 					</div>
 					<div class="col s12 m12">
-						<p class=" padding-left-20">
+						<p class=" padding-left-24">
 							<label>
 							<input type="hidden" name="herebyconfirm" value="0">
 							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" value="1" {{ $dataresigneddata->herebyconfirm == '1' ? 'checked' : '' }}/>
@@ -361,22 +357,22 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
-			  <h6>BRANCH COMMITEE VERIFICATION</h6>
+			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
 				<div class="row">
 					<div class="col s12 m12">
-					<div class="row">
-						<p class="padding-left-20">
+					
+						<p class="padding-left-24">
 							<label>
 							<input type="hidden" name="branchcommitteeverification1" value="0">
 							<input type="checkbox" name="branchcommitteeverification1" class="common-checkbox"  value="1"  {{ $dataresigneddata->branchcommitteeverification1 == '1' ? 'checked' : '' }}/>
 							<span>I have verified the above and confirm that the declaration by the IRC is correct.The messenger/clerical And; </span>
 							</label> 
 						</p>	
-						</div>
+					
 					</div>
 					<div class="col s12 m12">
-					<div class="row">
-						<p class="padding-left-20">
+					
+						<p class="padding-left-24">
 							<label>
 							<input type="hidden" name="branchcommitteeverification2" value="0">
 							<input type="checkbox" id="" name="branchcommitteeverification2" class="common-checkbox"  value="1" {{ $dataresigneddata->branchcommitteeverification2 == '1' ? 'checked' : '' }}/>
@@ -384,7 +380,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</label> 
 						</p>
 					</div>						
-					</div>
+					
 					<div class="col s12 m12">
 						<div class="row">
 							<div class="col s12 m4 ">

@@ -45,11 +45,8 @@ class CommonHelper
     }
 
     public static function get_member_status_name($status_id){
-       $status_data = DB::table('status')->where('status.id','=',$status_id)->pluck('status_name');
-       if(!empty($status_data)){
-           return $status_data[0];
-       }
-       return '';
+       $status_data = DB::table('status')->where('status.id','=',$status_id)->pluck('status_name')->first();
+       return $status_data;
     }
 
     public static function get_branch_company_id($branch_id){

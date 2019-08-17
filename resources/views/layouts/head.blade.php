@@ -60,6 +60,37 @@
 		left: -5px;
 		width: 64px;
 	}
+	span.custom-badge{
+		font-size: .8rem;
+		line-height: 20px;
+		min-width: 1rem;
+		height: 20px;
+		background-color: #03a9f4 !important;
+		border-radius: 5px;
+		font-size: 1rem;
+		line-height: 22px;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		min-width: 3rem;
+		height: 22px;
+		margin-left: 14px;
+		padding: 0 6px;
+		text-align: center;
+		color: #fff;
+	}
+	.padding-left-10{
+		padding-left:10px;
+	}
+	.padding-left-20{
+		padding-left:20px;
+	}
+	.padding-left-24{
+		padding-left:24px;
+	}
+	.padding-left-40{
+		padding-left:40px;
+	}
 	
 	  
 </style>

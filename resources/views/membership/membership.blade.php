@@ -63,7 +63,7 @@
 										@else
 											Pending
 										@endif
-										 Membership List
+										 Membership List &nbsp; @if($data['member_status'] !='all')  <span class="custom-badge">Status : {{ CommonHelper::get_member_status_name($data['member_status']) }}</span> @endif
 										@if($data['member_type'] ==1) 
 											<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('Pending members list') }}</a>
 										@else
