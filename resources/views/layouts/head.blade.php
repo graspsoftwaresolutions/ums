@@ -60,6 +60,25 @@
 		left: -5px;
 		width: 64px;
 	}
+	span.custom-badge{
+		font-size: .8rem;
+		line-height: 20px;
+		min-width: 1rem;
+		height: 20px;
+		background-color: #03a9f4 !important;
+		border-radius: 5px;
+		font-size: 1rem;
+		line-height: 22px;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		min-width: 3rem;
+		height: 22px;
+		margin-left: 14px;
+		padding: 0 6px;
+		text-align: center;
+		color: #fff;
+	}
 	
 	  
 </style>

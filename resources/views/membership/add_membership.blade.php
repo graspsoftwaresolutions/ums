@@ -42,7 +42,11 @@
 									<div class="card">
 										<div class="card-content pb-0">
 											<div class="card-header">
-												<h4 class="card-title">{{__('New Membership') }}</h4>
+												<h4 class="card-title">{{__('New Membership') }}
+													@if($data['user_type']!=1)
+													<a class="btn waves-effect waves-light right" href="{{ route('login', app()->getLocale())  }}">{{__('Login') }}</a>
+													@endif
+												</h4>
 												
 											</div>
 											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
@@ -393,7 +397,7 @@
 														</div>
 													</div>
 												</li>
-												<li class="step" onclick="return SubmitMemberForm()">
+												<li class="step">
 													<div class="step-title waves-effect">Additional Details</div>
 													<div class="step-content" style="padding: 50px 50px;">
 														<div class="row">

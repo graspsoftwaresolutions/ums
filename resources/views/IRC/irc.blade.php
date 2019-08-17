@@ -55,8 +55,8 @@
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number') }}*</label>
-					<input id="member_number" name="resignedmemberno"  class="common-input autocompleteoff"
-						type="text" required data-error=".errorTxt1">
+					<input id="member_number" name="resignedmemberno"  class="common-input"
+						type="text" required data-error=".errorTxt1" autocomplete="off">
 					<input type="hidden" name="resignedmemberno" id="memberid">
 					<div class="errorTxt1"></div>
 				</div>
@@ -492,6 +492,7 @@ $("#member_number").devbridgeAutocomplete({
 					$('#person_name').val(res.membername);
 					$('#memberid').val(res.memberid);
 					$('#branch_name').val(res.branch_name);
+					$('#bank_name').val(res.company_name);
 					$('#dob').val(res.dob);
 					$('#member_age').val(res.age);
 					if(res.gender == 'Male')
