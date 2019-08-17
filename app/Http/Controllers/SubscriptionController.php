@@ -511,4 +511,28 @@ class SubscriptionController extends CommonController
                     ->get();  
             return view('subscription.subscription_paymenthistory')->with('data',$data);
     }
+	
+	public function memberHistory($lang,$id){
+	$id = Crypt::decrypt($id);
+    
+        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name')
+											->leftjoin('designation as d','d.id','=','m.designation_id')
+											->leftjoin('persontitle as p','p.id','=','m.member_title_id')
+											->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+											->leftjoin('company as c','c.id','=','cb.company_id')
+											->leftjoin('race as r','r.id','=','m.race_id')
+											->leftjoin('status as s','s.id','=','m.status_id')
+                                            //->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
+                                            //->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
+                                            ->where('m.id','=',$id)
+                                            ->first();
+
+        $data['member_history'] = DB::table('membermonthendstatus as ms')
+                                            ->where('ms.MEMBER_CODE','=',$id)
+                                            ->OrderBy('ms.id','asc')
+                                            ->get(); 
+                                            
+           
+        return view('subscription.member_history')->with('data',$data);
+	}
 }

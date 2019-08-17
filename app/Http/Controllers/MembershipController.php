@@ -501,7 +501,7 @@ class MembershipController extends Controller
                 $delete = "";
                                
                 $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
-                $histry = route('subscription.submember', [app()->getLocale(),$enc_id]);
+                $histry = route('member.history', [app()->getLocale(),$enc_id]);
                 
               //  $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 
@@ -516,8 +516,10 @@ class MembershipController extends Controller
                            
                 if(count($history_list)!=0)
                 {
-                    $actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
+                   // $actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
                 }
+				$actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
+				
                 $baseurl = URL::to('/');
                 $editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
