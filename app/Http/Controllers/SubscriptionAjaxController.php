@@ -71,9 +71,8 @@ class SubscriptionAjaxController extends CommonController
         //     4 => 'statusId', 
         //     5 => 'id',
         // );
-         DB::enableQueryLog();
-		 $commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
-        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.id as mid')
+		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+        'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
@@ -88,7 +87,7 @@ class SubscriptionAjaxController extends CommonController
         }
         $commonqry = $commonqry->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
 		
-         $totalData = $commonqry->count();
+        $totalData = $commonqry->count();
         
         $totalFiltered = $totalData; 
         
@@ -116,6 +115,7 @@ class SubscriptionAjaxController extends CommonController
 					   ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
 					   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
 					   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+					   ->orWhere('m.member_number', 'LIKE',"%{$search}%")
 					   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
 		    if( $limit != -1){
 			   $sub_mem = $sub_mem->offset($start)
@@ -130,7 +130,8 @@ class SubscriptionAjaxController extends CommonController
                             ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
 							    ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
 							   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
-							   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+                               ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+                               ->orWhere('m.member_number', 'LIKE',"%{$search}%")
 							   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%")
 							   ->count();
         }
@@ -152,7 +153,7 @@ class SubscriptionAjaxController extends CommonController
                 //     }
                 // }
                 $nestedData['Name'] = $resultdata->Name;
-                $nestedData['membercode'] = $resultdata->mid;
+                $nestedData['membercode'] = $resultdata->member_number;
                 $nestedData['nric'] = $resultdata->nric;
                 $nestedData['amount'] = $resultdata->amount;
                 $font_color = $resultdata->font_color;
