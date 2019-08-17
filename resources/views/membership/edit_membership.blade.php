@@ -71,7 +71,239 @@
 										<div class="row">
 											<div class="col s12">
 												<ul class="stepper horizontal" id="horizStepper">
-													<li id="memberstepper" class="step active">
+													@if($irc_status==1)
+													@php
+														$irc_data = CommonHelper::getIrcDataByMember($values->mid);
+														$resignedmemberno = $irc_data->resignedmemberno;
+														$member_type = CommonHelper::getdesignationname($resignedmemberno);
+														$resignedid = $irc_data->resignedreason;
+														$irc_reason_name = CommonHelper::getircreason_byid($resignedid);
+														
+													@endphp
+													<li class="step active">
+														<div class="step-title waves-effect">IRC Confirmation</div>
+														<div class="step-content">
+															<div id="irc_confirmation_area" class="row">
+																</br>
+																 <div class="input-field col s6">
+																	<label for="irc_member_number"
+																		class="common-label force-active">{{__('Membership Number') }}*</label>
+																	<input id="irc_member_number" name="irc_member_number" value="{{ !empty($irc_data) ? $values->member_number : '' }}" class="common-input"
+																		type="text">
+																	
+																</div>
+																<div class="input-field col s6">
+																	<label for="irc_name_full" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
+																	<input id="irc_name_full"  name="irc_name_full" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircname : '' }}"
+																		type="text">
+																	
+																</div>
+																<div class="input-field col s6">
+																	<div class="col s12 m3">
+																	 <p>{{__('IRC Position') }}</p>
+																	</div>
+																	<div class="col s12 m3">
+																		<p>
+																			<label>
+																			<input class="validate" required="" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Chairman' ? 'checked' : '' }} >
+																			<span>{{__('Chairman') }}</span>
+																			</label> 
+																		</p>						
+																	</div>
+																	<div class="col s12 m3">
+																		<p>
+																			<label>
+																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Secretary' ? 'checked' : '' }} >
+																			<span>{{__('Secretary') }}</span>
+																			</label>
+																		</p>
+																	</div>
+																	<div class="col s12 m3">
+																		<p>
+																			<label>
+																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Commitee-Member' ? 'checked' : '' }} >
+																			<span>{{__('Commitee Member') }}</span>
+																			</label>
+																		</p>
+																	</div>
+																</div>
+																<div class="input-field col s6">
+																	<label for="irc_bank"
+																		class="common-label force-active">{{__('Bank') }}*</label>
+																	<input id="irc_bank"  name="irc_bank" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbank : '' }}"
+																		type="text" >
+																	
+																</div>
+																<div class="input-field col s6">
+																	<label for="irc_bank_address"
+																		class="common-label force-active">{{__('Bank Address') }}*</label>
+																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbankaddress : '' }}"
+																		type="text" >
+																	
+																</div>
+																<div class="input-field col s6">
+																	<label for="irc_office_telephone_number"
+																		class="common-label force-active">{{__('Office Number') }}*</label>
+																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input" value="{{ !empty($irc_data) ? $irc_data->irctelephoneno : '' }}"
+																		type="text" >
+																	
+																</div>
+																<div class="clearfix" style="clear:both"></div>
+																<div class="input-field col s6">
+																	<label for="irc_mobile"
+																		class="common-label force-active">{{__('Mobile') }}*</label>
+																	<input id="irc_mobile"  name="irc_mobile" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircmobileno : '' }}"
+																		type="text" >
+																	
+																</div>
+																<div class="input-field col s6">
+																	<label for="irc_fax"
+																		class="common-label force-active">{{__('Fax') }}*</label>
+																	<input id="irc_fax"  name="irc_fax" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircfaxno : '' }}"
+																		type="text" >
+																	
+																</div>
+																<div class="input-field col s12">
+																	<h6>Dear Sir,<br><br>
+																	I, the above named IRC hereby Confirmed that the following : [Tick all the boxes as confirmation]
+																	</h6>
+																</div>
+																<div class="col s12 m12">
+																	<div class="row padding-left-10">
+																		<div class="col s12 m4 input-field inline">
+																			<label>
+																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->nameofperson==1 ? 'checked' : '' }} />
+																				<span>Name of the Person appliying for BF is</span>
+																			</label> 
+																		</div>
+																		<div class="col s12 m3 ">
+																			<input type="text" name="irc_person_name" style="width:200%" value=" {{ !empty($irc_data) ? $irc_data->ircname : ''}}">
+																		</div>
+																	</div>						
+																</div>
+																<div class="col s12 m12">
+																	<div class="row padding-left-10">
+																		<div class="col s12 m4 input-field inline">
+																			<label>
+																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->waspromoted==1 ? 'checked' : '' }} />
+																				<span>She/He was @php echo strtolower(!empty($irc_reason_name) ? $irc_reason_name : '<span style="text-decoration:underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>') @endphp to</span>
+																			</label> 
+																		</div>
+																		<div class="col s12 m3 ">
+																			<input type="text" name="irc_promoted_person" style="width:110%" value="{{!empty($member_type) ? $member_type : ''}}">
+																		</div>
+																		<div class="col s12 m2 input-field inline">
+																			<label>
+																				grade w.e.f.
+																			</label>
+																		</div>
+																		<div class="col s12 m3">
+																			<input type="text" name="irc_grade" name="text" value=" {{ !empty($irc_data) ? $irc_data->gradewef : ''}}" placeholder="garde w.e.f" />	
+																		</div>
+																	</div>						
+																</div>
+																
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->beforepromotion==1 ? 'checked' : '' }} />
+																		<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->attached==1 ? 'checked' : '' }} />
+																		<span>Attached Job function/Description (compulsory). </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->herebyconfirm==1 ? 'checked' : '' }} />
+																		<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
+																		</label> 
+																	</p>		
+																</div>
+																<div class="col s12 m12">
+																	<p class="padding-left-20">
+																		<label>
+																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->filledby==1 ? 'checked' : '' }} />
+																		<span>The messenger clerical position has been filled by</span>
+																		</label> 
+																	</p>	
+																</div>
+																<div class="col s12 m12">
+																	</br>
+																	<h6>BRANCH COMMITEE VERIFICATION</h6>
+																	<div class="row">
+																		<div class="col s12 m12">
+																			<p class="padding-left-20">
+																				<label>
+																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->branchcommitteeverification1==1 ? 'checked' : '' }} />
+																				<span>I have verified the above and confirm that the declaration by the IRC is correct.The Messenger/Clerical position has filled by another Messenger/Clerical And; </span>
+																				</label> 
+																			</p>	
+																		</div>
+																		<div class="col s12 m12">
+																			<p class="padding-left-20">
+																				<label>
+																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->branchcommitteeverification2==1 ? 'checked' : '' }} />
+																				<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
+																				</label> 
+																			</p>
+																		</div>
+																		</br>
+																		<div class="col s12 m12">	
+																			<div class="row">
+																				<div class="col s12">
+																				   Branch Commitee [Name in full]
+																				  <div class="input-field inline">
+																					<input id="irc_branch_committie_name" style="width:200%" type="text"  value="{{ !empty($irc_data) ? $irc_data->branchcommitteeName : '' }}" class="validate">
+																				  </div>
+																				</div>
+																			</div>
+																			
+																		</div>
+																		<div class="col s12 m8">	
+																			<div class="row">
+																				<div class="col s12">
+																				   Zone
+																				  <div class="input-field inline">
+																					<input id="irc_branch_committie_zone" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeZone : '' }}" style="width:200%" class="validate">
+																				  </div>
+																				</div>
+																			</div>
+																			
+																		</div>
+																		<div class="col s12 m2">
+																			&nbsp;
+																		</div>
+																		<div class="col s12 m2 input-field inline">
+																			<!--<label>Date</label> -->
+																			<input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=""  ? date('d/M/Y',strtotime($irc_data->branchcommitteedate)) : '' }}" >
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col m12 s12 mb-1" style="text-align:right">
+																	<button id="controlled_nextone"  class="waves-effect waves dark btn btn-primary next-step"
+																		type="submit">
+																	Next
+																	<i class="material-icons right">arrow_forward</i>
+																	</button>
+																	
+																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
+																		type="submit">Submit</button>
+																</div>
+															</div>
+														</div>
+													</li>
+													@endif
+													<li id="memberstepper" class="step @if($irc_status!=1) active @endif">
 														<div class="step-title waves-effect">Member Details</div>
 														<div class="step-content" >
 															<div style="box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);padding:50px 50px;">
@@ -445,6 +677,12 @@
 																			</button>
 																			</div-->
 																		<div class="col m12 s12 mb-3" style="text-align: right;">
+																			@if($irc_status==1)
+																			<button class="btn btn-light previous-step">
+																				<i class="material-icons left">arrow_back</i>
+																				Prev
+																			</button>
+																			@endif
 																			<button id="controlled_nextone"  class="waves-effect waves dark btn btn-primary next-step"
 																				type="submit">
 																			Next
@@ -924,242 +1162,6 @@
 																		<i class="material-icons left">arrow_back</i>
 																		Prev
 																	</button>
-																	@if($irc_status==1)
-																	<button id="controlled_next"  class="waves-effect waves dark btn btn-primary next-step"
-																		type="submit">
-																	Next
-																	<i class="material-icons right">arrow_forward</i>
-																	</button>
-																	@endif
-																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
-																		type="submit">Submit</button>
-																</div>
-															</div>
-														</div>
-													</li>
-													@if($irc_status==1)
-													@php
-														$irc_data = CommonHelper::getIrcDataByMember($values->mid);
-														$resignedmemberno = $irc_data->resignedmemberno;
-														$member_type = CommonHelper::getdesignationname($resignedmemberno);
-														$resignedid = $irc_data->resignedreason;
-														$irc_reason_name = CommonHelper::getircreason_byid($resignedid);
-														
-													@endphp
-													<li class="step">
-														<div class="step-title waves-effect">IRC Confirmation</div>
-														<div class="step-content">
-															<div id="irc_confirmation_area" class="row">
-																</br>
-																 <div class="input-field col s6">
-																	<label for="irc_member_number"
-																		class="common-label force-active">{{__('Membership Number') }}*</label>
-																	<input id="irc_member_number" name="irc_member_number" value="{{ !empty($irc_data) ? $values->member_number : '' }}" class="common-input"
-																		type="text">
-																	
-																</div>
-																<div class="input-field col s6">
-																	<label for="irc_name_full" class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-																	<input id="irc_name_full"  name="irc_name_full" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircname : '' }}"
-																		type="text">
-																	
-																</div>
-																<div class="input-field col s6">
-																	<div class="col s12 m3">
-																	 <p>{{__('IRC Position') }}</p>
-																	</div>
-																	<div class="col s12 m3">
-																		<p>
-																			<label>
-																			<input class="validate" required="" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Chairman' ? 'checked' : '' }} >
-																			<span>{{__('Chairman') }}</span>
-																			</label> 
-																		</p>						
-																	</div>
-																	<div class="col s12 m3">
-																		<p>
-																			<label>
-																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Secretary' ? 'checked' : '' }} >
-																			<span>{{__('Secretary') }}</span>
-																			</label>
-																		</p>
-																	</div>
-																	<div class="col s12 m3">
-																		<p>
-																			<label>
-																			<input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Commitee-Member' ? 'checked' : '' }} >
-																			<span>{{__('Commitee Member') }}</span>
-																			</label>
-																		</p>
-																	</div>
-																</div>
-																<div class="input-field col s6">
-																	<label for="irc_bank"
-																		class="common-label force-active">{{__('Bank') }}*</label>
-																	<input id="irc_bank"  name="irc_bank" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbank : '' }}"
-																		type="text" >
-																	
-																</div>
-																<div class="input-field col s6">
-																	<label for="irc_bank_address"
-																		class="common-label force-active">{{__('Bank Address') }}*</label>
-																	<input id="irc_bank_address"  name="irc_bank_address" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbankaddress : '' }}"
-																		type="text" >
-																	
-																</div>
-																<div class="input-field col s6">
-																	<label for="irc_office_telephone_number"
-																		class="common-label force-active">{{__('Office Number') }}*</label>
-																	<input id="irc_office_telephone_number"  name="irc_office_telephone_number" class="common-input" value="{{ !empty($irc_data) ? $irc_data->irctelephoneno : '' }}"
-																		type="text" >
-																	
-																</div>
-																<div class="clearfix" style="clear:both"></div>
-																<div class="input-field col s6">
-																	<label for="irc_mobile"
-																		class="common-label force-active">{{__('Mobile') }}*</label>
-																	<input id="irc_mobile"  name="irc_mobile" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircmobileno : '' }}"
-																		type="text" >
-																	
-																</div>
-																<div class="input-field col s6">
-																	<label for="irc_fax"
-																		class="common-label force-active">{{__('Fax') }}*</label>
-																	<input id="irc_fax"  name="irc_fax" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircfaxno : '' }}"
-																		type="text" >
-																	
-																</div>
-																<div class="input-field col s12">
-																	<h6>Dear Sir,<br><br>
-																	I, the above named IRC hereby Confirmed that the following : [Tick all the boxes as confirmation]
-																	</h6>
-																</div>
-																<div class="col s12 m12">
-																	<div class="row padding-left-10">
-																		<div class="col s12 m4 input-field inline">
-																			<label>
-																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->nameofperson==1 ? 'checked' : '' }} />
-																				<span>Name of the Person appliying for BF is</span>
-																			</label> 
-																		</div>
-																		<div class="col s12 m3 ">
-																			<input type="text" name="irc_person_name" style="width:200%" value=" {{ !empty($irc_data) ? $irc_data->ircname : ''}}">
-																		</div>
-																	</div>						
-																</div>
-																<div class="col s12 m12">
-																	<div class="row padding-left-10">
-																		<div class="col s12 m4 input-field inline">
-																			<label>
-																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->waspromoted==1 ? 'checked' : '' }} />
-																				<span>She/He was @php echo strtolower(!empty($irc_reason_name) ? $irc_reason_name : '<span style="text-decoration:underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>') @endphp to</span>
-																			</label> 
-																		</div>
-																		<div class="col s12 m3 ">
-																			<input type="text" name="irc_promoted_person" style="width:110%" value="{{!empty($member_type) ? $member_type : ''}}">
-																		</div>
-																		<div class="col s12 m2 input-field inline">
-																			<label>
-																				grade w.e.f.
-																			</label>
-																		</div>
-																		<div class="col s12 m3">
-																			<input type="text" name="irc_grade" name="text" value=" {{ !empty($irc_data) ? $irc_data->gradewef : ''}}" placeholder="garde w.e.f" />	
-																		</div>
-																	</div>						
-																</div>
-																
-																<div class="col s12 m12">
-																	<p class="padding-left-20">
-																		<label>
-																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->beforepromotion==1 ? 'checked' : '' }} />
-																		<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
-																		</label> 
-																	</p>		
-																</div>
-																<div class="col s12 m12">
-																	<p class="padding-left-20">
-																		<label>
-																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->attached==1 ? 'checked' : '' }} />
-																		<span>Attached Job function/Description (compulsory). </span>
-																		</label> 
-																	</p>		
-																</div>
-																<div class="col s12 m12">
-																	<p class="padding-left-20">
-																		<label>
-																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->herebyconfirm==1 ? 'checked' : '' }} />
-																		<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
-																		</label> 
-																	</p>		
-																</div>
-																<div class="col s12 m12">
-																	<p class="padding-left-20">
-																		<label>
-																		<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->filledby==1 ? 'checked' : '' }} />
-																		<span>The messenger clerical position has been filled by</span>
-																		</label> 
-																	</p>	
-																</div>
-																<div class="col s12 m12">
-																	</br>
-																	<h6>BRANCH COMMITEE VERIFICATION</h6>
-																	<div class="row">
-																		<div class="col s12 m12">
-																			<p class="padding-left-20">
-																				<label>
-																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->branchcommitteeverification1==1 ? 'checked' : '' }} />
-																				<span>I have verified the above and confirm that the declaration by the IRC is correct.The Messenger/Clerical position has filled by another Messenger/Clerical And; </span>
-																				</label> 
-																			</p>	
-																		</div>
-																		<div class="col s12 m12">
-																			<p class="padding-left-20">
-																				<label>
-																				<input type="checkbox" class="filled-in" {{ !empty($irc_data) && $irc_data->branchcommitteeverification2==1 ? 'checked' : '' }} />
-																				<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
-																				</label> 
-																			</p>
-																		</div>
-																		</br>
-																		<div class="col s12 m12">	
-																			<div class="row">
-																				<div class="col s12">
-																				   Branch Commitee [Name in full]
-																				  <div class="input-field inline">
-																					<input id="irc_branch_committie_name" style="width:200%" type="text"  value="{{ !empty($irc_data) ? $irc_data->branchcommitteeName : '' }}" class="validate">
-																				  </div>
-																				</div>
-																			</div>
-																			
-																		</div>
-																		<div class="col s12 m8">	
-																			<div class="row">
-																				<div class="col s12">
-																				   Zone
-																				  <div class="input-field inline">
-																					<input id="irc_branch_committie_zone" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeZone : '' }}" style="width:200%" class="validate">
-																				  </div>
-																				</div>
-																			</div>
-																			
-																		</div>
-																		<div class="col s12 m2">
-																			&nbsp;
-																		</div>
-																		<div class="col s12 m2 input-field inline">
-																			<!--<label>Date</label> -->
-																			<input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=""  ? date('d/M/Y',strtotime($irc_data->branchcommitteedate)) : '' }}" >
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col m12 s12 mb-1" style="text-align:right">
-																	<button class="btn btn-light previous-step">
-																		<i class="material-icons left">arrow_back</i>
-																		Prev
-																	</button>
 																	
 																	<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
 																		type="submit">Submit</button>
@@ -1167,7 +1169,7 @@
 															</div>
 														</div>
 													</li>
-													@endif
+													
 												</ul>
 											</div>
 										</div>
