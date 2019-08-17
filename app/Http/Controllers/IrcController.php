@@ -190,7 +190,7 @@ class IrcController extends CommonController
 	public function getIrcMembersListValues(Request $request)
 	{
 		$member_id = $request->member_id;
-		$res = DB::table('irc_account as irc')->select('m.id as mid','m.name as membername','c.company_name as bankname','cb.')
+		$res = DB::table('irc_account as irc')->select('m.id as mid','m.name as membername','c.company_name as bankname')
 				->leftjoin('membership as m','irc.MemberCode','=','m.id')
 				->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
 				->leftjoin('company as c','cb.company_id','=','c.id')
