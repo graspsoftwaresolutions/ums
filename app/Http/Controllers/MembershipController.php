@@ -925,6 +925,18 @@ class MembershipController extends Controller
             return redirect(app()->getLocale().'/transfer_history')->with('error','Failed to delete');
         }
      }
+	 
+	public function getRelativename(Request $request){
+		$member_id  = $request->input('member_id');
+        $resign_claimer  = $request->input('resign_claimer');
+        $getselfid = DB::table('relation')->where('relation_name','=','SELF')->pluck('id')->first();
+        if($getselfid != $resign_claimer){
+            $relativename = MemberNominees::where('relation_id','=',$resign_claimer)->where('member_id','=',$member_id)->pluck('nominee_name')->first();
+        }else{
+            $relativename = Membership::where('id', '=', $member_id)->pluck('name')->first();
+        }
+       echo json_encode($relativename);
+	}
 
     
 

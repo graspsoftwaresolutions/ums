@@ -498,4 +498,14 @@ class CommonHelper
 			return $get_logo;
 		}
 	}
+	public static function ConvertdatetoDBFormat($date){
+		if($date!=""){
+			$date = str_replace('/', '-', $date );
+			$new_date = date("Y-m-d", strtotime($date));
+		}else{
+			$new_date = '0000-00-00';
+		}
+		return $new_date;
+    }
+	
 }

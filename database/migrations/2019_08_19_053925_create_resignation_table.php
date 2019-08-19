@@ -29,7 +29,7 @@ class CreateResignationTable extends Migration
 			$table->string('chequeno',30)->nullable();   
 			$table->dateTime('chequedate')->nullable();   
 			$table->float('amount', 8, 2)->nullable();   
-			$table->float('totalarrears', 8, 2)->nullable();    
+			$table->integer('totalarrears')->nullable();    
 			$table->integer('user_code')->nullable(); 
 			$table->dateTime('entry_date')->nullable();  
 			$table->time('entry_time')->nullable();   

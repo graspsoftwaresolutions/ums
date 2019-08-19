@@ -16,6 +16,7 @@ use App\User;
 use App\Model\MemberNominees;
 use App\Model\MemberGuardian;
 use App\Model\MemberFee;
+use App\Model\Resignation;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -369,6 +370,50 @@ class MemberController extends CommonController
 						$nominee->dob =  $dob;
                     }
 					$nominee->save();
+				}
+			}
+			if($auto_id!=''){
+				$resign_date = $request->input('resign_date');
+				$last_paid = $request->input('last_paid');
+				$resign_claimer = $request->input('resign_claimer');
+				$resign_reason = $request->input('resign_reason');
+				if($resign_date!="" && $last_paid!="" && $resign_reason!=""){
+					$check_resign_exists = Resignation::where('member_code','=',$member_id)->count();
+					if($check_resign_exists>0){
+						$resign = Resignation::where('member_code','=',$member_id)->first();
+					}else{
+						$resign = new Resignation();
+						$resign->member_code = $member_id;
+					}
+					$resign->resignation_date = CommonHelper::ConvertdatetoDBFormat($resign_date);
+					$resign->resignstatus_code = CommonHelper::ConvertdatetoDBFormat($resign_date);
+					$resign->relation_code = $resign_claimer;
+					$resign->reason_code = $resign_reason;
+					$resign->claimer_name = $request->input('claimer_name');
+					$resign->months_contributed = $request->input('contributed_months');
+					$resign->service_year = $request->input('service_year');
+					$resign->accbf = $request->input('bf_contribution');
+					$resign->accbenefit = $request->input('benefit_amount');
+					$resign->amount = $request->input('total_amount');
+					$resign->totalarrears = $request->input('totalarrears');
+					$resign->paymode = $request->input('pay_mode');
+					$resign->chequeno = $request->input('reference_number');
+					$resign->unioncontribution = $request->input('union_contribution');
+					$resign->insuranceamount = $request->input('insurance_amount');
+					$resign->chequedate = CommonHelper::ConvertdatetoDBFormat($request->input('cheque_date'));
+					$resign->voucher_date = CommonHelper::ConvertdatetoDBFormat($request->input('payment_confirmation'));
+					$resign->icno = $member['new_ic'];
+					$resign->icno_old = $member['old_ic'];
+					$resign->entry_date = date('Y-m-d');
+					$resign->created_by = Auth::user()->id;
+					$resign->created_at = date('Y-m-d');
+					$resign->save();
+					if($check_resign_exists==0 && $resign){
+						$resmember = Membership::find($member_id);
+						$resmember['status_id'] = 4;
+						$resmember->save();
+					}
+					
 				}
 			}
 			if($auto_id==''){

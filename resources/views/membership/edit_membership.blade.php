@@ -72,6 +72,9 @@ $irc_status = $data['irc_status'];
 <div class="row">
 <div class="col s12">
 <ul class="stepper horizontal" id="horizStepper">
+@php
+	$member_autoid = $values->mid;
+@endphp
 @if($irc_status==1)
 @php
 	$irc_data = CommonHelper::getIrcDataByMember($values->mid);
@@ -1184,9 +1187,15 @@ $irc_status = $data['irc_status'];
 		$reasondata = CommonHelper::getResignData();
 		$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid);
 		$lastpaid = '';
+		$totalmonthspaid = '';
 		if(!empty($lastmonthendrow)){
 			$lastpaid = date('M/Y',strtotime($lastmonthendrow->StatusMonth));
+			$totalmonthspaid = $lastmonthendrow->TOTALMONTHSPAID;
 		}
+		if(!empty($resignedrow)){
+			
+		}
+		
 	@endphp
 	<div class="step-content">
 		<div  class="row">
@@ -1194,6 +1203,7 @@ $irc_status = $data['irc_status'];
 			 <div class="input-field col s6">
 				<label for="resign_date" class="force-active">Resign Date *</label>
 				  <input type="text" class="datepicker" id="resign_date" data-error=".errorTxt500"  name="resign_date">
+				  <input type="text" class="hide" id="totalarrears" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->SUBSCRIPTIONDUE}}@endif" name="totalarrears">
 					
 				  <div class="errorTxt500"></div>
 			 </div>
@@ -1224,8 +1234,8 @@ $irc_status = $data['irc_status'];
 				<label for="resign_reason force-active" >Reason*</label>
 				<select name="resign_reason" id="resign_reason" data-error=".errorTxt503" class="force-active error browser-default selectpicker" >
 					<option value="">Select reason</option>
-					@foreach($reasondata as $values)
-						<option value="{{$values->id}}">{{$values->reason_name}}</option>
+					@foreach($reasondata as $reason)
+						<option value="{{$reason->id}}">{{$reason->reason_name}}</option>
 					@endforeach
 					<div class="input-field">
 						<div class="errorTxt503"></div>
@@ -1235,34 +1245,28 @@ $irc_status = $data['irc_status'];
 			<div class="input-field col s6">
 				<input type="text" id="claimer_name" name="claimer_name" data-error=".errorTxt504">
 				<label for="claimer_name" class="force-active">Claimer Name</label>
-				 <div class="errorTxt504"></div>
+				<div class="errorTxt504"></div>
 			</div>
 			 <div class="clearfix" style="clear:both"></div>
 			 <div class="input-field col s6">
 				<div class="row">
 					<div class="input-field col s6">
-						<input type="text"  id="service_year" name="service_year">
+						<input type="text" id="service_year" name="service_year" value="{{ CommonHelper::calculate_age($values->doj) }}">
 							<label for="service_year" class="force-active">Service Year</label>
-						  <div class="errorTxt26"></div>
 					 </div>
 					 <div class="input-field col s6">
-						<input type="text"  id="benefit_year" name="benefit_year" readonly >
+						<input type="text" id="benefit_year" name="benefit_year" readonly >
 							<label for="benefit_year" class="force-active">Benefit Year</label>
-						  <div class="errorTxt26"></div>
 					 </div>
 				</div>
 			 </div>
 			 <div class="input-field col s6">
 				<div class="row">
-					<div class="input-field col s6">
-						<input type="text"  id="contributed_months" name="contributed_months">
-							<label for="contributed_months" class="force-active">Contributed Months</label>
-						  <div class="errorTxt26"></div>
-					 </div>
-					 <div class="input-field col s6">
-						<input type="text"  id="bf_contribution" name="bf_contribution">
+					
+					
+					 <div class="input-field col s12">
+						<input type="text" id="bf_contribution" name="bf_contribution" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->ACCBF}}@endif" >
 							<label for="bf_contribution" class="force-active">BF Contribution</label>
-						  <div class="errorTxt26"></div>
 					 </div>
 				</div>
 			 </div>
@@ -1270,62 +1274,50 @@ $irc_status = $data['irc_status'];
 			 <div class="input-field col s6">
 				<div class="row">
 					<div class="input-field col s6">
-						<input type="text"  id="amount" name="amount">
-							<label for="amount" class="force-active">Amount</label>
-						  <div class="errorTxt26"></div>
+						<input type="text" id="contributed_months" name="contributed_months" value="{{$totalmonthspaid}}">
+							<label for="contributed_months" class="force-active">Contributed Months</label>
 					 </div>
 					 <div class="input-field col s6">
-						<input type="text"  id="benefit_amount" name="benefit_amount" readonly >
-							<label for="benefit_amount" class="force-active">Benefit Amount</label>
-						  <div class="errorTxt26"></div>
+						<input type="text"  id="union_contribution" name="union_contribution"  value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->ACCINSURANCE}}@endif">
+							<label for="union_contribution" class="force-active">Union Contribution</label>
 					 </div>
+					
 				</div>
 			 </div>
 			 
 			 <div class="input-field col s6">
 				<div class="row">
-					<div class="input-field col s6">
-						<input type="text" id="benefit_amount" name="benefit_amount" readonly >
+					
+					<div class="input-field col s12">
+						<input type="text" id="benefit_amount" name="benefit_amount" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->ACCBENEFIT}}@endif" >
 							<label for="benefit_amount" class="force-active">Benefit Amount</label>
-						  <div class="errorTxt26"></div>
 					 </div>
-					 <div class="input-field col s6">
-						<input type="text"  id="sub_total" name="sub_total">
-							<label for="sub_total" class="force-active">Sub Total</label>
-						  <div class="errorTxt26"></div>
-					 </div>
+					
 				</div>
 			 </div>
 			 <div class="clearfix" style="clear:both"></div>
 			 <div class="col s12 m6">
 				<div class="row">
 					<div class="col s12 m6">
-					<label>{{__('PayMode') }}*</label>
+					<label>{{__('PayMode') }}</label>
 						<select name="pay_mode" id="pay_mode" class="error browser-default selectpicker">
-						<option value="" disabled selected>{{__('Choose your option') }}</option>
-						<option value="CHEQUE"> CHEQUE</option>
-						<option value="ONLINE PAY"> ONLINE PAY</option>
+						<option value="" selected>{{__('Choose your option') }}</option>
+						<option value="1"> CHEQUE</option>
+						<option value="2"> ONLINE PAY</option>
 						</select>
-						  <div class="errorTxt26"></div>
 					 </div>
 					 <div class="input-field col s6">
 						<input type="text"  id="reference_number" name="reference_number">
-							<label for="reference_number" class="force-active">Reference Number</label>
-						  <div class="errorTxt26"></div>
+							<label id="reference_number_text" for="reference_number" class="force-active">Reference Number</label>
 					 </div>
 				</div>
 			 </div>
 			 <div class="col s12 m6">
 				<div class="row">
-					<div class="input-field col s6">
-						<input type="text"  id="union_contribution" name="union_contribution">
-							<label for="union_contribution" class="force-active">Union Contribution</label>
-						  <div class="errorTxt26"></div>
-					 </div>
-					 <div class="input-field col s6 ">
-						<input type="text"  id="insurance_amount" name="insurance_amount">
+					 
+					 <div class="input-field col s12 ">
+						<input type="text"  id="insurance_amount" name="insurance_amount" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->TOTALINSURANCE_AMOUNT}}@endif">
 							<label for="insurance_amount" class="force-active">Insurance Amount</label>
-						  <div class="errorTxt26"></div>
 					 </div>
 				</div>
 			 </div>
@@ -1335,19 +1327,16 @@ $irc_status = $data['irc_status'];
 					<div class="col s12 m6">
 					<label>{{__('Cheque Date') }}*</label>
 						<input type="text" name="cheque_date" id="cheque_date" class="datepicker">
-						  <div class="errorTxt26"></div>
 					 </div>
 					 <div class="col s12 m6">
 						<label>{{__('Payment Confirmation') }}*</label>
 						<input type="text" name="payment_confirmation" id="payment_confirmation" class="datepicker">
-						  <div class="errorTxt26"></div>
 					 </div>
 				</div>
 			 </div>
 			  <div class="col s12 m6">
 				<label for="total_amount" class="force-active">Total Amount</label>
-				  <input type="text" id="total_amount" name="total_amount">
-				  <div class="errorTxt26"></div>
+				<input type="text" id="total_amount" name="total_amount" readonly >
 			 </div>
 			 <div class="clearfix" style="clear:both"></div>
 			 </div>
@@ -1359,7 +1348,7 @@ $irc_status = $data['irc_status'];
 				</button>
 				
 				<button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn"  
-					type="button">Submit</button>
+					type="button">@if(!empty($resignedrow)){{'Submit'}}@else{{'Resign'}}@endif</button>
 			</div>
 		</div>
 	</div>
@@ -1496,6 +1485,50 @@ $(document.body).on('click', '#submitResignation' ,function(){
 	var resign_date = $("#resign_date").val();
 	var last_paid = $("#last_paid").val();
 	var resign_reason = $("#resign_reason").val();
+	if(resign_date!="" && last_paid!="" && resign_reason!=""){
+		SubmitMemberForm();
+	}else{
+		M.toast({ html: "please fill the required fields" });
+	}
+});
+$(document.body).on('change', '#resign_claimer' ,function(){
+	var resign_claimer = $('#resign_claimer').val();
+	var member_id = '{{ $member_autoid }}';
+	if(resign_claimer!="" && member_id!=""){
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url : "{{ URL::to('/'.app()->getLocale().'/get-relatives-info') }}?member_id="+member_id+"&resign_claimer="+resign_claimer,
+			success:function(res){
+				if(res)
+				{
+					$("#claimer_name").val(res);
+				}else{
+					$("#claimer_name").val(res);
+				}
+			}
+		});
+	}else{
+		$("#claimer_name").val('');
+	}
+});
+$(document.body).on('change', '#pay_mode' ,function(){
+	var pay_mode = $('#pay_mode').val();
+	if(pay_mode==1){
+		$('#reference_number_text').text('Cheque No');
+	}else{
+		$('#reference_number_text').text('Reference No');
+	}
+});
+$(document.body).on('keyup', '#bf_contribution,#benefit_amount,#insurance_amount' ,function(){
+	var bf_contribution = $('#bf_contribution').val();
+	var insurance_amount = $('#insurance_amount').val();
+	var benefit_amount = $('#benefit_amount').val();
+	bf_contribution = bf_contribution!="" && typeof(bf_contribution)!="number" ? parseInt(bf_contribution) : 0;
+	insurance_amount = insurance_amount!="" && typeof(insurance_amount)!="number" ? parseInt(insurance_amount) : 0;
+	benefit_amount = benefit_amount!="" && typeof(benefit_amount)!="number" ? parseInt(benefit_amount) : 0;
+	var total_amount = parseInt(insurance_amount)+parseInt(bf_contribution)+parseInt(benefit_amount);
+	$('#total_amount').val(total_amount);
 });
 /* function nextBtn() {
 $("#controlled_next").trigger('submit');
