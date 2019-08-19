@@ -49,6 +49,7 @@ class SubscriptionAjaxController extends CommonController
 {
     public function __construct() {
         ini_set('memory_limit', '-1');
+        $this->membermonthendstatus_table = "membermonthendstatus1";
     }
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){
@@ -458,7 +459,7 @@ class SubscriptionAjaxController extends CommonController
             $sl++ => 'ms.ACCINSURANCE',
         );
 		
-		$commonqry = DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+		$commonqry = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
 		'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
 		->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 		->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
