@@ -50,6 +50,28 @@
 									$url_member_name = '';
 									$url_member_number = '';
 									
+									$userid = Auth::user()->id;
+									$get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
+									$companylist = [];
+									if($user_role =='union'){
+										$companylist = $data['company_view'];
+									}
+									else if($user_role =='union-branch'){
+										$unionbranchid = CommonHelper::getUnionBranchID($userid);
+										$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+									} 
+									else if($user_role =='company'){
+										$branchid = CommonHelper::getCompanyBranchID($userid);
+										$companyid = CommonHelper::getCompanyID($userid);
+										$companylist = CommonHelper::getCompanyList($companyid);
+									}
+									else if($user_role =='company-branch'){
+										$branchid = CommonHelper::getCompanyBranchID($userid);
+										$companyid = CommonHelper::getCompanyID($userid);
+										$companylist = CommonHelper::getCompanyList($companyid);
+									} 
+									
 									if(isset($data['member_id'])){
 										
 										$url_member_id = $data['member_id'];
@@ -200,7 +222,7 @@
 															<div class="input-field">
 																<select class="error browser-default selectpicker" id="new_company" name="new_company" data-error=".errorTxt1">
 																	 <option value="">{{__('Select company') }}</option>
-																	@foreach($data['company_view'] as $values)
+																	@foreach($companylist as $values)
 																		<option value="{{$values->id}}">{{$values->company_name}}</option>
 																	@endforeach
 																</select>
