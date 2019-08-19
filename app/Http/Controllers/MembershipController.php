@@ -633,8 +633,6 @@ class MembershipController extends Controller
         }else{
             return redirect(app()->getLocale().'/transfer_history')->with('error','Old branch and new branch should not same');
         }
-      
-      
     }
 
 

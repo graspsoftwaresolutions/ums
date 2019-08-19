@@ -219,6 +219,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription.sub_paymenthistory','SubscriptionController@subPaymentHistory')->name('subscription.sub_paymenthistory');
 	Route::get('member_transfer','MembershipController@memberTransfer')->name('master.transfer');
 	
+	Route::post('ajax_arrear_list','SubscriptionAjaxController@ajax_arrear_list');
+	
+	//Arrear Entry 
+	Route::get('subscription.arrearentry','SubscriptionController@arrearentryIndex')->name('subscription.arrearentry');
+	Route::get('subscription.addarrearentry','SubscriptionController@arrearentryAdd')->name('subscription.addarrearentry');
+	
+	Route::post('subscription.saveArrear','SubscriptionController@arrearentrySave')->name('subscription.saveArrear');
+	
 	Route::get('transfer_history','MembershipController@memberTransferHistory')->name('transfer.history');
 	Route::post('change-branch','MembershipController@ChangeMemberBranch')->name('master.changebranch');
 	Route::post('ajax_transfer_list','MembershipController@ajax_transfer_list');
@@ -268,7 +276,10 @@ Route::get('get-oldmember-list','MemberController@getoldMemberList');
 Route::get('get-member-list','MemberController@getMembersList');
 Route::get('get-member-list-values','MemberController@getMembersListValues');
 Route::get('get-ircmember-list','IrcController@getIrcMembersList'); 
-Route::get('get-ircmember-list-values','IrcController@getIrcMembersListValues');
+Route::get('get-ircmember-list-values','IrcController@getIrcMembersListValues'); 
+
+Route::get('get-nricmember-list','SubscriptionController@getNricMemberlist'); 
+Route::get('get-nricmember-list-values','SubscriptionController@getMembersListValues');
 
 Route::post('membership_update','MemberController@update');
 

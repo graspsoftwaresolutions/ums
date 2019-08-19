@@ -320,7 +320,6 @@ function ConfirmDeletion() {
     }
 }
 
-
 function showaddForm() {
     $('.edit_hide').show();
     $('.add_hide').show();

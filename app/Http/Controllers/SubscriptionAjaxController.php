@@ -28,6 +28,7 @@ use App\Mail\CompanyBranchMailable;
 use App\Model\MonthlySubscription;
 use App\Model\MonthlySubscriptionCompany;
 use App\Model\MonthlySubscriptionMember;
+use App\Model\ArrearEntry;
 use DB;
 use View;
 use Mail;
@@ -534,6 +535,75 @@ class SubscriptionAjaxController extends CommonController
             );
 
         echo json_encode($json_data); 
+    }
+
+    public function ajax_arrear_list(Request $request)
+    {
+        $columns = array( 
+            0 => 'nric', 
+            1 => 'membercode',
+            2 => 'company_id',
+            3 => 'branch_id',
+            4 => 'arrear_date',
+            5 => 'arrear_amount',
+            6 => 'status_id',
+        );
+        $totalData = ArrearEntry::all()->count();
+        $totalFiltered = $totalData; 
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                $ArrearEntry = DB::table('arrear_entry as ar')->select('ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername')
+                ->leftjoin('membership as m')
+                ->leftjoin('company_branch as cb')
+                ->leftjoin('company as c')
+                ->leftjoin('status as s')
+                ->get()->toArray();
+            }else{
+                $Relation = Relation::select('id','relation_name')->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('status','=','1')
+                ->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $Relation =  Relation::select('id','relation_name')->where('id','LIKE',"%{$search}%")
+                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }else{
+            $Relation =  Relation::select('id','relation_name')->where('id','LIKE',"%{$search}%")
+                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->where('status','=','1')
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFiltered = Relation::where('id','LIKE',"%{$search}%")
+                    ->orWhere('relation_name', 'LIKE',"%{$search}%")
+                    ->where('status','=','1')
+                    ->count();
+        }
+        $data = $this->CommonAjaxReturn($Relation, 0, 'master.relationdestroy', 0);
+       
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+        echo json_encode($json_data);
     }
 
   
