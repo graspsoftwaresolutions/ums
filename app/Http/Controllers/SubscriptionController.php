@@ -31,6 +31,7 @@ use App\Model\MonthlySubscriptionMember;
 use App\Model\MonSubCompanyAttach;
 use App\Model\MonthlySubMemberMatch;
 use App\Model\Membership;
+use App\Model\ArrearEntry;
 use DB;
 use View;
 use Mail;
@@ -61,6 +62,7 @@ class SubscriptionController extends CommonController
         $this->MonthlySubscriptionMember = new MonthlySubscriptionMember;
         $this->Status = new Status;
         $this->membermonthendstatus_table = "membermonthendstatus1";
+        $this->ArrearEntry = new ArrearEntry;
     }
     //excel file download and upload it
     public function index() {
@@ -535,5 +537,77 @@ class SubscriptionController extends CommonController
                                             
            
         return view('subscription.member_history')->with('data',$data);
-	}
+    }
+    //Arrear 
+    public function arrearentryIndex()
+    {
+        //echo "hiii"; die;
+        return view('subscription.arrear_entry');
+    }
+    public function arrearentryAdd()
+    {
+        return view('subscription.add_arrearentry');
+    }
+    public function getNricMemberlist(Request $request)
+    {
+        $searchkey = $request->input('searchkey');
+        $search = $request->input('query');
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number, "-" , m.new_ic) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number')
+
+                            ->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.old_ic', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+                                 })->limit(25)
+                            ->get();   
+         return response()->json($res);
+    }
+    public function getMembersListValues(Request $request)
+	{
+		DB::connection()->enableQueryLog();
+		$member_id = $request->member_id;
+		
+		$res = DB::table('membership as m')->select(DB::raw("if(m.new_ic > 0  ,m.new_ic,m.old_ic) as nric"),'m.member_number','m.id as memberid','m.name as membername','cb.branch_name','c.company_name','s.status_name','s.id as statusid','cb.id as companybranchid','c.id as companyid')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('company as c','c.id','=','cb.company_id')
+                            ->leftjoin('status as s','s.id','=','m.status_id')
+							->where('m.member_number','=',$member_id)
+							->first();
+			// $queries = DB::getQueryLog();
+			// dd($queries);
+			return response()->json($res);
+    }
+    public function arrearentrySave(Request $request)
+    {
+        $request->validate([
+            'nric'=>'required',
+            'arrear_date'=>'required',
+            'arrear_amount'=>'required',
+        ],
+        [
+            'nric.required'=>'please enter NRIC',
+            'arrear_date.required'=>'please choose date',
+            'arrear_amount.required'=>'please enter Amount',
+        ]);
+        $data = $request->all();  
+         
+        $data['arrear_date'] = CommonHelper::convert_date_database($request->arrear_date);
+        $defdaultLang = app()->getLocale();
+
+        $saveArrearEntry = $this->ArrearEntry->saveArreardata($data);
+        
+        if($saveArrearEntry == true)
+        {
+            if(!empty($request->id))
+            {
+                return  redirect($defdaultLang.'/subscription.arrearentry')->with('message','Entry Updated Succesfully');
+            }
+            else
+            {
+                return  redirect($defdaultLang.'/subscription.arrearentry')->with('message','Entry Added Succesfully');
+            }
+        }
+        }
 }
