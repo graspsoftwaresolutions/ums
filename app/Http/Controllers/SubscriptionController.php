@@ -60,6 +60,7 @@ class SubscriptionController extends CommonController
         $this->MonthlySubscription = new MonthlySubscription;
         $this->MonthlySubscriptionMember = new MonthlySubscriptionMember;
         $this->Status = new Status;
+        $this->membermonthendstatus_table = "membermonthendstatus1";
     }
     //excel file download and upload it
     public function index() {
@@ -527,10 +528,10 @@ class SubscriptionController extends CommonController
                                             ->where('m.id','=',$id)
                                             ->first();
 
-        $data['member_history'] = DB::table('membermonthendstatus as ms')
+        $data['member_history'] = DB::table($this->membermonthendstatus_table.' as ms')
                                             ->where('ms.MEMBER_CODE','=',$id)
                                             ->OrderBy('ms.id','asc')
-                                            ->get(); 
+                                            ->get();
                                             
            
         return view('subscription.member_history')->with('data',$data);
