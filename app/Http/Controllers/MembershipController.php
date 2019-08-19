@@ -643,10 +643,15 @@ class MembershipController extends Controller
     }
 	
 	public function ajax_transfer_list(Request $request){
-         $datefilter = $request->input('datefilter');
-         $dateformat = '';  
-         $yearformat = '';  
-         $monthformat = '';  
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+		$user_id = Auth::user()->id; 
+        
+		$datefilter = $request->input('datefilter');
+        $dateformat = '';  
+        $yearformat = '';  
+        $monthformat = '';  
+		 
         if(preg_match("^[a-z]{3}/[0-9]{4}^", $datefilter)==true || preg_match("^[A-Z]{3}/[0-9]{4}^", strtoupper($datefilter))==true ){
             $fm_date = explode("/",$datefilter);
             $dateformat = date('Y-m',strtotime('01-'.$fm_date[0].'-'.$fm_date[1]));
@@ -668,14 +673,27 @@ class MembershipController extends Controller
             $sl++ => 'h.transfer_date',
             $sl++ => 'h.id',
         );
-        $commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number');
-        $commoncount = DB::table('member_transfer_history as h');
-        $commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
-        //DB::enableQueryLog();
-        $commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
-        $totalData = $commoncountqry->count();
-       // $queries = DB::getQueryLog();
-        //dd($queries);
+		$commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number');
+		$commoncount = DB::table('member_transfer_history as h');
+		if($user_role=='union'){
+			$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+			$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+            $union_branch_id_val = '';
+			if(count($union_branch_id)>0){
+				$union_branch_id_val = $union_branch_id[0];
+				$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')
+									->join('company_branch as c','c.id','=','m.branch_id')
+									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where([
+										['c.union_branch_id','=',$union_branch_id_val]
+										]);
+				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+               
+			}
+		}
+		$totalData = $commoncountqry->count();
 
         $totalFiltered = $totalData; 
 
@@ -700,27 +718,27 @@ class MembershipController extends Controller
         
         }
         else {
-        $search = $request->input('search.value'); 
-      
-        	
-        $historylist =  $commonselectqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
-                                ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
-                               
-                            //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
-                            
-                            
-                            if( $limit != -1){
-                                $historylist = $historylist->offset($start)->limit($limit);
-                            }
-                            $historylist = $historylist->orderBy($order,$dir)
-                                ->get();
+			$search = $request->input('search.value'); 
+		  
+				
+			$historylist =  $commonselectqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+									->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
+								   
+								//->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
+								
+								
+								if( $limit != -1){
+									$historylist = $historylist->offset($start)->limit($limit);
+								}
+								$historylist = $historylist->orderBy($order,$dir)
+									->get();
 
-        $historycount = $commoncountqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
-                             ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
-							
-                            //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
-                           
-                            $totalFiltered = $historycount->count();
+			$historycount = $commoncountqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+								 ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
+								
+								//->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
+							   
+								$totalFiltered = $historycount->count();
         }
         
         $data = array();
