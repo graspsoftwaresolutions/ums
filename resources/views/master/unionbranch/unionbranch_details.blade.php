@@ -190,7 +190,7 @@
                                                     @php
                                                     if(!empty($values->logo))
                                                     { @endphp
-                                                    <img src="{{ asset('public/images/').'/'.$values->logo}}"
+                                                    <img src="{{ asset('public/assets/images/logo/').'/'.$values->logo}}"
                                                         height=100px>
                                                     @php
                                                     }else

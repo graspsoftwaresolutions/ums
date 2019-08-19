@@ -473,4 +473,15 @@ class CommonHelper
         }
         return false;
     }
+	public static function getLogo()
+	{
+		$get_logo = UnionBranch::where('is_head','=','1')->pluck('logo');
+		if(!empty($get_logo[0]->logo)){
+            return $get_logo[0];
+        }
+		else{
+			$get_logo = 'logo.png';
+			return $get_logo;
+		}
+	}
 }

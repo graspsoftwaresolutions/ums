@@ -633,7 +633,7 @@ class MasterController extends CommonController {
 		if(!empty($files))
 		{
 			$image_name = time().'.'.$files->getClientOriginalExtension();
-			$files->move('public/images',$image_name);
+			$files->move('public/assets/images/logo/',$image_name);
 			$union['logo'] = $image_name;
 		}
 		$defaultLanguage = app()->getLocale();
