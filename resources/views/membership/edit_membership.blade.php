@@ -1179,50 +1179,64 @@ $irc_status = $data['irc_status'];
 @if($irc_status==1)
 <li class="step">
 	<div class="step-title waves-effect">Resignation</div>
+	@php
+		$resignedrow = CommonHelper::getResignDataByMember($values->mid);
+		$reasondata = CommonHelper::getResignData();
+		$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid);
+		$lastpaid = '';
+		if(!empty($lastmonthendrow)){
+			$lastpaid = date('M/Y',strtotime($lastmonthendrow->StatusMonth));
+		}
+	@endphp
 	<div class="step-content">
 		<div  class="row">
 			</br>
 			 <div class="input-field col s6">
-				<label for="resign_date" class="force-active">Resign Date</label>
-				  <input type="text" class="datepicker" id="resign_date" name="resign_date">
+				<label for="resign_date" class="force-active">Resign Date *</label>
+				  <input type="text" class="datepicker" id="resign_date" data-error=".errorTxt500"  name="resign_date">
 					
-				  <div class="errorTxt26"></div>
+				  <div class="errorTxt500"></div>
 			 </div>
 			 <div class="col s6">
 				 <div class="row">
 					<div class="input-field col s6">
-						<input type="text" placeholder="Paid Till" id="paid" name="paid">
-						<label for="reference_number" class="force-active">Paid Till </label>
-						  <div class="errorTxt26"></div>
+						<input type="text" placeholder="Paid Till" id="last_paid" data-error=".errorTxt501" name="last_paid" value="{{$lastpaid}}">
+						<label for="last_paid" class="force-active">Paid Till *</label>
+						  <div class="errorTxt501"></div>
 					 </div>				 
 					<div class="col s12 m6">
-					<label for="claim" class="force-active">Claim</label>
-						<select name="claim" class="error browser-default selectpicker" id="claim">
-						<option value="">Choose Claim</option>
-							<option value="">xx</option>
-							<option value="">xx</option>
-							<option value="">xx</option>
-						</select>
-						  <div class="errorTxt26"></div>
+					<label for="resign_claimer" class="force-active">Claim</label>
+						<select name="resign_claimer" id="resign_claimer" data-error=".errorTxt502" class="error browser-default selectpicker ">
+							<option value="" >Select</option>
+							@foreach($data['relationship_view'] as $key=>$value)
+								<option value="{{$value->id}}" >{{$value->relation_name}}</option>
+							@endforeach
+					    </select>
+						<div class="input-field">
+							<div class="errorTxt502"></div>
+						</div>
 					 </div>
 					 
 				 </div>
 			 </div>
 			 <div class="clearfix" style="clear:both"></div>
-			 <div class="input-field col s6">
-				<label for="reason" >Reason</label>
-				<select name="reason" id="reason" class="force-active error browser-default selectpicker" >
-				<option value="">Choose reason</option>
-					<option value="">xx</option>
-					<option value="">xx</option>
-					<option value="">xx</option>
+			 <div class="col s6">
+				<label for="resign_reason force-active" >Reason*</label>
+				<select name="resign_reason" id="resign_reason" data-error=".errorTxt503" class="force-active error browser-default selectpicker" >
+					<option value="">Select reason</option>
+					@foreach($reasondata as $values)
+						<option value="{{$values->id}}">{{$values->reason_name}}</option>
+					@endforeach
+					<div class="input-field">
+						<div class="errorTxt503"></div>
+					</div>
 				</select>
 			</div>
 			<div class="input-field col s6">
-				  <input type="text" id="claimer_name" name="claimer_name">
-					<label for="claimer_name" class="force-active">Claimer Name</label>
-				  <div class="errorTxt26"></div>
-			 </div>
+				<input type="text" id="claimer_name" name="claimer_name" data-error=".errorTxt504">
+				<label for="claimer_name" class="force-active">Claimer Name</label>
+				 <div class="errorTxt504"></div>
+			</div>
 			 <div class="clearfix" style="clear:both"></div>
 			 <div class="input-field col s6">
 				<div class="row">
@@ -1232,7 +1246,7 @@ $irc_status = $data['irc_status'];
 						  <div class="errorTxt26"></div>
 					 </div>
 					 <div class="input-field col s6">
-						<input type="text"  id="benefit_year" name="benefit_year">
+						<input type="text"  id="benefit_year" name="benefit_year" readonly >
 							<label for="benefit_year" class="force-active">Benefit Year</label>
 						  <div class="errorTxt26"></div>
 					 </div>
@@ -1261,7 +1275,7 @@ $irc_status = $data['irc_status'];
 						  <div class="errorTxt26"></div>
 					 </div>
 					 <div class="input-field col s6">
-						<input type="text"  id="benefit_amount" name="benefit_amount">
+						<input type="text"  id="benefit_amount" name="benefit_amount" readonly >
 							<label for="benefit_amount" class="force-active">Benefit Amount</label>
 						  <div class="errorTxt26"></div>
 					 </div>
@@ -1271,7 +1285,7 @@ $irc_status = $data['irc_status'];
 			 <div class="input-field col s6">
 				<div class="row">
 					<div class="input-field col s6">
-						<input type="text"  id="benefit_amount" name="benefit_amount">
+						<input type="text" id="benefit_amount" name="benefit_amount" readonly >
 							<label for="benefit_amount" class="force-active">Benefit Amount</label>
 						  <div class="errorTxt26"></div>
 					 </div>
@@ -1344,8 +1358,8 @@ $irc_status = $data['irc_status'];
 					Prev
 				</button>
 				
-				<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()" 
-					type="submit">Submit</button>
+				<button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn"  
+					type="button">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -1477,6 +1491,12 @@ return true;
 }
 return true;
 }
+
+$(document.body).on('click', '#submitResignation' ,function(){
+	var resign_date = $("#resign_date").val();
+	var last_paid = $("#last_paid").val();
+	var resign_reason = $("#resign_reason").val();
+});
 /* function nextBtn() {
 $("#controlled_next").trigger('submit');
 return false;		

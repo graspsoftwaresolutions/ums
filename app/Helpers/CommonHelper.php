@@ -17,6 +17,7 @@ use App\Model\Company;
 use App\Model\Status;
 use App\Model\MonthlySubscriptionCompany;
 use App\Model\Irc;
+use App\Model\Resignation;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -472,6 +473,19 @@ class CommonHelper
             return $reasonname[0];
         }
         return false;
+    }
+	public static function getResignDataByMember($memberid){
+		$resign = Resignation::where('member_code', '=' ,$memberid)->first();
+		return $resign;
+    }
+	public static function getlastMonthEndByMember($memberid){
+		$lastrecord =  DB::table('membermonthendstatus1 as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+						->OrderBy('ms.StatusMonth','desc')->limit(1)->first();
+		return $lastrecord;
+    }
+	public static function getResignData(){
+		$reason = Reason::where('status','=',1)->get();
+		return $reason;
     }
 	public static function getLogo()
 	{
