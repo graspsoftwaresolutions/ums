@@ -689,10 +689,49 @@ class MembershipController extends Controller
 									->where([
 										['c.union_branch_id','=',$union_branch_id_val]
 										]);
-				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')
+									->join('company_branch as c','c.id','=','m.branch_id')
+									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where([
+										['c.union_branch_id','=',$union_branch_id_val]
+										]);
                
 			}
-		}
+		}else if($user_role=='company'){
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
+			if(count($company_id)>0){
+				$companyid = $company_id[0];
+				$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')
+									->join('company_branch as c','c.id','=','m.branch_id')
+									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where([
+										['c.company_id','=',$companyid]
+										]);
+				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')
+									->join('company_branch as c','c.id','=','m.branch_id')
+									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where([
+										['c.company_id','=',$companyid]
+										]);
+			}
+		}else if($user_role=='company-branch'){
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
+			if(count($branch_id)>0){
+				$branchid = $branch_id[0];
+                $commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')
+									->join('company_branch as c','c.id','=','m.branch_id')
+									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where([
+										['m.branch_id','=',$branchid]
+										]);
+				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')
+									->join('company_branch as c','c.id','=','m.branch_id')
+									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where([
+										['m.branch_id','=',$branchid]
+										]);
+			}
+        }
 		$totalData = $commoncountqry->count();
 
         $totalFiltered = $totalData; 
