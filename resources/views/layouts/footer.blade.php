@@ -76,6 +76,38 @@ var loader = {
 <!-- BEGIN PAGE LEVEL JS-->
 <!--script src="{{ asset('public/assets/js/scripts/intro.js') }}" type="text/javascript"></script-->
 <!-- END PAGE LEVEL JS-->
+@php $logo = CommonHelper::getLogo(); @endphp
+<script>
+$(window).on("resize", function() {
+   resizetable();
+});
+
+function resizetable() {
+   if($(window).width() < 976){
+      if($('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo').length > 0){
+         $('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo img').attr('src',base_url+'/public/assets/images/logo/@php echo $logo @endphp');
+      }
+      if($('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo').length > 0){
+         $('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo img').attr('src',base_url+'/public/assets/images/logo/@php echo $logo @endphp');
+      }
+      if($('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo').length > 0){
+         $('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo img').attr('src',base_url+'/public/assets/images/logo/@php echo $logo @endphp');
+      }
+   }
+   else{
+      if($('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo').length > 0){
+         $('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo img').attr('src',base_url+'/public/assets/images/logo/@php echo $logo @endphp');
+      }
+      if($('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo').length > 0){
+         $('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo img').attr('src',base_url+'/public/assets/images/logo/@php echo $logo @endphp');
+      }
+      if($('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo').length > 0){
+         $('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo img').attr('src',base_url+'/public/assets/images/logo/@php echo $logo @endphp');
+      }
+   }
+}
+resizetable();
+</script>
 
 @section('footerSecondSection')
 @show

@@ -5,10 +5,10 @@
 <meta name="keywords" content="Membership">
 <meta name="author" content="Membership">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
+@php $logo = CommonHelper::getLogo(); @endphp
 <title>{{ config('app.name', 'Membership') }}</title>
-<link rel="apple-touch-icon" href="{{ asset('public/assets/images/logo/logo.png') }}">
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/assets/images/logo/logo.png') }}">
+<link rel="apple-touch-icon" href="{{ asset('public/assets/images/logo/'.$logo) }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('public/assets/images/logo/'.$logo) }}">
 <link href="{{ asset('public/assets/css/google-font.css') }}" rel="stylesheet">
 <!-- BEGIN: VENDOR CSS-->
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/vendors.min.css') }}">
