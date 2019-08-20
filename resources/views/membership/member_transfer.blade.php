@@ -337,7 +337,6 @@
 							
 						</div>
 						</form>
-						
 					</div>
 					<!-- END: Page Main-->
 					@include('layouts.right-sidebar')
