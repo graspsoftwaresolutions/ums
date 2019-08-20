@@ -537,74 +537,117 @@ class SubscriptionAjaxController extends CommonController
         echo json_encode($json_data); 
     }
 
-    public function ajax_arrear_list(Request $request)
+	public function ajax_arrear_list(Request $request,$lang)
     {
+       // echo "hii"; die;
+        $sl=0;
         $columns = array( 
-            0 => 'nric', 
-            1 => 'membercode',
-            2 => 'company_id',
-            3 => 'branch_id',
-            4 => 'arrear_date',
-            5 => 'arrear_amount',
-            6 => 'status_id',
+            $sl++ => 'ar.nric', 
+            $sl++ => 'ar.membercode', 
+            $sl++ => 'm.membername',
+            $sl++ => 'ar.company_id', 
+            $sl++ => 'ar.branch_id',
+            $sl++ => 'ar.arrear_date',
+            $sl++ => 'ar.arrear_amount',
+            $sl++ => 'ar.status_id',
         );
-        $totalData = ArrearEntry::all()->count();
-        $totalFiltered = $totalData; 
-        $limit = $request->input('length');
         
+       // DB::enableQueryLog();
+		$commonqry = DB::table('arrear_entry as ar')->select('ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+                    ->leftjoin('membership as m','ar.membercode','=','m.id')
+                    ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                    ->leftjoin('company as c','cb.company_id','=','c.id')
+                    ->leftjoin('status as s','m.status_id','=','s.id')
+                    ->orderBy('ar.id','DESC');
+        //  $queries = DB::getQueryLog();
+		// 					dd($queries);
+        $totalData = $commonqry->count();
+        
+        $totalFiltered = $totalData; 
+        
+        $limit = $request->input('length');
         $start = $request->input('start');
+		
         $order = $columns[$request->input('order.0.column')];
+     
         $dir = $request->input('order.0.dir');
         if(empty($request->input('search.value')))
         {            
-            if( $limit == -1){
-                $ArrearEntry = DB::table('arrear_entry as ar')->select('ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername')
-                ->leftjoin('membership as m')
-                ->leftjoin('company_branch as cb')
-                ->leftjoin('company as c')
-                ->leftjoin('status as s')
-                ->get()->toArray();
-            }else{
-                $Relation = Relation::select('id','relation_name')->offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->where('status','=','1')
-                ->get()->toArray();
-            }
-        
+            $sub_mem = $commonqry;
+			if( $limit != -1){
+				$sub_mem = $sub_mem->offset($start)
+							->limit($limit);
+			}
+			$sub_mem = $sub_mem->orderBy($order,$dir)
+			->get()->toArray();
         }
         else {
-        $search = $request->input('search.value'); 
-        if( $limit == -1){
-            $Relation =  Relation::select('id','relation_name')->where('id','LIKE',"%{$search}%")
-                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
-                        ->where('status','=','1')
-                        ->orderBy($order,$dir)
-                        ->get()->toArray();
-        }else{
-            $Relation =  Relation::select('id','relation_name')->where('id','LIKE',"%{$search}%")
-                        ->orWhere('relation_name', 'LIKE',"%{$search}%")
-                        ->offset($start)
-                        ->limit($limit)
-                        ->where('status','=','1')
-                        ->orderBy($order,$dir)
-                        ->get()->toArray();
+			$search = $request->input('search.value'); 
+			$sub_mem = $commonqry->where('m.id','LIKE',"%{$search}%")
+                       ->orWhere('ar.nric', 'LIKE',"%{$search}%")
+                       ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
+                       ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
+                       ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                       ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                       ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                       ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
+                       ->orWhere('m.name', 'LIKE',"%{$search}%");
+                       
+		    if( $limit != -1){
+			   $sub_mem = $sub_mem->offset($start)
+						->limit($limit);
+		    }
+		    $sub_mem = $sub_mem->orderBy($order,$dir)
+					  ->get()->toArray();
+			
+			
+			$totalFiltered =  $commonqry->where('m.id','LIKE',"%{$search}%")
+                                ->orWhere('ar.nric', 'LIKE',"%{$search}%")
+                                ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
+                                ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
+                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
+                                ->orWhere('m.name', 'LIKE',"%{$search}%")
+							   ->count();
         }
-        $totalFiltered = Relation::where('id','LIKE',"%{$search}%")
-                    ->orWhere('relation_name', 'LIKE',"%{$search}%")
-                    ->where('status','=','1')
-                    ->count();
+      
+        $data = array();
+        if(!empty($sub_mem))
+        {
+            foreach ($sub_mem as $arrear)
+            {
+                $nestedData['nric'] = $arrear->nric;
+                $nestedData['membercode'] = $arrear->member_number;
+                $nestedData['membername'] = $arrear->membername;
+                $nestedData['company_id'] = $arrear->company_name;
+                $nestedData['branch_id'] = $arrear->branch_name;
+                $nestedData['arrear_date'] = date('d/M/ Y',strtotime($arrear->arrear_date));
+                $nestedData['arrear_amount'] = $arrear->arrear_amount;
+                $nestedData['status_id'] = $arrear->status_name;
+                $font_color = $arrear->font_color;
+                $nestedData['font_color'] = $font_color;
+
+                $enc_id = Crypt::encrypt($arrear->arrearid);
+                $delete =  route('subscription.arrearentrydelete', [app()->getLocale(),$enc_id]) ;
+                               
+                $edit = route('subscription.editarreatentry', [app()->getLocale(),$enc_id]);
+                $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+			}
         }
-        $data = $this->CommonAjaxReturn($Relation, 0, 'master.relationdestroy', 0);
-       
+      
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
             "recordsFiltered" => intval($totalFiltered), 
             "data"            => $data   
             );
-        echo json_encode($json_data);
-    }
 
-  
+        echo json_encode($json_data); 
+    }
 }
