@@ -412,6 +412,9 @@ class MemberController extends CommonController
 						$resmember = Membership::find($member_id);
 						$resmember['status_id'] = 4;
 						$resmember->save();
+						$enc_id = Crypt::encrypt($member_id);
+						$redirect_url_pdf = app()->getLocale().'/resign-pdf/'.$enc_id;
+						return redirect($redirect_url_pdf)->with('message','Member has resigned successfully');
 					}
 					
 				}
