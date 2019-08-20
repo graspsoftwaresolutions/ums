@@ -32,7 +32,9 @@
                                             </li>
                                         </ol>
                                     </div>
-                                  
+                                    <div class="col s2 m6 l6 ">
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('subscription.sub_fileupload.sub_company',app()->getLocale())}}">{{__('Back') }}</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
