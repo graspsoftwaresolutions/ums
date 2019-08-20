@@ -377,7 +377,8 @@ class MemberController extends CommonController
 				$last_paid = $request->input('last_paid');
 				$resign_claimer = $request->input('resign_claimer');
 				$resign_reason = $request->input('resign_reason');
-				if($resign_date!="" && $last_paid!="" && $resign_reason!=""){
+				$resignstatus = $request->input('resignstatus');
+				if($resign_date!="" && $last_paid!="" && $resign_reason!="" && $resignstatus==1){
 					$check_resign_exists = Resignation::where('member_code','=',$member_id)->count();
 					if($check_resign_exists>0){
 						$resign = Resignation::where('member_code','=',$member_id)->first();
@@ -408,7 +409,7 @@ class MemberController extends CommonController
 					$resign->created_by = Auth::user()->id;
 					$resign->created_at = date('Y-m-d');
 					$resign->save();
-					if($check_resign_exists==0 && $resign){
+					if($check_resign_exists==0 && $resign && $resignstatus==1){
 						$resmember = Membership::find($member_id);
 						$resmember['status_id'] = 4;
 						$resmember->save();

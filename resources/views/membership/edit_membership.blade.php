@@ -1188,22 +1188,32 @@ $irc_status = $data['irc_status'];
 		$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid);
 		$lastpaid = '';
 		$totalmonthspaid = '';
+		$bfcontribuion = '';
+		$insamount = '';
 		if(!empty($lastmonthendrow)){
 			$lastpaid = date('M/Y',strtotime($lastmonthendrow->StatusMonth));
 			$totalmonthspaid = $lastmonthendrow->TOTALMONTHSPAID;
+			$bfcontribuion = $lastmonthendrow->ACCBF;
+			$insamount = $lastmonthendrow->ACCINSURANCE;
 		}
+		$resignstatus = 0;
+		$resign_date = 0;
 		if(!empty($resignedrow)){
-			
+			$resignstatus = 0;
+			$resign_date = date('d/M/Y',strtotime($resignedrow->resignation_date));
+			$totalmonthspaid = $resignedrow->months_contributed;
+			$bfcontribuion = $resignedrow->accbf;
+			$insamount = $resignedrow->insuranceamount;
 		}
-		
 	@endphp
 	<div class="step-content">
 		<div  class="row">
 			</br>
 			 <div class="input-field col s6">
 				<label for="resign_date" class="force-active">Resign Date *</label>
-				  <input type="text" class="datepicker" id="resign_date" data-error=".errorTxt500"  name="resign_date">
-				  <input type="text" class="hide" id="totalarrears" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->SUBSCRIPTIONDUE}}@endif" name="totalarrears">
+				  <input type="text" class="datepicker" id="resign_date" data-error=".errorTxt500" name="resign_date" value="{{$resign_date}}">
+				  <input type="text" class="hide" id="totalarrears" value="{{$totalmonthspaid}}" name="totalarrears">
+				  <input type="text" class="hide" id="resignstatus" value="{{$resignstatus}}" name="resignstatus">
 					
 				  <div class="errorTxt500"></div>
 			 </div>
@@ -1216,10 +1226,11 @@ $irc_status = $data['irc_status'];
 					 </div>				 
 					<div class="col s12 m6">
 					<label for="resign_claimer" class="force-active">Claim</label>
+					
 						<select name="resign_claimer" id="resign_claimer" data-error=".errorTxt502" class="error browser-default selectpicker ">
 							<option value="" >Select</option>
 							@foreach($data['relationship_view'] as $key=>$value)
-								<option value="{{$value->id}}" >{{$value->relation_name}}</option>
+								<option @if(!empty($resignedrow)) @php echo $resignedrow->relation_code==$value->id ? 'selected' :''; @endphp @endif value="{{$value->id}}" >{{$value->relation_name}}</option>
 							@endforeach
 					    </select>
 						<div class="input-field">
@@ -1235,7 +1246,7 @@ $irc_status = $data['irc_status'];
 				<select name="resign_reason" id="resign_reason" data-error=".errorTxt503" class="force-active error browser-default selectpicker" >
 					<option value="">Select reason</option>
 					@foreach($reasondata as $reason)
-						<option value="{{$reason->id}}">{{$reason->reason_name}}</option>
+						<option @if(!empty($resignedrow)) @php echo $resignedrow->reason_code==$reason->id ? 'selected' :''; @endphp @endif value="{{$reason->id}}">{{$reason->reason_name}}</option>
 					@endforeach
 					<div class="input-field">
 						<div class="errorTxt503"></div>
@@ -1243,7 +1254,7 @@ $irc_status = $data['irc_status'];
 				</select>
 			</div>
 			<div class="input-field col s6">
-				<input type="text" id="claimer_name" name="claimer_name" data-error=".errorTxt504">
+				<input type="text" id="claimer_name" name="claimer_name" data-error=".errorTxt504" value="@if(!empty($resignedrow)){{$resignedrow->claimer_name}}@endif">
 				<label for="claimer_name" class="force-active">Claimer Name</label>
 				<div class="errorTxt504"></div>
 			</div>
@@ -1265,7 +1276,7 @@ $irc_status = $data['irc_status'];
 					
 					
 					 <div class="input-field col s12">
-						<input type="text" id="bf_contribution" name="bf_contribution" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->ACCBF}}@endif" >
+						<input type="text" id="bf_contribution" name="bf_contribution" value="{{$bfcontribuion}}" >
 							<label for="bf_contribution" class="force-active">BF Contribution</label>
 					 </div>
 				</div>
@@ -1316,7 +1327,7 @@ $irc_status = $data['irc_status'];
 				<div class="row">
 					 
 					 <div class="input-field col s12 ">
-						<input type="text"  id="insurance_amount" name="insurance_amount" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->TOTALINSURANCE_AMOUNT}}@endif">
+						<input type="text"  id="insurance_amount" name="insurance_amount" value="{{$insamount}}">
 							<label for="insurance_amount" class="force-active">Insurance Amount</label>
 					 </div>
 				</div>
@@ -1342,12 +1353,13 @@ $irc_status = $data['irc_status'];
 			 </div>
 		<div class="row">
 			<div class="col m12 s12 mb-1" style="text-align:right">
+				<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small">Member already resigned</span>
 				<button class="btn btn-light previous-step">
 					<i class="material-icons left">arrow_back</i>
 					Prev
 				</button>
 				
-				<button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn"  
+				<button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn"
 					type="button">@if(!empty($resignedrow)){{'Submit'}}@else{{'Resign'}}@endif</button>
 			</div>
 		</div>
@@ -1486,7 +1498,15 @@ $(document.body).on('click', '#submitResignation' ,function(){
 	var last_paid = $("#last_paid").val();
 	var resign_reason = $("#resign_reason").val();
 	if(resign_date!="" && last_paid!="" && resign_reason!=""){
-		SubmitMemberForm();
+		@if(empty($resignedrow))
+			if (confirm("{{ __('Are you sure you want to Resign?') }}")) {
+				$("#resignstatus").val(1);
+				SubmitMemberForm();
+			} else {
+				return false;
+			}
+		@endif
+		
 	}else{
 		M.toast({ html: "please fill the required fields" });
 	}
@@ -1530,6 +1550,7 @@ $(document.body).on('keyup', '#bf_contribution,#benefit_amount,#insurance_amount
 	var total_amount = parseInt(insurance_amount)+parseInt(bf_contribution)+parseInt(benefit_amount);
 	$('#total_amount').val(total_amount);
 });
+
 /* function nextBtn() {
 $("#controlled_next").trigger('submit');
 return false;		

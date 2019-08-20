@@ -58,7 +58,7 @@
 				<td width="39%">{{ $member_data->name }}</td>
 				<td width="20%">DATE</td>
 				<td width="1%">:</td>
-				<td width="19%">15-11-2018</td>
+				<td width="19%">{{ date('d/M/Y',strtotime($resign_data->entry_date)) }}</td>
 			</tr>
 			<tr>
 				<td>MEMBERSHIP NO</td>
@@ -66,7 +66,7 @@
 				<td>{{ $member_data->member_number }}</td>
 				<td>BANK CODE</td>
 				<td>:</td>
-				<td>{{ $member_data->branch_id }}</td>
+				<td>{{ CommonHelper::getBankCode($member_data->branch_id) }}</td>
 			</tr>
 			<tr>
 				<td>BRANCH CODE</td>
@@ -87,7 +87,7 @@
 			<tr>
 				<td>REASON FOR CLAIM</td>
 				<td>:</td>
-				<td colspan="3">{{ $resign_data->reason_code }}</td>
+				<td colspan="3">{{ CommonHelper::getircreason_byid($resign_data->reason_code) }}</td>
 			</tr>
 		</table>
 		</br>
@@ -98,7 +98,7 @@
 				<td width="20%" align="center">TOTAL</td>
 			</tr>
 			<tr>
-				<td class="align-right">PAID FROM {{ date('d/M/Y',strtotime($member_data->doj)) }} TO {{ date('d/M/Y',strtotime($resign_data->entry_date)) }}</td>
+				<td class="align-right">PAID FROM {{ date('d/M/Y',strtotime($member_data->doj)) }} TO {{ date('d/M/Y',strtotime($resign_data->resignation_date)) }}</td>
 				<td class="align-right"></td>
 				<td class="align-right">{{ $resign_data->amount }}</td>
 			</tr>

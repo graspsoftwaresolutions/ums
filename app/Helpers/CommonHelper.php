@@ -508,4 +508,11 @@ class CommonHelper
 		return $new_date;
     }
 	
+	public static function getBankCode($branchid){
+		$company_id = CompanyBranch::where('id',$branchid)->pluck('company_id')->first();
+		$shortcode = Company::find($company_id)->pluck('short_code')->first();
+        
+        return $shortcode;
+    }
+	
 }

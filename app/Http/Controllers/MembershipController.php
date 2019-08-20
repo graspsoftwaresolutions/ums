@@ -957,7 +957,7 @@ class MembershipController extends Controller
                     'resign_data' =>  $resign_data,
                 ];
         $pdf = PDF::loadView('membership.pdf_resign', $data);  
-        return $pdf->download('resignation-102525.pdf');
+        return $pdf->download('resignation-'.$member_data->member_number.'.pdf');
     }
 
     
