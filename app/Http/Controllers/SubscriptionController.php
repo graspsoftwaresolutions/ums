@@ -518,7 +518,7 @@ class SubscriptionController extends CommonController
 	public function memberHistory($lang,$id){
 	$id = Crypt::decrypt($id);
     
-        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number')
+        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number','s.font_color')
 											->leftjoin('designation as d','d.id','=','m.designation_id')
 											->leftjoin('persontitle as p','p.id','=','m.member_title_id')
 											->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
