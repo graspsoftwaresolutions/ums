@@ -19,6 +19,7 @@ use App\Model\MemberGuardian;
 use App\Model\MemberFee;
 use App\Model\CompanyBranch;
 use App\Model\UnionBranch;
+use App\Model\Resignation;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -938,15 +939,25 @@ class MembershipController extends Controller
 	}
 
     public function resignPDF($lang,$encid){
-        return $encid;
+        $memberid = Crypt::decrypt($encid);
+        $member_data = Membership::find($memberid);
+        $resign_data = Resignation::where('member_code','=',$memberid)->first();
         $data = [
-                'title' => 'Resign Report',
-                'heading' => 'Resign Report'     
+                    'member_data' =>  $member_data,
+                    'resign_data' =>  $resign_data,
                 ];
-          
-         //return view('pdf_view', $data);  
-        $pdf = PDF::loadView('pdf_view', $data);  
-        return $pdf->download('resignation-102525.pdf');
+        return view('membership.resign-status', $data)->with('message','member resigned successfully');
+    }
+    public function genresignPDF($lang,$encid){
+        $memberid = Crypt::decrypt($encid);
+        $member_data = Membership::find($memberid);
+        $resign_data = Resignation::where('member_code','=',$memberid)->first();
+        $data = [
+                    'member_data' =>  $member_data,
+                    'resign_data' =>  $resign_data,
+                ];
+        $pdf = PDF::loadView('membership.pdf_resign', $data);  
+        return $pdf->download('resignation-'.$member_data->member_number.'.pdf');
     }
 
     

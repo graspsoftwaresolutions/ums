@@ -254,6 +254,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_member_history','SubscriptionAjaxController@ajax_member_history');
 	Route::get('get-relatives-info','MembershipController@getRelativename')->name('member.relatives');
 	Route::get('/resign-pdf/{parameter}', 'MembershipController@resignPDF');
+	Route::get('/generate-resign-pdf/{parameter}', 'MembershipController@genresignPDF')->name('resign.pdf');
 
 	//Reports
 	
