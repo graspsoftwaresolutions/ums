@@ -9,6 +9,14 @@
     href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+	<style>
+	.exportExcel{
+  padding: 5px;
+  border: 1px solid grey;
+  margin: 5px;
+  cursor: pointer;
+}
+</style>
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
@@ -100,7 +108,7 @@
                                     <!-- Horizontal Stepper -->
 									<div class="card">
                                     <div class="col sm12 m12">   
-                                        <table id="page-length-option" class="display ">
+                                        <table id="page-length-option" class="display" cellspacing="0" width="100%">
                                             <thead>
                                             <tr>
                                             <th>{{__('Member Number')}}</th>
@@ -188,6 +196,50 @@ $("#subcomp_sidebar_a_id").addClass('active');
 		  }
 		}
   });
+  $(document).ready(function() {
+  var table = $('#page-length-option').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+    {
+      extend: 'excel',
+      text: 'Export excel',
+      className: 'exportExcel',
+      filename: 'Export excel',
+      exportOptions: {
+        modifier: {
+          page: 'all'
+        }
+      }
+    }, 
+    {
+      extend: 'copy',
+      text: '<u>C</u>opie presse papier',
+      className: 'exportExcel',
+      key: {
+        key: 'c',
+        altKey: true
+      }
+    }, 
+    {
+      text: 'Alert Js',
+      className: 'exportExcel',
+      action: function(e, dt, node, config) {
+        alert('Activated!');
+        // console.log(table);
+
+        // new $.fn.dataTable.Buttons(table, {
+        //   buttons: [{
+        //     text: 'gfdsgfsd',
+        //     action: function(e, dt, node, config) {
+        //       alert('ok!');
+        //     }
+        //   }]
+        // });
+      }
+    }]
+  });
+
+});
 
 
 </script>

@@ -67,7 +67,7 @@
 		action="{{ route('subscription.saveArrear',app()->getLocale()) }}">
 		@csrf
 		<div class="container">
-			<h5 class="padding-left-10"> Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Arrear Entry List') }}</a></h5>
+			<h5 class="padding-left-10"> Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Back') }}</a></h5>
 			<div class="row">
 				 <div class="input-field col s12 m6">
                                           <label for="nric" class="common-label force-active">{{__('NRIC') }}*</label>
