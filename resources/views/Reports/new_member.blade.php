@@ -122,8 +122,7 @@
                                             <th>{{__('Levy')}}</th>
                                             <th>{{__('Type')}}</th>
                                             </tr> 
-                                                    <td><div calss="row"></td>
-                                               
+                                            <td><div calss="row"></td>
                                             </thead>
                                         </table>
                                         </div>          
