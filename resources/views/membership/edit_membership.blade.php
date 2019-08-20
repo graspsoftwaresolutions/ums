@@ -1353,7 +1353,7 @@ $irc_status = $data['irc_status'];
 			 </div>
 		<div class="row">
 			<div class="col m12 s12 mb-1" style="text-align:right">
-				<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small">Member already resigned</span>
+			@if(!empty($resignedrow))<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small">Member already resigned</span>@endif
 				<button class="btn btn-light previous-step">
 					<i class="material-icons left">arrow_back</i>
 					Prev
