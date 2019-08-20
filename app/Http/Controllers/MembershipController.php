@@ -24,6 +24,7 @@ use App\Mail\SendMemberMailable;
 use URL;
 use Auth;
 use Carbon\Carbon;
+use PDF;
 
 
 class MembershipController extends Controller
@@ -936,7 +937,17 @@ class MembershipController extends Controller
        echo json_encode($relativename);
 	}
 
-    
+    public function resignPDF($lang,$encid){
+        return $encid;
+        $data = [
+                'title' => 'Resign Report',
+                'heading' => 'Resign Report'     
+                ];
+          
+         //return view('pdf_view', $data);  
+        $pdf = PDF::loadView('pdf_view', $data);  
+        return $pdf->download('resignation-102525.pdf');
+    }
 
     
 }
