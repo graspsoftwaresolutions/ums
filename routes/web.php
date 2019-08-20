@@ -225,6 +225,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription.arrearentry','SubscriptionController@arrearentryIndex')->name('subscription.arrearentry');
 	Route::get('subscription.addarrearentry','SubscriptionController@arrearentryAdd')->name('subscription.addarrearentry');
 	
+	Route::get('editarreatentry/{parameter}','SubscriptionController@arrearentryEdit')->name('subscription.editarreatentry');
+	
+	Route::delete('arrearentrydelete/{id}','SubscriptionController@arrearentrydestroy')->name('subscription.arrearentrydelete');
+
 	Route::post('subscription.saveArrear','SubscriptionController@arrearentrySave')->name('subscription.saveArrear');
 	
 	Route::get('transfer_history','MembershipController@memberTransferHistory')->name('transfer.history');

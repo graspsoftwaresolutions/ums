@@ -45,20 +45,22 @@
 		action="{{ route('subscription.saveArrear',app()->getLocale()) }}">
 		@csrf
 		<div class="container">
-			<h5 class="padding-left-10"> Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Arrear Entry List') }}</a></h5>
+			<h5 class="padding-left-10">Edit Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Arrear Entry List') }}</a></h5>
 			<div class="row">
 				 <div class="input-field col s12 m6">
+                 @php $edit_data = $data; @endphp
+                 <input type="hidden" name="id" value="{{$edit_data->arrearid}}">
                                           <label for="nric" class="common-label force-active">{{__('NRIC') }}*</label>
                                           <input id="nric" class="common-input"
-                                              name="nric" type="text" data-error=".errorTxt1">
+                                              name="nric" value="{{$edit_data->nric}}" readonly type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                       </div>
                                       <div class="input-field col s12 m6">
                                           <label for="company_name"
                                               class="common-label force-active">{{__('Member Number') }}*</label>
                                           <input id="member_number" readonly class="common-input"
-                                              name="member_number" type="text" data-error=".errorTxt2">
-                                              <input type="hidden" name="membercode" id="memberid">
+                                              name="member_number" value="{{$edit_data->member_number}}" type="text" data-error=".errorTxt2">
+                                              <input type="hidden" name="membercode" id="memberid" value="{{$edit_data->memberid}}">
                                               <div class="errorTxt2"></div>
                                       </div>
                                       <div class="clearfix" style="clear:both"></div>
@@ -66,7 +68,7 @@
                                           <label
                                               class="common-label  force-active">{{__('Member Name') }}</label>
                                               <input id="member_name" class="common-input"
-                                              name="member_name" readonly type="text" data-error=".errorTxt3">
+                                              name="member_name" value="{{$edit_data->membername}}" readonly type="text" data-error=".errorTxt3">
                                               <div class="errorTxt3"></div>
                                          
                                       </div>
@@ -74,8 +76,8 @@
                                           <label
                                               class="common-label  force-active">{{__('Company Name') }}</label>
                                               <input id="company_name" class="common-input"
-                                              name="company_name" readonly type="text" data-error=".errorTxt3">
-                                              <input type="hidden" name="company_id" id="companyid">
+                                              name="company_name" value="{{$edit_data->company_name}}" readonly type="text" data-error=".errorTxt3">
+                                              <input type="hidden" name="company_id" id="companyid" value="{{$edit_data->companyid}}">
                                               <div class="errorTxt3"></div>
                                           
                                       </div>
@@ -83,8 +85,8 @@
                                           <label
                                               class="common-label  force-active">{{__('Company Branch') }}</label>
                                               <input id="company_branch" class="common-input"
-                                              name="company_branch" readonly type="text" data-error=".errorTxt3">
-                                              <input type="hidden" name="branch_id" id="companybranchid">
+                                              name="company_branch" value="{{$edit_data->branch_name}}" readonly type="text" data-error=".errorTxt3">
+                                              <input type="hidden" name="branch_id" id="companybranchid" value="{{$edit_data->companybranchid}}">
                                               <div class="errorTxt3"
                                               ></div>
                                       </div>
@@ -92,23 +94,23 @@
                                           <label
                                               class="common-label  force-active">{{__('Status') }}</label>
                                               <input id="status" class="common-input"
-                                              name="status" type="text" readonly data-error=".errorTxt3">
+                                              name="status" type="text" value="{{$edit_data->status_name}}"  readonly data-error=".errorTxt3">
                                               <div class="errorTxt3"></div>
-                                              <input type="hidden" name="status_id" id="statusid">
+                                              <input type="hidden" name="status_id" id="statusid" value="{{$edit_data->statusid}}">
                                           
                                       </div>
                                       <div class="col s12 m6">
                                           <label
                                               class="common-label  force-active">{{__('Arrear Date') }}*</label>
                                               
-												<input id="arrear_date"  type="text" required class="datepicker" name="arrear_date">
+												<input id="arrear_date"  value="{{$edit_data->arrear_date}}" type="text" required class="datepicker" name="arrear_date">
                                               <div class="errorTxt5"></div>
                                       </div>
                                       <div class="col s12 m6">
                                           <label
                                               class="common-label  force-active">{{__('Arrear Amount') }}*</label>
                                               <input id="arrear_amount" class="common-input"
-                                              name="arrear_amount" type="text" data-error=".errorTxt6">
+                                              name="arrear_amount" type="text"  value="{{$edit_data->arrear_amount}}"  data-error=".errorTxt6">
                                               <div class="errorTxt6"></div>
                                       <div class="clearfix" style="clear:both"></div>
                                         </div>
@@ -116,7 +118,7 @@
 										<div class="row">
 										<div class="input-field col s12 m2">
 											<p>
-											<input type="submit" class="btn" id="save" name="save" value="Submit" >
+											<input type="submit" class="btn" id="save" name="save" value="Update" >
 											</P>
 										</div>	
 										<div class="input-field col s12 m2">
