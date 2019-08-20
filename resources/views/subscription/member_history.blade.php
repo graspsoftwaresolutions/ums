@@ -44,7 +44,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                             </li>
                                         </ol>
                                     </div>
-                                  
+                                    <div class="col s2 m6 l6 ">
+										   <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.membership',app()->getLocale())}}">{{__('Back') }}</a>
+									   </div>
                                 </div>
                             </div>
                            
