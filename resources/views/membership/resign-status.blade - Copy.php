@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>{{ $title }}</title>
+	<title>Resign Report</title>
 	<style>
 		.company-details{
 			text-align:center;
@@ -55,7 +55,7 @@
 			<tr>
 				<td width="20%">MEMBER NAME</td>
 				<td width="1%">:</td>
-				<td width="39%">AHMAD JOHARI BIN ALI</td>
+				<td width="39%">{{ $member_data->name }}</td>
 				<td width="20%">DATE</td>
 				<td width="1%">:</td>
 				<td width="19%">15-11-2018</td>
@@ -63,31 +63,31 @@
 			<tr>
 				<td>MEMBERSHIP NO</td>
 				<td>:</td>
-				<td>39473</td>
+				<td>{{ $member_data->member_number }}</td>
 				<td>BANK CODE</td>
 				<td>:</td>
-				<td>CIMB/ 128</td>
+				<td>{{ $member_data->branch_id }}</td>
 			</tr>
 			<tr>
 				<td>BRANCH CODE</td>
 				<td>:</td>
-				<td>01</td>
+				<td>{{ $member_data->branch_id }}</td>
 				<td>CLAIMER NAME</td>
 				<td>:</td>
-				<td>AHMAD JOHARI BIN ALI</td>
+				<td>{{ $resign_data->claimer_name }}</td>
 			</tr>
 			<tr>
 				<td>IC NO</td>
 				<td>:</td>
-				<td>640402085189</td>
+				<td>{{ $member_data->ic_no }}</td>
 				<td>RESIGNATION DATE</td>
 				<td>:</td>
-				<td>01-07-2015</td>
+				<td>{{ date('d/M/Y',strtotime($resign_data->resignation_date)) }}</td>
 			</tr>
 			<tr>
 				<td>REASON FOR CLAIM</td>
 				<td>:</td>
-				<td colspan="3">MUTUAL SEPARATION SCHEME</td>
+				<td colspan="3">{{ $resign_data->reason_code }}</td>
 			</tr>
 		</table>
 		</br>
