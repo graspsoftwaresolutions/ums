@@ -255,6 +255,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-relatives-info','MembershipController@getRelativename')->name('member.relatives');
 	Route::get('/resign-pdf/{parameter}', 'MembershipController@resignPDF');
 
+	//Reports
+	
+	Route::get('newmember_report','ReportsController@newMemberIndex')->name('reports.newmembers');
+
 	
 });
 /* Master */

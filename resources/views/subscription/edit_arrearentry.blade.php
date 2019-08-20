@@ -143,11 +143,11 @@
 											<input type="submit" class="btn" id="save" name="save" value="Update" >
 											</P>
 										</div>	
-										<div class="input-field col s12 m2">
+										<!-- <div class="input-field col s12 m2">
 											<p>
 											<input type="button" class="btn" id="clear" name="clear" onClick="refreshPage()" value="Clear" >
 											</P>
-										</div>
+										</div> -->
 										</div>
 									</div>
 		</div>
@@ -166,13 +166,9 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script>
-function refreshPage(){
-    window.location.reload();
-}
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subsarrear_sidebar_li_id").addClass('active');
 $("#subarrear_sidebar_a_id").addClass('active');
@@ -217,47 +213,5 @@ errorPlacement: function(error, element) {
   }
 }
 });
-
-$("#nric").devbridgeAutocomplete({
-	//lookup: countries,
-	serviceUrl: "{{ URL::to('/get-nricmember-list') }}?searchkey="+ $("#nric").val(),
-	type:'GET',
-	//callback just to show it's working
-	onSelect: function (suggestion) {
-			$("#nric").val(suggestion.member_number);
-			$.ajax({
-				url: "{{ URL::to('/get-nricmember-list-values') }}?member_id="+ $("#nric").val(),
-                type: "GET",
-				dataType: "json",
-				success: function(res) {
-					
-					$('#nric').val(res.nric);
-                    $('#member_number').val(res.member_number);
-                    $('#memberid').val(res.memberid);
-                    $('#member_name').val(res.membername);
-					$('#company_branch').val(res.branch_name);
-					$('#company_name').val(res.company_name); 
-                    $('#status').val(res.status_name);  
-                    $('#statusid').val(res.statusid);
-                    $('#companybranchid').val(res.companybranchid);
-                    $('#companyid').val(res.companyid);
-				}
-        
-			});
-			
-	},
-	showNoSuggestionNotice: true,
-	noSuggestionNotice: 'Sorry, no matching results',
-	onSearchComplete: function (query, suggestions) {
-		if(!suggestions.length){
-			//$("#member_number").val('');
-		}
-	}
-});
-$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
-	$("#member_number").val('');
-});
-
-
 </script>
 @endsection
