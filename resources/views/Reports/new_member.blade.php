@@ -118,9 +118,9 @@
                                             <th>{{__('Bank')}}</th>
                                             <th>{{__('Branch')}}</th>
                                             <th>{{__('Type')}}</th>
-											<th>{{__('DOJ')}}</th>
-											<th>{{__('Levy')}}</th>
-											<th>{{__('Type')}}</th>
+                                            <th>{{__('DOJ')}}</th>
+                                            <th>{{__('Levy')}}</th>
+                                            <th>{{__('Type')}}</th>
                                             </tr> 
                                                     <td><div calss="row"></td>
                                                
