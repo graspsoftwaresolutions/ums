@@ -125,6 +125,7 @@
               <li id="member_status{{strtolower($status->id)}}_sidebar_li_id" class=""><a id="member_status{{strtolower($status->id)}}_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),$status->id]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ Ucfirst(strtolower($status->status_name)) }}{{ __(' Members') }}</span></a></li>
               @endif
               @endforeach
+              <li id="member_status4_sidebar_li_id" class=""><a id="member_status4_sidebar_a_id" class="collapsible-body" href="{{ route('reports.resignmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Resigned Members</span></a></li>
               
             </ul>
           </div>
