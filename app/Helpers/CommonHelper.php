@@ -515,4 +515,10 @@ class CommonHelper
         return $shortcode;
     }
 	
+	public static function getStatusList()
+    {
+        $status = status::where('status','=','1')->get();
+        return $status;
+    }
+	
 }

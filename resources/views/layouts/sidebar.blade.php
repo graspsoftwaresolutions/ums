@@ -115,10 +115,16 @@
 		   @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
 	  <li id="reports_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">receipt	</i><span class="menu-title" data-i18n="">{{ __('Reports') }}</span></a>
           <div class="collapsible-body">
+            @php
+              $status_list = CommonHelper::getStatusList();
+            @endphp
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-              <li id="newmember_sidebar_li_id" class=""><a id="newmember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.newmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a></li>
-              <li id="activemember_sidebar_li_id" class=""><a id="activemember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),1]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Active Members') }}</span></a></li>
-              </ul>
+              <li id="newmember_sidebar_li_id" class=""><a id="newmember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),0]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a></li>
+              @foreach ($status_list as $status)
+              <li id="activemember_sidebar_li_id" class=""><a id="activemember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),$status->id]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ Ucfirst(strtolower($status->status_name)) }}{{ __(' Members') }}</span></a></li>
+              @endforeach
+              
+            </ul>
           </div>
         </li>
 		@endif

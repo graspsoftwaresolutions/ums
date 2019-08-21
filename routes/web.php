@@ -301,6 +301,7 @@ Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('get-auto-member-list','MembershipController@getAutomemberslist');
 Route::get('get-branch-details','MembershipController@getBranchDetails');
+Route::get('get-company-member-list','ReportsController@getAutomemberslist');
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');
