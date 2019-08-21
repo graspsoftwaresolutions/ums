@@ -14,7 +14,7 @@ class AddIsMonthlyPaymentFeeTable extends Migration
     public function up()
     {
         Schema::table('fee', function (Blueprint $table) {
-            $table->integer('is_monthly_payment')->after('fee_amount')->default('NULL');
+            $table->integer('is_monthly_payment')->after('fee_amount')->nullable();
         });
     }
 
