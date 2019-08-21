@@ -119,9 +119,9 @@
               $status_list = CommonHelper::getStatusList();
             @endphp
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-              <li id="newmember_sidebar_li_id" class=""><a id="newmember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),0]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a></li>
+              <li id="member_status0_sidebar_li_id" class=""><a id="member_status0_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),0]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a></li>
               @foreach ($status_list as $status)
-              <li id="activemember_sidebar_li_id" class=""><a id="activemember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),$status->id]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ Ucfirst(strtolower($status->status_name)) }}{{ __(' Members') }}</span></a></li>
+              <li id="member_status{{strtolower($status->id)}}_sidebar_li_id" class=""><a id="member_status{{strtolower($status->id)}}_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),$status->id]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ Ucfirst(strtolower($status->status_name)) }}{{ __(' Members') }}</span></a></li>
               @endforeach
               
             </ul>

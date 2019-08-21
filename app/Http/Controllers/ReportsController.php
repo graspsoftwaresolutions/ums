@@ -34,6 +34,9 @@ class ReportsController extends Controller
                 ->leftjoin('race as r','r.id','=','m.race_id');
                 if($status_id!="" && $status_id!=0){
                     $members = $members->where('m.status_id','=',$status_id);
+                }else{
+                    $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
+                    $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
                 }
 		$members = $members->offset(0)
 				->limit($data['data_limit'])
@@ -93,13 +96,21 @@ class ReportsController extends Controller
         $branch_id = $request->input('branch_id');
         $search = $request->input('query');
         //DB::enableQueryLog();
-        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number as member_code')      
-                            ->where(function($query) use ($search){
+        $member_query = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number as member_code')      
+                            ->leftjoin('company_branch as c','c.id','=','m.branch_id');
+        if($company_id!=""){
+            $member_query = $member_query->where('c.company_id','=',$company_id);
+        }
+        if($branch_id!=""){
+            $member_query = $member_query->where('m.branch_id','=',$branch_id);
+        }
+        $member_query = $member_query->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
                                     ->orWhere('m.member_number', 'LIKE',"%{$search}%")
                                     ->orWhere('m.name', 'LIKE',"%{$search}%");
                             })->limit(25)
-                            ->get();        
+                            ->get(); 
+         $res['suggestions'] =  $member_query;      
         //$queries = DB::getQueryLog();
                             //  dd($queries);
          return response()->json($res);

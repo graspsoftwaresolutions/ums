@@ -69,7 +69,7 @@
 					<div class="row">                          
 						<div class="col s3">
 							<label for="month_year">{{__('Month and Year')}}</label>
-							<input id="month_year" type="text" required class="validate datepicker-custom" name="month_year">
+							<input id="month_year" type="text" class="validate datepicker-custom" value="@if($data['status_id']==0){{date('M/Y')}}@endif" name="month_year">
 						</div>
 						<div class="col s3">
 							<label>{{__('Company Name') }}</label>
@@ -195,9 +195,9 @@
 @endsection
 @section('footerSecondSection')
 <script>
-$("#subscriptions_sidebars_id").addClass('active');
-$("#subscomp_sidebar_li_id").addClass('active');
-$("#subcomp_sidebar_a_id").addClass('active');
+$("#reports_sidebars_id").addClass('active');
+$("#member_status{{strtolower($data['status_id'])}}_sidebar_li_id").addClass('active');
+$("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		$(".datepicker-custom").datepicker({
@@ -210,11 +210,15 @@ $("#subcomp_sidebar_a_id").addClass('active');
         });
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,
-			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val()+"&company_id="+$("#company_id").val()+"&branch_id="+$("#branch_id").val(),
+			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
+			params: { 
+						company_id:  function(){ return $("#company_id").val();  },
+						branch_id:  function(){ return $("#branch_id").val();  } 
+					},
 			type:'GET',
 			//callback just to show it's working
 			onSelect: function (suggestion) {
-				 $("#member_search").val(suggestion.member_number);
+				 $("#member_search").val(suggestion.member_code);
 				 $("#member_auto_id").val(suggestion.number);
 			},
 			showNoSuggestionNotice: true,
@@ -226,6 +230,9 @@ $("#subcomp_sidebar_a_id").addClass('active');
 				}
 			}
 		}); 
+		$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+			$("#member_search").val('');
+		});
 	
 	});
 	$('#company_id').change(function(){
@@ -261,10 +268,10 @@ $("#subcomp_sidebar_a_id").addClass('active');
 	});
 		$('#filtersubmit').validate({
 			rules: {
-				month_year: {
+				/* month_year: {
 					  required: true,
 				  },
-				  /* company_id: {
+				  company_id: {
 					  required: true,
 				  },
 				  branch_id: {
@@ -276,9 +283,9 @@ $("#subcomp_sidebar_a_id").addClass('active');
 			},
 			//For custom messages
 			messages: {
-				month_year: {
+				/* month_year: {
 					  required: '{{__("Please Select Month And Year") }}',
-				 },
+				 }, */
 				/*   company_id: {
 					  required: '{{__("Please Select Company ID") }}',
 				  },
@@ -345,35 +352,39 @@ $("#subcomp_sidebar_a_id").addClass('active');
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
 		var status_id = $("#member_status").val();
-		var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
-		$("#memberoffset").val(0);
-		//loader.showLoader();
-		$('#page-length-option tbody').empty();
-		loader.showLoader();
-		$.ajax({
-			type: "GET",
-			dataType: "json",
-			url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
-			success:function(res){
-				if(res)
-				{
-					$.each(res,function(key,entry){
-						var table_row = "<tr><td>"+entry.name+"</td>";
-							table_row += "<td>"+entry.member_number+"</td>";
-							table_row += "<td>"+entry.new_ic+"</td>";
-							table_row += "<td>"+entry.gender+"</td>";
-							table_row += "<td>"+entry.companycode+"</td>";
-							table_row += "<td>"+entry.branch_name+"</td>";
-							table_row += "<td>"+entry.doj+"</td>";
-							table_row += "<td>"+entry.levy+"</td></tr>";
-							$('#page-length-option tbody').append(table_row);
-					});
-					loader.hideLoader();
-				}else{
-					
+		if(month_year!="" || company_id!="" || branch_id!="" || member_auto_id!=""){
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
+			$("#memberoffset").val(0);
+			//loader.showLoader();
+			$('#page-length-option tbody').empty();
+			loader.showLoader();
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
+				success:function(res){
+					if(res)
+					{
+						$.each(res,function(key,entry){
+							var table_row = "<tr><td>"+entry.name+"</td>";
+								table_row += "<td>"+entry.member_number+"</td>";
+								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.gender+"</td>";
+								table_row += "<td>"+entry.companycode+"</td>";
+								table_row += "<td>"+entry.branch_name+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.levy+"</td></tr>";
+								$('#page-length-option tbody').append(table_row);
+						});
+						loader.hideLoader();
+					}else{
+						
+					}
 				}
-			}
-		});
+			});
+		}else{
+			alert("please choose any filter");
+		}
 		//$("#submit-download").prop('disabled',true);
 	});
 
