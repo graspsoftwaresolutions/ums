@@ -32,7 +32,12 @@
 				<div class="section section-data-tables">
 					<!-- BEGIN: Page Main-->
 					<div class="row">
-						
+					<div class="col s2 m6 l6 ">
+                                       
+                                    </div>
+					<div class="col s2 m6 l6 ">
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('transfer.history',app()->getLocale())}}">{{__('Back') }}</a>
+                                    </div>
 						<div class="col s12">
 							<!--h4 class="card-title">{{__('New Membership') }}</h4-->
 							@include('includes.messages')

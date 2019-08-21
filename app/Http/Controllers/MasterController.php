@@ -1160,6 +1160,7 @@ public function companyDestroy($lang,$id)
             'email'=>'required',
             'phone'=>'required',
             'mobile'=>'required',
+            'branch_shortcode'=>'required',
         ],
         [
             'company_id.required'=>'please Choose Company name',
@@ -1173,6 +1174,7 @@ public function companyDestroy($lang,$id)
             'email.required'=>'please Enter email address',
             'phone.required'=>'please Enter phone number',
             'mobile.required'=>'please Enter mobile number',
+            'branch_shortcode.required'=>'please Enter Short Code',
         ]);
         $auto_id = $request->input('auto_id');
         $branch['company_id'] = $request->input('company_id');
@@ -1188,6 +1190,7 @@ public function companyDestroy($lang,$id)
         $branch['phone'] = $request->input('phone');
         $branch['mobile'] = $request->input('mobile');
         $branch['email'] = $request->input('email');
+        $branch['branch_shortcode'] = $request->input('branch_shortcode');
 
         $is_head = $request->input('is_head');
         $companyid = $request->input('company_id');

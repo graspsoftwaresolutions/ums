@@ -44,7 +44,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                             </li>
                                         </ol>
                                     </div>
-                                  
+                                    <div class="col s2 m6 l6 ">
+										   <a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{route('master.membership',app()->getLocale())}}">{{__('Back') }}</a>
+									   </div>
                                 </div>
                             </div>
                            
@@ -60,30 +62,30 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<table width="100%" class="memberinfotable" style="font-weight: bold; font-size: 16px">
 											<tr>
 												<td width="25%">{{__('Member Name ')}}</td>
-												<td width="25%">: {{ $member->membername }} [{{ $member->member_number }}]</td>
+												<td width="25%" style="color:{{$member->font_color}}">: {{ $member->membername }} [{{ $member->member_number }}]</td>
 												<td width="25%">{{ __('NRIC-OLD')}}</td>
-												<td width="25%">: {{ $member->old_ic }}</td>
+												<td width="25%"  style="color:{{$member->font_color}}">: {{ $member->old_ic }}</td>
 											</tr>
 											<tr>
 												<td width="25%">{{__('NRIC-NEW')}}</td>
-												<td width="25%" >: {{ $member->new_ic }}</td>
+												<td width="25%"  style="color:{{$member->font_color}}">: {{ $member->new_ic }}</td>
 												<td width="25%">{{__('Bank')}}</td>
-												<td width="25%" >: {{ $member->company_name }}</td>
+												<td width="25%"  style="color:{{$member->font_color}}">: {{ $member->company_name }}</td>
 												
 											</tr>
 											<tr>
 												<td width="25%">{{__('Type')}}</td>
-												<td width="25%">: {{ $member->membertype }}</td>
+												<td width="25%"  style="color:{{$member->font_color}}">: {{ $member->membertype }}</td>
 												
 												<td width="25%">{{__('Status')}}</td>
-												<td width="25%">: {{ $member->status_name }}</td>
+												<td width="25%"  style="color:{{$member->font_color}}">: {{ $member->status_name }}</td>
 											</tr>
 											<tr>
 												<td width="25%">{{__('Date of joing')}}</td>
-												<td width="25%">: {{ date('d/M/Y',strtotime($member->doj)) }}</td>
+												<td width="25%"  style="color:{{$member->font_color}}">: {{ date('d/M/Y',strtotime($member->doj)) }}</td>
 												
 												<td width="25%">{{__('Last paid Date')}}</td>
-												<td width="25%">: 
+												<td width="25%"  style="color:{{$member->font_color}}">: 
 												@if(count($data['member_history'])>0)
 												{{ date('M/ Y',strtotime($data['member_history'][count($data['member_history'])-1]->StatusMonth)) }}
 												@endif

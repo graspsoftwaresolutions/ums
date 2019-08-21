@@ -16,7 +16,28 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     href="{{ asset('public/assets/custom_respon.css') }}">
     <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
-
+    <style>
+	#main.main-full {
+		height: 750px;
+		overflow: auto;
+	}
+	
+	.footer {
+	   position: fixed;
+	   margin-top:50px;
+	   left: 0;
+	   bottom: 0;
+	   width: 100%;
+	   height:auto;
+	   background-color: red;
+	   color: white;
+	   text-align: center;
+	   z-index:999;
+	} 
+	.sidenav-main{
+		z-index:9999;
+	}
+</style>
 @endsection
 @section('main-content')
 
@@ -60,8 +81,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                               <thead>
                                                   <tr>
                                                       <th>{{__('NRIC') }}</th>
-                                                      <th>{{__('Arrear Date') }}</th>
+                                                      <th>{{__('MemberID') }}</th>
+                                                      <th>{{__('MemberName') }}</th>
+                                                      <th>{{__('Company') }}</th>
+                                                      <th>{{__('Branch') }}</th>
+                                                      <th>{{__('arrear_date') }}</th>
                                                       <th>{{__('Arrear Amount') }}</th>
+                                                      <th>{{__('Status') }}</th>
                                                       <th style="text-align:center;"> {{__('Action') }}</th>
                                                   </tr>
                                               </thead>
@@ -100,8 +126,8 @@ type="text/javascript"></script>
 <script>
 
 $("#masters_sidebars_id").addClass('active');
-$("#company_sidebar_li_id").addClass('active');
-$("#company_sidebar_a_id").addClass('active');
+$("#subsarrear_sidebar_li_id").addClass('active');
+$("#subarrear_sidebar_a_id").addClass('active');
 
 
 $('.datepicker').datepicker({
@@ -113,8 +139,8 @@ $(function () {
     $('#page-length-option').DataTable({
 			"responsive": true,
 			"lengthMenu": [
-				[10, 25, 50, -1],
-				[10, 25, 50, "All"]
+				[10, 25, 50, 100],
+				[10, 25, 50, 100]
 			],
 			"processing": true,
 			"serverSide": true,
@@ -125,17 +151,29 @@ $(function () {
 				"data": {_token: "{{csrf_token()}}"}
 			},
 			"columns": [
-				{"data": "options"},
 				{"data" : "nric"},
                 {"data": "membercode"},
+                {"data": "membername"},
                 {"data": "company_id"},
                 {"data": "branch_id"},
                 {"data": "arrear_date"},
 				{"data": "arrear_amount"},
-				{"data": "status_id"}
-			]
+				{"data": "status_id"},
+                {"data": "options"}
+			],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				$('td', nRow).css('color', aData.font_color );
+			}
 		});
+       
 });
+function ConfirmDeletion() {
+    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 //Model
 $(document).ready(function() {
 // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered

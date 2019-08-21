@@ -19,11 +19,13 @@ use App\Model\MemberGuardian;
 use App\Model\MemberFee;
 use App\Model\CompanyBranch;
 use App\Model\UnionBranch;
+use App\Model\Resignation;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
 use Auth;
 use Carbon\Carbon;
+use PDF;
 
 
 class MembershipController extends Controller
@@ -575,7 +577,7 @@ class MembershipController extends Controller
         $searchkey = $request->input('serachkey');
         $search = $request->input('query');
         //DB::enableQueryLog();
-        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id')      
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number as member_code')      
                             ->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
                                     ->orWhere('m.member_number', 'LIKE',"%{$search}%")
@@ -936,7 +938,27 @@ class MembershipController extends Controller
        echo json_encode($relativename);
 	}
 
-    
+    public function resignPDF($lang,$encid){
+        $memberid = Crypt::decrypt($encid);
+        $member_data = Membership::find($memberid);
+        $resign_data = Resignation::where('member_code','=',$memberid)->first();
+        $data = [
+                    'member_data' =>  $member_data,
+                    'resign_data' =>  $resign_data,
+                ];
+        return view('membership.resign-status', $data)->with('message','member resigned successfully');
+    }
+    public function genresignPDF($lang,$encid){
+        $memberid = Crypt::decrypt($encid);
+        $member_data = Membership::find($memberid);
+        $resign_data = Resignation::where('member_code','=',$memberid)->first();
+        $data = [
+                    'member_data' =>  $member_data,
+                    'resign_data' =>  $resign_data,
+                ];
+        $pdf = PDF::loadView('membership.pdf_resign', $data);  
+        return $pdf->download('resignation-'.$member_data->member_number.'.pdf');
+    }
 
     
 }

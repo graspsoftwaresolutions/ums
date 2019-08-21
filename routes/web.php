@@ -225,6 +225,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription.arrearentry','SubscriptionController@arrearentryIndex')->name('subscription.arrearentry');
 	Route::get('subscription.addarrearentry','SubscriptionController@arrearentryAdd')->name('subscription.addarrearentry');
 	
+	Route::get('editarreatentry/{parameter}','SubscriptionController@arrearentryEdit')->name('subscription.editarreatentry');
+	
+	Route::delete('arrearentrydelete/{id}','SubscriptionController@arrearentrydestroy')->name('subscription.arrearentrydelete');
+
 	Route::post('subscription.saveArrear','SubscriptionController@arrearentrySave')->name('subscription.saveArrear');
 	
 	Route::get('transfer_history','MembershipController@memberTransferHistory')->name('transfer.history');
@@ -249,6 +253,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('member-history/{parameter}','SubscriptionController@memberHistory')->name('member.history');
 	Route::post('ajax_member_history','SubscriptionAjaxController@ajax_member_history');
 	Route::get('get-relatives-info','MembershipController@getRelativename')->name('member.relatives');
+	Route::get('/resign-pdf/{parameter}', 'MembershipController@resignPDF');
+	Route::get('/generate-resign-pdf/{parameter}', 'MembershipController@genresignPDF')->name('resign.pdf');
+
+	//Reports
+	
+	Route::get('newmember_report','ReportsController@newMemberIndex')->name('reports.newmembers');
+	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
+	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
 
 	
 });
@@ -289,9 +301,12 @@ Route::get('delete-nominee-data','MembershipController@deleteNominee');
 Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('get-auto-member-list','MembershipController@getAutomemberslist');
 Route::get('get-branch-details','MembershipController@getBranchDetails');
+Route::get('get-company-member-list','ReportsController@getAutomemberslist');
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });
+
+Route::get('/customer/print-pdf', 'CustomerController@printPDF');
 
 Route::get('irc','IRCController@index');

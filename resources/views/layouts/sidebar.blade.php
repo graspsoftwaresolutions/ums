@@ -107,13 +107,28 @@
       @endif
       
       @if($user_role=='irc-confirmation' )
-      <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
-      @endif
-      @if($user_role=='irc-branch-committee' )
-      <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
-      @endif
+		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
+		  @endif
+		  @if($user_role=='irc-branch-committee' )
+		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
+		  @endif
+		   @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
+	  <li id="reports_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">receipt	</i><span class="menu-title" data-i18n="">{{ __('Reports') }}</span></a>
+          <div class="collapsible-body">
+            @php
+              $status_list = CommonHelper::getStatusList();
+            @endphp
+            <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+              <li id="member_status0_sidebar_li_id" class=""><a id="member_status0_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),0]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a></li>
+              @foreach ($status_list as $status)
+              <li id="member_status{{strtolower($status->id)}}_sidebar_li_id" class=""><a id="member_status{{strtolower($status->id)}}_sidebar_a_id" class="collapsible-body" href="{{ route('reports.members',[app()->getLocale(),$status->id]) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ Ucfirst(strtolower($status->status_name)) }}{{ __(' Members') }}</span></a></li>
+              @endforeach
+              
+            </ul>
+          </div>
+        </li>
+		@endif
       </ul>
-      
       <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>
     </aside>
     <!-- END: SideNav-->

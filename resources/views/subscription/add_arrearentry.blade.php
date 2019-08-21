@@ -34,6 +34,28 @@
 		background-color: #f4f8fb !important;
 	}
 </style>
+<style>
+	#main.main-full {
+		height: 750px;
+		overflow: auto;
+	}
+	
+	.footer {
+	   position: fixed;
+	   margin-top:50px;
+	   left: 0;
+	   bottom: 0;
+	   width: 100%;
+	   height:auto;
+	   background-color: red;
+	   color: white;
+	   text-align: center;
+	   z-index:999;
+	} 
+	.sidenav-main{
+		z-index:9999;
+	}
+</style>
 @endsection
 @section('main-content')
 @php 
@@ -45,7 +67,7 @@
 		action="{{ route('subscription.saveArrear',app()->getLocale()) }}">
 		@csrf
 		<div class="container">
-			<h5 class="padding-left-10"> Arrear Entry Details <!--<a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a>--></h5>
+			<h5 class="padding-left-10"> Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Back') }}</a></h5>
 			<div class="row">
 				 <div class="input-field col s12 m6">
                                           <label for="nric" class="common-label force-active">{{__('NRIC') }}*</label>
@@ -150,8 +172,8 @@ function refreshPage(){
     window.location.reload();
 }
 $("#subscriptions_sidebars_id").addClass('active');
-$("#subscomp_sidebar_li_id").addClass('active');
-$("#subcomp_sidebar_a_id").addClass('active');
+$("#subsarrear_sidebar_li_id").addClass('active');
+$("#subarrear_sidebar_a_id").addClass('active');
 
 	$('#addarrear_formValidate').validate({
 rules: {

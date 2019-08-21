@@ -518,7 +518,7 @@ class SubscriptionController extends CommonController
 	public function memberHistory($lang,$id){
 	$id = Crypt::decrypt($id);
     
-        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number')
+        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number','s.font_color')
 											->leftjoin('designation as d','d.id','=','m.designation_id')
 											->leftjoin('persontitle as p','p.id','=','m.member_title_id')
 											->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
@@ -592,6 +592,8 @@ class SubscriptionController extends CommonController
             'arrear_amount.required'=>'please enter Amount',
         ]);
         $data = $request->all();  
+        // echo "<pre>";
+        // print_r($data); die;
          
         $data['arrear_date'] = CommonHelper::convert_date_database($request->arrear_date);
         $defdaultLang = app()->getLocale();
@@ -610,4 +612,24 @@ class SubscriptionController extends CommonController
             }
         }
         }
+    public function arrearentryEdit($lang,$id)
+    {
+        $id = Crypt::decrypt($id);
+       
+         $data =  DB::table('arrear_entry as ar')->select('m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric',DB::raw("DATE_FORMAT(ar.arrear_date,'%d/%b/%Y') as arrear_date"),'ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+        ->leftjoin('membership as m','ar.membercode','=','m.id')
+        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        ->leftjoin('company as c','cb.company_id','=','c.id')
+        ->leftjoin('status as s','m.status_id','=','s.id')
+        ->where('ar.id','=',$id)->first();
+
+        return view('subscription.edit_arrearentry')->with('data',$data);
+    }
+    public function arrearentrydestroy($lang,$id)
+    {
+         $id = Crypt::decrypt($id);
+        $ArrearEntry = ArrearEntry::find($id);
+        $ArrearEntry->delete();
+        return redirect($lang.'/subscription.arrearentry')->with('message','Arrear Entry Details Deleted Successfully!!');
+    }
 }
