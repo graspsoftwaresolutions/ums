@@ -44,11 +44,20 @@
                         @php
                         $datacmpy = $data['company_subscription_list'][0];   
 						$enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
+                        $company_id = $data['company_auto_id'];
+						
                         @endphp
                             <div class="card-content">
 								<div class="row">
 									<div class="col m6">
-                                      <h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Bank Member List')}}</h4>
+                                        <div class="row">
+                                            <div class="col m6"> 
+                                            <h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Bank Member List')}}</h4>
+                                            </div>
+                                            <div class="col m6">
+                                            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Subscription Details</a>
+                                            </div>
+                                        </div>
                                     <!-- <div class="col s12">
                                       <label>   {{__('Month :')}} </label>
                                     <div class="input-field inline">
@@ -149,8 +158,68 @@
                                 @endforeach
                                
 								</div>
+								
                             </div>
-                          </div>
+							<div id="modal1" class="modal">
+							<div class="modal-content">
+								<div class="row">
+									<div class="col s12 m6">
+										<div class="card darken-1" id="member_status_div">
+											<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth"></span> </span>
+											<table class="collection" id="memberstatustable">
+												<thead>
+													<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+														<td>{{__('Sl No') }}</td>
+														<td>{{__('Status') }}</td>
+														 <td>{{__('Count') }}</td>
+														<td>{{__('Amount') }}</td>
+													</tr>
+													
+													@php 
+													$get_roles = Auth::user()->roles;
+													$user_role = $get_roles[0]->slug;
+													$user_id = Auth::user()->id;
+													@endphp 
+													@foreach($data['member_stat'] as  $key => $stat)
+													<tr>
+													<td>{{ $key+1 }} </td>
+													<td>{{ $stat->status_name }}</td>
+													<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCompanyCount($stat->id, $user_role, $user_id,$company_id) }}</td>
+													<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersCompanyAmount($stat->id, $user_role, $user_id,$company_id), 0) }} </td>
+                                                    @endforeach
+													</tr>
+												</thead>
+												<tbody>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!--Approval Status-->
+									<div class="col s12 m6">
+										<div class="card darken-1">
+											<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth"></span></span>
+											<table class="collection" id="approvalstatustable">
+												<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+													<td>{{__('Sl No') }}</td>
+													<td>{{__('Description') }}</td>
+													<td>{{__('Count') }}</td>
+												</tr>
+                                                @foreach($data['approval_status'] as  $key => $stat)
+                                                <tr>
+                                                    <td>{{ $key+1 }} </td>
+                                                    <td>{{ $stat->match_name }}</td>
+                                                    <td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsCompanyMatchCount($stat->id, $user_role, $user_id,$company_id) }}</td>
+                                                </tr>
+                                                @endforeach
+											</table>
+										</div>
+									</div>
+		
+								</div>
+							</div>
+						  </div>
+												  </div>
                         </div>
                     </div>
                        
@@ -182,6 +251,10 @@
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subcomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
+//Model
+$(document).ready(function() {
+    $('.modal').modal();
+});
 $(document).ready(function(){
     $('.tab_status').click(function(){
         console.log($(this).attr('id'));

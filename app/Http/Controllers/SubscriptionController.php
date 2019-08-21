@@ -452,6 +452,9 @@ class SubscriptionController extends CommonController
        $data['tot_count'] = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->count();
        $data['non_updated_rows'] = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->where('update_status','=',0)->count();
        $data['member_stat'] = $status_all;
+       $data['approval_status'] = DB::table('mon_sub_match_table as mt')
+                                    ->select('mt.id as id','mt.match_name as match_name')
+                                    ->get();
       // $data['member_stat'] = isset($data['member_stat']) ? $data['member_stat'] : [];   
 	  // return  $data;
        return view('subscription.company_members')->with('data', $data);

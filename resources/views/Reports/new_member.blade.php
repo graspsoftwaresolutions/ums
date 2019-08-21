@@ -71,7 +71,7 @@
 								<div class="row">                          
 									<div class="col s3">
 										<label for="month_year">{{__('Current Month and Year')}}</label>
-										@php echo date('d-m-yyyy') @endphp
+										@php echo date('d-m-') @endphp
 									</div>
 									<div class="input-field col s4">
 														<i class="material-icons prefix">date_range</i>
