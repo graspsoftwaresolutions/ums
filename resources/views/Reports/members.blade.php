@@ -23,7 +23,17 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<h4 class="card-title">{{__('Members Filter')}}  </h4> 
+				<h4 class="card-title">
+				
+				{{__('Members Filter')}} 
+				[
+					@if($data['status_id']!=0)
+					{{ CommonHelper::getStatusName($data['status_id']) }}
+					@else
+						New members
+					@endif
+				]
+				</h4> 
 				@php
 					
 					$userid = Auth::user()->id;
@@ -54,18 +64,16 @@
 					} 
 					
 				@endphp
-				<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
+				<form method="post" id="filtersubmit" action="">
 					@csrf  
-					<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
-					<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
 					<div class="row">                          
 						<div class="col s3">
 							<label for="month_year">{{__('Month and Year')}}</label>
-							<input id="month_year" type="text" required class="validate datepicker" name="month_year">
+							<input id="month_year" type="text" class="validate datepicker-custom" value="@if($data['status_id']==0){{date('M/Y')}}@endif" name="month_year">
 						</div>
 						<div class="col s3">
-							<label>{{__('Company Name') }}*</label>
-							<select name="company_id" id="company" class="error browser-default selectpicker" data-error=".errorTxt22" required >
+							<label>{{__('Company Name') }}</label>
+							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
 								@foreach($companylist as $value)
 								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
@@ -76,8 +84,8 @@
 							</div>
 						</div>
 						<div class="col s3">
-							<label>{{__('Company Branch Name') }}*</label>
-							<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
+							<label>{{__('Company Branch Name') }}</label>
+							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>
 								@foreach($branchlist as $branch)
 								<option @if($branchid==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
@@ -88,9 +96,13 @@
 							</div>
 						</div>
 						<div class="col s3">
-							<label for="member_number">{{__('Member Number')}}</label>
-							<input id="member_search" type="text" required class="validate " name="member_search">
-							<input id="member_number" type="text" required class="validate " name="member_number">
+							<label for="member_auto_id">{{__('Member Number')}}</label>
+							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
+							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
+							<input id="member_status" type="text" class="hide" readonly class="validate " value="{{$data['status_id']}}" name="member_status">
+							<div class="input-field">
+								<div class="errorTxt24"></div>
+							</div>
 						</div>
 						<div class="input-field col s12 right-align">
 							<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
@@ -104,8 +116,8 @@
 				<table id="page-length-option" class="display ">
 					<thead>
 						<tr>
-							<th>{{__('Member Number')}}</th>
 							<th>{{__('Member Name')}}</th>
+							<th>{{__('Member Number')}}</th>
 							<th>{{__('NRIC')}}</th>
 							<th>{{__('Gender')}}</th>
 							<th>{{__('Bank')}}</th>
@@ -136,6 +148,26 @@
 		</div>
 	</div>
 </div> 
+@php	
+	$ajaxcompanyid = '';
+	$ajaxbranchid = '';
+	$ajaxunionbranchid = '';
+	if(!empty(Auth::user())){
+		$userid = Auth::user()->id;
+		
+		if($user_role =='union'){
+
+		}else if($user_role =='union-branch'){
+			$ajaxunionbranchid = CommonHelper::getUnionBranchID($userid);
+		}else if($user_role =='company'){
+			$ajaxcompanyid = CommonHelper::getCompanyID($userid);
+		}else if($user_role =='company-branch'){
+			$ajaxbranchid = CommonHelper::getCompanyBranchID($userid);
+		}else{
+
+		}
+	}
+@endphp
 @endsection
 @section('footerSection')
 <!--<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script> -->
@@ -163,41 +195,132 @@
 @endsection
 @section('footerSecondSection')
 <script>
-$("#subscriptions_sidebars_id").addClass('active');
-$("#subscomp_sidebar_li_id").addClass('active');
-$("#subcomp_sidebar_a_id").addClass('active');
+$("#reports_sidebars_id").addClass('active');
+$("#member_status{{strtolower($data['status_id'])}}_sidebar_li_id").addClass('active');
+$("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
+		$(".datepicker-custom").datepicker({
+            changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			autoClose: true,
+			weekdaysAbbrev: ['sun'],
+            format: "mmm/yyyy",
+        });
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,
-			serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
+			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
+			params: { 
+						company_id:  function(){ return $("#company_id").val();  },
+						branch_id:  function(){ return $("#branch_id").val();  } 
+					},
 			type:'GET',
 			//callback just to show it's working
 			onSelect: function (suggestion) {
-				 $("#member_search").val(suggestion.value);
-				 $("#member_number").val(suggestion.number);
+				 $("#member_search").val(suggestion.member_code);
+				 $("#member_auto_id").val(suggestion.number);
 			},
 			showNoSuggestionNotice: true,
 			noSuggestionNotice: 'Sorry, no matching results',
 			onSearchComplete: function (query, suggestions) {
 				if(!suggestions.length){
 					$("#member_search").val('');
-					$("#member_number").val('');
+					$("#member_auto_id").val('');
 				}
 			}
 		}); 
+		$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+			$("#member_search").val('');
+		});
 	
 	});
-	
+	$('#company_id').change(function(){
+	   var CompanyID = $(this).val();
+	   var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
+	   var ajaxbranchid = '{{ $ajaxbranchid }}';
+	   var additional_cond;
+	   if(CompanyID!='' && CompanyID!='undefined')
+	   {
+		 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+		 $.ajax({
+			type: "GET",
+			dataType: "json",
+			url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
+			success:function(res){
+				if(res)
+				{
+					$('#branch_id').empty();
+					$("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+					$.each(res,function(key,entry){
+						$('#branch_id').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+					});
+				}else{
+					$('#branch_id').empty();
+				}
+			}
+		 });
+	   }else{
+		   $('#branch_id').empty();
+	   }
+	    $('#member_auto_id').val('');
+	    $('#member_search').val('');
+	});
+		$('#filtersubmit').validate({
+			rules: {
+				/* month_year: {
+					  required: true,
+				  },
+				  company_id: {
+					  required: true,
+				  },
+				  branch_id: {
+					required: true,
+				  },
+				  member_search: {
+					required: true,
+				  }, */
+			},
+			//For custom messages
+			messages: {
+				/* month_year: {
+					  required: '{{__("Please Select Month And Year") }}',
+				 }, */
+				/*   company_id: {
+					  required: '{{__("Please Select Company ID") }}',
+				  },
+				  branch_id: {
+					required: '{{__("Please Select Branch ID") }}',
+				  },
+				  member_search: {
+					required: '{{__("Please Enter Member") }}',
+				  }, */
+			},
+			errorElement: 'div',
+			errorPlacement: function(error, element) {
+			  var placement = $(element).data('error');
+			  if (placement) {
+				  $(placement).append(error)
+			  } else {
+				  error.insertAfter(element);
+			  }
+			}
+		});
     $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+		    var month_year = $("#month_year").val();
+			var company_id = $("#company_id").val();
+			var branch_id = $("#branch_id").val();
+			var member_auto_id = $("#member_auto_id").val();
+			var status_id = $("#member_status").val();
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-members-report') }}?offset="+lastoffset,
+				url : "{{ URL::to('/en/get-members-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
@@ -222,7 +345,48 @@ $("#subcomp_sidebar_a_id").addClass('active');
 				
 	   }
 	});
-
+	$(document).on('submit','form#filtersubmit',function(event){
+		event.preventDefault();
+		var month_year = $("#month_year").val();
+		var company_id = $("#company_id").val();
+		var branch_id = $("#branch_id").val();
+		var member_auto_id = $("#member_auto_id").val();
+		var status_id = $("#member_status").val();
+		if(month_year!="" || company_id!="" || branch_id!="" || member_auto_id!=""){
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
+			$("#memberoffset").val(0);
+			//loader.showLoader();
+			$('#page-length-option tbody').empty();
+			loader.showLoader();
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
+				success:function(res){
+					if(res)
+					{
+						$.each(res,function(key,entry){
+							var table_row = "<tr><td>"+entry.name+"</td>";
+								table_row += "<td>"+entry.member_number+"</td>";
+								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.gender+"</td>";
+								table_row += "<td>"+entry.companycode+"</td>";
+								table_row += "<td>"+entry.branch_name+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.levy+"</td></tr>";
+								$('#page-length-option tbody').append(table_row);
+						});
+						loader.hideLoader();
+					}else{
+						
+					}
+				}
+			});
+		}else{
+			alert("please choose any filter");
+		}
+		//$("#submit-download").prop('disabled',true);
+	});
 
 </script>
 @endsection
