@@ -61,78 +61,62 @@
                         </div>
                         <div class="row">
                         <div class="col s12">
-                        <div class="card">
-                            
-                            <div class="card-content">
-                            <h4 class="card-title">{{__('New Memebers ')}}  </h4> 
-							<table width="100%" style="font-weight:bold">
-								<tr>
-									<td width="25%">{{__('Current Month ')}}</td>
-									<td width="25%">: @php echo date('M/Y') @endphp</td>
+					<div class="card">
+						<div class="card-content">
+							<h4 class="card-title">{{__('Members Filter')}}  </h4> 
+							<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
+								@csrf  
+								<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
+								<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
+								<div class="row">                          
+									<div class="col s3">
+										<label for="month_year">{{__('Current Month and Year')}}</label>
+										@php echo date('d-m-yyyy') @endphp
+									</div>
+									<div class="input-field col s4">
+														<i class="material-icons prefix">date_range</i>
+														<input id="from_date" type="text" required class="validate datepicker" name="from_date">
+														<label for="from_date">{{__('From Month and Year')}}</label>
+													</div>
+													<div class="input-field col s4">
+														<i class="material-icons prefix">date_range</i>
+														<input id="to_date" type="text" required class="validate datepicker" name="to_date">
+														<label for="to_date">{{__('To Month and Year')}}</label>
+													</div>
 									
-									<td width="25%"></td>
-									<td width="25%"></td>
-								</tr>
-							</table>
-                            <h6 class="">   </h6>
-                            <h6 class="">  </h6>
-                                                                   
-							<h6 class="">  </h6>
-                          
-                            <h6 class="">   </h6>
-                            <div class="card filter">
-								<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
-									@csrf  
-									<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
-									<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
-									<div class="row">                          
-										<div class="input-field col s4">
-											<i class="material-icons prefix">date_range</i>
-											<input id="from_date" type="text" required class="validate datepicker" name="from_date">
-											<label for="from_date">{{__('From Month and Year')}}</label>
-										</div>
-										<div class="input-field col s4">
-											<i class="material-icons prefix">date_range</i>
-											<input id="to_date" type="text" required class="validate datepicker" name="to_date">
-											<label for="to_date">{{__('To Month and Year')}}</label>
-										</div>
-										<div class="input-field col s4">
+									<div class="input-field col s12 right-align">
 										<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
-										</div>
-									</div>
-								</form>  
-                            </div>
-                            @include('includes.messages')
-                            <div class="row">
-                                <div class="col s12">
-                                    <!-- Horizontal Stepper -->
-									<div class="card">
-                                    <div class="col sm12 m12">   
-                                        <table id="page-length-option" class="display" cellspacing="0" width="100%">
-                                            <thead>
-                                            <tr>
-                                            <th>{{__('Member Number')}}</th>
-                                            <th>{{__('Member Name')}}</th>
-                                            <th>{{__('NRIC')}}</th>
-                                            <th>{{__('Gender')}}</th>
-                                            <th>{{__('Bank')}}</th>
-                                            <th>{{__('Branch')}}</th>
-                                            <th>{{__('Type')}}</th>
-                                            <th>{{__('DOJ')}}</th>
-                                            <th>{{__('Levy')}}</th>
-                                            <th>{{__('Type')}}</th>
-                                            </tr> 
-                                            <td><div calss="row"></td>
-                                            </thead>
-                                        </table>
-                                        </div>          
-									</div>
 									</div>
 								</div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
+							</form>  
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-content">
+							<table id="page-length-option" class="display ">
+								<thead>
+									<tr>
+										<th>{{__('Member Number')}}</th>
+										<th>{{__('Member Name')}}</th>
+										<th>{{__('NRIC')}}</th>
+										<th>{{__('Gender')}}</th>
+										<th>{{__('Bank')}}</th>
+										<th>{{__('Branch')}}</th>
+										<th>{{__('Type')}}</th>
+										<th>{{__('DOJ')}}</th>
+										<th>{{__('Levy')}}</th>
+										<th>{{__('Type')}}</th>
+									</tr> 
+								</thead>
+								<tbody>
+									
+									
+								</tbody>
+								<input type="text" name="memberoffset" id="memberoffset" class="hide" value="0"></input>
+							</table> 
+						</div>
+					</div>
+</div>
                        
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
