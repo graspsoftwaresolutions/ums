@@ -258,9 +258,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	//Reports
 	
-	Route::get('newmember_report','ReportsController@newMemberIndex')->name('reports.newmembers');
+	Route::get('newmember_report','ReportsController@newMemberReport')->name('reports.newmembers');
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
 	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
+	Route::get('get-new-members-report','ReportsController@membersNewReportMore')->name('reports.moremembers');
 
 	
 });

@@ -69,7 +69,7 @@
 					<div class="row">                          
 						<div class="col s3">
 							<label for="month_year">{{__('Month and Year')}}</label>
-							<input id="month_year" type="text" class="validate datepicker-custom" value="@if($data['status_id']==0){{date('M/Y')}}@endif" name="month_year">
+							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
 						</div>
 						<div class="col s3">
 							<label>{{__('Company Name') }}</label>
@@ -142,7 +142,7 @@
 							</tr> 
 						@endforeach
 					</tbody>
-					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="0"></input>
+					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 				</table> 
 			</div>
 		</div>
@@ -204,9 +204,12 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
             changeMonth: true,
 			changeYear: true,
 			showButtonPanel: true,
-			autoClose: true,
+			closeText: 'Clear',
 			weekdaysAbbrev: ['sun'],
             format: "mmm/yyyy",
+			onClose: function (dateText, inst) {
+				
+			}
         });
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,
