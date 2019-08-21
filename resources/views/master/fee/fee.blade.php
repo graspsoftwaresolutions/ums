@@ -76,6 +76,7 @@
                                                     <tr>
                                                         <th>{{__('Fee Name') }}</th>
                                                         <th>{{__('Fee Amount') }}</th>
+                                                        <th>{{__('Short Code') }}</th>
                                                         <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
@@ -110,6 +111,13 @@
                                                 data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>
+                                        <div class="input-field col s12 m6">
+                                            <label for="fee_shortcode"
+                                                class="common-label force-active">{{__('Fee Short Code') }}*</label>
+                                            <input id="fee_shortcode" name="fee_shortcode" class="common-input" type="text"
+                                                data-error=".errorTxt3">
+                                            <div class="errorTxt3"></div>
+                                        </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
                                             <p>
@@ -131,7 +139,6 @@
                                             <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
-                                        
                                     </div>
                                 </form>
                             </div>
@@ -190,6 +197,9 @@ $(function() {
                 "data": "fee_amount"
             },
             {
+                "data": "fee_shortcode"
+            },
+            {
                 "data": "options"
             }
         ]
@@ -226,6 +236,9 @@ $("#feeformValidate").validate({
             required: true,
             digits : true,
         },
+        fee_shortcode: {
+            required: true,
+        },
     },
     //For custom messages
     messages: {
@@ -236,6 +249,9 @@ $("#feeformValidate").validate({
         fee_amount: {
             required: '{{__("Enter a Fee Amount") }}',
             digits : '{{__("Enter Numbers only") }}',
+        },
+        fee_shortcode: {
+            required: '{{__("Enter a Fee Short Code") }}',
         },
     },
     errorElement: 'div',
@@ -262,6 +278,8 @@ function showaddForm() {
     $('#fee_name').val("");
     $('#fee_amount').val("");
     $('#is_monthly_payment').val("1");
+    $('#fee_shortcode').val("");
+    $("#fee_shortcode").prop("readonly", false);
     $('.modal').modal();
     $('#updateid').val("");
     $('.common-label').removeClass('force-active');
@@ -270,7 +288,7 @@ function showaddForm() {
 function showeditForm(feeid) {
     $('.edit_hide').hide();
     $('.add_hide').hide();
-    $('.edit_hide_btn').show();
+    $("#fee_shortcode").prop("readonly", true);
     $('.modal').modal();
     loader.showLoader();
     var url = "{{ url(app()->getLocale().'/fee_detail') }}" + '?id=' + feeid;
@@ -283,6 +301,7 @@ function showeditForm(feeid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#fee_name').val(result.fee_name);
             $('#fee_amount').val(result.fee_amount);
+            $('#fee_shortcode').val(result.fee_shortcode);
             if(result.is_monthly_payment)
             {
                 $('#is_monthly_payment').prop('checked', true);

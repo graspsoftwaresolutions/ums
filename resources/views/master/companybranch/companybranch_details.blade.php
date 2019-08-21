@@ -244,6 +244,16 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="input-field col s12 m6">
+                                                    <label for="branch_shortcode" class="common-label">{{__('Short Code') }}
+                                                        *</label>
+                                                    <input id="branch_shortcode" name="branch_shortcode" class="common-input"
+                                                        value="@isset($row){{$row->branch_shortcode}}@endisset" type="text"
+                                                        data-error=".errorTxt16">
+                                                    <div class="errorTxt16"></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="input-field col s12">
                                                     <button id="form-save-btn" class="btn waves-effect waves-light right submit"
                                                         type="submit" name="action">
@@ -402,6 +412,9 @@ $("#branchformValidate").validate({
         city_id: {
             required: true,
         },
+        branch_shortcode: {
+            required: true,
+        },
     },
     //For custom messages
     messages: {
@@ -444,7 +457,10 @@ $("#branchformValidate").validate({
         },
         address_one: {
             required: '{{__("Please enter your address") }}',
-        }
+        },
+        branch_shortcode: {
+            required: '{{__("Please enter Branch Shortcode") }}',
+        },
     },
     errorElement: 'div',
     errorPlacement: function(error, element) {

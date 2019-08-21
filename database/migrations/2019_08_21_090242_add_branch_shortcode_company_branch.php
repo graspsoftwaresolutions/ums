@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIsMonthlyPaymentFeeTable extends Migration
+class AddBranchShortcodeCompanyBranch extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddIsMonthlyPaymentFeeTable extends Migration
      */
     public function up()
     {
-        Schema::table('fee', function (Blueprint $table) {
-            $table->integer('is_monthly_payment')->after('fee_amount')->nullable();
+        Schema::table('company_branch', function (Blueprint $table) {
+            $table->string('branch_shortcode')->after('branch_name');
         });
     }
 
@@ -25,7 +25,7 @@ class AddIsMonthlyPaymentFeeTable extends Migration
      */
     public function down()
     {
-        Schema::table('fee', function (Blueprint $table) {
+        Schema::table('company_branch', function (Blueprint $table) {
             //
         });
     }
