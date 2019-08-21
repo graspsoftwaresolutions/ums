@@ -720,7 +720,8 @@ class AjaxController extends CommonController
         $columns = array(
             0 => 'fee_name',
             1 => 'fee_amount',
-            2 => 'id',
+            2 => 'fee_shortcode',
+            3 => 'id',
         );
         $select = array();
         $where = array();
@@ -731,7 +732,7 @@ class AjaxController extends CommonController
         $dir = $request->input('order.0.dir');
         $orderby = array($order, $dir);
         
-        $select = array('fee.id', 'fee.fee_name', 'fee.fee_amount');
+        $select = array('fee.id', 'fee.fee_name', 'fee.fee_amount','fee.fee_shortcode');
         if (isset($user_id) && !empty($user_id)) {
             $where['id'] = $user_id;
         }
@@ -739,6 +740,7 @@ class AjaxController extends CommonController
         if (isset($search) && !empty($search)) {
             $or_where1 = array("fee_name", "Like", "%{$search}%");
             $or_where2 = array("fee_amount", "Like", "%{$search}%");
+            $or_where2 = array("fee_shortcode", "Like", "%{$search}%");
              $or_where = array($or_where1, $or_where2);
         }
         $feelist = new Fee();

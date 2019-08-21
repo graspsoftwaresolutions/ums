@@ -76,6 +76,7 @@
                                                     <tr>
                                                         <th>{{__('Fee Name') }}</th>
                                                         <th>{{__('Fee Amount') }}</th>
+                                                        <th>{{__('Short Code') }}</th>
                                                         <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
@@ -194,6 +195,9 @@ $(function() {
             },
             {
                 "data": "fee_amount"
+            },
+            {
+                "data": "fee_shortcode"
             },
             {
                 "data": "options"
