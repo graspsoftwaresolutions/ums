@@ -24,23 +24,76 @@
 		<div class="card">
 			<div class="card-content">
 				<h4 class="card-title">{{__('Members Filter')}}  </h4> 
+				@php
+					
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+					$companylist = [];
+					$branchlist = [];
+					$companyid = '';
+					$branchid = '';
+					if($user_role =='union'){
+						$companylist = $data['company_view'];
+					}
+					else if($user_role =='union-branch'){
+						$unionbranchid = CommonHelper::getUnionBranchID($userid);
+						$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+					} 
+					else if($user_role =='company'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid);
+					}
+					else if($user_role =='company-branch'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+					} 
+					
+				@endphp
 				<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
 					@csrf  
 					<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
 					<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
 					<div class="row">                          
-						<div class="input-field col s4">
-							<i class="material-icons prefix">date_range</i>
-							<input id="from_date" type="text" required class="validate datepicker" name="from_date">
-							<label for="from_date">{{__('From Month and Year')}}</label>
+						<div class="col s3">
+							<label for="month_year">{{__('Month and Year')}}</label>
+							<input id="month_year" type="text" required class="validate datepicker" name="month_year">
 						</div>
-						<div class="input-field col s4">
-							<i class="material-icons prefix">date_range</i>
-							<input id="to_date" type="text" required class="validate datepicker" name="to_date">
-							<label for="to_date">{{__('To Month and Year')}}</label>
+						<div class="col s3">
+							<label>{{__('Company Name') }}*</label>
+							<select name="company_id" id="company" class="error browser-default selectpicker" data-error=".errorTxt22" required >
+								<option value="">{{__('Select Company') }}</option>
+								@foreach($companylist as $value)
+								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
+								@endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt22"></div>
+							</div>
 						</div>
-						<div class="input-field col s4">
-						<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
+						<div class="col s3">
+							<label>{{__('Company Branch Name') }}*</label>
+							<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
+								<option value="">{{__('Select Branch') }}</option>
+								@foreach($branchlist as $branch)
+								<option @if($branchid==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
+								@endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt23"></div>
+							</div>
+						</div>
+						<div class="col s3">
+							<label for="member_number">{{__('Member Number')}}</label>
+							<input id="member_search" type="text" required class="validate " name="member_search">
+							<input id="member_number" type="text" required class="validate " name="member_number">
+						</div>
+						<div class="input-field col s12 right-align">
+							<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
 						</div>
 					</div>
 				</form>  
@@ -95,6 +148,18 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<style type="text/css">
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+	#transfer_member{
+		color:#fff;
+	}
+</style>
 @endsection
 @section('footerSecondSection')
 <script>
@@ -103,7 +168,24 @@ $("#subscomp_sidebar_li_id").addClass('active');
 $("#subcomp_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
-		//loader.showLoader();
+		$("#member_search").devbridgeAutocomplete({
+			//lookup: countries,
+			serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
+			type:'GET',
+			//callback just to show it's working
+			onSelect: function (suggestion) {
+				 $("#member_search").val(suggestion.value);
+				 $("#member_number").val(suggestion.number);
+			},
+			showNoSuggestionNotice: true,
+			noSuggestionNotice: 'Sorry, no matching results',
+			onSearchComplete: function (query, suggestions) {
+				if(!suggestions.length){
+					$("#member_search").val('');
+					$("#member_number").val('');
+				}
+			}
+		}); 
 	
 	});
 	

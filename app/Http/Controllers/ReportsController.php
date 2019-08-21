@@ -20,7 +20,8 @@ class ReportsController extends Controller
 	
 	public function membersReport()
     {
-		$data['data_limit']=$this->limit;
+        $data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		$data['member_view'] = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
