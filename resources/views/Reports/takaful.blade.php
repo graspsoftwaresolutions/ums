@@ -12,7 +12,27 @@
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <style>
-
+	@if(count($data['member_view'])<10)
+		#main.main-full {
+			height: 750px;
+		}
+		
+		.footer {
+		   position: fixed;
+		   margin-top:50px;
+		   left: 0;
+		   bottom: 0;
+		   width: 100%;
+		   height:auto;
+		   background-color: red;
+		   color: white;
+		   text-align: center;
+		   z-index:999;
+		} 
+		.sidenav-main{
+			z-index:9999;
+		}
+	@endif
 </style>
 @endsection
 @section('main-content')
@@ -141,6 +161,8 @@
 				</table> 
 			</div>
 		</div>
+		</br>
+		</br>
 	</div>
 </div> 
 @php	
@@ -191,8 +213,8 @@
 @section('footerSecondSection')
 <script>
 $("#reports_sidebars_id").addClass('active');
-$("#member_status4_sidebar_li_id").addClass('active');
-$("#member_status4_sidebar_a_id").addClass('active');
+$("#takaful_report_sidebar_li_id").addClass('active');
+$("#takaful_report_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		$(".datepicker-custom").datepicker({
@@ -305,7 +327,7 @@ $("#member_status4_sidebar_a_id").addClass('active');
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-resign-members-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ URL::to('/en/get-takaful-more-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
@@ -346,7 +368,7 @@ $("#member_status4_sidebar_a_id").addClass('active');
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-resign-members-report') }}?offset=0"+searchfilters,
+				url : "{{ URL::to('/en/get-takaful-more-report') }}?offset=0"+searchfilters,
 				success:function(res){
 					if(res)
 					{
