@@ -292,9 +292,27 @@ $('#page-length-option').DataTable({
 		"type": "POST",
 		'data': function(data){
 		  var unionbranch_id = $('#unionbranch_id').val();
+		  var company_id      = $(company_id).val();
+		  var branch_id = $('#branch_id').val();
+		  var gender = $('#gender').val();
+		  var race_id = $('#race_id').val();
+		  var status_id = $('#status_id').val();
+		  var country_id = $('#country_id').val();
+		  var state_id = $('#state_id').val();
+		  var city_id = $('#city_id').val();
+		  
 		  //console.log(datefilter);
 		 
-		  data.datefilter = datefilter;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
+		  data.unionbranch_id = unionbranch_id;
 		  data._token = "{{csrf_token()}}";
 	   }
 	},
