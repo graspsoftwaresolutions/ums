@@ -300,7 +300,7 @@ class MembershipController extends Controller
 			 if($gender!="")
 			 {
 			  	$member_qry = $member_qry->where('m.gender','=',$gender);
-            }
+             }
 			 if($race_id != "")
 			 {
 				 $member_qry = $member_qry->where('m.race_id','=',$race_id);
