@@ -280,6 +280,7 @@ $(document).on('submit','form#advancedsearch',function(event){
 $(function () {
 $('#page-length-option').DataTable({
 	"responsive": true,
+	"searching": false,
 	"lengthMenu": [
 		[10, 25, 50, -1],
 		[10, 25, 50, "All"]
@@ -304,15 +305,14 @@ $('#page-length-option').DataTable({
 		  //console.log(datefilter);
 		 
 		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
-		  data.unionbranch_id = unionbranch_id;
+		  data.company_id = company_id;
+		  data.branch_id = branch_id;
+		  data.gender = gender;
+		  data.race_id = race_id;
+		  data.status_id = status_id;
+		  data.country_id = country_id;
+		  data.city_id = city_id;
+		  console.log(data);
 		  data._token = "{{csrf_token()}}";
 	   }
 	},
