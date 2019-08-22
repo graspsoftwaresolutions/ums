@@ -25,7 +25,7 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				
-				{{__('New Members Filter')}} 
+				{{__('Resign Members Filter')}} 
 				
 				</h4> 
 				@php
@@ -60,7 +60,14 @@
 				@endphp
 				<form method="post" id="filtersubmit" action="">
 					@csrf  
-					<div class="row">                          
+					<div class="row">    
+						<div class="col s4">
+							<label for="join_type">{{__('Date Type')}}</label>
+							<select name="join_type" id="join_type" class="error browser-default selectpicker" data-error=".errorTxt6">
+								<option value="1">Resign Date</option>
+								<option value="2" selected >Payment Date</option>
+							</select>
+						</div>
 						<div class="col s4">
 							<label for="from_date">{{__('From Date')}}</label>
 							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/M/Y')}}" name="from_date">
@@ -69,14 +76,7 @@
 							<label for="to_date">{{__('To Date')}}</label>
 							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/M/Y')}}" name="to_date">
 						</div>
-						<div class="col s4">
-							<label for="join_type">{{__('Join Type')}}</label>
-							<select name="join_type" id="join_type" class="error browser-default selectpicker" data-error=".errorTxt6">
-								<option value="" selected>{{__('All') }}</option>
-								<option value="1">New Joined</option>
-								<option value="2">Rejoined</option>
-							</select>
-						</div>
+						
 						<div class="clearfix"/>
 						<div class="col s4">
 							<label>{{__('Company Name') }}</label>
@@ -130,12 +130,13 @@
 							<th width="15%">{{__('Name')}}</th>
 							<th width="10%">{{__('Number')}}</th>
 							<th width="10%">{{__('NRIC')}}</th>
+							<th width="10%">{{__('joined')}}</th>
+							<th width="10%">{{__('Resigned')}}</th>
 							<th width="10%">{{__('Bank')}}</th>
 							<th width="20%">{{__('Branch')}}</th>
-							<th width="10%">{{__('DOJ')}}</th>
-							<th width="6%">{{__('ENT')}}</th>
-							<th width="6%">{{__('INS')}}</th>
-							<th width="6%">{{__('SUBS')}}</th>
+							<th width="6%">{{__('Contribution')}}</th>
+							<th width="6%">{{__('Benifit')}}</th>
+							<th width="6%">{{__('Total')}}</th>
 						</tr> 
 					</thead>
 					<tbody>
@@ -145,12 +146,13 @@
 								<td>{{ $member->name }}</td>
 								<td>{{ $member->member_number }}</td>
 								<td>{{ $member->new_ic }}</td>
+								<td>{{ $member->doj }}</td>
+								<td>{{ $member->resignation_date }}</td>
 								<td>{{ $member->companycode }}</td>
 								<td>{{ $member->branch_name }}</td>
-								<td>{{ $member->doj }}</td>
-								<td>{{ $member->entryfee }}</td>
-								<td>{{ $member->insfee }}</td>
-								<td>{{ $member->subs }}</td>
+								<td>{{ $member->contribution }}</td>
+								<td>{{ $member->benifit }}</td>
+								<td>{{ $member->total }}</td>
 								
 							</tr> 
 						@endforeach
@@ -209,8 +211,8 @@
 @section('footerSecondSection')
 <script>
 $("#reports_sidebars_id").addClass('active');
-$("#member_status0_sidebar_li_id").addClass('active');
-$("#member_status0_sidebar_a_id").addClass('active');
+$("#member_status4_sidebar_li_id").addClass('active');
+$("#member_status4_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		$(".datepicker-custom").datepicker({
@@ -325,13 +327,13 @@ $("#member_status0_sidebar_a_id").addClass('active');
 			var company_id = $("#company_id").val();
 			var branch_id = $("#branch_id").val();
 			var member_auto_id = $("#member_auto_id").val();
-			var join_type = $("#join_type").val();
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+			var date_type = $("#date_type").val();
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-new-members-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ URL::to('/en/get-resign-members-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
@@ -339,12 +341,13 @@ $("#member_status0_sidebar_a_id").addClass('active');
 							var table_row = "<tr><td>"+entry.name+"</td>";
 								table_row += "<td>"+entry.member_number+"</td>";
 								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.resignation_date+"</td>";
 								table_row += "<td>"+entry.companycode+"</td>";
 								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.entryfee+"</td>";
-								table_row += "<td>"+entry.insfee+"</td>";
-								table_row += "<td>"+entry.subs+"</td></tr>";
+								table_row += "<td>"+entry.contribution+"</td>";
+								table_row += "<td>"+entry.benifit+"</td>";
+								table_row += "<td>"+entry.total+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
 						loader.hideLoader();
@@ -365,10 +368,10 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		var company_id = $("#company_id").val();
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
-		var join_type = $("#join_type").val();
+		var date_type = $("#date_type").val();
 		$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
 			$("#memberoffset").val(0);
 			//loader.showLoader();
 			$('#page-length-option tbody').empty();
@@ -376,7 +379,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,
+				url : "{{ URL::to('/en/get-resign-members-report') }}?offset=0"+searchfilters,
 				success:function(res){
 					if(res)
 					{
@@ -384,12 +387,13 @@ $("#member_status0_sidebar_a_id").addClass('active');
 							var table_row = "<tr><td>"+entry.name+"</td>";
 								table_row += "<td>"+entry.member_number+"</td>";
 								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.resignation_date+"</td>";
 								table_row += "<td>"+entry.companycode+"</td>";
 								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.entryfee+"</td>";
-								table_row += "<td>"+entry.insfee+"</td>";
-								table_row += "<td>"+entry.subs+"</td></tr>";
+								table_row += "<td>"+entry.contribution+"</td>";
+								table_row += "<td>"+entry.benifit+"</td>";
+								table_row += "<td>"+entry.total+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
 						$("#memberoffset").val("{{$data['data_limit']}}");

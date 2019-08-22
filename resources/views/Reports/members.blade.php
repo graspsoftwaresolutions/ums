@@ -34,53 +34,67 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				@endif
 			]
 			</h4> 
-			@php
-				
-				$userid = Auth::user()->id;
-				$get_roles = Auth::user()->roles;
-				$user_role = $get_roles[0]->slug;
-				$companylist = [];
-				$branchlist = [];
-				$companyid = '';
-				$branchid = '';
-				if($user_role =='union'){
-					$companylist = $data['company_view'];
-				}
-				else if($user_role =='union-branch'){
-					$unionbranchid = CommonHelper::getUnionBranchID($userid);
-					$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
-				} 
-				else if($user_role =='company'){
-					$branchid = CommonHelper::getCompanyBranchID($userid);
-					$companyid = CommonHelper::getCompanyID($userid);
-					$companylist = CommonHelper::getCompanyList($companyid);
-					$branchlist = CommonHelper::getCompanyBranchList($companyid);
-				}
-				else if($user_role =='company-branch'){
-					$branchid = CommonHelper::getCompanyBranchID($userid);
-					$companyid = CommonHelper::getCompanyID($userid);
-					$companylist = CommonHelper::getCompanyList($companyid);
-					$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
-				} 
-				
-			@endphp
-			<form method="post" id="filtersubmit" name="">
-				@csrf  
-				<div class="row">                          
-					<div class="col s3">
-						<label for="month_year">{{__('Month and Year')}}</label>
-						<input id="month_year" type="text" class="validate datepicker-custom" value="@if($data['status_id']==0){{date('M/Y')}}@endif" name="month_year">
-					</div>
-					<div class="col s3">
-						<label>{{__('Company Name') }}</label>
-						<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
-							<option value="">{{__('Select Company') }}</option>
-							@foreach($companylist as $value)
-							<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
-							@endforeach
-						</select>
-						<div class="input-field">
-							<div class="errorTxt22"></div>
+			 
+				@php
+					
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+					$companylist = [];
+					$branchlist = [];
+					$companyid = '';
+					$branchid = '';
+					if($user_role =='union'){
+						$companylist = $data['company_view'];
+					}
+					else if($user_role =='union-branch'){
+						$unionbranchid = CommonHelper::getUnionBranchID($userid);
+						$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+					} 
+					else if($user_role =='company'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid);
+					}
+					else if($user_role =='company-branch'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+					} 
+					
+				@endphp
+				<form method="post" id="filtersubmit" action="">
+					@csrf  
+					<div class="row">                          
+						<div class="col s3">
+							<label for="month_year">{{__('Month and Year')}}</label>
+							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
+						</div>
+						<div class="col s3">
+							<label>{{__('Company Name') }}</label>
+							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+								<option value="">{{__('Select Company') }}</option>
+								@foreach($companylist as $value)
+								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
+								@endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt22"></div>
+							</div>
+						</div>
+						<div class="col s3">
+							<label>{{__('Company Branch Name') }}</label>
+							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+								<option value="">{{__('Select Branch') }}</option>
+								@foreach($branchlist as $branch)
+								<option @if($branchid==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
+								@endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt23"></div>
+							</div>
 						</div>
 					</div>
 					<div class="col s3">
@@ -126,24 +140,26 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<th>{{__('Levy')}}</th>
 					</tr> 
 				</thead>
-				<tbody>
-					
-					@foreach($data['member_view'] as $member)
-						<tr>
-							<td>{{ $member->name }}</td>
-							<td>{{ $member->member_number }}</td>
-							<td>{{ $member->new_ic }}</td>
-							<td>{{ $member->gender }}</td>
-							<td>{{ $member->companycode }}</td>
-							<td>{{ $member->branch_name }}</td>
-							<td>{{ $member->doj }}</td>
-							<td>{{ $member->levy }}</td>
-							
-						</tr> 
-					@endforeach
-				</tbody>
-				<input type="text" name="memberoffset" id="memberoffset" class="hide" value="0"></input>
-			</table> 
+				
+					<tbody>
+						
+						@foreach($data['member_view'] as $member)
+							<tr>
+								<td>{{ $member->name }}</td>
+								<td>{{ $member->member_number }}</td>
+								<td>{{ $member->new_ic }}</td>
+								<td>{{ $member->gender }}</td>
+								<td>{{ $member->companycode }}</td>
+								<td>{{ $member->branch_name }}</td>
+								<td>{{ $member->doj }}</td>
+								<td>{{ $member->levy }}</td>
+								
+							</tr> 
+						@endforeach
+					</tbody>
+					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
+				</table> 
+			</div>
 		</div>
 	</div>
 </div>
@@ -199,34 +215,38 @@ $("#reports_sidebars_id").addClass('active');
 $("#member_status{{strtolower($data['status_id'])}}_sidebar_li_id").addClass('active');
 $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('active');
 
-$(document).ready(function(){
-	$(".datepicker-custom").datepicker({
-		changeMonth: true,
-		changeYear: true,
-		showButtonPanel: true,
-		autoClose: true,
-		weekdaysAbbrev: ['sun'],
-		format: "mmm/yyyy",
-	});
-	$("#member_search").devbridgeAutocomplete({
-		//lookup: countries,
-		serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
-		params: { 
-					company_id:  function(){ return $("#company_id").val();  },
-					branch_id:  function(){ return $("#branch_id").val();  } 
-				},
-		type:'GET',
-		//callback just to show it's working
-		onSelect: function (suggestion) {
-			 $("#member_search").val(suggestion.member_code);
-			 $("#member_auto_id").val(suggestion.number);
-		},
-		showNoSuggestionNotice: true,
-		noSuggestionNotice: 'Sorry, no matching results',
-		onSearchComplete: function (query, suggestions) {
-			if(!suggestions.length){
-				$("#member_search").val('');
-				$("#member_auto_id").val('');
+	$(document).ready(function(){
+		$(".datepicker-custom").datepicker({
+            changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			closeText: 'Clear',
+			weekdaysAbbrev: ['sun'],
+            format: "mmm/yyyy",
+			onClose: function (dateText, inst) {
+				
+			}
+        });
+		$("#member_search").devbridgeAutocomplete({
+			//lookup: countries,
+			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
+			params: { 
+						company_id:  function(){ return $("#company_id").val();  },
+						branch_id:  function(){ return $("#branch_id").val();  } 
+					},
+			type:'GET',
+			//callback just to show it's working
+			onSelect: function (suggestion) {
+				 $("#member_search").val(suggestion.member_code);
+				 $("#member_auto_id").val(suggestion.number);
+			},
+			showNoSuggestionNotice: true,
+			noSuggestionNotice: 'Sorry, no matching results',
+			onSearchComplete: function (query, suggestions) {
+				if(!suggestions.length){
+					$("#member_search").val('');
+					$("#member_auto_id").val('');
+				}
 			}
 		}
 	}); 
