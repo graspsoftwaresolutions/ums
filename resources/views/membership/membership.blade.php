@@ -73,7 +73,7 @@ color: #5a2da1 !important;
 								
 							</h4>
 							<div class="row">
-							<div class="card advancedsearch">
+							<div class="card advancedsearch" style="dispaly:none;">
 								<div class="col s12">
 									<form method="post" id="advancedsearch">
 									@csrf  
@@ -113,7 +113,7 @@ color: #5a2da1 !important;
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
 												 @foreach($data['companybranch_view'] as $value)
-                                                <option value="{{$value->id}}" @if($data1==$value->id) selected @endif >
+                                                <option value="{{$value->id}}">
                                                     {{$value->branch_name}}</option>
                                                 @endforeach
 												
@@ -203,8 +203,14 @@ color: #5a2da1 !important;
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="input-field col s12 right-align">
-											<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
+										</div>
+										<div class="row">
+											<div class="input-field col s6 right">
+												<input type="submit" id="clear"  class="btn" name="clear" value="{{__('Clear')}}">
+											</div>
+											<div class="input-field col s6 right-align">
+												<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
+											</div>
 										</div>
 									</div>
 									</form> 
@@ -267,18 +273,22 @@ color: #5a2da1 !important;
 $('#advancedsearch').hide();
  $('#advancedsearchs').click(function(){
 	$('#advancedsearch').toggle();
-	//var  oldMemberID = $('#old_mumber_number').val();
 	});
+$('#clear').click(function(){
+	$("#unionbranch_id option[value='']").attr('selected', false)
+	$('#company_id').val("");
+	$('#branch_id').val("");
+	$('#gender').val("");
+	$('#unionbranch_id').val("");
+	$('#unionbranch_id').val("");
+	$('#unionbranch_id').val("");
+	});	
 
 $("#membership_sidebar_a_id").addClass('active');
 
-$(document).on('submit','form#advancedsearch',function(event){
-	event.preventDefault();
-	dataTable.draw();
-});
 
 $(function () {
-$('#page-length-option').DataTable({
+ var dataTable = $('#page-length-option').DataTable({
 	"responsive": true,
 	"searching": false,
 	"lengthMenu": [
@@ -311,6 +321,7 @@ $('#page-length-option').DataTable({
 		  data.race_id = race_id;
 		  data.status_id = status_id;
 		  data.country_id = country_id;
+		  data.state_id = state_id;
 		  data.city_id = city_id;
 		  console.log(data);
 		  data._token = "{{csrf_token()}}";
@@ -342,6 +353,14 @@ $('#page-length-option').DataTable({
 		$('td', nRow).css('color', aData.font_color );
 	}
 });
+
+$(document).on('submit','form#advancedsearch',function(event){
+	event.preventDefault();
+	dataTable.draw();
 });
+});
+
+
+
 </script>
 @endsection

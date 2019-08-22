@@ -262,19 +262,67 @@ class MembershipController extends Controller
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
 		$member_qry = '';
+		
+		$unionbranch_id = $request->input('unionbranch_id'); 
+		$company_id = $request->input('company_id'); 
+		$branch_id = $request->input('branch_id'); 
+		$gender = $request->input('gender'); 
+		$race_id = $request->input('race_id'); 
+		$status_id = $request->input('status_id'); 
+		$country_id = $request->input('country_id'); 
+		$state_id = $request->input('state_id');
+		$city_id = $request->input('city_id'); 
+		
+		
 		if($user_role=='union'){
             //DB::enableQueryLog();
-			$member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
+				
+			$member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color','con.country_name')
 						 ->leftjoin('designation as d','m.designation_id','=','d.id')
 						 ->leftjoin('company_branch as c','m.branch_id','=','c.id')
 						 ->leftjoin('company as com','com.id','=','c.company_id')
+						 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
 						 ->leftjoin('status as s','s.id','=','m.status_id')
+						 ->leftjoin('country as con','con.id','=','m.country_id')
 						 ->leftjoin('state as st','st.id','=','m.state_id')
 						 ->leftjoin('city as cit','cit.id','=','m.city_id')
 						 ->leftjoin('race as r','r.id','=','m.race_id')
-						 ->where('m.is_request_approved','=',$approved_cond)
+                         ->where('m.is_request_approved','=',$approved_cond)
 						 ->orderBy('m.id','DESC');
-			if($member_status!='all'){
+			if($branch_id!=""){
+				  $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+			  }elseif($company_id!= ''){
+				   $member_qry = $member_qry->where('c.company_id','=',$company_id);
+			  }
+			  elseif($unionbranch_id!= ''){
+				  $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
+			  }
+			 if($gender!="")
+			 {
+			  	 $member_qry = $member_qry->where('m.gender','=',$gender);
+			 }
+			 if($race_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.race_id','=',$race_id);
+			 }
+			 if($status_id!=0 && $status_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.status_id','=',$status_id);
+			 }
+			 if($country_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.country_id','=',$country_id);
+			 }
+			 if($state_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.state_id','=',$state_id);
+			 }
+			 if($city_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.city_id','=',$city_id);
+			 }
+			  
+			if($member_status !='all'){
 				$member_qry = $member_qry->where('m.status_id','=',$member_status);
 			}
 						 
