@@ -322,6 +322,7 @@ $("#member_status4_sidebar_a_id").addClass('active');
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    loader.showLoader();
+			console.log("event triggered");
 		    var from_date = $("#from_date").val();
 			var to_date = $("#to_date").val();
 			var company_id = $("#company_id").val();
@@ -372,10 +373,10 @@ $("#member_status4_sidebar_a_id").addClass('active');
 		$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
 			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
-			$("#memberoffset").val(0);
 			//loader.showLoader();
 			$('#page-length-option tbody').empty();
 			loader.showLoader();
+			$("#memberoffset").val("{{$data['data_limit']}}");
 			$.ajax({
 				type: "GET",
 				dataType: "json",
@@ -396,14 +397,14 @@ $("#member_status4_sidebar_a_id").addClass('active');
 								table_row += "<td>"+entry.total+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
-						$("#memberoffset").val("{{$data['data_limit']}}");
 						loader.hideLoader();
+						$("#search").attr('disabled',false);
 					}else{
 						
 					}
 				}
 			});
-			$("#search").attr('disabled',false);
+			//$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
 		}

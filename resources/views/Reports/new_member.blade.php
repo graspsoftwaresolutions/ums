@@ -369,7 +369,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
 			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
-			$("#memberoffset").val(0);
+			$("#memberoffset").val("{{$data['data_limit']}}");
 			//loader.showLoader();
 			$('#page-length-option tbody').empty();
 			loader.showLoader();
@@ -392,7 +392,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 								table_row += "<td>"+entry.subs+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
-						$("#memberoffset").val("{{$data['data_limit']}}");
+						
 						loader.hideLoader();
 					}else{
 						
