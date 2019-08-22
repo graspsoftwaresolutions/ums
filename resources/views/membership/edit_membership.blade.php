@@ -1190,20 +1190,42 @@ $irc_status = $data['irc_status'];
 		$totalmonthspaid = '';
 		$bfcontribuion = '';
 		$insamount = '';
+		$service_year = '';
+		$unioncontribution = '';
+		$accbenefit = '';
 		if(!empty($lastmonthendrow)){
 			$lastpaid = date('M/Y',strtotime($lastmonthendrow->StatusMonth));
 			$totalmonthspaid = $lastmonthendrow->TOTALMONTHSPAID;
 			$bfcontribuion = $lastmonthendrow->ACCBF;
 			$insamount = $lastmonthendrow->ACCINSURANCE;
+			$service_year = CommonHelper::calculate_age($values->doj);
+			$unioncontribution = $lastmonthendrow->ACCINSURANCE;
+			$accbenefit = $resignedrow->ACCBENEFIT;
 		}
 		$resignstatus = 0;
 		$resign_date = 0;
+		$relation_code = '';
+		$pay_mode = '';
+		$chequeno = '';
+		$voucher_date = '';
+		$chequedate = '';
+		$chequedate = '';
+		$totamount = 0;
 		if(!empty($resignedrow)){
 			$resignstatus = 0;
 			$resign_date = date('d/M/Y',strtotime($resignedrow->resignation_date));
 			$totalmonthspaid = $resignedrow->months_contributed;
 			$bfcontribuion = $resignedrow->accbf;
 			$insamount = $resignedrow->insuranceamount;
+			$relation_code = $resignedrow->relation_code;
+			$service_year = $resignedrow->service_year;
+			$unioncontribution = $resignedrow->unioncontribution;
+			$accbenefit = $resignedrow->accbenefit;
+			$pay_mode = $resignedrow->paymode;
+			$chequeno = $resignedrow->chequeno;
+			$voucher_date = date('d/M/Y',strtotime($resignedrow->voucher_date));
+			$chequedate = date('d/M/Y',strtotime($resignedrow->chequedate));
+			$totamount = $resignedrow->amount;
 		}
 	@endphp
 	<div class="step-content">
@@ -1230,7 +1252,7 @@ $irc_status = $data['irc_status'];
 						<select name="resign_claimer" id="resign_claimer" data-error=".errorTxt502" class="error browser-default selectpicker ">
 							<option value="" >Select</option>
 							@foreach($data['relationship_view'] as $key=>$value)
-								<option @if(!empty($resignedrow)) @php echo $resignedrow->relation_code==$value->id ? 'selected' :''; @endphp @endif value="{{$value->id}}" >{{$value->relation_name}}</option>
+								<option @if($relation_code!='') @php echo $relation_code==$value->id ? 'selected' :''; @endphp @endif value="{{$value->id}}" >{{$value->relation_name}}</option>
 							@endforeach
 					    </select>
 						<div class="input-field">
@@ -1262,7 +1284,7 @@ $irc_status = $data['irc_status'];
 			 <div class="input-field col s6">
 				<div class="row">
 					<div class="input-field col s6">
-						<input type="text" id="service_year" name="service_year" value="{{ CommonHelper::calculate_age($values->doj) }}">
+						<input type="text" id="service_year" name="service_year" value="{{ $service_year }}">
 							<label for="service_year" class="force-active">Service Year</label>
 					 </div>
 					 <div class="input-field col s6">
@@ -1289,7 +1311,7 @@ $irc_status = $data['irc_status'];
 							<label for="contributed_months" class="force-active">Contributed Months</label>
 					 </div>
 					 <div class="input-field col s6">
-						<input type="text"  id="union_contribution" name="union_contribution"  value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->ACCINSURANCE}}@endif">
+						<input type="text"  id="union_contribution" name="union_contribution"  value="{{$unioncontribution}}">
 							<label for="union_contribution" class="force-active">Union Contribution</label>
 					 </div>
 					
@@ -1300,7 +1322,7 @@ $irc_status = $data['irc_status'];
 				<div class="row">
 					
 					<div class="input-field col s12">
-						<input type="text" id="benefit_amount" name="benefit_amount" value="@if(!empty($lastmonthendrow)){{$lastmonthendrow->ACCBENEFIT}}@endif" >
+						<input type="text" id="benefit_amount" name="benefit_amount" value="{{$accbenefit}}" >
 							<label for="benefit_amount" class="force-active">Benefit Amount</label>
 					 </div>
 					
@@ -1313,12 +1335,12 @@ $irc_status = $data['irc_status'];
 					<label>{{__('PayMode') }}</label>
 						<select name="pay_mode" id="pay_mode" class="error browser-default selectpicker">
 						<option value="" selected>{{__('Choose your option') }}</option>
-						<option value="1"> CHEQUE</option>
-						<option value="2"> ONLINE PAY</option>
+						<option @if($pay_mode==1) selected @endif value="1"> CHEQUE</option>
+						<option @if($pay_mode==2) selected @endif value="2"> ONLINE PAY</option>
 						</select>
 					 </div>
 					 <div class="input-field col s6">
-						<input type="text"  id="reference_number" name="reference_number">
+						<input type="text" id="reference_number" name="reference_number" value="{{$chequeno}}">
 							<label id="reference_number_text" for="reference_number" class="force-active">Reference Number</label>
 					 </div>
 				</div>
@@ -1337,23 +1359,26 @@ $irc_status = $data['irc_status'];
 				<div class="row">
 					<div class="col s12 m6">
 					<label>{{__('Cheque Date') }}*</label>
-						<input type="text" name="cheque_date" id="cheque_date" class="datepicker">
+						<input type="text" name="cheque_date" id="cheque_date" class="datepicker" value="{{$chequedate}}">
 					 </div>
 					 <div class="col s12 m6">
 						<label>{{__('Payment Confirmation') }}*</label>
-						<input type="text" name="payment_confirmation" id="payment_confirmation" class="datepicker">
+						<input type="text" name="payment_confirmation" id="payment_confirmation" class="datepicker" value="{{$voucher_date}}">
 					 </div>
 				</div>
 			 </div>
 			  <div class="col s12 m6">
 				<label for="total_amount" class="force-active">Total Amount</label>
-				<input type="text" id="total_amount" name="total_amount" readonly >
+				<input type="text" id="total_amount" name="total_amount" value="{{$totamount}}" readonly >
 			 </div>
 			 <div class="clearfix" style="clear:both"></div>
 			 </div>
 		<div class="row">
 			<div class="col m12 s12 mb-1" style="text-align:right">
-			@if(!empty($resignedrow))<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small">Member already resigned</span>@endif
+				@if(!empty($resignedrow))
+					<a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-effect waves-light gradient-45deg-purple-deep-purple">View resign Details</a>
+					<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small hide">Member already resigned</span>
+				@endif
 				<button class="btn btn-light previous-step">
 					<i class="material-icons left">arrow_back</i>
 					Prev
