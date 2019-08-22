@@ -69,7 +69,7 @@ color: #5a2da1 !important;
 								@else
 									<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Approved members list') }}</a>
 								@endif
-								<input type="button" id="advancedsearchs" name="advancedsearch" class="btn" value="Advancedsearch">
+								<input type="button" id="advancedsearchs" name="advancedsearch" class="btn" value="Advanced search">
 								
 							</h4>
 							<div class="row">
@@ -275,14 +275,8 @@ $('#advancedsearch').hide();
 	$('#advancedsearch').toggle();
 	});
 $('#clear').click(function(){
-	$("#unionbranch_id option[value='']").attr('selected', false)
-	$('#company_id').val("");
-	$('#branch_id').val("");
-	$('#gender').val("");
-	$('#unionbranch_id').val("");
-	$('#unionbranch_id').val("");
-	$('#unionbranch_id').val("");
-	});	
+	$(".selectpicker").val('').trigger("change"); 
+});	
 
 $("#membership_sidebar_a_id").addClass('active');
 
