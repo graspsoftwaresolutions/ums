@@ -203,8 +203,8 @@ class ReportsController extends Controller
                     ->leftjoin('city as cit','cit.id','=','m.city_id')
                     ->leftjoin('race as r','r.id','=','m.race_id');
 
-                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',date('01-m-Y'));
-                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',date('t-m-Y'));
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',date('Y-m-01'));
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',date('Y-m-t'));
                   
                     $members = $members->offset(0)
                     ->limit($data['data_limit'])

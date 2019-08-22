@@ -62,8 +62,8 @@
 					@csrf  
 					<div class="row">    
 						<div class="col s4">
-							<label for="join_type">{{__('Date Type')}}</label>
-							<select name="join_type" id="join_type" class="error browser-default selectpicker" data-error=".errorTxt6">
+							<label for="date_type">{{__('Date Type')}}</label>
+							<select name="date_type" id="date_type" class="error browser-default selectpicker" data-error=".errorTxt6">
 								<option value="1">Resign Date</option>
 								<option value="2" selected >Payment Date</option>
 							</select>
