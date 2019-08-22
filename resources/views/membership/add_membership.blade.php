@@ -796,8 +796,6 @@ ul.stepper .step .step-title:hover {
 		});
 
 		horizStepperInstace.resetStepper();
-		
-	
 	});
 	function defaultValidationFunction(horizStepper, activeStepContent) {
 		

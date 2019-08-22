@@ -197,7 +197,7 @@
 									</div>
 									<!--Approval Status-->
 									<div class="col s12 m6">
-										<div class="card darken-1">
+									`	<div class="card darken-1">
 											<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth"></span></span>
 											<table class="collection" id="approvalstatustable">
 												<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
@@ -215,7 +215,6 @@
 											</table>
 										</div>
 									</div>
-		
 								</div>
 							</div>
 						  </div>
