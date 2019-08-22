@@ -475,9 +475,9 @@
 	$('#new_branch').change(function(){
 	   var branchid = $(this).val();
 	   $('#newbranchinfo').find('input:text').val('');  
-	   loader.showLoader();
 	   if(branchid!='')
 	   {
+		   loader.showLoader();
 		 $.ajax({
 			type: "GET",
 			dataType: "json",
