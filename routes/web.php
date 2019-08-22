@@ -265,6 +265,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
 	Route::get('get-takaful-report','ReportsController@takafulReport')->name('reports.takaful');
+	Route::get('get-takaful-more-report','ReportsController@takafulReportMore')->name('reports.takfulmore');
 	
 });
 /* Master */
