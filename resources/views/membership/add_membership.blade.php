@@ -3,9 +3,11 @@
 	@include('membership.member_common_styles')
 @endsection
 @section('headSecondSection')
+<style>
 ul.stepper .step .step-title:hover {
      background-color: #fff !important;
 }
+</style>
 @endsection
 @section('main-content')
 <div id="">

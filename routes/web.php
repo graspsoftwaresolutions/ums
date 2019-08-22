@@ -311,6 +311,6 @@ Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });
 
-Route::get('/customer/print-pdf', 'CustomerController@printPDF');
+Route::get('/form-wizard', 'CustomerController@FormWizard');
 
 Route::get('irc','IRCController@index');
