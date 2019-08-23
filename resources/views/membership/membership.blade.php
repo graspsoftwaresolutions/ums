@@ -284,7 +284,7 @@ $("#membership_sidebar_a_id").addClass('active');
 $(function () {
  var dataTable = $('#page-length-option').DataTable({
 	"responsive": true,
-	"searching": false,
+	//"searching": false,
 	"lengthMenu": [
 		[10, 25, 50, -1],
 		[10, 25, 50, "All"]
