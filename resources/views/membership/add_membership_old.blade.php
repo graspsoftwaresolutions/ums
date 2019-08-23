@@ -7,11 +7,7 @@
 ul.stepper .step .step-title:hover {
      background-color: #fff !important;
 }
-
 </style>
-<link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-app.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-theme.css') }}">
-<link class="rtl_switch_page_css" href="{{ asset('public/css/steps.css') }}" rel="stylesheet" type="text/css">
 @endsection
 @section('main-content')
 <div id="">
@@ -48,7 +44,7 @@ ul.stepper .step .step-title:hover {
 							@include('includes.messages')
 							<div class="row">
 								<div class="col s12">
-									<div class="card theme-mda">
+									<div class="card">
 										<div class="card-content pb-0">
 											<div class="card-header">
 												<h4 class="card-title">{{__('New Membership') }}
@@ -58,58 +54,59 @@ ul.stepper .step .step-title:hover {
 												</h4>
 												
 											</div>
-											<form class="formValidate" id="wizard2" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
+											<form class="formValidate" id="member_formValidate" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
 											@csrf
-												@php 
-													$auth_user = Auth::user();
-													$member_number_readonly = 'readonly';
-													$member_number_hide = 'hide';
-													$companylist = $data['company_view'];
-													$branchlist = [];
-													$companyid = '';
-													$branchid = '';
-													if(!empty($auth_user)){
-														$userid = Auth::user()->id;
-														$get_roles = Auth::user()->roles;
-														$user_role = $get_roles[0]->slug;
-														
-														$companylist = [];
-														
-														if($user_role =='union'){
-															$member_number_readonly = '';
-															$member_number_hide = '';
-															$member_status = 2;
-															$companylist = $data['company_view'];
-														}
-														else if($user_role =='union-branch'){
-															$unionbranchid = CommonHelper::getUnionBranchID($userid);
-															$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
-															
-															$member_status = 1;
-														} 
-														else if($user_role =='company'){
-															$branchid = CommonHelper::getCompanyBranchID($userid);
-															$companyid = CommonHelper::getCompanyID($userid);
-															$companylist = CommonHelper::getCompanyList($companyid);
-															$branchlist = CommonHelper::getCompanyBranchList($companyid);
-															//print_r($branchlist);die;
-															$member_status = 1;
-														}
-														else if($user_role =='company-branch'){
-															$branchid = CommonHelper::getCompanyBranchID($userid);
-															$member_status = 1;
-															$companyid = CommonHelper::getCompanyID($userid);
-															$companylist = CommonHelper::getCompanyList($companyid);
-															$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
-														}  
-													}
+											@php 
+												$auth_user = Auth::user();
+												$member_number_readonly = 'readonly';
+												$member_number_hide = 'hide';
+												$companylist = $data['company_view'];
+												$branchlist = [];
+												$companyid = '';
+												$branchid = '';
+												if(!empty($auth_user)){
+													$userid = Auth::user()->id;
+													$get_roles = Auth::user()->roles;
+													$user_role = $get_roles[0]->slug;
 													
-												@endphp
-												<h3>Member Details</h3>
-												<fieldset>
-													</br>
-													<div class="col-sm-8 col-sm-offset-1">
-														<div class="row">
+													$companylist = [];
+													
+													if($user_role =='union'){
+														$member_number_readonly = '';
+														$member_number_hide = '';
+														$member_status = 2;
+														$companylist = $data['company_view'];
+													}
+													else if($user_role =='union-branch'){
+														$unionbranchid = CommonHelper::getUnionBranchID($userid);
+														$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+														
+														$member_status = 1;
+													} 
+													else if($user_role =='company'){
+														$branchid = CommonHelper::getCompanyBranchID($userid);
+														$companyid = CommonHelper::getCompanyID($userid);
+														$companylist = CommonHelper::getCompanyList($companyid);
+														$branchlist = CommonHelper::getCompanyBranchList($companyid);
+														//print_r($branchlist);die;
+														$member_status = 1;
+													}
+													else if($user_role =='company-branch'){
+														$branchid = CommonHelper::getCompanyBranchID($userid);
+														$member_status = 1;
+														$companyid = CommonHelper::getCompanyID($userid);
+														$companylist = CommonHelper::getCompanyList($companyid);
+														$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+													}  
+												}
+												
+											@endphp
+											<ul class="stepper horizontal" id="horizStepper">
+												<li class="step active">
+													<div class="step-title waves-effect">Member Details</div>
+													<div class="step-content" >
+														<div style="box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);padding:50px 50px;">
+															<div class="row">
 																<div class="col s12 m6">
 																	<label >{{__('Member Title') }}*</label>
 																	<select name="member_title" id="member_title" required data-error=".errorTxt1" class="error browser-default selectpicker">
@@ -186,8 +183,8 @@ ul.stepper .step .step-title:hover {
 																			<span>{{__('Rejoined') }}</span>
 																			</label>
 																		</p>
-																	</div> 
-																	<div class="input-field col s12 m6" style="display:none;" id="member_old_div">
+																	</div>
+																	<div class="input-field col s12 m6" id="member_old_div">
 																		<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
 																		<label for="old_mumber_number">{{__('Old Number') }}</label>
 																		<span> 
@@ -390,20 +387,34 @@ ul.stepper .step .step-title:hover {
 																			Prev
 																		</button>
 																		</div-->
-																	
+																	<div class="col m12 s12 mb-3" style="text-align: right;">
+																		<button id="controlled_next" class="waves-effect waves dark btn btn-primary next-step "
+																			type="submit">
+																		Next
+																		<i class="material-icons right">arrow_forward</i>
+																		</button>
+																		<button id="submit-member" class="waves-effect waves-dark btn btn-primary form-save-btn"
+																	type="submit">Submit</button>
+																	</div>
 																</div>
 																
 															</div>
-														<p>(*) Mandatory</p>
-													</div><!-- /.col- -->
-												</fieldset>
-											 
-												<h3>Additional Details</h3>
-												<fieldset>
-													<div class="col-sm-8 col-sm-offset-1">
+														</div>
+													</div>
+												</li>
+												<li class="step">
+													<div class="step-title waves-effect">Additional Details</div>
+													<div class="step-content" style="padding: 50px 50px;">
 														<div class="row">
-															<div class="">
-																<ul class="collapsible collapsible-accordion" data-collapsible="accordion" style="margin:0;padding:0;">
+															<div class="col s12">
+																<!--h4 class="header">Additional Details</h4-->
+																<!--p>
+																	If you want a collapsible with a preopened section just add the
+																	<code class=" language-markup">active</code> class to the li of collapsible-header.
+																	</p-->
+															</div>
+															<div class="col s12">
+																<ul class="collapsible collapsible-accordion" data-collapsible="accordion">
 																	<li class="active">
 																		<div class="collapsible-header gradient-45deg-indigo-purple white-text" ><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
 																		
@@ -711,15 +722,22 @@ ul.stepper .step .step-title:hover {
 																	</li>
 																</ul>
 															</div>
-														
 														</div>
-													</div><!-- /.col- -->
-												</fieldset>
-											 
+														<div class="row">
+															<div class="col m12 s12 mb-1" style="text-align:right">
+																<button class="btn btn-light previous-step">
+																	<i class="material-icons left">arrow_back</i>
+																	Prev
+																</button>
+																<button class="waves-effect waves-dark btn btn-primary form-save-btn" onClick="return SubmitMemberForm()"
+																	type="submit">Submit</button>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
 											</form>
-
 										</div>
-										
 									</div>
 								</div>
 							</div>
@@ -740,251 +758,13 @@ ul.stepper .step .step-title:hover {
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/js/jquery.steps.js') }}"></script>
+<script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
+<!--script src = "{{ asset('public/assets/js/materialize.min.js') }}" type="text/javascript"></script-->
 @endsection
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/js/scripts/form-wizard.js') }}" type="text/javascript"></script>
 <script>
-   
-	var form = $("#wizard2").show();
- 
-	form.steps({
-	    headerTag: "h3",
-	    bodyTag: "fieldset",
-	    onStepChanging: function (event, currentIndex, newIndex)
-	    {
-	        // Allways allow previous action even if the current form is not valid!
-	        if (currentIndex > newIndex)
-	        {
-	            return true;
-	        }
-	        // Forbid next action on "Warning" step if the user is to young
-	        if (currentIndex === 1)
-	        {
-	            return true;
-	        }
-	        // Needed in some cases if the user went back (clean up)
-	        if (currentIndex < newIndex)
-	        {
-	            // To remove error styles
-	            form.find(".body:eq(" + newIndex + ") label.error").remove();
-	            form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
-	        }
-	        form.validate().settings.ignore = ":disabled,:hidden";
-	        return form.valid();
-	    },
-	    onFinishing: function (event, currentIndex)
-	    {
-	        form.validate().settings.ignore = ":disabled";
-	        return form.valid();
-	    },
-	    onFinished: function (event, currentIndex)
-	    {
-			$('#wizard2').trigger('submit');
-	       return true;
-	    }
-	}).validate({
-	    rules: {
-	    	member_title:{
-                required: true,
-            },
-            member_number: {
-                required: true,
-            },
-            name: {
-                required: true,
-				minlength:3,
-            },
-            gender: {
-                required: true,
-            },
-            name: {
-                required: true,
-            },
-            mobile: {
-                required: true,	
-            },
-            email: {
-                required: true,
-				email:true,
-				remote: {
-					url: "{{ url(app()->getLocale().'/member_emailexists')}}",
-					data: {
-						db_autoid: function() {
-							return $("#auto_id").val();
-						},
-						_token: "{{csrf_token()}}",
-						email: $(this).data('email')
-					},
-					type: "post",
-				},
-            },
-            doe: {
-                required: true,
-            },
-            designation: {
-                required: true,
-            },
-            race: {
-                required: true,
-            },
-            country: {
-                required: true,
-            },
-            state: {
-                required: true,
-            },
-			state_id: {
-                required: true,
-            },
-            city: {
-                required: true,
-            },
-			city_id: {
-                required: true,
-            },
-            postal_code: {
-                required: true,
-				number: true,
-				minlength:5,
-				maxlength:8,
-            },
-            address_one: {
-                required:true,
-            },
-			address_two: {
-                required:true,
-            },
-			address_three: {
-                required:true,
-            },
-            dob: {
-                required:true,
-            }, 
-			doj: {
-                required:true,
-            },
-            new_ic: {
-                required:true,
-                minlength: 3,
-                maxlength: 20,
-            },
-            salary: {
-                required: true,
-            },
-            branch: {
-                required: true,
-            },
-            uname: {
-                required: true,
-                minlength: 5
-            },
-            country_name: {
-                required: true,
-            },
-            state_name: {
-                required: true,
-            },
-            country_id: "required",
-            cemail: {
-                required: true,
-                email: true
-            },
-            city_name : {
-            required: true,
-            },
-            designation_name : {
-            required: true,
-            },  
-	    },
-	   	messages: {
-			  member_title: {
-                required: "Please Enter Your Title ",
-                
-            },
-            member_number: {
-                required: "Please Enter Member NUmber",
-                
-            },
-            name: {
-                required: "Please Enter Your Name",
-                
-            },
-            gender: {
-                required: "Please choose Gender",
-            },
-            mobile: {
-                required: "Please Enter your Number",
-                
-            },
-            email: {
-                required: "Please enter valid email",
-				remote: '{{__("Email Already exists") }}',
-            },
-            designation: {
-                required: "Please choose  your Designation",
-            },
-            
-            race: {
-                required: "Please Choose your Race ",
-            },
-            country: {
-                required:"Please choose  your Country",
-            },
-            state: {
-                required:"Please choose  your State",
-            },
-            city: {
-                required:"Please choose  your city",
-            },
-            address_one: {
-                required:"Please Enter your Address",
-            },
-            dob: {
-                required:"Please choose DOB",
-            },
-            new_ic: {
-                required:"Please Enter New Ic Number",
-            },
-            salary: {
-                required:"Please Enter salary Name",
-            },
-            branch: {
-                required:"Please Choose Company Name",
-            },
-            uname: {
-                required: "Enter a username",
-                minlength: "Enter at least 5 characters"
-            },
-            country_name: {
-                required: "Enter a Country Name",
-            },
-            state_name: {
-                required: "Enter a State Name",
-            },
-            city_name: {
-                required: "Enter a City Name",
-            },
-            designation_name: {
-                required: "Enter a Designation Name",
-            },
-			guardian_name: {
-                required: "Enter a Guardian Name",
-            },
-			employee_id: {
-                required: "Enter a Employee ID",
-            },
-		},
-		errorElement: 'div',
-		errorPlacement: function (error, element) {
-			var placement = $(element).data('error');
-			if (placement) {
-				$(placement).append(error)
-			} else {
-				error.insertAfter(element);
-			}
-		},
-	});
-	$("#old_mumber_number").devbridgeAutocomplete({
+    $("#old_mumber_number").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-oldmember-list') }}?serachkey="+ $("#old_mumber_number").val(),
         type:'GET',
@@ -1003,6 +783,35 @@ ul.stepper .step .step-title:hover {
 	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 		$("#old_mumber_number").val('');
 	});
+	$(document).ready(function(){
+		//loader.showLoader();
+		$('#member_old_div').hide();
+		var horizStepper = document.querySelector('#horizStepper');
+		var horizStepperInstace = new MStepper(horizStepper, {
+			// options
+			firstActive: 0,
+			showFeedbackPreloader: true,
+			autoFormCreation: true,
+			validationFunction: defaultValidationFunction,
+			stepTitleNavigation: false,
+			feedbackPreloader: '<div class="spinner-layer spinner-blue-only">...</div>'
+		});
+
+		horizStepperInstace.resetStepper();
+	});
+	function defaultValidationFunction(horizStepper, activeStepContent) {
+		
+		var inputs = activeStepContent.querySelectorAll('input, textarea, select');
+	   for (let i = 0; i < inputs.length; i++) 
+	   {
+		   if (!inputs[i].checkValidity()) {
+			   jQuery("#submit-member").trigger('submit');
+			   return false;
+		   }
+	   }
+	  
+	   return true;
+	}
 </script>
 @include('membership.member_common_script')
 @endsection
