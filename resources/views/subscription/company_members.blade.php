@@ -142,7 +142,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="row">
 								<div class="card advancedsearch" style="dispaly:none;">
 								<div class="col s12">
-								<form method="post" id="advancedsearch">
+								<form method="post" id="advancedsearch" >
 								@csrf  
 									<div class="row">   
 										<div class="col s4">
@@ -160,15 +160,15 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<div class="col s4">
 											<label for="member_number"
 												class="common-label force-active">{{__('Membership Number') }}*</label>
-											<input id="member_number" name="resignedmemberno"  class="common-input"
-												type="text" required data-error=".errorTxt1" autocomplete="off">
-											<input type="hidden" name="resignedmemberno" id="memberid">
+											<input id="member_number" name="member_number"  class="common-input"
+												type="text" data-error=".errorTxt1" autocomplete="off">
+											<input type="hidden" name="memberid" id="memberid">
 											<div class="errorTxt1"></div>
 										</div>
 										
 										<div class="col s4">
 											<label>{{__('Designation') }}</label>
-											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+											<select name="designation_id" id="designation_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Designation') }}</option>
 												 @foreach($data['designation_view'] as $values)
 													<option value="{{$values->id}}">{{$values->designation_name}}</option>
@@ -181,7 +181,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										</div>
 										<div class="row">
 											<div class="input-field col s6 right">
-												<input type="submit" id="clear"  class="btn" name="clear" value="{{__('Clear')}}">
+												<input type="button" id="clear"  class="btn" name="clear" value="{{__('Clear')}}">
 											</div>
 											<div class="input-field col s6 right-align">
 												<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
@@ -353,6 +353,7 @@ $('#advancedsearch').hide();
 	});
 $('#clear').click(function(){
 	$(".selectpicker").val('').trigger("change"); 
+	$("#member_number").val(''); 
 });	
 /*$(document).ready(function(){
 	//loader.showLoader();
@@ -399,6 +400,7 @@ $("#member_number").devbridgeAutocomplete({
 				dataType: "json",
 				success: function(res) {		
 					$('#member_number').val(res.member_number);
+					$('#memberid').val(res.memberid);
 				}
 			});
 			
@@ -415,8 +417,8 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
 
-$(document).ready(function(){
-$('.datatable-display').DataTable({
+$(function () {
+   var dataTable =   $('.datatable-display').DataTable({
 	"responsive": true,
 	"lengthMenu": [
 		[10, 25, 50, 100],
@@ -433,8 +435,19 @@ $('.datatable-display').DataTable({
 		"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=all",
 		"dataType": "json",
 		"type": "POST",
-		"data": {
-			_token: "{{csrf_token()}}"
+		headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       	},
+		'data': function(data){
+			 var race_id = $('#race_id').val();
+			 var memberid      = $('#memberid').val();
+			 var designation_id = $('#designation_id').val();
+			
+			 data.race_id = race_id;
+			 data.memberid = memberid;
+			 data.designation_id = designation_id;
+		  //console.log(data);
+		  data._token = "{{csrf_token()}}";
 		}
 	},
 	"columns": [{
@@ -463,7 +476,7 @@ $('.datatable-display').DataTable({
 });
 @if($loopcount == count($data['member_stat']))
 @foreach($data['member_stat'] as  $key => $member_stat)
-$('.datatable-display-{{$member_stat->id}}').DataTable({
+  var dataTable_{{$member_stat->id}} = $('.datatable-display-{{$member_stat->id}}').DataTable({
 	"responsive": true,
 	"lengthMenu": [
 		[10, 25, 50, 100],
@@ -480,8 +493,18 @@ $('.datatable-display-{{$member_stat->id}}').DataTable({
 	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status="+{{$member_stat->id}},
 		"dataType": "json",
 		"type": "POST",
-		"data": {
-			_token: "{{csrf_token()}}"
+		headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+		'data': function(data){
+			var race_id = $('#race_id').val();
+			 var memberid      = $('#memberid').val();
+			 var designation_id = $('#designation_id').val();
+
+				data.race_id = race_id;
+				data.memberid = memberid;
+				data.designation_id = designation_id;
+			_token: "{{csrf_token()}}";
 		}
 	},
 	"columns": [{
@@ -504,9 +527,17 @@ $('.datatable-display-{{$member_stat->id}}').DataTable({
 			$('td', nRow).css('color', aData.font_color );
 		}
 });
-
 @endforeach
 @endif
+$(document).on('submit','form#advancedsearch',function(event){
+	event.preventDefault();
+	dataTable.draw();
+	@if($loopcount == count($data['member_stat']))
+	@foreach($data['member_stat'] as  $key => $member_stat)
+	dataTable_{{$member_stat->id}}.draw();
+	@endforeach
+	@endif
+});
 });
 
 function ConfirmDeletion() {
@@ -546,6 +577,5 @@ $.ajax({
 	}
 });
 }
-
 </script>
 @endsection
