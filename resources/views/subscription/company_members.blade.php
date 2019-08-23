@@ -121,10 +121,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<label>{{__('Race') }}</label>
 											<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 												<option value="">{{__('Select Race') }}</option>
-												@foreach($data['state_view'] as $value)
-                                                <option value="{{$value->id}}">
-                                                    {{$value->state_name}}</option>
-                                                @endforeach
+												
 											</select>
 											<div class="input-field">
 												<div class="errorTxt22"></div>
