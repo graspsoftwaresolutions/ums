@@ -144,6 +144,14 @@ class MembershipController extends Controller
     
 
     public function new_members(Request $request){
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
+        $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['member_status'] = 'all';
         if(!empty($request->all())){
             $data['member_status'] = $request->input('status');
@@ -597,75 +605,75 @@ class MembershipController extends Controller
 			
             
         }
-    //     else {
-    //        // DB::enableQueryLog();
-    //         $search = $request->input('search.value'); 
+        else {
+           // DB::enableQueryLog();
+            $search = $request->input('search.value'); 
         
-	// 		$compQuery = DB::table('company_branch as c')
-	// 						->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic','r.race_name','r.short_code as raceshortcode','s.font_color')
-    //                         ->join('membership as m','c.id','=','m.branch_id')
-    //                         ->leftjoin('designation as d','m.designation_id','=','d.id')
-    //                         ->leftjoin('company as com','com.id','=','c.company_id')
-    //                         ->leftjoin('status as s','s.id','=','m.status_id')
-    //                         ->leftjoin('state as st','st.id','=','m.state_id')
-    //                         ->leftjoin('city as cit','cit.id','=','m.city_id')
-    //                         ->leftjoin('race as r','r.id','=','m.race_id')
-    //                         ->where('m.is_request_approved','=',$approved_cond);
-    //                         if($member_status!='all'){
-    //                             $compQuery = $compQuery->where('m.status_id','=',$member_status);
-    //                         }
-	// 						if($user_role=='union-branch'){
-	// 							$compQuery =  $compQuery->where([
-	// 							['c.union_branch_id','=',$union_branch_id]
-	// 							]);
-	// 						}
-	// 						if($user_role=='company'){
-	// 							$compQuery =  $compQuery->where([
-	// 							['c.company_id','=',$companyid]
-	// 							]);
-	// 						}
-	// 						if($user_role=='company-branch'){
-	// 							$compQuery =  $compQuery->where([
-	// 							['m.branch_id','=',$branchid]
-	// 							]);
-	// 						}
-    //                         $compQuery =  $compQuery->where(function($query) use ($search){
-    //                             $query->orWhere('m.id','LIKE',"%{$search}%")
-    //                             ->orWhere('com.company_name', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-    //                             ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.gender', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.doj', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.name', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.old_ic', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
-    //                             ->orWhere('com.short_code', 'LIKE',"%{$search}%")
-    //                             ->orWhere('st.state_name', 'LIKE',"%{$search}%")
-    //                             ->orWhere('cit.city_name', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.levy', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.levy_amount', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.tdf', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.tdf_amount', 'LIKE',"%{$search}%")
-    //                            // ->orWhere('m.email', 'LIKE',"%{$search}%")
-    //                             ->orWhere('m.mobile', 'LIKE',"%{$search}%")
-    //                             ->orWhere('r.short_code', 'LIKE',"%{$search}%")
-    //                             ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
-    //                             ->orWhere('s.status_name', 'LIKE',"%{$search}%");
-    //                         });
-	// 		if( $limit != -1){
-	// 			$compQuery = $compQuery->offset($start)
-	// 			->limit($limit);
-	// 		}
-	// 		$memberslist = $compQuery
-	// 		->orderBy($order,$dir)
-	// 		->get()->toArray();
+			$compQuery = DB::table('company_branch as c')
+							->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic','r.race_name','r.short_code as raceshortcode','s.font_color')
+                            ->join('membership as m','c.id','=','m.branch_id')
+                            ->leftjoin('designation as d','m.designation_id','=','d.id')
+                            ->leftjoin('company as com','com.id','=','c.company_id')
+                            ->leftjoin('status as s','s.id','=','m.status_id')
+                            ->leftjoin('state as st','st.id','=','m.state_id')
+                            ->leftjoin('city as cit','cit.id','=','m.city_id')
+                            ->leftjoin('race as r','r.id','=','m.race_id')
+                            ->where('m.is_request_approved','=',$approved_cond);
+                            if($member_status!='all'){
+                                $compQuery = $compQuery->where('m.status_id','=',$member_status);
+                            }
+							if($user_role=='union-branch'){
+								$compQuery =  $compQuery->where([
+								['c.union_branch_id','=',$union_branch_id]
+								]);
+							}
+							if($user_role=='company'){
+								$compQuery =  $compQuery->where([
+								['c.company_id','=',$companyid]
+								]);
+							}
+							if($user_role=='company-branch'){
+								$compQuery =  $compQuery->where([
+								['m.branch_id','=',$branchid]
+								]);
+							}
+                            $compQuery =  $compQuery->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                ->orWhere('com.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.gender', 'LIKE',"%{$search}%")
+                                ->orWhere('m.doj', 'LIKE',"%{$search}%")
+                                ->orWhere('m.name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                                ->orWhere('m.old_ic', 'LIKE',"%{$search}%")
+                                ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                                ->orWhere('com.short_code', 'LIKE',"%{$search}%")
+                                ->orWhere('st.state_name', 'LIKE',"%{$search}%")
+                                ->orWhere('cit.city_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.levy', 'LIKE',"%{$search}%")
+                                ->orWhere('m.levy_amount', 'LIKE',"%{$search}%")
+                                ->orWhere('m.tdf', 'LIKE',"%{$search}%")
+                                ->orWhere('m.tdf_amount', 'LIKE',"%{$search}%")
+                               // ->orWhere('m.email', 'LIKE',"%{$search}%")
+                                ->orWhere('m.mobile', 'LIKE',"%{$search}%")
+                                ->orWhere('r.short_code', 'LIKE',"%{$search}%")
+                                ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
+                                ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                            });
+			if( $limit != -1){
+				$compQuery = $compQuery->offset($start)
+				->limit($limit);
+			}
+			$memberslist = $compQuery
+			->orderBy($order,$dir)
+			->get()->toArray();
 
-    //          $totalFiltered = $compQuery->count();
+             $totalFiltered = $compQuery->count();
 
            
           
-    // }
+    }
 	$data = array();
         if(!empty($memberslist))
         {
