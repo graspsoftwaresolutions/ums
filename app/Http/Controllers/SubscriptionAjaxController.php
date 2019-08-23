@@ -73,6 +73,11 @@ class SubscriptionAjaxController extends CommonController
         //     4 => 'statusId', 
         //     5 => 'id',
         // );
+        $race_id = $request->input('race_id'); 
+		$memberid = $request->input('memberid'); 
+	 	$designation_id = $request->input('designation_id');
+        
+
 		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
         'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
@@ -80,11 +85,25 @@ class SubscriptionAjaxController extends CommonController
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
         ->leftjoin('status','mon_sub_member.StatusId','=','status.id')
         ->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
-        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
-        // ->leftjoin('race as r','r.id','=','m.race_id')
-        // ->leftjoin('designation as d','d.id','=','m.designation_id');
+        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+        ->leftjoin('race as r','r.id','=','m.race_id')
+        ->leftjoin('designation as d','d.id','=','m.designation_id');
 
-       
+        if($race_id!="")
+        {
+             $commonqry = $commonqry->where('m.race_id','=',$race_id);
+        }
+        if($memberid != "")
+        {
+            $commonqry = $commonqry->where('m.id','=',$memberid);
+        }
+        if($designation_id != "")
+        {
+            $commonqry = $commonqry->where('m.designation_id','=',$designation_id);
+        }
+
+        //$commonqry->dump()->get();
+
         // $queries = DB::getQueryLog();
         // dd($queries);
 
@@ -92,7 +111,8 @@ class SubscriptionAjaxController extends CommonController
             $commonqry = $commonqry->where('mon_sub_member.StatusId','=',$status);
         }
         $commonqry = $commonqry->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
-		
+        
+        //$commonqry->dump()->get();
         $totalData = $commonqry->count();
         
         $totalFiltered = $totalData; 
@@ -141,8 +161,8 @@ class SubscriptionAjaxController extends CommonController
 							   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%")
 							   ->count();
         }
-        //var_dump($sub_mem);
-       // exit;
+    //     var_dump($sub_mem);
+    //    exit;
         $result = $sub_mem;
 
         $data = array();
