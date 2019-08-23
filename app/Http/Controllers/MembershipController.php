@@ -144,6 +144,14 @@ class MembershipController extends Controller
     
 
     public function new_members(Request $request){
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
+        $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['member_status'] = 'all';
         if(!empty($request->all())){
             $data['member_status'] = $request->input('status');
