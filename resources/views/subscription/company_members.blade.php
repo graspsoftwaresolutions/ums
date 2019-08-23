@@ -8,6 +8,34 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<style type="text/css">
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+	.padding-left-10{
+		padding-left:10px;
+	}
+	.padding-left-20{
+		padding-left:20px;
+	}
+	.padding-left-24{
+		padding-left:24px;
+	}
+	.padding-left-40{
+		padding-left:40px;
+	}
+	#irc_confirmation_area {
+		pointer-events: none;
+	}
+	.branch 
+	{
+    	pointer-events: none;
+		background-color: #f4f8fb !important;
+	}
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -119,30 +147,32 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<div class="row">   
 										<div class="col s4">
 											<label>{{__('Race') }}</label>
-											<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+											<select name="race_id" id="race_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 												<option value="">{{__('Select Race') }}</option>
-												
+												@foreach($data['race_view'] as $values)
+													<option value="{{$values->id}}">{{$values->race_name}}</option>
+												@endforeach
 											</select>
 											<div class="input-field">
 												<div class="errorTxt22"></div>
 											</div>
 										</div>
 										<div class="col s4">
-											<label>{{__('Member Number') }}</label>
-											<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22">
-												<option value="">{{__('Select Number') }}</option>
-												
-												
-											</select>
-											<div class="input-field">
-												<div class="errorTxt22"></div>
-											</div>
+											<label for="member_number"
+												class="common-label force-active">{{__('Membership Number') }}*</label>
+											<input id="member_number" name="resignedmemberno"  class="common-input"
+												type="text" required data-error=".errorTxt1" autocomplete="off">
+											<input type="hidden" name="resignedmemberno" id="memberid">
+											<div class="errorTxt1"></div>
 										</div>
 										
 										<div class="col s4">
 											<label>{{__('Designation') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Designation') }}</option>
+												 @foreach($data['designation_view'] as $values)
+													<option value="{{$values->id}}">{{$values->designation_name}}</option>
+												@endforeach
 											</select>
 											<div class="input-field">
 												<div class="errorTxt23"></div>
@@ -303,6 +333,7 @@ type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subcomp_sidebar_li_id").addClass('active');
@@ -355,6 +386,34 @@ function defaultValidationFunction(horizStepper, activeStepContent) {
   
   // return true;
 // }*/
+$("#member_number").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-member-list') }}?searchkey="+ $("#member_number").val(),
+	type:'GET',
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$("#member_number").val(suggestion.member_number);
+			$.ajax({
+				url: "{{ URL::to('/get-member-list-values') }}?member_id="+ $("#member_number").val(),
+                type: "GET",
+				dataType: "json",
+				success: function(res) {		
+					$('#member_number').val(res.member_number);
+				}
+			});
+			
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#member_number").val('');
+		}
+	}
+});
+$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+	$("#member_number").val('');
+});
 
 $(document).ready(function(){
 $('.datatable-display').DataTable({

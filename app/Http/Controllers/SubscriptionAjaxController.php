@@ -80,7 +80,11 @@ class SubscriptionAjaxController extends CommonController
         ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
         ->leftjoin('status','mon_sub_member.StatusId','=','status.id')
         ->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
-        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
+        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+        ->leftjoin('race as r','r.id','=','m.race_id')
+        ->leftjoin('designation as d','d.id','=','m.designation_id');
+
+       
         // $queries = DB::getQueryLog();
         // dd($queries);
 
