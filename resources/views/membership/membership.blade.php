@@ -8,19 +8,45 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <style>
 @media (min-width: 1025px) {
-ul.dtr-details li {
-  display:inline;
-  margin-right: 13px;
-}
-ul.dtr-details {
-   width: 1180px; overflow: auto
-}
-
+	ul.dtr-details li {
+	  display:inline;
+	  margin-right: 13px;
+	}
+	ul.dtr-details {
+	   width: 1180px; overflow: auto
+	}
+	span.dtr-data{
+		padding-right:5px;
+		border-right: 1px solid #636363;
+	}
+	span.dtr-title{
+		color: #6a6a6a;
+	}
 
 }
 span.dtr-title{
-font-weight: bold;
-color: #5a2da1 !important;
+	color: #6a6a6a;
+}
+span.dtr-title::after {
+  content: ":";
+}
+
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:first-child {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 26px;
+    padding-right: 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    text-transform: Uppercase;
+    border: none !important;
+}
+.btn-sm{
+	padding: 1px 3px;
+    font-size: 8px;
+    line-height: 1.5;
+    border-radius: 3px;
+	color: #fff;
 }
 
 </style>
@@ -344,10 +370,63 @@ $(function () {
 		
 	],
 	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+		
 		$('td', nRow).css('color', aData.font_color );
-	}
-});
+		$('td', nRow).eq(5).addClass('highlight');
+		$('td', nRow).data('row-color','#fff');
+	},
+	"columnDefs": [
+            {
+                "render": function ( data, type, row ) {
+					console.log(row.font_color);
+                    return '<span class="testspan" style="color:'+row.font_color+'">'+data+'</span>' ;
+                },
+                "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+            },
+            { "visible": true,  "targets": '_all' }
+        ],
+	/* responsive: {
+		details: {
+			renderer: function ( api, rowIdx, columns ) {
+				
+				var data = $.map( columns, function ( col, i ) {
+					  var tr = $(this).closest('tr');
+					  console.log(tr);
+					/* return col.hidden ?
+						'<ul><li data-dtr-index="'+col.columnIndex+'" data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'"><span class="dtr-title">'+col.title+'</span> <span class="dtr-data">'+col.data+'</span></li>' : ''; 
+					return col.hidden ?
+						'<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+							'<td class="test">'+col.title+':'+'</td> '+
+							'<td>'+col.data+'</td>'+
+						'</tr>' :
+						'';
+				} ).join('');
+				data += "</ul>";
 
+				return data ?
+					$('<table/>').append( data ) :
+					false;
+			}
+		}
+	} */
+});
+/* $('#page-length-option tbody').on('click', 'ul.dtr-details', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+	console.log(row);
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+            tr.removeClass('highlightExpanded');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+            tr.addClass('highlightExpanded');
+        }
+    } ); */
 $(document).on('submit','form#advancedsearch',function(event){
 	event.preventDefault();
 	dataTable.draw();
