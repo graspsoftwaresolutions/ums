@@ -432,6 +432,63 @@ $(document).on('submit','form#advancedsearch',function(event){
 	dataTable.draw();
 });
 });
+$('#country_id').change(function(){
+	var countryID = $(this).val();   
+	
+	if(countryID){
+		$.ajax({
+		type:"GET",
+		dataType: "json",
+		url:" {{ URL::to('/get-state-list') }}?country_id="+countryID,
+		success:function(res){               
+			if(res){
+				$("#state_id").empty();
+				$("#state_id").append($('<option></option>').attr('value', '').text("Select"));
+				$.each(res,function(key,entry){
+					$("#state_id").append($('<option></option>').attr('value', entry.id).text(entry.state_name));
+				   // var select = $("#state");
+				   // select.material_select('destroy');
+					//select.empty();
+					
+				});
+			   // $('#state').material_select();
+			}else{
+			  $("#state_id").empty();
+			}
+		}
+		});
+	}else{
+		$("#state_id").empty();
+		$("#city_id").empty();
+	}      
+});
+$('#state_id').change(function(){
+   var StateId = $(this).val();
+  
+   if(StateId!='' && StateId!='undefined')
+   {
+	 $.ajax({
+		type: "GET",
+		dataType: "json",
+		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+		success:function(res){
+			if(res)
+			{
+				$('#city_id').empty();
+				$("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
+				$.each(res,function(key,entry){
+					$('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+					
+				});
+			}else{
+				$('#city_id').empty();
+			}
+		}
+	 });
+   }else{
+	   $('#city_id').empty();
+   }
+});
 
 
 
