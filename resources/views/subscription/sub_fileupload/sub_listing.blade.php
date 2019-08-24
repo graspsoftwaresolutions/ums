@@ -1,13 +1,12 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+
+
 @endsection
 @section('headSecondSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('main-content')
 <div id="">
@@ -245,46 +244,34 @@
 @section('footerSection')
 <script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript">
-</script>
+
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
-    type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript">
-</script>
+
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+
+ <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+ <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
+
 <script>
 $(document).ready(function() {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
 });
+
      $(document).ready(function(){
-        $(".datepicker-custom").datepicker({
-            changeMonth: true,
-			changeYear: true,
-			showButtonPanel: true,
-			onSelect:function(dateText) {
-				console.log(dateText);	
-			},
-			onDraw:function(dateText) {
-				console.log(dateText);	
-			},
-			onClose: function(dateText, inst) {
-				console.log(inst);				
-				//$(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-			},
-			autoClose: true,
-			weekdaysAbbrev: ['sun'],
-            format: "mmm/yyyy",
-			/* today: 'Today',
-			defaultDate: '01/Jul/2019', */
-        });
+	 $('.datepicker-custom').MonthPicker({ 
+		Button: false, 
+		MonthFormat: 'M/yy',
+		OnAfterChooseMonth: function() { 
+			getDataStatus();
+		} 
+	 });
+		 //$('.datepicker-custom').MonthPicker({ Button: false,dateFormat: 'M/yy' });
+       
     });
 	
 	$("#subscribe_formValidate").validate({
@@ -331,7 +318,7 @@ $(document).ready(function() {
 			$("#file-upload-div").addClass('hide');
 		}
 	}
-	$(document).on('change','#entry_date,#sub_company',function(){
+	function getDataStatus(){
 		var entry_date = $("#entry_date").val();
 		var sub_company = $("#sub_company").val();
 		$(".datamonth").text('['+entry_date+']');
@@ -353,7 +340,7 @@ $(document).ready(function() {
 				}
 			});
 		}
-		if(entry_date!="" && $(this).attr('id')=='entry_date'){
+		if(entry_date!=""){
 			$("#memberstatustable").css('opacity',0.5);
 			$("#approvalstatustable").css('opacity',0.5);
 			var url = "{{ url(app()->getLocale().'/get-datewise-status') }}" + '?entry_date=' + entry_date ;
@@ -381,6 +368,9 @@ $(document).ready(function() {
 				}
 			});
 		}
+	}
+	$(document).on('change','#entry_date,#sub_company',function(){
+		getDataStatus();
 	});
 	function DownloadExistance(existance){
 		if(existance==1){

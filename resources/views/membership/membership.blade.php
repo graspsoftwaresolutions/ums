@@ -48,6 +48,11 @@ span.dtr-title::after {
     border-radius: 3px;
 	color: #fff;
 }
+#page-length-option td:not(:first-child) {
+	word-break: break-word !important;
+	white-space: unset !important;
+	vertical-align: top;
+}
 
 </style>
 @endsection
@@ -248,26 +253,26 @@ span.dtr-title::after {
 									<table id="page-length-option" class="display" width="100%">
 										<thead>
 											<tr>
-												<th width="30%" style="text-align:center;">{{__('Action') }}</th>
-												<th>{{__('Member ID') }}</th>
-												<th>{{__('Member Name') }}</th>
-												<th>{{__('Type')}} </th>
-												<th>{{__('M/F')}}</th>
-												<th>{{__('Bank Short Code') }}</th>
-												<th>{{__('Branch Name') }}</th>
-												<th>{{__('Levy') }}</th>
-												<th>{{__('Levy Amount') }}</th>
-												<th>{{__('TDF') }}</th>
-												<th>{{__('TDF Amount') }}</th>
-												<th>{{__('DOJ')}}</th>
-												<th>{{__('City') }}</th>
-												<th>{{__('State') }}</th>
-												<th>{{__('NRIC Old') }}</th>
-												<th>{{__('NRIC New') }}</th>
-												<th>{{__('Mobile') }}</th>
-												<th>{{__('Race Short Code') }}</th>
+												<th width="20%" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
+												<th width="5%">{{__('Member ID') }}</th>
+												<th width="5%">{{__('Member Name') }}</th>
+												<th width="5%">{{__('Type')}} </th>
+												<th width="5%">{{__('M/F')}}</th>
+												<th width="5%">{{__('Bank Code') }}</th>
+												<th width="5%">{{__('Branch Name') }}</th>
+												<th width="5%">{{__('Levy') }}</th>
+												<th width="5%">{{__('Levy Amount') }}</th>
+												<th width="5%">{{__('TDF') }}</th>
+												<th width="5%">{{__('TDF Amount') }}</th>
+												<th width="5%">{{__('DOJ')}}</th>
+												<th width="5%">{{__('City') }}</th>
+												<th width="5%">{{__('State') }}</th>
+												<th width="5%">{{__('NRIC Old') }}</th>
+												<th width="5%">{{__('NRIC New') }}</th>
+												<th width="5%">{{__('Mobile') }}</th>
+												<th width="5%">{{__('Race Short Code') }}</th>
 												<!-- <th>{{__('Union Branch Name') }}</th> -->
-												<th>{{__('Status') }}</th>
+												<th width="3%">{{__('Status') }}</th>
 												
 											</tr>
 										</thead>
@@ -342,7 +347,6 @@ $(function () {
 		  data.country_id = country_id;
 		  data.state_id = state_id;
 		  data.city_id = city_id;
-		  console.log(data);
 		  data._token = "{{csrf_token()}}";
 	   }
 	},
@@ -371,19 +375,19 @@ $(function () {
 	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 		
 		$('td', nRow).css('color', aData.font_color );
-		$('td', nRow).eq(5).addClass('highlight');
-		$('td', nRow).data('row-color','#fff');
 	},
 	"columnDefs": [
             {
                 "render": function ( data, type, row ) {
-					console.log(row.font_color);
                     return '<span class="testspan" style="color:'+row.font_color+'">'+data+'</span>' ;
                 },
                 "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
             },
             { "visible": true,  "targets": '_all' }
         ],
+	"drawCallback": function(settings) {
+		loader.hideLoader();
+	},
 	/* responsive: {
 		details: {
 			renderer: function ( api, rowIdx, columns ) {
@@ -429,6 +433,7 @@ $(function () {
 $(document).on('submit','form#advancedsearch',function(event){
 	event.preventDefault();
 	dataTable.draw();
+	loader.showLoader();
 });
 });
 $('#country_id').change(function(){
