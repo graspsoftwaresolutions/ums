@@ -255,7 +255,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-relatives-info','MembershipController@getRelativename')->name('member.relatives');
 	Route::get('/resign-pdf/{parameter}', 'MembershipController@resignPDF')->name('resign.status');
 	Route::get('/generate-resign-pdf/{parameter}', 'MembershipController@genresignPDF')->name('resign.pdf');
-	Route::get('subscription-status/{parameter}','SubscriptionController@statusCountView')->name('subscription.status');
+	Route::get('subscription-status','SubscriptionController@statusCountView')->name('subscription.status');
 
 	//Reports
 	

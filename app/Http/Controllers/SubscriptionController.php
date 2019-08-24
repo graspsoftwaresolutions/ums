@@ -214,7 +214,7 @@ class SubscriptionController extends CommonController
             foreach($approval_status as $key => $value){
                 $approval_data['count'][$value->id] = CommonHelper::statusSubsCompanyMatchCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
             }
-            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0), 'sundry_count' => CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_auto_id,$full_date),'message'  => 'Data already uploaded for this company'];
+            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0), 'sundry_count' => CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_auto_id,$full_date), 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime($full_date),'message'  => 'Data already uploaded for this company'];
         }else{
             $data =['status' =>0, 'status_data' => [], 'approval_data' => [] ,'message'  => 'No data found'];
         }
@@ -652,9 +652,29 @@ class SubscriptionController extends CommonController
     }
     public function arrearentrydestroy($lang,$id)
     {
-         $id = Crypt::decrypt($id);
+        $id = Crypt::decrypt($id);
         $ArrearEntry = ArrearEntry::find($id);
         $ArrearEntry->delete();
         return redirect($lang.'/subscription.arrearentry')->with('message','Arrear Entry Details Deleted Successfully!!');
     }
+	
+	public function statusCountView($lang, Request $request){
+        $member_status = $request->input('member_status');
+        $approval_status = $request->input('approval_status');
+        $date = $request->input('date');
+        $company_id = $request->input('company_id');
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+		$defaultdate = date('Y-m-01',$date);
+        if($member_status!=""){
+            $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId="'.$member_status.'" AND `sm`.`Date`="'.$defaultdate.'"'));
+			$data['member'] = $members_data;
+        }
+        if($approval_status!=""){
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.match_name as status_name FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join mon_sub_match_table as s on `s`.`id` = `mm`.`match_id` WHERE mm.match_id="'.$approval_status.'" AND `sm`.`Date`="'.$defaultdate.'"'));
+		   $data['member'] = $members_data;
+        }
+		return view('subscription.member_status')->with('data',$data);
+	}
 }

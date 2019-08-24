@@ -189,7 +189,7 @@
 								<tr>
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->status_name }}</td>
-									<td id="member_status_count_{{ $stat->id }}"> <a href="">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</a></td>
+									<td id="member_status_count_{{ $stat->id }}"> <a target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime(date('dmy'))) }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</a></td>
 									<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
 								</tr>
 								@endforeach
@@ -220,7 +220,7 @@
 							<tr>
 								<td>{{ $key+1 }} </td>
 								<td>{{ $stat->match_name }}</td>
-								<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
+								<td id="approval_status_count_{{ $stat->id }}"><a target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime(date('dmy'))) }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</a></td>
 							</tr>
 							@endforeach
 						</table>
@@ -421,14 +421,18 @@ $(document).ready(function() {
 					if(result.status==1){
 						$("#modal_subscription").modal('open');
 						$.each(result.status_data.count, function(key, entry) {
-							$("#company_member_status_count_"+key).html(entry);
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id+"'>"
+							$("#company_member_status_count_"+key).html(member_link+entry+'</a>');
                         });
 						$.each(result.status_data.amount, function(key, entry) {
 							$("#company_member_status_amount_"+key).html(entry);
                         });
 						$("#memberstatustable").css('opacity',1);
 						$.each(result.approval_data.count, function(key, entry) {
-							$("#company_approval_status_count_"+key).html(entry);
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id+"'>"
+							$("#company_approval_status_count_"+key).html(member_link+entry+'</a>');
                         });
 						$("#company_member_status_count_sundry").html(result.sundry_count);
 						$("#company_member_status_amount_sundry").html(result.sundry_amount);
@@ -451,14 +455,18 @@ $(document).ready(function() {
 				success: function(result) {
 					if(result.status==1){
 						$.each(result.status_data.count, function(key, entry) {
-							$("#member_status_count_"+key).html(entry);
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"'>";
+							$("#member_status_count_"+key).html(member_link+entry+'</a>');
                         });
 						$.each(result.status_data.amount, function(key, entry) {
 							$("#member_status_amount_"+key).html(entry);
                         });
 						$("#memberstatustable").css('opacity',1);
 						$.each(result.approval_data.count, function(key, entry) {
-							$("#approval_status_count_"+key).html(entry);
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"'>"
+							$("#approval_status_count_"+key).html(member_link+entry+'</a>');
                         });
 						$("#approvalstatustable").css('opacity',1);
 						//$("#member_status_count_1").html(5555);
