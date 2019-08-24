@@ -189,7 +189,7 @@
 								<tr>
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->status_name }}</td>
-									<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
+									<td id="member_status_count_{{ $stat->id }}"> <a href="">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</a></td>
 									<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
 								</tr>
 								@endforeach

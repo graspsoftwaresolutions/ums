@@ -236,12 +236,13 @@ class MembershipController extends Controller
     public function AjaxmembersList(Request $request,$lang, $type){
         $member_status = $request->input('status');
         $sl=0;
+        $columns[$sl++] = 'm.id';
         $columns[$sl++] = 'm.member_number';
         $columns[$sl++] = 'm.name';
         $columns[$sl++] = 'm.designation_id';
         $columns[$sl++] = 'm.gender'; 
-        $columns[$sl++] = 'm.short_code';
-        $columns[$sl++] = 'm.branch_id';
+        $columns[$sl++] = 'com.short_code';
+        $columns[$sl++] = 'c.branch_name';
         $columns[$sl++] = 'm.levy';
         $columns[$sl++] = 'm.levy_amount';
         $columns[$sl++] = 'm.tdf';
@@ -251,14 +252,13 @@ class MembershipController extends Controller
         $columns[$sl++] = 'm.state_id';
         $columns[$sl++] = 'm.old_ic';
         $columns[$sl++] = 'm.new_ic';
-		
+		$columns[$sl++] = 'm.mobile';
 		$columns[$sl++] = 'm.email';
-        $columns[$sl++] = 'm.mobile';
+        
         $columns[$sl++] = 'm.race_id';
 		//if($type==1){
 			$columns[$sl++] = 'm.status_id';
 		//}
-		$columns[$sl++] = 'm.id';
         
 		if($type==1){
 			$approved_cond = 1;
