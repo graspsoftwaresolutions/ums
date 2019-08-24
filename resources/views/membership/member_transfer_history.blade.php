@@ -6,6 +6,8 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
 	#main .section-data-tables .dataTables_wrapper table.dataTable div.datepicker-calendar th, #main .section-data-tables .dataTables_wrapper table.dataTable  div.datepicker-calendar td {
 		padding: 0;
@@ -61,9 +63,9 @@
 											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
-														<td colspan="4">&nbsp;</td>
-														<td>Date</td>
-														<td valign="middle"><input type="text" id="5" id="transferdate-search-input" class="transferdate-search-input datepicker-cutom" value="{{date('M/Y')}}" ></td>
+														<td class="hide-on-small-only" colspan="4">&nbsp;</td>
+														<td class="hide-on-small-only">Date</td>
+														<td valign="middle"><input type="text" id="5" id="transferdate-search-input" class="transferdate-search-input datepicker-custom" value="{{date('M/Y')}}" ></td>
 														
 													</tr>
 													<tr>
@@ -98,14 +100,16 @@
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
+
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+
+ <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+ <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 <script>
  $("#member_transfer_sidebar_a_id").addClass('active');
+	
  $(function () {
-	  $(".datepicker-cutom").datepicker({
-		 autoclose: true,
-		 format: "mmm/yyyy"
-	  });
+	
     var dataTable =  $('#page-length-option').DataTable({
 			"responsive": true,
 			"searching": false,
@@ -145,30 +149,17 @@
 			var i =$(this).attr('id');  // getting column index
 			var v =$(this).val();  // getting search input value
 			dataTable.draw();
-			//dataTable.ajax.reload();
-			/* var data = dataTable.data();
-			console.log(data);
-			dataTable.ajax.reload();
-			dataTable.search( v ).draw();
-			dataTable.column(3).search(v).draw() */
-			//data.push.datefilter( v ).draw();
+		
 		} );
-	 
-		 /* $( ".datepicker" ).datepicker({
-			dateFormat: "yy-mm-dd",
-			showOn: "button",
-			showAnim: 'slideDown',
-			showButtonPanel: true ,
-			autoSize: true,
-			buttonImage: "//jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-			buttonImageOnly: true,
-			buttonText: "Select date",
-			closeText: "Clear"
-		}); */
-		/* $(document).on("click", ".ui-datepicker-close", function(){
-			$('.datepicker').val("");
-			dataTable.search( '' ).draw();
-		}); */
+		 $('.datepicker-custom').MonthPicker({ 
+			Button: false, 
+			MonthFormat: 'M/yy',
+			OnAfterChooseMonth: function() { 
+				dataTable.draw();
+			} 
+		 });
+		 
 });
+
  </script>
 @endsection

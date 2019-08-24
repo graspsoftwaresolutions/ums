@@ -11,6 +11,8 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
 	@if(count($data['member_view'])<10)
 		#main.main-full {
@@ -205,6 +207,8 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -224,17 +228,13 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_li_id").addClass('ac
 $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
-		$(".datepicker-custom").datepicker({
-            changeMonth: true,
-			changeYear: true,
-			showButtonPanel: true,
-			closeText: 'Clear',
-			weekdaysAbbrev: ['sun'],
-            format: "mmm/yyyy",
-			onClose: function (dateText, inst) {
-				
-			}
-        });
+		 $('.datepicker-custom').MonthPicker({ 
+			Button: false, 
+			MonthFormat: 'M/yy',
+			OnAfterChooseMonth: function() { 
+				//getDataStatus();
+			} 
+		 });
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,
 			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
