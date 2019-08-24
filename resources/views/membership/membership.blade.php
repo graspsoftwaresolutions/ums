@@ -328,7 +328,7 @@ $(function () {
 		"type": "POST",
 		'data': function(data){
 		  var unionbranch_id = $('#unionbranch_id').val();
-		  var company_id      = $(company_id).val();
+		  var company_id      = $('#company_id').val();
 		  var branch_id = $('#branch_id').val();
 		  var gender = $('#gender').val();
 		  var race_id = $('#race_id').val();
