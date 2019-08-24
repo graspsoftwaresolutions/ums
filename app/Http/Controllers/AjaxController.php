@@ -529,7 +529,8 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturnold($Race, 0, 'master.racedestroy', 0);
+        $table = "race";
+        $data = $this->CommonAjaxReturn($Race, 0, 'master.racedestroy', 0,$table);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -590,6 +591,7 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
+        $table = "reason";
         $data = $this->CommonAjaxReturnold($Reason, 0, 'master.reasondestroy', 0);
        
         $json_data = array(
@@ -712,7 +714,8 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturnold($Designation, 0, 'master.designationdestroy', 0);
+        $table = "designation";
+        $data = $this->CommonAjaxReturn($Designation, 0, 'master.designationdestroy', 0,$table);
    
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -753,7 +756,8 @@ class AjaxController extends CommonController
         $feelist = new Fee();
         $overallfeedetail = $feelist->getFee($select, $where, $or_where, $orderby, $limit, $offset);
         $totalFiltered =$totalData=$overallfeedetail->count();
-        $data = $this->CommonAjaxReturnold($overallfeedetail->toArray(), 0, 'master.feedestroy', 0);
+        $table = "fee";
+        $data = $this->CommonAjaxReturn($overallfeedetail->toArray(), 0, 'master.feedestroy', 0,$table);
         
           $json_data = array(
           "draw" => intval($request->input('draw')),

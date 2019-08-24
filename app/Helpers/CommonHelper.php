@@ -351,6 +351,23 @@ class CommonHelper
                 ->leftjoin('company as c','c.id','=','cb.company_id')
                 ->where('cb.id','=',$autoid)->count();
             }
+            else if($table=="designation")
+            {
+                $members_count = DB::table('membership as m')
+                    ->where('designation_id','=',$autoid)->count();
+            }
+            else if($table=="race")
+            {
+                $members_count = DB::table('membership as m')
+                    ->where('race_id','=',$autoid)->count();
+            }
+            else if($table=="fee")
+            {
+                $members_count = DB::table('membership as m')
+                    ->leftjoin('member_fee as f','m.id','=','f.member_id')
+                    ->where('f.fee_id','=',$autoid)->count();
+            }
+           
         }
         else if($user_role=='union-branch')
         {
@@ -389,6 +406,28 @@ class CommonHelper
                                 ->leftjoin('company as c','c.id','=','cb.company_id')
                                 ->where('cb.union_branch_id','=',$union_branch_id)
                                 ->where('cb.id','=',$autoid)->count();
+            }
+            else if($table=="designation")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as c','c.id','=','m.branch_id')
+                        ->where('c.union_branch_id','=',$union_branch_id)
+                        ->where('m.designation_id','=',$autoid)->count();
+            }
+            else if($table=="race")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as c','c.id','=','m.branch_id')
+                        ->where('c.union_branch_id','=',$union_branch_id)
+                        ->where('m.race_id','=',$autoid)->count();
+            }
+            else if($table=="fee")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as c','c.id','=','m.branch_id')
+                        ->leftjoin('member_fee as f','m.id','=','f.member_id')                     
+                        ->where('c.union_branch_id','=',$union_branch_id)
+                        ->where('f.fee_id','=',$autoid)->count();
             }
         }
         else if($user_role=='company')
@@ -432,7 +471,32 @@ class CommonHelper
                         ->leftjoin('company as c','c.id','=','cb.company_id')
                         ->where('cb.company_id','=',$company_id)
                         ->where('cb.id','=',$autoid)->count();
-            }         
+            }
+            else if($table=="designation")
+            {
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where('cb.company_id','=',$company_id)
+                ->where('m.designation_id','=',$autoid)->count();
+            }
+            else if($table=="race")
+            {
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where('cb.company_id','=',$company_id)
+                ->where('m.race_id','=',$autoid)->count();
+            }
+            else if($table=="fee")
+            {
+                $members_count = DB::table('membership as m')
+                    ->leftjoin('member_fee as f','m.id','=','f.member_id')
+                    ->join('company_branch as cb','cb.id','=','m.branch_id')
+                    ->leftjoin('company as c','c.id','=','cb.company_id')
+                    ->where('cb.company_id','=',$company_id)
+                    ->where('f.fee_id','=',$autoid)->count();
+            }    
         }
         else if($user_role=='company-branch'){
             $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
@@ -472,7 +536,29 @@ class CommonHelper
                 ->leftjoin('company as c','c.id','=','cb.company_id')
                 ->where('cb.id','=',$branch_id)
                 ->where('cb.id','=',$autoid)->count(); 
-            } 
+            }
+            else if($table=="designation")
+            {
+                $members_count = DB::table('membership as m')
+                            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                            ->where('cb.id','=',$branch_id)
+                            ->where('m.designation_id','=',$autoid)->count();
+            }
+            else if($table=="race")
+            {
+                $members_count = DB::table('membership as m')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                ->where('cb.id','=',$branch_id)
+                ->where('m.race_id','=',$autoid)->count();
+            }
+            else if($table=="fee")
+            {
+                $members_count = DB::table('membership as m')
+                ->leftjoin('member_fee as f','m.id','=','f.member_id')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                ->where('cb.id','=',$branch_id)
+                ->where('f.fee_id','=',$autoid)->count();
+            }
 
         }
 
