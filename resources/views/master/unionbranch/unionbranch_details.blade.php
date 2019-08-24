@@ -226,7 +226,7 @@
 																	@endisset />
 															@else
                                                             <input type="checkbox" name="is_head"
-                                                                class="common-checkbox" id="is_head" value="1"
+                                                                class="common-checkbox" id="is_head" value="1" onclick='return ConfirmDeletion()'
                                                                 @isset($values)
                                                                 {{ $values->is_head == '1' ? 'checked' : '' }}
                                                                 @endisset />

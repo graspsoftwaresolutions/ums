@@ -316,7 +316,169 @@ class CommonHelper
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
         }
 		return $members_count;
-	}
+    }
+    
+    public static function mastersMembersCount($table,$autoid,$user_role,$user_id)
+    {
+        $members_count=0;
+        //dd($country_id);
+        if($user_role=='union')
+        {
+            if($table=="country"){
+                $members_count = DB::table('membership as m')->where('country_id','=',$autoid)->count();
+            }
+            else if($table=="state")
+            {
+                $members_count = DB::table('membership as m')
+                    ->where('state_id','=',$autoid)->count();
+            }
+            else if($table=="city")
+            {
+                $members_count = DB::table('membership as m')
+                    ->where('city_id','=',$autoid)->count();
+            }
+            else if($table=="company")
+            {
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where('cb.company_id','=',$autoid)->count();
+            }
+            else if($table=="company_branch")
+            {
+                $members_count = DB::table('membership as m')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where('cb.id','=',$autoid)->count();
+            }
+        }
+        else if($user_role=='union-branch')
+        {
+            $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+            if($table=="country"){   
+                $members_count = DB::table('membership as m')
+                                    ->join('company_branch as c','c.id','=','m.branch_id')
+                                    ->where('c.union_branch_id','=',$union_branch_id)
+                                    ->where('m.country_id','=',$autoid)->count();
+            }
+            else if($table=="state")
+            {
+                $members_count = DB::table('membership as m')
+                                    ->join('company_branch as c','c.id','=','m.branch_id')
+                                    ->where('c.union_branch_id','=',$union_branch_id)
+                                    ->where('m.state_id','=',$autoid)->count();
+            }
+            else if($table=="city")
+            {
+                $members_count = DB::table('membership as m')
+                                    ->join('company_branch as c','c.id','=','m.branch_id')
+                                    ->where('c.union_branch_id','=',$union_branch_id)
+                                    ->where('m.city_id','=',$autoid)->count();
+            }
+            else if($table=="company")
+            {
+                $members_count = DB::table('membership as m')
+                                    ->join('company_branch as c','c.id','=','m.branch_id')
+                                    ->where('c.union_branch_id','=',$union_branch_id)
+                                    ->where('cb.company_id','=',$autoid)->count();
+            }
+            else if($table=="company_branch")
+            {
+                $members_count = DB::table('membership as m')
+                                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                                ->leftjoin('company as c','c.id','=','cb.company_id')
+                                ->where('cb.union_branch_id','=',$union_branch_id)
+                                ->where('cb.id','=',$autoid)->count();
+            }
+        }
+        else if($user_role=='company')
+        {
+            $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+            if($table=="country"){
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where('cb.company_id','=',$company_id)
+                ->where('m.country_id','=',$autoid)->count();
+            } 
+            else if($table=="state")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as cb','cb.id','=','m.branch_id')
+                        ->leftjoin('company as c','c.id','=','cb.company_id')
+                        ->where('cb.company_id','=',$company_id)
+                        ->where('m.state_id','=',$autoid)->count();
+            }
+            else if($table=="city")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as cb','cb.id','=','m.branch_id')
+                        ->leftjoin('company as c','c.id','=','cb.company_id')
+                        ->where('cb.company_id','=',$company_id)
+                        ->where('m.city','=',$autoid)->count();
+            }
+            else if($table=="company")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as cb','cb.id','=','m.branch_id')
+                        ->leftjoin('company as c','c.id','=','cb.company_id')
+                        ->where('cb.company_id','=',$company_id)
+                        ->where('cb.company_id','=',$autoid)->count();
+            }
+            else if($table=="company_branch")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as cb','cb.id','=','m.branch_id')
+                        ->leftjoin('company as c','c.id','=','cb.company_id')
+                        ->where('cb.company_id','=',$company_id)
+                        ->where('cb.id','=',$autoid)->count();
+            }         
+        }
+        else if($user_role=='company-branch'){
+            $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+
+            if($table=="country"){
+            $members_count = DB::table('membership as m')
+                            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                            ->where('cb.id','=',$branch_id)
+                            ->where('m.country_id','=',$autoid)->count();
+            }
+            else if($table=="state")
+            {
+                $members_count = DB::table('membership as m')
+                            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                            ->where('cb.id','=',$branch_id)
+                            ->where('m.state_id','=',$autoid)->count();
+            }
+            else if($table=="city")
+            {
+                $members_count = DB::table('membership as m')
+                            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                            ->where('cb.id','=',$branch_id)
+                            ->where('m.city','=',$autoid)->count();
+            }
+            else if($table=="company")
+            {
+                $members_count = DB::table('membership as m')
+                        ->join('company_branch as cb','cb.id','=','m.branch_id')
+                        ->leftjoin('company as c','c.id','=','cb.company_id')
+                        ->where('cb.id','=',$branch_id)
+                        ->where('cb.company_id','=',$autoid)->count();
+            }
+            else if($table=="company_branch")
+            {
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where('cb.id','=',$branch_id)
+                ->where('cb.id','=',$autoid)->count(); 
+            } 
+
+        }
+
+        return $members_count;
+
+    }
 	
 	public static function statusSubsMembersCount($status_id, $user_role, $user_id, $monthyear=false){
 		if($monthyear==false){
