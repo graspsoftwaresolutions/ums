@@ -209,7 +209,6 @@ span.dtr-title::after {
                                                 <option value="{{$value->id}}">
                                                     {{$value->state_name}}</option>
                                                 @endforeach
-												
 											</select>
 											<div class="input-field">
 												<div class="errorTxt23"></div>
