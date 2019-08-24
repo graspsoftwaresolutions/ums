@@ -187,16 +187,36 @@ class SubscriptionController extends CommonController
     public function getSubscriptionStatus(Request $request){
         $entry_date = $request->entry_date;
         $sub_company = $request->sub_company;
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
         $data =[];
 
         $company_auto_id = '';
         $company_auto_id = $this->getCommonStatus($entry_date,$sub_company);
+        $datearr = explode("/",$entry_date);  
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $full_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
 
         
         if($company_auto_id!=''){
-            $data =['status' =>1 ,'message'  => 'Data already uploaded for this company'];
+            $status_all = Status::where('status',1)->get();
+            $status_data = [];
+            $approval_status = DB::table('mon_sub_match_table as mt')
+                                    ->select('mt.id as id','mt.match_name as match_name')
+                                    ->get();
+            $approval_data = [];
+            foreach($status_all as $key => $value){
+                $status_data['count'][$value->id] = CommonHelper::statusSubsMembersCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+                $status_data['amount'][$value->id] = round(CommonHelper::statusMembersCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date), 0);
+            }
+            foreach($approval_status as $key => $value){
+                $approval_data['count'][$value->id] = CommonHelper::statusSubsCompanyMatchCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+            }
+            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0), 'sundry_count' => CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_auto_id,$full_date),'message'  => 'Data already uploaded for this company'];
         }else{
-            $data =['status' =>0 ,'message'  => 'No data found'];
+            $data =['status' =>0, 'status_data' => [], 'approval_data' => [] ,'message'  => 'No data found'];
         }
 
         return $data;

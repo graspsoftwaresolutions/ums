@@ -91,6 +91,13 @@
 	.padding-left-40{
 		padding-left:40px;
 	}
-	
+	.btn-sm-all{
+		padding: 0 10px;
+		height: 30px;
+	}
+	.tabs .tab a:hover, .tabs .tab a.active {
+		color: #3f51b5;
+		background-color: #eee;
+	}
 	  
 </style>

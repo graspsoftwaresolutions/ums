@@ -108,7 +108,7 @@
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>{{__('Choose Company') }}</option>
 												@foreach($companylist as $value)
-												<option value="{{$value->id}}">{{$value->company_name}}</option>
+												<option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
 												@endforeach
 											</select>
 											<div class="errorTxt6"></div>
@@ -158,62 +158,146 @@
 			</div>
 		</div>
 	</div>
-    <div class="row">
-		<div class="col s12 m6">
-			<div class="card darken-1" id="member_status_div">
-				<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
-				<table class="collection" id="memberstatustable">
-					<thead>
-						<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-							<td>{{__('Sl No') }}</td>
-							<td>{{__('Status') }}</td>
-							<td>{{__('Count') }}</td>
-							<td>{{__('Amount') }}</td>
-						</tr>
-					</thead>
-					<tbody>
-						@php 
-							$get_roles = Auth::user()->roles;
-							$user_role = $get_roles[0]->slug;
-							$user_id = Auth::user()->id;
-						@endphp 
-						@foreach($data['member_stat'] as  $key => $stat)
-						<tr>
-							<td>{{ $key+1 }} </td>
-							<td>{{ $stat->status_name }}</td>
-							<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
-							<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
+	<div class="row">
+		<div class="col s12">  
+			<ul class="tabs">  
+				<li class="tab col s3"><a class="active " href="#monthly_status" id="all">Monthly Status</a></li>  
+				<li class="tab col s3"><a class="" href="#company_status" id="all">Companywise Monthly Status</a></li>  
+			</ul>  
+		</div> 
+		<div id="monthly_status" class="col s12">
+			 <div class="">
+				<div class="col s12 m6">
+					<div class="card darken-1" id="member_status_div">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
+						<table class="collection" id="memberstatustable">
+							<thead>
+								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+									<td>{{__('Sl No') }}</td>
+									<td>{{__('Status') }}</td>
+									<td>{{__('Count') }}</td>
+									<td>{{__('Amount') }}</td>
+								</tr>
+							</thead>
+							<tbody>
+								@php 
+									$get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
+									$user_id = Auth::user()->id;
+								@endphp 
+								@foreach($data['member_stat'] as  $key => $stat)
+								<tr>
+									<td>{{ $key+1 }} </td>
+									<td>{{ $stat->status_name }}</td>
+									<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
+									<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
+								</tr>
+								@endforeach
+								<tr>
+									<td>{{ count($data['member_stat'])+1 }} </td>
+									<td>SUNDRY CREDITORS</td>
+									<td id="member_status_count_sundry">{{ CommonHelper::statusSubsMatchCount(2, $user_role, $user_id) }}</td>
+									<td id="member_status_amount_sundry">{{ round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0) }} </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--Approval Status-->
+				<div class="col s12 m6">
+					<div class="card darken-1">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
+						<table class="collection" id="approvalstatustable">
+							<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+								<td>{{__('Sl No') }}</td>
+								<td>{{__('Description') }}</td>
+								<td>{{__('Count') }}</td>
+							</tr>
+							@php 
+							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+							@endphp 
+							@foreach($data['approval_status'] as  $key => $stat)
+							<tr>
+								<td>{{ $key+1 }} </td>
+								<td>{{ $stat->match_name }}</td>
+								<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
+							</tr>
+							@endforeach
+						</table>
+					</div>
+				</div>
+				
 			</div>
-		</div>
-		<!--Approval Status-->
-		<div class="col s12 m6">
-			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
-				<table class="collection" id="approvalstatustable">
-					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-						<td>{{__('Sl No') }}</td>
-						<td>{{__('Description') }}</td>
-						<td>{{__('Count') }}</td>
-					</tr>
-					@php 
-					//isset($data['approval_status']) ? $data['approval_status'] : "";                   
-					@endphp 
-					@foreach($data['approval_status'] as  $key => $stat)
-					<tr>
-						<td>{{ $key+1 }} </td>
-						<td>{{ $stat->match_name }}</td>
-						<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
-					</tr>
-					@endforeach
-				</table>
+		</div>  
+		<div id="company_status" class="col s12">
+			<div class="col s12 m12">
+				<h5 class="center">Bank Name : <span class="subscription-bankname">---</span></h5>
 			</div>
-		</div>
-		
+			 <div class="">
+				<div class="col s12 m6">
+					<div class="card darken-1" id="member_status_div">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
+						<table class="collection" id="memberstatustable">
+							<thead>
+								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+									<td>{{__('Sl No') }}</td>
+									<td>{{__('Status') }}</td>
+									<td>{{__('Count') }}</td>
+									<td>{{__('Amount') }}</td>
+								</tr>
+							</thead>
+							<tbody>
+								@php 
+									$get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
+									$user_id = Auth::user()->id;
+								@endphp 
+								@foreach($data['member_stat'] as  $key => $stat)
+								<tr>
+									<td>{{ $key+1 }} </td>
+									<td>{{ $stat->status_name }}</td>
+									<td id="company_member_status_count_{{ $stat->id }}">0</td>
+									<td id="company_member_status_amount_{{ $stat->id }}">0 </td>
+								</tr>
+								@endforeach
+								<tr>
+									<td>{{ count($data['member_stat'])+1 }} </td>
+									<td>SUNDRY CREDITORS</td>
+									<td id="company_member_status_count_sundry">0</td>
+									<td id="company_member_status_amount_sundry">0 </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--Approval Status-->
+				<div class="col s12 m6">
+					<div class="card darken-1">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
+						<table class="collection" id="approvalstatustable">
+							<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+								<td>{{__('Sl No') }}</td>
+								<td>{{__('Description') }}</td>
+								<td>{{__('Count') }}</td>
+							</tr>
+							@php 
+							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+							@endphp 
+							@foreach($data['approval_status'] as  $key => $stat)
+							<tr>
+								<td>{{ $key+1 }} </td>
+								<td>{{ $stat->match_name }}</td>
+								<td id="company_approval_status_count_{{ $stat->id }}">0</td>
+							</tr>
+							@endforeach
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		</div>  
 	</div>
+   
 	</br>
 	</br>
 <!--dgfdgfdg-->
@@ -323,6 +407,9 @@ $(document).ready(function() {
 		var sub_company = $("#sub_company").val();
 		$(".datamonth").text('['+entry_date+']');
 		if(entry_date!="" && sub_company!=""){
+			var selected = $("#sub_company").find('option:selected');
+			var company_name = selected.data('companyname'); 
+			$(".subscription-bankname").text(company_name);
 			loader.showLoader();
 			$("#type option[value='2']").remove();
 			var url = "{{ url(app()->getLocale().'/check-subscription-exists') }}" + '?entry_date=' + entry_date + "&sub_company=" + sub_company;
@@ -333,6 +420,19 @@ $(document).ready(function() {
 					loader.hideLoader();
 					if(result.status==1){
 						$("#modal_subscription").modal('open');
+						$.each(result.status_data.count, function(key, entry) {
+							$("#company_member_status_count_"+key).html(entry);
+                        });
+						$.each(result.status_data.amount, function(key, entry) {
+							$("#company_member_status_amount_"+key).html(entry);
+                        });
+						$("#memberstatustable").css('opacity',1);
+						$.each(result.approval_data.count, function(key, entry) {
+							$("#company_approval_status_count_"+key).html(entry);
+                        });
+						$("#company_member_status_count_sundry").html(result.sundry_count);
+						$("#company_member_status_amount_sundry").html(result.sundry_amount);
+						$("#approvalstatustable").css('opacity',1);
 						$("#type").append('<option value="2">Download Existance data</option>');
 					}else{
 						

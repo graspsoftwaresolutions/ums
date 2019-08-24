@@ -35,6 +35,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     	pointer-events: none;
 		background-color: #f4f8fb !important;
 	}
+	@media (max-width: 500px) {
+		.modal {
+			width: 90% !important;
+		}
+	}
 </style>
 @endsection
 @section('main-content')
@@ -83,31 +88,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Bank Member List')}}</h4>
 										</div>
 										<div class="col m6">
-										<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Subscription Details</a>
+										<a class="waves-effect waves-light gradient-45deg-purple-deep-purple btn modal-trigger" href="#modal1">Subscription Details</a>
 										</div>
 									</div>
-								<!-- <div class="col s12">
-								  <label>   {{__('Month :')}} </label>
-								<div class="input-field inline">
-								  @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp
-							   
-								</div>
-								</div>
-								<div class="row">
-									<div class="col s12">
-										<label>   {{__('Total Members Count :')}} </label>
-									<div class="input-field inline">
-											{{ isset($data['tot_count']) ? $data['tot_count'] : ""}}
-									</div>
-								</div>  
-								<div class="row">
-									<div class="col s12">
-										<label>   {{__('Company :')}} </label>
-									<div class="input-field inline">
-									{{ isset($datacmpy) ? $datacmpy->short_code : ""}} - {{ isset($datacmpy) ? $datacmpy->company_name : ""}}
-									</div>
-								</div> -->
-									
+								
 									<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Month :')}} @php echo date('M-Y',strtotime($datacmpy->Date)); @endphp</h4>
 									<h4 class="card-title" style="font-weight: bold; font-size: 16px">{{__('Total Members Count :')}} {{ isset($data['tot_count']) ? $data['tot_count'] : ""}}</h4>
 									<div class="row">
@@ -122,8 +106,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								@if($data['non_updated_rows']>0)
 								<div class="col m6">
 									<div class="row">
-										<div class="col m4">
-											<div id="scanning-details" class="gradient-45deg-amber-amber padding-3 medium-small" style="color:#fff">
+										<div class="col m5">
+											<div id="scanning-details" class="gradient-45deg-amber-amber padding-3 medium-small" style="color:#fff;    font-size: 13px !important;line-height:24px;">
 											{{__('Please update membership details')}}
 												
 											</div>
@@ -132,7 +116,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<div class="col m3">
 											<a id="submit-download" href="{{ route('subscription.viewscan', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">{{__('Update details')}}</a>
 										</div>
-										<div class="col m5">
+										<div class="col m4">
 											<a id="pending_members" href="{{ route('subscription.pendingmembers', [app()->getLocale(),$enccompany_auto_id])  }}" class="waves-effect waves-light btn btn-primary form-download-btn right" type="button">{{__('Pending Members')}} </a>
 										</div>
 									</div>
@@ -198,7 +182,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<ul class="tabs">  
 								<li class="tab col s3"><a class="active tab_status" href="#inbox" id="all">All</a></li>  
 								@foreach($data['member_stat'] as  $key => $member_stat)
-								<li class="tab col s3"><a class="tab_status"  href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}" style="color:{{$member_stat->font_color}}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
+								<li class="tab col s2"><a class="tab_status"  href="#member{{ $member_stat->id }}" id="m{{ $member_stat->id }}" style="color:{{$member_stat->font_color}}">{{ isset($member_stat->id) ? CommonHelper::get_member_status_name($member_stat->id) : "" }}</a></li>  
 								@endforeach
 							</ul>  
 						</div>  
@@ -250,13 +234,18 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<div id="modal1" class="modal">
 						<div class="modal-content">
 							<div class="row">
+								<div class="col s12 m12">
+									<span class="btn btn-sm-all right modal-close">x</span>
+								</div>
 								<div class="col s12 m6">
+									@php $cond_date = date('Y-m-01',strtotime($datacmpy->Date)); @endphp
 									<div class="card darken-1" id="member_status_div">
+										
 										<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth"></span> </span>
 										<table class="collection" id="memberstatustable">
 											<thead>
 												<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-													<td>{{__('Sl No') }}</td>
+													<td>{{__('SlNo') }}</td>
 													<td>{{__('Status') }}</td>
 													 <td>{{__('Count') }}</td>
 													<td>{{__('Amount') }}</td>
@@ -268,12 +257,18 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												$user_id = Auth::user()->id;
 												@endphp 
 												@foreach($data['member_stat'] as  $key => $stat)
-												<tr>
-												<td>{{ $key+1 }} </td>
-												<td>{{ $stat->status_name }}</td>
-												<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCompanyCount($stat->id, $user_role, $user_id,$company_id) }}</td>
-												<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersCompanyAmount($stat->id, $user_role, $user_id,$company_id), 0) }} </td>
+													<tr>
+														<td>{{ $key+1 }} </td>
+														<td>{{ $stat->status_name }}</td>
+														<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCompanyCount($stat->id, $user_role, $user_id,$company_id,$cond_date) }}</td>
+														<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersCompanyAmount($stat->id, $user_role, $user_id,$company_id,$cond_date), 0) }} </td>
+													</tr>
 												@endforeach
+												<tr>
+													<td>{{ count($data['member_stat'])+1 }} </td>
+													<td>SUNDRY CREDITORS</td>
+													<td id="company_member_status_count_sundry">{{ CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_id,$cond_date) }}</td>
+													<td id="company_member_status_amount_sundry">{{ round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_id,$cond_date), 0) }}</td>
 												</tr>
 											</thead>
 											<tbody>
@@ -284,11 +279,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								</div>
 								<!--Approval Status-->
 								<div class="col s12 m6">
-								`	<div class="card darken-1">
+									<div class="card darken-1">
 										<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth"></span></span>
 										<table class="collection" id="approvalstatustable">
 											<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-												<td>{{__('Sl No') }}</td>
+												<td>{{__('SlNo') }}</td>
 												<td>{{__('Description') }}</td>
 												<td>{{__('Count') }}</td>
 											</tr>
@@ -296,7 +291,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<tr>
 												<td>{{ $key+1 }} </td>
 												<td>{{ $stat->match_name }}</td>
-												<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsCompanyMatchCount($stat->id, $user_role, $user_id,$company_id) }}</td>
+												<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsCompanyMatchCount($stat->id, $user_role, $user_id,$company_id,$cond_date) }}</td>
 											</tr>
 											@endforeach
 										</table>
