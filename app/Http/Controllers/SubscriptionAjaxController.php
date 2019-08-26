@@ -293,7 +293,7 @@ class SubscriptionAjaxController extends CommonController
         //var_dump($sub_mem);
        // exit;
         
-        $data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+        $data = $this->CommonAjaxReturnold($sub_mem, 2, '',2); 
       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -673,5 +673,18 @@ class SubscriptionAjaxController extends CommonController
             );
 
         echo json_encode($json_data); 
+    }
+    public function SubscriptionMemberDetails(Request $request){
+       $sub_match_auto_id = $request->input('sub_match_auto_id');
+       $status_data = DB::table('mon_sub_member_match')->where('id','=',$sub_match_auto_id)->first();
+       $data['match'] = $status_data;
+       $data['match_id'] = $status_data->match_id;
+       if($status_data->match_id==3){
+            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
+            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
+            $data['uploaded_member_name'] = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('Name')->first();
+       }
+       $data['status'] = 1;
+       echo json_encode($data); 
     }
 }

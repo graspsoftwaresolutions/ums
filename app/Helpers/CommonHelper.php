@@ -927,4 +927,14 @@ class CommonHelper
         return $status;
     }
 	
+	public static function get_member_match_name($status_id){
+       $status_data = DB::table('mon_sub_match_table')->where('id','=',$status_id)->pluck('match_name')->first();
+       return $status_data;
+    }
+	
+	public static function getmemberName($memberid){
+      return $status_data = DB::table('membership')->where('id', $memberid)->pluck('name')->first();
+       
+    }
+	
 }
