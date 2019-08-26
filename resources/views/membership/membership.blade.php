@@ -206,10 +206,7 @@ span.dtr-title::after {
 											<label>{{__('State') }}</label>
 											<select name="state_id" id="state_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select State') }}</option>
-												@foreach($data['state_view'] as $value)
-                                                <option value="{{$value->id}}">
-                                                    {{$value->state_name}}</option>
-                                                @endforeach
+												
 											</select>
 											<div class="input-field">
 												<div class="errorTxt23"></div>
@@ -219,10 +216,7 @@ span.dtr-title::after {
 											<label>{{__('City') }}</label>
 											<select name="city_id" id="city_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select City') }}</option>
-												@foreach($data['city_view'] as $value)
-                                                <option value="{{$value->id}}">
-                                                    {{$value->city_name}}</option>
-                                                @endforeach
+												
 												
 											</select>
 											<div class="input-field">
@@ -469,6 +463,51 @@ $('#unionbranch_id').change(function(){
 		$("#company_id").empty();
 	}      
 });
+//union branch for bank  branch
+$('#unionbranch_id').change(function(){
+	var unionbranchID = $(this).val();   
+	
+	if(unionbranchID){
+		$.ajax({
+		type:"GET",
+		dataType: "json",
+		url:" {{ URL::to('/get-unionbankbranch-list') }}?unionbranch_id="+unionbranchID,
+		success:function(res){              
+			if(res){
+				$("#branch_id").empty();
+				$("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+				$.each(res,function(key,entry){
+					console.log(res);
+					
+					$("#branch_id").append($('<option></option>').attr('value', entry.id).text(entry.branch_name));
+					//$('#branch_id').val(entry.id);
+				   // var select = $("#state");
+				   // select.material_select('destroy');
+					//select.empty();
+					
+				});
+			   // $('#state').material_select();
+			}else{
+			  //$("#company_id").empty();
+			  $("#branch_id").empty();
+			}
+		}
+		});
+	}else{
+		$("#branch_id").empty();
+		$("#company_id").empty();
+	}      
+});
+
+
+
+
+
+
+
+
+
+
 $('#company_id').change(function() {
         var companyID = $(this).val();
 
@@ -496,6 +535,7 @@ $('#company_id').change(function() {
             $('#branch_id').empty();
         }
     });
+
 $('#country_id').change(function(){
 	var countryID = $(this).val();   
 	
