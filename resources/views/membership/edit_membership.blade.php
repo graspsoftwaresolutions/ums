@@ -628,8 +628,8 @@
                                                                     <select name="nominee_country_id" id="nominee_country_id" class="error browser-default selectpicker">
                                                                         <option value="">Select Country</option>
                                                                         @foreach($data['country_view'] as $value)
-                                                                        <option value="{{$value->id}}">{{$value->country_name}}</option>
-                                                                        @endforeach
+                                                                        <option value="{{$value->id}}" @php if($value->id == $values->country_id) { echo "selected";} @endphp >{{$value->country_name}}</option>
+                                                                        @endforeach               
                                                                     </select>
                                                                     <div class="input-field">
                                                                         <div class="errorTxt35"></div>

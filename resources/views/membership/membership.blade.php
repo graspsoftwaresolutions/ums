@@ -500,14 +500,6 @@ $('#unionbranch_id').change(function(){
 });
 
 
-
-
-
-
-
-
-
-
 $('#company_id').change(function() {
         var companyID = $(this).val();
 
