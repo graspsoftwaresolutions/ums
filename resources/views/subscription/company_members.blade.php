@@ -469,9 +469,13 @@ $(function () {
 			$('td', nRow).css('color', aData.font_color );
 		}
 });
-@if($loopcount == count($data['member_stat']))
+/* @if($loopcount == count($data['member_stat']))
 @foreach($data['member_stat'] as  $key => $member_stat)
-  var dataTable_{{$member_stat->id}} = $('.datatable-display-{{$member_stat->id}}').DataTable({
+@if($member_stat->id==1)
+@endif
+@endforeach
+@endif */
+  var dataTable_1 = $('.datatable-display-1').DataTable({
 	"responsive": true,
 	"lengthMenu": [
 		[10, 25, 50, 100],
@@ -485,7 +489,7 @@ $(function () {
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
-	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status="+{{$member_stat->id}},
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=1",
 		"dataType": "json",
 		"type": "POST",
 		headers: {
@@ -520,18 +524,185 @@ $(function () {
 	],
 	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 			$('td', nRow).css('color', aData.font_color );
-		}
+	},
+	error: function (xhr, error, thrown) {
+		alert( 'You are not logged in' );
+	}
 });
-@endforeach
-@endif
+ var dataTable_2 = $('.datatable-display-2').DataTable({
+	"responsive": true,
+	"lengthMenu": [
+		[10, 25, 50, 100],
+		[10, 25, 50, 100]
+	],
+	/* "lengthMenu": [
+		[10, 25, 50, -1],
+		[10, 25, 50, "All"]
+	], */
+	  
+	"processing": true,
+	"serverSide": true,
+	"ajax": {
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=2",
+		"dataType": "json",
+		"type": "POST",
+		headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+		'data': function(data){
+			var race_id = $('#race_id').val();
+			 var memberid      = $('#memberid').val();
+			 var designation_id = $('#designation_id').val();
+
+				data.race_id = race_id;
+				data.memberid = memberid;
+				data.designation_id = designation_id;
+			_token: "{{csrf_token()}}";
+		}
+	},
+	"columns": [{
+			"data": "Name"
+		},
+		{
+			"data": "membercode"
+		},
+		{
+			"data": "nric"
+		},
+		{
+			"data": "amount"
+		},
+		{
+			"data": "options"
+		}
+	],
+	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+			$('td', nRow).css('color', aData.font_color );
+	},
+	error: function (xhr, error, thrown) {
+		alert( 'You are not logged in' );
+	}
+});
+ var dataTable_3 = $('.datatable-display-3').DataTable({
+	"responsive": true,
+	"lengthMenu": [
+		[10, 25, 50, 100],
+		[10, 25, 50, 100]
+	],
+	/* "lengthMenu": [
+		[10, 25, 50, -1],
+		[10, 25, 50, "All"]
+	], */
+	  
+	"processing": true,
+	"serverSide": true,
+	"ajax": {
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=3",
+		"dataType": "json",
+		"type": "POST",
+		headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+		'data': function(data){
+			var race_id = $('#race_id').val();
+			 var memberid      = $('#memberid').val();
+			 var designation_id = $('#designation_id').val();
+
+				data.race_id = race_id;
+				data.memberid = memberid;
+				data.designation_id = designation_id;
+			_token: "{{csrf_token()}}";
+		}
+	},
+	"columns": [{
+			"data": "Name"
+		},
+		{
+			"data": "membercode"
+		},
+		{
+			"data": "nric"
+		},
+		{
+			"data": "amount"
+		},
+		{
+			"data": "options"
+		}
+	],
+	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+			$('td', nRow).css('color', aData.font_color );
+	},
+	error: function (xhr, error, thrown) {
+		alert( 'You are not logged in' );
+	}
+});
+ var dataTable_4 = $('.datatable-display-4').DataTable({
+	"responsive": true,
+	"lengthMenu": [
+		[10, 25, 50, 100],
+		[10, 25, 50, 100]
+	],
+	/* "lengthMenu": [
+		[10, 25, 50, -1],
+		[10, 25, 50, "All"]
+	], */
+	  
+	"processing": true,
+	"serverSide": true,
+	"ajax": {
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=4",
+		"dataType": "json",
+		"type": "POST",
+		headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
+		'data': function(data){
+			var race_id = $('#race_id').val();
+			 var memberid      = $('#memberid').val();
+			 var designation_id = $('#designation_id').val();
+
+				data.race_id = race_id;
+				data.memberid = memberid;
+				data.designation_id = designation_id;
+			_token: "{{csrf_token()}}";
+		}
+	},
+	"columns": [{
+			"data": "Name"
+		},
+		{
+			"data": "membercode"
+		},
+		{
+			"data": "nric"
+		},
+		{
+			"data": "amount"
+		},
+		{
+			"data": "options"
+		}
+	],
+	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+			$('td', nRow).css('color', aData.font_color );
+	},
+	error: function (xhr, error, thrown) {
+		alert( 'You are not logged in' );
+	}
+});
 $(document).on('submit','form#advancedsearch',function(event){
 	event.preventDefault();
 	dataTable.draw();
-	@if($loopcount == count($data['member_stat']))
+	dataTable_1.draw();
+	dataTable_2.draw();
+	dataTable_3.draw();
+	dataTable_4.draw();
+	/* @if($loopcount == count($data['member_stat']))
 	@foreach($data['member_stat'] as  $key => $member_stat)
 	dataTable_{{$member_stat->id}}.draw();
 	@endforeach
-	@endif
+	@endif */
 });
 });
 

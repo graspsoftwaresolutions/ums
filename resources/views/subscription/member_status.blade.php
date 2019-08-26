@@ -154,7 +154,7 @@
 	  <div id="modal-approval" class="modal">
 		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('master.savecountry',app()->getLocale()) }}">
         @csrf
-		<input type="text" name="member_id" id="member_id">
+		<input type="text" class="hide" name="match_auto_id" id="match_auto_id">
 		<div class="modal-content">
 		  <h4>Monthly subscription member approval</h4>
 		   </hr>

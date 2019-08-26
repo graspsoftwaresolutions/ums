@@ -57,14 +57,15 @@ class SubscriptionAjaxController extends CommonController
 		$companyid = $request->company_id;
         $status = $request->status;
         $sl=0;
-		$columns[$sl++] = 'Name';
-		$columns[$sl++] = 'membercode';
-		$columns[$sl++] = 'nric';
-        $columns[$sl++] = 'amount';
+		$columns[$sl++] = 'mon_sub_member.Name';
+		$columns[$sl++] = 'mon_sub_member.membercode';
+		$columns[$sl++] = 'mon_sub_member.nric';
+        $columns[$sl++] = 'mon_sub_member.amount';
         if($status!='all'){
-          $columns[$sl++] = 'statusId';
+          $columns[$sl++] = 'mon_sub_member.statusId';
         }
-		$columns[$sl++] = 'id';
+		$columns[$sl++] = 'mon_sub_member.id';
+		$columns[$sl++] = 'mon_sub_member.id';
         // $columns = array( 
         //     0 => 'Name', 
         //     1 => 'membercode', 
