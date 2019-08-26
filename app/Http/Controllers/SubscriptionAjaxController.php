@@ -293,7 +293,7 @@ class SubscriptionAjaxController extends CommonController
         //var_dump($sub_mem);
        // exit;
         
-        $data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+        $data = $this->CommonAjaxReturnold($sub_mem, 2, '',2); 
       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
