@@ -255,7 +255,7 @@ span.dtr-title::after {
 												<th width="5%">{{__('Type')}} </th>
 												<th width="5%">{{__('M/F')}}</th>
 												<th width="5%">{{__('Bank Code') }}</th>
-												<th width="5%">{{__('Branch Name') }}</th>
+												<th width="7%">{{__('Branch Name') }}</th>
 												<th width="5%">{{__('Levy') }}</th>
 												<th width="5%">{{__('Levy Amount') }}</th>
 												<th width="5%">{{__('TDF') }}</th>
@@ -313,8 +313,8 @@ $(function () {
 	"order": [[ 0, "desc" ]],
 	//"searching": false,
 	"lengthMenu": [
-		[10, 25, 50, -1],
-		[10, 25, 50, "All"]
+		[10, 25, 50, 100],
+		[10, 25, 50, 100]
 	],
 	"processing": true,
 	"serverSide": true,
