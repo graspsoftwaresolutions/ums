@@ -20,7 +20,7 @@ class CreateArrearEntryTable extends Migration
             $table->integer('branch_id')->nullable(); 
             $table->string('nric')->nullable(); 
             $table->date('arrear_date')->nullable(); 
-            $table->string('arrear_amount')->nullable(); 
+            $table->string('arrear_amount')->nullable();
             $table->integer('created_by')->nullable(); 
 			$table->integer('updated_by')->nullable(); 
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
