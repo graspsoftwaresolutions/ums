@@ -640,7 +640,7 @@ class MembershipController extends Controller
                             $compQuery =  $compQuery->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
                                 ->orWhere('com.company_name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                ->orWhere('m.member_number', '=',"{$search}")
                                 ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
                                 ->orWhere('m.gender', 'LIKE',"%{$search}%")
                                 ->orWhere('m.doj', 'LIKE',"%{$search}%")

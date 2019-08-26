@@ -124,16 +124,15 @@ span.dtr-title::after {
 										</div>
 										<div class="col s3">
 											<label>{{__('Company Name') }}</label>
-											<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22">
-												<option value="">{{__('Select Company') }}</option>
-												@php
-                                                $data1 = CommonHelper::DefaultCountry();
-                                                @endphp
-                                                @foreach($data['company_view'] as $value)
-                                                <option value="{{$value->id}}" >
-                                                    {{$value->company_name}}</option>
-                                                @endforeach
-											</select>
+											<input type="hidden" name="companyid" id="companyid">
+										
+												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22">
+												<option value=""> Select Company</option>
+												@foreach($data['company_view'] as $key=>$value)
+                                                        <option value="{{$value->id}}"
+                                                            >{{$value->company_name}}</option>
+                                                        @endforeach
+												</select>
 											<div class="input-field">
 												<div class="errorTxt22"></div>
 											</div>
@@ -143,10 +142,7 @@ span.dtr-title::after {
 											<label>{{__('Company Branch Name') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
-												 @foreach($data['companybranch_view'] as $value)
-                                                <option value="{{$value->id}}">
-                                                    {{$value->branch_name}}</option>
-                                                @endforeach
+												
 												
 											</select>
 											<div class="input-field">
@@ -169,7 +165,7 @@ span.dtr-title::after {
 											<select name="race_id" id="race_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Race') }}</option>
 												 @foreach($data['race_view'] as $value)
-                                                <option value="{{$value->id}}" @if($data1==$value->id) selected @endif >
+                                                <option value="{{$value->id}}" >
                                                     {{$value->race_name}}</option>
                                                 @endforeach
 												
@@ -183,7 +179,7 @@ span.dtr-title::after {
 											<select name="status_id" id="status_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Status') }}</option>
 												 @foreach($data['status_view'] as $value)
-                                                <option value="{{$value->id}}" @if($data1==$value->id) selected @endif >
+                                                <option value="{{$value->id}}" >
                                                     {{$value->status_name}}</option>
                                                 @endforeach
 												
@@ -198,7 +194,7 @@ span.dtr-title::after {
 												<option value="">{{__('Select Country') }}</option>
 												
 												@foreach($data['country_view'] as $value)
-                                                <option value="{{$value->id}}" @if($data1==$value->id) selected @endif >
+                                                <option value="{{$value->id}}" >
                                                     {{$value->country_name}}</option>
                                                 @endforeach
 											</select>
@@ -437,6 +433,69 @@ $(document).on('submit','form#advancedsearch',function(event){
 	loader.showLoader();
 });
 });
+
+//union branch related bank 
+$('#unionbranch_id').change(function(){
+	var unionbranchID = $(this).val();   
+	
+	if(unionbranchID){
+		$.ajax({
+		type:"GET",
+		dataType: "json",
+		url:" {{ URL::to('/get-company-list') }}?unionbranch_id="+unionbranchID,
+		success:function(res){              
+			if(res){
+				$("#company_id").empty();
+				$("#company_id").append($('<option></option>').attr('value', '').text("Select"));
+				$.each(res,function(key,entry){
+					//console.log(res);
+					
+					$("#company_id").append($('<option></option>').attr('value', entry.id).text(entry.company_name));
+					$('#companyid').val(entry.id);
+				   // var select = $("#state");
+				   // select.material_select('destroy');
+					//select.empty();
+					
+				});
+			   // $('#state').material_select();
+			}else{
+			  $("#company_id").empty();
+			  $("#branch_id").empty();
+			}
+		}
+		});
+	}else{
+		$("#branch_id").empty();
+		$("#company_id").empty();
+	}      
+});
+$('#company_id').change(function() {
+        var companyID = $(this).val();
+
+        if (companyID != '' && companyID != 'undefined') {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ URL::to('/get-companybranches-list') }}?company_id=" + companyID,
+                success: function(res) {
+                    if (res) {
+                        $('#branch_id').empty();
+                        $("#branch_id").append($('<option></option>').attr('value', '').text(
+                            "Select"));
+                        $.each(res, function(key, entry) {
+                            $('#branch_id').append($('<option></option>').attr(
+                                'value', entry.id).text(entry.branch_name));
+
+                        });
+                    } else {
+                        $('#branch_id').empty();
+                    }
+                }
+            });
+        } else {
+            $('#branch_id').empty();
+        }
+    });
 $('#country_id').change(function(){
 	var countryID = $(this).val();   
 	

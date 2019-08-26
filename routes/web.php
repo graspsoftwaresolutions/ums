@@ -282,6 +282,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 //common routes
 Route::get('get-state-list','CommonController@getStateList');
+Route::get('get-company-list','CommonController@getCompanyList');
+Route::get('get-companybranches-list','CommonController@getCompanyBranchesList');
 Route::get('get-cities-list','CommonController@getCitiesList');
 Route::get('get-branch-list','CommonController@getBranchList');
 Route::get('get-age','CommonController@getAge');

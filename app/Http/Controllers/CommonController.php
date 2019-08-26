@@ -724,5 +724,33 @@ class CommonController extends Controller
         }
         return $data;
     }
-    
+    public static function getCompanyList(Request $request)
+    {
+        
+        $id = $request->unionbranch_id;
+        $res = DB::table('company as c')
+                ->select('c.id','c.company_name as company_name')
+                ->leftjoin('company_branch as cb','c.id','=','cb.company_id')
+                ->leftjoin('union_branch as ub','cb.union_branch_id','=','ub.id')
+                ->where([
+                    ['ub.id','=',$id]
+                ])
+                ->distinct('company_name')
+                ->get();
+        
+                return response()->json($res);
+    }
+
+    public function getCompanyBranchesList(Request $request)
+    {
+        $id = $request->company_id;
+        $res = DB::table('company_branch as cb')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->where([
+                    ['cb.company_id','=',$id]
+                ])
+                ->distinct('branch_name')
+                ->get();
+        return response()->json($res);
+    } 
 }
