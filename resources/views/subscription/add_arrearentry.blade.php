@@ -188,6 +188,7 @@ rules: {
   },
   arrear_amount: {
     required: true,
+    digits: true,
   },
 },
 //For custom messages
@@ -203,6 +204,7 @@ messages: {
   },
   arrear_amount: {
     required: '{{__("Please Enter Arrear Amount") }}',
+    digits: '{{__("please Enter numbers only")}}'
   },
 },
 errorElement: 'div',
