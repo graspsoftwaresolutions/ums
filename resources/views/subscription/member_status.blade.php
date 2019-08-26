@@ -35,23 +35,38 @@
 			z-index:9999;
 		}
 	@endif
+	.btn-sm{
+		padding: 2.5px 8px;
+		font-size: 8px;
+		line-height: 1.5;
+		border-radius: 3px;
+		color: #fff;
+		margin-right:5px;
+	}
+	p.verify-approval{
+		margin:0;
+	}
 </style>
 @endsection
 @section('main-content')
 @php 
 
 @endphp
-<div class="row hide">
+<div class="row ">
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
 				<h4 class="card-title">
 				
-				{{__('Members')}} 
+				@if($data['status_type']==1)
+					{{ CommonHelper::get_member_status_name($data['status']) }} Members List
+				@elseif($data['status_type']==2)
+					{{ CommonHelper::get_member_match_name($data['status']) }}'s List
+				@endif
 				
 				</h4> 
 				
-				<form method="post" id="filtersubmit" action="">
+				<form method="post" class="hide" id="filtersubmit" action="">
 					@csrf  
 					<div class="row">    
 						<div class="col s3">
@@ -94,6 +109,7 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
+				
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
 						<tr>
@@ -108,6 +124,9 @@
 						</tr> 
 					</thead>
 					<tbody>
+						@php
+							//dd($data['member'])
+						@endphp
 						@foreach($data['member'] as  $key => $member)
 							<tr>
 								<td>{{ $member->member_name }}</td>
@@ -117,7 +136,9 @@
 								<td>{{ $member->Amount }}</td>
 								<td>{{ $member->due }}</td>
 								<td>{{ $member->status_name }}</td>
-								<td></td>
+								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
+								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
+								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{$member->match_auto_id}})"  title="Approval" type="button" name="action"><i class="material-icons">check_box</i></a></td>
 								
 							</tr> 
 						@endforeach
@@ -129,6 +150,95 @@
 		</br>
 		</br>
 	</div>
+	  <!-- Modal Structure -->
+	  <div id="modal-approval" class="modal">
+		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('master.savecountry',app()->getLocale()) }}">
+        @csrf
+		<input type="text" name="member_id" id="member_id">
+		<div class="modal-content">
+		  <h4>Monthly subscription member approval</h4>
+		   </hr>
+			
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th>Description</th>
+							<th>Approval By</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="member_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="member_approve" id="member_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>
+								Mismatched Member Name
+								</br>
+								&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_member_name" class="bold"></span></span>
+								</br>
+								&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_member_name" class="bold"></span></span>
+							</td>
+							<td></td>
+						</tr>
+						<tr class="bank_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="bank_approve" id="bank_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>
+							Mismatched Bank
+							</br>
+							&nbsp;&nbsp;<span class="bold">From Bank: Affin bank</span>
+							</br>
+							&nbsp;&nbsp;<span class="bold">From Union: Affin bank Berhard</span>
+							</td>
+							<td></td>
+						</tr>
+						<tr class="nric_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" />
+										
+									</label>
+								</p>
+							</td>
+							<td>
+							NRIC Not Matched
+							
+							<td></td>
+						</tr>
+						<tr class="hide">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="approve" id="approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>Mismatched Previous Subscription</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
+		  <button type="submit" class="btn waves-effect waves-light">Submit</button>
+		</div>
+		 </form>
+	  </div>
 </div> 
 
 @endsection
@@ -163,11 +273,6 @@
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subscription_sidebar_li_id").addClass('active');
 $("#subscription_sidebar_a_id").addClass('active');
-
-	$(document).ready(function(){
-		
-	
-	});
 	
 	 $("#filtersubmit").validate({
 		rules: {
@@ -191,6 +296,47 @@ $("#subscription_sidebar_a_id").addClass('active');
 			  }
 			}
 	  });
+	  function showApproval(match_id){
+		   $('.modal').modal();
+		   $("#match_auto_id").val(match_id);
+		   loader.showLoader();
+		    var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_match_auto_id=' + match_id;
+			$.ajax({
+				url: url,
+				type: "GET",
+				dataType: "json",
+				success: function(result) {
+					var match_data = result.match;
+					if(match_data.match_id==3){
+						$(".member_match_row").removeClass('hide');
+						$(".bank_match_row").addClass('hide');
+						$(".nric_match_row").addClass('hide');
+						$("#registered_member_name").html(result.registered_member_name);
+						$("#uploaded_member_name").html(result.uploaded_member_name);
+					}else if(match_data.match_id==4){
+						$(".member_match_row").addClass('hide');
+						$(".bank_match_row").removeClass('hide');
+						$(".nric_match_row").addClass('hide');
+						$("#registered_member_name").html('');
+						$("#uploaded_member_name").html('');
+					}else if(match_data.match_id==2){
+						$(".nric_match_row").removeClass('hide');
+						$(".member_match_row").addClass('hide');
+						$(".bank_match_row").addClass('hide');
+						$("#registered_member_name").html('');
+						$("#uploaded_member_name").html('');
+					}else{
+						$(".member_match_row").addClass('hide');
+						$(".bank_match_row").addClass('hide');
+						$(".nric_match_row").addClass('hide');
+						$("#registered_member_name").html('');
+						$("#uploaded_member_name").html('');
+					}
+					$("#modal-approval").modal('open');
+					loader.hideLoader();
+				}
+			});
+	  }
   
 
 </script>
