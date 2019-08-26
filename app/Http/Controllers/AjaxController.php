@@ -404,7 +404,7 @@ class AjaxController extends CommonController
           
     }
     $table = "union_branch";
-    $data = $this->CommonAjaxReturnold($unionbranchs, 1, 'master.deleteunionbranch', 1, 'master.editunionbranch'); 
+    $data = $this->CommonAjaxReturn($unionbranchs, 1, 'master.deleteunionbranch', 1,$table, 'master.editunionbranch'); 
     
          $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -412,7 +412,6 @@ class AjaxController extends CommonController
             "recordsFiltered" => intval($totalFiltered), 
             "data"            => $data   
             );
-
         echo json_encode($json_data); 
     }
     
@@ -592,7 +591,7 @@ class AjaxController extends CommonController
                     ->count();
         }
         $table = "reason";
-        $data = $this->CommonAjaxReturnold($Reason, 0, 'master.reasondestroy', 0);
+        $data = $this->CommonAjaxReturn($Reason, 0, 'master.reasondestroy', 0,$table);
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
