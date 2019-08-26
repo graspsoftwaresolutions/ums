@@ -7,6 +7,19 @@
 @section('headSecondSection')
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
+<style>
+	table.highlight > tbody > tr
+	{
+		-webkit-transition: background-color .25s ease;
+		   -moz-transition: background-color .25s ease;
+			 -o-transition: background-color .25s ease;
+				transition: background-color .25s ease;
+	}
+	table.highlight > tbody > tr:hover
+	{
+		background-color: rgba(242, 242, 242, .5);
+	}
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -170,7 +183,7 @@
 				<div class="col s12 m6">
 					<div class="card darken-1" id="member_status_div">
 						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
-						<table class="collection" id="memberstatustable">
+						<table class="collection Highlight" id="memberstatustable">
 							<thead>
 								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
 									<td>{{__('Sl No') }}</td>
@@ -186,14 +199,19 @@
 									$user_id = Auth::user()->id;
 								@endphp 
 								@foreach($data['member_stat'] as  $key => $stat)
-								<tr>
+								@php
+									$member_sub_link = URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime('now'));
+								@endphp
+								
+								<tr class="monthly-sub-status" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $stat->font_color }};">
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->status_name }}</td>
-									<td id="member_status_count_{{ $stat->id }}"> <a target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime(date('dmy'))) }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</a></td>
+									<td id="member_status_count_{{ $stat->id }}"> {{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
 									<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
 								</tr>
+								
 								@endforeach
-								<tr>
+								<tr class="monthly-sub-status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=0&date='.strtotime('now')) }}" style="cursor:pointer;">
 									<td>{{ count($data['member_stat'])+1 }} </td>
 									<td>SUNDRY CREDITORS</td>
 									<td id="member_status_count_sundry">{{ CommonHelper::statusSubsMatchCount(2, $user_role, $user_id) }}</td>
@@ -220,7 +238,7 @@
 							<tr>
 								<td>{{ $key+1 }} </td>
 								<td>{{ $stat->match_name }}</td>
-								<td id="approval_status_count_{{ $stat->id }}"><a target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime(date('dmy'))) }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</a></td>
+								<td id="approval_status_count_{{ $stat->id }}"><a target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</a></td>
 							</tr>
 							@endforeach
 						</table>
@@ -505,6 +523,9 @@ $(document).ready(function() {
 		$('#subscribe_formValidate').trigger('submit');
 		
 	});
+	$(".monthly-sub-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');
 	$("#subscription_sidebar_a_id").addClass('active');
