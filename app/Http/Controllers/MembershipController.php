@@ -638,16 +638,14 @@ class MembershipController extends Controller
 								]);
 							}
                             $compQuery =  $compQuery->where(function($query) use ($search){
-                                $query->orWhere('m.id','LIKE',"%{$search}%")
-                                ->orWhere('com.company_name', 'LIKE',"%{$search}%")
+                                $query->orWhere('com.company_name', 'LIKE',"%{$search}%")
                                 ->orWhere('m.member_number', '=',"{$search}")
                                 ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
                                 ->orWhere('m.gender', 'LIKE',"%{$search}%")
                                 ->orWhere('m.doj', 'LIKE',"%{$search}%")
                                 ->orWhere('m.name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
-                                ->orWhere('m.old_ic', 'LIKE',"%{$search}%")
-                                ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                                ->orWhere('m.old_ic', 'LIKE',"{$search}")
+                                ->orWhere('m.new_ic', 'LIKE',"{$search}")
                                 ->orWhere('com.short_code', 'LIKE',"%{$search}%")
                                 ->orWhere('st.state_name', 'LIKE',"%{$search}%")
                                 ->orWhere('cit.city_name', 'LIKE',"%{$search}%")
@@ -656,10 +654,10 @@ class MembershipController extends Controller
                                 ->orWhere('m.tdf', 'LIKE',"%{$search}%")
                                 ->orWhere('m.tdf_amount', 'LIKE',"%{$search}%")
                                // ->orWhere('m.email', 'LIKE',"%{$search}%")
-                                ->orWhere('m.mobile', 'LIKE',"%{$search}%")
-                                ->orWhere('r.short_code', 'LIKE',"%{$search}%")
-                                ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
-                                ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                                ->orWhere('m.mobile', 'LIKE',"{$search}")
+                                ->orWhere('r.short_code', 'LIKE',"%{$search}%");
+                                //->orWhere('c.branch_name', 'LIKE',"%{$search}%")
+                                //->orWhere('s.status_name', 'LIKE',"%{$search}%");
                             });
 			if( $limit != -1){
 				$compQuery = $compQuery->offset($start)

@@ -898,155 +898,62 @@
                                                     <li>
                                                         <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
-															<div class="row">
-																@foreach($data['fee_view'] as $key=>$value)
-																<div class="col s6 m4">
-																	{{ CommonHelper::get_fee_name($value->fee_id) }}:
-																	<div class="input-field inline" style="margin-top:0;margin-bottom:0;">
-																		<input id="fee_readonly" type="text" class="validate" value="{{$value->fee_amount}}" readonly style="height:2rem;">
-																	</div>																	
-																</div>
-																@endforeach
-															</div>
-															</br>
                                                             <div class="row">
-																@php
-																	$lastmonthendrecord = CommonHelper::getlastMonthEndByMember($values->mid); 
-																@endphp
-                                                                <div class="col s6 m3">
-																	<ul id="task-card" class="collection with-header">
-																		<li class="collection-header" style="padding:5px;background:#6857af;">
-																		   <p class="task-card-date">Monthly</p>
-																		</li>
-																	</ul>
-																	<div class="row">
-																		<div class="col s12">
-																			Subs:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->SUBSCRIPTION_AMOUNT}}@endif" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			BF &nbsp; &nbsp;:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->BF_AMOUNT}}@endif" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			Ins &nbsp;&nbsp; :
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																	</div>
-																</div>
-																<div class="col s6 m3">
-																	<ul id="task-card" class="collection with-header">
-																		<li class="collection-header " style="padding:5px;background:#6857af;">
-																		   <p class="task-card-date">Acc</p>
-																		</li>
-																	</ul>
-																	<div class="row">
-																		<div class="col s12">
-																			Subs:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly style="height:2rem;" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCSUBSCRIPTION}}@endif">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			BF &nbsp; &nbsp;:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly style="height:2rem;" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCBF}}@endif">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			Ins &nbsp;&nbsp; :
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE}}@endif" style="height:2rem;">
-																		    </div>
-																		</div>
-																	</div>
-																</div>
-																<div class="col s6 m3">
-																	<ul id="task-card" class="collection with-header">
-																		<li class="collection-header " style="padding:5px;background:#6857af;">
-																		   <p class="task-card-date">Total Months Paid</p>
-																		</li>
-																	</ul>
-																	<div class="row">
-																		<div class="col s12">
-																			Subs:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" style="height:2rem;">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			BF &nbsp; &nbsp;:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			Ins &nbsp;&nbsp; :
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																	</div>
-																</div>
-																<div class="col s6 m3">
-																	<ul id="task-card" class="collection with-header">
-																		<li class="collection-header" style="padding:5px;background:#6857af;">
-																		   <p class="task-card-date">Total Months Due</p>
-																		</li>
-																	</ul>
-																	<div class="row">
-																		<div class="col s12">
-																			Subs:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			BF &nbsp; &nbsp;:
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" class="validate" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																		<div class="col s12">
-																			Ins &nbsp;&nbsp; :
-																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" type="text" class="validate" readonly style="height:2rem;">
-																		    </div>
-																		</div>
-																	</div>
-																</div>
+                                                                <div class="col s12 m6">
+                                                                    <label for="new_fee_id">Fee name* </label>
+                                                                    <select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
+                                                                        <option value="">Select</option>
+                                                                        @foreach($data['fee_list'] as $key=>$value)
+                                                                        <option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <div class="input-field">
+                                                                        <div class="errorTxt50"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-field col s12 m6">
+                                                                    <label for="fee_amount" class="force-active">Fee amount *</label>
+                                                                    <input id="fee_amount" name="fee_amount" value="0" type="text">
+                                                                </div>
+                                                                <div class="clearfix"> </div>
+                                                                <div class="col s12 m12">
+                                                                    <button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
+                                                                        <i class="material-icons right">send</i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                             </br>
                                                             <div class="row">
-                                                                <div class="col s8 m8">
-																	&nbsp;
-																</div>
-																
-																<div class="col s4 m4 right">
-																	Last Paid Date: 
-																	<div class="input-field inline" style="margin:0;">
-																		<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{ date('d/M/Y',strtotime($lastmonthendrecord->LASTPAYMENTDATE)) }}@endif" readonly style="height:2rem;">
-																	</div>
-																</div>
-                                                            </div>
-															<div class="row">
-                                                                <div class="col s12 m12 center">
-																	@if(!empty($lastmonthendrecord))
-																		@php
-																			$color = CommonHelper::getStatusColor($values->status_id);
-																		@endphp
-																		<h4 style="color:{{$color}}">{{ CommonHelper::getStatusName($values->status_id) }} 
-																		@if($lastmonthendrecord->TOTALMONTHSDUE>0)
-																			, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending</h4>
-																		@endif
-																	@endif
-																</div>
+                                                                <div class="col s12">
+                                                                    @php // print_r($data['nominee_view']); @endphp
+                                                                    <table id="fee_table" width="100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th data-field="feename">Fee Name</th>
+                                                                                <th data-field="feeamount">Amount</th>
+                                                                                <th data-field="action" width="25%">Action</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @php {{ $sl = 0; }} @endphp @foreach($data['fee_view'] as $key=>$value)
+                                                                            <tr id="nominee_{{ $sl }}">
+                                                                                <td><span id="fee_name_label_{{ $sl }}">{{ CommonHelper::get_fee_name($value->fee_id) }}</span>
+                                                                                    <input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_{{ $sl }}" value="{{$value->id}}"></input>
+                                                                                    <input type="text" class="hide" name="fee_name_id[]" id="fee_name_id_{{ $sl }}" value="{{$value->fee_id}}"></input>
+                                                                                </td>
+                                                                                <td><span id="fee_amount_label_{{ $sl }}">{{$value->fee_amount}}</span>
+                                                                                    <input type="text" class="hide" name="fee_name_amount[]" id="fee_name_amount_{{ $sl }}" value="{{$value->fee_amount}}">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a class="btn-floating waves-effect waves-light cyan edit_fee_row " href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
+                                                                                    <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            @php {{ $sl++; }} @endphp @endforeach
+                                                                            <input id="fee_row_id" class="hide" name="fee_row_id" value="{{ $sl }}" type="text">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </li>

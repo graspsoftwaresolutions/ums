@@ -936,5 +936,8 @@ class CommonHelper
       return $status_data = DB::table('membership')->where('id', $memberid)->pluck('name')->first();
        
     }
+	public static function getStatusColor($statusid){
+        return $status_data = DB::table('status')->where('id', $statusid)->pluck('font_color')->first();
+    }
 	
 }
