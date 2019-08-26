@@ -367,7 +367,20 @@ class CommonHelper
                     ->leftjoin('member_fee as f','m.id','=','f.member_id')
                     ->where('f.fee_id','=',$autoid)->count();
             }
-           
+            else if($table=="reason")
+            {
+                $members_count = DB::table('membership as m')
+                ->leftjoin('irc_confirmation as irc','m.id','=','irc.resignedmemberno')
+                ->leftjoin('reason as r','r.id','=','irc.resignedreason')
+                ->where('r.id','=',$autoid)->count();
+            }
+            else if($table=="union_branch")
+            {
+              //  echo "hiii";die;
+                $members_count = DB::table('membership as m')
+                 ->join('company_branch as c','c.id','=','m.branch_id')
+                                 ->where('c.union_branch_id','=',$autoid)->count();
+            }
         }
         else if($user_role=='union-branch')
         {
@@ -428,6 +441,15 @@ class CommonHelper
                         ->leftjoin('member_fee as f','m.id','=','f.member_id')                     
                         ->where('c.union_branch_id','=',$union_branch_id)
                         ->where('f.fee_id','=',$autoid)->count();
+            }
+            else if($table=="reason")
+            {
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as c','c.id','=','m.branch_id')
+                ->leftjoin('irc_confirmation as irc','m.id','=','irc.resignedmemberno')
+                ->leftjoin('reason as r','r.id','=','irc.resignedreason')
+                ->where('c.union_branch_id','=',$union_branch_id)
+                ->where('r.id','=',$autoid)->count();
             }
         }
         else if($user_role=='company')
@@ -496,7 +518,17 @@ class CommonHelper
                     ->leftjoin('company as c','c.id','=','cb.company_id')
                     ->where('cb.company_id','=',$company_id)
                     ->where('f.fee_id','=',$autoid)->count();
-            }    
+            } 
+            else if($table=="reason")
+            {
+                $members_count = DB::table('membership as m')
+                ->join('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as c','c.id','=','cb.company_id')
+                ->leftjoin('irc_confirmation as irc','m.id','=','irc.resignedmemberno')
+                ->leftjoin('reason as r','r.id','=','irc.resignedreason')
+                ->where('cb.company_id','=',$company_id)
+                ->where('r.id','=',$autoid)->count();
+            }   
         }
         else if($user_role=='company-branch'){
             $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
@@ -559,11 +591,17 @@ class CommonHelper
                 ->where('cb.id','=',$branch_id)
                 ->where('f.fee_id','=',$autoid)->count();
             }
-
+            else if($table=="reason")
+            {
+                $members_count = DB::table('membership as m')
+                                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id') 
+                                ->leftjoin('irc_confirmation as irc','m.id','=','irc.resignedmemberno')
+                                ->leftjoin('reason as r','r.id','=','irc.resignedreason')
+                                ->where('cb.id','=',$branch_id)
+                                ->where('r.id','=',$autoid)->count();               
+            }
         }
-
         return $members_count;
-
     }
 	
 	public static function statusSubsMembersCount($status_id, $user_role, $user_id, $monthyear=false){

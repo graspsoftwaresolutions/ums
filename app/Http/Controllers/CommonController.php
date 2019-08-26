@@ -275,7 +275,7 @@ class CommonController extends Controller
         if(!empty($result))
         {
             //$memberscount = CommonHelper::mastersMembersCount($table,$autoid, $user_role, $user_id);
-           // dd($result);
+            //dd($table);
 
             foreach ($result as $resultdata)
             {
