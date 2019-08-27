@@ -524,7 +524,7 @@ class MembershipController extends Controller
 
         if(empty($request->input('search.value')))
         {
-            DB::enableQueryLog();
+            //DB::enableQueryLog();
            $compQuery = DB::table('company_branch as c')
 				->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
@@ -595,14 +595,15 @@ class MembershipController extends Controller
 				$compQuery = $compQuery->offset($start)
 				->limit($limit);
             }
-            if($order =='m.member_number'){
+           /*  if($order =='m.member_number'){
                 $memberslist = $compQuery->orderBy('m.id','desc')
 			        ->get()->toArray(); 
             }else{
                 $memberslist = $compQuery->orderBy($order,$dir)
                 ->get()->toArray(); 
-            }
-			
+            } */
+			$memberslist = $compQuery->orderBy($order,$dir)
+                ->get()->toArray(); 
             
         }
         else {

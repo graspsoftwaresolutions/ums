@@ -110,7 +110,7 @@ class MemberController extends CommonController
 
         $member_name = $request->input('name');
         $member_email = $request->input('email');
-
+		$number_count = 0;
         if($member_name!="" &&  $member_email!=""){
 			
 			if($auto_id==''){
@@ -160,6 +160,10 @@ class MemberController extends CommonController
 					}
 					
 				}
+				if($request->input('member_number')!=""){
+					$number_count = DB::table('membership')->where('member_number', $request->input('member_number'))->count();
+					
+				}
 				
 			}else{
 				if(!empty(Auth::user())){
@@ -200,7 +204,12 @@ class MemberController extends CommonController
 				}
 			}
 			$member['member_title_id'] = $request->input('member_title');
-			$member['member_number'] = $request->input('member_number');
+			if($number_count>0){
+				$member_number = CommonHelper::get_auto_member_number();
+			}else{
+				$member_number = $request->input('member_number');
+			}
+			$member['member_number'] = $member_number;
 			$member['name'] = $request->input('name');
 			$member['gender'] = $request->input('gender');
 			$member['mobile'] = $request->input('mobile');
