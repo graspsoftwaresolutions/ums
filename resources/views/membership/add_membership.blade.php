@@ -398,8 +398,7 @@
 													<div class="col-sm-8 col-sm-offset-1">
 														<div class="row">
 															<div class="">
-																<ul class="collapsible collapsible-accordion" data-collapsible="accordion" style="margin:0;padding:0;">
-																	
+																<ul class="collapsible collapsible-accordion" data-collapsible="accordion" style="margin:0;padding:0;">	
 																	<li class="active" >
 																		<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">details</i> {{__('Nominee Details') }}</div>
 																		<div class="collapsible-body">
