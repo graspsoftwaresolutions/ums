@@ -880,7 +880,19 @@
             new_ic: {
                 required:true,
                 minlength: 3,
-                maxlength: 20,
+				maxlength: 20,
+				remote: {
+					url: "{{ url(app()->getLocale().'/member_newicexists')}}",
+					data: {
+						db_autoid: function() {
+							return $("#auto_id").val();
+						},
+						_token: "{{csrf_token()}}",
+						new_ic: $(this).data('new_ic')
+					},
+					type: "post",
+            	},
+				
             },
             salary: {
                 required: true,
@@ -957,7 +969,8 @@
                 required:"Please choose DOB",
             },
             new_ic: {
-                required:"Please Enter New Ic Number",
+				required:"Please Enter New Ic Number",
+				remote: '{{__("IC Already Exists") }}',
             },
             salary: {
                 required:"Please Enter salary Name",

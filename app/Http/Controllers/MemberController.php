@@ -587,6 +587,31 @@ class MemberController extends CommonController
 		//return Response::json($return_status);
 	}
 
+	public function checkMemberNewicExists(Request $request)
+	{
+		$new_ic =  $request->input('new_ic');
+        $db_autoid = $request->input('db_autoid');
+		
+		if(!empty($autoid))
+        {
+            $usernewic_exists = Membership::where([
+                ['new_ic','=',$new_ic],
+                ['id','!=',$autoid]
+                ])->count(); 
+        }
+        else
+        {
+            $usernewic_exists = Membership::where('new_ic','=',$new_ic)->count(); 
+        } 
+        if($usernewic_exists > 0)
+        {
+            return "false";
+        }
+        else{
+            return "true";
+        }
+	}
+
 	//getMembersList
 	public function getMembersList(Request $request)
 	{

@@ -193,6 +193,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
 	Route::post('membership_save','MemberController@Save')->name('member.savemembership');
 	Route::post('member_emailexists','MemberController@checkMemberemailExists');
+	Route::post('member_newicexists','MemberController@checkMemberNewicExists');
 
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
 	//subscription
