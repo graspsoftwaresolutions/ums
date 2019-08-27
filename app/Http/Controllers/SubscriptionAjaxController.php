@@ -228,14 +228,14 @@ class SubscriptionAjaxController extends CommonController
         // echo "hii";
         // die;
         $companyid = $request->company_id;
-
+        $sl=0;
         $columns = array( 
-            0 => 'Name', 
-            1 => 'membercode', 
-            2 => 'nric', 
-            3 => 'amount', 
-            4 => 'statusId', 
-            5 => 'id',
+            $sl++ => 'Name', 
+            $sl++ => 'membercode', 
+            $sl++ => 'nric', 
+            $sl++ => 'amount', 
+            $sl++ => 'statusId', 
+            $sl++ => 'mon_sub_member.id',
         );
         DB::enableQueryLog();
             $commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
