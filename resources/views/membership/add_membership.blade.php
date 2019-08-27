@@ -1000,6 +1000,9 @@
 	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 		$("#old_mumber_number").val('');
 	});
+	$(document).on('submit','form#fee_new_form',function(){
+    $("#new_fee_id").val("");
+});
 </script>
 @include('membership.member_common_script')
 @endsection

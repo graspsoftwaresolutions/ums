@@ -285,7 +285,7 @@ class MembershipController extends Controller
 		if($user_role=='union'){
             //DB::enableQueryLog();
 				
-			$member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color','con.country_name')
+			$member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color','con.country_name')
 						 ->leftjoin('designation as d','m.designation_id','=','d.id')
 						 ->leftjoin('company_branch as c','m.branch_id','=','c.id')
 						 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -344,8 +344,8 @@ class MembershipController extends Controller
             $union_branch_id_val = '';
 			if(count($union_branch_id)>0){
                 $union_branch_id_val = $union_branch_id[0];
-                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
-                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
+                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
@@ -400,8 +400,8 @@ class MembershipController extends Controller
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name as raceshortcode','s.font_color')
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name as raceshortcode','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -456,8 +456,8 @@ class MembershipController extends Controller
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
-                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code')
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -526,7 +526,7 @@ class MembershipController extends Controller
         {
             //DB::enableQueryLog();
            $compQuery = DB::table('company_branch as c')
-				->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
+				->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','m.mobile','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -611,7 +611,7 @@ class MembershipController extends Controller
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
-							->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic','r.race_name','r.short_code as raceshortcode','s.font_color')
+							->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','m.mobile','m.old_ic','m.new_ic','r.race_name','r.short_code as raceshortcode','s.font_color')
                             ->join('membership as m','c.id','=','m.branch_id')
                             ->leftjoin('designation as d','m.designation_id','=','d.id')
                             ->leftjoin('company as com','com.id','=','c.company_id')
@@ -686,6 +686,7 @@ class MembershipController extends Controller
                 $nestedData['gender'] = $gender;
                 $nestedData['short_code'] = $member->short_code;
                 $nestedData['branch_name'] = $member->branch_name;
+            
                 $nestedData['levy'] = $member->levy;
                 $nestedData['levy_amount'] = $member->levy_amount;
                 $nestedData['tdf'] = $member->tdf;
