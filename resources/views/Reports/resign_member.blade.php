@@ -131,8 +131,13 @@
 							</div>
 						</div>
 						
-						<div class="input-field col s12 right-align">
-							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
+						<div class="row">
+							<div class="input-field col s6 right">
+								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
+							</div>
+							<div class="input-field col s6 right-align">
+								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+							</div>
 						</div>
 					</div>
 				</form>  
@@ -432,6 +437,14 @@ $("#member_status4_sidebar_a_id").addClass('active');
 		}
 		//$("#submit-download").prop('disabled',true);
 	});
-
+$('#clear').click(function(){
+	$('#date_type').val("");
+	$('#from_date').val("");
+	$('#to_date').val("");
+	$('#company_id').val("");
+	$('#branch_id').val("");
+	$('#member_search').val("");
+	$(".selectpicker").val('').trigger("change"); 
+});
 </script>
 @endsection

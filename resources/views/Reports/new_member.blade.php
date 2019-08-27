@@ -130,9 +130,13 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>
-						
-						<div class="input-field col s12 right-align">
-							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
+						<div class="row">
+							<div class="input-field col s6 right">
+								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
+							</div>
+							<div class="input-field col s6 right-align">
+								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+							</div>
 						</div>
 					</div>
 				</form>  
@@ -427,6 +431,16 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		}
 		//$("#submit-download").prop('disabled',true);
 	});
+$('#clear').click(function(){
+	$('#from_date').val("");
+	$('#to_date').val("");
+	$('#join_type').val("");
+	$('#company_id').val("");
+	$('#branch_id').val("");
+	$('#member_search').val("");
+	$(".selectpicker").val('').trigger("change"); 
+});
 
 </script>
+
 @endsection

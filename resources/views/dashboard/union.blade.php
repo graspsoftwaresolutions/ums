@@ -108,32 +108,16 @@ canvas#custom-line-chart-sample-three {
       </div>
    </div>
    <div class="col s12 m8 l8 animate fadeRight">
-
-      <div id="chartjs" class="card pt-0 pb-0 animate fadeLeft">
-         <div class=" ml-2">
-				<span class=" badge  gradient-shadow mt-2 mr-2" style="color:orange">{{$data['totla_resigned_member_count']}} Resigned</span>
-				<span class=" badge gradient-shadow mt-2 mr-2" style="color:#e75480">{{$data['totla_struckoff_member_count']}} Strukoff</span> 
-				<span class="badge gradient-shadow mt-2 mr-2" style="color:blue">{{$data['totla_defaulter_member_count']}} Deaulter</span> 
-             <span class="badge gradient-shadow mt-2 mr-2" style="color:purple;">{{$data['totla_active_member_count']}} Active</span>
-			 
-			 
-			
-			
-            <p class="mt-2 mb-0 font-weight-600 hide-on-med-and-down">Total Members</p>
-            <p class="no-margin grey-text lighten-3 hide-on-med-and-down">{{ $data['total_member_count']}}</p> 
-         </div>
-         <div class="row">
-            <div class="sample-chart-wrapper card-gradient-chart">
-               <canvas id="custom-line-chart-sample-three" class="center"></canvas>
-            </div>
-         </div>
-      </div> 
+		<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
    </div>
    @php
    $data_status = CommonHelper::getStatus();
    @endphp
 </div>
 @section('footerSecondSection')
+<script src="{{ asset('public/assets/js/highchartjs/highcharts.js') }}" type="text/javascript"></script>
+
+
 <script>
 	var data = {
 	  series: [97, 3]
@@ -206,45 +190,58 @@ canvas#custom-line-chart-sample-three {
             text: "82%"
         }
     };
- 
-    // var SLlabels = @php echo json_encode($data_status) @endphp;
-   var SLlabels = ['x','ACTIVE','DEFAULTER','STRUCKOFF','RESIGNED','y'];
-    var LineSL3ctx = document.getElementById("custom-line-chart-sample-three").getContext("2d");
-    var gradientStroke = LineSL3ctx.createLinearGradient(500, 0, 0, 200);
-    gradientStroke.addColorStop(0, "#8133ff");
-    gradientStroke.addColorStop(1, "#ff4bac");
-
-    var gradientFill = LineSL3ctx.createLinearGradient(500, 0, 0, 200);
-    gradientFill.addColorStop(0, "#8133ff");
-    gradientFill.addColorStop(1, "#ff4bac");
-
-    var SL3Chart = new Chart(LineSL3ctx, {
-        type: "line",
-        data: {
-            labels: SLlabels,
-            datasets: [
-                {
-                    label: "Members Count",
-                   
-                    borderColor: gradientStroke,
-                    pointColor: "#fff",
-                    pointBorderColor: gradientStroke,
-                    pointBackgroundColor: "#fff",
-                    pointHoverBackgroundColor: gradientStroke,
-                    pointHoverBorderColor: gradientStroke,
-                    pointRadius: 4,
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    fill: true,
-                    backgroundColor: gradientFill,
-                    borderWidth: 1,
-                    data: [0, @php echo  $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp,0]
-                }
-            ],
-            
-        },
-        options: SLOption
-    });
+	
+	//High Chart starts 
+	Highcharts.chart('container', {
+    chart: {
+        type: 'areaspline'
+    },
+    title: {
+        text: 'Total Members count based on status'
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'left',
+        verticalAlign: 'top',
+        x: 150,
+        y: 100,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
+    },
+    xAxis: {
+        categories: ['ACTIVE','DEFAULTER','STRUCKOFF','RESIGNED'],
+        plotBands: [{ // visualize the weekend
+            from: 4.5,
+            to: 6.5,
+            color: 'rgba(68, 170, 213, .2)'
+        }]
+    },
+    yAxis: {
+        title: {
+            text: 'Count'
+        }
+    },
+    tooltip: {
+        shared: true,
+        valueSuffix: ''
+    },
+    credits: {
+        enabled: false
+    },
+    plotOptions: {   
+		 series: {
+			dataLabels: {
+				enabled: true
+			}
+		},
+    },
+    series: [{
+		name : "Staus Count",
+		data: [ @php echo  $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp]
+    }]
+}); 
+ //High Chart Ends  
 </script>
 @endsection
