@@ -21,6 +21,12 @@ canvas#custom-line-chart-sample-three {
 	  display:none;
 	}
 }
+#container{
+	font-family: 'Muli', sans-serif !important;
+}
+text{
+	font-family: 'Muli', sans-serif !important;
+}
 
 </style>
 @endsection
@@ -107,8 +113,8 @@ canvas#custom-line-chart-sample-three {
          </div>
       </div>
    </div>
-   <div class="col s12 m8 l8 animate fadeRight">
-		<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+   <div class="col s12 m8 l8 animate fadeRight" style="padding:0;margin:0;">
+		<div id="container" style="min-width: 310px; height: 350px; margin: 12px 0 auto"></div>
    </div>
    @php
    $data_status = CommonHelper::getStatus();
@@ -157,39 +163,7 @@ canvas#custom-line-chart-sample-three {
    })(window, document, jQuery);
    //Sampel Line Chart Three
     // Options
-    var SLOption = {
-        responsive: true,
-        maintainAspectRatio: true,
-        datasetStrokeWidth: 3,
-        pointDotStrokeWidth: 4,
-        tooltipFillColor: "rgba(0,0,0,0.6)",
-        legend: {
-            display: false,
-            position: "bottom"
-        },
-        hover: {
-            mode: "label"
-        },
-        scales: {
-            xAxes: [
-                {
-                    display: false
-                }
-            ],
-            yAxes: [
-                {
-                    display: false
-                }
-            ]
-        },
-        title: {
-            display: false,
-            fontColor: "#FFF",
-            fullWidth: false,
-            fontSize: 40,
-            text: "82%"
-        }
-    };
+ 
 	
 	//High Chart starts 
 	Highcharts.chart('container', {
@@ -197,7 +171,7 @@ canvas#custom-line-chart-sample-three {
         type: 'areaspline'
     },
     title: {
-        text: 'Total Members count based on status'
+        text: 'Statuswise members count'
     },
     legend: {
         layout: 'vertical',
@@ -234,7 +208,14 @@ canvas#custom-line-chart-sample-three {
 		 series: {
 			dataLabels: {
 				enabled: true
-			}
+			},
+			fillColor: {
+                linearGradient: [0, 0, 0, 300],
+                stops: [
+                    [0, '#7b1fa2'],
+                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                ]
+            }
 		},
     },
     series: [{
