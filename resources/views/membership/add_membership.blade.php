@@ -454,10 +454,15 @@
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m4">
 																					<label>Country Name*</label>
+																					@php
+																					$Defcountry = CommonHelper::DefaultCountry();
+																					@endphp
 																					<select name="nominee_country_id" id="nominee_country_id"  class="error browser-default selectpicker">
 																						<option value="">Select Country</option>
 																						@foreach($data['country_view'] as $value)
-																						<option value="{{$value->id}}" >{{$value->country_name}}</option>
+																							<option value="{{$value->id}}" @isset($row) @php if($value->id
+																								== $row->country_id) { echo "selected";} @endphp @endisset @if($Defcountry==$value->id) selected @endif
+																								>{{$value->country_name}}</option>
 																						@endforeach
 																					</select>
 																					<div class="input-field">
@@ -467,7 +472,11 @@
 																				<div class="col s12 m4">
 																					<label>State Name*</label>
 																					<select name="nominee_state_id" id="nominee_state_id"  class="error browser-default selectpicker">
-																						<option value="">Select</option>
+																						
+																						<option value="" selected>{{__('State Name') }}</option>
+																							@foreach($statelist as $key=>$value)
+																								<option value="{{$value->id}}" >{{$value->state_name}}</option>
+																							@endforeach
 																					</select>
 																					<div class="input-field">
 																						<div class="errorTxt36"></div>
@@ -595,10 +604,15 @@
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m4">
 																					<label>Country Name*</label>
+																					@php
+																					$Defcountry = CommonHelper::DefaultCountry();
+																					@endphp
 																					<select name="guardian_country_id" id="guardian_country_id"  class="error browser-default selectpicker">
 																						<option value="">Select</option>
 																						@foreach($data['country_view'] as $value)
-																						<option value="{{$value->id}}" >{{$value->country_name}}</option>
+																							<option value="{{$value->id}}" @isset($row) @php if($value->id
+																								== $row->country_id) { echo "selected";} @endphp @endisset @if($Defcountry==$value->id) selected @endif
+																								>{{$value->country_name}}</option>
 																						@endforeach
 																					</select>
 																					<div class="input-field">
@@ -608,7 +622,11 @@
 																				<div class="col s12 m4">
 																					<label>State Name*</label>
 																					<select name="guardian_state_id" id="guardian_state_id"  class="error browser-default selectpicker">
-																						<option value="" >Select</option>
+																						
+																						<option value="" selected>{{__('State Name') }}</option>
+																							@foreach($statelist as $key=>$value)
+																								<option value="{{$value->id}}" >{{$value->state_name}}</option>
+																							@endforeach
 																					</select>
 																					<div class="input-field">
 																						<div class="errorTxt36"></div>
