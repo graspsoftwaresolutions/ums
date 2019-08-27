@@ -257,6 +257,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('/generate-resign-pdf/{parameter}', 'MembershipController@genresignPDF')->name('resign.pdf');
 	Route::get('subscription-status','SubscriptionController@statusCountView')->name('subscription.status');
 	Route::get('subscription_member_info','SubscriptionAjaxController@SubscriptionMemberDetails')->name('subscription.match');
+	Route::post('ajax_save_approval','SubscriptionController@saveApproval')->name('approval.save');
 
 	//Reports
 	
@@ -268,6 +269,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
 	Route::get('get-takaful-report','ReportsController@takafulReport')->name('reports.takaful');
 	Route::get('get-takaful-more-report','ReportsController@takafulReportMore')->name('reports.takfulmore');
+	
 	
 	
 	

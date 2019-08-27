@@ -939,5 +939,25 @@ class CommonHelper
 	public static function getStatusColor($statusid){
         return $status_data = DB::table('status')->where('id', $statusid)->pluck('font_color')->first();
     }
+	public static function getUserName($userid){
+        return $status_data = DB::table('users')->where('id', $userid)->pluck('name')->first();
+    }
+	public static function getCompanyIDbyMemberID($memberid){
+		return $bank_name = DB::table('membership as m')->where('m.id', $memberid)
+						->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+						->leftjoin('company as c','c.id','=','cb.company_id')
+						->pluck('c.company_name')->first();
+	 }
+	public static function getCompanyIDbySubMemberID($memberid){
+		return $bank_name = DB::table('mon_sub_member as m')->where('m.id', $memberid)
+						->leftjoin('mon_sub_company as sc','sc.id','=','m.MonthlySubscriptionCompanyId')
+						->leftjoin('company as c','c.id','=','sc.CompanyCode')
+						->pluck('c.company_name')->first();
+	}
+	
+	public static function get_member_match_id($autoid){
+       $status_data = DB::table('mon_sub_member_match')->where('id','=',$autoid)->pluck('match_id')->first();
+       return $status_data;
+    }
 	
 }

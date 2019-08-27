@@ -666,19 +666,40 @@ class SubscriptionController extends CommonController
         $user_id = Auth::user()->id;
 		$defaultdate = date('Y-m-01',$date);
         if($member_status!=""){
-            $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub_member_match` as mm on m.id=mm.mon_sub_member_id left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId="'.$member_status.'" AND `sm`.`Date`="'.$defaultdate.'"'));
+            $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub_member_match` as mm on m.id=mm.mon_sub_member_id left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId="'.$member_status.'" AND `sm`.`Date`="'.$defaultdate.'"'));
             $data['member'] = $members_data;
             $data['status_type'] = 1;
             $data['status'] = $member_status;
         }
         if($approval_status!=""){
-           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` WHERE mm.match_id="'.$approval_status.'" AND `sm`.`Date`="'.$defaultdate.'"'));
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` WHERE mm.match_id="'.$approval_status.'" AND `sm`.`Date`="'.$defaultdate.'"'));
            $data['member'] = $members_data;
            $data['status_type'] = 2;
            $data['status'] = $approval_status;
         }
+		if($member_status==0 && $approval_status==""){
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` WHERE mm.match_id="2" AND `sm`.`Date`="'.$defaultdate.'"'));
+           $data['member'] = $members_data;
+           $data['status_type'] = 3;
+           $data['status'] = 0;
+        }
 		return view('subscription.member_status')->with('data',$data);
     }
+	
+	public function saveApproval($lang, Request $request){
+        $match_auto_id = $request->input('match_auto_id');
+        $match_id  = CommonHelper::get_member_match_id($match_auto_id);
+		$member_approve = $request->input('member_approve');
+		$bank_approve = $request->input('bank_approve');
+		if(isset($member_approve) && $match_id==3){
+			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,3)->update(['approval_status' => 1, 'description' => 'Mismatched Member Name', 'updated_by' => Auth::user()->id]);
+        }
+        if(isset($bank_approve) && $match_id==4){
+			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,4)->update(['approval_status' => 1, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
+		}
+		$return_data = ['status' => 1, 'message' => 'Updated Succesfully'];
+		echo json_encode($return_data);
+	}
     
     
 }
