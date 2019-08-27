@@ -62,6 +62,8 @@
 					{{ CommonHelper::get_member_status_name($data['status']) }} Members List
 				@elseif($data['status_type']==2)
 					{{ CommonHelper::get_member_match_name($data['status']) }}'s List
+				@elseif($data['status_type']==3)
+					SUNDRY CREDITORS List
 				@endif
 				
 				</h4> 
@@ -113,14 +115,16 @@
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
 						<tr>
-							<th width="20%">{{__('Member Name')}}</th>
-							<th width="10%">{{__('Member Id')}}</th>
+							<th width="10%">{{__('Member Name')}}</th>
+							<th width="9%">{{__('Member Id')}}</th>
 							<th width="10%">{{__('Bank')}}</th>
 							<th width="10%">{{__('NRIC')}}</th>
-							<th width="10%">{{__('Amount')}}</th>
-							<th width="10%">{{__('Due')}}</th>
-							<th width="10%">{{__('Status')}}</th>
-							<th>{{__('Action')}}</th>
+							<th width="7%">{{__('Amount')}}</th>
+							<th width="5%">{{__('Due')}}</th>
+							<th width="10%">{{__('Member Status')}}</th>
+							<th width="10%">{{__('Description')}}</th>
+							<th width="10%">{{__('Approval Status')}}</th>
+							<th width="15%">{{__('Action')}}</th>
 						</tr> 
 					</thead>
 					<tbody>
@@ -136,6 +140,8 @@
 								<td>{{ $member->Amount }}</td>
 								<td>{{ $member->due }}</td>
 								<td>{{ $member->status_name }}</td>
+								<td>{{ CommonHelper::get_member_match_name($member->match_id) }}</td>
+								<td><span class="badge {{$member->approval_status==1 ? 'green' : 'red'}}">{{ $member->approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{$member->match_auto_id}})"  title="Approval" type="button" name="action"><i class="material-icons">check_box</i></a></td>
@@ -152,7 +158,7 @@
 	</div>
 	  <!-- Modal Structure -->
 	  <div id="modal-approval" class="modal">
-		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('master.savecountry',app()->getLocale()) }}">
+		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('approval.save',app()->getLocale()) }}">
         @csrf
 		<input type="text" class="hide" name="match_auto_id" id="match_auto_id">
 		<div class="modal-content">
@@ -168,6 +174,34 @@
 						</tr>
 					</thead>
 					<tbody>
+						<tr class="nric_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" checked />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>
+							NRIC Matched
+							
+							<td><span id="nric_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="nric_not_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" />
+										
+									</label>
+								</p>
+							</td>
+							<td>
+							NRIC Not Matched
+							
+							<td></td>
+						</tr>
 						<tr class="member_match_row">
 							<td>
 								<p class="verify-approval">
@@ -184,7 +218,7 @@
 								</br>
 								&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_member_name" class="bold"></span></span>
 							</td>
-							<td></td>
+							<td><span id="name_approved_by" class="bold"></span></td>
 						</tr>
 						<tr class="bank_match_row">
 							<td>
@@ -198,27 +232,14 @@
 							<td>
 							Mismatched Bank
 							</br>
-							&nbsp;&nbsp;<span class="bold">From Bank: Affin bank</span>
+							&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_bank_name" class="bold"></span></span>
 							</br>
-							&nbsp;&nbsp;<span class="bold">From Union: Affin bank Berhard</span>
+							&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_bank_name" class="bold"></span></span>
 							</td>
-							<td></td>
+							<td><span id="bank_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="nric_match_row">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" />
-										
-									</label>
-								</p>
-							</td>
-							<td>
-							NRIC Not Matched
-							
-							<td></td>
-						</tr>
-						<tr class="hide">
+						
+						<tr class="previous_subscription_match_row">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -235,7 +256,7 @@
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-		  <button type="submit" class="btn waves-effect waves-light">Submit</button>
+		  <button type="submit" class="btn waves-effect waves-light submitApproval">Submit</button>
 		</div>
 		 </form>
 	  </div>
@@ -297,6 +318,7 @@ $("#subscription_sidebar_a_id").addClass('active');
 			}
 	  });
 	  function showApproval(match_id){
+		   $(".submitApproval").attr('disabled', false);
 		   $('.modal').modal();
 		   $("#match_auto_id").val(match_id);
 		   loader.showLoader();
@@ -307,37 +329,61 @@ $("#subscription_sidebar_a_id").addClass('active');
 				dataType: "json",
 				success: function(result) {
 					var match_data = result.match;
-					if(match_data.match_id==3){
+					$(".bank_match_row").addClass('hide');
+					$(".nric_match_row").addClass('hide');
+					$(".member_match_row").addClass('hide');
+					$(".nric_not_match_row").addClass('hide');
+					$(".previous_subscription_match_row").addClass('hide');
+					if(match_data.match_id==1){
+						$(".nric_match_row").removeClass('hide');
+						$("#nric_approved_by").html(result.updated_user);
+					}
+					else if(match_data.match_id==3){
+						$("#member_approve").attr('checked',match_data.approval_status==1 ? true : false);
 						$(".member_match_row").removeClass('hide');
-						$(".bank_match_row").addClass('hide');
-						$(".nric_match_row").addClass('hide');
 						$("#registered_member_name").html(result.registered_member_name);
 						$("#uploaded_member_name").html(result.uploaded_member_name);
+						$("#name_approved_by").html(result.updated_user);
 					}else if(match_data.match_id==4){
-						$(".member_match_row").addClass('hide');
+						$("#bank_approve").attr('checked',match_data.approval_status==1 ? true : false);
 						$(".bank_match_row").removeClass('hide');
-						$(".nric_match_row").addClass('hide');
-						$("#registered_member_name").html('');
-						$("#uploaded_member_name").html('');
+						$("#registered_bank_name").html(result.registered_bank_name);
+						$("#uploaded_bank_name").html(result.uploaded_bank_name);
+						$("#bank_approved_by").html(result.bank_approved_by);
 					}else if(match_data.match_id==2){
-						$(".nric_match_row").removeClass('hide');
-						$(".member_match_row").addClass('hide');
-						$(".bank_match_row").addClass('hide');
-						$("#registered_member_name").html('');
-						$("#uploaded_member_name").html('');
-					}else{
-						$(".member_match_row").addClass('hide');
-						$(".bank_match_row").addClass('hide');
-						$(".nric_match_row").addClass('hide');
-						$("#registered_member_name").html('');
-						$("#uploaded_member_name").html('');
+						$(".nric_not_match_row").removeClass('hide');
 					}
 					$("#modal-approval").modal('open');
 					loader.hideLoader();
 				}
 			});
 	  }
-  
+	$(document).on('submit','#approvalformValidate',function(event){
+		event.preventDefault();
+		$(".submitApproval").attr('disabled', true);
+		var url = "{{ url(app()->getLocale().'/ajax_save_approval') }}" ;
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType: "json",
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		    },
+			data: $('#approvalformValidate').serialize(),
+			success: function(result) {
+				if(result.status==1){
+					M.toast({
+						html: result.message
+					});
+				}else{
+					M.toast({
+						html: result.message
+					});
+				}
+				$("#modal-approval").modal('close');
+			}
+		});
+	});
 
 </script>
 @endsection

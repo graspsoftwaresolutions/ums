@@ -19,6 +19,9 @@
 	{
 		background-color: rgba(242, 242, 242, .5);
 	}
+	.monthly-sub-status:hover,.monthly-approval-status:hover{
+		background-color: #dddddd;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -235,10 +238,10 @@
 							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
 							@endphp 
 							@foreach($data['approval_status'] as  $key => $stat)
-							<tr>
+							<tr class="monthly-approval-status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
 								<td>{{ $key+1 }} </td>
 								<td>{{ $stat->match_name }}</td>
-								<td id="approval_status_count_{{ $stat->id }}"><a target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</a></td>
+								<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
 							</tr>
 							@endforeach
 						</table>
@@ -524,6 +527,9 @@ $(document).ready(function() {
 		
 	});
 	$(".monthly-sub-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
+	$(".monthly-approval-status").click(function() {
 		win = window.open($(this).data("href"), '_blank');
     });
 	$("#subscriptions_sidebars_id").addClass('active');

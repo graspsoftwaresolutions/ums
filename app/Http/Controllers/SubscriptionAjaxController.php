@@ -680,11 +680,19 @@ class SubscriptionAjaxController extends CommonController
        $status_data = DB::table('mon_sub_member_match')->where('id','=',$sub_match_auto_id)->first();
        $data['match'] = $status_data;
        $data['match_id'] = $status_data->match_id;
+       $data['updated_user'] = CommonHelper::getUserName($status_data->updated_by);
        if($status_data->match_id==3){
             $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
             $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
             $data['uploaded_member_name'] = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('Name')->first();
        }
+       if($status_data->match_id==4){
+            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
+            $company_name = CommonHelper::getCompanyIDbyMemberID($member_id);
+            $sub_company_name = CommonHelper::getCompanyIDbySubMemberID($status_data->mon_sub_member_id);
+            $data['registered_bank_name'] = $company_name;
+            $data['uploaded_bank_name'] = $sub_company_name;
+        }
        $data['status'] = 1;
        echo json_encode($data); 
     }
