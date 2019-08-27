@@ -26,13 +26,14 @@
 @section('main-content')
 <div id="main">
 	<div class="row">
-		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+		
 			<div class="col s12">
 				<div class="container">
 					<div class="col s12 m2">
 					&nbsp;
 					</div>
-					<div class="col s12 m6 z-depth-4 border-radius-6 bg-opacity-8">
+					<br><br>
+					<div class="col s12 m6 z-depth-4 border-radius-6 bg-opacity-8" style="margin-left: 86px;">
 						<form method="POST" id="FormChangePasswordValidate" action="{{ route('changePassword', app()->getLocale()) }}">
 							@csrf
 							<div class="row">

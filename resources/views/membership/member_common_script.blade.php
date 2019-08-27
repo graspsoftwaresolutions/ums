@@ -784,6 +784,8 @@ $('#nominee_state_id').change(function(){
 	var nominee_phone =   $("#nominee_phone").val();
 	var nominee_age =   $("#nominee_age").val();
 	
+
+	
 	var selected = $("#relationship").find('option:selected');
 	var relationshipname = selected.data('relationshipname'); 
 	$.ajaxSetup({
@@ -821,6 +823,7 @@ $('#nominee_state_id').change(function(){
 		});
 		$("#add_nominee").attr('disabled',false);
 		$("#nominee_row_id").val(nominee_row_id);
+		$(".selectpicker").val('').trigger("change");
 		
 	}
 	else{
