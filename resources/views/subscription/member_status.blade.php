@@ -141,7 +141,7 @@
 								<td>{{ $member->due }}</td>
 								<td>{{ $member->status_name }}</td>
 								<td>{{ CommonHelper::get_member_match_name($member->match_id) }}</td>
-								<td><span class="badge {{$member->approval_status==1 ? 'green' : 'red'}}">{{ $member->approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
+								<td id="approve_status_{{ $member->match_auto_id }}"><span class="badge {{$member->approval_status==1 ? 'green' : 'red'}}">{{ $member->approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{$member->match_auto_id}})"  title="Approval" type="button" name="action"><i class="material-icons">check_box</i></a></td>
@@ -163,6 +163,7 @@
 		<input type="text" class="hide" name="match_auto_id" id="match_auto_id">
 		<div class="modal-content">
 		  <h4>Monthly subscription member approval</h4>
+		   <p>Member Name: <span id="view_member_name" class="bold"></span></p>
 		   </hr>
 			
 				<table>
@@ -174,7 +175,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="nric_match_row">
+						<tr class="nric_match_row" style="pointer-events: none;">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -243,13 +244,73 @@
 							<td>
 								<p class="verify-approval">
 									<label>
-										<input type="checkbox" name="approve" id="approve" value="1" />
+										<input type="checkbox" name="previous_approve" id="previous_approve" value="1" />
 										<span></span>
 									</label>
 								</p>
 							</td>
 							<td>Mismatched Previous Subscription</td>
-							<td></td>
+							<td><span id="previous_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="struckoff_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="struckoff_approve" id="struckoff_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>StruckOff Members</td>
+							<td><span id="struckoff_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="resign_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="resign_approve" id="resign_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>Resigned Members</td>
+							<td><span id="resign_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="nric_old_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="nric_old_approve" id="nric_old_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>NRIC Old Matched</td>
+							<td><span id="nric_old_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="nric_bank_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="nric_bank_approve" id="nric_bank_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>NRIC By Bank Matched</td>
+							<td><span id="nric_bank_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="previous_unpaid_match_row">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="previous_unpaid_approve" id="previous_unpaid_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>Previous Subscription Unpaid</td>
+							<td><span id="previous_unpaid_approved_by" class="bold"></span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -333,25 +394,68 @@ $("#subscription_sidebar_a_id").addClass('active');
 					$(".nric_match_row").addClass('hide');
 					$(".member_match_row").addClass('hide');
 					$(".nric_not_match_row").addClass('hide');
+					$(".struckoff_match_row").addClass('hide');
+					$(".resign_match_row").addClass('hide');
+					$(".nric_old_match_row").addClass('hide');
 					$(".previous_subscription_match_row").addClass('hide');
+					$(".nric_bank_match_row").addClass('hide');
+					$(".previous_unpaid_match_row").addClass('hide');
+					$("#view_member_name").html(result.registered_member_name);
 					if(match_data.match_id==1){
 						$(".nric_match_row").removeClass('hide');
-						$("#nric_approved_by").html(result.updated_user);
+						$("#nric_approved_by").html(result.created_user);
 					}
 					else if(match_data.match_id==3){
-						$("#member_approve").attr('checked',match_data.approval_status==1 ? true : false);
+						$("#member_approve").prop('checked',match_data.approval_status==1 ? true : false);
 						$(".member_match_row").removeClass('hide');
 						$("#registered_member_name").html(result.registered_member_name);
 						$("#uploaded_member_name").html(result.uploaded_member_name);
 						$("#name_approved_by").html(result.updated_user);
+						$(".nric_match_row").removeClass('hide');
+						$("#nric_approved_by").html(result.created_user);
 					}else if(match_data.match_id==4){
-						$("#bank_approve").attr('checked',match_data.approval_status==1 ? true : false);
+						$("#bank_approve").prop('checked',match_data.approval_status==1 ? true : false);
 						$(".bank_match_row").removeClass('hide');
 						$("#registered_bank_name").html(result.registered_bank_name);
 						$("#uploaded_bank_name").html(result.uploaded_bank_name);
-						$("#bank_approved_by").html(result.bank_approved_by);
+						$("#bank_approved_by").html(result.updated_user);
+						$(".nric_match_row").removeClass('hide');
+						$("#nric_approved_by").html(result.created_user);
+					}else if(match_data.match_id==5){
+						$(".previous_subscription_match_row").removeClass('hide');
+						$("#previous_approve").prop('checked',match_data.approval_status==1 ? true : false);
+						$("#previous_approved_by").html(result.created_user);
+					}
+					else if(match_data.match_id==6){
+						$(".nric_match_row").removeClass('hide');
+						$("#struckoff_approve").prop('checked',match_data.approval_status==1 ? true : false);
+						$(".struckoff_match_row").removeClass('hide');
+						$("#nric_approved_by").html(result.created_user);
+						$("#struckoff_approved_by").html(result.updated_user);
+					}
+					else if(match_data.match_id==7){
+						$(".nric_match_row").removeClass('hide');
+						$("#resign_approve").prop('checked',match_data.approval_status==1 ? true : false);
+						$(".resign_match_row").removeClass('hide');
+						$("#nric_approved_by").html(result.created_user);
+						$("#resign_approved_by").html(result.updated_user);
+					}
+					else if(match_data.match_id==8){
+						$("#nric_old_approve").prop('checked',match_data.approval_status==1 ? true : false);
+						$(".nric_old_match_row").removeClass('hide');
+						$("#nric_old_approved_by").html(result.updated_user);
+					}else if(match_data.match_id==9){
+						$(".nric_bank_match_row").removeClass('hide');
+						$("#nric_bank_approve").prop('checked',match_data.approval_status==1 ? true : false);
+						$("#nric_bank_approved_by").html(result.created_user);
+					}else if(match_data.match_id==10){
+						$(".previous_unpaid_match_row").removeClass('hide');
+						$("#previous_unpaid_approve").prop('checked',match_data.approval_status==1 ? true : false);
+						$("#previous_unpaid_approved_by").html(result.created_user);
 					}else if(match_data.match_id==2){
 						$(".nric_not_match_row").removeClass('hide');
+					}else{
+						$(".nric_match_row").removeClass('hide');
 					}
 					$("#modal-approval").modal('open');
 					loader.hideLoader();
@@ -372,6 +476,9 @@ $("#subscription_sidebar_a_id").addClass('active');
 			data: $('#approvalformValidate').serialize(),
 			success: function(result) {
 				if(result.status==1){
+					var badge_color = result.approval_status == 1 ? 'green' : 'red';
+					var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
+					$("#approve_status_"+result.match_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
 					M.toast({
 						html: result.message
 					});

@@ -19,8 +19,9 @@
 	{
 		background-color: rgba(242, 242, 242, .5);
 	}
-	.monthly-sub-status:hover,.monthly-approval-status:hover{
+	.monthly-sub-status:hover,.monthly-approval-status:hover,.monthly-company-sub-status:hover,.monthly-company-approval-status:hover{
 		background-color: #dddddd;
+		cursor:pointer;
 	}
 </style>
 @endsection
@@ -233,6 +234,8 @@
 								<td>{{__('Sl No') }}</td>
 								<td>{{__('Description') }}</td>
 								<td>{{__('Count') }}</td>
+								<td>{{__('Approved') }}</td>
+								<td>{{__('Pending') }}</td>
 							</tr>
 							@php 
 							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
@@ -242,6 +245,8 @@
 								<td>{{ $key+1 }} </td>
 								<td>{{ $stat->match_name }}</td>
 								<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
+								<td id="approval_approved_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1) }}</td>
+								<td id="approval_pending_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0) }}</td>
 							</tr>
 							@endforeach
 						</table>
@@ -274,14 +279,14 @@
 									$user_id = Auth::user()->id;
 								@endphp 
 								@foreach($data['member_stat'] as  $key => $stat)
-								<tr>
+								<tr id="monthly_company_sub_status_{{ $stat->id }}" class="monthly-company-sub-status" data-href="" style="cursor:pointer;color:{{ $stat->font_color }};">
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->status_name }}</td>
 									<td id="company_member_status_count_{{ $stat->id }}">0</td>
 									<td id="company_member_status_amount_{{ $stat->id }}">0 </td>
 								</tr>
 								@endforeach
-								<tr>
+								<tr id="monthly_company_sub_status_0" class="monthly-company-sub-status" data-href="" style="cursor:pointer;">
 									<td>{{ count($data['member_stat'])+1 }} </td>
 									<td>SUNDRY CREDITORS</td>
 									<td id="company_member_status_count_sundry">0</td>
@@ -300,15 +305,19 @@
 								<td>{{__('Sl No') }}</td>
 								<td>{{__('Description') }}</td>
 								<td>{{__('Count') }}</td>
+								<td>{{__('Approved') }}</td>
+								<td>{{__('Pending') }}</td>
 							</tr>
 							@php 
 							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
 							@endphp 
 							@foreach($data['approval_status'] as  $key => $stat)
-							<tr>
+							<tr id="monthly_company_approval_status_{{ $stat->id }}" class="monthly-company-approval-status" data-href="">
 								<td>{{ $key+1 }} </td>
 								<td>{{ $stat->match_name }}</td>
 								<td id="company_approval_status_count_{{ $stat->id }}">0</td>
+								<td id="company_approval_approved_count_{{ $stat->id }}">0</td>
+								<td id="company_approval_pending_count_{{ $stat->id }}">0</td>
 							</tr>
 							@endforeach
 						</table>
@@ -443,8 +452,8 @@ $(document).ready(function() {
 						$("#modal_subscription").modal('open');
 						$.each(result.status_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
-							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id+"'>"
-							$("#company_member_status_count_"+key).html(member_link+entry+'</a>');
+							$("#monthly_company_sub_status_"+key).attr('data-href',baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+							$("#company_member_status_count_"+key).html(entry);
                         });
 						$.each(result.status_data.amount, function(key, entry) {
 							$("#company_member_status_amount_"+key).html(entry);
@@ -452,9 +461,17 @@ $(document).ready(function() {
 						$("#memberstatustable").css('opacity',1);
 						$.each(result.approval_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
-							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id+"'>"
-							$("#company_approval_status_count_"+key).html(member_link+entry+'</a>');
+							$("#monthly_company_approval_status_"+key).attr('data-href',baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+							$("#company_approval_status_count_"+key).html(entry);
                         });
+						$.each(result.approval_data.approved, function(key, entry) {
+							$("#company_approval_approved_count_"+key).html(entry);
+                        });
+						$.each(result.approval_data.pending, function(key, entry) {
+							$("#company_approval_pending_count_"+key).html(entry);
+                        });
+						var baselink = base_url +'/{{ app()->getLocale() }}/';
+						$("#monthly_company_sub_status_0").attr('data-href',baselink+"subscription-status?member_status=0&date="+result.month_year_number+"&company_id="+result.company_auto_id);
 						$("#company_member_status_count_sundry").html(result.sundry_count);
 						$("#company_member_status_amount_sundry").html(result.sundry_amount);
 						$("#approvalstatustable").css('opacity',1);
@@ -478,7 +495,7 @@ $(document).ready(function() {
 						$.each(result.status_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
 							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"'>";
-							$("#member_status_count_"+key).html(member_link+entry+'</a>');
+							$("#member_status_count_"+key).html(entry);
                         });
 						$.each(result.status_data.amount, function(key, entry) {
 							$("#member_status_amount_"+key).html(entry);
@@ -487,7 +504,7 @@ $(document).ready(function() {
 						$.each(result.approval_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
 							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"'>"
-							$("#approval_status_count_"+key).html(member_link+entry+'</a>');
+							$("#approval_status_count_"+key).html(entry);
                         });
 						$("#approvalstatustable").css('opacity',1);
 						//$("#member_status_count_1").html(5555);
@@ -530,6 +547,12 @@ $(document).ready(function() {
 		win = window.open($(this).data("href"), '_blank');
     });
 	$(".monthly-approval-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
+	$(".monthly-company-sub-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
+	$(".monthly-company-approval-status").click(function() {
 		win = window.open($(this).data("href"), '_blank');
     });
 	$("#subscriptions_sidebars_id").addClass('active');
