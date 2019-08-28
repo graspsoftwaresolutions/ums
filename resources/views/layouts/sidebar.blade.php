@@ -127,7 +127,7 @@
               @endforeach
               <li id="member_status4_sidebar_li_id" class=""><a id="member_status4_sidebar_a_id" class="collapsible-body" href="{{ route('reports.resignmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Resigned Members</span></a></li>
               <li id="takaful_report_sidebar_li_id" class=""><a id="takaful_report_sidebar_a_id" class="collapsible-body" href="{{ route('reports.takaful',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Takaful Report</span></a></li>
-              
+              <li id="member_halfshare_sidebar_li_id" class=""><a id="member_halfshare_sidebar_a_id" class="collapsible-body" href="{{ route('reports.halfshare',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Financial Half Share') }}</span></a></li>
             </ul>
           </div>
         </li>
