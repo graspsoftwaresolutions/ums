@@ -669,7 +669,11 @@ class SubscriptionController extends CommonController
         $user_id = Auth::user()->id;
 		$defaultdate = date('Y-m-d',$date);
 		$data['data_limit'] = $this->limit;
-		$data['company_view'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_id'] = $company_id;
+        $data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01',$date))->get();
 		$data['member_status'] = Status::where('status',1)->get();
 		$data['approval_status'] = DB::table('mon_sub_match_table as mt')
                                     ->select('mt.id as id','mt.match_name as match_name')

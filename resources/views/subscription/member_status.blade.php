@@ -89,9 +89,9 @@
 					$userid = Auth::user()->id;
 					$get_roles = Auth::user()->roles;
 					$user_role = $get_roles[0]->slug;
-					$companylist = [];
-					$companyid = '';
-					if($user_role =='union'){
+					$companylist = $data['company_view'];
+					$companyid = $data['company_id'];
+					/* if($user_role =='union'){
 						$companylist = $data['company_view'];
 					}
 					else if($user_role =='union-branch'){
@@ -107,7 +107,7 @@
 						$branchid = CommonHelper::getCompanyBranchID($userid);
 						$companyid = CommonHelper::getCompanyID($userid);
 						$companylist = CommonHelper::getCompanyList($companyid);
-					} 
+					}  */
 					
 				@endphp
 				</h4> 
@@ -117,7 +117,8 @@
 					<div class="row">    
 						<div class="col s3 member_status_row">
 							<label for="search_date">{{__('Date')}}</label>
-							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" disabled name="search_date">
+							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" readonly name="search_date">
+							<input id="filter_date" type="text" class="validate hide" value="{{ $data['filter_date'] }}" readonly name="filter_date">
 						</div>
 						<div class="col s3 member_status_row">
 							<label for="member_status">{{__('Member Status')}}</label>
@@ -139,7 +140,7 @@
 						</div>
 						<div class="col s3">
 							<label>{{__('Company Name') }}</label>
-							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+							<select name="company_id" id="company_id" class="error browser-default" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
 								@foreach($companylist as $value)
 								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
@@ -604,31 +605,33 @@ $("#subscription_sidebar_a_id").addClass('active');
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    loader.showLoader();
-		    var from_date = $("#from_date").val();
-			var to_date = $("#to_date").val();
+		    var filter_date = $("#filter_date").val();
+			var member_status = $("#member_status").val();
+			var approval_status = $("#approval_status").val();
 			var company_id = $("#company_id").val();
-			var branch_id = $("#branch_id").val();
-			var member_auto_id = $("#member_auto_id").val();
-			var join_type = $("#join_type").val();
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+			var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&approval_status='+approval_status+'&company_id='+company_id;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-new-members-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(res)
+				url : "{{ URL::to('/en/get-subscription-more') }}?offset="+lastoffset+searchfilters,
+				success:function(result){
+					if(result)
 					{
+						res = result.member;
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
+							var table_row = "<tr><td>"+entry.up_member_name+"</td>";
 								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.entryfee+"</td>";
-								table_row += "<td>"+entry.insfee+"</td>";
-								table_row += "<td>"+entry.subs+"</td></tr>";
+								table_row += "<td>"+entry.company_name+"</td>";
+								table_row += "<td>"+entry.up_nric+"</td>";
+								table_row += "<td>"+entry.Amount+"</td>";
+								table_row += "<td>"+entry.due+"</td>";
+								table_row += "<td>"+entry.status_name+"</td>";
+								table_row += "<td>"+entry.match_name+"</td>";
+								var app_status = entry.approval_status==1 ? 'Approved' : 'Pending';
+								table_row += "<td>"+app_status+"</td>";
+								var actions = '<a class="btn btn-sm waves-effect " href="http://localhost/murugan/ums/en/membership-edit/eyJpdiI6InptN0tBZ1wvS2lSUFR0emdrUFdtaDJ3PT0iLCJ2YWx1ZSI6InZxcHVUcldOd1hXSFQyVE9RdmlucEE9PSIsIm1hYyI6IjYyMDAzYTEzOTU2NmVkOTgyZWZhMmExNDQ5ZmM1MTcyNDkxYWNkODU5NGE0MDk2Mzg0YWE2ZjhiNWNmMjNjYjkifQ==" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a><a class="btn btn-sm waves-effect amber darken-4" href="http://localhost/murugan/ums/en/member-history/eyJpdiI6IjFkVEtWakppYlVSTUpnXC9ucm9VckZRPT0iLCJ2YWx1ZSI6IlVTMVlSUmlQN3lIclV6YjlzYVM5elE9PSIsIm1hYyI6IjU3N2JiZGQ5ZGUyZjExM2RkZjMzMGUxZTFlMmZmMjdhNmVhOTM2OTAzYzFhZmJkZWU5NTI2ZDdiM2U2NTk0NDgifQ==" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval(36)" title="Approval" type="button" name="action"><i class="material-icons">check_box</i></a>';
+								table_row += "<td>"+actions+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
 						loader.hideLoader();
