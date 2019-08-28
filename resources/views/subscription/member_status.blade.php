@@ -46,6 +46,15 @@
 	p.verify-approval{
 		margin:0;
 	}
+	.member_status_row{
+		pointer-events: none;
+	}
+	.member_status_row #member_status{
+		background-color: #ddd !important;
+	}
+	input:disabled{
+		background-color: #ddd !important;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -57,7 +66,17 @@
 		<div class="card">
 			<div class="card-content">
 				<h4 class="card-title">
-				
+				@php
+					$member_status = '';
+					$approval_status = '';
+					if($data['status_type']==1){
+						$member_status = $data['status'];
+					}elseif($data['status_type']==2){
+						$approval_status = $data['status'];
+					}else{
+						$approval_status = $data['status'];
+					}
+				@endphp
 				@if($data['status_type']==1)
 					{{ CommonHelper::get_member_status_name($data['status']) }} Members List
 				@elseif($data['status_type']==2)
@@ -65,40 +84,81 @@
 				@elseif($data['status_type']==3)
 					SUNDRY CREDITORS List
 				@endif
-				
+				</h4> 
+				@php
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+					$companylist = [];
+					$companyid = '';
+					if($user_role =='union'){
+						$companylist = $data['company_view'];
+					}
+					else if($user_role =='union-branch'){
+						$unionbranchid = CommonHelper::getUnionBranchID($userid);
+						$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+					} 
+					else if($user_role =='company'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+					}
+					else if($user_role =='company-branch'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+					} 
+					
+				@endphp
 				</h4> 
 				
-				<form method="post" class="hide" id="filtersubmit" action="">
+				<form method="post"id="filtersubmit" action="">
 					@csrf  
 					<div class="row">    
-						<div class="col s3">
-							<label for="month_year">{{__('Month')}}</label>
-							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
+						<div class="col s3 member_status_row">
+							<label for="search_date">{{__('Date')}}</label>
+							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" disabled name="search_date">
 						</div>
-					
+						<div class="col s3 member_status_row">
+							<label for="member_status">{{__('Member Status')}}</label>
+							<select name="member_status" id="member_status" class="error browser-default" data-error=".errorTxt6" >
+								<option value="">{{__('All') }}</option>
+								@foreach($data['member_status'] as  $key => $stat)
+									<option @if($member_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->status_name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col s3 approval_status_row">
+							<label for="approval_status">{{__('Approval Status')}}[Match Case]</label>
+							<select name="approval_status" id="approval_status" class="error browser-default" data-error=".errorTxt6" >
+								<option value="">{{__('All') }}</option>
+								@foreach($data['approval_status'] as  $key => $stat)
+									<option @if($approval_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->match_name }}</option>
+								@endforeach
+							</select>
+						</div>
 						<div class="col s3">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
-								
+								@foreach($companylist as $value)
+								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
+								@endforeach
 							</select>
 							<div class="input-field">
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s3">
-							<label>{{__('Company Branch Name') }}</label>
-							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
-								<option value="">{{__('Select Branch') }}</option>
-								
-							</select>
+						<div class="col s4">
+							<label for="member_auto_id">{{__('NRIC / Member Name')}}</label>
+							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
+							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
 							<div class="input-field">
-								<div class="errorTxt23"></div>
+								<div class="errorTxt24"></div>
 							</div>
 						</div>
-						
-						
 						<div class="input-field col s12 right-align">
+							<input type="button" class="btn waves-effect waves-light amber darken-4" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
 							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
 						</div>
 					</div>
@@ -111,7 +171,7 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				
+				<input type="text" name="memberoffset" id="memberoffset" class="" value="{{$data['data_limit']}}"></input>
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
 						<tr>
@@ -123,7 +183,7 @@
 							<th width="5%">{{__('Due')}}</th>
 							<th width="10%">{{__('Member Status')}}</th>
 							<th width="10%">{{__('Description')}}</th>
-							<th width="10%">{{__('Approval Status')}}</th>
+							<th width="10%">{{__('Verification Status')}}</th>
 							<th width="15%">{{__('Action')}}</th>
 						</tr> 
 					</thead>
@@ -491,6 +551,95 @@ $("#subscription_sidebar_a_id").addClass('active');
 			}
 		});
 	});
-
+	$(document).on('submit','form#filtersubmit',function(event){
+		event.preventDefault();
+		$("#search").attr('disabled',true);
+		var from_date = $("#from_date").val();
+		var to_date = $("#to_date").val();
+		var company_id = $("#company_id").val();
+		var branch_id = $("#branch_id").val();
+		var member_auto_id = $("#member_auto_id").val();
+		var join_type = $("#join_type").val();
+		$('#page-length-option tbody').empty();
+		if(from_date!="" && to_date!=""){
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+			$("#memberoffset").val("{{$data['data_limit']}}");
+			//loader.showLoader();
+			$('#page-length-option tbody').empty();
+			loader.showLoader();
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,
+				success:function(res){
+					if(res)
+					{
+						$.each(res,function(key,entry){
+							var table_row = "<tr><td>"+entry.name+"</td>";
+								table_row += "<td>"+entry.member_number+"</td>";
+								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.companycode+"</td>";
+								table_row += "<td>"+entry.branch_name+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.entryfee+"</td>";
+								table_row += "<td>"+entry.insfee+"</td>";
+								table_row += "<td>"+entry.subs+"</td></tr>";
+								$('#page-length-option tbody').append(table_row);
+						});
+						
+						loader.hideLoader();
+					}else{
+						
+					}
+				}
+			});
+			$("#search").attr('disabled',false);
+		}else{
+			alert("please choose any filter");
+		}
+		//$("#submit-download").prop('disabled',true);
+	});
+	$(window).scroll(function() {   
+	   var lastoffset = $("#memberoffset").val();
+	   var limit = "{{$data['data_limit']}}";
+	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+		    loader.showLoader();
+		    var from_date = $("#from_date").val();
+			var to_date = $("#to_date").val();
+			var company_id = $("#company_id").val();
+			var branch_id = $("#branch_id").val();
+			var member_auto_id = $("#member_auto_id").val();
+			var join_type = $("#join_type").val();
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/get-new-members-report') }}?offset="+lastoffset+searchfilters,
+				success:function(res){
+					if(res)
+					{
+						$.each(res,function(key,entry){
+							var table_row = "<tr><td>"+entry.name+"</td>";
+								table_row += "<td>"+entry.member_number+"</td>";
+								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.companycode+"</td>";
+								table_row += "<td>"+entry.branch_name+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.entryfee+"</td>";
+								table_row += "<td>"+entry.insfee+"</td>";
+								table_row += "<td>"+entry.subs+"</td></tr>";
+								$('#page-length-option tbody').append(table_row);
+						});
+						loader.hideLoader();
+					}else{
+						
+					}
+				}
+			});
+		    
+				
+	   }
+	});
 </script>
 @endsection

@@ -446,7 +446,8 @@ class SubscriptionAjaxController extends CommonController
         $user_id = Auth::user()->id;
         $entry_date = $request->input('entry_date');
         $fm_date = explode("/",$entry_date);
-        $dateformat = date('Y-m-01',strtotime('01-'.$fm_date[0].'-'.$fm_date[1]));
+        $fm_date[1].'-'.$fm_date[0].'-'.'01';
+        $dateformat = date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01'));
         if($entry_date!=""){
             $status_all = Status::where('status',1)->get();
             $status_data = [];
@@ -461,7 +462,7 @@ class SubscriptionAjaxController extends CommonController
             foreach($approval_status as $key => $value){
                 $approval_data['count'][$value->id] = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
             }
-            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'status' => 1];
+            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'sundry_amount' => round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id,$dateformat), 0), 'sundry_count' => CommonHelper::statusSubsMatchCount(2, $user_role, $user_id,$dateformat), 'status' => 1];
         }
         echo json_encode($json_data); 
     }
