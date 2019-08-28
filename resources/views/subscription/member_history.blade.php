@@ -12,6 +12,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 <style>
 	.memberinfotable tr>td{
 		font-weight: bold;
@@ -156,6 +159,13 @@ type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subscomp_sidebar_li_id").addClass('active');
@@ -166,14 +176,8 @@ $(function() {
     $('#page-length-option').DataTable({
         "responsive": true,
         "searching": false,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-        /* "lengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
-        ], */
+        
+        
         "processing": true,
         "serverSide": true,
         "ajax": {

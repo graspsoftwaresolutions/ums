@@ -142,15 +142,8 @@ $(function() {
         buttons: [
 		   {
 			   extend: 'pdf',
+			   
 			   footer: true,
-			   exportOptions: {
-					columns: [0]
-				},
-				title : 'Countries List'
-		   },
-		   {
-			   extend: 'csv',
-			   footer: false,
 			   exportOptions: {
 					columns: [0]
 				},
