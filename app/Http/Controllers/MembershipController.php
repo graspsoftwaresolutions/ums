@@ -553,7 +553,6 @@ class MembershipController extends Controller
                     ['m.branch_id','=',$branchid]
                     ]);
                 }
-
                 if($branch_id!=""){
                     $compQuery = $compQuery->where('m.branch_id','=',$branch_id);
                 }elseif($company_id!= ''){
@@ -562,6 +561,7 @@ class MembershipController extends Controller
                 elseif($unionbranch_id!= ''){
                     $compQuery = $compQuery->where('c.union_branch_id','=',$unionbranch_id);
                 }
+               // $compQuery->dump()->get();
                if($gender!="")
                {
                     $compQuery = $compQuery->where('m.gender','=',$gender);

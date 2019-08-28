@@ -744,7 +744,7 @@ class CommonController extends Controller
     public function getCompanyBranchesList(Request $request)
     {
         $id = $request->company_id;
-        $res = DB::table('company_branch as cb')
+        $res = DB::table('company_branch as cb')->select('cb.id as branchid','cb.branch_name')
                 ->leftjoin('company as c','c.id','=','cb.company_id')
                 ->where([
                     ['cb.company_id','=',$id]
