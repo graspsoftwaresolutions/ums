@@ -7,6 +7,7 @@
 @section('headSecondSection')
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="https://pixinvent.com/materialize-material-design-admin-template/app-assets/vendors/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 <style>
 	table.highlight > tbody > tr
 	{
@@ -20,158 +21,170 @@
 		background-color: rgba(242, 242, 242, .5);
 	}
 	.monthly-sub-status:hover,.monthly-approval-status:hover,.monthly-company-sub-status:hover,.monthly-company-approval-status:hover{
-		background-color: #dddddd;
+		background-color: #eeeeee !important;
 		cursor:pointer;
+	}
+	
+	.card .card-content {
+		padding: 10px;
+		border-radius: 0 0 2px 2px;
+	}
+	.file-path-wrapper{
+		//display:none;
+	}
+	.file-field .btn, .file-field .btn-large, .file-field .btn-small {
+		margin-top:10px;
+		line-height: 2.4rem;
+		float: left;
+		height: 2.4rem;
 	}
 </style>
 @endsection
 @section('main-content')
-<div id="">
-    <div class="row">
-        <div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
-        <div class="col s12">
-            <div class="container">
-                <div class="section section-data-tables">
-                    <!-- BEGIN: Page Main-->
-                    <div class="row">
-                        <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
-                            <!-- Search for small screen-->
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription List') }}</h5>
-                                        <ol class="breadcrumbs mb-0">
-                                            <ol class="breadcrumbs mb-0">
-                                                <li class="breadcrumb-item"><a
-                                                        href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
-                                                </li>
-                                                <li class="breadcrumb-item active">{{__('Subscription') }}
-                                                </li>
-                                        </ol>
-                                    </div>
-									<div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
-                                    </div>                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END: Page Main-->
-                    @include('layouts.right-sidebar')
-                </div>   
-            </div>
-        </div>
-<!--sfsdgfdg-->
-	<div class="clearfix"></div>
-    <div class="col s12">
-		<div id="validations" class="card card-tabs">
-			<div class="card-title">
-				@if ($errors->any())
-						<div class="card-alert card gradient-45deg-red-pink">
-							<div class="card-content white-text">
-							  <p>
-								<i class="material-icons">check</i> {{ __('Error') }} : {{ implode('', $errors->all(':message')) }}</p>
-							</div>
-							<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-							  <span aria-hidden="true">×</span>
-							</button>
-						 </div>
-						
-					@endif
-			</div>
-			<div class="card-content">
-					<div class="row">
-						<div class="col s12 m12">
+<div class="row">
+	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<div class="col s12">
+		<div class="container">
+			<div class="section section-data-tables">
+				<!-- BEGIN: Page Main-->
+				<div class="row">
+					<div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
+						<!-- Search for small screen-->
+						<div class="container">
 							<div class="row">
-								<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
-									@csrf
-									<div class="row">
-										
-										@php 
-									
-											$auth_user = Auth::user();
-											$companylist = [];
-											$companyid = '';
-											if(!empty($auth_user)){
-												$userid = Auth::user()->id;
-												$get_roles = Auth::user()->roles;
-												$user_role = $get_roles[0]->slug;
-												
-												if($user_role =='union'){
-													$companylist = CommonHelper::getCompanyListAll();
-												}
-												else if($user_role =='union-branch'){
-													$unionbranchid = CommonHelper::getUnionBranchID($userid);
-													$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
-												} 
-												else if($user_role =='company'){
-													$companyid = CommonHelper::getCompanyID($userid);
-													$companylist = CommonHelper::getCompanyList($companyid);
-												}
-												else if($user_role =='company-branch'){
-													$companyid = CommonHelper::getCompanyID($userid);
-													$companylist = CommonHelper::getCompanyList($companyid);
-												}  
-												$company_count = count($companylist);
-											}
-											
-										@endphp
-										<div class="input-field col s3">
-											<label for="doe">{{__('Subscription Month') }}*</label>
-											<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
-										</div>
-										<div class="col s4">
-											<label for="sub_company">{{__('Company') }}*</label>
-											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
-												<option value="" selected>{{__('Choose Company') }}</option>
-												@foreach($companylist as $value)
-												<option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
-												@endforeach
-											</select>
-											<div class="errorTxt6"></div>
-										</div>
-										<div class="col s2 hide" >
-											<label for="type">{{__('Type') }}*</label>
-											 <select id="type" name="type"
-											  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
-												<option value="0">{{__('Download Empty File') }}</option>
-												<option value="1" selected>{{__('Upload File') }}</option>
-										     </select>
-										</div>
-										<div id="file-upload-div" class="input-field  file-field col s2">
-											
-											<div class="btn ">
-												<span>File</span>
-												<input type="file" name="file" class="form-control browser-default"  accept=".xls,.xlsx">
-											</div>
-											<div class="file-path-wrapper ">
-												<input class="file-path validate" type="text">
-											</div>
-										</div>
-										<div class="col s3 " >
-											</br>
-											
-											
-										</div>
-										
-									</div>
-									<div class="row">
-										<div class="col s7">
-											
-										</div>
-										<div class="col s4 ">
-											<button id="submit-upload" class="waves-effect waves-dark btn btn-primary form-download-btn" type="button">{{__('Submit') }}</button>
-											<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
-											
-										</div>
-									</div>
-								</form>
-								
+								<div class="col s10 m6 l6">
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription List') }}</h5>
+									<ol class="breadcrumbs mb-0">
+										<ol class="breadcrumbs mb-0">
+											<li class="breadcrumb-item"><a
+													href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
+											</li>
+											<li class="breadcrumb-item active">{{__('Subscription') }}
+											</li>
+									</ol>
+								</div>
+								<div class="col s2 m6 l6 ">
+									<a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
+								</div>                                    
 							</div>
 						</div>
-						
 					</div>
-				
+				</div>
+				<!-- END: Page Main-->
+				@include('layouts.right-sidebar')
+			</div>   
+		</div>
+	</div>
+	<div class="row">
+		<div class="col s12">
+			<div class="container">
+				<div class="card">
+					<div class="card-title">
+						@if ($errors->any())
+							<div class="card-alert card gradient-45deg-red-pink">
+								<div class="card-content white-text">
+								  <p>
+									<i class="material-icons">check</i> {{ __('Error') }} : {{ implode('', $errors->all(':message')) }}</p>
+								</div>
+								<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+								  <span aria-hidden="true">×</span>
+								</button>
+							 </div>
+						@endif
+					</div>
+					<div class="card-content">
+						<div class="row">
+							<div class="col s12 m12">
+								<div class="row">
+									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
+										@csrf
+										<div class="row">
+											
+											@php 
+										
+												$auth_user = Auth::user();
+												$companylist = [];
+												$companyid = '';
+												if(!empty($auth_user)){
+													$userid = Auth::user()->id;
+													$get_roles = Auth::user()->roles;
+													$user_role = $get_roles[0]->slug;
+													
+													if($user_role =='union'){
+														$companylist = CommonHelper::getCompanyListAll();
+													}
+													else if($user_role =='union-branch'){
+														$unionbranchid = CommonHelper::getUnionBranchID($userid);
+														$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+													} 
+													else if($user_role =='company'){
+														$companyid = CommonHelper::getCompanyID($userid);
+														$companylist = CommonHelper::getCompanyList($companyid);
+													}
+													else if($user_role =='company-branch'){
+														$companyid = CommonHelper::getCompanyID($userid);
+														$companylist = CommonHelper::getCompanyList($companyid);
+													}  
+													$company_count = count($companylist);
+												}
+												
+											@endphp
+											<div class="input-field col m3 s12">
+												<label for="doe">{{__('Subscription Month') }}*</label>
+												<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
+											</div>
+											<div class="col m4 s12">
+												<label for="sub_company">{{__('Company') }}*</label>
+												<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
+													<option value="" selected>{{__('Choose Company') }}</option>
+													@foreach($companylist as $value)
+													<option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
+													@endforeach
+												</select>
+												<div class="errorTxt6"></div>
+											</div>
+											<div class="col m2 s12 hide" >
+												<label for="type">{{__('Type') }}*</label>
+												 <select id="type" name="type"
+												  class="error browser-default common-select add-select" onChange="return FileUploadEnable(this.value)">
+													<option value="0">{{__('Download Empty File') }}</option>
+													<option value="1" selected>{{__('Upload File') }}</option>
+												 </select>
+											</div>
+											<div id="file-upload-div" class="input-field  file-field col m2 s12">
+												<div class="btn ">
+													<span>File</span>
+													<input type="file" name="file" class="form-control btn"  accept=".xls,.xlsx">
+												</div>
+												<div class="file-path-wrapper ">
+													<input class="file-path validate" type="text">
+												</div>
+											</div>
+											<div class="col m3 s12 " style="padding-top:5px;">
+												</br>
+												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
+												
+											</div>
+											
+										</div>
+										<div class="row hide">
+											<div class="col s7">
+												
+											</div>
+											<div class="col s4 ">
+												
+												<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
+												
+											</div>
+										</div>
+									</form>
+									
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -185,16 +198,20 @@
 		<div id="monthly_status" class="col s12">
 			 <div class="">
 				<div class="col s12 m6">
-					<div class="card darken-1" id="member_status_div">
-						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
-						<table class="collection Highlight" id="memberstatustable">
+					<div class="card subscriber-list-card animate fadeRight">
+						 <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
+							<h4 class="card-title mb-0">{{__('Member Status') }} 
+								<span class="right datamonth">[{{ date('M/Y') }}]</span>
+							</h4>
+						 </div>
+						 <table class="subscription-table responsive-table highlight">
 							<thead>
-								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-									<td>{{__('Sl No') }}</td>
-									<td>{{__('Status') }}</td>
-									<td>{{__('Count') }}</td>
-									<td>{{__('Amount') }}</td>
-								</tr>
+							   <tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
+								  <th>Sl No</th>
+								  <th>Status</th>
+								  <th>Count</th>
+								  <th>Amount</th>
+							   </tr>
 							</thead>
 							<tbody>
 								@php 
@@ -222,34 +239,42 @@
 									<td id="member_status_amount_sundry">{{ round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0) }} </td>
 								</tr>
 							</tbody>
-						</table>
+						 </table>
 					</div>
 				</div>
 				<!--Approval Status-->
 				<div class="col s12 m6">
-					<div class="card darken-1">
-						<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
-						<table class="collection" id="approvalstatustable">
-							<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-								<td>{{__('Sl No') }}</td>
-								<td>{{__('Description') }}</td>
-								<td>{{__('Count') }}</td>
-								<td>{{__('Approved') }}</td>
-								<td>{{__('Pending') }}</td>
-							</tr>
-							@php 
-							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
-							@endphp 
-							@foreach($data['approval_status'] as  $key => $stat)
-							<tr class="monthly-approval-status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
-								<td>{{ $key+1 }} </td>
-								<td>{{ $stat->match_name }}</td>
-								<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
-								<td id="approval_approved_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1) }}</td>
-								<td id="approval_pending_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0) }}</td>
-							</tr>
-							@endforeach
-						</table>
+					<div class="card subscriber-list-card animate fadeRight">
+						 <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
+							<h4 class="card-title mb-0">{{__('Approval Status') }} 
+								<span class="right datamonth">[{{ date('M/Y') }}]</span>
+							</h4>
+						 </div>
+						 <table class="subscription-table responsive-table highlight">
+							<thead>
+							   <tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
+								  <th>Sl No</th>
+								  <th>Description</th>
+								  <th>Count</th>
+								  <th>Approved</th>
+								  <th>Pending</th>
+							   </tr>
+							</thead>
+							<tbody>
+								@php 
+								//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+								@endphp 
+								@foreach($data['approval_status'] as  $key => $stat)
+								<tr class="monthly-approval-status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
+									<td>{{ $key+1 }} </td>
+									<td>{{ $stat->match_name }}</td>
+									<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
+									<td id="approval_approved_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1) }}</td>
+									<td id="approval_pending_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0) }}</td>
+								</tr>
+								@endforeach
+							</tbody>
+						 </table>
 					</div>
 				</div>
 				
@@ -257,20 +282,24 @@
 		</div>  
 		<div id="company_status" class="col s12">
 			<div class="col s12 m12">
-				<h5 class="center">Bank Name : <span class="subscription-bankname">---</span></h5>
+				<h5 id="bankname-listing" class="center hide"><span class="badge green" style="float:none;padding: 5px;">Bank Name : <span class="subscription-bankname">---</span></span></h5>
 			</div>
 			 <div class="">
 				<div class="col s12 m6">
-					<div class="card darken-1" id="member_status_div">
-						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
-						<table class="collection" id="memberstatustable">
+					<div class="card subscriber-list-card animate fadeRight">
+						 <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
+							<h4 class="card-title mb-0">{{__('Member Status') }} 
+								<span class="right datamonth">[{{ date('M/Y') }}]</span>
+							</h4>
+						 </div>
+						 <table class="subscription-table responsive-table highlight">
 							<thead>
-								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-									<td>{{__('Sl No') }}</td>
-									<td>{{__('Status') }}</td>
-									<td>{{__('Count') }}</td>
-									<td>{{__('Amount') }}</td>
-								</tr>
+							   <tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
+								  <th>Sl No</th>
+								  <th>Status</th>
+								  <th>Count</th>
+								  <th>Amount</th>
+							   </tr>
 							</thead>
 							<tbody>
 								@php 
@@ -293,66 +322,52 @@
 									<td id="company_member_status_amount_sundry">0 </td>
 								</tr>
 							</tbody>
-						</table>
+						 </table>
 					</div>
+					
 				</div>
 				<!--Approval Status-->
 				<div class="col s12 m6">
-					<div class="card darken-1">
-						<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
-						<table class="collection" id="approvalstatustable">
-							<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-								<td>{{__('Sl No') }}</td>
-								<td>{{__('Description') }}</td>
-								<td>{{__('Count') }}</td>
-								<td>{{__('Approved') }}</td>
-								<td>{{__('Pending') }}</td>
-							</tr>
-							@php 
-							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
-							@endphp 
-							@foreach($data['approval_status'] as  $key => $stat)
-							<tr id="monthly_company_approval_status_{{ $stat->id }}" class="monthly-company-approval-status" data-href="">
-								<td>{{ $key+1 }} </td>
-								<td>{{ $stat->match_name }}</td>
-								<td id="company_approval_status_count_{{ $stat->id }}">0</td>
-								<td id="company_approval_approved_count_{{ $stat->id }}">0</td>
-								<td id="company_approval_pending_count_{{ $stat->id }}">0</td>
-							</tr>
-							@endforeach
-						</table>
+					<div class="card subscriber-list-card animate fadeRight">
+						 <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
+							<h4 class="card-title mb-0">{{__('Approval Status') }} 
+								<span class="right datamonth">[{{ date('M/Y') }}]</span>
+							</h4>
+						 </div>
+						 <table class="subscription-table responsive-table highlight">
+							<thead>
+							   <tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
+								  <th>Sl No</th>
+								  <th>Description</th>
+								  <th>Count</th>
+								  <th>Approved</th>
+								  <th>Pending</th>
+							   </tr>
+							</thead>
+							<tbody>
+								@php 
+								//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+								@endphp 
+								@foreach($data['approval_status'] as  $key => $stat)
+								<tr id="monthly_company_approval_status_{{ $stat->id }}" class="monthly-company-approval-status" data-href="">
+									<td>{{ $key+1 }} </td>
+									<td>{{ $stat->match_name }}</td>
+									<td id="company_approval_status_count_{{ $stat->id }}">0</td>
+									<td id="company_approval_approved_count_{{ $stat->id }}">0</td>
+									<td id="company_approval_pending_count_{{ $stat->id }}">0</td>
+								</tr>
+								@endforeach
+							</tbody>
+						 </table>
 					</div>
+					
 				</div>
 				
 			</div>
 		</div>  
 	</div>
-   
-	</br>
-	</br>
-<!--dgfdgfdg-->
-	 <div id="modal_subscription" class="modal">
-		<div class="modal-content">
-			<p>{{__('Company Data Already Exists, Are you sure you want to download existance data') }}</p>
-			<div class="row">
-				<div class="input-field col s12 m6">
-					<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn " onClick="return DownloadExistance(1)"
-						type="button" name="action">{{__('Yes')}}
-					</button>
-				</div>
-				<div class="input-field col s12 m6 right">
-					<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn right" onClick="return DownloadExistance(0)"
-						type="button" name="action">{{__('No')}}
-					</button>
-				</div>
-				<div class="clearfix" style="clear:both"></div>
-				
-			</div>
-		</div>
-	</div>
-
-    </div>
-</div> 
+	
+</div>
 
 @endsection
 @section('footerSection')
@@ -369,6 +384,8 @@
 
  <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
  <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
+ <script src="https://pixinvent.com/materialize-material-design-admin-template/app-assets/vendors/sweetalert/sweetalert.min.js"></script>
+ <script src="https://pixinvent.com/materialize-material-design-admin-template/app-assets/js/scripts/extra-components-sweetalert.js"></script>
 
 <script>
 $(document).ready(function() {
@@ -439,6 +456,7 @@ $(document).ready(function() {
 		if(entry_date!="" && sub_company!=""){
 			var selected = $("#sub_company").find('option:selected');
 			var company_name = selected.data('companyname'); 
+			$("#bankname-listing").removeClass('hide');
 			$(".subscription-bankname").text(company_name);
 			loader.showLoader();
 			$("#type option[value='2']").remove();
@@ -449,7 +467,22 @@ $(document).ready(function() {
 				success: function(result) {
 					loader.hideLoader();
 					if(result.status==1){
-						$("#modal_subscription").modal('open');
+						swal({
+						title: "Data Already Exists!",
+						text: "Are you sure you want to download existance data",
+						icon: 'success',
+						dangerMode: true,
+						buttons: {
+						  cancel: 'No, Please!',
+						  delete: 'Yes, Download It'
+						}
+					  }).then(function (willDelete) {
+						if (willDelete) {
+						  DownloadExistance(1);
+						} else {
+						  DownloadExistance(0);
+						}
+					  });
 						$.each(result.status_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
 							$("#monthly_company_sub_status_"+key).attr('data-href',baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id);
@@ -481,6 +514,9 @@ $(document).ready(function() {
 					}
 				}
 			});
+		}else{
+			$(".subscription-bankname").text('');
+			$("#bankname-listing").addClass('hide');
 		}
 		if(entry_date!=""){
 			$("#memberstatustable").css('opacity',0.5);

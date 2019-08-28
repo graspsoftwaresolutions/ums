@@ -133,10 +133,10 @@
 						@endphp
 						@foreach($data['member'] as  $key => $member)
 							<tr>
-								<td>{{ $member->member_name }}</td>
+								<td>{{ $member->up_member_name }}</td>
 								<td>{{ $member->member_number }}</td>
 								<td>{{ $member->company_name }}</td>
-								<td>{{ $member->ic }}</td>
+								<td>{{ $member->up_nric }}</td>
 								<td>{{ $member->Amount }}</td>
 								<td>{{ $member->due }}</td>
 								<td>{{ $member->status_name }}</td>
@@ -400,7 +400,7 @@ $("#subscription_sidebar_a_id").addClass('active');
 					$(".previous_subscription_match_row").addClass('hide');
 					$(".nric_bank_match_row").addClass('hide');
 					$(".previous_unpaid_match_row").addClass('hide');
-					$("#view_member_name").html(result.registered_member_name);
+					$("#view_member_name").html(result.up_member_name);
 					if(match_data.match_id==1){
 						$(".nric_match_row").removeClass('hide');
 						$("#nric_approved_by").html(result.created_user);

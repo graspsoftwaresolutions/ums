@@ -678,10 +678,12 @@ class SubscriptionAjaxController extends CommonController
     public function SubscriptionMemberDetails(Request $request){
        $sub_match_auto_id = $request->input('sub_match_auto_id');
        $status_data = DB::table('mon_sub_member_match')->where('id','=',$sub_match_auto_id)->first();
+       $up_member_data = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->first();
        $data['match'] = $status_data;
        $data['match_id'] = $status_data->match_id;
        $data['updated_user'] = CommonHelper::getUserName($status_data->updated_by);
        $data['created_user'] = CommonHelper::getUserName($status_data->created_by);
+       $data['up_member_name'] = $up_member_data->Name;
        if($status_data->match_id==3){
             $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
             $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
