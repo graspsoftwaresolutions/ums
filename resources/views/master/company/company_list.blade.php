@@ -12,6 +12,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -51,7 +54,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">
-                                          <table id="page-length-option" class="display">
+                                          <table id="page-length-option" class="display nowrap">
                                               <thead>
                                                   <tr>
                                                       <th>{{__('Company Name') }}</th>
@@ -141,6 +144,13 @@ type="text/javascript"></script>
 type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
@@ -195,14 +205,41 @@ $('.selelctpicker-modal').select2({
 });
 $('#page-length-option').DataTable({
   "responsive": true,
-  "lengthMenu": [
-      [10, 25, 50, 100],
-      [10, 25, 50, 100]
-  ],
-  /* "lengthMenu": [
-[10, 25, 50, -1],
-[10, 25, 50, "All"]
-], */
+	dom: 'lBfrtip', 
+        buttons: [
+       {
+           extend: 'pdf',
+           footer: true,
+           exportOptions: {
+                columns: [0,1]
+            },
+			title : 'Bank List'
+       },
+       {
+           extend: 'csv',
+           footer: false,
+		   exportOptions: {
+                columns: [0,1]
+            },
+			title : 'Bank List'
+       },
+       {
+           extend: 'excel',
+           footer: false,
+		   exportOptions: {
+                columns: [0,1]
+            },
+			title : 'Bank List'
+       },
+		{
+           extend: 'print',
+           footer: false,
+		   exportOptions: {
+                columns: [0,1]
+            },
+			title : 'Bank List'
+       }  
+    ],  
   "processing": true,
   "serverSide": true,
   "ajax": {

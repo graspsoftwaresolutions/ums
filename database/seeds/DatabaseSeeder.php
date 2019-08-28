@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 		
 		// new master seeds
     //    $this->call(RelationshipTableSeeder::class);
-       // $this->call(FeeTableSeeder::class);
+        //$this->call(FeeTableSeeder::class);
     //     $this->call(DesignationTableSeeder::class);
         // $this->call(RaceTableSeeder::class);
     //     $this->call(PersonTitleTableSeeder::class);
