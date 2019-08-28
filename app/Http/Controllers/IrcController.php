@@ -149,7 +149,7 @@ class IrcController extends CommonController
 							->orWhere('u.email', 'LIKE',"%{$search}%")
                    			 ->count();
         }
-        $data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
+        $data = $this->CommonAjaxReturnold($users, 0, 'master.destroy', 0);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  

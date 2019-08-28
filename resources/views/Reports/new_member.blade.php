@@ -1,4 +1,3 @@
-
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
@@ -9,122 +8,205 @@
     href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
-	<style>
-	.exportExcel{
-  padding: 5px;
-  border: 1px solid grey;
-  margin: 5px;
-  cursor: pointer;
-}
-</style>
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <style>
-.filter{
-    padding-top: 9px;
-    background-color: #dad1d1c7;
-}
+	@if(count($data['member_view'])<10)
+		#main.main-full {
+			height: 750px;
+		}
+		
+		.footer {
+		   position: fixed;
+		   margin-top:50px;
+		   left: 0;
+		   bottom: 0;
+		   width: 100%;
+		   height:auto;
+		   background-color: red;
+		   color: white;
+		   text-align: center;
+		   z-index:999;
+		} 
+		.sidenav-main{
+			z-index:9999;
+		}
+	@endif
 </style>
 @endsection
 @section('main-content')
 @php 
 
 @endphp
-<div id="">
-    <div class="row">
-   
-        <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
-        <div class="col s12">
-            <div class="container">
-                <div class="section section-data-tables">
-                    <!-- BEGIN: Page Main-->
-                    <div class="row">
-                        <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
-                            <!-- Search for small screen-->
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('New Memebers List')}}</h5>
-                                        <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a
-                                                    href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
-                                            </li>
-                                            <li class="breadcrumb-item active">{{__('New Members')}}
-                                            </li>
-                                        </ol>
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                           
-                        </div>
-                        <div class="row">
-                        <div class="col s12">
-					<div class="card">
-						<div class="card-content">
-							<h4 class="card-title">{{__('Members Filter')}}  </h4> 
-							<form method="post" id="filtersubmit" action="{{route('subscription.memberfilter',app()->getLocale())}}">
-								@csrf  
-								<input type="hidden" name="id" value="{{ isset($row->MemberCode) ? $row->MemberCode : '' }}">
-								<input type="hidden" name="memberid" value="{{ isset($row->memberid) ? $row->memberid : ''}}">
-								<div class="row">                          
-									<div class="col s3">
-										<label for="month_year">{{__('Current Month and Year')}}</label>
-										@php echo date('d-m-yyyy') @endphp
-									</div>
-									<div class="input-field col s4">
-														<i class="material-icons prefix">date_range</i>
-														<input id="from_date" type="text" required class="validate datepicker" name="from_date">
-														<label for="from_date">{{__('From Month and Year')}}</label>
-													</div>
-													<div class="input-field col s4">
-														<i class="material-icons prefix">date_range</i>
-														<input id="to_date" type="text" required class="validate datepicker" name="to_date">
-														<label for="to_date">{{__('To Month and Year')}}</label>
-													</div>
-									
-									<div class="input-field col s12 right-align">
-										<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
-									</div>
-								</div>
-							</form>  
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<h4 class="card-title">
+				
+				{{__('New Members Filter')}} 
+				
+				</h4> 
+				@php
+					
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+					$companylist = [];
+					$branchlist = [];
+					$companyid = '';
+					$branchid = '';
+					if($user_role =='union'){
+						$companylist = $data['company_view'];
+					}
+					else if($user_role =='union-branch'){
+						$unionbranchid = CommonHelper::getUnionBranchID($userid);
+						$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+					} 
+					else if($user_role =='company'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid);
+					}
+					else if($user_role =='company-branch'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+					} 
+					
+				@endphp
+				<form method="post" id="filtersubmit" action="">
+					@csrf  
+					<div class="row">                          
+						<div class="col s4">
+							<label for="from_date">{{__('From Date')}}</label>
+							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/M/Y')}}" name="from_date">
+						</div>
+						<div class="col s4">
+							<label for="to_date">{{__('To Date')}}</label>
+							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/M/Y')}}" name="to_date">
+						</div>
+						<div class="col s4">
+							<label for="join_type">{{__('Join Type')}}</label>
+							<select name="join_type" id="join_type" class="error browser-default selectpicker" data-error=".errorTxt6">
+								<option value="" selected>{{__('All') }}</option>
+								<option value="1">New Joined</option>
+								<option value="2">Rejoined</option>
+							</select>
+						</div>
+						<div class="clearfix"/>
+						<div class="col s4">
+							<label>{{__('Company Name') }}</label>
+							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+								<option value="">{{__('Select Company') }}</option>
+								@foreach($companylist as $value)
+								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
+								@endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt22"></div>
+							</div>
+						</div>
+						<div class="col s4">
+							<label>{{__('Company Branch Name') }}</label>
+							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+								<option value="">{{__('Select Branch') }}</option>
+								@foreach($branchlist as $branch)
+								<option @if($branchid==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
+								@endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt23"></div>
+							</div>
+						</div>
+						<div class="col s4">
+							<label for="member_auto_id">{{__('Member Number')}}</label>
+							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
+							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
+							<div class="input-field">
+								<div class="errorTxt24"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s6 right">
+								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
+							</div>
+							<div class="input-field col s6 right-align">
+								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+							</div>
 						</div>
 					</div>
-					<div class="card">
-						<div class="card-content">
-							<table id="page-length-option" class="display ">
-								<thead>
-									<tr>
-										<th>{{__('Member Number')}}</th>
-										<th>{{__('Member Name')}}</th>
-										<th>{{__('NRIC')}}</th>
-										<th>{{__('Gender')}}</th>
-										<th>{{__('Bank')}}</th>
-										<th>{{__('Branch')}}</th>
-										<th>{{__('Type')}}</th>
-										<th>{{__('DOJ')}}</th>
-										<th>{{__('Levy')}}</th>
-										<th>{{__('Type')}}</th>
-									</tr> 
-								</thead>
-								<tbody>
-									
-									
-								</tbody>
-								<input type="text" name="memberoffset" id="memberoffset" class="hide" value="0"></input>
-							</table> 
-						</div>
-					</div>
-</div>
-                       
-                    <!-- END: Page Main-->
-                    @include('layouts.right-sidebar')
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+				</form>  
+			</div>
+		</div>
+	</div>
+</div> 
+<div class="row">
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<table id="page-length-option" class="display" width="100%">
+					<thead>
+						<tr>
+							<th width="15%">{{__('Name')}}</th>
+							<th width="10%">{{__('Number')}}</th>
+							<th width="10%">{{__('NRIC')}}</th>
+							<th width="10%">{{__('Bank')}}</th>
+							<th width="20%">{{__('Branch')}}</th>
+							<th width="10%">{{__('DOJ')}}</th>
+							<th width="6%">{{__('ENT')}}</th>
+							<th width="6%">{{__('INS')}}</th>
+							<th width="6%">{{__('SUBS')}}</th>
+						</tr> 
+					</thead>
+					<tbody>
+						
+						@foreach($data['member_view'] as $member)
+							<tr>
+								<td>{{ $member->name }}</td>
+								<td>{{ $member->member_number }}</td>
+								<td>{{ $member->new_ic }}</td>
+								<td>{{ $member->companycode }}</td>
+								<td>{{ $member->branch_name }}</td>
+								<td>{{ $member->doj }}</td>
+								<td>{{ $member->entryfee }}</td>
+								<td>{{ $member->insfee }}</td>
+								<td>{{ $member->subs }}</td>
+								
+							</tr> 
+						@endforeach
+					</tbody>
+					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
+				</table> 
+			</div>
+		</div>
+		</br>
+		</br>
+	</div>
+</div> 
+@php	
+	$ajaxcompanyid = '';
+	$ajaxbranchid = '';
+	$ajaxunionbranchid = '';
+	if(!empty(Auth::user())){
+		$userid = Auth::user()->id;
+		
+		if($user_role =='union'){
+
+		}else if($user_role =='union-branch'){
+			$ajaxunionbranchid = CommonHelper::getUnionBranchID($userid);
+		}else if($user_role =='company'){
+			$ajaxcompanyid = CommonHelper::getCompanyID($userid);
+		}else if($user_role =='company-branch'){
+			$ajaxbranchid = CommonHelper::getCompanyBranchID($userid);
+		}else{
+
+		}
+	}
+@endphp
 @endsection
 @section('footerSection')
 <!--<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script> -->
@@ -137,93 +219,228 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<style type="text/css">
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+	#transfer_member{
+		color:#fff;
+	}
+</style>
 @endsection
 @section('footerSecondSection')
 <script>
-$("#subscriptions_sidebars_id").addClass('active');
-$("#subscomp_sidebar_li_id").addClass('active');
-$("#subcomp_sidebar_a_id").addClass('active');
+$("#reports_sidebars_id").addClass('active');
+$("#member_status0_sidebar_li_id").addClass('active');
+$("#member_status0_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
-		//loader.showLoader();
+		$(".datepicker-custom").datepicker({
+            changeMonth: true,
+			changeYear: true,
+			showButtonPanel: true,
+			closeText: 'Clear',
+			weekdaysAbbrev: ['sun'],
+            format: "dd/mmm/yyyy",
+			onClose: function (dateText, inst) {
+				
+			}
+        });
+		$("#member_search").devbridgeAutocomplete({
+			//lookup: countries,
+			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
+			params: { 
+						company_id:  function(){ return $("#company_id").val();  },
+						branch_id:  function(){ return $("#branch_id").val();  } 
+					},
+			type:'GET',
+			//callback just to show it's working
+			onSelect: function (suggestion) {
+				 $("#member_search").val(suggestion.member_code);
+				 $("#member_auto_id").val(suggestion.number);
+			},
+			showNoSuggestionNotice: true,
+			noSuggestionNotice: 'Sorry, no matching results',
+			onSearchComplete: function (query, suggestions) {
+				if(!suggestions.length){
+					$("#member_search").val('');
+					$("#member_auto_id").val('');
+				}
+			}
+		}); 
+		$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+			$("#member_search").val('');
+		});
 	
 	});
-	
-    $("#filtersubmit").validate({
-    rules: {
-        from_date: {
-			required: true,
-			
+	$('#company_id').change(function(){
+	   var CompanyID = $(this).val();
+	   var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
+	   var ajaxbranchid = '{{ $ajaxbranchid }}';
+	   var additional_cond;
+	   if(CompanyID!='' && CompanyID!='undefined')
+	   {
+		 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+		 $.ajax({
+			type: "GET",
+			dataType: "json",
+			url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
+			success:function(res){
+				if(res)
+				{
+					$('#branch_id').empty();
+					$("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+					$.each(res,function(key,entry){
+						$('#branch_id').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+					});
+				}else{
+					$('#branch_id').empty();
+				}
+			}
+		 });
+	   }else{
+		   $('#branch_id').empty();
+		   $("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+	   }
+	    $('#member_auto_id').val('');
+	    $('#member_search').val('');
+	});
+	$('#branch_id').change(function(){
+		$('#member_auto_id').val('');
+	    $('#member_search').val('');
+	});
+	 $("#filtersubmit").validate({
+		rules: {
+			from_date: {
+				required: true,
+			},
+			to_date: {
+				required: true,
+			},
+		},
+		  //For custom messages
+		  messages: {
+				from_date:{
+					required: "Enter From Date"
+				},
+				to_date:{
+					required: "Enter To Date"
+				},
 		  },
-		  to_date: {
-			required: true,
-			
-		  },
-	},
-      //For custom messages
-      messages: {
-			from_date:{
-			required: "Enter From Date"
-		  },
-		  to_date:{
-			required: "Enter To Date"
-		  },
-      },
-      errorElement : 'div',
-      errorPlacement: function(error, element) {
-			var placement = $(element).data('error');
-			if (placement) {
-			  $(placement).append(error)
-			} else {
-		  error.insertAfter(element);
-		  }
+		  errorElement : 'div',
+		  errorPlacement: function(error, element) {
+				var placement = $(element).data('error');
+				if (placement) {
+				  $(placement).append(error)
+				} else {
+			  error.insertAfter(element);
+			  }
+			}
+	  });
+    $(window).scroll(function() {   
+	   var lastoffset = $("#memberoffset").val();
+	   var limit = "{{$data['data_limit']}}";
+	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+		    loader.showLoader();
+		    var from_date = $("#from_date").val();
+			var to_date = $("#to_date").val();
+			var company_id = $("#company_id").val();
+			var branch_id = $("#branch_id").val();
+			var member_auto_id = $("#member_auto_id").val();
+			var join_type = $("#join_type").val();
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/get-new-members-report') }}?offset="+lastoffset+searchfilters,
+				success:function(res){
+					if(res)
+					{
+						$.each(res,function(key,entry){
+							var table_row = "<tr><td>"+entry.name+"</td>";
+								table_row += "<td>"+entry.member_number+"</td>";
+								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.companycode+"</td>";
+								table_row += "<td>"+entry.branch_name+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.entryfee+"</td>";
+								table_row += "<td>"+entry.insfee+"</td>";
+								table_row += "<td>"+entry.subs+"</td></tr>";
+								$('#page-length-option tbody').append(table_row);
+						});
+						loader.hideLoader();
+					}else{
+						
+					}
+				}
+			});
+		    
+				
+	   }
+	});
+	$(document).on('submit','form#filtersubmit',function(event){
+		event.preventDefault();
+		$("#search").attr('disabled',true);
+		var from_date = $("#from_date").val();
+		var to_date = $("#to_date").val();
+		var company_id = $("#company_id").val();
+		var branch_id = $("#branch_id").val();
+		var member_auto_id = $("#member_auto_id").val();
+		var join_type = $("#join_type").val();
+		$('#page-length-option tbody').empty();
+		if(from_date!="" && to_date!=""){
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+			$("#memberoffset").val("{{$data['data_limit']}}");
+			//loader.showLoader();
+			$('#page-length-option tbody').empty();
+			loader.showLoader();
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,
+				success:function(res){
+					if(res)
+					{
+						$.each(res,function(key,entry){
+							var table_row = "<tr><td>"+entry.name+"</td>";
+								table_row += "<td>"+entry.member_number+"</td>";
+								table_row += "<td>"+entry.new_ic+"</td>";
+								table_row += "<td>"+entry.companycode+"</td>";
+								table_row += "<td>"+entry.branch_name+"</td>";
+								table_row += "<td>"+entry.doj+"</td>";
+								table_row += "<td>"+entry.entryfee+"</td>";
+								table_row += "<td>"+entry.insfee+"</td>";
+								table_row += "<td>"+entry.subs+"</td></tr>";
+								$('#page-length-option tbody').append(table_row);
+						});
+						
+						loader.hideLoader();
+					}else{
+						
+					}
+				}
+			});
+			$("#search").attr('disabled',false);
+		}else{
+			alert("please choose any filter");
 		}
-  });
-  $(document).ready(function() {
-  var table = $('#page-length-option').DataTable({
-    dom: 'Bfrtip',
-    buttons: [
-    {
-      extend: 'excel',
-      text: 'Export excel',
-      className: 'exportExcel',
-      filename: 'Export excel',
-      exportOptions: {
-        modifier: {
-          page: 'all'
-        }
-      }
-    }, 
-    {
-      extend: 'copy',
-      text: '<u>C</u>opie presse papier',
-      className: 'exportExcel',
-      key: {
-        key: 'c',
-        altKey: true
-      }
-    }, 
-    {
-      text: 'Alert Js',
-      className: 'exportExcel',
-      action: function(e, dt, node, config) {
-        alert('Activated!');
-        // console.log(table);
-
-        // new $.fn.dataTable.Buttons(table, {
-        //   buttons: [{
-        //     text: 'gfdsgfsd',
-        //     action: function(e, dt, node, config) {
-        //       alert('ok!');
-        //     }
-        //   }]
-        // });
-      }
-    }]
-  });
-
+		//$("#submit-download").prop('disabled',true);
+	});
+$('#clear').click(function(){
+	$('#from_date').val("");
+	$('#to_date').val("");
+	$('#join_type').val("");
+	$('#company_id').val("");
+	$('#branch_id').val("");
+	$('#member_search').val("");
+	$(".selectpicker").val('').trigger("change"); 
 });
 
-
 </script>
+
 @endsection

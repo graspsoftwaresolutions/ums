@@ -193,6 +193,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('edit-membership-profile','MemberController@editMemberProfile')->name('member.membership.profile');
 	Route::post('membership_save','MemberController@Save')->name('member.savemembership');
 	Route::post('member_emailexists','MemberController@checkMemberemailExists');
+	Route::post('member_newicexists','MemberController@checkMemberNewicExists');
 
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
 	//subscription
@@ -253,15 +254,25 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('member-history/{parameter}','SubscriptionController@memberHistory')->name('member.history');
 	Route::post('ajax_member_history','SubscriptionAjaxController@ajax_member_history');
 	Route::get('get-relatives-info','MembershipController@getRelativename')->name('member.relatives');
-	Route::get('/resign-pdf/{parameter}', 'MembershipController@resignPDF');
+	Route::get('/resign-pdf/{parameter}', 'MembershipController@resignPDF')->name('resign.status');
 	Route::get('/generate-resign-pdf/{parameter}', 'MembershipController@genresignPDF')->name('resign.pdf');
+	Route::get('subscription-status','SubscriptionController@statusCountView')->name('subscription.status');
+	Route::get('subscription_member_info','SubscriptionAjaxController@SubscriptionMemberDetails')->name('subscription.match');
+	Route::post('ajax_save_approval','SubscriptionController@saveApproval')->name('approval.save');
 
 	//Reports
 	
-	Route::get('newmember_report','ReportsController@newMemberIndex')->name('reports.newmembers');
+	Route::get('newmember_report','ReportsController@newMemberReport')->name('reports.newmembers');
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
 	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
-
+	Route::get('get-new-members-report','ReportsController@membersNewReportMore')->name('reports.newmoremembers');
+	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
+	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
+	Route::get('get-takaful-report','ReportsController@takafulReport')->name('reports.takaful');
+	Route::get('get-takaful-more-report','ReportsController@takafulReportMore')->name('reports.takfulmore');
+	
+	
+	
 	
 });
 /* Master */
@@ -276,6 +287,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 //common routes
 Route::get('get-state-list','CommonController@getStateList');
+Route::get('get-company-list','CommonController@getCompanyList');
+Route::get('get-companybranches-list','CommonController@getCompanyBranchesList');
+Route::get('get-unionbankbranch-list','CommonController@getUnionBranchesList');
 Route::get('get-cities-list','CommonController@getCitiesList');
 Route::get('get-branch-list','CommonController@getBranchList');
 Route::get('get-age','CommonController@getAge');
@@ -307,6 +321,6 @@ Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });
 
-Route::get('/customer/print-pdf', 'CustomerController@printPDF');
+Route::get('/form-wizard', 'CustomerController@FormWizard');
 
 Route::get('irc','IRCController@index');

@@ -5,6 +5,7 @@
 /vendor
 /public/.htaccess
 /public/.htaccesstest
+/public/assets/images
 .htaccess
 .htaccesstest
 .env

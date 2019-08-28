@@ -211,7 +211,8 @@
                                                 <div class="clearfix" style="clear:both"></div>
                                                 <div class="input-field col s12 m6">
                                                     <p>
-                                                        <label>
+                                                        <label for="is_head">
+                                                        @if(isset($values))
 															@php 
 																$userid = isset($values) ? $values->user_id: '';
 																$ishead = isset($values) ? $values->is_head: '';
@@ -225,16 +226,21 @@
 																	@endisset />
 															@else
                                                             <input type="checkbox" name="is_head"
-                                                                class="common-checkbox" id="is_head" value="1"
+                                                                class="common-checkbox" id="is_head" value="1" onclick='return ConfirmDeletion()'
                                                                 @isset($values)
                                                                 {{ $values->is_head == '1' ? 'checked' : '' }}
                                                                 @endisset />
+                                                                
                                                             <span>{{__('Head') }}</span>
+                                                            <br> <br> 
+                                                                <div id="head">
+                                                                 <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ __('you are the union head of all union branch. Please check the mail Id for Login as a user') }}</span>
+                                                               </div>
+                                                            <span></span>
 															@endif
-															
+														@endisset
                                                         </label>
                                                     </p>
-                                                    
                                                 </div>
 												<div class="clearfix" style="clear:both"></div>
 												<div class="input-field col s12">
@@ -252,6 +258,7 @@
                             </div>
                         </div>
                     </div>
+                    <p>Hover the mouse pointer over this paragraph.</p>
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
                 </div>
@@ -262,14 +269,28 @@
 @endsection
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script>
+
 $("#masters_sidebars_id").addClass('active');
 $("#unionbranch_sidebar_li_id").addClass('active');
 $("#unionbranch_sidebar_a_id").addClass('active');
 $(document).ready(function() {
+    $('#head').hide();
+ $('#is_head').click(function(){
+	$('#head').toggle();
+        
+    // if (confirm("{{ __('Are you want to to be the union head for all the union branches?') }}")) {
+    //    return true;
+    // } else {
+    //     return false;
+    // }
+      alert("Are you want to to be the union head for all the union branches?");
+       
+	}); 
     //state
     $('#country_id').change(function() {
         var countryID = $(this).val();

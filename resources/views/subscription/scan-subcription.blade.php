@@ -73,7 +73,7 @@
 													@if($data['row_count']>0)
 													@for ($i = 0; $count <= $halfrows; $i+=$limit,$count++)
 														<tr>
-															<th>{{ $i }} - @php if( $data['row_count'] < $i+$limit ){ echo $i.'++'; }else{ echo $i+$limit; }  @endphp</th>
+															<th>{{ $i }} - @php if( $data['row_count'] < $i+$limit && $data['row_count']>=100){ echo $i.'++'; }else if( $data['row_count'] <= 100 ){ echo $data['row_count']; }else{ echo $i+$limit; }  @endphp</th>
 															<th><span id="check_updated_{{ $i }}"><i class="material-icons"></i><span></th>
 														</tr>
 														@php

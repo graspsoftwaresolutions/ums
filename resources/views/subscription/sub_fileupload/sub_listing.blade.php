@@ -1,13 +1,29 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
+
+
 @endsection
 @section('headSecondSection')
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
+<style>
+	table.highlight > tbody > tr
+	{
+		-webkit-transition: background-color .25s ease;
+		   -moz-transition: background-color .25s ease;
+			 -o-transition: background-color .25s ease;
+				transition: background-color .25s ease;
+	}
+	table.highlight > tbody > tr:hover
+	{
+		background-color: rgba(242, 242, 242, .5);
+	}
+	.monthly-sub-status:hover,.monthly-approval-status:hover,.monthly-company-sub-status:hover,.monthly-company-approval-status:hover{
+		background-color: #dddddd;
+		cursor:pointer;
+	}
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -109,7 +125,7 @@
 											<select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
 												<option value="" selected>{{__('Choose Company') }}</option>
 												@foreach($companylist as $value)
-												<option value="{{$value->id}}">{{$value->company_name}}</option>
+												<option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
 												@endforeach
 											</select>
 											<div class="errorTxt6"></div>
@@ -159,62 +175,159 @@
 			</div>
 		</div>
 	</div>
-    <div class="row">
-		<div class="col s12 m6">
-			<div class="card darken-1" id="member_status_div">
-				<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
-				<table class="collection" id="memberstatustable">
-					<thead>
-						<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-							<td>{{__('Sl No') }}</td>
-							<td>{{__('Status') }}</td>
-							<td>{{__('Count') }}</td>
-							<td>{{__('Amount') }}</td>
-						</tr>
-					</thead>
-					<tbody>
-						@php 
-							$get_roles = Auth::user()->roles;
-							$user_role = $get_roles[0]->slug;
-							$user_id = Auth::user()->id;
-						@endphp 
-						@foreach($data['member_stat'] as  $key => $stat)
-						<tr>
-							<td>{{ $key+1 }} </td>
-							<td>{{ $stat->status_name }}</td>
-							<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
-							<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
+	<div class="row">
+		<div class="col s12">  
+			<ul class="tabs">  
+				<li class="tab col s3"><a class="active " href="#monthly_status" id="all">Monthly Status</a></li>  
+				<li class="tab col s3"><a class="" href="#company_status" id="all">Companywise Monthly Status</a></li>  
+			</ul>  
+		</div> 
+		<div id="monthly_status" class="col s12">
+			 <div class="">
+				<div class="col s12 m6">
+					<div class="card darken-1" id="member_status_div">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
+						<table class="collection Highlight" id="memberstatustable">
+							<thead>
+								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+									<td>{{__('Sl No') }}</td>
+									<td>{{__('Status') }}</td>
+									<td>{{__('Count') }}</td>
+									<td>{{__('Amount') }}</td>
+								</tr>
+							</thead>
+							<tbody>
+								@php 
+									$get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
+									$user_id = Auth::user()->id;
+								@endphp 
+								@foreach($data['member_stat'] as  $key => $stat)
+								@php
+									$member_sub_link = URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime('now'));
+								@endphp
+								
+								<tr class="monthly-sub-status" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $stat->font_color }};">
+									<td>{{ $key+1 }} </td>
+									<td>{{ $stat->status_name }}</td>
+									<td id="member_status_count_{{ $stat->id }}"> {{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
+									<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
+								</tr>
+								
+								@endforeach
+								<tr class="monthly-sub-status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=0&date='.strtotime('now')) }}" style="cursor:pointer;">
+									<td>{{ count($data['member_stat'])+1 }} </td>
+									<td>SUNDRY CREDITORS</td>
+									<td id="member_status_count_sundry">{{ CommonHelper::statusSubsMatchCount(2, $user_role, $user_id) }}</td>
+									<td id="member_status_amount_sundry">{{ round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0) }} </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--Approval Status-->
+				<div class="col s12 m6">
+					<div class="card darken-1">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
+						<table class="collection" id="approvalstatustable">
+							<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+								<td>{{__('Sl No') }}</td>
+								<td>{{__('Description') }}</td>
+								<td>{{__('Count') }}</td>
+								<td>{{__('Approved') }}</td>
+								<td>{{__('Pending') }}</td>
+							</tr>
+							@php 
+							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+							@endphp 
+							@foreach($data['approval_status'] as  $key => $stat)
+							<tr class="monthly-approval-status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
+								<td>{{ $key+1 }} </td>
+								<td>{{ $stat->match_name }}</td>
+								<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
+								<td id="approval_approved_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1) }}</td>
+								<td id="approval_pending_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0) }}</td>
+							</tr>
+							@endforeach
+						</table>
+					</div>
+				</div>
+				
 			</div>
-		</div>
-		<!--Approval Status-->
-		<div class="col s12 m6">
-			<div class="card darken-1">
-				<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
-				<table class="collection" id="approvalstatustable">
-					<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
-						<td>{{__('Sl No') }}</td>
-						<td>{{__('Description') }}</td>
-						<td>{{__('Count') }}</td>
-					</tr>
-					@php 
-					//isset($data['approval_status']) ? $data['approval_status'] : "";                   
-					@endphp 
-					@foreach($data['approval_status'] as  $key => $stat)
-					<tr>
-						<td>{{ $key+1 }} </td>
-						<td>{{ $stat->match_name }}</td>
-						<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
-					</tr>
-					@endforeach
-				</table>
+		</div>  
+		<div id="company_status" class="col s12">
+			<div class="col s12 m12">
+				<h5 class="center">Bank Name : <span class="subscription-bankname">---</span></h5>
 			</div>
-		</div>
-		
+			 <div class="">
+				<div class="col s12 m6">
+					<div class="card darken-1" id="member_status_div">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Member Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span> </span>
+						<table class="collection" id="memberstatustable">
+							<thead>
+								<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+									<td>{{__('Sl No') }}</td>
+									<td>{{__('Status') }}</td>
+									<td>{{__('Count') }}</td>
+									<td>{{__('Amount') }}</td>
+								</tr>
+							</thead>
+							<tbody>
+								@php 
+									$get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
+									$user_id = Auth::user()->id;
+								@endphp 
+								@foreach($data['member_stat'] as  $key => $stat)
+								<tr id="monthly_company_sub_status_{{ $stat->id }}" class="monthly-company-sub-status" data-href="" style="cursor:pointer;color:{{ $stat->font_color }};">
+									<td>{{ $key+1 }} </td>
+									<td>{{ $stat->status_name }}</td>
+									<td id="company_member_status_count_{{ $stat->id }}">0</td>
+									<td id="company_member_status_amount_{{ $stat->id }}">0 </td>
+								</tr>
+								@endforeach
+								<tr id="monthly_company_sub_status_0" class="monthly-company-sub-status" data-href="" style="cursor:pointer;">
+									<td>{{ count($data['member_stat'])+1 }} </td>
+									<td>SUNDRY CREDITORS</td>
+									<td id="company_member_status_count_sundry">0</td>
+									<td id="company_member_status_amount_sundry">0 </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!--Approval Status-->
+				<div class="col s12 m6">
+					<div class="card darken-1">
+						<span style="text-align:center;padding:5px;" class="card-title">{{__('Approval Status') }} <span class="right datamonth">[{{ date('M/Y') }}]</span></span>
+						<table class="collection" id="approvalstatustable">
+							<tr style="background:#3e57e6;color:white;text-align:center;" class="collection-item avatar">
+								<td>{{__('Sl No') }}</td>
+								<td>{{__('Description') }}</td>
+								<td>{{__('Count') }}</td>
+								<td>{{__('Approved') }}</td>
+								<td>{{__('Pending') }}</td>
+							</tr>
+							@php 
+							//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+							@endphp 
+							@foreach($data['approval_status'] as  $key => $stat)
+							<tr id="monthly_company_approval_status_{{ $stat->id }}" class="monthly-company-approval-status" data-href="">
+								<td>{{ $key+1 }} </td>
+								<td>{{ $stat->match_name }}</td>
+								<td id="company_approval_status_count_{{ $stat->id }}">0</td>
+								<td id="company_approval_approved_count_{{ $stat->id }}">0</td>
+								<td id="company_approval_pending_count_{{ $stat->id }}">0</td>
+							</tr>
+							@endforeach
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		</div>  
 	</div>
+   
 	</br>
 	</br>
 <!--dgfdgfdg-->
@@ -245,46 +358,34 @@
 @section('footerSection')
 <script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript">
-</script>
+
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
-    type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript">
-</script>
+
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+
+ <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+ <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
+
 <script>
 $(document).ready(function() {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
 });
+
      $(document).ready(function(){
-        $(".datepicker-custom").datepicker({
-            changeMonth: true,
-			changeYear: true,
-			showButtonPanel: true,
-			onSelect:function(dateText) {
-				console.log(dateText);	
-			},
-			onDraw:function(dateText) {
-				console.log(dateText);	
-			},
-			onClose: function(dateText, inst) {
-				console.log(inst);				
-				//$(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-			},
-			autoClose: true,
-			weekdaysAbbrev: ['sun'],
-            format: "mmm/yyyy",
-			/* today: 'Today',
-			defaultDate: '01/Jul/2019', */
-        });
+	 $('.datepicker-custom').MonthPicker({ 
+		Button: false, 
+		MonthFormat: 'M/yy',
+		OnAfterChooseMonth: function() { 
+			getDataStatus();
+		} 
+	 });
+		 //$('.datepicker-custom').MonthPicker({ Button: false,dateFormat: 'M/yy' });
+       
     });
 	
 	$("#subscribe_formValidate").validate({
@@ -331,11 +432,14 @@ $(document).ready(function() {
 			$("#file-upload-div").addClass('hide');
 		}
 	}
-	$(document).on('change','#entry_date,#sub_company',function(){
+	function getDataStatus(){
 		var entry_date = $("#entry_date").val();
 		var sub_company = $("#sub_company").val();
 		$(".datamonth").text('['+entry_date+']');
 		if(entry_date!="" && sub_company!=""){
+			var selected = $("#sub_company").find('option:selected');
+			var company_name = selected.data('companyname'); 
+			$(".subscription-bankname").text(company_name);
 			loader.showLoader();
 			$("#type option[value='2']").remove();
 			var url = "{{ url(app()->getLocale().'/check-subscription-exists') }}" + '?entry_date=' + entry_date + "&sub_company=" + sub_company;
@@ -346,6 +450,31 @@ $(document).ready(function() {
 					loader.hideLoader();
 					if(result.status==1){
 						$("#modal_subscription").modal('open');
+						$.each(result.status_data.count, function(key, entry) {
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							$("#monthly_company_sub_status_"+key).attr('data-href',baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+							$("#company_member_status_count_"+key).html(entry);
+                        });
+						$.each(result.status_data.amount, function(key, entry) {
+							$("#company_member_status_amount_"+key).html(entry);
+                        });
+						$("#memberstatustable").css('opacity',1);
+						$.each(result.approval_data.count, function(key, entry) {
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							$("#monthly_company_approval_status_"+key).attr('data-href',baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+							$("#company_approval_status_count_"+key).html(entry);
+                        });
+						$.each(result.approval_data.approved, function(key, entry) {
+							$("#company_approval_approved_count_"+key).html(entry);
+                        });
+						$.each(result.approval_data.pending, function(key, entry) {
+							$("#company_approval_pending_count_"+key).html(entry);
+                        });
+						var baselink = base_url +'/{{ app()->getLocale() }}/';
+						$("#monthly_company_sub_status_0").attr('data-href',baselink+"subscription-status?member_status=0&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+						$("#company_member_status_count_sundry").html(result.sundry_count);
+						$("#company_member_status_amount_sundry").html(result.sundry_amount);
+						$("#approvalstatustable").css('opacity',1);
 						$("#type").append('<option value="2">Download Existance data</option>');
 					}else{
 						
@@ -353,7 +482,7 @@ $(document).ready(function() {
 				}
 			});
 		}
-		if(entry_date!="" && $(this).attr('id')=='entry_date'){
+		if(entry_date!=""){
 			$("#memberstatustable").css('opacity',0.5);
 			$("#approvalstatustable").css('opacity',0.5);
 			var url = "{{ url(app()->getLocale().'/get-datewise-status') }}" + '?entry_date=' + entry_date ;
@@ -364,6 +493,8 @@ $(document).ready(function() {
 				success: function(result) {
 					if(result.status==1){
 						$.each(result.status_data.count, function(key, entry) {
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"'>";
 							$("#member_status_count_"+key).html(entry);
                         });
 						$.each(result.status_data.amount, function(key, entry) {
@@ -371,6 +502,8 @@ $(document).ready(function() {
                         });
 						$("#memberstatustable").css('opacity',1);
 						$.each(result.approval_data.count, function(key, entry) {
+							var baselink = base_url +'/{{ app()->getLocale() }}/';
+							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"'>"
 							$("#approval_status_count_"+key).html(entry);
                         });
 						$("#approvalstatustable").css('opacity',1);
@@ -381,6 +514,9 @@ $(document).ready(function() {
 				}
 			});
 		}
+	}
+	$(document).on('change','#entry_date,#sub_company',function(){
+		getDataStatus();
 	});
 	function DownloadExistance(existance){
 		if(existance==1){
@@ -407,6 +543,18 @@ $(document).ready(function() {
 		$('#subscribe_formValidate').trigger('submit');
 		
 	});
+	$(".monthly-sub-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
+	$(".monthly-approval-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
+	$(".monthly-company-sub-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
+	$(".monthly-company-approval-status").click(function() {
+		win = window.open($(this).data("href"), '_blank');
+    });
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');
 	$("#subscription_sidebar_a_id").addClass('active');

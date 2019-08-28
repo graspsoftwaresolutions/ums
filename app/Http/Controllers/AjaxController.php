@@ -38,6 +38,9 @@ class AjaxController extends CommonController
     }
     //Ajax Datatable Countries List //Users List 
     public function ajax_countries_list(Request $request){
+        $get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+		$user_id = Auth::user()->id;
         $columns = array( 
             0 => 'country_name', 
             1 => 'id',
@@ -91,9 +94,9 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        
-        
-        $data = $this->CommonAjaxReturn($country, 0, 'master.countrydestroy',0); 
+
+        $table = "country";
+        $data = $this->CommonAjaxReturn($country, 0, 'master.countrydestroy',0,$table); 
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -106,7 +109,9 @@ class AjaxController extends CommonController
     }
 
     public function ajax_state_list(Request $request){
+      
         $columns = array( 
+
             0 => 'country_name', 
             1 => 'state_name', 
             2 => 'id',
@@ -127,13 +132,13 @@ class AjaxController extends CommonController
         {            
             if( $limit == -1){
 				
-				$state = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+				$state = DB::table('country')->select('state.id','country.country_name','state.state_name','state.country_id','state.status')
                 ->join('state','country.id','=','state.country_id')
                 ->orderBy($order,$dir)
                 ->where('state.status','=','1')
 				->get()->toArray();
             }else{
-                $state = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+                $state = DB::table('country')->select('state.id','country.country_name','state.state_name','state.country_id','state.status')
                 ->join('state','country.id','=','state.country_id')
 				->offset($start)
                 ->limit($limit)
@@ -146,7 +151,7 @@ class AjaxController extends CommonController
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-			$state = DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+			$state = DB::table('country')->select('state.id','country.country_name','state.state_name','state.country_id','state.status')
 					->join('state','country.id','=','state.country_id')
 					->where('state.id','LIKE',"%{$search}%")
                     ->orWhere('country.country_name', 'LIKE',"%{$search}%")
@@ -155,7 +160,7 @@ class AjaxController extends CommonController
                     ->orderBy($order,$dir)
                     ->get()->toArray();
         }else{
-            $state 	=  DB::table('country')->select('country.country_name','state.state_name','state.id','state.country_id','state.status')
+            $state 	=  DB::table('country')->select('state.id','country.country_name','state.state_name','state.country_id','state.status')
 						->join('state','country.id','=','state.country_id')
 						->where('state.id','LIKE',"%{$search}%")
                         ->orWhere('country.country_name', 'LIKE',"%{$search}%")
@@ -172,8 +177,8 @@ class AjaxController extends CommonController
                     ->count();
         }
         
-        
-        $data = $this->CommonAjaxReturn($state, 0, 'master.statedestroy', 0); 
+        $table ="state";
+        $data = $this->CommonAjaxReturn($state, 0, 'master.statedestroy', 0,$table); 
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -187,9 +192,9 @@ class AjaxController extends CommonController
 
     public function ajax_city_list(Request $request){
         $columns = array( 
-            0 => 'state_name', 
+            0 => 'id', 
             1 => 'city_name', 
-            2 => 'id',
+            2 => 'state_name',
         );
 
         $totalData = City::where('status','=','1')
@@ -206,14 +211,14 @@ class AjaxController extends CommonController
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
-				$city = DB::table('country')->select(DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'city.id','state.country_id','city.status','city.city_name')
+				$city = DB::table('country')->select('city.id','city.city_name',DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'state.country_id','city.status')
                 ->join('state','country.id','=','state.country_id')
                 ->join('city','city.state_id','=','state.id')
                 ->orderBy($order,$dir)
                 ->where('city.status','=','1')
 				->get()->toArray();
             }else{
-               $city = DB::table('country')->select(DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'city.id','state.country_id','city.status','city.city_name')
+               $city = DB::table('country')->select('city.id','city.city_name',DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'state.country_id','city.status','city.city_name')
                 ->join('state','country.id','=','state.country_id')
                 ->join('city','city.state_id','=','state.id')
 				->offset($start)
@@ -227,7 +232,7 @@ class AjaxController extends CommonController
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-			$city = DB::table('country')->select(DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'city.id','state.country_id','city.status','city.city_name')
+			$city = DB::table('country')->select('city.id','city.city_name',DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'state.country_id','city.status','city.city_name')
 					->join('state','country.id','=','state.country_id')
 					->join('city','city.state_id','=','state.id')
 					->where('city.id','LIKE',"%{$search}%")
@@ -238,7 +243,7 @@ class AjaxController extends CommonController
                     ->orderBy($order,$dir)
                     ->get()->toArray();
         }else{
-            $city = DB::table('country')->select(DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'city.id','state.country_id','city.status','city.city_name')
+            $city = DB::table('country')->select('city.id','city.city_name',DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'state.country_id','city.status','city.city_name')
 						->join('state','country.id','=','state.country_id')
 						->join('city','city.state_id','=','state.id')
 						->where('city.id','LIKE',"%{$search}%")
@@ -257,8 +262,9 @@ class AjaxController extends CommonController
                     ->count();
         }
         
+        $table = "city";
         
-        $data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0); 
+        $data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0,$table); 
       //// var_dump($data);
        //exit;
         $json_data = array(
@@ -397,7 +403,8 @@ class AjaxController extends CommonController
                     ->count();
           
     }
-    $data = $this->CommonAjaxReturn($unionbranchs, 1, 'master.deleteunionbranch', 1, 'master.editunionbranch'); 
+    $table = "union_branch";
+    $data = $this->CommonAjaxReturn($unionbranchs, 1, 'master.deleteunionbranch', 1,$table, 'master.editunionbranch'); 
     
          $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -405,7 +412,6 @@ class AjaxController extends CommonController
             "recordsFiltered" => intval($totalFiltered), 
             "data"            => $data   
             );
-
         echo json_encode($json_data); 
     }
     
@@ -460,7 +466,7 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Relation, 0, 'master.relationdestroy', 0);
+        $data = $this->CommonAjaxReturnold($Relation, 0, 'master.relationdestroy', 0);
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -522,7 +528,8 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Race, 0, 'master.racedestroy', 0);
+        $table = "race";
+        $data = $this->CommonAjaxReturn($Race, 0, 'master.racedestroy', 0,$table);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -583,7 +590,8 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Reason, 0, 'master.reasondestroy', 0);
+        $table = "reason";
+        $data = $this->CommonAjaxReturn($Reason, 0, 'master.reasondestroy', 0,$table);
        
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -644,7 +652,7 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Persontitle, 0, 'master.persontitledestroy', 0);
+        $data = $this->CommonAjaxReturnold($Persontitle, 0, 'master.persontitledestroy', 0);
         
         $json_data = array(
 
@@ -705,7 +713,8 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Designation, 0, 'master.designationdestroy', 0);
+        $table = "designation";
+        $data = $this->CommonAjaxReturn($Designation, 0, 'master.designationdestroy', 0,$table);
    
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -746,7 +755,8 @@ class AjaxController extends CommonController
         $feelist = new Fee();
         $overallfeedetail = $feelist->getFee($select, $where, $or_where, $orderby, $limit, $offset);
         $totalFiltered =$totalData=$overallfeedetail->count();
-        $data = $this->CommonAjaxReturn($overallfeedetail->toArray(), 0, 'master.feedestroy', 0);
+        $table = "fee";
+        $data = $this->CommonAjaxReturn($overallfeedetail->toArray(), 0, 'master.feedestroy', 0,$table);
         
           $json_data = array(
           "draw" => intval($request->input('draw')),
@@ -823,7 +833,7 @@ class AjaxController extends CommonController
 							->count();
           
     }
-    $data = $this->CommonAjaxReturn($appforms, 1, 'master.deleteappform', 1, 'master.editappform'); 
+    $data = $this->CommonAjaxReturnold($appforms, 1, 'master.deleteappform', 1, 'master.editappform'); 
     
          $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -882,7 +892,7 @@ class AjaxController extends CommonController
                     ->orWhere('slug', 'LIKE',"%{$search}%")
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Role, 2, '', 0);
+        $data = $this->CommonAjaxReturnold($Role, 2, '', 0);
    
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -1037,7 +1047,7 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($FormType->toArray(), 0, 'master.formTypedestroy', 0);
+        $data = $this->CommonAjaxReturnold($FormType->toArray(), 0, 'master.formTypedestroy', 0);
    
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -1102,7 +1112,8 @@ class AjaxController extends CommonController
                     ->where('status','=','1')
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.companydestroy', 0);
+        $table = "company";
+        $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.companydestroy', 0,$table);
         
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -1111,7 +1122,7 @@ class AjaxController extends CommonController
             "data"            => $data   
             );
         echo json_encode($json_data); 
-    }
+    } 
 
     //Company Details End
     public function AjaxCompanyBranchList(Request $request){
@@ -1205,7 +1216,8 @@ class AjaxController extends CommonController
                             ->count();
           
     }
-    $data = $this->CommonAjaxReturn($companybranchs, 1, 'master.deletebranch', 1, 'master.editbranch'); 
+    $table = "company_branch";
+    $data = $this->CommonAjaxReturn($companybranchs, 1, 'master.deletebranch', 1, $table,'master.editbranch'); 
     
          $json_data = array(
             "draw"            => intval($request->input('draw')),  

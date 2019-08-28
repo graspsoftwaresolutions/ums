@@ -11,8 +11,30 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
-
+	@if(count($data['member_view'])<10)
+		#main.main-full {
+			height: 750px;
+		}
+		
+		.footer {
+		   position: fixed;
+		   margin-top:50px;
+		   left: 0;
+		   bottom: 0;
+		   width: 100%;
+		   height:auto;
+		   background-color: red;
+		   color: white;
+		   text-align: center;
+		   z-index:999;
+		} 
+		.sidenav-main{
+			z-index:9999;
+		}
+	@endif
 </style>
 @endsection
 @section('main-content')
@@ -69,7 +91,7 @@
 					<div class="row">                          
 						<div class="col s3">
 							<label for="month_year">{{__('Month and Year')}}</label>
-							<input id="month_year" type="text" class="validate datepicker-custom" value="@if($data['status_id']==0){{date('M/Y')}}@endif" name="month_year">
+							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
 						</div>
 						<div class="col s3">
 							<label>{{__('Company Name') }}</label>
@@ -104,8 +126,13 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>
-						<div class="input-field col s12 right-align">
-							<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
+						<div class="row">
+							<div class="input-field col s6 right">
+								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
+							</div>
+							<div class="input-field col s6 right-align">
+								<input type="submit" id="search"  class="btn" name="search" value="{{__('Search')}}">
+							</div>
 						</div>
 					</div>
 				</form>  
@@ -142,10 +169,14 @@
 							</tr> 
 						@endforeach
 					</tbody>
-					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="0"></input>
+					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 				</table> 
+				
 			</div>
+			
 		</div>
+		</br>
+		</br>
 	</div>
 </div> 
 @php	
@@ -181,6 +212,8 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -200,14 +233,13 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_li_id").addClass('ac
 $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
-		$(".datepicker-custom").datepicker({
-            changeMonth: true,
-			changeYear: true,
-			showButtonPanel: true,
-			autoClose: true,
-			weekdaysAbbrev: ['sun'],
-            format: "mmm/yyyy",
-        });
+		 $('.datepicker-custom').MonthPicker({ 
+			Button: false, 
+			MonthFormat: 'M/yy',
+			OnAfterChooseMonth: function() { 
+				//getDataStatus();
+			} 
+		 });
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,
 			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
@@ -354,7 +386,7 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 		var status_id = $("#member_status").val();
 		if(month_year!="" || company_id!="" || branch_id!="" || member_auto_id!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
-			$("#memberoffset").val(0);
+			$("#memberoffset").val("{{$data['data_limit']}}");
 			//loader.showLoader();
 			$('#page-length-option tbody').empty();
 			loader.showLoader();
@@ -387,6 +419,12 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 		}
 		//$("#submit-download").prop('disabled',true);
 	});
-
+$('#clear').click(function(){
+	$('#month_year').val("");
+	$('#company_id').val("");
+	$('#branch_id').val("");
+	$('#member_search').val("");
+	$(".selectpicker").val('').trigger("change"); 
+});
 </script>
 @endsection

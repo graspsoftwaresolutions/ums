@@ -103,6 +103,7 @@ $("#subcomp_sidebar_a_id").addClass('active');
 $(function() {
     $('#page-length-option').DataTable({
         "responsive": true,
+		"order": [[ 0, "desc" ]],
         "lengthMenu": [
             [10, 25, 50, 100],
             [10, 25, 50, 100]

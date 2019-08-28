@@ -40,11 +40,20 @@ class MembershipController extends Controller
     }
     public function index(Request $request)
     {
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
+        $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['member_status'] = 'all';
         if(!empty($request->all())){
             $data['member_status'] = $request->input('status');
         }
         $data['member_type'] = 1;
+
         return view('membership.membership')->with('data',$data); 
     }
 	
@@ -135,6 +144,14 @@ class MembershipController extends Controller
     
 
     public function new_members(Request $request){
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
+        $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->where('status','=','1')->get();
+        $data['city_view'] = DB::table('city')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['member_status'] = 'all';
         if(!empty($request->all())){
             $data['member_status'] = $request->input('status');
@@ -219,12 +236,13 @@ class MembershipController extends Controller
     public function AjaxmembersList(Request $request,$lang, $type){
         $member_status = $request->input('status');
         $sl=0;
+        $columns[$sl++] = 'm.id';
         $columns[$sl++] = 'm.member_number';
         $columns[$sl++] = 'm.name';
         $columns[$sl++] = 'm.designation_id';
         $columns[$sl++] = 'm.gender'; 
-        $columns[$sl++] = 'm.short_code';
-        $columns[$sl++] = 'm.branch_id';
+        $columns[$sl++] = 'com.short_code';
+        $columns[$sl++] = 'c.branch_name';
         $columns[$sl++] = 'm.levy';
         $columns[$sl++] = 'm.levy_amount';
         $columns[$sl++] = 'm.tdf';
@@ -234,14 +252,13 @@ class MembershipController extends Controller
         $columns[$sl++] = 'm.state_id';
         $columns[$sl++] = 'm.old_ic';
         $columns[$sl++] = 'm.new_ic';
-		
+		$columns[$sl++] = 'm.mobile';
 		$columns[$sl++] = 'm.email';
-        $columns[$sl++] = 'm.mobile';
+        
         $columns[$sl++] = 'm.race_id';
 		//if($type==1){
 			$columns[$sl++] = 'm.status_id';
 		//}
-		$columns[$sl++] = 'm.id';
         
 		if($type==1){
 			$approved_cond = 1;
@@ -253,39 +270,88 @@ class MembershipController extends Controller
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
 		$member_qry = '';
+		
+		$unionbranch_id = $request->input('unionbranch_id'); 
+		$company_id = $request->input('company_id'); 
+		$branch_id = $request->input('branch_id'); 
+		$gender = $request->input('gender'); 
+		$race_id = $request->input('race_id'); 
+		$status_id = $request->input('status_id'); 
+		$country_id = $request->input('country_id'); 
+		$state_id = $request->input('state_id');
+		$city_id = $request->input('city_id'); 
+		
+		
 		if($user_role=='union'){
             //DB::enableQueryLog();
-        $member_qry = DB::table('membership as m')->select('m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
-                     ->leftjoin('designation as d','m.designation_id','=','d.id')
-                     ->leftjoin('company_branch as c','m.branch_id','=','c.id')
-                     ->leftjoin('company as com','com.id','=','c.company_id')
-                     ->leftjoin('status as s','s.id','=','m.status_id')
-                     ->leftjoin('state as st','st.id','=','m.state_id')
-                     ->leftjoin('city as cit','cit.id','=','m.city_id')
-                     ->leftjoin('race as r','r.id','=','m.race_id')
-                     ->where('m.is_request_approved','=',$approved_cond)
-                     ->orderBy('m.id','DESC');
-        if($member_status!='all'){
-            $member_qry = $member_qry->where('m.status_id','=',$member_status);
-        }
-                     
-        // $queries = DB::getQueryLog();
-        // dd($queries);         
+				
+			$member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color','con.country_name')
+						 ->leftjoin('designation as d','m.designation_id','=','d.id')
+						 ->leftjoin('company_branch as c','m.branch_id','=','c.id')
+						 ->leftjoin('company as com','com.id','=','c.company_id')
+						 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
+						 ->leftjoin('status as s','s.id','=','m.status_id')
+						 ->leftjoin('country as con','con.id','=','m.country_id')
+						 ->leftjoin('state as st','st.id','=','m.state_id')
+						 ->leftjoin('city as cit','cit.id','=','m.city_id')
+						 ->leftjoin('race as r','r.id','=','m.race_id')
+                         ->where('m.is_request_approved','=',$approved_cond)
+                         ->orderBy('m.id','DESC');
+			if($branch_id!=""){
+				  $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+			  }elseif($company_id!= ''){
+				   $member_qry = $member_qry->where('c.company_id','=',$company_id);
+			  }
+			  elseif($unionbranch_id!= ''){
+				  $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
+			  }
+			 if($gender!="")
+			 {
+			  	$member_qry = $member_qry->where('m.gender','=',$gender);
+             }
+			 if($race_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.race_id','=',$race_id);
+			 }
+			 if($status_id!=0 && $status_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.status_id','=',$status_id);
+			 }
+			 if($country_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.country_id','=',$country_id);
+			 }
+			 if($state_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.state_id','=',$state_id);
+			 }
+			 if($city_id != "")
+			 {
+				 $member_qry = $member_qry->where('m.city_id','=',$city_id);
+			 }
+			  
+			if($member_status !='all'){
+				$member_qry = $member_qry->where('m.status_id','=',$member_status);
+			}
+			//$member_qry->dump()->get();			 
+			// $queries = DB::getQueryLog();
+			// dd($queries);         
          
                         
 		}else if($user_role=='union-branch'){
-            DB::enableQueryLog();
            
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
             $union_branch_id_val = '';
 			if(count($union_branch_id)>0){
                 $union_branch_id_val = $union_branch_id[0];
-                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
-                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
+                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->leftjoin('country as con','con.id','=','m.country_id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
@@ -294,6 +360,38 @@ class MembershipController extends Controller
                     ['c.union_branch_id','=',$union_branch_id_val],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
+                	if($branch_id!=""){
+                        $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+                    }elseif($company_id!= ''){
+                         $member_qry = $member_qry->where('c.company_id','=',$company_id);
+                    }
+                    elseif($unionbranch_id!= ''){
+                        $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
+                    }
+                   if($gender!="")
+                   {
+                        $member_qry = $member_qry->where('m.gender','=',$gender);
+                    }
+                   if($race_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.race_id','=',$race_id);
+                   }
+                   if($status_id!=0 && $status_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.status_id','=',$status_id);
+                   }
+                   if($country_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.country_id','=',$country_id);
+                   }
+                   if($state_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                   }
+                   if($city_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                   }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -302,12 +400,14 @@ class MembershipController extends Controller
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name as raceshortcode','s.font_color')
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name as raceshortcode','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
+                ->leftjoin('country as con','con.id','=','m.country_id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
@@ -316,6 +416,38 @@ class MembershipController extends Controller
                     ['c.company_id','=',$companyid],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
+                    if($branch_id!=""){
+                        $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+                    }elseif($company_id!= ''){
+                         $member_qry = $member_qry->where('c.company_id','=',$company_id);
+                    }
+                    elseif($unionbranch_id!= ''){
+                        $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
+                    }
+                   if($gender!="")
+                   {
+                        $member_qry = $member_qry->where('m.gender','=',$gender);
+                    }
+                   if($race_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.race_id','=',$race_id);
+                   }
+                   if($status_id!=0 && $status_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.status_id','=',$status_id);
+                   }
+                   if($country_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.country_id','=',$country_id);
+                   }
+                   if($state_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                   }
+                   if($city_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                   }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -324,12 +456,14 @@ class MembershipController extends Controller
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
-                $member_qry = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','r.race_name','r.short_code')
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
+                ->leftjoin('country as con','con.id','=','m.country_id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
@@ -338,6 +472,38 @@ class MembershipController extends Controller
                     ['m.branch_id','=',$branchid],
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
+                    if($branch_id!=""){
+                        $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+                    }elseif($company_id!= ''){
+                         $member_qry = $member_qry->where('c.company_id','=',$company_id);
+                    }
+                    elseif($unionbranch_id!= ''){
+                        $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
+                    }
+                   if($gender!="")
+                   {
+                        $member_qry = $member_qry->where('m.gender','=',$gender);
+                    }
+                   if($race_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.race_id','=',$race_id);
+                   }
+                   if($status_id!=0 && $status_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.status_id','=',$status_id);
+                   }
+                   if($country_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.country_id','=',$country_id);
+                   }
+                   if($state_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                   }
+                   if($city_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                   }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -358,8 +524,9 @@ class MembershipController extends Controller
 
         if(empty($request->input('search.value')))
         {
-           $compQuery = DB::table('company_branch as c')
-				->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color')
+            //DB::enableQueryLog();
+				$compQuery = DB::table('company_branch as c')
+				->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),'st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color')
                 ->join('membership as m','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -386,27 +553,65 @@ class MembershipController extends Controller
                     ['m.branch_id','=',$branchid]
                     ]);
                 }
+
+                if($branch_id!=""){
+                    $compQuery = $compQuery->where('m.branch_id','=',$branch_id);
+                }elseif($company_id!= ''){
+                     $compQuery = $compQuery->where('c.company_id','=',$company_id);
+                }
+                elseif($unionbranch_id!= ''){
+                    $compQuery = $compQuery->where('c.union_branch_id','=',$unionbranch_id);
+                }
+               if($gender!="")
+               {
+                    $compQuery = $compQuery->where('m.gender','=',$gender);
+              }
+               if($race_id != "")
+               {
+                   $compQuery = $compQuery->where('m.race_id','=',$race_id);
+               }
+               if($status_id!=0 && $status_id != "")
+               {
+                   $compQuery = $compQuery->where('m.status_id','=',$status_id);
+               }
+               if($country_id != "")
+               {
+                   $compQuery = $compQuery->where('m.country_id','=',$country_id);
+               }
+               if($state_id != "")
+               {
+                   $compQuery = $compQuery->where('m.state_id','=',$state_id);
+               }
+               if($city_id != "")
+               {
+                   $compQuery = $compQuery->where('m.city_id','=',$city_id);
+               }
+                
+              if($member_status !='all'){
+                  $compQuery = $compQuery->where('m.status_id','=',$member_status);
+              }
                 
 			if( $limit != -1){
 				$compQuery = $compQuery->offset($start)
 				->limit($limit);
             }
-            if($order =='m.member_number'){
+           /*  if($order =='m.member_number'){
                 $memberslist = $compQuery->orderBy('m.id','desc')
 			        ->get()->toArray(); 
             }else{
                 $memberslist = $compQuery->orderBy($order,$dir)
                 ->get()->toArray(); 
-            }
-			
-        
+            } */
+			$memberslist = $compQuery->orderBy($order,$dir)
+                ->get()->toArray(); 
+            
         }
         else {
            // DB::enableQueryLog();
             $search = $request->input('search.value'); 
         
 			$compQuery = DB::table('company_branch as c')
-							->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','c.branch_name as branch_name','s.status_name as status_name','m.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code','m.mobile','m.old_ic','m.new_ic','r.race_name','r.short_code as raceshortcode','s.font_color')
+							->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),'st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color')
                             ->join('membership as m','c.id','=','m.branch_id')
                             ->leftjoin('designation as d','m.designation_id','=','d.id')
                             ->leftjoin('company as com','com.id','=','c.company_id')
@@ -434,16 +639,14 @@ class MembershipController extends Controller
 								]);
 							}
                             $compQuery =  $compQuery->where(function($query) use ($search){
-                                $query->orWhere('m.id','LIKE',"%{$search}%")
-                                ->orWhere('com.company_name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                $query->orWhere('com.company_name', 'LIKE',"%{$search}%")
+                                ->orWhere('m.member_number', '=',"{$search}")
                                 ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
                                 ->orWhere('m.gender', 'LIKE',"%{$search}%")
                                 ->orWhere('m.doj', 'LIKE',"%{$search}%")
                                 ->orWhere('m.name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
-                                ->orWhere('m.old_ic', 'LIKE',"%{$search}%")
-                                ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                                ->orWhere('m.old_ic', 'LIKE',"{$search}")
+                                ->orWhere('m.new_ic', 'LIKE',"{$search}")
                                 ->orWhere('com.short_code', 'LIKE',"%{$search}%")
                                 ->orWhere('st.state_name', 'LIKE',"%{$search}%")
                                 ->orWhere('cit.city_name', 'LIKE',"%{$search}%")
@@ -452,10 +655,10 @@ class MembershipController extends Controller
                                 ->orWhere('m.tdf', 'LIKE',"%{$search}%")
                                 ->orWhere('m.tdf_amount', 'LIKE',"%{$search}%")
                                // ->orWhere('m.email', 'LIKE',"%{$search}%")
-                                ->orWhere('m.mobile', 'LIKE',"%{$search}%")
-                                ->orWhere('r.short_code', 'LIKE',"%{$search}%")
-                                ->orWhere('c.branch_name', 'LIKE',"%{$search}%")
-                                ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                                ->orWhere('m.mobile', 'LIKE',"{$search}")
+                                ->orWhere('r.short_code', 'LIKE',"%{$search}%");
+                                //->orWhere('c.branch_name', 'LIKE',"%{$search}%")
+                                //->orWhere('s.status_name', 'LIKE',"%{$search}%");
                             });
 			if( $limit != -1){
 				$compQuery = $compQuery->offset($start)
@@ -467,8 +670,7 @@ class MembershipController extends Controller
 
              $totalFiltered = $compQuery->count();
 
-            // $queries = DB::getQueryLog();
-            //   dd($queries);
+           
           
     }
 	$data = array();
@@ -484,6 +686,7 @@ class MembershipController extends Controller
                 $nestedData['gender'] = $gender;
                 $nestedData['short_code'] = $member->short_code;
                 $nestedData['branch_name'] = $member->branch_name;
+            
                 $nestedData['levy'] = $member->levy;
                 $nestedData['levy_amount'] = $member->levy_amount;
                 $nestedData['tdf'] = $member->tdf;
@@ -505,9 +708,9 @@ class MembershipController extends Controller
                 $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
                 
-              //  $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='btn-floating waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+                $actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 
-                $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+               // $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
                 //DB::enableQueryLog();
                 $history_list = DB::table('mon_sub_member')
@@ -520,14 +723,14 @@ class MembershipController extends Controller
                 {
                    // $actions .="<a style='margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
                 }
-				$actions .="<a style='margin-left: 10px;' title='Payment History'  class='' href='$histry'><i class='material-icons' style='color:#FF6900;'>history</i></a>";
+				$actions .="<a style='margin-left: 10px;' title='Payment History'  class='btn-sm waves-effect waves-light amber darken-4' href='$histry'><i class='material-icons'>history</i></a>";
 				
                 $baseurl = URL::to('/');
                 $editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
-                $actions .="<a style='margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+                $actions .="<a style='margin-left: 10px;' title='Member Transfer'  class='btn-sm waves-effect waves-light yellow darken-3' href='$member_transfer_link'><i class='material-icons' >transfer_within_a_station</i></a>";
 				if($ircstatus==1){
-					$actions .= "<a style='margin-left: 10px;' title='IRC Details'  class='' href='$editmemberirc_link'><i class='material-icons' style='color:#c36ac3'>confirmation_number</i></a>";
+					$actions .= "<a style='margin-left: 10px;' title='IRC Details'  class='btn-sm waves-effect waves-light purple' href='$editmemberirc_link'><i class='material-icons' >confirmation_number</i></a>";
 				}
                 
                

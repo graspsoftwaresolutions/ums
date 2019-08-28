@@ -35,7 +35,7 @@
 						<div class="row margin">
 							<div class="input-field col s12">
 								<i class="material-icons prefix pt-2">lock_outline</i>
-								<input id="password" name="password" type="password" class="@error('password') is-invalid @enderror" required >
+								<input id="password" name="password" type="password" class="@error('password') is-invalid @enderror" required onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false">
 								<label for="password">{{ __('Password') }}</label>
 							</div>
 						</div>
@@ -76,5 +76,9 @@
 		</div>
 	</div>
 </div>
-
+<script>
+ $('#password').bind("cut copy paste",function(e) {
+          e.preventDefault();
+      });
+</script>
 @endsection

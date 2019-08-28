@@ -556,6 +556,7 @@ $('#add_fee').click(function(){
 	var selected = $("#new_fee_id").find('option:selected');
 	var new_fee_name = selected.data('feename'); 
 	var fee_amount =   $("#fee_amount").val();
+	
 
 	$.ajaxSetup({
 		headers: {
@@ -572,6 +573,7 @@ $('#add_fee').click(function(){
 		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_fee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
 		new_row += '</tr>';
 		$("#fee_amount").val('');
+		$(".selectpicker").val('').trigger("change");
 		//$('#test3').find('input:text').val('');    
 		$('#fee_table').append(new_row);
 		$("#add_fee").attr('disabled',false);
@@ -782,6 +784,8 @@ $('#nominee_state_id').change(function(){
 	var nominee_phone =   $("#nominee_phone").val();
 	var nominee_age =   $("#nominee_age").val();
 	
+
+	
 	var selected = $("#relationship").find('option:selected');
 	var relationshipname = selected.data('relationshipname'); 
 	$.ajaxSetup({
@@ -819,6 +823,7 @@ $('#nominee_state_id').change(function(){
 		});
 		$("#add_nominee").attr('disabled',false);
 		$("#nominee_row_id").val(nominee_row_id);
+		$(".selectpicker").val('').trigger("change");
 		
 	}
 	else{
