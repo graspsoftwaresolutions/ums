@@ -252,7 +252,7 @@ span.dtr-title::after {
 												<th width="7%">{{__('Branch Name') }}</th>
 												<th width="5%">{{__('Levy') }}</th>
 												<th width="5%">{{__('Levy Amount') }}</th>
-												<th width="5%">{{__('TDF') }}</th>
+												<th width="10%">{{__('TDF') }}</th>
 												<th width="5%">{{__('TDF Amount') }}</th>
 												<th width="5%">{{__('DOJ')}}</th>
 												<th width="5%">{{__('City') }}</th>
