@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -157,6 +160,13 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
 $("#state_sidebar_li_id").addClass('active');
@@ -172,10 +182,41 @@ $(function() {
     "order": [
       [0, 'asc']
     ],
-	"lengthMenu": [
-		[10, 25, 50, 100],
-		[10, 25, 50, 100]
-	],
+	 dom: 'lBfrtip', 
+        buttons: [
+		   {
+			   extend: 'pdf',
+			   footer: true,
+			   exportOptions: {
+					columns: [0,1]
+				},
+				title : 'State List'
+		   },
+		   {
+			   extend: 'csv',
+			   footer: false,
+			   exportOptions: {
+					columns: [0,1]
+				},
+				title : 'State List'
+		   },
+		   {
+			   extend: 'excel',
+			   footer: false,
+			   exportOptions: {
+					columns: [0,1]
+				},
+				title : 'State List'
+		   },
+			{
+			   extend: 'print',
+			   footer: false,
+			   exportOptions: {
+					columns: [0,1]
+				},
+				title : 'State List'
+		   }  
+		],
     "drawCallback": function (settings) {
       var api = this.api();
       var rows = api.rows({

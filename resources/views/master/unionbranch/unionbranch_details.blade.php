@@ -230,11 +230,12 @@
                                                                 @isset($values)
                                                                 {{ $values->is_head == '1' ? 'checked' : '' }}
                                                                 @endisset />
+															
                                                                 
                                                             <span>{{__('Head') }}</span>
                                                             <br> <br> 
                                                                 <div id="head">
-                                                                 <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ __('you are the union head of all union branch. Please check the mail Id for Login as a user') }}</span>
+                                                                 <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small col s12">{{ __('you are the union head of all union branch. Please check the mail Id for Login as a user') }}</span>
                                                                </div>
                                                             <span></span>
 															@endif

@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 @endsection
 @section('main-content')
 
@@ -120,6 +123,13 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
 <script>
 $("#masters_sidebars_id").addClass('active');
 $("#country_sidebar_li_id").addClass('active');
@@ -128,14 +138,34 @@ $("#country_sidebar_a_id").addClass('active');
 $(function() {
     $('#page-length-option').DataTable({
         "responsive": true,
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
-        ],
-        /* "lengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
-        ], */
+        dom: 'lBfrtip', 
+        buttons: [
+		   {
+			   extend: 'pdf',
+			   
+			   footer: true,
+			   exportOptions: {
+					columns: [0]
+				},
+				title : 'Countries List'
+		   },
+		   {
+			   extend: 'excel',
+			   footer: false,
+			   exportOptions: {
+					columns: [0]
+				},
+				title : 'Countries List'
+		   },
+			{
+			   extend: 'print',
+			   footer: false,
+			   exportOptions: {
+					columns: [0]
+				},
+				title : 'Countries List'
+		   }  
+		],
         "processing": true,
         "serverSide": true,
         "ajax": {
