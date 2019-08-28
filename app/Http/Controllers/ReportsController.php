@@ -115,5 +115,19 @@ class ReportsController extends Controller
                             //  dd($queries);
          return response()->json($res);
     }
+    public function halfshareReport(Request $request, $lang)
+    {
+       $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+       DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(mend.statusmonth)'),'=','8')  
+                ->where(DB::raw('year(mend.statusmonth)'),'=','2018')
+                ->groupBy('cb.union_branch_id')
+                ->get();              
+       $data['half_share'] = $half_s;
+        return view('Reports.halfshare')->with('data',$data);  
+    }
 }
 
