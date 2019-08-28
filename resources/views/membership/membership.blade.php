@@ -142,8 +142,6 @@ span.dtr-title::after {
 											<label>{{__('Company Branch Name') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
-												
-												
 											</select>
 											<div class="input-field">
 												<div class="errorTxt23"></div>
@@ -515,7 +513,7 @@ $('#company_id').change(function() {
                             "Select"));
                         $.each(res, function(key, entry) {
                             $('#branch_id').append($('<option></option>').attr(
-                                'value', entry.id).text(entry.branch_name));
+                                'value', entry.branchid).text(entry.branch_name));
 
                         });
                     } else {
