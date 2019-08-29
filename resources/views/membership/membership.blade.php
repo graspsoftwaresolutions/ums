@@ -304,6 +304,7 @@ $(function () {
  var dataTable = $('#page-length-option').DataTable({
 	"responsive": true,
 	"order": [[ 0, "desc" ]],
+	//"searching": false,
 	"lengthMenu": [
 		[10, 25, 50, 100],
 		[10, 25, 50, 100]
