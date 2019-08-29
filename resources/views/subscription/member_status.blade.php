@@ -205,7 +205,7 @@
 								<td id="approve_status_{{ $member->match_auto_id }}"><span class="badge {{$member->approval_status==1 ? 'green' : 'red'}}">{{ $member->approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
-								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{$member->match_auto_id}})"  title="Approval" type="button" name="action"><i class="material-icons">check_box</i></a></td>
+								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{$member->match_auto_id}})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
 							</tr> 
 						@endforeach
@@ -576,16 +576,7 @@ $("#subscription_sidebar_a_id").addClass('active');
 					if(res)
 					{
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.entryfee+"</td>";
-								table_row += "<td>"+entry.insfee+"</td>";
-								table_row += "<td>"+entry.subs+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
+							
 						});
 						
 						loader.hideLoader();
@@ -603,6 +594,7 @@ $("#subscription_sidebar_a_id").addClass('active');
 	$(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
+	   var baselink = base_url +'/{{ app()->getLocale() }}/';
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    loader.showLoader();
 		    var filter_date = $("#filter_date").val();
@@ -619,6 +611,7 @@ $("#subscription_sidebar_a_id").addClass('active');
 					if(result)
 					{
 						res = result.member;
+						console.log(res);
 						$.each(res,function(key,entry){
 							var table_row = "<tr><td>"+entry.up_member_name+"</td>";
 								table_row += "<td>"+entry.member_number+"</td>";
@@ -628,9 +621,11 @@ $("#subscription_sidebar_a_id").addClass('active');
 								table_row += "<td>"+entry.due+"</td>";
 								table_row += "<td>"+entry.status_name+"</td>";
 								table_row += "<td>"+entry.match_name+"</td>";
-								var app_status = entry.approval_status==1 ? 'Approved' : 'Pending';
-								table_row += "<td>"+app_status+"</td>";
-								var actions = '<a class="btn btn-sm waves-effect " href="http://localhost/murugan/ums/en/membership-edit/eyJpdiI6InptN0tBZ1wvS2lSUFR0emdrUFdtaDJ3PT0iLCJ2YWx1ZSI6InZxcHVUcldOd1hXSFQyVE9RdmlucEE9PSIsIm1hYyI6IjYyMDAzYTEzOTU2NmVkOTgyZWZhMmExNDQ5ZmM1MTcyNDkxYWNkODU5NGE0MDk2Mzg0YWE2ZjhiNWNmMjNjYjkifQ==" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a><a class="btn btn-sm waves-effect amber darken-4" href="http://localhost/murugan/ums/en/member-history/eyJpdiI6IjFkVEtWakppYlVSTUpnXC9ucm9VckZRPT0iLCJ2YWx1ZSI6IlVTMVlSUmlQN3lIclV6YjlzYVM5elE9PSIsIm1hYyI6IjU3N2JiZGQ5ZGUyZjExM2RkZjMzMGUxZTFlMmZmMjdhNmVhOTM2OTAzYzFhZmJkZWU5NTI2ZDdiM2U2NTk0NDgifQ==" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval(36)" title="Approval" type="button" name="action"><i class="material-icons">check_box</i></a>';
+								var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+								table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
+								var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+								actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+								actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.match_auto_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 								table_row += "<td>"+actions+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});

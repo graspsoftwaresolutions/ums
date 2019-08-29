@@ -744,7 +744,7 @@ class SubscriptionAjaxController extends CommonController
 			$members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric,match.match_name as match_name from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub_member_match` as mm on m.id=mm.mon_sub_member_id left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId` left join mon_sub_match_table as `match` on `match`.`id` = `mm`.`match_id` where m.StatusId="'.$member_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" LIMIT '.$offset.', '.$data['data_limit']));
 			
            // $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub_member_match` as mm on m.id=mm.mon_sub_member_id left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company_branch as cb on `cb`.`id` = `member`.`branch_id` left join company as c on `c`.`id` = `cb`.`company_id` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId="'.$member_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'"'));
-            $data['member'] = $members_data;
+            //$data['member'] = $members_data;
             $data['status_type'] = 1;
             $data['status'] = $member_status;
         }
@@ -753,8 +753,8 @@ class SubscriptionAjaxController extends CommonController
 			if(isset($company_id) && $company_id!=''){
 				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
 			}
-           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric,match.match_name as match_name FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId` left join mon_sub_match_table as `match` on `match`.`id` = `mm`.`match_id` WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" OFFSET '.$offset.' LIMIT '.$offset.', '.$data['data_limit']));
-           $data['member'] = $members_data;
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric,match.match_name as match_name FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId` left join mon_sub_match_table as `match` on `match`.`id` = `mm`.`match_id` WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" LIMIT '.$offset.', '.$data['data_limit']));
+           //$data['member'] = $members_data;
            $data['status_type'] = 2;
            $data['status'] = $approval_status;
         }
@@ -763,15 +763,21 @@ class SubscriptionAjaxController extends CommonController
 			if(isset($company_id) && $company_id!=''){
 				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
 			}
-           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric,match.match_name as match_name FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId` left join mon_sub_match_table as `match` on `match`.`id` = `mm`.`match_id` WHERE mm.match_id="2" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" OFFSET '.$offset.' LIMIT '.$offset.', '.$data['data_limit']));
-           $data['member'] = $members_data;
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric,match.match_name as match_name FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId` left join mon_sub_match_table as `match` on `match`.`id` = `mm`.`match_id` WHERE mm.match_id="2" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" LIMIT '.$offset.', '.$data['data_limit']));
+          // $data['member'] = $members_data;
            
            $data['status_type'] = 3;
            $data['status'] = 0;
         }
-        // foreach($members_data as $member){
-        //     dd($member);
-        // }
+        //dd($members_data);
+        foreach($members_data as $mkey => $member){
+            foreach($member as $newkey => $newvalue){
+                $data['member'][$mkey][$newkey] = $newvalue;
+            }
+            $enc_member = Crypt::encrypt($member->memberid);
+            $data['member'][$mkey]['enc_member'] = $enc_member;
+        }
+        
         echo json_encode($data); 
     }
 }

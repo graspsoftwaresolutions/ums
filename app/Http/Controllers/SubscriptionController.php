@@ -326,7 +326,7 @@ class SubscriptionController extends CommonController
                         $subMemberMatch->match_id = 4;
                     }
                     
-                    if($memberdata[0]->name != $subscription->Name){
+                    if(strtoupper(trim($memberdata[0]->name)) != strtoupper($subscription->Name)){
                         $subMemberMatch->match_id = 3;
                     }
                     
@@ -667,7 +667,7 @@ class SubscriptionController extends CommonController
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
-		$defaultdate = date('Y-m-d',$date);
+		$defaultdate = date('Y-m-01',$date);
 		$data['data_limit'] = $this->limit;
 		$data['company_id'] = $company_id;
         $data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
@@ -679,7 +679,7 @@ class SubscriptionController extends CommonController
                                     ->select('mt.id as id','mt.match_name as match_name')
                                     ->get();
 
-		$data['filter_date'] = strtotime(date('Y-m-d',strtotime($defaultdate)));
+		$data['filter_date'] = strtotime(date('Y-m-01',strtotime($defaultdate)));
         if($member_status!=""){
 			$cond ='';
 			if(isset($company_id) && $company_id!=''){

@@ -99,5 +99,9 @@
 		color: #3f51b5;
 		background-color: #eee;
 	}
+	.swal-button--cancel {
+		color: #fff;
+		background-color: #ff5a92 !important;
+	}
 	  
 </style>

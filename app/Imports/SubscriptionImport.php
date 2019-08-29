@@ -113,7 +113,7 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
                         $subscription_member->MonthlySubscriptionCompanyId = $this->company_auto_id;
                     }
                     $subscription_member->NRIC = $nric;
-                    $subscription_member->Name = $membername;
+                    $subscription_member->Name = trim($membername);
                     $subscription_member->Amount = $amount;
                     $subscription_member->StatusId = null;
                     $subscription_member->update_status = 0;
