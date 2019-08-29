@@ -21,6 +21,9 @@ div.error {
     transform: translateY(0%);
     color: #ff4081;
 }
+span.dtr-title::after {
+    content: ":";
+  }
 div.clearfix{
 	clear:both;
 }
