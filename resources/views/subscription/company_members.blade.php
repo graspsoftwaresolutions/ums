@@ -129,7 +129,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<form method="post" id="advancedsearch" >
 								@csrf  
 									<div class="row">   
-										<div class="col s4">
+										<div class="col s12 m6 l4">
 											<label>{{__('Race') }}</label>
 											<select name="race_id" id="race_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 												<option value="">{{__('Select Race') }}</option>
@@ -141,7 +141,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												<div class="errorTxt22"></div>
 											</div>
 										</div>
-										<div class="col s4">
+										<div class="col s12 m6 l4">
 											<label for="member_number"
 												class="common-label force-active">{{__('Membership Number') }}*</label>
 											<input id="member_number" name="member_number"  class="common-input"
@@ -150,7 +150,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<div class="errorTxt1"></div>
 										</div>
 										
-										<div class="col s4">
+										<div class="col s12 m6 l4">
 											<label>{{__('Designation') }}</label>
 											<select name="designation_id" id="designation_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Designation') }}</option>

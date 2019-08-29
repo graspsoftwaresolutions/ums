@@ -39,7 +39,7 @@
 										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Transfer History') }}</h5>
 										<ol class="breadcrumbs mb-0">
 										<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
-											<li class="breadcrumb-item active"><a href="#">{{__('Member') }}</a>
+											<li class="breadcrumb-item active"><a href="#">{{__('Member Transfer History List') }}</a>
 											</li>
 											
 										</ol>
