@@ -176,7 +176,41 @@ $(function() {
     $('#page-length-option').DataTable({
         "responsive": true,
         "searching": false,
-        
+        dom: 'lBfrtip', 
+			buttons: [
+			   {
+				   extend: 'pdf',
+				   footer: true,
+				   exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					},
+					title : 'Member History List'
+			   },
+			   {
+				   extend: 'csv',
+				   footer: false,
+				   exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					},
+					title : 'Member History List'
+			   },
+			   {
+				   extend: 'excel',
+				   footer: false,
+				   exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					},
+					title : 'Member History List'
+			   },
+				{
+				   extend: 'print',
+				   footer: false,
+				   exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					},
+					title : 'Member History List'
+			   }  
+			],
         
         "processing": true,
         "serverSide": true,

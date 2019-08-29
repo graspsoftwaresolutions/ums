@@ -118,6 +118,8 @@ text{
    </div>
    @php
    $data_status = CommonHelper::getStatus();
+   $status = 'active';
+   $status_name_count = $status.$data['totla_active_member_count'];
    @endphp
 </div>
 @section('footerSecondSection')
@@ -125,6 +127,7 @@ text{
 
 
 <script>
+
 	var data = {
 	  series: [97, 3]
 	};
@@ -220,7 +223,7 @@ text{
     },
     series: [{
 		name : "Staus Count",
-		data: [ @php echo  $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp]
+		data: [ @php echo $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp]
     }]
 }); 
  //High Chart Ends  
