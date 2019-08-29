@@ -780,4 +780,27 @@ class SubscriptionAjaxController extends CommonController
         
         echo json_encode($data); 
     }
+
+    public function getAutomemberslist(Request $request){
+        $company_id = $request->input('company_id');
+        $filter_date = $request->input('filter_date');
+        $member_status = $request->input('member_status');
+        $approval_status = $request->input('approval_status');
+        $search = $request->input('query');
+       
+        $member_query = DB::table('mon_sub_member_match as mm')->select(DB::raw('CONCAT(sm.Name, " - ", sm.NRIC) AS value'),'sm.NRIC as number','m.id as member_code')      
+                            ->leftjoin('mon_sub_member as sm','sm.id','=','mm.mon_sub_member_id')
+                            ->leftjoin('membership as m','m.id','=','sm.MemberCode');
+        $member_query = $member_query->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('sm.NRIC', 'LIKE',"%{$search}%")
+                                    ->orWhere('sm.Name', 'LIKE',"%{$search}%");
+                            })->limit(25)
+                            ->get(); 
+         $res['suggestions'] =  $member_query;      
+        //$queries = DB::getQueryLog();
+                            //  dd($queries);
+         return response()->json($res);
+    }
 }

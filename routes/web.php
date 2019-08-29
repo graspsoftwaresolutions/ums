@@ -273,6 +273,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare');
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
+
 	
 	
 });
@@ -317,6 +318,7 @@ Route::get('delete-fee-data','MembershipController@deleteFee');
 Route::get('get-auto-member-list','MembershipController@getAutomemberslist');
 Route::get('get-branch-details','MembershipController@getBranchDetails');
 Route::get('get-company-member-list','ReportsController@getAutomemberslist');
+Route::get('get-subscription-status-list','SubscriptionAjaxController@getAutomemberslist');
 
 Route::get('/maintenance', function () {
     return view('errors.maintenance');

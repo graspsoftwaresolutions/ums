@@ -56,6 +56,17 @@
 		background-color: #ddd !important;
 	}
 </style>
+<style type="text/css">
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+	#transfer_member{
+		color:#fff;
+	}
+</style>
 @endsection
 @section('main-content')
 @php 
@@ -151,7 +162,7 @@
 							</div>
 						</div>
 						<div class="col s4">
-							<label for="member_auto_id">{{__('NRIC / Member Name')}}</label>
+							<label for="member_auto_id"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
 							<div class="input-field">
@@ -416,228 +427,256 @@
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subscription_sidebar_li_id").addClass('active');
 $("#subscription_sidebar_a_id").addClass('active');
-	
-	 $("#filtersubmit").validate({
-		rules: {
-			month_year: {
-				required: true,
-			},
-		},
-		  //For custom messages
-		  messages: {
-				month_year:{
-					required: "Enter date"
+$(document).ready(function(){
+	$("#member_search").devbridgeAutocomplete({
+		//lookup: countries,
+		serviceUrl: "{{ URL::to('/get-subscription-status-list') }}?serachkey="+ $("#member_search").val(),
+		params: { 
+					company_id:  function(){ return $("#company_id").val();  },
+					filter_date:  function(){ return $("#filter_date").val();  }, 
+					member_status:  function(){ return $("#member_status").val();  }, 
+					approval_status:  function(){ return $("#approval_status").val();  }, 
 				},
-		  },
-		  errorElement : 'div',
-		  errorPlacement: function(error, element) {
-				var placement = $(element).data('error');
-				if (placement) {
-				  $(placement).append(error)
-				} else {
-			  error.insertAfter(element);
-			  }
+		type:'GET',
+		//callback just to show it's working
+		onSelect: function (suggestion) {
+			 $("#member_search").val(suggestion.member_code);
+			 $("#member_auto_id").val(suggestion.number);
+		},
+		showNoSuggestionNotice: true,
+		noSuggestionNotice: 'Sorry, no matching results',
+		onSearchComplete: function (query, suggestions) {
+			if(!suggestions.length){
+				$("#member_search").val('');
+				$("#member_auto_id").val('');
 			}
-	  });
-	  function showApproval(match_id){
-		   $(".submitApproval").attr('disabled', false);
-		   $('.modal').modal();
-		   $("#match_auto_id").val(match_id);
-		   loader.showLoader();
-		    var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_match_auto_id=' + match_id;
-			$.ajax({
-				url: url,
-				type: "GET",
-				dataType: "json",
-				success: function(result) {
-					var match_data = result.match;
-					$(".bank_match_row").addClass('hide');
-					$(".nric_match_row").addClass('hide');
-					$(".member_match_row").addClass('hide');
-					$(".nric_not_match_row").addClass('hide');
-					$(".struckoff_match_row").addClass('hide');
-					$(".resign_match_row").addClass('hide');
-					$(".nric_old_match_row").addClass('hide');
-					$(".previous_subscription_match_row").addClass('hide');
-					$(".nric_bank_match_row").addClass('hide');
-					$(".previous_unpaid_match_row").addClass('hide');
-					$("#view_member_name").html(result.up_member_name);
-					if(match_data.match_id==1){
-						$(".nric_match_row").removeClass('hide');
-						$("#nric_approved_by").html(result.created_user);
-					}
-					else if(match_data.match_id==3){
-						$("#member_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$(".member_match_row").removeClass('hide');
-						$("#registered_member_name").html(result.registered_member_name);
-						$("#uploaded_member_name").html(result.uploaded_member_name);
-						$("#name_approved_by").html(result.updated_user);
-						$(".nric_match_row").removeClass('hide');
-						$("#nric_approved_by").html(result.created_user);
-					}else if(match_data.match_id==4){
-						$("#bank_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$(".bank_match_row").removeClass('hide');
-						$("#registered_bank_name").html(result.registered_bank_name);
-						$("#uploaded_bank_name").html(result.uploaded_bank_name);
-						$("#bank_approved_by").html(result.updated_user);
-						$(".nric_match_row").removeClass('hide');
-						$("#nric_approved_by").html(result.created_user);
-					}else if(match_data.match_id==5){
-						$(".previous_subscription_match_row").removeClass('hide');
-						$("#previous_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$("#previous_approved_by").html(result.created_user);
-					}
-					else if(match_data.match_id==6){
-						$(".nric_match_row").removeClass('hide');
-						$("#struckoff_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$(".struckoff_match_row").removeClass('hide');
-						$("#nric_approved_by").html(result.created_user);
-						$("#struckoff_approved_by").html(result.updated_user);
-					}
-					else if(match_data.match_id==7){
-						$(".nric_match_row").removeClass('hide');
-						$("#resign_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$(".resign_match_row").removeClass('hide');
-						$("#nric_approved_by").html(result.created_user);
-						$("#resign_approved_by").html(result.updated_user);
-					}
-					else if(match_data.match_id==8){
-						$("#nric_old_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$(".nric_old_match_row").removeClass('hide');
-						$("#nric_old_approved_by").html(result.updated_user);
-					}else if(match_data.match_id==9){
-						$(".nric_bank_match_row").removeClass('hide');
-						$("#nric_bank_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$("#nric_bank_approved_by").html(result.created_user);
-					}else if(match_data.match_id==10){
-						$(".previous_unpaid_match_row").removeClass('hide');
-						$("#previous_unpaid_approve").prop('checked',match_data.approval_status==1 ? true : false);
-						$("#previous_unpaid_approved_by").html(result.created_user);
-					}else if(match_data.match_id==2){
-						$(".nric_not_match_row").removeClass('hide');
-					}else{
-						$(".nric_match_row").removeClass('hide');
-					}
-					$("#modal-approval").modal('open');
-					loader.hideLoader();
-				}
-			});
-	  }
-	$(document).on('submit','#approvalformValidate',function(event){
-		event.preventDefault();
-		$(".submitApproval").attr('disabled', true);
-		var url = "{{ url(app()->getLocale().'/ajax_save_approval') }}" ;
+		}
+	}); 
+	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+		$("#member_search").val('');
+	});
+});
+ $("#filtersubmit").validate({
+	rules: {
+		month_year: {
+			required: true,
+		},
+	},
+	  //For custom messages
+	  messages: {
+			month_year:{
+				required: "Enter date"
+			},
+	  },
+	  errorElement : 'div',
+	  errorPlacement: function(error, element) {
+			var placement = $(element).data('error');
+			if (placement) {
+			  $(placement).append(error)
+			} else {
+		  error.insertAfter(element);
+		  }
+		}
+  });
+  function showApproval(match_id){
+	   $(".submitApproval").attr('disabled', false);
+	   $('.modal').modal();
+	   $("#match_auto_id").val(match_id);
+	   loader.showLoader();
+		var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_match_auto_id=' + match_id;
 		$.ajax({
 			url: url,
-			type: "POST",
+			type: "GET",
 			dataType: "json",
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    },
-			data: $('#approvalformValidate').serialize(),
 			success: function(result) {
-				if(result.status==1){
-					var badge_color = result.approval_status == 1 ? 'green' : 'red';
-					var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
-					$("#approve_status_"+result.match_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
-					M.toast({
-						html: result.message
-					});
-				}else{
-					M.toast({
-						html: result.message
-					});
+				var match_data = result.match;
+				$(".bank_match_row").addClass('hide');
+				$(".nric_match_row").addClass('hide');
+				$(".member_match_row").addClass('hide');
+				$(".nric_not_match_row").addClass('hide');
+				$(".struckoff_match_row").addClass('hide');
+				$(".resign_match_row").addClass('hide');
+				$(".nric_old_match_row").addClass('hide');
+				$(".previous_subscription_match_row").addClass('hide');
+				$(".nric_bank_match_row").addClass('hide');
+				$(".previous_unpaid_match_row").addClass('hide');
+				$("#view_member_name").html(result.up_member_name);
+				if(match_data.match_id==1){
+					$(".nric_match_row").removeClass('hide');
+					$("#nric_approved_by").html(result.created_user);
 				}
-				$("#modal-approval").modal('close');
+				else if(match_data.match_id==3){
+					$("#member_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$(".member_match_row").removeClass('hide');
+					$("#registered_member_name").html(result.registered_member_name);
+					$("#uploaded_member_name").html(result.uploaded_member_name);
+					$("#name_approved_by").html(result.updated_user);
+					$(".nric_match_row").removeClass('hide');
+					$("#nric_approved_by").html(result.created_user);
+				}else if(match_data.match_id==4){
+					$("#bank_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$(".bank_match_row").removeClass('hide');
+					$("#registered_bank_name").html(result.registered_bank_name);
+					$("#uploaded_bank_name").html(result.uploaded_bank_name);
+					$("#bank_approved_by").html(result.updated_user);
+					$(".nric_match_row").removeClass('hide');
+					$("#nric_approved_by").html(result.created_user);
+				}else if(match_data.match_id==5){
+					$(".previous_subscription_match_row").removeClass('hide');
+					$("#previous_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$("#previous_approved_by").html(result.created_user);
+				}
+				else if(match_data.match_id==6){
+					$(".nric_match_row").removeClass('hide');
+					$("#struckoff_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$(".struckoff_match_row").removeClass('hide');
+					$("#nric_approved_by").html(result.created_user);
+					$("#struckoff_approved_by").html(result.updated_user);
+				}
+				else if(match_data.match_id==7){
+					$(".nric_match_row").removeClass('hide');
+					$("#resign_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$(".resign_match_row").removeClass('hide');
+					$("#nric_approved_by").html(result.created_user);
+					$("#resign_approved_by").html(result.updated_user);
+				}
+				else if(match_data.match_id==8){
+					$("#nric_old_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$(".nric_old_match_row").removeClass('hide');
+					$("#nric_old_approved_by").html(result.updated_user);
+				}else if(match_data.match_id==9){
+					$(".nric_bank_match_row").removeClass('hide');
+					$("#nric_bank_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$("#nric_bank_approved_by").html(result.created_user);
+				}else if(match_data.match_id==10){
+					$(".previous_unpaid_match_row").removeClass('hide');
+					$("#previous_unpaid_approve").prop('checked',match_data.approval_status==1 ? true : false);
+					$("#previous_unpaid_approved_by").html(result.created_user);
+				}else if(match_data.match_id==2){
+					$(".nric_not_match_row").removeClass('hide');
+				}else{
+					$(".nric_match_row").removeClass('hide');
+				}
+				$("#modal-approval").modal('open');
+				loader.hideLoader();
 			}
 		});
-	});
-	$(document).on('submit','form#filtersubmit',function(event){
-		event.preventDefault();
-		$("#search").attr('disabled',true);
-		var from_date = $("#from_date").val();
-		var to_date = $("#to_date").val();
-		var company_id = $("#company_id").val();
-		var branch_id = $("#branch_id").val();
-		var member_auto_id = $("#member_auto_id").val();
-		var join_type = $("#join_type").val();
-		$('#page-length-option tbody').empty();
-		if(from_date!="" && to_date!=""){
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
-			$("#memberoffset").val("{{$data['data_limit']}}");
-			//loader.showLoader();
-			$('#page-length-option tbody').empty();
-			loader.showLoader();
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						$.each(res,function(key,entry){
-							
-						});
-						
-						loader.hideLoader();
-					}else{
-						
-					}
-				}
-			});
-			$("#search").attr('disabled',false);
-		}else{
-			alert("please choose any filter");
+  }
+$(document).on('submit','#approvalformValidate',function(event){
+	event.preventDefault();
+	$(".submitApproval").attr('disabled', true);
+	var url = "{{ url(app()->getLocale().'/ajax_save_approval') }}" ;
+	$.ajax({
+		url: url,
+		type: "POST",
+		dataType: "json",
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		},
+		data: $('#approvalformValidate').serialize(),
+		success: function(result) {
+			if(result.status==1){
+				var badge_color = result.approval_status == 1 ? 'green' : 'red';
+				var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
+				$("#approve_status_"+result.match_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
+				M.toast({
+					html: result.message
+				});
+			}else{
+				M.toast({
+					html: result.message
+				});
+			}
+			$("#modal-approval").modal('close');
 		}
-		//$("#submit-download").prop('disabled',true);
 	});
-	$(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   var baselink = base_url +'/{{ app()->getLocale() }}/';
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    loader.showLoader();
-		    var filter_date = $("#filter_date").val();
-			var member_status = $("#member_status").val();
-			var approval_status = $("#approval_status").val();
-			var company_id = $("#company_id").val();
-			var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&approval_status='+approval_status+'&company_id='+company_id;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-subscription-more') }}?offset="+lastoffset+searchfilters,
-				success:function(result){
-					if(result)
-					{
-						res = result.member;
-						console.log(res);
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.up_member_name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.company_name+"</td>";
-								table_row += "<td>"+entry.up_nric+"</td>";
-								table_row += "<td>"+entry.Amount+"</td>";
-								table_row += "<td>"+entry.due+"</td>";
-								table_row += "<td>"+entry.status_name+"</td>";
-								table_row += "<td>"+entry.match_name+"</td>";
-								var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
-								table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
-								var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-								actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
-								actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.match_auto_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
-								table_row += "<td>"+actions+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						loader.hideLoader();
-					}else{
+});
+$(document).on('submit','form#filtersubmit',function(event){
+	event.preventDefault();
+	$("#search").attr('disabled',true);
+	var from_date = $("#from_date").val();
+	var to_date = $("#to_date").val();
+	var company_id = $("#company_id").val();
+	var branch_id = $("#branch_id").val();
+	var member_auto_id = $("#member_auto_id").val();
+	var join_type = $("#join_type").val();
+	$('#page-length-option tbody').empty();
+	if(from_date!="" && to_date!=""){
+		var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+		$("#memberoffset").val("{{$data['data_limit']}}");
+		//loader.showLoader();
+		$('#page-length-option tbody').empty();
+		loader.showLoader();
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url : "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,
+			success:function(res){
+				if(res)
+				{
+					$.each(res,function(key,entry){
 						
-					}
+					});
+					
+					loader.hideLoader();
+				}else{
+					
 				}
-			});
-		    
-				
-	   }
-	});
+			}
+		});
+		$("#search").attr('disabled',false);
+	}else{
+		alert("please choose any filter");
+	}
+	//$("#submit-download").prop('disabled',true);
+});
+$(window).scroll(function() {   
+   var lastoffset = $("#memberoffset").val();
+   var limit = "{{$data['data_limit']}}";
+   var baselink = base_url +'/{{ app()->getLocale() }}/';
+   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+		loader.showLoader();
+		var filter_date = $("#filter_date").val();
+		var member_status = $("#member_status").val();
+		var approval_status = $("#approval_status").val();
+		var company_id = $("#company_id").val();
+		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&approval_status='+approval_status+'&company_id='+company_id;
+		$("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url : "{{ URL::to('/en/get-subscription-more') }}?offset="+lastoffset+searchfilters,
+			success:function(result){
+				if(result)
+				{
+					res = result.member;
+					console.log(res);
+					$.each(res,function(key,entry){
+						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
+							table_row += "<td>"+entry.member_number+"</td>";
+							table_row += "<td>"+entry.company_name+"</td>";
+							table_row += "<td>"+entry.up_nric+"</td>";
+							table_row += "<td>"+entry.Amount+"</td>";
+							table_row += "<td>"+entry.due+"</td>";
+							table_row += "<td>"+entry.status_name+"</td>";
+							table_row += "<td>"+entry.match_name+"</td>";
+							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+							table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
+							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+							actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.match_auto_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							table_row += "<td>"+actions+"</td></tr>";
+							$('#page-length-option tbody').append(table_row);
+					});
+					loader.hideLoader();
+				}else{
+					
+				}
+			}
+		});
+		
+			
+   }
+});
 </script>
 @endsection
