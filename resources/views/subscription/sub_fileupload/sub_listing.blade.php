@@ -7,7 +7,7 @@
 @section('headSecondSection')
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="https://pixinvent.com/materialize-material-design-admin-template/app-assets/vendors/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <style>
 	table.highlight > tbody > tr
 	{
@@ -384,8 +384,7 @@
 
  <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
  <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
- <script src="https://pixinvent.com/materialize-material-design-admin-template/app-assets/vendors/sweetalert/sweetalert.min.js"></script>
- <script src="https://pixinvent.com/materialize-material-design-admin-template/app-assets/js/scripts/extra-components-sweetalert.js"></script>
+ <script src="{{ asset('public/js/sweetalert.min.js')}}"></script>
 
 <script>
 $(document).ready(function() {
@@ -469,7 +468,7 @@ $(document).ready(function() {
 					if(result.status==1){
 						swal({
 						title: "Data Already Exists!",
-						text: "Are you sure you want to download existance data",
+						text: "Are you sure you want to download existance data?",
 						icon: 'success',
 						dangerMode: true,
 						buttons: {
@@ -596,16 +595,24 @@ $(document).ready(function() {
 	});
 	$(".monthly-sub-status").click(function() {
 		//console.log($(this).data("href"));
-		win = window.open($(this).attr("data-href"), '_blank');
+		if($(this).attr("data-href")!=""){
+			win = window.open($(this).attr("data-href"), '_blank');
+		}
     });
 	$(".monthly-approval-status").click(function() {
-		win = window.open($(this).attr("data-href"), '_blank');
+		if($(this).attr("data-href")!=""){
+			win = window.open($(this).attr("data-href"), '_blank');
+		}
     });
 	$(".monthly-company-sub-status").click(function() {
-		win = window.open($(this).attr("data-href"), '_blank');
+		if($(this).attr("data-href")!=""){
+			win = window.open($(this).attr("data-href"), '_blank');
+		}
     });
 	$(".monthly-company-approval-status").click(function() {
-		win = window.open($(this).attr("data-href"), '_blank');
+		if($(this).attr("data-href")!=""){
+			win = window.open($(this).attr("data-href"), '_blank');
+		}
     });
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');
