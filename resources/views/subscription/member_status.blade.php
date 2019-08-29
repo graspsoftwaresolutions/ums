@@ -161,8 +161,8 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s4">
-							<label for="member_auto_id"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
+						<div class="col s4 {{ $member_status==0 || $approval_status==2 ? 'hide' : '' }}">
+							<label for="member_search"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
 							<div class="input-field">
@@ -183,7 +183,7 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<input type="text" name="memberoffset" id="memberoffset" class="" value="{{$data['data_limit']}}"></input>
+				<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
 						<tr>
@@ -440,8 +440,8 @@ $(document).ready(function(){
 		type:'GET',
 		//callback just to show it's working
 		onSelect: function (suggestion) {
-			 $("#member_search").val(suggestion.member_code);
-			 $("#member_auto_id").val(suggestion.number);
+			 $("#member_search").val(suggestion.number);
+			 $("#member_auto_id").val(suggestion.sub_member_id);
 		},
 		showNoSuggestionNotice: true,
 		noSuggestionNotice: 'Sorry, no matching results',
@@ -593,16 +593,16 @@ $(document).on('submit','#approvalformValidate',function(event){
 });
 $(document).on('submit','form#filtersubmit',function(event){
 	event.preventDefault();
+	var baselink = base_url +'/{{ app()->getLocale() }}/';
 	$("#search").attr('disabled',true);
-	var from_date = $("#from_date").val();
-	var to_date = $("#to_date").val();
+	var filter_date = $("#filter_date").val();
+	var member_status = $("#member_status").val();
+	var approval_status = $("#approval_status").val();
 	var company_id = $("#company_id").val();
-	var branch_id = $("#branch_id").val();
 	var member_auto_id = $("#member_auto_id").val();
-	var join_type = $("#join_type").val();
 	$('#page-length-option tbody').empty();
-	if(from_date!="" && to_date!=""){
-		var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+	if(filter_date!=""){
+		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&company_id='+company_id+'&approval_status='+approval_status+'&member_auto_id='+member_auto_id;
 		$("#memberoffset").val("{{$data['data_limit']}}");
 		//loader.showLoader();
 		$('#page-length-option tbody').empty();
@@ -610,12 +610,28 @@ $(document).on('submit','form#filtersubmit',function(event){
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url : "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,
-			success:function(res){
-				if(res)
+			url : "{{ URL::to('/en/get-subscription-more') }}?offset=0"+searchfilters,
+			success:function(result){
+				if(result)
 				{
+					res = result.member;
+					//console.log(res);
 					$.each(res,function(key,entry){
-						
+						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
+							table_row += "<td>"+entry.member_number+"</td>";
+							table_row += "<td>"+entry.company_name+"</td>";
+							table_row += "<td>"+entry.up_nric+"</td>";
+							table_row += "<td>"+entry.Amount+"</td>";
+							table_row += "<td>"+entry.due+"</td>";
+							table_row += "<td>"+entry.status_name+"</td>";
+							table_row += "<td>"+entry.match_name+"</td>";
+							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+							table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
+							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+							actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.match_auto_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							table_row += "<td>"+actions+"</td></tr>";
+							$('#page-length-option tbody').append(table_row);
 					});
 					
 					loader.hideLoader();
@@ -640,7 +656,8 @@ $(window).scroll(function() {
 		var member_status = $("#member_status").val();
 		var approval_status = $("#approval_status").val();
 		var company_id = $("#company_id").val();
-		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&approval_status='+approval_status+'&company_id='+company_id;
+		var member_auto_id = $("#member_auto_id").val();
+		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&company_id='+company_id+'&approval_status='+approval_status+'&member_auto_id='+member_auto_id;
 		$("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 		$.ajax({
 			type: "GET",
@@ -650,7 +667,7 @@ $(window).scroll(function() {
 				if(result)
 				{
 					res = result.member;
-					console.log(res);
+					//console.log(res);
 					$.each(res,function(key,entry){
 						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
 							table_row += "<td>"+entry.member_number+"</td>";
