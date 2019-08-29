@@ -88,28 +88,34 @@ span.dtr-title::after {
 				<div class="col s12">
 					<div class="card">
 						<div class="card-content">
-							<h4 class="card-title">
-								@if($data['member_type'] ==1)
-									Approved
+							<div class="row">
+								<div class="col s12 m4 l3">
+								<h4 class="card-title">
+									@if($data['member_type'] ==1)
+										Approved
+									@else
+										Pending
+									@endif
+									 Membership List &nbsp; @if($data['member_status'] !='all')  <span class="custom-badge">Status : {{ CommonHelper::get_member_status_name($data['member_status']) }}</span> @endif </h4>
+								</div>
+								<div >
+									<input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn col s12 m4 l3" value="Advanced search">
+								</div> 
+								<div>
+									@if($data['member_type'] ==1) 
+									<a class="col s12 m4 l3 btn waves-effect breadcrumbs-btn waves-light amber right" style="margin-bottom: 10px" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('Pending members list') }}</a>
 								@else
-									Pending
+									<a class="col s12 m4 l3 btn waves-effect breadcrumbs-btn waves-light green darken-1 right " style="margin-bottom: 10px" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Approved members list') }}</a>
 								@endif
-								 Membership List &nbsp; @if($data['member_status'] !='all')  <span class="custom-badge">Status : {{ CommonHelper::get_member_status_name($data['member_status']) }}</span> @endif
-								@if($data['member_type'] ==1) 
-									<a class="btn waves-effect breadcrumbs-btn waves-light amber right" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('Pending members list') }}</a>
-								@else
-									<a class="btn waves-effect breadcrumbs-btn waves-light green darken-1 right" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Approved members list') }}</a>
-								@endif
-								<input type="button" id="advancedsearchs" name="advancedsearch" class="btn" value="Advanced search">
-								
-							</h4>
+								</div>
+							</div>	
 							<div class="row">
 							<div class="card advancedsearch" style="dispaly:none;">
 								<div class="col s12">
 									<form method="post" id="advancedsearch">
 									@csrf  
 									<div class="row">   
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Union Branch Name') }}</label>
 											<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 												<option value="">{{__('Select Union') }}</option>
@@ -122,7 +128,7 @@ span.dtr-title::after {
 												<div class="errorTxt22"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Company Name') }}</label>
 											<input type="hidden" name="companyid" id="companyid">
 										
@@ -138,7 +144,7 @@ span.dtr-title::after {
 											</div>
 										</div>
 										
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Company Branch Name') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
@@ -147,7 +153,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Gender') }}</label>
 											<select name="gender" id="gender" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Gender') }}</option>
@@ -158,7 +164,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Race') }}</label>
 											<select name="race_id" id="race_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Race') }}</option>
@@ -172,7 +178,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Status') }}</label>
 											<select name="status_id" id="status_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Status') }}</option>
@@ -186,7 +192,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('Country') }}</label>
 											<select name="country_id" id="country_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Country') }}</option>
@@ -200,7 +206,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('State') }}</label>
 											<select name="state_id" id="state_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select State') }}</option>
@@ -210,7 +216,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s3">
+										<div class="col s12 m6 l3">
 											<label>{{__('City') }}</label>
 											<select name="city_id" id="city_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select City') }}</option>
