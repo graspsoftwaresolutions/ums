@@ -163,8 +163,6 @@ text{
    })(window, document, jQuery);
    //Sampel Line Chart Three
     // Options
- 
-	
 	//High Chart starts 
 	Highcharts.chart('container', {
     chart: {
