@@ -13,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -99,7 +100,7 @@
                                         </div>
                                         <div class="input-field col s12 m6">
                                         <label class="force-active">{{__(' State Name') }} *</label>
-                                            <select class="error browser-default" id="state_id" name="state_id"
+                                            <select  class="error browser-default" id="state_id" name="state_id"
                                                 data-error=".errorTxt2">
                                                 <option value="" disabled="" selected="">{{__('Select State') }}
                                                 </option>
@@ -112,21 +113,21 @@
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12 m6">
 
-                                            <input id="city_name" name="city_name" class="common-input" type="text"
+                                            <input id="city_name" autofocus name="city_name"  class="common-input" type="text"
                                                 data-error=".errorTxt3">
                                             <div class="errorTxt3"></div>
                                             <label for="city_name" class="common-label">{{__('City Name') }}*</label>
                                         </div></div></div>
 
                                         <div class="modal-footer">
-                                            <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                             <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
                                             <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
+                                            <a href="#!"
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                         </div>
                                     </div>
                                 </form>
@@ -161,6 +162,7 @@
 <script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 <script>
 $("#masters_sidebars_id").addClass('active');
 $("#city_sidebar_li_id").addClass('active');
@@ -201,15 +203,9 @@ $(function() {
 			   exportOptions: {
 					columns: [0,1]
 				},
-				title : 'Cities List'
-		   },
-		   {
-			   extend: 'csv',
-			   footer: false,
-			   exportOptions: {
-					columns: [0,1]
-				},
-				title : 'Cities List'
+                title : 'Cities List', 
+                text: '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'pdf'
 		   },
 		   {
 			   extend: 'excel',
@@ -217,7 +213,9 @@ $(function() {
 			   exportOptions: {
 					columns: [0,1]
 				},
-				title : 'Cities List'
+				title : 'Cities List',
+                text:    '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'excel'
 		   },
 			{
 			   extend: 'print',
@@ -225,7 +223,9 @@ $(function() {
 			   exportOptions: {
 					columns: [0,1]
 				},
-				title : 'Cities List'
+				title : 'Cities List',
+                text:   '<i class="fa fa-files-o"></i>',
+                titleAttr: 'print'
 		   }  
 		],
     "drawCallback": function (settings) {

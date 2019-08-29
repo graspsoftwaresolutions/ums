@@ -1,0 +1,21 @@
+button.dt-button, div.dt-button, a.dt-button {
+    margin-left: 11px;
+    background-color: #383c9f !important;
+    color: #fff;
+    background-image: none;
+
+}
+button.dt-button:hover,
+div.dt-button:hover,
+a.dt-button:hover {
+	border: 1px solid #666;
+	background-color: #e0e0e0;
+	background-image: none !important;
+}
+@media only screen and (max-width: 640px) {
+    div.dt-buttons {
+        margin-top: 9px !important;
+        float: none !important;
+        text-align: center;
+    }
+}

@@ -9,6 +9,8 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -103,15 +105,9 @@
 				   exportOptions: {
 						columns: [0,1,2,3]
 					},
-					title : 'Bank Branch List'
-			   },
-			   {
-				   extend: 'csv',
-				   footer: false,
-				   exportOptions: {
-						columns: [0,1,2,3]
-					},
-					title : 'Bank Branch List'
+					title : 'Bank Branch List',
+					titleAttr: 'pdf',
+            		text:'<i class="fa fa-file-pdf-o"></i>'
 			   },
 			   {
 				   extend: 'excel',
@@ -119,7 +115,9 @@
 				   exportOptions: {
 						columns: [0,1,2,3]
 					},
-					title : 'Bank Branch List'
+					title : 'Bank Branch List',
+					text:      '<i class="fa fa-file-excel-o"></i>',
+					titleAttr: 'excel'
 			   },
 				{
 				   extend: 'print',
@@ -127,7 +125,9 @@
 				   exportOptions: {
 						columns: [0,1,2,3]
 					},
-					title : 'Bank Branch List'
+					title : 'Bank Branch List',
+					text:   '<i class="fa fa-files-o"></i>',
+           			 titleAttr: 'print'
 			   }  
 			],
 			"processing": true,

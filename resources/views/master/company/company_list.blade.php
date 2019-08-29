@@ -15,6 +15,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -82,7 +84,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                           <label for="company_name"
                                               class="common-label force-active">{{__('Company Name') }}*</label>
                                           <input id="company_name" class="common-input"
-                                              name="company_name" type="text" data-error=".errorTxt1">
+                                              name="company_name" type="text" autofocus data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
                                       </div>
                                       <div class="input-field col s12 m6">
@@ -105,8 +107,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                       <div class="clearfix" style="clear:both"></div>
                                         </div></div>
                                         <div class="modal-footer">
-                                          <a href="#!"
-                                              class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
+                                         
                                           <button id="modal-update-btn"
                                               class="btn waves-effect waves-light  submit edit_hide_btn "
                                               type="submit" name="action">{{__('Update')}}
@@ -116,6 +117,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                               style="display:none;" type="submit"
                                               name="action">{{__('Save')}}
                                           </button>
+                                          <a href="#!"
+                                              class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                      
                                   </div>
                               </form>
@@ -213,15 +216,9 @@ $('#page-length-option').DataTable({
            exportOptions: {
                 columns: [0,1]
             },
-			title : 'Bank List'
-       },
-       {
-           extend: 'csv',
-           footer: false,
-		   exportOptions: {
-                columns: [0,1]
-            },
-			title : 'Bank List'
+            title : 'Bank List',
+            titleAttr: 'pdf',
+            text:'<i class="fa fa-file-pdf-o"></i>'
        },
        {
            extend: 'excel',
@@ -229,7 +226,9 @@ $('#page-length-option').DataTable({
 		   exportOptions: {
                 columns: [0,1]
             },
-			title : 'Bank List'
+            title : 'Bank List',
+            text:      '<i class="fa fa-file-excel-o"></i>',
+            titleAttr: 'excel'
        },
 		{
            extend: 'print',
@@ -237,7 +236,9 @@ $('#page-length-option').DataTable({
 		   exportOptions: {
                 columns: [0,1]
             },
-			title : 'Bank List'
+            title : 'Bank List',
+            text:   '<i class="fa fa-files-o"></i>',
+            titleAttr: 'print'
        }  
     ],  
   "processing": true,

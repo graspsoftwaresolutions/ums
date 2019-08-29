@@ -13,6 +13,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
 
@@ -81,7 +83,7 @@
                                         <div class="input-field col s12">
                                             <label for="name"
                                                 class="common-label force-active">{{__('Country Name') }}*</label>
-                                            <input id="country_name" class="common-input" name="country_name"
+                                            <input id="country_name" autofocus class="common-input" name="country_name"
                                                 type="text" data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
@@ -89,14 +91,15 @@
                                         </div>
                                         </div>
                                        <div class="modal-footer">
-                                       <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
+                                       
                                             <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
                                             <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
+                                            <a href="#!"
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close')}}</a>
                                         </div>
                                     </div>
                                 </form>
@@ -130,6 +133,7 @@
 <script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
+ 
 <script>
 $("#masters_sidebars_id").addClass('active');
 $("#country_sidebar_li_id").addClass('active');
@@ -142,28 +146,33 @@ $(function() {
         buttons: [
 		   {
 			   extend: 'pdf',
-			   
+               text:      '<i class="fa fa-file-pdf-o"></i>',
 			   footer: true,
 			   exportOptions: {
 					columns: [0]
-				},
+                },
+                titleAttr: 'pdf',
 				title : 'Countries List'
 		   },
 		   {
-			   extend: 'excel',
+               extend: 'excel',
+               text:      '<i class="fa fa-file-excel-o"></i>',
 			   footer: false,
 			   exportOptions: {
 					columns: [0]
 				},
-				title : 'Countries List'
+                title : 'Countries List',
+                titleAttr: 'excel',
 		   },
 			{
-			   extend: 'print',
+               extend: 'print',
+               text:      '<i class="fa fa-files-o"></i>',
 			   footer: false,
 			   exportOptions: {
 					columns: [0]
 				},
-				title : 'Countries List'
+                title : 'Countries List',
+                titleAttr: 'print',
 		   }  
 		],
         "processing": true,

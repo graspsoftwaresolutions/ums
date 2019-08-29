@@ -63,7 +63,7 @@
                                                 <div class="input-field col s12 m6">
                                                     <label for="branch_name"
                                                         class="common-label">{{__('Union Branch Name') }}*</label>
-                                                    <input id="branch_name" class="common-input" name="branch_name"
+                                                    <input id="branch_name" class="common-input" autofocus name="branch_name"
                                                         value="@isset($values){{ $values->union_branch }}@endisset"
                                                         type="text" data-error=".errorTxt1">
                                                     <div class="errorTxt1"></div>
@@ -259,7 +259,6 @@
                             </div>
                         </div>
                     </div>
-                    <p>Hover the mouse pointer over this paragraph.</p>
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
                 </div>
@@ -283,15 +282,15 @@ $(document).ready(function() {
     $('#head').hide();
  $('#is_head').click(function(){
 	$('#head').toggle();
-        
-    // if (confirm("{{ __('Are you want to to be the union head for all the union branches?') }}")) {
-    //    return true;
-    // } else {
-    //     return false;
-    // }
-      alert("Are you want to to be the union head for all the union branches?");
-       
-	}); 
+     
+    if($(this).is(':checked')){
+        alert("Are you want to to be the union head for all the union branches?");
+    }
+    else
+    {
+        alert("Are you don't want to to be the union head for all the union branches?");
+    }   
+}); 
     //state
     $('#country_id').change(function() {
         var countryID = $(this).val();

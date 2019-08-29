@@ -13,6 +13,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -79,21 +81,22 @@
                                         <div class="input-field col s12 m6">
                                             <label for="relation_name"
                                                 class="common-label force-active">{{ __('Relation Name') }}*</label>
-                                            <input id="relation_name" class="common-input" name="relation_name"
+                                            <input id="relation_name" autofocus class="common-input" name="relation_name"
                                                 type="text" data-error=".errorTxt1">
                                             <div class="errorTxt1"></div>
                                         </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div></div>
                                         <div class="modal-footer">
-                                            <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{ __('Close') }}</a>
+                                            
                                             <button class="btn waves-effect waves-light submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
                                             <button class="btn waves-effect waves-light submit add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
+                                            <a href="#!"
+                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{ __('Close') }}</a>
                                         </div>
                                     </div>
                                 </form>
@@ -178,15 +181,9 @@ $(function() {
 				   exportOptions: {
 						columns: [0]
 					},
-					title : 'Relation List'
-			   },
-			   {
-				   extend: 'csv',
-				   footer: false,
-				   exportOptions: {
-						columns: [0]
-					},
-					title : 'Relation List'
+                    title : 'Relation List',
+                    titleAttr: 'pdf',
+            		text:'<i class="fa fa-file-pdf-o"></i>'
 			   },
 			   {
 				   extend: 'excel',
@@ -194,7 +191,9 @@ $(function() {
 				   exportOptions: {
 						columns: [0]
 					},
-					title : 'Relation List'
+                    title : 'Relation List',
+					text:      '<i class="fa fa-file-excel-o"></i>',
+					titleAttr: 'excel'
 			   },
 				{
 				   extend: 'print',
@@ -202,7 +201,9 @@ $(function() {
 				   exportOptions: {
 						columns: [0]
 					},
-					title : 'Relation List'
+                    title : 'Relation List',
+					text:   '<i class="fa fa-files-o"></i>',
+           			titleAttr: 'print'
 			   }  
 			],
         "processing": true,

@@ -11,6 +11,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
 <div id="">
@@ -32,7 +34,7 @@
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('Union Branch Title') }}
+                                            <li class="breadcrumb-item active">{{__('Union Branch') }}
                                             </li>
                                         </ol>
                                     </div>
@@ -109,15 +111,9 @@ $(function() {
 			   exportOptions: {
 					columns: [0,1,2]
 				},
-				title : 'Union Branch List'
-		   },
-		   {
-			   extend: 'csv',
-			   footer: false,
-			   exportOptions: {
-					columns: [0,1,2]
-				},
-				title : 'Union Branch List'
+                title : 'Union Branch List',
+                titleAttr: 'pdf',
+            	text:'<i class="fa fa-file-pdf-o"></i>'
 		   },
 		   {
 			   extend: 'excel',
@@ -125,7 +121,9 @@ $(function() {
 			   exportOptions: {
 					columns: [0,1,2]
 				},
-				title : 'Union Branch List'
+                title : 'Union Branch List',
+                text:      '<i class="fa fa-file-excel-o"></i>',
+				titleAttr: 'excel'
 		   },
 			{
 			   extend: 'print',
@@ -133,7 +131,9 @@ $(function() {
 			   exportOptions: {
 					columns: [0,1,2]
 				},
-				title : 'Union Branch List'
+                title : 'Union Branch List',
+                text:   '<i class="fa fa-files-o"></i>',
+           		titleAttr: 'print'
 		   }  
 		],
         "processing": true,
