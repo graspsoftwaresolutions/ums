@@ -81,24 +81,24 @@
 				<form method="post" id="filtersubmit" action="">
 					@csrf  
 					<div class="row">    
-						<div class="col s4">
+						<div class="col s12 m6 l4">
 							<label for="date_type">{{__('Date Type')}}</label>
 							<select name="date_type" id="date_type" class="error browser-default selectpicker" data-error=".errorTxt6">
 								<option value="1">Resign Date</option>
 								<option value="2" selected >Payment Date</option>
 							</select>
 						</div>
-						<div class="col s4">
+						<div class="col s12 m6 l4">
 							<label for="from_date">{{__('From Date')}}</label>
 							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/M/Y')}}" name="from_date">
 						</div>
-						<div class="col s4">
+						<div class="col s12 m6 l4">
 							<label for="to_date">{{__('To Date')}}</label>
 							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/M/Y')}}" name="to_date">
 						</div>
 						
 						<div class="clearfix"/>
-						<div class="col s4">
+						<div class="col s12 m6 l4">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -110,7 +110,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s4">
+						<div class="col s12 m6 l4">
 							<label>{{__('Company Branch Name') }}</label>
 							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>
@@ -122,7 +122,7 @@
 								<div class="errorTxt23"></div>
 							</div>
 						</div>
-						<div class="col s4">
+						<div class="col s12 m6 l4">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
