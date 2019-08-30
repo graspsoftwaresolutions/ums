@@ -340,11 +340,13 @@ class SubscriptionController extends CommonController
                             ->limit(1)
                             ->pluck('Amount')
                             ->first();
-                            
+
                     if($old_subscription_count>1){
-                        if($old_subscription_amount!==$subscription->Amount){
+                        if($old_subscription_amount!=$subscription->Amount){
                             $subMemberMatch->match_id = 5;
-                        }else{
+                        }
+                    }else{
+                        if($old_subscription_count>0){
                             $subMemberMatch->match_id = 10;
                         }
                     }
