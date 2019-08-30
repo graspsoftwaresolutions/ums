@@ -13,6 +13,23 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
+@php
+	$member_status = '';
+	$companyid = $data['company_id'];
+	$approval_status = '';
+	$hide_members = '';
+	if($data['status_type']==1){
+		$member_status = $data['status'];
+	}elseif($data['status_type']==2){
+		$approval_status = $data['status'];
+		if($approval_status==2){
+			$hide_members = 'hide';
+		}
+	}else{
+		$hide_members = 'hide';
+		$approval_status = $data['status'];
+	}
+@endphp
 <style>
 	@if(count($data['member'])<10)
 		#main.main-full {
@@ -46,15 +63,40 @@
 	p.verify-approval{
 		margin:0;
 	}
+	.m_date_row{
+		pointer-events: none;
+	}
+	.m_date_row #search_date{
+		background-color: #ddd !important;
+	}
+	@if($member_status!="" || $member_status==0)
 	.member_status_row{
 		pointer-events: none;
 	}
 	.member_status_row #member_status{
 		background-color: #ddd !important;
 	}
+	@endif
+	@if($approval_status!="" || $member_status==0)
+	.approval_status_row{
+		pointer-events: none;
+	}
+	.approval_status_row #approval_status{
+		background-color: #ddd !important;
+	}
+	@endif
+	@if($companyid!="")
+	.member_company_row{
+		pointer-events: none;
+	}
+	.member_company_row #company_id{
+		background-color: #ddd !important;
+	}
+	@endif
 	input:disabled{
 		background-color: #ddd !important;
 	}
+	
 </style>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
@@ -77,17 +119,7 @@
 		<div class="card">
 			<div class="card-content">
 				<h4 class="card-title">
-				@php
-					$member_status = '';
-					$approval_status = '';
-					if($data['status_type']==1){
-						$member_status = $data['status'];
-					}elseif($data['status_type']==2){
-						$approval_status = $data['status'];
-					}else{
-						$approval_status = $data['status'];
-					}
-				@endphp
+				
 				@if($data['status_type']==1)
 					{{ CommonHelper::get_member_status_name($data['status']) }} Members List
 				@elseif($data['status_type']==2)
@@ -101,7 +133,7 @@
 					$get_roles = Auth::user()->roles;
 					$user_role = $get_roles[0]->slug;
 					$companylist = $data['company_view'];
-					$companyid = $data['company_id'];
+					
 					/* if($user_role =='union'){
 						$companylist = $data['company_view'];
 					}
@@ -126,21 +158,24 @@
 				<form method="post"id="filtersubmit" action="">
 					@csrf  
 					<div class="row">    
-						<div class="col s3 member_status_row">
+						<div class="col m3 s12 m_date_row">
 							<label for="search_date">{{__('Date')}}</label>
 							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" readonly name="search_date">
 							<input id="filter_date" type="text" class="validate hide" value="{{ $data['filter_date'] }}" readonly name="filter_date">
 						</div>
-						<div class="col s3 member_status_row">
-							<label for="member_status">{{__('Member Status')}}</label>
+						<div class="col m3 s12 member_status_row">
+							<label for="member_status">{{__('Member Status') }}</label>
 							<select name="member_status" id="member_status" class="error browser-default" data-error=".errorTxt6" >
 								<option value="">{{__('All') }}</option>
 								@foreach($data['member_status'] as  $key => $stat)
 									<option @if($member_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->status_name }}</option>
 								@endforeach
+								@if($hide_members=='hide')
+									<option value="0" selected>{{ __('SUNDRY CREDITORS') }}</option>
+								@endif
 							</select>
 						</div>
-						<div class="col s3 approval_status_row">
+						<div class="col m3 s12 approval_status_row">
 							<label for="approval_status">{{__('Approval Status')}}[Match Case]</label>
 							<select name="approval_status" id="approval_status" class="error browser-default" data-error=".errorTxt6" >
 								<option value="">{{__('All') }}</option>
@@ -149,7 +184,7 @@
 								@endforeach
 							</select>
 						</div>
-						<div class="col s3">
+						<div class="col m3 s12 member_company_row">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -161,7 +196,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s4 {{ $member_status==0 || $approval_status==2 ? 'hide' : '' }}">
+						<div class="col m3 s12 {{ $hide_members }}">
 							<label for="member_search"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
@@ -204,7 +239,7 @@
 							//dd($data['member'])
 						@endphp
 						@foreach($data['member'] as  $key => $member)
-							<tr>
+							<tr style="overflow-x:auto;">
 								<td>{{ $member->up_member_name }}</td>
 								<td>{{ $member->member_number }}</td>
 								<td>{{ $member->company_name }}</td>
@@ -427,6 +462,10 @@
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subscription_sidebar_li_id").addClass('active');
 $("#subscription_sidebar_a_id").addClass('active');
+$(document).on('click','#clear',function(event){
+	$('#member_search').val("");
+	$('#member_auto_id').val("");
+});
 $(document).ready(function(){
 	$("#member_search").devbridgeAutocomplete({
 		//lookup: countries,
@@ -695,5 +734,6 @@ $(window).scroll(function() {
 			
    }
 });
+
 </script>
 @endsection

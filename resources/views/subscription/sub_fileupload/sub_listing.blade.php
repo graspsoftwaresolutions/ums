@@ -395,11 +395,13 @@ $(document).ready(function() {
      $(document).ready(function(){
 	 $('.datepicker-custom').MonthPicker({ 
 		Button: false, 
+		changeYear: true,
 		MonthFormat: 'M/yy',
 		OnAfterChooseMonth: function() { 
 			getDataStatus();
 		} 
 	 });
+	 $('.ui-button').removeClass("ui-state-disabled");
 		 //$('.datepicker-custom').MonthPicker({ Button: false,dateFormat: 'M/yy' });
        
     });
