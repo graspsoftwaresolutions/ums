@@ -79,6 +79,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					$enccompany_auto_id = Crypt::encrypt($data['company_auto_id']);
 					$company_id = $data['company_auto_id'];
 					
+					$month = $datacmpy->Date;
+					
 					@endphp
 						<div class="card-content">
 							<div class="row">
@@ -427,7 +429,7 @@ $(function () {
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
-		"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=all",
+		"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=all"+"&month={{$month}}",
 		"dataType": "json",
 		"type": "POST",
 		headers: {
@@ -437,6 +439,7 @@ $(function () {
 			 var race_id = $('#race_id').val();
 			 var memberid      = $('#memberid').val();
 			 var designation_id = $('#designation_id').val();
+			 
 			
 			 data.race_id = race_id;
 			 data.memberid = memberid;
@@ -489,7 +492,7 @@ $(function () {
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
-	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=1",
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=1"+"&month={{$month}}",
 		"dataType": "json",
 		"type": "POST",
 		headers: {
@@ -543,7 +546,7 @@ $(function () {
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
-	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=2",
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=2"+"&month={{$month}}",
 		"dataType": "json",
 		"type": "POST",
 		headers: {
@@ -597,7 +600,7 @@ $(function () {
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
-	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=3",
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=3"+"&month={{$month}}",
 		"dataType": "json",
 		"type": "POST",
 		headers: {
@@ -651,7 +654,7 @@ $(function () {
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
-	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=4",
+	"url": "{{ url(app()->getLocale().'/ajax_submember_list') }}?company_id="+{{$data['company_auto_id']}}+"&status=4"+"&month={{$month}}",
 		"dataType": "json",
 		"type": "POST",
 		headers: {
