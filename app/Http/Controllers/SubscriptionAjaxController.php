@@ -78,6 +78,7 @@ class SubscriptionAjaxController extends CommonController
         //     4 => 'statusId', 
         //     5 => 'id',
         // );
+        
         $race_id = $request->input('race_id'); 
 		$memberid = $request->input('memberid'); 
 	 	$designation_id = $request->input('designation_id');
