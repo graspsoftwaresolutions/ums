@@ -463,6 +463,8 @@ class SubscriptionAjaxController extends CommonController
             }
             foreach($approval_status as $key => $value){
                 $approval_data['count'][$value->id] = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
+                $approval_data['approved'][$value->id] = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
+                $approval_data['pending'][$value->id] = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
             }
             $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'sundry_amount' => round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id,$dateformat), 0), 'sundry_count' => CommonHelper::statusSubsMatchCount(2, $user_role, $user_id,$dateformat), 'status' => 1];
         }
