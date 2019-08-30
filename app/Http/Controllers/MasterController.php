@@ -110,10 +110,23 @@ class MasterController extends CommonController {
         $Country = Country::find($id);
         $countryf = DB::table('country as con')
                     ->leftjoin('state as s','con.id','=','s.country_id')
-                    ->where('s.country_id','=',$Country)
-                    ;
-                    
-        $Country->where('id','=',$id)->update(['status'=>'0']);
+                    ->leftjoin('company_branch as cb','cb.country_id','=','con.id')
+                    ->leftjoin('union_branch as ub','ub.country_id','=','con.id')
+                    ->leftjoin('membership as m','m.country_id','=','con.id')
+                    ->orwhere('s.country_id','=',$id)
+                    ->orwhere('cb.country_id','=',$id)
+                    ->orwhere('ub.country_id','=',$id)
+                    ->orwhere('m.country_id','=',$id)
+                    ->count();              
+        if($countryf > 0)
+        {
+            $defdaultLang = app()->getLocale();
+            return redirect($defdaultLang.'/country')->with('error','You cannot delete the country!');
+        }
+        else{
+            $Country->where('id','=',$id)->update(['status'=>'0']);
+        }
+       
         $defdaultLang = app()->getLocale();
         return redirect($defdaultLang.'/country')->with('message','Country Details Deleted Successfully!!');
 	}
