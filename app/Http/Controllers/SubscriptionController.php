@@ -329,6 +329,28 @@ class SubscriptionController extends CommonController
                     if(strtoupper(trim($memberdata[0]->name)) != strtoupper($subscription->Name)){
                         $subMemberMatch->match_id = 3;
                     }
+
+                    $old_subscription_count = MonthlySubscriptionMember::where('MemberCode','=',$member_code)
+                            ->orderBY('MonthlySubscriptionCompanyId','desc')
+                            ->count();
+
+                    $old_subscription_amount = MonthlySubscriptionMember::where('MemberCode','=',$member_code)
+                            ->orderBY('MonthlySubscriptionCompanyId','desc')
+                            ->offset(1)
+                            ->limit(1)
+                            ->pluck('Amount')
+                            ->first();
+
+                    if($old_subscription_count>1){
+                        if($old_subscription_amount!=$subscription->Amount){
+                            $subMemberMatch->match_id = 5;
+                        }
+                    }else{
+                        if($old_subscription_count>0){
+                            $subMemberMatch->match_id = 10;
+                        }
+                    }
+                   
                     
                     if($memberdata[0]->status_id ==3){
                         $subMemberMatch->match_id = 6;

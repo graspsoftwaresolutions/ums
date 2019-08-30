@@ -698,7 +698,7 @@
                                                             <div class="row">
                                                                 <div class="col s12">
                                                                     @php // print_r($data['nominee_view']); @endphp
-                                                                    <table id="nominee_table" width="100%">
+                                                                    <table id="nominee_table" class="responsive-table" width="100%">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th data-field="name">Name</th>
@@ -1038,19 +1038,7 @@
 																	</div>
 																</div>
                                                             </div>
-															<div class="row">
-                                                                <div class="col s12 m12 center">
-																	@if(!empty($lastmonthendrecord))
-																		@php
-																			$color = CommonHelper::getStatusColor($values->status_id);
-																		@endphp
-																		<h4 style="color:{{$color}}">{{ CommonHelper::getStatusName($values->status_id) }} 
-																		@if($lastmonthendrecord->TOTALMONTHSDUE>0)
-																			, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending</h4>
-																		@endif
-																	@endif
-																</div>
-                                                            </div>
+															
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -1085,8 +1073,8 @@
 													$accbenefit = $resignedrow->accbenefit; 
 													$pay_mode = $resignedrow->paymode; 
 													$chequeno = $resignedrow->chequeno; 
-													$voucher_date = date('d/M/Y',strtotime($resignedrow->voucher_date)); 
-													$chequedate = date('d/M/Y',strtotime($resignedrow->chequedate)); 
+													$voucher_date = $resignedrow->voucher_date != '0000-00-00 00:00:00' ? date('d/M/Y',strtotime($resignedrow->voucher_date)) : ''; 
+													$chequedate = $resignedrow->chequedate != '0000-00-00 00:00:00' ? date('d/M/Y',strtotime($resignedrow->chequedate)) : ''; 
 													$totamount = $resignedrow->amount; 
 												} 
 											@endphp
@@ -1225,17 +1213,33 @@
                                                         <input type="text" id="total_amount" name="total_amount" value="{{$totamount}}" readonly>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="col m12 s12 mb-1">
+                                                    <div class="col s12 m12 center">
                                                         @if(empty($resignedrow))
                                                         <button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn right" type="button">{{'Resign'}}</button>
                                                         @endif @if(!empty($resignedrow))
-                                                        <a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-effect waves-light pink ">View resign Details</a>
-                                                        <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small">Member already resigned</span> @endif
+                                                        <a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-effect waves-light pink m2 mdl-button">View resign Details</a>
+														<div class="col m2 hide">
+															<h5 style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">Member already resigned</h5>
+														</div>
+														@endif
                                                     </div>
                                                 </div>
                                             </div>
                                         </fieldset>
                                         @endif
+										<div class="row">
+											<div class="col s12 m12 center">
+													@php
+														$color = CommonHelper::getStatusColor($values->status_id);
+													@endphp
+													<h4 style="color:{{$color}}">{{ CommonHelper::getStatusName($values->status_id) }} 
+													@if(!empty($lastmonthendrecord))
+														@if($lastmonthendrecord->TOTALMONTHSDUE>0)
+															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending</h4>
+														@endif
+													@endif
+											</div>
+										</div>
                                     </form>
                                 </div>
                             </div>

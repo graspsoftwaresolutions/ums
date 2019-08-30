@@ -1,17 +1,15 @@
 button.dt-button, div.dt-button, a.dt-button {
     margin-left: 11px;
-    background-color: #383c9f !important;
+	background: #303f9f;
+    background: -webkit-linear-gradient(45deg, #303f9f, #7b1fa2) !important;
+    background: -moz- oldlinear-gradient(45deg, #303f9f, #7b1fa2) !important;
+    background: -o-linear-gradient(45deg, #303f9f, #7b1fa2) !important;
+    background: linear-gradient(45deg, #303f9f, #7b1fa2) !important;
     color: #fff;
     background-image: none;
 
 }
-button.dt-button:hover,
-div.dt-button:hover,
-a.dt-button:hover {
-	border: 1px solid #666;
-	background-color: #e0e0e0;
-	background-image: none !important;
-}
+
 @media only screen and (max-width: 640px) {
     div.dt-buttons {
         margin-top: 9px !important;

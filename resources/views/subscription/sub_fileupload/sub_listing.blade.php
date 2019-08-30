@@ -395,11 +395,13 @@ $(document).ready(function() {
      $(document).ready(function(){
 	 $('.datepicker-custom').MonthPicker({ 
 		Button: false, 
+		changeYear: true,
 		MonthFormat: 'M/yy',
 		OnAfterChooseMonth: function() { 
 			getDataStatus();
 		} 
 	 });
+	 $('.ui-button').removeClass("ui-state-disabled");
 		 //$('.datepicker-custom').MonthPicker({ Button: false,dateFormat: 'M/yy' });
        
     });
@@ -553,6 +555,14 @@ $(document).ready(function() {
 							var member_link = "<a target='_blank' href='"+baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number+"'>"
 							$("#approval_status_count_"+key).html(entry);
 							$("#monthly_approval_status_"+key).attr('data-href',baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number);
+                        });
+						$.each(result.approval_data.approved, function(key, entry) {
+							console.log("#approval_approved_count_"+key);
+							console.log("#approval_approved_count_"+entry);
+							$("#approval_approved_count_"+key).html(entry);
+                        });
+						$.each(result.approval_data.pending, function(key, entry) {
+							$("#approval_pending_count_"+key).html(entry);
                         });
 						$("#approvalstatustable").css('opacity',1);
 						$("#member_status_count_sundry").html(result.sundry_count);

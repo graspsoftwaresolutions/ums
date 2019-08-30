@@ -107,8 +107,22 @@ class MasterController extends CommonController {
     public function countrydestroy($lang,$id)
 	{
         $Country = new Country();
-        $Country = Country::find($id);
-        $Country->where('id','=',$id)->update(['status'=>'0']);
+        $country =  DB::table('membership as m')->where('m.country_id','=',$id)->count();
+        $country =  DB::table('member_guardian as mg')->where('mg.country_id','=',$id)->count();
+        $country =  DB::table('member_nominees as mn')->where('mn.country_id','=',$id)->count();
+        $country =  DB::table('company_branch as cb')->where('cb.country_id','=',$id)->count();
+        $country =  DB::table('state as s')->where('s.country_id','=',$id)->count();
+        $country =  DB::table('union_branch as ub')->where('ub.country_id','=',$id)->count();
+             
+        if($country > 0)
+        {
+            $defdaultLang = app()->getLocale();
+            return redirect($defdaultLang.'/country')->with('error','You cannot delete the country!');
+        }
+        else{
+            $Country->where('id','=',$id)->update(['status'=>'0']);
+        }
+       
         $defdaultLang = app()->getLocale();
         return redirect($defdaultLang.'/country')->with('message','Country Details Deleted Successfully!!');
 	}
@@ -161,9 +175,21 @@ class MasterController extends CommonController {
 	public function statedestroy($lang,$id)
 	{
         $State = new state();
-        $State = state::find($id);
-        $State->where('id','=',$id)->update(['status'=>'0']);
+        //$State = state::find($id);
+        $state =  DB::table('membership as m')->where('m.state_id','=',$id)->count();
+        $state =  DB::table('member_guardian as mg')->where('mg.state_id','=',$id)->count();
+        $state =  DB::table('member_nominees as mn')->where('mn.state_id','=',$id)->count();
+        $state =  DB::table('company_branch as cb')->where('cb.state_id','=',$id)->count();
+        $state =  DB::table('union_branch as ub')->where('ub.state_id','=',$id)->count();
+
         $defdaultLang = app()->getLocale();
+        if($state > 0)
+        {
+            return redirect($defdaultLang.'/state')->with('error','You cannot delete the state');
+        }
+        else{
+            $State->where('id','=',$id)->update(['status'=>'0']);
+        }
         return redirect($defdaultLang.'/state')->with('message','State Details Deleted Successfully!!');
 	}
 	
@@ -219,10 +245,22 @@ class MasterController extends CommonController {
     }
 	public function citydestroy($lang,$id)
 	{
-        $City = new City();
+        $city = new City();
         $City = City::find($id);
-        $City->where('id','=',$id)->update(['status'=>'0']);
+        $City =  DB::table('membership as m')->where('m.city_id','=',$id)->count();
+        $City =  DB::table('member_guardian as mg')->where('mg.city_id','=',$id)->count();
+        $City =  DB::table('member_nominees as mn')->where('mn.city_id','=',$id)->count();
+        $City =  DB::table('company_branch as cb')->where('cb.city_id','=',$id)->count();
+        $City =  DB::table('union_branch as ub')->where('ub.city_id','=',$id)->count();
+
         $defdaultLang = app()->getLocale();
+        if($City > 0)
+        {
+            return redirect($defdaultLang.'/city')->with('error','You cannot delete the City');
+        }
+        else{
+            $city->where('id','=',$id)->update(['status'=>'0']);
+        }
         return redirect($defdaultLang.'/city')->with('message','City Details Deleted Successfully!!');
 	}
     //user Details Save and Update
