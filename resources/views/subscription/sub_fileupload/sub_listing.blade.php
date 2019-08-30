@@ -556,6 +556,14 @@ $(document).ready(function() {
 							$("#approval_status_count_"+key).html(entry);
 							$("#monthly_approval_status_"+key).attr('data-href',baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number);
                         });
+						$.each(result.approval_data.approved, function(key, entry) {
+							console.log("#approval_approved_count_"+key);
+							console.log("#approval_approved_count_"+entry);
+							$("#approval_approved_count_"+key).html(entry);
+                        });
+						$.each(result.approval_data.pending, function(key, entry) {
+							$("#approval_pending_count_"+key).html(entry);
+                        });
 						$("#approvalstatustable").css('opacity',1);
 						$("#member_status_count_sundry").html(result.sundry_count);
 						$("#member_status_amount_sundry").html(result.sundry_amount);
