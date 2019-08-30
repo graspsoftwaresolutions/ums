@@ -127,6 +127,7 @@
 				@elseif($data['status_type']==3)
 					SUNDRY CREDITORS List
 				@endif
+				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn " value="Advanced search">
 				</h4> 
 				@php
 					$userid = Auth::user()->id;
@@ -157,7 +158,7 @@
 				
 				<form method="post"id="filtersubmit" action="">
 					@csrf  
-					<div class="row">    
+					<div id="advancedsearch" class="row" style="display:none">    
 						<div class="col m3 s12 m_date_row">
 							<label for="search_date">{{__('Date')}}</label>
 							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" readonly name="search_date">
@@ -465,6 +466,9 @@ $("#subscription_sidebar_a_id").addClass('active');
 $(document).on('click','#clear',function(event){
 	$('#member_search').val("");
 	$('#member_auto_id').val("");
+});
+$('#advancedsearchs').click(function(){
+	$('#advancedsearch').toggle();
 });
 $(document).ready(function(){
 	$("#member_search").devbridgeAutocomplete({
