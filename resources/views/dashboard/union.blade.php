@@ -27,6 +27,9 @@ canvas#custom-line-chart-sample-three {
 text{
 	font-family: 'Muli', sans-serif !important;
 }
+.highcharts-legend{
+	display:none;
+}
 
 </style>
 @endsection
