@@ -58,6 +58,8 @@ class SubscriptionAjaxController extends CommonController
     public function ajax_submember_list(Request $request){
 		$companyid = $request->company_id;
         $status = $request->status;
+        $month = $request->month;
+        
         $sl=0;
 		$columns[$sl++] = 'mon_sub_member.Name';
 		$columns[$sl++] = 'mon_sub_member.membercode';
@@ -76,6 +78,7 @@ class SubscriptionAjaxController extends CommonController
         //     4 => 'statusId', 
         //     5 => 'id',
         // );
+        
         $race_id = $request->input('race_id'); 
 		$memberid = $request->input('memberid'); 
 	 	$designation_id = $request->input('designation_id');
@@ -111,9 +114,10 @@ class SubscriptionAjaxController extends CommonController
         // dd($queries);
 
         if($status!='all'){
-            $commonqry = $commonqry->where('mon_sub_member.StatusId','=',$status);
+            $commonqry = $commonqry->where('mon_sub_member.StatusId','=',$status); 
         }
-        $commonqry = $commonqry->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid);
+        $commonqry = $commonqry->where('mon_sub_member.MonthlySubscriptionCompanyId','=',$companyid)
+                                ->where('mon_sub.Date','=',$month);
         
         //$commonqry->dump()->get();
         $totalData = $commonqry->count();
