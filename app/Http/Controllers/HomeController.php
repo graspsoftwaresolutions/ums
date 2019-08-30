@@ -151,7 +151,7 @@ class HomeController extends Controller
 									  ->where('i.attached','=','1')
 									  ->where('i.herebyconfirm','=','1')
 									  ->where('i.filledby','=','1')
-									  ->where('i.status','=','0')->count();
+									  ->count();
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count;
 			
 			$data['total_irc_count'] = $irc_count;
