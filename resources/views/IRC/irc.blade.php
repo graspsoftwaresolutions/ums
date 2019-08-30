@@ -476,7 +476,7 @@ $('.modal').modal();
 });
 $("#member_number").devbridgeAutocomplete({
 	//lookup: countries,
-	serviceUrl: "{{ URL::to('/get-member-list') }}?searchkey="+ $("#member_number").val(),
+	serviceUrl: "{{ URL::to('/get-activemember-list') }}?searchkey="+ $("#member_number").val(),
 	type:'GET',
 	//callback just to show it's working
 	onSelect: function (suggestion) {

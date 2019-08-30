@@ -321,6 +321,7 @@ Route::get('get-branch-details','MembershipController@getBranchDetails');
 Route::get('get-company-member-list','ReportsController@getAutomemberslist');
 Route::get('get-subscription-status-list','SubscriptionAjaxController@getAutomemberslist');
 
+Route::get('get-activemember-list','IrcController@getMembersList');
 Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });

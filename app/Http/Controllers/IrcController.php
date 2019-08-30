@@ -265,17 +265,17 @@ class IrcController extends CommonController
 					  ->where('i.beforepromotion','=','1')
 					  ->where('i.attached','=','1')
 					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1')
-					  ->where('i.status','=','0');
+					  ->where('i.filledby','=','1');
+					  //->where('i.status','=','0');
 				}
 			}else{
-				 $totalqry = $totalqry->where('i.status','=','0');
+				 //$totalqry = $totalqry->where('i.status','=','0');
 			}
 		}
 		
 		
 		$commonselect = DB::table('irc_confirmation as i')
-						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id')
+						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id')
 						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
 		if($user_role=='irc-branch-committee'){
 			if($statusfilter!=''){
@@ -323,11 +323,11 @@ class IrcController extends CommonController
 					  ->where('i.beforepromotion','=','1')
 					  ->where('i.attached','=','1')
 					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1')
-					  ->where('i.status','=','0');
+					  ->where('i.filledby','=','1');
+					  //->where('i.status','=','0');
 				}
 			}else{
-				 $commonselect = $commonselect->where('i.status','=','0');
+				 //$commonselect = $commonselect->where('i.status','=','0');
 			}
 		}
 		
@@ -392,7 +392,7 @@ class IrcController extends CommonController
 							  ->where('irc.attached','=','1')
 							  ->where('irc.herebyconfirm','=','1')
 							  ->where('irc.filledby','=','1')
-							  ->where('irc.status','=','0')
+							  //->where('irc.status','=','0')
 							  ->where('irc.id','=',$irc->id)
 							  ->count();
 					if($check_count>0){
@@ -413,7 +413,11 @@ class IrcController extends CommonController
                 $company_enc_id = Crypt::encrypt($irc->id);
                 $editurl =  route('edit.irc', [app()->getLocale(),$company_enc_id]) ;
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
-                $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>Edit IRC</a>";
+				if($irc->status_id!=4){
+					$nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>Edit IRC</a>";
+				}else{
+					$nestedData['options'] = "";
+				}
 				$data[] = $nestedData;
 			}
         }
@@ -532,5 +536,19 @@ class IrcController extends CommonController
 			}
 		}
 	}
-	
+	//getMembersList
+	public function getMembersList(Request $request)
+	{
+	    $searchkey = $request->input('searchkey');
+        $search = $request->input('query');
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number')      
+                            ->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+                            })->limit(25)
+                            ->where('status_id','!=',4)  
+                            ->get();   
+         return response()->json($res);
+	}
 }
