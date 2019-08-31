@@ -47,7 +47,7 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				
-				{{__('Members Filter')}} 
+				{{__('Bank Filter')}} 
 				
 				</h4> 
 				@php
