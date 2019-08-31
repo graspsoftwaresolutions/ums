@@ -118,10 +118,13 @@
     <div class="col s12">
       <div class="card">
         <div class="card-content">
-          <h4 class="card-title">Variation by bank Report
-		  @php
-			$last_month = date("Y-m-01", strtotime("first day of previous month"));
-		  @endphp
+          <h4 class="card-title">Subscription by bank Report
+			@php 
+				$get_roles = Auth::user()->roles;
+				$user_role = $get_roles[0]->slug;
+				$user_id = Auth::user()->id;
+				$dateformat = date('Y-m-01');
+			@endphp 
           </h4>
           <div class="row">
             <div class="col s12">
@@ -129,28 +132,37 @@
                 <thead>
                   <tr>
                     	<th>{{__('Bank Name')}}</th>
-						<th>{{__('# Current')}}</th>
-						<th>{{__('# Previous')}}</th>
-						<th>{{__('Different')}}</th>
-						<th>{{__('Unpaid')}}</th>
-						<th>{{__('Paid')}}</th>
+						<th>{{__('# Member')}}</th>
+						<th>{{__('Total Amount')}}</th>
+						<th>{{__('Active')}}</th>
+						<th>{{__('Defaulter')}}</th>
+						<th>{{__('StruckOff')}}</th>
+						<th>{{__('Resigned')}}</th>
+						<th>{{__('SundryCr')}}</th>
                   </tr>
                 </thead>
                 <tbody>
-						@foreach($data['company_view'] as $company)
-							@php
-								$current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01'));
-								$last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,$last_month);
-							@endphp
-							<tr>
-								<td>{{ $company->company_name }}</td>
-								<td>{{ $current_count }}</td>
-								<td>{{ $last_month_count }}</td>
-								<td><span class="badge {{$current_count-$last_month_count>0 ? 'green' : 'red'}}">{{ abs($current_count-$last_month_count) }}</span></td>
-								<td>{{ 0 }}</td>
-								<td>{{ $current_count }}</td>
-							</tr> 
-						@endforeach
+					@foreach($data['company_view'] as $company)
+						@php
+							$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
+							$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
+							$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
+							$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
+							$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
+							
+							$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+						@endphp
+						<tr>
+							<td>{{ $company->company_name }}</td>
+							<td>{{ $total_members }}</td>
+							<td>{{ number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',') }}</td>
+							<td>{{ number_format($active_amt,2, '.', ',') }}</td>
+							<td>{{ number_format($default_amt,2, '.', ',') }}</td>
+							<td>{{ number_format($struckoff_amt,2, '.', ',') }}</td>
+							<td>{{ number_format($resign_amt,2, '.', ',') }}</td>
+							<td>{{ number_format($sundry_amt,2, '.', ',') }}</td>
+						</tr> 
+					@endforeach
                 </tbody>
               </table>
             </div>
@@ -309,18 +321,20 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-variation-report') }}?offset=0"+searchfilters,
+				url : "{{ URL::to('/en/get-subscription-report') }}?offset=0"+searchfilters,
 				success:function(result){
 					if(result)
 					{
 						res = result.company_view;
 						$.each(res,function(key,entry){
 							var table_row = "<tr><td>"+entry.company_name+"</td>";
-								table_row += "<td>"+entry.current_count+"</td>";
-								table_row += "<td>"+entry.last_count+"</td>";
-								table_row += "<td><span class='badge "+entry.diif_color+"'>"+entry.difference+"</span></td>";
-								table_row += "<td>"+entry.unpaid+"</td>";
-								table_row += "<td>"+entry.paid+"</td></tr>";
+								table_row += "<td>"+entry.total_members+"</td>";
+								table_row += "<td>"+entry.total_amount+"</td>";
+								table_row += "<td>"+entry.active_amt+"</td>";
+								table_row += "<td>"+entry.default_amt+"</td>";
+								table_row += "<td>"+entry.struckoff_amt+"</td>";
+								table_row += "<td>"+entry.resign_amt+"</td>";
+								table_row += "<td>"+entry.sundry_amt+"</td></tr>";
 								$('#scroll-vert-hor tbody').append(table_row);
 						});
 						if(!res){

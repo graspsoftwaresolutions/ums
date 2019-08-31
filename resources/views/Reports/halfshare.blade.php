@@ -10,9 +10,12 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('main-content')
 <div id="">
+	
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
         <div class="col s12">
@@ -38,6 +41,38 @@
 								</div>
                             </div>
                         </div>
+						<div class="col s12">
+							<div class="card">
+								<div class="card-content">
+									<h4 class="card-title">
+									
+									{{__('Date Filter')}} 
+									
+									</h4> 
+									
+									<form method="post" id="filtersubmit" action="{{ route('reports.filterhalfshare', app()->getLocale())  }}">
+										@csrf  
+										<div class="row">                          
+											<div class="col s12 m6 l3">
+												<label for="month_year">{{__('Month and Year')}}</label>
+												<input id="month_year" type="text" class="validate datepicker-custom" value="{{ $data['date'] }}" name="month_year">
+											</div>
+											
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="input-field col s6 right">
+													<input type="button" id="clear" style="width:130px"  class="btn hide" name="clear" value="{{__('Clear')}}">
+												</div>
+												<div class="input-field col s6 right-align">
+													<input type="submit" id="search"  class="btn" name="search" value="{{__('Search')}}">
+												</div>
+											</div>
+										</div>
+									</form>  
+								</div>
+							</div>
+							
+						</div>
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
@@ -150,12 +185,21 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 
 <script>
 
 //$(function() {
     //$('#page-length-option').DataTable();
 	$(document).ready(function() {
+		 $('.datepicker-custom').MonthPicker({ 
+			Button: false, 
+			MonthFormat: 'M/yy',
+			OnAfterChooseMonth: function() { 
+				//getDataStatus();
+			} 
+		 });
     $('#page-length-option').DataTable( {
 		"paging":   false,
         "info":     false,

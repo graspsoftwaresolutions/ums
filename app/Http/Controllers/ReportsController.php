@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helpers\CommonHelper;
 use DB;
+use Auth;
 
 class ReportsController extends Controller
 {
@@ -335,11 +336,12 @@ class ReportsController extends Controller
        'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
                 ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
                 ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
-                ->where(DB::raw('month(mend.statusmonth)'),'=','8')  
-                ->where(DB::raw('year(mend.statusmonth)'),'=','2018')
+                ->where(DB::raw('month(mend.statusmonth)'),'=',date('m'))  
+                ->where(DB::raw('year(mend.statusmonth)'),'=',date('Y'))
                 ->groupBy('cb.union_branch_id')
                 ->get();              
        $data['half_share'] = $half_s;
+       $data['date'] = date('M/Y');
         return view('reports.halfshare')->with('data',$data);  
 	}
 	
@@ -401,7 +403,83 @@ class ReportsController extends Controller
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
                                 ->where('ms.Date', '=', date('Y-m-01'))->get();
-        return view('reports.variation')->with('data',$data);  
+        return view('reports.subscription')->with('data',$data);  
+	}
+	public function SubscriptionFiltereport(Request $request, $lang){
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+		
+		$month_year = $request->input('month_year');
+		$company_id = $request->input('company_id');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        }
+		$data['data_limit']=$this->limit;
+		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+		if($monthno!="" && $yearno!=""){
+			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+		}
+		if($company_id!=""){
+			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+		}
+		$company_list =  $company_view->get();
+		$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
+		foreach($company_list as $ckey => $company){
+            foreach($company as $newkey => $newvalue){
+                $data['company_view'][$ckey][$newkey] = $newvalue;
+            }
+			
+			$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
+			$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
+			$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
+			$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
+			$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
+			$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+			
+            $data['company_view'][$ckey]['total_members'] = $total_members;
+            $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
+            $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
+            $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
+            $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
+            $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
+            $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
+        }
+		echo json_encode($data);
+	}
+	
+	public function filterHalfShareReport(Request $request, $lang){
+		$month_year = $request->input('month_year');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+			$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+			$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+			$data['date'] = $month_year;
+        }else{
+			$monthno = date('m');
+			$yearno = date('Y');
+			$data['date'] = date('M/Y');
+		}
+		$half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(mend.statusmonth)'),'=',$monthno)  
+                ->where(DB::raw('year(mend.statusmonth)'),'=',$yearno)
+                ->groupBy('cb.union_branch_id')
+                ->get();              
+		$data['half_share'] = $half_s;
+        return view('reports.halfshare')->with('data',$data); 
 	}
 }
 

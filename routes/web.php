@@ -276,6 +276,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('variation_report','ReportsController@VariationReport')->name('reports.variation');
 	Route::get('get-variation-report','ReportsController@VariationFiltereport')->name('reports.variationfilter');
 	Route::get('subscription_report','ReportsController@SubscriptionReport')->name('reports.subscription');
+	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
+	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 	
 
 	

@@ -1034,4 +1034,29 @@ class CommonHelper
 		return $count;
     }
 	
+	public static function statusSubsMembersCompanyTotalCount($user_role, $user_id,$company_id,$monthyear=false)
+    {
+        if($monthyear==false){
+			$monthyear=date('Y-m-01');
+        }
+        if($user_role=='union'){
+            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` where `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
+            $members_count = $members_qry[0]->count;
+        }
+        else if($user_role=='union-branch'){
+            $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` where sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.union_branch_id="'.$union_branch_id.'") AND `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
+            $members_count = $members_qry[0]->count;
+        }else if($user_role=='company'){
+            $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` where sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
+            $members_count = $members_qry[0]->count;
+        }else if($user_role=='company-branch'){
+            $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` where sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.id="'.$branch_id.'") AND `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
+            $members_count = $members_qry[0]->count;
+        }
+		return $members_count;
+    }
+	
 }
