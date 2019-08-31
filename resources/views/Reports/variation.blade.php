@@ -60,7 +60,7 @@
 					$companyid = '';
 					$branchid = '';
 					if($user_role =='union'){
-						$companylist = $data['company_view'];
+						$companylist = $data['company_list'];
 					}
 					else if($user_role =='union-branch'){
 						$unionbranchid = CommonHelper::getUnionBranchID($userid);
@@ -179,9 +179,10 @@
           </div>
         </div>
       </div>
-    </div>
-	</br>
+	  </br>
 		</br>
+    </div>
+	
   </div>
 
 </div> 
@@ -241,7 +242,6 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		$('#scroll-vert-hor').DataTable({
-			"scrollY": 200,
 			"scrollX": true,
 			"searching": false,
 			"paging":   false,
@@ -260,33 +260,16 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 	
 		$('#filtersubmit').validate({
 			rules: {
-				/* month_year: {
+				month_year: {
 					  required: true,
-				  },
-				  company_id: {
-					  required: true,
-				  },
-				  branch_id: {
-					required: true,
-				  },
-				  member_search: {
-					required: true,
-				  }, */
+				},
+				 
 			},
 			//For custom messages
 			messages: {
-				/* month_year: {
+				month_year: {
 					  required: '{{__("Please Select Month And Year") }}',
-				 }, */
-				/*   company_id: {
-					  required: '{{__("Please Select Company ID") }}',
-				  },
-				  branch_id: {
-					required: '{{__("Please Select Branch ID") }}',
-				  },
-				  member_search: {
-					required: '{{__("Please Enter Member") }}',
-				  }, */
+				}, 
 			},
 			errorElement: 'div',
 			errorPlacement: function(error, element) {
@@ -341,29 +324,31 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 		event.preventDefault();
 		var month_year = $("#month_year").val();
 		var company_id = $("#company_id").val();
-		if(month_year!="" || company_id!=""){
+		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
-			//loader.showLoader();
 			$('#scroll-vert-hor tbody').empty();
-			loader.showLoader();
+			//loader.showLoader();
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
-				success:function(res){
-					if(res)
+				url : "{{ URL::to('/en/get-variation-report') }}?offset=0"+searchfilters,
+				success:function(result){
+					if(result)
 					{
+						res = result.company_view;
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.gender+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.levy+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
+							var table_row = "<tr><td>"+entry.company_name+"</td>";
+								table_row += "<td>"+entry.current_count+"</td>";
+								table_row += "<td>"+entry.last_count+"</td>";
+								table_row += "<td><span class='badge "+entry.diif_color+"'>"+entry.difference+"</span></td>";
+								table_row += "<td>"+entry.unpaid+"</td>";
+								table_row += "<td>"+entry.paid+"</td></tr>";
+								$('#scroll-vert-hor tbody').append(table_row);
 						});
+						if(!res){
+								var table_row = "<tr><td colspan='6'>No data found</td></tr>";
+								$('#scroll-vert-hor tbody').append(table_row);
+						}
 						loader.hideLoader();
 					}else{
 						
@@ -371,7 +356,7 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 				}
 			});
 		}else{
-			alert("please choose any filter");
+			alert("Please Choose Month & Year");
 		}
 		//$("#submit-download").prop('disabled',true);
 	});

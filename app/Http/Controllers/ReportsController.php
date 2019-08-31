@@ -293,8 +293,8 @@ class ReportsController extends Controller
         $yearno = '';
         if($month_year!=""){
           $fmmm_date = explode("/",$month_year);
-          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
 			$members = DB::table($this->membermonthendstatus_table.' as ms')
 					->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
@@ -346,6 +346,57 @@ class ReportsController extends Controller
 	public function VariationReport(Request $request, $lang)
     {
 		$data['data_limit']=$this->limit;
+		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+        return view('reports.variation')->with('data',$data);  
+	}
+	
+	public function VariationFiltereport(Request $request, $lang)
+    {
+		$month_year = $request->input('month_year');
+		$company_id = $request->input('company_id');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        }
+		$data['data_limit']=$this->limit;
+		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+		if($monthno!="" && $yearno!=""){
+			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+		}
+		if($company_id!=""){
+			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+		}
+		$company_list =  $company_view->get();
+		foreach($company_list as $ckey => $company){
+            foreach($company as $newkey => $newvalue){
+                $data['company_view'][$ckey][$newkey] = $newvalue;
+            }
+			$current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno)));
+			$last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno.' -1 Month')));
+            $data['company_view'][$ckey]['current_count'] = $current_count;
+            $data['company_view'][$ckey]['last_count'] = $last_month_count;
+            $data['company_view'][$ckey]['difference'] = abs($current_count-$last_month_count);
+            $data['company_view'][$ckey]['diif_color'] = $current_count-$last_month_count>0 ? 'green' : 'red';
+            $data['company_view'][$ckey]['unpaid'] = 0;
+            $data['company_view'][$ckey]['paid'] = $current_count;
+        }
+		echo json_encode($data);
+		
+	}
+	public function SubscriptionReport(Request $request, $lang)
+    {
+		$data['data_limit']=$this->limit;
+		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
