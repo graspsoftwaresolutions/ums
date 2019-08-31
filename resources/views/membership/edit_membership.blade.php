@@ -1235,9 +1235,14 @@
 													<h4 style="color:{{$color}}">{{ CommonHelper::getStatusName($values->status_id) }} 
 													@if(!empty($lastmonthendrecord))
 														@if($lastmonthendrecord->TOTALMONTHSDUE>0)
-															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending</h4>
+															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending
+														@else
+															, 0 Arrears pending
 														@endif
+													@else
+														, 0 Arrears pending
 													@endif
+													</h4>
 											</div>
 										</div>
                                     </form>

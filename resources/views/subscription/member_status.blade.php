@@ -96,6 +96,9 @@
 	input:disabled{
 		background-color: #ddd !important;
 	}
+	#clear{
+		color:#fff;
+	}
 	
 </style>
 <style type="text/css">
@@ -206,7 +209,7 @@
 							</div>
 						</div>
 						<div class="input-field col s12 right-align">
-							<input type="button" class="btn waves-effect waves-light amber darken-4" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
+							<input type="button" class="btn waves-effect waves-light amber darken-4" style="width:130px;color:#fff !important;" id="clear" name="clear" value="{{__('clear')}}">
 							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
 						</div>
 					</div>
