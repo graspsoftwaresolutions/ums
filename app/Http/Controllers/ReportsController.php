@@ -64,7 +64,7 @@ class ReportsController extends Controller
 				->limit($data['data_limit'])
                 ->get();
         $data['member_view'] = $members;
-        return view('Reports.members')->with('data',$data);  
+        return view('reports.members')->with('data',$data);  
     }
 	public function membersReportMore(Request $request){
         $offset = $request->input('offset');
@@ -340,7 +340,17 @@ class ReportsController extends Controller
                 ->groupBy('cb.union_branch_id')
                 ->get();              
        $data['half_share'] = $half_s;
-        return view('Reports.halfshare')->with('data',$data);  
+        return view('reports.halfshare')->with('data',$data);  
+	}
+	
+	public function VariationReport(Request $request, $lang)
+    {
+		$data['data_limit']=$this->limit;
+		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+        return view('reports.variation')->with('data',$data);  
 	}
 }
 

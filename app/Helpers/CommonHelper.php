@@ -1017,4 +1017,21 @@ class CommonHelper
        return $status_data;
     }
 	
+	public static function getMonthlyPaidCount($company_id, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		
+		$count = DB::table('mon_sub_member as sm')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+								->where('mc.CompanyCode','=',$company_id)
+								->where(DB::raw('month(ms.Date)'),'=',$month)
+								->where(DB::raw('year(ms.Date)'),'=',$year)
+								->count();
+		return $count;
+    }
+	
 }

@@ -223,7 +223,7 @@
 		<div class="card">
 			<div class="card-content">
 				<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
-				<table id="page-length-option" class="display" width="100%">
+				<table id="page-length-option" class="display nowrap" width="100%">
 					<thead>
 						<tr>
 							<th width="10%">{{__('Member Name')}}</th>

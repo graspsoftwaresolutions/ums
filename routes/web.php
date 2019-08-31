@@ -273,6 +273,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare');
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
+	Route::get('variation_report','ReportsController@VariationReport')->name('reports.variation');
 	
 
 	
