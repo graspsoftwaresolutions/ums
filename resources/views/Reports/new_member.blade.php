@@ -136,7 +136,7 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<iframe src="{{ route('reports.membersnew',[app()->getLocale()]) }}" id="myframe" height="500px" width="100%"></iframe>
+		<iframe src="{{ route('reports.membersnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
 		<div class="card hide">
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">

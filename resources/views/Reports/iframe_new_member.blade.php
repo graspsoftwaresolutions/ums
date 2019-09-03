@@ -26,16 +26,16 @@
 		  bottom: 0;
 		  width: 100%;
 		  border-top: 1px solid black; /* for demo */
-		  background: #0b97d3; /* for demo */
-		  color:#fff;
+		  background: #fff; /* for demo */
+		  color:#000;
 		}
 		
 		.page-header {
 		  position: fixed;
 		  top: 0mm;
 		  width: 100%;
-		  background: #0b97d3; /* for demo */
-		  color:#fff;
+		  background: #fff; /* for demo */
+		  color:#000;
 		}
 		
 		.page {
@@ -67,7 +67,7 @@
 			  position: fixed;
 			  top:101px;
 			  margin-bottom:20px;
-			  background: #0000ff; /* for demo */
+			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
 			}
@@ -110,11 +110,25 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">New Members Report
-		<br/> 
-		<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
-		<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
-		<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
+	<div class="page-header" style="text-align: center">
+		<table width="100%">
+			<tr>
+				<td width="20%"></td>
+				<td width="10%"><img src="http://localhost/murugan/ums/public/assets/images/logo/logo.png" alt="Membership logo" height="50"></td>
+				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
+					<br/> 
+					<h6 style="text-align:center;">New Members Report</h6>
+				</td>
+				<td width="20%">	
+					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
+				</td>
+			</tr>
+		</table>
+		
+		
+	
 	</div>
 	<!-- <div class="page-footer">
     I'm The Footer

@@ -272,6 +272,8 @@ class SubscriptionController extends CommonController
                 $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric);
                 
                 $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric);
+				
+                $subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric);
                 
                 $up_sub_member =0;
                 $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->count();
@@ -299,11 +301,17 @@ class SubscriptionController extends CommonController
                     $memberdata = $subscription_old_qry->select('status_id','id','branch_id','name')->get();
                     $subMemberMatch->match_id = 8;
                 }
+				else if($subscription_empid_qry->count() > 0){
+                    
+                    $up_sub_member =1;
+                    $memberdata = $subscription_empid_qry->select('status_id','id','branch_id','name')->get();
+                    $subMemberMatch->match_id = 9;
+                }
                
                 else{
                     $subMemberMatch->match_id = 2;
                 }
-               
+                $subMemberMatch->save();
                 
                 $upstatus=1;
                 if($up_sub_member ==1){
@@ -318,49 +326,89 @@ class SubscriptionController extends CommonController
                     }
                     $company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
                     $member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
+					
+					$match_company_status = $this->recursiveCompany($company_code,$member_company_id);
                 
-                    if($company_code == $member_company_id){
-                        $subMemberMatch->match_id = 9;
+                    if(!$match_company_status){
+						$subMemberMatch_one = new MonthlySubMemberMatch();
+                        $subMemberMatch_one->match_id = 4;
+						$subMemberMatch_one->mon_sub_member_id = $subscription->id;
+						$subMemberMatch_one->created_by = Auth::user()->id;
+						$subMemberMatch_one->created_on = date('Y-m-d');
+						$subMemberMatch_one->save();
                     }
-                    else if ( $company_code != $member_company_id){
-                        $subMemberMatch->match_id = 4;
-                    }
-                    
+                                       
                     if(strtoupper(trim($memberdata[0]->name)) != strtoupper($subscription->Name)){
-                        $subMemberMatch->match_id = 3;
+						$subMemberMatch_two = new MonthlySubMemberMatch();
+                        $subMemberMatch_two->match_id = 3;
+						$subMemberMatch_two->mon_sub_member_id = $subscription->id;
+						$subMemberMatch_two->created_by = Auth::user()->id;
+						$subMemberMatch_two->created_on = date('Y-m-d');
+						$subMemberMatch_two->save();
                     }
+					
+					$cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$subscription->MonthlySubscriptionCompanyId)->pluck('Date')->first();
+					$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
 
-                    $old_subscription_count = MonthlySubscriptionMember::where('MemberCode','=',$member_code)
-                            ->orderBY('MonthlySubscriptionCompanyId','desc')
+                    $old_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$member_code)
+							->where('ms.Date','=',$last_month)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
                             ->count();
-
-                    $old_subscription_amount = MonthlySubscriptionMember::where('MemberCode','=',$member_code)
-                            ->orderBY('MonthlySubscriptionCompanyId','desc')
-                            ->offset(1)
-                            ->limit(1)
-                            ->pluck('Amount')
-                            ->first();
-
-                    if($old_subscription_count>1){
-                        if($old_subscription_amount!=$subscription->Amount){
-                            $subMemberMatch->match_id = 5;
-                        }
-                    }else{
-                        if($old_subscription_count>0){
-                            $subMemberMatch->match_id = 10;
-                        }
-                    }
-                   
+							
+					$member_doj = DB::table("membership as m")->where('m.id','=',$member_code)->pluck('doj')->first();
+					$member_month_yr = date('m-Y',strtotime($member_doj));
+					$cur_month_yr = date('m-Y',strtotime($cur_date));
+					
+					if($member_month_yr!=$cur_month_yr){
+						if($old_subscription_count>1){
+							$old_subscription_amount = DB::table("mon_sub_member as mm")
+								->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+								->where('mm.MemberCode','=',$member_code)
+								->where('ms.Date','=',$last_month)
+								->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+								->pluck('Amount')
+								->first();
+							
+							if($old_subscription_amount!=$subscription->Amount){
+								$subMemberMatch_three = new MonthlySubMemberMatch();
+								$subMemberMatch_three->match_id = 5;
+								$subMemberMatch_three->mon_sub_member_id = $subscription->id;
+								$subMemberMatch_three->created_by = Auth::user()->id;
+								$subMemberMatch_three->created_on = date('Y-m-d');
+								$subMemberMatch_three->save();
+							}
+						}else{
+							$subMemberMatch_four = new MonthlySubMemberMatch();
+							$subMemberMatch_four->match_id = 10;
+							$subMemberMatch_four->mon_sub_member_id = $subscription->id;
+							$subMemberMatch_four->created_by = Auth::user()->id;
+							$subMemberMatch_four->created_on = date('Y-m-d');
+							$subMemberMatch_four->save();
+						}
+					}
+			   
                     
                     if($memberdata[0]->status_id ==3){
-                        $subMemberMatch->match_id = 6;
+						$subMemberMatch_five = new MonthlySubMemberMatch();
+                        $subMemberMatch_five->match_id = 6;
+						$subMemberMatch_five->mon_sub_member_id = $subscription->id;
+						$subMemberMatch_five->created_by = Auth::user()->id;
+						$subMemberMatch_five->created_on = date('Y-m-d');
+						$subMemberMatch_five->save();
                     }else if($memberdata[0]->status_id ==4){
-                        $subMemberMatch->match_id = 7;
+						$subMemberMatch_six = new MonthlySubMemberMatch();
+                        $subMemberMatch_six->match_id = 7;
+						$subMemberMatch_six->mon_sub_member_id = $subscription->id;
+						$subMemberMatch_six->created_by = Auth::user()->id;
+						$subMemberMatch_six->created_on = date('Y-m-d');
+						$subMemberMatch_six->save();
                     }
                 }
 
-                $subMemberMatch->save();
-                
                
                 if( $upstatus==1){
                     $updata = ['update_status' => 1];
@@ -378,6 +426,22 @@ class SubscriptionController extends CommonController
         }
        echo json_encode($return_data);
     }
+	
+	public function recursiveCompany($company_code,$member_company_id){
+		//Print out the number.
+		//If the number is less or equal to 50.
+		if($company_code == $member_company_id){
+			//Call the function again. Increment number by one.
+			return true;
+		}else{
+			$company_data = Company::find($member_company_id);
+			if($company_code == $company_data->head_of_company){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
 
     public function submember($lang,$id)
     {
