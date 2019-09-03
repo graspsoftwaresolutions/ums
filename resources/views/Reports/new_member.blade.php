@@ -12,27 +12,17 @@
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <style>
-	@if(count($data['member_view'])<10)
-		#main.main-full {
-			height: 750px;
-		}
-		
-		.footer {
-		   position: fixed;
-		   margin-top:50px;
-		   left: 0;
-		   bottom: 0;
-		   width: 100%;
-		   height:auto;
-		   background-color: red;
-		   color: white;
-		   text-align: center;
-		   z-index:999;
-		} 
-		.sidenav-main{
-			z-index:9999;
-		}
-	@endif
+	.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -46,7 +36,7 @@
 				<h4 class="card-title">
 				
 				{{__('New Members Filter')}} 
-				
+				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
 				@php
 					
@@ -80,7 +70,7 @@
 				@endphp
 				<form method="post" id="filtersubmit" action="">
 					@csrf  
-					<div class="row">                          
+					<div id="hidesearch" class="row">                          
 						<div class="col s12 m6 l4">
 							<label for="from_date">{{__('From Date')}}</label>
 							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/M/Y')}}" name="from_date">
@@ -146,7 +136,8 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<div class="card">
+		<iframe src="{{ route('reports.membersnew',[app()->getLocale()]) }}" id="myframe" height="500px" width="100%"></iframe>
+		<div class="card hide">
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
@@ -341,11 +332,11 @@ $("#member_status0_sidebar_a_id").addClass('active');
 			  }
 			}
 	  });
-    $(window).scroll(function() {   
+    /* $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    loader.showLoader();
+		    //loader.showLoader();
 		    var from_date = $("#from_date").val();
 			var to_date = $("#to_date").val();
 			var company_id = $("#company_id").val();
@@ -357,7 +348,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-new-members-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ URL::to('/en/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
@@ -373,7 +364,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 								table_row += "<td>"+entry.subs+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
-						loader.hideLoader();
+						//loader.hideLoader();
 					}else{
 						
 					}
@@ -382,9 +373,10 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		    
 				
 	   }
-	});
+	}); */
 	$(document).on('submit','form#filtersubmit',function(event){
 		event.preventDefault();
+		
 		$("#search").attr('disabled',true);
 		var from_date = $("#from_date").val();
 		var to_date = $("#to_date").val();
@@ -392,13 +384,14 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
 		var join_type = $("#join_type").val();
-		$('#page-length-option tbody').empty();
+		//$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
 			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
 			$("#memberoffset").val("{{$data['data_limit']}}");
+			$("#myframe").attr("src", "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,);
 			//loader.showLoader();
-			$('#page-length-option tbody').empty();
-			loader.showLoader();
+			/* $('#page-length-option tbody').empty();
+			//loader.showLoader();
 			$.ajax({
 				type: "GET",
 				dataType: "json",
@@ -419,12 +412,12 @@ $("#member_status0_sidebar_a_id").addClass('active');
 								$('#page-length-option tbody').append(table_row);
 						});
 						
-						loader.hideLoader();
+						//loader.hideLoader();
 					}else{
 						
 					}
 				}
-			});
+			}); */
 			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
