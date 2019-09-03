@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\CommonHelper;
 use DB;
 use Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class ReportsController extends Controller
 {
@@ -391,6 +392,7 @@ class ReportsController extends Controller
             $data['company_view'][$ckey]['diif_color'] = $current_count-$last_month_count>0 ? 'green' : 'red';
             $data['company_view'][$ckey]['unpaid'] = 0;
             $data['company_view'][$ckey]['paid'] = $current_count;
+            $data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
         }
 		echo json_encode($data);
 		
@@ -451,6 +453,7 @@ class ReportsController extends Controller
             $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
             $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
             $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
+			$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
         }
 		echo json_encode($data);
 	}

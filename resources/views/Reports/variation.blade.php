@@ -35,6 +35,10 @@
 			z-index:9999;
 		}
 	@endif
+	.monthly-sub-status:hover{
+		background-color: #eeeeee !important;
+		cursor:pointer;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -141,8 +145,9 @@
 							@php
 								$current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01'));
 								$last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,$last_month);
+								$member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
 							@endphp
-							<tr>
+							<tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
 								<td>{{ $company->company_name }}</td>
 								<td>{{ $current_count }}</td>
 								<td>{{ $last_month_count }}</td>
@@ -315,7 +320,8 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 					{
 						res = result.company_view;
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.company_name+"</td>";
+							var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
+							var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td>"+entry.company_name+"</td>";
 								table_row += "<td>"+entry.current_count+"</td>";
 								table_row += "<td>"+entry.last_count+"</td>";
 								table_row += "<td><span class='badge "+entry.diif_color+"'>"+entry.difference+"</span></td>";
@@ -342,6 +348,11 @@ $('#clear').click(function(){
 	$('#month_year').val("");
 	$('#company_id').val("");
 	$(".selectpicker").val('').trigger("change"); 
+});
+$(document.body).on('click', '.monthly-sub-status' ,function(){
+	if($(this).attr("data-href")!=""){
+		win = window.open($(this).attr("data-href"), '_blank');
+	}
 });
 </script>
 @endsection
