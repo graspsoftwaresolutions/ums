@@ -138,15 +138,15 @@
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
 				<tr>
-					<td>{{ $member->name }}</td>
-					<td>{{ $member->member_number }}</td>
-					<td>{{ $member->new_ic }}</td>
-					<td>{{ $member->companycode }}</td>
-					<td>{{ $member->branch_name }}</td>
-					<td>{{ $member->doj }}</td>
-					<td>{{ $member->entryfee }}</td>
-					<td>{{ $member->insfee }}</td>
-					<td>{{ $member->subs }}</td>
+					<td width="19%">{{ $member->name }}</td>
+					<td width="10%">{{ $member->member_number }}</td>
+					<td width="10%">{{ $member->new_ic }}</td>
+					<td width="10%">{{ $member->companycode }}</td>
+					<td width="21%">{{ $member->branch_name }}</td>
+					<td width="10%">{{ $member->doj }}</td>
+					<td width="10%">{{ $member->entryfee }}</td>
+					<td width="6%">{{ $member->insfee }}</td>
+					<td width="6%">{{ $member->subs }}</td>
 					
 				</tr> 
 			@endforeach
@@ -197,15 +197,15 @@
 					if(res)
 					{
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.entryfee+"</td>";
-								table_row += "<td>"+entry.insfee+"</td>";
-								table_row += "<td>"+entry.subs+"</td></tr>";
+							var table_row = "<tr><td width='19%'>"+entry.name+"</td>";
+								table_row += "<td width='10%'>"+entry.member_number+"</td>";
+								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
+								table_row += "<td width='10%'>"+entry.companycode+"</td>";
+								table_row += "<td width='21%'>"+entry.branch_name+"</td>";
+								table_row += "<td width='10%'>"+entry.doj+"</td>";
+								table_row += "<td width='10%'>"+entry.entryfee+"</td>";
+								table_row += "<td width='6%'>"+entry.insfee+"</td>";
+								table_row += "<td width='6%'>"+entry.subs+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
 						//loader.hideLoader();
