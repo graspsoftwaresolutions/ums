@@ -279,7 +279,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 	
-
+	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
+	//Route::get('statistics_report','ReportsController@defaulterstatisticsReport')->name('reports.statistics');
+	Route::post('statistic_filter','ReportsController@statisticsReportMore')->name('statistic_filter');
 	
 	
 });

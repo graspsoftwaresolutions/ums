@@ -1058,5 +1058,149 @@ class CommonHelper
         }
 		return $members_count;
     }
-	
+	public static function get_male_gender_race_count($raceid,$branchshortcode,$status_active,$month_year)
+    {
+	 
+		// $month_year  = '';
+		//$month_year = '1964-05-01';
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{		
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+		
+        $male_count = DB::table('membership as m')->select('m.gender','m.doj')
+                    ->leftjoin('race as r','m.race_id','=','r.id')
+					->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+					->leftjoin('status as s','s.id','=','m.status_id')
+                    ->where('m.gender','=','Male');
+					       
+
+       /*  if($monthno!="" && $yearno!=""){
+            $male_count = $male_count->where(DB::raw('month(m.doj)'),'=',$monthno);
+            $male_count = $male_count->where(DB::raw('year(m.doj)'),'=',$yearno);
+        }  */ 
+        $male_count =  $male_count->where('r.id','=',$raceid)
+					->where('cb.branch_shortcode','=',$branchshortcode)
+					->where(DB::raw('month(m.doj)'),'=',$monthno)  
+					->where(DB::raw('year(m.doj)'),'=',$yearno)  
+					->where('s.status_name','=',$status_active)
+                    //->dump()   
+                    ->count();
+        return $male_count;
+		
+
+    }
+	public static function get_female_gender_race_count($raceid,$branchshortcode,$status_active,$month_year)
+    {
+ 
+		 //$month_year = $request->input('month_year');
+		//$month_year = '1964-05-01';
+		$month_year  = '';
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{		
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+		
+        $female_count = DB::table('membership as m')->select('m.gender','m.doj')
+                    ->leftjoin('race as r','m.race_id','=','r.id')
+					->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+					->leftjoin('status as s','s.id','=','m.status_id')
+                    ->where('m.gender','=','Female');
+					       
+
+       /*  if($monthno!="" && $yearno!=""){
+            $female_count = $female_count->where(DB::raw('month(m.doj)'),'=',$monthno);
+            $female_count = $female_count->where(DB::raw('year(m.doj)'),'=',$yearno);
+        }  */ 
+        $female_count =  $female_count->where('r.id','=',$raceid)
+					->where('cb.branch_shortcode','=',$branchshortcode)
+					->where(DB::raw('month(m.doj)'),'=',$monthno)  
+					->where(DB::raw('year(m.doj)'),'=',$yearno) 
+					->where('s.status_name','=',$status_active)
+                    //->dump()   
+                    ->count();
+        return $female_count;	
+    }
+	public static function get_male_gender_race_count_defaulter($raceid,$branchshortcode,$status_defaulter,$month_year)
+	{
+		 //$month_year = $request->input('month_year');
+		//$month_year = '1964-05-01';
+		$month_year  = '';
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{		
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+		
+        $maledefaulter_count = DB::table('membership as m')->select('m.gender','m.doj')
+                    ->leftjoin('race as r','m.race_id','=','r.id')
+					->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+					->leftjoin('status as s','s.id','=','m.status_id')
+                    ->where('m.gender','=','Male');			       
+
+       /*  if($monthno!="" && $yearno!=""){
+            $male_count = $male_count->where(DB::raw('month(m.doj)'),'=',$monthno);
+            $male_count = $male_count->where(DB::raw('year(m.doj)'),'=',$yearno);
+        }  */ 
+        $maledefaulter_count =  $maledefaulter_count->where('r.id','=',$raceid)
+					->where('cb.branch_shortcode','=',$branchshortcode)
+					->where(DB::raw('month(m.doj)'),'=',$monthno)  
+					->where(DB::raw('year(m.doj)'),'=',$yearno)  
+					->where('s.status_name','=',$status_defaulter)
+                    //->dump()   
+                    ->count();
+        return $maledefaulter_count;	
+	}
+	public static function get_female_gender_race_count_defaulter($raceid,$branchshortcode,$status_defaulter,$month_year)
+	{
+		 //$month_year = $request->input('month_year');
+		//$month_year = '1964-05-01';
+		$month_year  = '';
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{		
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+		
+        $femaledefaulter_count = DB::table('membership as m')->select('m.gender','m.doj')
+                    ->leftjoin('race as r','m.race_id','=','r.id')
+					->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+					->leftjoin('status as s','s.id','=','m.status_id')
+                    ->where('m.gender','=','Female');			       
+
+       /*  if($monthno!="" && $yearno!=""){
+            $male_count = $male_count->where(DB::raw('month(m.doj)'),'=',$monthno);
+            $male_count = $male_count->where(DB::raw('year(m.doj)'),'=',$yearno);
+        }  */ 
+        $femaledefaulter_count =  $femaledefaulter_count->where('r.id','=',$raceid)
+					->where('cb.branch_shortcode','=',$branchshortcode)
+					->where(DB::raw('month(m.doj)'),'=',$monthno)  
+					->where(DB::raw('year(m.doj)'),'=',$yearno)  
+					->where('s.status_name','=',$status_defaulter)
+                    //->dump()   
+                    ->count();
+        return $femaledefaulter_count;	
+	}
 }
