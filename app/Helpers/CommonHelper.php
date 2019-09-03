@@ -1081,10 +1081,7 @@ class CommonHelper
                     ->where('m.gender','=','Male');
 					       
 
-       /*  if($monthno!="" && $yearno!=""){
-            $male_count = $male_count->where(DB::raw('month(m.doj)'),'=',$monthno);
-            $male_count = $male_count->where(DB::raw('year(m.doj)'),'=',$yearno);
-        }  */ 
+     
         $male_count =  $male_count->where('r.id','=',$raceid)
 					->where('cb.branch_shortcode','=',$branchshortcode)
 					->where(DB::raw('month(m.doj)'),'=',$monthno)  
@@ -1119,11 +1116,6 @@ class CommonHelper
 					->leftjoin('status as s','s.id','=','m.status_id')
                     ->where('m.gender','=','Female');
 					       
-
-       /*  if($monthno!="" && $yearno!=""){
-            $female_count = $female_count->where(DB::raw('month(m.doj)'),'=',$monthno);
-            $female_count = $female_count->where(DB::raw('year(m.doj)'),'=',$yearno);
-        }  */ 
         $female_count =  $female_count->where('r.id','=',$raceid)
 					->where('cb.branch_shortcode','=',$branchshortcode)
 					->where(DB::raw('month(m.doj)'),'=',$monthno)  
@@ -1155,10 +1147,6 @@ class CommonHelper
 					->leftjoin('status as s','s.id','=','m.status_id')
                     ->where('m.gender','=','Male');			       
 
-       /*  if($monthno!="" && $yearno!=""){
-            $male_count = $male_count->where(DB::raw('month(m.doj)'),'=',$monthno);
-            $male_count = $male_count->where(DB::raw('year(m.doj)'),'=',$yearno);
-        }  */ 
         $maledefaulter_count =  $maledefaulter_count->where('r.id','=',$raceid)
 					->where('cb.branch_shortcode','=',$branchshortcode)
 					->where(DB::raw('month(m.doj)'),'=',$monthno)  
@@ -1190,10 +1178,7 @@ class CommonHelper
 					->leftjoin('status as s','s.id','=','m.status_id')
                     ->where('m.gender','=','Female');			       
 
-       /*  if($monthno!="" && $yearno!=""){
-            $male_count = $male_count->where(DB::raw('month(m.doj)'),'=',$monthno);
-            $male_count = $male_count->where(DB::raw('year(m.doj)'),'=',$yearno);
-        }  */ 
+
         $femaledefaulter_count =  $femaledefaulter_count->where('r.id','=',$raceid)
 					->where('cb.branch_shortcode','=',$branchshortcode)
 					->where(DB::raw('month(m.doj)'),'=',$monthno)  
