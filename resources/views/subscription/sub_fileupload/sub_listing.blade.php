@@ -239,6 +239,13 @@
 									<td id="member_status_amount_sundry">{{ round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0) }} </td>
 								</tr>
 							</tbody>
+							<tfoot>
+								<tr class="monthly-sub-status" id="monthly_member_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #f2f2f2;font-weight:bold;">
+									<td colspan="2">Total</td>
+									<td>0</td>
+									<td>0</td>
+								</tr>
+							</tfoot>
 						 </table>
 					</div>
 				</div>
@@ -274,6 +281,14 @@
 								</tr>
 								@endforeach
 							</tbody>
+							<tfoot>
+								<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #f2f2f2;font-weight:bold;">
+									<td colspan="2">Total</td>
+									<td>0</td>
+									<td>0</td>
+									<td>0</td>
+								</tr>
+							</tfoot>
 						 </table>
 					</div>
 				</div>
@@ -606,22 +621,22 @@ $(document).ready(function() {
 	$(".monthly-sub-status").click(function() {
 		//console.log($(this).data("href"));
 		if($(this).attr("data-href")!=""){
-			win = window.open($(this).attr("data-href"), '_blank');
+			win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$(".monthly-approval-status").click(function() {
 		if($(this).attr("data-href")!=""){
-			win = window.open($(this).attr("data-href"), '_blank');
+			win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$(".monthly-company-sub-status").click(function() {
 		if($(this).attr("data-href")!=""){
-			win = window.open($(this).attr("data-href"), '_blank');
+			win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$(".monthly-company-approval-status").click(function() {
 		if($(this).attr("data-href")!=""){
-			win = window.open($(this).attr("data-href"), '_blank');
+			win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$("#subscriptions_sidebars_id").addClass('active');
