@@ -34,7 +34,12 @@
 		.sidenav-main{
 			z-index:9999;
 		}
+		
 	@endif
+	.monthly-sub-status:hover{
+		background-color: #eeeeee !important;
+		cursor:pointer;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -151,8 +156,9 @@
 							$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
 							
 							$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+							$member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
 						@endphp
-						<tr>
+						<tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
 							<td>{{ $company->company_name }}</td>
 							<td>{{ $total_members }}</td>
 							<td>{{ number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',') }}</td>
@@ -327,7 +333,8 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 					{
 						res = result.company_view;
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.company_name+"</td>";
+							var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
+							var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td>"+entry.company_name+"</td>";
 								table_row += "<td>"+entry.total_members+"</td>";
 								table_row += "<td>"+entry.total_amount+"</td>";
 								table_row += "<td>"+entry.active_amt+"</td>";
@@ -356,6 +363,11 @@ $('#clear').click(function(){
 	$('#month_year').val("");
 	$('#company_id').val("");
 	$(".selectpicker").val('').trigger("change"); 
+});
+$(document.body).on('click', '.monthly-sub-status' ,function(){
+	if($(this).attr("data-href")!=""){
+		win = window.open($(this).attr("data-href"), '_blank');
+	}
 });
 </script>
 @endsection

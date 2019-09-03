@@ -131,6 +131,7 @@
 					SUNDRY CREDITORS List
 				@endif
 				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn " value="Advanced search">
+				<a class="btn waves-effect waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
 				</h4> 
 				@php
 					$userid = Auth::user()->id;
