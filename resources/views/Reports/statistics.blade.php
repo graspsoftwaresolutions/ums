@@ -61,6 +61,7 @@
 					$branchid = '';
 					if($user_role =='union'){
 						$companylist = $data['company_view'];
+
 						$unionbranchid = CommonHelper::getUnionBranchID($userid);
 						$unionbranchlist = $data['unionbranch_view'];
 					}
@@ -80,7 +81,7 @@
 						$companylist = CommonHelper::getCompanyList($companyid);
 						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
 					} 
-					
+					//dd($data['branch_id']);
 				@endphp
 				<form method="post" id="filtersubmit" action="{{ route('statistic_filter',app()->getLocale()) }}">
                                                               
@@ -88,7 +89,7 @@
 					<div class="row">    
 						<div class="col s12 m6 l3">
 							<label for="month_year">{{__('Month')}}</label>
-							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
+							<input id="month_year" type="text" class="validate datepicker-custom" value="{{$data['month_year']}}" name="month_year">
 						</div>
 						@php 
 						if($user_role =='union')
@@ -97,10 +98,10 @@
 						<div class="col s12 m6 l3">
 							<label>{{__('Union Branch Name') }}</label>
 							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
-								<option value="">{{__('Select Union Branch') }}</option>
+								<option  value="">{{__('Select Union Branch') }}</option>
 								@foreach($unionbranchlist as $value)
-								<option value="{{$value->id}}">{{$value->union_branch}}</option>
-								@endforeach
+								<option @if($data['unionbranch_id']==$value->id) selected @endif value="{{$value->id}}">{{$value->union_branch}}</option>
+								@endforeach 
 							</select>
 							<div class="input-field">
 								<div class="errorTxt22"></div>
@@ -114,7 +115,7 @@
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
 								@foreach($companylist as $value)
-								<option @if($companyid==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
+								<option @if($data['company']==$value->id) selected @endif value="{{$value->id}}">{{$value->company_name}}</option>
 								@endforeach
 							</select>
 							<div class="input-field">
@@ -126,7 +127,7 @@
 							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>
 								@foreach($branchlist as $branch)
-								<option @if($branchid==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
+								<option @if($data['branch_id']==$branch->id) selected @endif value="{{$branch->id}}">{{$branch->branch_name}}</option>
 								@endforeach
 							</select>
 							<div class="input-field">
@@ -249,9 +250,7 @@
                                 <td>{{$grandtotal}}</td>
 							</tr> 
                          @endforeach
-						
 					</tbody>
-				
 				</table> 
 			</div>
 		</div>
@@ -309,8 +308,8 @@
 @section('footerSecondSection')
 <script>
 $("#reports_sidebars_id").addClass('active');
-$("#takaful_report_sidebar_li_id").addClass('active');
-$("#takaful_report_sidebar_a_id").addClass('active');
+$("#member_statistic_sidebar_li_id").addClass('active');
+$("#member_statistic_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		 $('.datepicker-custom').MonthPicker({ 

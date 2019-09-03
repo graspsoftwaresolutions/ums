@@ -586,15 +586,14 @@ class ReportsController extends Controller
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
 
-        $month_year = $request->input('month_year');
-		//$month_year = '1964-05-01';
+			$month_year = '';
 		$monthno = '';
         $yearno = '';
         if($month_year!=""){
-			$fmmm_date = explode("-",$month_year);
-			$monthno = 05;
-			$yearno = 1964;
-        }else{		
+			$fmmm_date = explode("/",$month_year);
+			  $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+			  $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{	
 			$monthno = date('m');
 			$yearno = date('Y');
 		}
@@ -609,12 +608,14 @@ class ReportsController extends Controller
             $members = $members->where(DB::raw('year(m.doj)'),'=',$yearno);
         }
        
+		$data['month_year'] = date('M/Y');
+		$data['unionbranch_id'] = '';
+		$data['company'] = '' ;
+		$data['branch_id'] = '';
         $data['member_count'] =  $members->GroupBY('c.id')
 							->where(DB::raw('month(m.doj)'),'=',$monthno)  
-							->where(DB::raw('year(m.doj)'),'=',$yearno)->get();
-							//->where('s.status_name','=','Active');  
-		
-              
+							->where(DB::raw('year(m.doj)'),'=',$yearno)->get(); 
+		      
 		//dd($data['member_count']);
         return view('Reports.statistics')->with('data',$data);  
     }
@@ -640,16 +641,12 @@ class ReportsController extends Controller
             ->select('m.gender','c.branch_shortcode','m.doj')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
             ->leftjoin('company as com','com.id','=','c.company_id');
-            //->leftjoin('status as s','s.id','=','m.status_id')
-           // ->leftjoin('race as r','r.id','=','m.race_id');
         }
         else{
             $members =  $members = DB::table('membership as m')
             ->select('m.gender','c.branch_shortcode','m.doj')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-            ->leftjoin('union_branch as ub','ub.id','=','c.union_branch_id');
-            //->leftjoin('status as s','s.id','=','m.status_id')
-           // ->leftjoin('race as r','r.id','=','m.race_id');
+            ->leftjoin('union_branch as ub','ub.id','=','c.union_branch_id');   
         }
 		
         if($branch_id!=""){
@@ -671,6 +668,9 @@ class ReportsController extends Controller
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();  
 		$data['month_year'] = $month_year;
+		$data['unionbranch_id'] = $unionbranch_id;
+		$data['company'] = $request->input('company_id');
+		$data['branch_id'] = $request->input('branch_id');
         return view('Reports.statistics')->with('data',$data);  
     }
 }

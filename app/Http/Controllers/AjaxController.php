@@ -755,8 +755,7 @@ class AjaxController extends CommonController
         $feelist = new Fee();
         $overallfeedetail = $feelist->getFee($select, $where, $or_where, $orderby, $limit, $offset);
         $totalFiltered =$totalData=$overallfeedetail->count();
-        $table = "fee";
-        $data = $this->CommonAjaxReturn($overallfeedetail->toArray(), 0, 'master.feedestroy', 0,$table);
+        $data = $this->CommonAjaxReturnold($overallfeedetail->toArray(), 0, 'master.feedestroy', 0);
         
           $json_data = array(
           "draw" => intval($request->input('draw')),

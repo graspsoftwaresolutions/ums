@@ -282,8 +282,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('newmembers_report','ReportsController@newMembersReport')->name('reports.membersnew');
 	
 	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
-	//Route::get('statistics_report','ReportsController@defaulterstatisticsReport')->name('reports.statistics');
-	Route::post('statistic_filter','ReportsController@statisticsReportMore')->name('statistic_filter');
+	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');
 	
 	
 });
