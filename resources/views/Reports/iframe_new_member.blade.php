@@ -56,6 +56,10 @@
 			.export-button{
 				display:none !important;
 			}
+			.page-header,.page-table-header-space {
+			  background: #fff; /* for demo */
+			  color:#000;
+			}
 		}
 		@media not print {
 			.page-table-header-space {
