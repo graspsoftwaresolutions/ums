@@ -106,7 +106,7 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">I'm The Header
+	<div class="page-header" style="text-align: center">New Members Report
 		<br/> 
 		<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
 		<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
