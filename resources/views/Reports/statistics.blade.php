@@ -150,7 +150,9 @@
 </div> 
 <div class="row">
 	<div class="col s12">
+	
 		<div class="card">
+		
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
@@ -209,7 +211,6 @@
 								 @endphp
                                 @endforeach
                                 <td> {{$subtotal1}}</td>
-                                
 								@foreach($data['race_view'] as $value)
                                 @php $race_id = $value->id;
                                  $female_count = CommonHelper::get_female_gender_race_count($race_id,$values->branch_shortcode,$status_active,$month_year)
@@ -220,7 +221,6 @@
 								 $total = $subtotal1 + $subtotal2; 
 								 @endphp
 								@endforeach
-								
                                 <td> {{$subtotal2}}</td>
                                 <td>{{$total}}</td>
 	

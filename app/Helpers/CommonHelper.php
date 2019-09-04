@@ -20,6 +20,7 @@ use App\Model\Irc;
 use App\Model\Resignation;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Log;
 
 class CommonHelper
@@ -1190,4 +1191,95 @@ class CommonHelper
                     ->count();
         return $femaledefaulter_count;	
 	}
+	public static function subCompanyMembersCount($company_enc_id, $user_role, $user_id,$date)
+	{
+		// return $date;
+		if($date!=''){
+		  $fmmm_date = explode("/",$date);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+		else{
+			$date=date('Y-m-01');
+		}
+		$members_count=0;
+        //dd($country_id);
+        if($user_role=='union')
+        {
+			$company_auto_id = Crypt::decrypt($company_enc_id);
+			
+			$members_count	=DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+							'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
+							->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+							->join('company','company.id','=','mon_sub_company.CompanyCode')
+							->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+							->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+							->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+						   ->where('mon_sub_company.id','=',$company_auto_id)
+							->where(DB::raw('month(mon_sub.Date)'),'=',$monthno)  
+							->where(DB::raw('year(mon_sub.Date)'),'=',$yearno)  
+						   ->count();
+		}
+		else if($user_role=='union-branch')
+		{
+			 $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			 $members_count	=DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+							'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
+							->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+							->join('company','company.id','=','mon_sub_company.CompanyCode')
+							->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+							->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+							->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+						   ->where('mon_sub_company.id','=',$company_auto_id)
+							->where(DB::raw('month(mon_sub.Date)'),'=',$monthno)  
+							->where(DB::raw('year(mon_sub.Date)'),'=',$yearno)  
+							->where('cb.union_branch_id','=',$union_branch_id)
+						   ->count();
+		}
+		elseif($user_role=='company')
+		{
+			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$members_count	=DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+							'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
+							->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+							->join('company','company.id','=','mon_sub_company.CompanyCode')
+							->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+							->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+							->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+						   ->where('mon_sub_company.id','=',$company_auto_id)
+							->where(DB::raw('month(mon_sub.Date)'),'=',$monthno)  
+							->where(DB::raw('year(mon_sub.Date)'),'=',$yearno) 
+							->where('cb.company_id','=',$company_id)
+						   ->count();
+		}
+		else if($user_role=='company-branch')
+		{
+			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+			$members_count	=DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+							'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
+							->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+							->join('company','company.id','=','mon_sub_company.CompanyCode')
+							->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+							->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+							->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+						   ->where('mon_sub_company.id','=',$company_auto_id)
+							->where(DB::raw('month(mon_sub.Date)'),'=',$monthno)  
+							->where(DB::raw('year(mon_sub.Date)'),'=',$yearno)  
+							->where('cb.id','=',$branch_id)
+						   ->count();
+		}
+		return $members_count;
+	}		
 }
