@@ -26,8 +26,9 @@
 			$hide_members = 'hide';
 		}
 	}else{
+		$member_status = 'all';
 		$hide_members = 'hide';
-		$approval_status = $data['status'];
+		$approval_status = 'all';
 	}
 @endphp
 <style>
@@ -69,15 +70,18 @@
 	.m_date_row #search_date{
 		background-color: #ddd !important;
 	}
-	@if($member_status!="" || $member_status==0)
-	.member_status_row{
-		pointer-events: none;
-	}
-	.member_status_row #member_status{
-		background-color: #ddd !important;
-	}
+	
+	@if($approval_status!="all" || $member_status!="all")
+		@if($member_status!="" || $member_status==0) 
+		.member_status_row{
+			pointer-events: none;
+		}
+		.member_status_row #member_status{
+			background-color: #ddd !important;
+		}
+		@endif
 	@endif
-	@if($approval_status!="" || $member_status==0)
+	@if(($approval_status!="" || $member_status==0) && ($approval_status!="all" || $member_status!="all"))
 	.approval_status_row{
 		pointer-events: none;
 	}
@@ -129,6 +133,8 @@
 					{{ CommonHelper::get_member_match_name($data['status']) }}'s List
 				@elseif($data['status_type']==3)
 					SUNDRY CREDITORS List
+				@else
+					All Members List
 				@endif
 				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn " value="Advanced search">
 				<a class="btn waves-effect waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
@@ -167,6 +173,7 @@
 							<label for="search_date">{{__('Date')}}</label>
 							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" readonly name="search_date">
 							<input id="filter_date" type="text" class="validate hide" value="{{ $data['filter_date'] }}" readonly name="filter_date">
+							<input id="status_type" type="text" class="validate hide" value="{{ $data['status_type'] }}" readonly name="status_type">
 						</div>
 						<div class="col m3 s12 member_status_row">
 							<label for="member_status">{{__('Member Status') }}</label>
@@ -175,8 +182,10 @@
 								@foreach($data['member_status'] as  $key => $stat)
 									<option @if($member_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->status_name }}</option>
 								@endforeach
-								@if($hide_members=='hide')
+								@if($hide_members=='hide' && $data['status_type']!=4)
 									<option value="0" selected>{{ __('SUNDRY CREDITORS') }}</option>
+								@else
+									<option value="0" >{{ __('SUNDRY CREDITORS') }}</option>
 								@endif
 							</select>
 						</div>
@@ -234,7 +243,6 @@
 							<th width="7%">{{__('Amount')}}</th>
 							<th width="5%">{{__('Due')}}</th>
 							<th width="10%">{{__('Member Status')}}</th>
-							<th width="10%">{{__('Description')}}</th>
 							<th width="10%">{{__('Verification Status')}}</th>
 							<th width="15%">{{__('Action')}}</th>
 						</tr> 
@@ -244,6 +252,9 @@
 							//dd($data['member'])
 						@endphp
 						@foreach($data['member'] as  $key => $member)
+							@php
+								$approval_status =1;
+							@endphp
 							<tr style="overflow-x:auto;">
 								<td>{{ $member->up_member_name }}</td>
 								<td>{{ $member->member_number }}</td>
@@ -252,11 +263,10 @@
 								<td>{{ $member->Amount }}</td>
 								<td>{{ $member->due }}</td>
 								<td>{{ $member->status_name }}</td>
-								<td>{{ CommonHelper::get_member_match_name($member->match_id) }}</td>
-								<td id="approve_status_{{ $member->match_auto_id }}"><span class="badge {{$member->approval_status==1 ? 'green' : 'red'}}">{{ $member->approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
+								<td id="approve_status_{{ 1 }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
-								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{$member->match_auto_id}})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
+								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ 1 }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
 							</tr> 
 						@endforeach
@@ -647,9 +657,10 @@ $(document).on('submit','form#filtersubmit',function(event){
 	var approval_status = $("#approval_status").val();
 	var company_id = $("#company_id").val();
 	var member_auto_id = $("#member_auto_id").val();
+	var status_type = $("#status_type").val();
 	$('#page-length-option tbody').empty();
 	if(filter_date!=""){
-		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&company_id='+company_id+'&approval_status='+approval_status+'&member_auto_id='+member_auto_id;
+		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&company_id='+company_id+'&approval_status='+approval_status+'&member_auto_id='+member_auto_id+'&status_type='+status_type;
 		$("#memberoffset").val("{{$data['data_limit']}}");
 		//loader.showLoader();
 		$('#page-length-option tbody').empty();
@@ -671,8 +682,8 @@ $(document).on('submit','form#filtersubmit',function(event){
 							table_row += "<td>"+entry.Amount+"</td>";
 							table_row += "<td>"+entry.due+"</td>";
 							table_row += "<td>"+entry.status_name+"</td>";
-							table_row += "<td>"+entry.match_name+"</td>";
-							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+							var approval_status = 1;
+							var app_status = approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
 							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
 							actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
@@ -704,7 +715,8 @@ $(window).scroll(function() {
 		var approval_status = $("#approval_status").val();
 		var company_id = $("#company_id").val();
 		var member_auto_id = $("#member_auto_id").val();
-		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&company_id='+company_id+'&approval_status='+approval_status+'&member_auto_id='+member_auto_id;
+		var status_type = $("#status_type").val();
+		var searchfilters = '&filter_date='+filter_date+'&member_status='+member_status+'&company_id='+company_id+'&approval_status='+approval_status+'&member_auto_id='+member_auto_id+'&status_type='+status_type;
 		$("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 		$.ajax({
 			type: "GET",
@@ -723,12 +735,12 @@ $(window).scroll(function() {
 							table_row += "<td>"+entry.Amount+"</td>";
 							table_row += "<td>"+entry.due+"</td>";
 							table_row += "<td>"+entry.status_name+"</td>";
-							table_row += "<td>"+entry.match_name+"</td>";
-							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
-							table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
+							var approval_status = 1;
+							var app_status = approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+							table_row += "<td id='approve_status_"+entry.memberid+"'>"+app_status+"</td>";
 							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
 							actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
-							actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.match_auto_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.memberid+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
 					});

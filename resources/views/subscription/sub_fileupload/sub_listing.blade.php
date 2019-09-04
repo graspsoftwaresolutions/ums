@@ -365,7 +365,7 @@
 								</tr>
 							</tbody>
 							<tfoot>
-								<tr class="monthly-sub-status" id="monthly_member_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+								<tr class="monthly-company-sub-status" id="monthly_company_sub_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
 									<td id="company_member_status_count_total">0</td>
 									<td id="company_member_status_amount_total">0</td>
@@ -408,7 +408,7 @@
 								@endforeach
 							</tbody>
 							<tfoot>
-								<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+								<tr class="monthly-company-approval-status" id="monthly_company_approval_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
 									<td id="company_approval_status_count_total">0</td>
 									<td id="company_approval_approved_count_total">0</td>
@@ -563,8 +563,15 @@ $(document).ready(function() {
                         });
 						var baselink = base_url +'/{{ app()->getLocale() }}/';
 						$("#monthly_company_sub_status_0").attr('data-href',baselink+"subscription-status?member_status=0&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+						$("#monthly_company_sub_status_all").attr('data-href',baselink+"subscription-status?member_status=all&date="+result.month_year_number+"&company_id="+result.company_auto_id);
+						$("#monthly_company_approval_status_all").attr('data-href',baselink+"subscription-status?approval_status=all&date="+result.month_year_number+"&company_id="+result.company_auto_id);
 						$("#company_member_status_count_sundry").html(result.sundry_count);
 						$("#company_member_status_amount_sundry").html(result.sundry_amount);
+						$("#company_member_status_count_total").html(result.total_members_count);
+						$("#company_member_status_amount_total").html(result.total_members_amount);
+						$("#company_approval_status_count_total").html(result.total_match_members_count);
+						$("#company_approval_approved_count_total").html(result.total_match_approval_members_count);
+						$("#company_approval_pending_count_total").html(result.total_match_pending_members_count);
 						$("#approvalstatustable").css('opacity',1);
 						$("#type").append('<option value="2">Download Existance data</option>');
 					}else{
@@ -603,6 +610,7 @@ $(document).ready(function() {
                         });
 						var baselink = base_url +'/{{ app()->getLocale() }}/';
 						$("#monthly_member_status_0").attr('data-href',baselink+"subscription-status?member_status=0&date="+result.month_year_number);
+						$("#monthly_member_status_all").attr('data-href',baselink+"subscription-status?member_status=all&date="+result.month_year_number);
 						$.each(result.status_data.amount, function(key, entry) {
 							$("#member_status_amount_"+key).html(entry);
                         });
@@ -618,6 +626,7 @@ $(document).ready(function() {
 							console.log("#approval_approved_count_"+entry);
 							$("#approval_approved_count_"+key).html(entry);
                         });
+						$("#monthly_approval_status_all").attr('data-href',baselink+"subscription-status?approval_status=all&date="+result.month_year_number);
 						$.each(result.approval_data.pending, function(key, entry) {
 							$("#approval_pending_count_"+key).html(entry);
                         });

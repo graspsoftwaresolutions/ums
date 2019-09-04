@@ -759,26 +759,25 @@ class SubscriptionAjaxController extends CommonController
         $approval_status = $request->input('approval_status');
         $company_id = $request->input('company_id');
         $member_auto_id = $request->input('member_auto_id');
+        $status_type = $request->input('status_type');
         $defaultdate = date('Y-m-01',$filter_date);
 		
         $data['data_limit'] = $this->limit;
 		$members_data = [];
 		if($filter_date!=""){
-			$cond ='';
-			if(isset($company_id) && $company_id!=''){
-				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
-			}
-			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id, mm.id as match_auto_id, mm.approval_status as approval_status,mm.match_id as match_id,m.Name as up_member_name,m.NRIC as up_nric,match.match_name as match_name'))
+			
+			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric'))
 							->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
 							->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
 							->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
 							->leftjoin('membership as member','m.MemberCode','=','member.id')
 							->leftjoin('company as c','sc.CompanyCode','=','c.id')
-							->leftjoin('status as s','m.StatusId','=','s.id')
-							->leftjoin('mon_sub_match_table as match','mm.match_id','=','match.id');
+							->leftjoin('status as s','m.StatusId','=','s.id');
+							//->leftjoin('mon_sub_match_table as match','mm.match_id','=','match.id');
 			if(isset($company_id) && $company_id!=''){
 				$members_qry = $members_qry->where('m.MonthlySubscriptionCompanyId','=',$company_id);
 			}
+			
 			if($member_status!='' && $member_status!=0){
 				$members_qry = $members_qry->where('m.StatusId','=',$member_status);
 			}
@@ -788,26 +787,28 @@ class SubscriptionAjaxController extends CommonController
 			if($member_status==0 && $approval_status==""){
 				$members_qry = $members_qry->where('mm.match_id','=',2);
 			}
+			
 			if($member_auto_id!=0 && $member_auto_id!=""){
 				$members_qry = $members_qry->where('m.id','=',$member_auto_id);
 			}
 			$members_qry = $members_qry->where('sm.Date','=',$defaultdate);
 			$members_data = $members_qry->offset($offset)
               ->limit($data['data_limit'])
+			  ->groupBy('m.id')
+			  ->dump()
 			  ->get();
 		}
+		$data['status'] = 0;
         if($member_status!=""){
-            $data['status_type'] = 1;
             $data['status'] = $member_status;
         }
         if($approval_status!=""){
-           $data['status_type'] = 2;
            $data['status'] = $approval_status;
         }
 		if($member_status==0 && $approval_status==""){
-           $data['status_type'] = 3;
            $data['status'] = 0;
         }
+		$data['status_type'] = $status_type;
         //dd($members_data);
         foreach($members_data as $mkey => $member){
             foreach($member as $newkey => $newvalue){
