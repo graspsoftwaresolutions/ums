@@ -290,6 +290,7 @@ class SubscriptionController extends CommonController
             
             $row_count = count($subscription_data);
             $count =0;
+			
             foreach($subscription_data as $subscription){
                 $nric = $subscription->NRIC;
                
@@ -300,9 +301,21 @@ class SubscriptionController extends CommonController
                 $subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric);
                 
                 $up_sub_member =0;
-                $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->count();
+                $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)
+									->where(function($query) {
+										  $query->where('match_id', 1)
+											->orWhere('match_id', 8)
+											->orWhere('match_id', 9)
+											->orWhere('match_id', 2);
+									  })->count();
                 if($match_count>0){
-                    $match_res =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)->get();
+                    $match_res =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)
+										->where(function($query) {
+										  $query->where('match_id', 1)
+											->orWhere('match_id', 8)
+											->orWhere('match_id', 9)
+											->orWhere('match_id', 2);
+									    })->get();
                     $matchid = $match_res[0]->id;
                     $subMemberMatch = MonthlySubMemberMatch::find($matchid);
                 }else{
@@ -340,7 +353,7 @@ class SubscriptionController extends CommonController
                     $subMemberMatch->match_id = 2;
                 }
                 $subMemberMatch->save();
-                
+              
                 $upstatus=1;
                 if($up_sub_member ==1){
 					$insert_month_end = 1;
@@ -353,13 +366,18 @@ class SubscriptionController extends CommonController
                         ->where('NRIC',$nric)->update($updata);
                         $upstatus=0;
                     }
+					
                     $company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
                     $member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
 					
 					$match_company_status = $this->recursiveCompany($company_code,$member_company_id);
                 
                     if(!$match_company_status){
-						$subMemberMatch_one = new MonthlySubMemberMatch();
+						$subMemberMatch_one = MonthlySubMemberMatch::where('match_id','=',4)->where('mon_sub_member_id','=',$subscription->id)->first();
+						
+						if(empty($subMemberMatch_one)){
+							$subMemberMatch_one = new MonthlySubMemberMatch();
+						}
                         $subMemberMatch_one->match_id = 4;
 						$subMemberMatch_one->mon_sub_member_id = $subscription->id;
 						$subMemberMatch_one->created_by = Auth::user()->id;
@@ -367,9 +385,13 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_one->save();
 						$insert_month_end = 0;
                     }
+					
                                        
                     if(strtoupper(trim($memberdata[0]->name)) != strtoupper($subscription->Name)){
-						$subMemberMatch_two = new MonthlySubMemberMatch();
+						$subMemberMatch_two = MonthlySubMemberMatch::where('match_id','=',3)->where('mon_sub_member_id','=',$subscription->id)->first();
+						if(empty($subMemberMatch_two)){
+							$subMemberMatch_two = new MonthlySubMemberMatch();
+						}
                         $subMemberMatch_two->match_id = 3;
 						$subMemberMatch_two->mon_sub_member_id = $subscription->id;
 						$subMemberMatch_two->created_by = Auth::user()->id;
@@ -392,9 +414,10 @@ class SubscriptionController extends CommonController
 					$member_doj = DB::table("membership as m")->where('m.id','=',$member_code)->pluck('doj')->first();
 					$member_month_yr = date('m-Y',strtotime($member_doj));
 					$cur_month_yr = date('m-Y',strtotime($cur_date));
-					
+					//dd($member_month_yr);
+					//dd($old_subscription_count);
 					if($member_month_yr!=$cur_month_yr){
-						if($old_subscription_count>1){
+						if($old_subscription_count>0){
 							$old_subscription_amount = DB::table("mon_sub_member as mm")
 								->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
 								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
@@ -403,9 +426,12 @@ class SubscriptionController extends CommonController
 								->orderBY('mm.MonthlySubscriptionCompanyId','desc')
 								->pluck('Amount')
 								->first();
-							
+							//dd($old_subscription_amount);
 							if($old_subscription_amount!=$subscription->Amount){
-								$subMemberMatch_three = new MonthlySubMemberMatch();
+								$subMemberMatch_three = MonthlySubMemberMatch::where('match_id','=',5)->where('mon_sub_member_id','=',$subscription->id)->first();
+								if(empty($subMemberMatch_three)){
+									$subMemberMatch_three = new MonthlySubMemberMatch();
+								}
 								$subMemberMatch_three->match_id = 5;
 								$subMemberMatch_three->mon_sub_member_id = $subscription->id;
 								$subMemberMatch_three->created_by = Auth::user()->id;
@@ -414,7 +440,11 @@ class SubscriptionController extends CommonController
 								$insert_month_end = 0;
 							}
 						}else{
-							$subMemberMatch_four = new MonthlySubMemberMatch();
+							$subMemberMatch_four = MonthlySubMemberMatch::where('match_id','=',10)->where('mon_sub_member_id','=',$subscription->id)->first();
+							if(empty($subMemberMatch_four)){
+								$subMemberMatch_four = new MonthlySubMemberMatch();
+							}
+							
 							$subMemberMatch_four->match_id = 10;
 							$subMemberMatch_four->mon_sub_member_id = $subscription->id;
 							$subMemberMatch_four->created_by = Auth::user()->id;
@@ -426,7 +456,10 @@ class SubscriptionController extends CommonController
 			   
                     
                     if($memberdata[0]->status_id ==3){
-						$subMemberMatch_five = new MonthlySubMemberMatch();
+						$subMemberMatch_five = MonthlySubMemberMatch::where('match_id','=',6)->where('mon_sub_member_id','=',$subscription->id)->first();
+						if(empty($subMemberMatch_five)){
+							$subMemberMatch_five = new MonthlySubMemberMatch();
+						}
                         $subMemberMatch_five->match_id = 6;
 						$subMemberMatch_five->mon_sub_member_id = $subscription->id;
 						$subMemberMatch_five->created_by = Auth::user()->id;
@@ -434,7 +467,10 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_five->save();
 						$insert_month_end = 0;
                     }else if($memberdata[0]->status_id ==4){
-						$subMemberMatch_six = new MonthlySubMemberMatch();
+						$subMemberMatch_six = MonthlySubMemberMatch::where('match_id','=',7)->where('mon_sub_member_id','=',$subscription->id)->first();
+						if(empty($subMemberMatch_six)){
+							$subMemberMatch_six = new MonthlySubMemberMatch();
+						}
                         $subMemberMatch_six->match_id = 7;
 						$subMemberMatch_six->mon_sub_member_id = $subscription->id;
 						$subMemberMatch_six->created_by = Auth::user()->id;
@@ -444,6 +480,7 @@ class SubscriptionController extends CommonController
                     }
 					
 					if($insert_month_end==1 && $nric_matched==1){
+						
 						$total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
 						->where('MemberCode', '=', $member_code)
 						->first();
@@ -465,40 +502,46 @@ class SubscriptionController extends CommonController
 						$total_subs_to_paid = $diff_in_months==0 ? $subscription->Amount : ($diff_in_months*$subscription->Amount);
 						$total_pending = $total_subs_to_paid - $total_subs;
 						
-						DB::table($this->membermonthendstatus_table)->insert(
-												[
-													'StatusMonth' => $cur_date, 
-													'MEMBER_CODE' => $member_code,
-													'SUBSCRIPTION_AMOUNT' => $subscription->Amount,
-													'BF_AMOUNT' => $this->bf_amount,
-													'LASTPAYMENTDATE' => $old_subscription_count>0 ? $last_month : NULL,
-													'TOTALSUBCRP_AMOUNT' => $total_subs,
-													'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
-													'TOTAL_MONTHS' => $diff_in_months,
-													//'ENTRYMODE' => 0,
-													//'DEFAULTINGMONTHS' => 0,
-													'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
-													'TOTALMONTHSPAID' => $total_count,
-													'SUBSCRIPTIONDUE' => $total_pending,
-													'BFDUE' => $bf_due,
-													'ACCSUBSCRIPTION' => $subscription->Amount,
-													'ACCBF' => $this->bf_amount,
-													//'ACCBENEFIT' => 0,
-													//'CURRENT_YDTBF' => 0,
-													//'CURRENT_YDTSUBSCRIPTION' => 0,
-													'STATUS_CODE' => $memberdata[0]->status_id,
-													'RESIGNED' => $memberdata[0]->status_id==4 ? 1 : 0,
-													'ENTRY_DATE' => date('Y-m-d'),
-													'ENTRY_TIME' => date('h:i:s'),
-													'STRUCKOFF' => $memberdata[0]->status_id==3 ? 1 : 0,
-													'INSURANCE_AMOUNT' => $this->ins_amount,
-													'TOTALINSURANCE_AMOUNT' => $diff_in_months==0 ? $this->ins_amount : ($diff_in_months*$this->ins_amount),
-													'TOTALMONTHSCONTRIBUTION' => $total_count,
-													'INSURANCEDUE' => $ins_due,
-													'ACCINSURANCE' => $this->ins_amount,
-													//'CURRENT_YDTINSURANCE' => 0,
-												]
-											);
+						$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_code)->count();
+						//dd($member_code);
+						$monthend_data = [
+												'StatusMonth' => $cur_date, 
+												'MEMBER_CODE' => $member_code,
+												'SUBSCRIPTION_AMOUNT' => $subscription->Amount,
+												'BF_AMOUNT' => $this->bf_amount,
+												'LASTPAYMENTDATE' => $old_subscription_count>0 ? $last_month : NULL,
+												'TOTALSUBCRP_AMOUNT' => $total_subs,
+												'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
+												'TOTAL_MONTHS' => $diff_in_months,
+												//'ENTRYMODE' => 0,
+												//'DEFAULTINGMONTHS' => 0,
+												'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
+												'TOTALMONTHSPAID' => $total_count,
+												'SUBSCRIPTIONDUE' => $total_pending,
+												'BFDUE' => $bf_due,
+												'ACCSUBSCRIPTION' => $subscription->Amount,
+												'ACCBF' => $this->bf_amount,
+												//'ACCBENEFIT' => 0,
+												//'CURRENT_YDTBF' => 0,
+												//'CURRENT_YDTSUBSCRIPTION' => 0,
+												'STATUS_CODE' => $memberdata[0]->status_id,
+												'RESIGNED' => $memberdata[0]->status_id==4 ? 1 : 0,
+												'ENTRY_DATE' => date('Y-m-d'),
+												'ENTRY_TIME' => date('h:i:s'),
+												'STRUCKOFF' => $memberdata[0]->status_id==3 ? 1 : 0,
+												'INSURANCE_AMOUNT' => $this->ins_amount,
+												'TOTALINSURANCE_AMOUNT' => $diff_in_months==0 ? $this->ins_amount : ($diff_in_months*$this->ins_amount),
+												'TOTALMONTHSCONTRIBUTION' => $total_count,
+												'INSURANCEDUE' => $ins_due,
+												'ACCINSURANCE' => $this->ins_amount,
+												//'CURRENT_YDTINSURANCE' => 0,
+											];
+						if($mont_count>0){
+							DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_code)->update($monthend_data);
+						}else{
+							DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+						}
+						
 					}
                 }
 
