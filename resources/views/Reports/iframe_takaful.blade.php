@@ -117,7 +117,7 @@
 				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">New Members Report</h6>
+					<h6 style="text-align:center;">Takaful Insurance Report</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -138,34 +138,26 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
-				<th width="19%" align="center">Name</th>
-				<th width="10%" align="center">Number</th>
-				<th width="10%" align="center">NRIC</th>
-				<th width="10%" align="center">Bank</th>
-				<th width="21%" align="center">Branch</th>
-				<th width="10%" align="center">DOJ</th>
-				<th width="10%" align="center">ENT</th>
-				<th width="6%" align="center">INS</th>
-				<th width="6%" align="center">SUBS</th>
+			<tr class="page-table-header-space">
+				<th width="20%">{{__('Bank')}}</th>
+				<th width="20%">{{__('Branch')}}</th>
+				<th width="20%">{{__('Name')}}</th>
+				<th width="10%">{{__('Number')}}</th>
+				<th width="10%">{{__('NRIC')}}</th>
+				<th>{{__('Insurance Amount(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
-				<tr>
-					<td width="19%">{{ $member->name }}</td>
-					<td width="10%">{{ $member->member_number }}</td>
-					<td width="10%">{{ $member->new_ic }}</td>
-					<td width="10%">{{ $member->companycode }}</td>
-					<td width="21%">{{ $member->branch_name }}</td>
-					<td width="10%">{{ $member->doj }}</td>
-					<td width="10%">{{ $member->entryfee }}</td>
-					<td width="6%">{{ $member->insfee }}</td>
-					<td width="6%">{{ $member->subs }}</td>
-					
-				</tr> 
+					<tr>
+						<td>{{$member->companycode}}</td>
+						<td>{{$member->branch_name}}</td>
+						<td>{{$member->name}}</td>
+						<td>{{$member->member_number}}</td>
+						<td>{{$member->new_ic}}</td>
+						<td>{{$member->total}}</td>
+					</tr> 
 			@endforeach
-			
 		</tbody>
 		
 	</table>

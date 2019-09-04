@@ -280,6 +280,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 	Route::get('newmembers_report','ReportsController@newMembersReport')->name('reports.membersnew');
+	Route::get('takaful_report','ReportsController@takafulnewReport')->name('reports.takaful');
 	
 	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
 	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');

@@ -35,6 +35,17 @@
 			z-index:9999;
 		}
 	@endif
+	.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -46,9 +57,8 @@
 		<div class="card">
 			<div class="card-content">
 				<h4 class="card-title">
-				
 				{{__('Takaful Insurance Filter')}} 
-				
+				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
 				@php
 					
@@ -82,12 +92,12 @@
 				@endphp
 				<form method="post" id="filtersubmit" action="">
 					@csrf  
+					<div id="hidesearch" class="row">
 					<div class="row">    
 						<div class="col s12 m6 l3">
 							<label for="month_year">{{__('Month')}}</label>
 							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
 						</div>
-					
 						<div class="col s12 m6 l3">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
@@ -129,6 +139,7 @@
 							</div>
 						</div>
 					</div>
+					</div>
 				</form>  
 			</div>
 		</div>
@@ -136,7 +147,8 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<div class="card">
+		<iframe src="{{ route('reports.takaful',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+		<div class="card hide">
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
@@ -317,7 +329,7 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 			  }
 			}
 	  });
-    $(window).scroll(function() {   
+    /* $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
@@ -353,7 +365,7 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 		    
 				
 	   }
-	});
+	}); */
 	$(document).on('submit','form#filtersubmit',function(event){
 		event.preventDefault();
 		$("#search").attr('disabled',true);
