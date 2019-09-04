@@ -424,16 +424,11 @@ class SubscriptionAjaxController extends CommonController
             foreach ($company_qry as $company)
             {
                 $nestedData['month_year'] = date('M/Y',strtotime($company->date));
-				$date = date('M/Y',strtotime($company->date));
-               // $memberscount = 5;
+                $nestedData['company_name'] = $company->company_name;
                 $company_enc_id = Crypt::encrypt($company->id);
                 $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
-				
-                $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
-                $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';
-               
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
-               // $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>View Members</a>";
+                $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>View Members</a>";
 				$data[] = $nestedData;
 
 			}
@@ -783,13 +778,13 @@ class SubscriptionAjaxController extends CommonController
 				$members_qry = $members_qry->where('m.MonthlySubscriptionCompanyId','=',$company_id);
 			}
 			
-			if($member_status!='' && $member_status!=0){
+			if($member_status!='all' && $member_status!=0){
 				$members_qry = $members_qry->where('m.StatusId','=',$member_status);
 			}
-			if($approval_status!=''){
+			if($approval_status!='all'){
 				$members_qry = $members_qry->where('mm.match_id','=',$approval_status);
 			}
-			if($member_status==0 && $approval_status==""){
+			if($member_status=='0'){
 				$members_qry = $members_qry->where('mm.match_id','=',2);
 			}
 			
@@ -800,7 +795,7 @@ class SubscriptionAjaxController extends CommonController
 			$members_data = $members_qry->offset($offset)
               ->limit($data['data_limit'])
 			  ->groupBy('m.id')
-			  ->dump()
+			  //->dump()
 			  ->get();
 		}
 		$data['status'] = 0;

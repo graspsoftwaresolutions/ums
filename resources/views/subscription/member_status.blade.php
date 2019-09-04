@@ -178,21 +178,21 @@
 						<div class="col m3 s12 member_status_row">
 							<label for="member_status">{{__('Member Status') }}</label>
 							<select name="member_status" id="member_status" class="error browser-default" data-error=".errorTxt6" >
-								<option value="">{{__('All') }}</option>
+								<option value="all">{{__('All') }}</option>
 								@foreach($data['member_status'] as  $key => $stat)
 									<option @if($member_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->status_name }}</option>
 								@endforeach
 								@if($hide_members=='hide' && $data['status_type']!=4)
 									<option value="0" selected>{{ __('SUNDRY CREDITORS') }}</option>
 								@else
-									<option value="0" >{{ __('SUNDRY CREDITORS') }}</option>
+									<option value="0">{{ __('SUNDRY CREDITORS') }}</option>
 								@endif
 							</select>
 						</div>
 						<div class="col m3 s12 approval_status_row">
 							<label for="approval_status">{{__('Approval Status')}}[Match Case]</label>
 							<select name="approval_status" id="approval_status" class="error browser-default" data-error=".errorTxt6" >
-								<option value="">{{__('All') }}</option>
+								<option value="all">{{__('All') }}</option>
 								@foreach($data['approval_status'] as  $key => $stat)
 									<option @if($approval_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->match_name }}</option>
 								@endforeach
