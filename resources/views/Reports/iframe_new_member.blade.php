@@ -2,12 +2,12 @@
 <html>
 
 <head>
-	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://pixinvent.com/materialize-material-design-admin-template/app-assets/vendors/vendors.min.css">
-	<link rel="stylesheet" type="text/css" href="https://pixinvent.com/materialize-material-design-admin-template/app-assets/vendors/flag-icon/css/flag-icon.min.css">
-	<link rel="stylesheet" type="text/css" href="https://pixinvent.com/materialize-material-design-admin-template/app-assets/css/themes/vertical-modern-menu-template/style.css">
-	<link rel="stylesheet" type="text/css" href="https://pixinvent.com/materialize-material-design-admin-template/app-assets/css/themes/vertical-modern-menu-template/materialize.css">
+	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
 	<style>
 		/* Styles go here */
 		
@@ -126,9 +126,6 @@
 				</td>
 			</tr>
 		</table>
-		
-		
-	
 	</div>
 	<!-- <div class="page-footer">
     I'm The Footer
@@ -174,15 +171,15 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/libs/js-xlsx/xlsx.core.min.js"></script>
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/libs/FileSaver/FileSaver.min.js"></script>
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/libs/jsPDF/jspdf.min.js"></script>
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/libs/es6-promise/es6-promise.auto.min.js"></script>
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/libs/html2canvas/html2canvas.min.js"></script>
+<script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
-<script type="text/javascript" src="https://d1v5pkn4fpocaq.cloudfront.net/js/tableExport.js"></script>
+<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script>
 	$('#tableID').tableExport({
 		type:'pdf',
