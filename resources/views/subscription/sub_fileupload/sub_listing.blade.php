@@ -218,32 +218,47 @@
 									$get_roles = Auth::user()->roles;
 									$user_role = $get_roles[0]->slug;
 									$user_id = Auth::user()->id;
+									$total_members_count = 0;
+									$total_members_amount = 0;
 								@endphp 
 								@foreach($data['member_stat'] as  $key => $stat)
 								@php
 									$member_sub_link = URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime('now'));
+									$member_status_count = CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id);
+									$member_status_amount = round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0);
 								@endphp
 								
 								<tr class="monthly-sub-status" id="monthly_member_status_{{ $stat->id }}" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $stat->font_color }};">
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->status_name }}</td>
-									<td id="member_status_count_{{ $stat->id }}"> {{ CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id) }}</td>
-									<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0) }} </td>
+									<td id="member_status_count_{{ $stat->id }}"> {{ $member_status_count }}</td>
+									<td id="member_status_amount_{{ $stat->id }}">{{ $member_status_amount }} </td>
 								</tr>
-								
+								@php
+									$total_members_count += $member_status_count;
+									$total_members_amount += $member_status_amount;
+								@endphp
 								@endforeach
+								@php
+									$total_sundry_count = CommonHelper::statusSubsMatchCount(2, $user_role, $user_id);
+									$total_sundry_amount = round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0);
+								@endphp
 								<tr class="monthly-sub-status" id="monthly_member_status_0" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=0&date='.strtotime('now')) }}" style="cursor:pointer;">
 									<td>{{ count($data['member_stat'])+1 }} </td>
 									<td>SUNDRY CREDITORS</td>
-									<td id="member_status_count_sundry">{{ CommonHelper::statusSubsMatchCount(2, $user_role, $user_id) }}</td>
-									<td id="member_status_amount_sundry">{{ round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0) }} </td>
+									<td id="member_status_count_sundry">{{ $total_sundry_count }}</td>
+									<td id="member_status_amount_sundry">{{ $total_sundry_amount }} </td>
 								</tr>
+								@php
+									$total_members_count += $total_sundry_count;
+									$total_members_amount += $total_sundry_amount;
+								@endphp
 							</tbody>
 							<tfoot>
-								<tr class="monthly-sub-status" id="monthly_member_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #f2f2f2;font-weight:bold;">
+								<tr class="monthly-sub-status" id="monthly_member_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
-									<td>0</td>
-									<td>0</td>
+									<td id="member_status_count_total">{{ $total_members_count }}</td>
+									<td id="member_status_amount_total"> {{ $total_members_amount }}</td>
 								</tr>
 							</tfoot>
 						 </table>
@@ -269,24 +284,36 @@
 							</thead>
 							<tbody>
 								@php 
-								//isset($data['approval_status']) ? $data['approval_status'] : "";                   
+									$total_match_members_count = 0;
+									$total_match_approval_members_count = 0;
+									$total_match_pending_members_count = 0;
 								@endphp 
 								@foreach($data['approval_status'] as  $key => $stat)
+								@php
+									$match_members_count = CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id);
+									$match_approval_members_count = CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1);
+									$match_pending_members_count = CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0);
+								@endphp
 								<tr class="monthly-approval-status" id="monthly_approval_status_{{ $stat->id }}" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->match_name }}</td>
-									<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id) }}</td>
-									<td id="approval_approved_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1) }}</td>
-									<td id="approval_pending_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0) }}</td>
+									<td id="approval_status_count_{{ $stat->id }}">{{ $match_members_count }}</td>
+									<td id="approval_approved_count_{{ $stat->id }}">{{ $match_approval_members_count }}</td>
+									<td id="approval_pending_count_{{ $stat->id }}">{{ $match_pending_members_count }}</td>
 								</tr>
+								@php
+									$total_match_members_count += $match_members_count;
+									$total_match_approval_members_count += $match_approval_members_count;
+									$total_match_pending_members_count += $match_pending_members_count;
+								@endphp
 								@endforeach
 							</tbody>
 							<tfoot>
-								<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #f2f2f2;font-weight:bold;">
+								<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
-									<td>0</td>
-									<td>0</td>
-									<td>0</td>
+									<td id="approval_status_count_total">{{ $total_match_members_count }}</td>
+									<td id="approval_approved_count_total">{{ $total_match_approval_members_count }}</td>
+									<td id="approval_pending_count_total">{{ $total_match_pending_members_count }}</td>
 								</tr>
 							</tfoot>
 						 </table>
@@ -337,6 +364,13 @@
 									<td class="clear-approval" id="company_member_status_amount_sundry">0 </td>
 								</tr>
 							</tbody>
+							<tfoot>
+								<tr class="monthly-sub-status" id="monthly_member_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+									<td colspan="2">Total</td>
+									<td id="company_member_status_count_total">0</td>
+									<td id="company_member_status_amount_total">0</td>
+								</tr>
+							</tfoot>
 						 </table>
 					</div>
 					
@@ -373,6 +407,14 @@
 								</tr>
 								@endforeach
 							</tbody>
+							<tfoot>
+								<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+									<td colspan="2">Total</td>
+									<td id="company_approval_status_count_total">0</td>
+									<td id="company_approval_approved_count_total">0</td>
+									<td id="company_approval_pending_count_total">0</td>
+								</tr>
+							</tfoot>
 						 </table>
 					</div>
 					
@@ -582,6 +624,11 @@ $(document).ready(function() {
 						$("#approvalstatustable").css('opacity',1);
 						$("#member_status_count_sundry").html(result.sundry_count);
 						$("#member_status_amount_sundry").html(result.sundry_amount);
+						$("#member_status_count_total").html(result.total_members_count);
+						$("#member_status_amount_total").html(result.total_members_amount);
+						$("#approval_status_count_total").html(result.total_match_members_count);
+						$("#approval_approved_count_total").html(result.total_match_approval_members_count);
+						$("#approval_pending_count_total").html(result.total_match_pending_members_count);
 						//$("#member_status_count_1").html(5555);
 					}else{
 						

@@ -208,16 +208,35 @@ class SubscriptionController extends CommonController
                                     ->select('mt.id as id','mt.match_name as match_name')
                                     ->get();
             $approval_data = [];
+            $total_members_count = 0;
+            $total_members_amount = 0;
+			$total_match_members_count = 0;
+			$total_match_approval_members_count = 0;
+			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
-                $status_data['count'][$value->id] = CommonHelper::statusSubsMembersCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
-                $status_data['amount'][$value->id] = round(CommonHelper::statusMembersCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date), 0);
+				$members_count = CommonHelper::statusSubsMembersCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+				$members_amount = round(CommonHelper::statusMembersCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date), 0);
+                $status_data['count'][$value->id] = $members_count;
+                $status_data['amount'][$value->id] = $members_amount;
+				$total_members_count += $members_count;
+				$total_members_amount += $members_amount;
             }
             foreach($approval_status as $key => $value){
-                $approval_data['count'][$value->id] = CommonHelper::statusSubsCompanyMatchCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
-                $approval_data['approved'][$value->id] = CommonHelper::statusSubsCompanyMatchApprovalCount($value->id, $user_role, $user_id,$company_auto_id,1,$full_date);
-                $approval_data['pending'][$value->id] = CommonHelper::statusSubsCompanyMatchApprovalCount($value->id, $user_role, $user_id,$company_auto_id,0,$full_date);
+				$match_members_count = CommonHelper::statusSubsCompanyMatchCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+				$match_approval_members_count = CommonHelper::statusSubsCompanyMatchApprovalCount($value->id, $user_role, $user_id,$company_auto_id,1,$full_date);
+				$match_pending_members_count = CommonHelper::statusSubsCompanyMatchApprovalCount($value->id, $user_role, $user_id,$company_auto_id,0,$full_date);
+                $approval_data['count'][$value->id] = $match_members_count;
+                $approval_data['approved'][$value->id] = $match_approval_members_count;
+                $approval_data['pending'][$value->id] = $match_pending_members_count;
+				$total_match_members_count += $match_members_count;
+				$total_match_approval_members_count += $match_approval_members_count;
+				$total_match_pending_members_count += $match_pending_members_count;
             }
-            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0), 'sundry_count' => CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_auto_id,$full_date), 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => 'Data already uploaded for this company'];
+			$sundry_count = CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_auto_id,$full_date);
+			$sundry_amount = round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0);
+			$total_members_count += $sundry_count;
+			$total_members_amount += $sundry_amount;
+            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => $sundry_amount, 'sundry_count' => $sundry_count, 'total_members_amount' => $total_members_amount, 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => 'Data already uploaded for this company'];
         }else{
             $data =['status' =>0, 'status_data' => [], 'approval_data' => [] ,'message'  => 'No data found'];
         }

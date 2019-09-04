@@ -466,16 +466,35 @@ class SubscriptionAjaxController extends CommonController
                                     ->select('mt.id as id','mt.match_name as match_name')
                                     ->get();
             $approval_data = [];
+			$total_members_count = 0;
+            $total_members_amount = 0;
+			$total_match_members_count = 0;
+			$total_match_approval_members_count = 0;
+			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
-                $status_data['count'][$value->id] = CommonHelper::statusSubsMembersCount($value->id, $user_role, $user_id, $dateformat);
-                $status_data['amount'][$value->id] = round(CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat), 0);
+				$members_count = CommonHelper::statusSubsMembersCount($value->id, $user_role, $user_id, $dateformat);
+				$members_amount = round(CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat), 0);
+                $status_data['count'][$value->id] = $members_count;
+                $status_data['amount'][$value->id] = $members_amount;
+				$total_members_count += $members_count;
+				$total_members_amount += $members_amount;
             }
             foreach($approval_status as $key => $value){
-                $approval_data['count'][$value->id] = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
-                $approval_data['approved'][$value->id] = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
-                $approval_data['pending'][$value->id] = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
+				$match_members_count = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
+				$match_approval_members_count = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
+				$match_pending_members_count = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
+                $approval_data['count'][$value->id] = $match_members_count;
+                $approval_data['approved'][$value->id] = $match_approval_members_count;
+                $approval_data['pending'][$value->id] = $match_pending_members_count;
+				$total_match_members_count += $match_members_count;
+				$total_match_approval_members_count += $match_approval_members_count;
+				$total_match_pending_members_count += $match_pending_members_count;
             }
-            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'sundry_amount' => round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id,$dateformat), 0), 'sundry_count' => CommonHelper::statusSubsMatchCount(2, $user_role, $user_id,$dateformat), 'status' => 1];
+			$sundry_count = CommonHelper::statusSubsMatchCount(2, $user_role, $user_id,$dateformat);
+			$sundry_amount = round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id,$dateformat), 0);
+			$total_members_count += $sundry_count;
+			$total_members_amount += $sundry_amount;
+            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'sundry_amount' => $sundry_amount, 'sundry_count' => $sundry_count, 'total_members_amount' => $total_members_amount, 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'status' => 1];
         }
         echo json_encode($json_data); 
     }
