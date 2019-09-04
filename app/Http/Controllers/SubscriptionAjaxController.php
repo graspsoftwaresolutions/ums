@@ -425,12 +425,13 @@ class SubscriptionAjaxController extends CommonController
             {
                 $nestedData['month_year'] = date('M/Y',strtotime($company->date));
                 $nestedData['company_name'] = $company->company_name;
+				$date = date('M/Y',strtotime($company->date));
                 $company_enc_id = Crypt::encrypt($company->id);
                 $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
-				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
-                $nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>View Members</a>";
+				
+                $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
+                $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
 				$data[] = $nestedData;
-
 			}
         }
         //$data = $this->CommonAjaxReturn($company_qry, 0, 'master.countrydestroy',0); 

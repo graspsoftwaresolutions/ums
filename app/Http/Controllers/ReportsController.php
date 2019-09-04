@@ -673,5 +673,39 @@ class ReportsController extends Controller
 		$data['branch_id'] = $request->input('branch_id');
         return view('Reports.statistics')->with('data',$data);  
     }
+	public function takafulnewReport()
+	{
+		$data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+        $members = DB::table($this->membermonthendstatus_table.' as ms')
+					->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('state as st','st.id','=','m.state_id')
+                    ->leftjoin('city as cit','cit.id','=','m.city_id')
+                    ->leftjoin('race as r','r.id','=','m.race_id');
+      
+        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
+        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
+                  
+		$members = $members->offset(0)
+		->limit($data['data_limit'])
+		//->dump()
+		->get();
+		//dd($members);
+        $data['member_view'] = $members;
+        $data['from_date']=date('01/M/Y');
+        $data['to_date']=date('t/M/Y');
+        $data['company_id']='';
+        $data['branch_id']='';
+        $data['member_auto_id']='';
+        $data['join_type']='';
+        $data['offset']=0;
+       return view('reports.iframe_takaful')->with('data',$data);    
+	}
 }
 
