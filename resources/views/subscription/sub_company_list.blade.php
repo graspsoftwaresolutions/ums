@@ -55,7 +55,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                   <tr>
                                                       <th>{{__('MonthYear') }}</th>
                                                       <th>{{__('Company Name') }}</th>
-                                                      <th> {{__('Action') }}</th>
+                                                     
                                                   </tr>
                                               </thead>
                                           </table>
@@ -127,9 +127,6 @@ $(function() {
             },
             {
                 "data": "company_name"
-            },
-            {
-                "data": "options"
             }
         ]
     });
