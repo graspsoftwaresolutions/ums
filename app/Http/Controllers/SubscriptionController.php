@@ -42,7 +42,7 @@ use App\Exports\SubscriptionExport;
 use App\Imports\SubscriptionImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\ToArray;
-use Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +65,10 @@ class SubscriptionController extends CommonController
         $this->Status = new Status;
         $this->membermonthendstatus_table = "membermonthendstatus1";
         $this->ArrearEntry = new ArrearEntry;
+        $bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
+        $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        $this->bf_amount = $bf_amount=='' ? 0 : $bf_amount;
+        $this->ins_amount = $ins_amount=='' ? 0 : $ins_amount;
     }
     //excel file download and upload it
     public function index() {
@@ -270,6 +274,7 @@ class SubscriptionController extends CommonController
 
     public function scanSubscriptions(Request $request){
         ini_set('memory_limit', -1);
+		ini_set('max_execution_time', '300');
         $limit = 100;
         $company_auto_id = $request->company_auto_id;
         $start =  $request->start;
@@ -308,17 +313,21 @@ class SubscriptionController extends CommonController
                 $subMemberMatch->created_by = Auth::user()->id;
                 $subMemberMatch->created_on = date('Y-m-d');
                // DB::enableQueryLog();
+				$insert_month_end = 0;
+				$nric_matched = 0;
                 if($subscription_new_qry->count() > 0){
                    
                     $memberdata = $subscription_new_qry->select('status_id','id','branch_id','name')->get();
                     $up_sub_member =1;
                     $subMemberMatch->match_id = 1;
+					$nric_matched = 1;
                    
                 }else if($subscription_old_qry->count() > 0){
                     
                     $up_sub_member =1;
                     $memberdata = $subscription_old_qry->select('status_id','id','branch_id','name')->get();
                     $subMemberMatch->match_id = 8;
+					//$nric_matched = 1;
                 }
 				else if($subscription_empid_qry->count() > 0){
                     
@@ -334,6 +343,7 @@ class SubscriptionController extends CommonController
                 
                 $upstatus=1;
                 if($up_sub_member ==1){
+					$insert_month_end = 1;
                     if(count($memberdata)>0){
                         $status_id = $memberdata[0]->status_id;
                         $member_code = $memberdata[0]->id;
@@ -355,6 +365,7 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_one->created_by = Auth::user()->id;
 						$subMemberMatch_one->created_on = date('Y-m-d');
 						$subMemberMatch_one->save();
+						$insert_month_end = 0;
                     }
                                        
                     if(strtoupper(trim($memberdata[0]->name)) != strtoupper($subscription->Name)){
@@ -364,6 +375,7 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_two->created_by = Auth::user()->id;
 						$subMemberMatch_two->created_on = date('Y-m-d');
 						$subMemberMatch_two->save();
+						$insert_month_end = 0;
                     }
 					
 					$cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$subscription->MonthlySubscriptionCompanyId)->pluck('Date')->first();
@@ -399,6 +411,7 @@ class SubscriptionController extends CommonController
 								$subMemberMatch_three->created_by = Auth::user()->id;
 								$subMemberMatch_three->created_on = date('Y-m-d');
 								$subMemberMatch_three->save();
+								$insert_month_end = 0;
 							}
 						}else{
 							$subMemberMatch_four = new MonthlySubMemberMatch();
@@ -407,6 +420,7 @@ class SubscriptionController extends CommonController
 							$subMemberMatch_four->created_by = Auth::user()->id;
 							$subMemberMatch_four->created_on = date('Y-m-d');
 							$subMemberMatch_four->save();
+							$insert_month_end = 0;
 						}
 					}
 			   
@@ -418,6 +432,7 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_five->created_by = Auth::user()->id;
 						$subMemberMatch_five->created_on = date('Y-m-d');
 						$subMemberMatch_five->save();
+						$insert_month_end = 0;
                     }else if($memberdata[0]->status_id ==4){
 						$subMemberMatch_six = new MonthlySubMemberMatch();
                         $subMemberMatch_six->match_id = 7;
@@ -425,7 +440,66 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_six->created_by = Auth::user()->id;
 						$subMemberMatch_six->created_on = date('Y-m-d');
 						$subMemberMatch_six->save();
+						$insert_month_end = 0;
                     }
+					
+					if($insert_month_end==1 && $nric_matched==1){
+						$total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
+						->where('MemberCode', '=', $member_code)
+						->first();
+						$total_subs = $total_subs_obj->amount;
+						
+						$total_count = DB::table('mon_sub_member')
+						->where('MemberCode', '=', $member_code)
+						->count();
+						
+						$paid_bf = $total_subs-($total_count*$this->bf_amount);
+						
+							
+						$to = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
+						$from = Carbon::createFromFormat('Y-m-d H:s:i', $cur_date.' 9:30:34');
+						$diff_in_months = $to->diffInMonths($from);
+						
+						$bf_due = ($diff_in_months-$total_count)*$this->bf_amount;
+						$ins_due = ($diff_in_months-$total_count)*$this->ins_amount;
+						$total_subs_to_paid = $diff_in_months==0 ? $subscription->Amount : ($diff_in_months*$subscription->Amount);
+						$total_pending = $total_subs_to_paid - $total_subs;
+						
+						DB::table($this->membermonthendstatus_table)->insert(
+												[
+													'StatusMonth' => $cur_date, 
+													'MEMBER_CODE' => $member_code,
+													'SUBSCRIPTION_AMOUNT' => $subscription->Amount,
+													'BF_AMOUNT' => $this->bf_amount,
+													'LASTPAYMENTDATE' => $old_subscription_count>0 ? $last_month : NULL,
+													'TOTALSUBCRP_AMOUNT' => $total_subs,
+													'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
+													'TOTAL_MONTHS' => $diff_in_months,
+													//'ENTRYMODE' => 0,
+													//'DEFAULTINGMONTHS' => 0,
+													'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
+													'TOTALMONTHSPAID' => $total_count,
+													'SUBSCRIPTIONDUE' => $total_pending,
+													'BFDUE' => $bf_due,
+													'ACCSUBSCRIPTION' => $subscription->Amount,
+													'ACCBF' => $this->bf_amount,
+													//'ACCBENEFIT' => 0,
+													//'CURRENT_YDTBF' => 0,
+													//'CURRENT_YDTSUBSCRIPTION' => 0,
+													'STATUS_CODE' => $memberdata[0]->status_id,
+													'RESIGNED' => $memberdata[0]->status_id==4 ? 1 : 0,
+													'ENTRY_DATE' => date('Y-m-d'),
+													'ENTRY_TIME' => date('h:i:s'),
+													'STRUCKOFF' => $memberdata[0]->status_id==3 ? 1 : 0,
+													'INSURANCE_AMOUNT' => $this->ins_amount,
+													'TOTALINSURANCE_AMOUNT' => $diff_in_months==0 ? $this->ins_amount : ($diff_in_months*$this->ins_amount),
+													'TOTALMONTHSCONTRIBUTION' => $total_count,
+													'INSURANCEDUE' => $ins_due,
+													'ACCINSURANCE' => $this->ins_amount,
+													//'CURRENT_YDTINSURANCE' => 0,
+												]
+											);
+					}
                 }
 
                
