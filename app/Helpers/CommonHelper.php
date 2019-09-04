@@ -20,6 +20,7 @@ use App\Model\Irc;
 use App\Model\Resignation;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class CommonHelper
 {
@@ -326,6 +327,7 @@ class CommonHelper
         {
             if($table=="country"){
                 $members_count = DB::table('membership as m')->where('country_id','=',$autoid)->count();
+				//Log::debug('An informational message.');
             }
             else if($table=="state")
             {
