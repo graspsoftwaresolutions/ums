@@ -137,45 +137,6 @@
 <div class="row">
 	<div class="col s12">
 		<iframe src="{{ route('reports.membersnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
-		<div class="card hide">
-			<div class="card-content">
-				<table id="page-length-option" class="display" width="100%">
-					<thead>
-						<tr>
-							<th width="15%">{{__('Name')}}</th>
-							<th width="10%">{{__('Number')}}</th>
-							<th width="10%">{{__('NRIC')}}</th>
-							<th width="10%">{{__('Bank')}}</th>
-							<th width="20%">{{__('Branch')}}</th>
-							<th width="10%">{{__('DOJ')}}</th>
-							<th width="6%">{{__('ENT')}}</th>
-							<th width="6%">{{__('INS')}}</th>
-							<th width="6%">{{__('SUBS')}}</th>
-						</tr> 
-					</thead>
-					<tbody>
-						
-						@foreach($data['member_view'] as $member)
-							<tr>
-								<td>{{ $member->name }}</td>
-								<td>{{ $member->member_number }}</td>
-								<td>{{ $member->new_ic }}</td>
-								<td>{{ $member->companycode }}</td>
-								<td>{{ $member->branch_name }}</td>
-								<td>{{ $member->doj }}</td>
-								<td>{{ $member->entryfee }}</td>
-								<td>{{ $member->insfee }}</td>
-								<td>{{ $member->subs }}</td>
-								
-							</tr> 
-						@endforeach
-					</tbody>
-					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
-				</table> 
-			</div>
-		</div>
-		</br>
-		</br>
 	</div>
 </div> 
 @php	

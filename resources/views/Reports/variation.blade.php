@@ -39,6 +39,17 @@
 		background-color: #eeeeee !important;
 		cursor:pointer;
 	}
+	.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -52,7 +63,7 @@
 				<h4 class="card-title">
 				
 				{{__('Bank Filter')}} 
-				
+				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
 				@php
 					
@@ -85,6 +96,8 @@
 					
 				@endphp
 				<form method="post" id="filtersubmit" action="">
+
+				<div id="hidesearch" class="row">    
 					@csrf  
 					<div class="row">                          
 						<div class="col s12 m6 l3">
@@ -113,6 +126,7 @@
 							</div>
 						</div>
 					</div>
+					</div>
 				</form>  
 			</div>
 		</div>
@@ -120,7 +134,8 @@
 	</div>
 	<div class="row">
     <div class="col s12">
-      <div class="card">
+	<iframe src="{{ route('reports.variationnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+      <div class="card hide">
         <div class="card-content">
           <h4 class="card-title">Variation by bank Report
 		  @php
@@ -309,36 +324,39 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 		var company_id = $("#company_id").val();
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
-			$('#scroll-vert-hor tbody').empty();
-			//loader.showLoader();
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-variation-report') }}?offset=0"+searchfilters,
-				success:function(result){
-					if(result)
-					{
-						res = result.company_view;
-						$.each(res,function(key,entry){
-							var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
-							var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td>"+entry.company_name+"</td>";
-								table_row += "<td>"+entry.current_count+"</td>";
-								table_row += "<td>"+entry.last_count+"</td>";
-								table_row += "<td><span class='badge "+entry.diif_color+"'>"+entry.difference+"</span></td>";
-								table_row += "<td>"+entry.unpaid+"</td>";
-								table_row += "<td>"+entry.paid+"</td></tr>";
-								$('#scroll-vert-hor tbody').append(table_row);
-						});
-						if(!res){
-								var table_row = "<tr><td colspan='6'>No data found</td></tr>";
-								$('#scroll-vert-hor tbody').append(table_row);
-						}
-						loader.hideLoader();
-					}else{
+			$("#myframe").attr("src", "{{ URL::to('/en/get-variation-report') }}?offset=0"+searchfilters,);
+			// $('#scroll-vert-hor tbody').empty();
+			// //loader.showLoader();
+			// $.ajax({
+			// 	type: "GET",
+			// 	dataType: "json",
+			// 	url : "{{ URL::to('/en/get-variation-report') }}?offset=0"+searchfilters,
+			// 	success:function(result){
+			// 		if(result)
+			// 		{
+			// 			res = result.company_view;
+			// 			$.each(res,function(key,entry){
+			// 				var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
+			// 				var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td>"+entry.company_name+"</td>";
+			// 					table_row += "<td>"+entry.current_count+"</td>";
+			// 					table_row += "<td>"+entry.last_count+"</td>";
+			// 					table_row += "<td><span class='badge "+entry.diif_color+"'>"+entry.difference+"</span></td>";
+			// 					table_row += "<td>"+entry.unpaid+"</td>";
+			// 					table_row += "<td>"+entry.paid+"</td></tr>";
+			// 					$('#scroll-vert-hor tbody').append(table_row);
+			// 			});
+			// 			if(!res){
+			// 					var table_row = "<tr><td colspan='6'>No data found</td></tr>";
+			// 					$('#scroll-vert-hor tbody').append(table_row);
+			// 			}
+			// 			loader.hideLoader();
 						
-					}
-				}
-			});
+			// 		}else{
+						
+			// 		}
+			// 	}
+			// });
+			$("#search").attr('disabled',false);
 		}else{
 			alert("Please Choose Month & Year");
 		}

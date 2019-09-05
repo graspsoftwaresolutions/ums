@@ -254,19 +254,9 @@ class ReportsController extends Controller
         return view('reports.halfshare')->with('data',$data);  
 	}
 	
-	public function VariationReport(Request $request, $lang)
-    {
-		$data['data_limit']=$this->limit;
-		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
-                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                                ->where('ms.Date', '=', date('Y-m-01'))->get();
-        return view('reports.variation')->with('data',$data);  
-	}
-	
 	public function VariationFiltereport(Request $request, $lang)
     {
+        $offset = $request->input('offset');
 		$month_year = $request->input('month_year');
 		$company_id = $request->input('company_id');
 		$monthno = '';
@@ -287,7 +277,8 @@ class ReportsController extends Controller
 		if($company_id!=""){
 			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
 		}
-		$company_list =  $company_view->get();
+        $company_list =  $company_view->get();
+        
 		foreach($company_list as $ckey => $company){
             foreach($company as $newkey => $newvalue){
                 $data['company_view'][$ckey][$newkey] = $newvalue;
@@ -302,8 +293,13 @@ class ReportsController extends Controller
             $data['company_view'][$ckey]['paid'] = $current_count;
             $data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
         }
-		echo json_encode($data);
-		
+      
+        $data['company_view'] =  $company_list;
+        $data['month_year']= $month_year;
+        $data['company_id']= $company_id;
+        $data['offset']=$offset;
+        //dd($data);
+        return view('reports.iframe_variationbank')->with('data',$data);
 	}
 	public function SubscriptionReport(Request $request, $lang)
     {
@@ -796,6 +792,76 @@ class ReportsController extends Controller
               ->get();
 		//dd($members);
         echo json_encode($members);
-	}
+    }
+
+    //Variation  Report Starts	
+	public function VariationReport(Request $request, $lang)
+    {
+		$data['data_limit']=$this->limit;
+		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+        return view('reports.variation')->with('data',$data);  
+    }
+    public function newVariationReport(Request $request)
+    {
+        $data['data_limit']=$this->limit;
+        $data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+       
+        $data['month_year']='';
+        $data['company_id']=''; 
+        $data['offset']=0;
+        return view('reports.iframe_variationbank')->with('data',$data);    
+    }
+    public function variationBankReportloadMore($lang,Request $request)
+    {
+        $offset = $request->input('offset');
+		$month_year = $request->input('month_year');
+		$company_id = $request->input('company_id');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        }
+		$data['data_limit']=$this->limit;
+		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+		if($monthno!="" && $yearno!=""){
+			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+		}
+		if($company_id!=""){
+			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+		}
+        $company_list =  $company_view->get();
+        
+		foreach($company_list as $ckey => $company){
+            foreach($company as $newkey => $newvalue){
+                $data['company_view'][$ckey][$newkey] = $newvalue;
+            }
+			$current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno)));
+			$last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno.' -1 Month')));
+            $data['company_view'][$ckey]['current_count'] = $current_count;
+            $data['company_view'][$ckey]['last_count'] = $last_month_count;
+            $data['company_view'][$ckey]['difference'] = abs($current_count-$last_month_count);
+            $data['company_view'][$ckey]['diif_color'] = $current_count-$last_month_count>0 ? 'green' : 'red';
+            $data['company_view'][$ckey]['unpaid'] = 0;
+            $data['company_view'][$ckey]['paid'] = $current_count;
+            $data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
+        }
+        
+        //dd($members);
+        echo json_encode($data['company_view'][$ckey][$newkey]);
+    }
+    //Vartion Reports End
 }
 

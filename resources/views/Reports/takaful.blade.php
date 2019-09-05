@@ -148,8 +148,7 @@
 <div class="row">
 	<div class="col s12">
 		<iframe src="{{ route('reports.takafulnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
-		</br>
-		</br>
+		
 	</div>
 </div> 
 @php	

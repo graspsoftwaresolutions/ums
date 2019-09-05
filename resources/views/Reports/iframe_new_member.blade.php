@@ -113,8 +113,9 @@
 	<div class="page-header" style="text-align: center">
 		<table width="100%">
 			<tr>
+			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" alt="Membership logo" height="50"></td>
+				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
 					<h6 style="text-align:center;">New Members Report</h6>

@@ -97,6 +97,8 @@
 		.tbody-area{
 			color:#000;
 		}
+		
+		
 	</style>
 	<script type="text/javascript">
 		function updateIframe(){
@@ -111,12 +113,12 @@
 	<div class="page-header" style="text-align: center">
 		<table width="100%">
 			<tr>
-			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
+				@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">Takaful Insurance Report</h6>
+					<h6 style="text-align:center;">New Members Report</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -137,33 +139,41 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space">
-				<th width="10%">{{__('Bank')}}</th>
-				<th width="20%">{{__('Branch')}}</th>
-				<th width="25%">{{__('Name')}}</th>
-				<th width="20%">{{__('Number')}}</th>
-				<th width="10%">{{__('NRIC')}}</th>
-				<th width="5%">{{__('Insurance Amount(RM)')}}</th>
+			<tr class="page-table-header-space" >
+            <th>{{__('Bank Name')}}</th>
+            <th>{{__('# Current')}}</th>
+            <th>{{__('# Previous')}}</th>
+            <th>{{__('Different')}}</th>
+            <th>{{__('Unpaid')}}</th>
+            <th>{{__('Paid')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
-			@foreach($data['member_view'] as $member)
-					<tr>
-						<td width="10%">{{$member->companycode}}</td>
-						<td width="20%">{{$member->branch_name}}</td>
-						<td width="25%">{{$member->name}}</td>
-						<td width="20%">{{$member->member_number}}</td>
-						<td width="10%">{{$member->new_ic}}</td>
-						<td width="5%">{{$member->total}}</td>
-					</tr> 
-			@endforeach
+        @php
+			$last_month = date("Y-m-01", strtotime("first day of previous month"));
+		  @endphp
+            @foreach($data['company_view'] as $company)
+                    @php
+                        $current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01'));
+                        $last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,$last_month);
+                        $member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
+                    @endphp
+                    <tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
+                        <td>{{ $company->company_name }}</td>
+                        <td>{{ $current_count }}</td>
+                        <td>{{ $last_month_count }}</td>
+                        <td><span class="badge {{$current_count-$last_month_count>0 ? 'green' : 'red'}}">{{ abs($current_count-$last_month_count) }}</span></td>
+                        <td>{{ 0 }}</td>
+                        <td>{{ $current_count }}</td>
+                    </tr> 
+            @endforeach
 		</tbody>
 		
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script>
+<!-- <script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script> -->
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
@@ -182,21 +192,19 @@
 			autotable: false
 		}
 	});
-	 $(window).scroll(function() {   
+    $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    //loader.showLoader();
 			var month_year = "{{$data['month_year']}}";
 			var company_id = "{{$data['company_id']}}";
-			var branch_id = "{{$data['branch_id']}}";
-			var member_auto_id = "{{$data['member_auto_id']}}";
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-takaful-moremembers-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ URL::to('/en/get-newvariation_report-more-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
