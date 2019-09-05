@@ -946,50 +946,163 @@ class SubscriptionController extends CommonController
     }
 	
 	public function saveApproval($lang, Request $request){
-        $match_auto_id = $request->input('match_auto_id');
-        $match_id  = CommonHelper::get_member_match_id($match_auto_id);
-        $member_approve = $request->input('member_approve');
-        $approval_status=0;
-		$bank_approve = $request->input('bank_approve');
-		$struckoff_approve = $request->input('struckoff_approve');
-		$resign_approve = $request->input('resign_approve');
-		$nric_old_approve = $request->input('nric_old_approve');
-		$nric_bank_approve = $request->input('nric_bank_approve');
-		$previous_approve = $request->input('previous_approve');
-		$previous_unpaid_approve = $request->input('previous_unpaid_approve');
-		if($match_id==3){
-            $approval_status= isset($member_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,3)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Member Name', 'updated_by' => Auth::user()->id]);
-        }
-        if($match_id==4){
-            $approval_status= isset($bank_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,4)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
-        }
-		if($match_id==5){
-            $approval_status= isset($previous_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,5)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
-        }
-        if($match_id==6){
-            $approval_status= isset($struckoff_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,6)->update(['approval_status' => $approval_status, 'description' => 'StruckOff Members', 'updated_by' => Auth::user()->id]);
+        $sub_member_id = $request->input('sub_member_id');
+		$match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_id)->get();
+		$total_match_count = 0;
+		foreach($match_data as $mkey => $match){
+			$match_id = $match->match_id;
+			$approval_status=0;
+			if($match_id==1){
+				$nric_approve = $request->input('nric_approve');
+				$approval_status= isset($nric_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Matched', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==2){
+				$nric_not_approve = $request->input('nric_not_approve');
+				$approval_status= isset($nric_not_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Not Matched', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==3){
+				$member_approve = $request->input('member_approve');
+				$approval_status= isset($member_approve) ? 1 : 0;
+				$nameverify = $request->input('nameverify');
+				if($approval_status==1){
+					$member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_id)->pluck('MemberCode')->first();
+					if($nameverify==1){
+						DB::table('mon_sub_member')->where('id', '=', $sub_member_id)->update(['Name' =>  CommonHelper::getmemberName($member_id)]);
+					}else{
+						$uploaded_member_name = DB::table('mon_sub_member')->where('id','=',$sub_member_id)->pluck('Name')->first();
+						DB::table('membership')->where('id', '=', $member_id)->update(['name' => $uploaded_member_name]);
+					}
+				}
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Member Name', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==4){
+				$bank_approve = $request->input('bank_approve');
+				$approval_status= isset($bank_approve) ? 1 : 0;
+				if($approval_status==1){
+					$registered_bank_id = $request->input('registered_bank_id');
+					$uploaded_bank_id = $request->input('uploaded_bank_id');
+					if($registered_bank_id==$uploaded_bank_id){
+						$approval_status= 1;
+					}else{
+						$approval_status= 0;
+					}
+				}
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==5){
+				$previous_approve = $request->input('previous_approve');
+				$approval_status= isset($previous_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Previous Subscription', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==6){
+				$struckoff_approve = $request->input('struckoff_approve');
+				$approval_status= isset($struckoff_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'StruckOff Members', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==7){
+				$resign_approve = $request->input('resign_approve');
+				$approval_status= isset($resign_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Resigned Members', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==8){
+				$nric_old_approve = $request->input('nric_old_approve');
+				$approval_status= isset($nric_old_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Old Matched', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==9){
+				$nric_bank_approve = $request->input('nric_bank_approve');
+				$approval_status= isset($nric_bank_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Employee ID Matched', 'updated_by' => Auth::user()->id]);
+			}
+			if($match_id==10){
+				$previous_unpaid_approve = $request->input('previous_unpaid_approve');
+				$approval_status= isset($previous_unpaid_approve) ? 1 : 0;
+				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Previous Subscription Unpaid', 'updated_by' => Auth::user()->id]);
+			}
+			$total_match_count++;
 		}
-		if($match_id==7){
-            $approval_status= isset($resign_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,7)->update(['approval_status' => $approval_status, 'description' => 'Resigned Members', 'updated_by' => Auth::user()->id]);
+		$approved_match_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_id)->where('approval_status','=',1)->count();
+		$total_approval_status = $total_match_count==$approved_match_count ? '1' : '0';
+		if($total_approval_status==1){
+			$sub_member =DB::table("mon_sub_member")->where('id','=',$sub_member_id)->first();
+			$sub_company_id = $sub_member->MonthlySubscriptionCompanyId;
+			$member_id = $sub_member->MemberCode;
+			$cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$sub_company_id)->pluck('Date')->first();
+			$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
+			$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
+			$memberdata =DB::table("membership")->where('id','=',$member_id)->first();
+			$total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
+						->where('MemberCode', '=', $member_id)
+						->first();
+			$member_doj = $memberdata->doj;
+			$total_subs = $total_subs_obj->amount;
+			
+			$total_count = DB::table('mon_sub_member')
+			->where('MemberCode', '=', $member_id)
+			->count();
+			
+			 $old_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$member_id)
+							->where('ms.Date','=',$last_month)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			
+			$paid_bf = $total_subs-($total_count*$this->bf_amount);
+			
+				
+			$to = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
+			$from = Carbon::createFromFormat('Y-m-d H:s:i', $cur_date.' 9:30:34');
+			$diff_in_months = $to->diffInMonths($from);
+			
+			$bf_due = ($diff_in_months-$total_count)*$this->bf_amount;
+			$ins_due = ($diff_in_months-$total_count)*$this->ins_amount;
+			$total_subs_to_paid = $diff_in_months==0 ? $sub_member->Amount : ($diff_in_months*$sub_member->Amount);
+			$total_pending = $total_subs_to_paid - $total_subs;
+			//dd($member_code);
+			$monthend_data = [
+									'StatusMonth' => $cur_date, 
+									'MEMBER_CODE' => $member_id,
+									'SUBSCRIPTION_AMOUNT' => $sub_member->Amount,
+									'BF_AMOUNT' => $this->bf_amount,
+									'LASTPAYMENTDATE' => $old_subscription_count>0 ? $last_month : NULL,
+									'TOTALSUBCRP_AMOUNT' => $total_subs,
+									'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
+									'TOTAL_MONTHS' => $diff_in_months,
+									//'ENTRYMODE' => 0,
+									//'DEFAULTINGMONTHS' => 0,
+									'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
+									'TOTALMONTHSPAID' => $total_count,
+									'SUBSCRIPTIONDUE' => $total_pending,
+									'BFDUE' => $bf_due,
+									'ACCSUBSCRIPTION' => $sub_member->Amount,
+									'ACCBF' => $this->bf_amount,
+									//'ACCBENEFIT' => 0,
+									//'CURRENT_YDTBF' => 0,
+									//'CURRENT_YDTSUBSCRIPTION' => 0,
+									'STATUS_CODE' => $memberdata->status_id,
+									'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+									'ENTRY_DATE' => date('Y-m-d'),
+									'ENTRY_TIME' => date('h:i:s'),
+									'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+									'INSURANCE_AMOUNT' => $this->ins_amount,
+									'TOTALINSURANCE_AMOUNT' => $diff_in_months==0 ? $this->ins_amount : ($diff_in_months*$this->ins_amount),
+									'TOTALMONTHSCONTRIBUTION' => $total_count,
+									'INSURANCEDUE' => $ins_due,
+									'ACCINSURANCE' => $this->ins_amount,
+									//'CURRENT_YDTINSURANCE' => 0,
+								];
+			if($mont_count>0){
+				DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_code)->update($monthend_data);
+			}else{
+				DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+			}
 		}
-		if($match_id==8){
-            $approval_status= isset($nric_old_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,8)->update(['approval_status' => $approval_status, 'description' => 'NRIC Old Matched', 'updated_by' => Auth::user()->id]);
-		}
-		if($match_id==9){
-            $approval_status= isset($nric_bank_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,9)->update(['approval_status' => $approval_status, 'description' => 'NRIC By Bank Matched', 'updated_by' => Auth::user()->id]);
-		}
-		if($match_id==10){
-            $approval_status= isset($previous_unpaid_approve) ? 1 : 0;
-			DB::table('mon_sub_member_match')->where('id', '=', $match_auto_id)->where('match_id','=' ,10)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
-        }
-		$return_data = ['status' => 1, 'message' => 'Updated Succesfully', 'match_auto_id' => $match_auto_id, 'approval_status' => $approval_status];
+        
+		$return_data = ['status' => 1, 'message' => 'Updated Succesfully', 'sub_member_auto_id' => $sub_member_id, 'approval_status' => $total_approval_status];
 		echo json_encode($return_data);
 	}
     

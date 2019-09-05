@@ -1014,6 +1014,18 @@ class CommonHelper
 						->leftjoin('company as c','c.id','=','sc.CompanyCode')
 						->pluck('c.company_name')->first();
 	}
+	public static function getCompanyAutoIDbyMemberID($memberid){
+		return $bank_name = DB::table('membership as m')->where('m.id', $memberid)
+						->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+						->leftjoin('company as c','c.id','=','cb.company_id')
+						->pluck('cb.company_id')->first();
+	 }
+	public static function getCompanyAutoIDbySubMemberID($memberid){
+		return $bank_name = DB::table('mon_sub_member as m')->where('m.id', $memberid)
+						->leftjoin('mon_sub_company as sc','sc.id','=','m.MonthlySubscriptionCompanyId')
+						->leftjoin('company as c','c.id','=','sc.CompanyCode')
+						->pluck('c.id')->first();
+	}
 	
 	public static function get_member_match_id($autoid){
        $status_data = DB::table('mon_sub_member_match')->where('id','=',$autoid)->pluck('match_id')->first();
@@ -1281,5 +1293,15 @@ class CommonHelper
 						   ->count();
 		}
 		return $members_count;
-	}		
+	}
+	
+	public static function get_overall_approval_status($submemberid){
+		$total_member_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$submemberid)->count();
+		$approved_match_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$submemberid)->where('approval_status','=',1)->count();
+		return $total_member_count==$approved_match_count ? '1' : '0';
+	}
+	public static function getmemberBranchid($memberid){
+      return $status_data = DB::table('membership')->where('id', $memberid)->pluck('branch_id')->first();
+       
+    }
 }

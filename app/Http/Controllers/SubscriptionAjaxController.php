@@ -709,9 +709,11 @@ class SubscriptionAjaxController extends CommonController
 	   $up_member_data = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->first();
 	   $match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_auto_id)->get();
 	   $member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->pluck('MemberCode')->first();
-	   $data['up_member_name'] = $up_member_data->Name;
+	   $data['up_member_data'] = $up_member_data;
+	   //$data['up_nric'] = $up_member_data->NRIC;
 	   $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
 	   $data['status'] = 1;
+	   $baseurl = URL::to('/');
 	   foreach($match_data as $mkey => $member){
 		    $match_id = $member->match_id;
 		    foreach($member as $newkey => $newvalue){
@@ -723,8 +725,26 @@ class SubscriptionAjaxController extends CommonController
 		    if($match_id==4){
 				$company_name = CommonHelper::getCompanyIDbyMemberID($member_id);
 				$sub_company_name = CommonHelper::getCompanyIDbySubMemberID($sub_member_auto_id);
+				$sub_branch_id = CommonHelper::getmemberBranchid($member_id);
+				$member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member_id).'&branch_id='.Crypt::encrypt($sub_branch_id);
 				$data['match'][$mkey]['registered_bank_name'] = $company_name;
+				$data['match'][$mkey]['registered_bank_id'] = CommonHelper::getCompanyAutoIDbyMemberID($member_id);
+				$data['match'][$mkey]['uploaded_bank_id'] = CommonHelper::getCompanyAutoIDbySubMemberID($sub_member_auto_id);
 				$data['match'][$mkey]['uploaded_bank_name'] = $sub_company_name;
+				$data['match'][$mkey]['transfer_link'] = $member_transfer_link;
+			}
+			if($match_id==5){
+				$cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$up_member_data->MonthlySubscriptionCompanyId)->pluck('Date')->first();
+				$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
+				$old_subscription_amount = DB::table("mon_sub_member as mm")
+								->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+								->where('mm.MemberCode','=',$member_id)
+								->where('ms.Date','=',$last_month)
+								->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+								->pluck('Amount')
+								->first();
+				$data['match'][$mkey]['old_payment'] = $old_subscription_amount;
 			}
 			$data['match'][$mkey]['updated_user'] = CommonHelper::getUserName($member->updated_by);
 			$data['match'][$mkey]['created_user'] = CommonHelper::getUserName($member->created_by);
@@ -795,6 +815,7 @@ class SubscriptionAjaxController extends CommonController
             }
             $enc_member = Crypt::encrypt($member->memberid);
             $data['member'][$mkey]['enc_member'] = $enc_member;
+            $data['member'][$mkey]['approval_status'] = CommonHelper::get_overall_approval_status($member->sub_member_id);
         }
         
         echo json_encode($data); 

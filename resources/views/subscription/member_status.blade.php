@@ -13,6 +13,17 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+	.autocomplete-selected { background: #F0F0F0; }
+	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+	.autocomplete-group { padding: 8px 5px; }
+	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+	#transfer_member{
+		color:#fff;
+	}
+</style>
 @php
 	$member_status = '';
 	$companyid = $data['company_id'];
@@ -25,10 +36,12 @@
 		if($approval_status==2){
 			$hide_members = 'hide';
 		}
-	}else{
+	}else if($data['status_type']==4){
 		$member_status = 'all';
-		$hide_members = 'hide';
+		$member_status = $data['status'];
 		$approval_status = 'all';
+	}else{
+		$hide_members = 'hide';
 	}
 @endphp
 <style>
@@ -56,6 +69,14 @@
 	.btn-sm{
 		padding: 2.5px 8px;
 		font-size: 8px;
+		line-height: 1.5;
+		border-radius: 3px;
+		color: #fff;
+		margin-right:5px;
+	}
+	.btn-sm-popup{
+		padding: 2.5px 8px;
+		font-size: 12px;
 		line-height: 1.5;
 		border-radius: 3px;
 		color: #fff;
@@ -105,17 +126,7 @@
 	}
 	
 </style>
-<style type="text/css">
-	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
-	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
-	.autocomplete-selected { background: #F0F0F0; }
-	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-	.autocomplete-group { padding: 8px 5px; }
-	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-	#transfer_member{
-		color:#fff;
-	}
-</style>
+
 @endsection
 @section('main-content')
 @php 
@@ -253,7 +264,7 @@
 						@endphp
 						@foreach($data['member'] as  $key => $member)
 							@php
-								$approval_status =1;
+								$approval_status = CommonHelper::get_overall_approval_status($member->sub_member_id);
 							@endphp
 							<tr style="overflow-x:auto;">
 								<td>{{ $member->up_member_name }}</td>
@@ -263,7 +274,7 @@
 								<td>{{ $member->Amount }}</td>
 								<td>{{ $member->due }}</td>
 								<td>{{ $member->status_name }}</td>
-								<td id="approve_status_{{ 1 }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
+								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
@@ -285,7 +296,21 @@
 		<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
 		<div class="modal-content">
 		  <h4>Monthly subscription member approval</h4>
-		   <p>Member Name: <span id="view_member_name" class="bold"></span></p>
+			<div class="row">
+				<div class="col s12 m6">
+					 <p>
+						Member Name: <span id="view_member_name" class="bold"></span>
+						</br>
+						NRIC: <span id="view_nric" class="bold"></span>
+				   </p>
+				</div>
+				<div class="col s12 m6">
+					 <p>
+						Amount: <span id="view_paid" class="bold"></span>
+				   </p>
+				</div>
+			</div>
+		  
 		   </hr>
 			
 				<table>
@@ -297,21 +322,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="nric_match_row hide" >
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" checked />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>
-							{{ CommonHelper::get_member_match_name(1) }}
-							
-							<td><span id="nric_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="nric_not_match_row hide">
+						<tr class="match_row_1 match_case_row hide" >
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -321,11 +332,40 @@
 								</p>
 							</td>
 							<td>
-							{{ CommonHelper::get_member_match_name(2) }}
-							
-							<td></td>
+							{{ CommonHelper::get_member_match_name(1) }}
+							</td>
+							<td><span id="nric_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="member_match_row hide">
+						<tr class="match_row_2 match_case_row hide">
+							<td>
+								<p class="verify-approval">
+									<label>
+										<input type="checkbox" name="nric_not_approve" id="nric_not_approve" value="1" />
+										<span></span>
+									</label>
+								</p>
+							</td>
+							<td>
+								{{ CommonHelper::get_member_match_name(2) }}
+								</br>
+								<div class="row">
+									<div class="col s12">
+										Search Member Code/Name
+									    <div class="input-field inline">
+											<input id="member_search_match" name="member_search_match" type="text" class="validate">
+											<input id="member_search_auto_id" name="member_search_auto_id" type="text" class="validate hide">
+										</div>
+									</div>
+									<div class="col s12">
+										If the member is not registered
+										<a class="btn-sm-popup waves-light yellow darken-3 right" href="{{ route('master.addmembership', app()->getLocale())  }}">{{__('New Registration') }}</a>
+									</div>
+							    </div>
+							
+							</td>
+							<td><span id="nric_not_approved_by" class="bold"></span></td>
+						</tr>
+						<tr class="match_row_3 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -336,14 +376,26 @@
 							</td>
 							<td>
 								{{ CommonHelper::get_member_match_name(3) }}
-								</br>
-								&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_member_name" class="bold"></span></span>
-								</br>
-								&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_member_name" class="bold"></span></span>
+									&nbsp;&nbsp;
+									<p>
+										<span class="bold">From Bank: <span id="registered_member_name" class="bold"></span></span> 
+										<label>
+											<input name="nameverify" type="radio" checked value="1" />
+											<span>is it correct?</span>
+										</label>
+									</p>
+								<p>
+									<span class="bold">From Union: <span id="uploaded_member_name" class="bold"></span></span>
+									<label>
+										<input name="nameverify" type="radio" value="2" />
+										<span>is it correct?</span>
+									</label>
+								</p>
+								&nbsp;&nbsp;
 							</td>
 							<td><span id="name_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="bank_match_row hide">
+						<tr class="match_row_4 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -353,16 +405,19 @@
 								</p>
 							</td>
 							<td>
-							{{ CommonHelper::get_member_match_name(4) }}
-							</br>
-							&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_bank_name" class="bold"></span></span>
-							</br>
-							&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_bank_name" class="bold"></span></span>
+								{{ CommonHelper::get_member_match_name(4) }}
+								</br>
+								&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_bank_name" class="bold"></span></span>
+								</br>
+								&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_bank_name" class="bold"></span></span>
+								<input type="text" name="registered_bank_id" class="hide" id="registered_bank_id" value="" />
+								<input type="text" name="uploaded_bank_id" class="hide" id="uploaded_bank_id" value="" />
+								<a title='Member Transfer' id="memebr_tansfer_link" class='btn-sm-popup waves-effect waves-light yellow darken-3' href=''>Member Transfer</a>
 							</td>
 							<td><span id="bank_approved_by" class="bold"></span></td>
 						</tr>
 						
-						<tr class="previous_subscription_match_row">
+						<tr class="match_row_5 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -371,10 +426,16 @@
 									</label>
 								</p>
 							</td>
-							<td>{{ CommonHelper::get_member_match_name(5) }}</td>
+							<td>
+								{{ CommonHelper::get_member_match_name(5) }}
+								</br>
+								&nbsp;&nbsp;<span class="bold">Current Month: <span id="current_month_amount" class="bold"></span></span>
+								</br>
+								&nbsp;&nbsp;<span class="bold">Last Month: <span id="last_month_amount" class="bold"></span></span>
+							</td>
 							<td><span id="previous_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="struckoff_match_row">
+						<tr class="match_row_6 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -386,7 +447,7 @@
 							<td>{{ CommonHelper::get_member_match_name(6) }}</td>
 							<td><span id="struckoff_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="resign_match_row">
+						<tr class="match_row_7 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -398,7 +459,7 @@
 							<td>{{ CommonHelper::get_member_match_name(7) }}</td>
 							<td><span id="resign_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="nric_old_match_row">
+						<tr class="match_row_8 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -410,7 +471,7 @@
 							<td>{{ CommonHelper::get_member_match_name(8) }}</td>
 							<td><span id="nric_old_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="nric_bank_match_row">
+						<tr class="match_row_9 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -422,7 +483,7 @@
 							<td>{{ CommonHelper::get_member_match_name(9) }}</td>
 							<td><span id="nric_bank_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="previous_unpaid_match_row">
+						<tr class="match_row_10 match_case_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -439,7 +500,7 @@
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-		  <button type="submit" class="btn waves-effect waves-light submitApproval">Submit</button>
+		  <button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
 		</div>
 		 </form>
 	  </div>
@@ -460,17 +521,7 @@
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
 <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
-<style type="text/css">
-	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
-	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
-	.autocomplete-selected { background: #F0F0F0; }
-	.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-	.autocomplete-group { padding: 8px 5px; }
-	.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-	#transfer_member{
-		color:#fff;
-	}
-</style>
+
 @endsection
 @section('footerSecondSection')
 <script>
@@ -509,8 +560,27 @@ $(document).ready(function(){
 			}
 		}
 	}); 
+	$("#member_search_match").devbridgeAutocomplete({
+		//lookup: countries,
+		serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
+		type:'GET',
+		//callback just to show it's working
+		onSelect: function (suggestion) {
+			 $("#member_search_match").val(suggestion.value);
+			 $("#member_search_auto_id").val(suggestion.number);
+		},
+		showNoSuggestionNotice: true,
+		noSuggestionNotice: 'Sorry, no matching results',
+		onSearchComplete: function (query, suggestions) {
+			if(!suggestions.length){
+				//$("#member_search_match").val('');
+				//$("#member_search_auto_id").val('');
+			}
+		}
+	}); 
 	$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 		$("#member_search").val('');
+		//$("#member_search_match").val('');
 	});
 });
  $("#filtersubmit").validate({
@@ -547,7 +617,69 @@ $(document).ready(function(){
 			dataType: "json",
 			success: function(result) {
 				console.log(result);
-				$("#view_member_name").html(result.up_member_name);
+				$(".match_case_row").addClass('hide');
+				$("#view_member_name").html(result.up_member_data.Name);
+				$("#view_nric").html(result.up_member_data.NRIC);
+				$("#view_paid").html(result.up_member_data.Amount);
+				matchinfo = result.match;
+					//console.log(res);
+				$.each(matchinfo,function(key,entry){
+					$(".match_row_"+entry.match_id).removeClass('hide');
+					if(entry.match_id==1){
+						$("#nric_approved_by").html(entry.updated_user);
+						$("#nric_approve").prop('checked',entry.approval_status==1 ? true : false);
+					}
+					else if(entry.match_id==2){
+						$("#nric_not_approved_by").html(entry.updated_user);
+					}
+					else if(entry.match_id==3){
+						$("#member_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#registered_member_name").html(result.registered_member_name);
+						$("#uploaded_member_name").html(entry.uploaded_member_name);
+						$("#name_approved_by").html(entry.updated_user);
+						if(result.registered_member_name == entry.uploaded_member_name){
+							$(".match_row_3").css('pointer-events','none');
+						}
+					}
+					else if(entry.match_id==4){
+						$("#bank_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#registered_bank_name").html(entry.registered_bank_name);
+						$("#uploaded_bank_name").html(entry.uploaded_bank_name);
+						$("#registered_bank_id").val(entry.registered_bank_id);
+						$("#uploaded_bank_id").val(entry.uploaded_bank_id);
+						$("#memebr_tansfer_link").prop('href',entry.transfer_link);
+						$("#bank_approved_by").html(entry.updated_user);
+						$("#memebr_tansfer_link").removeClass('hide');
+						if(entry.registered_bank_id == entry.uploaded_bank_id && entry.approval_status==1){
+							$(".match_row_4").css('pointer-events','none');
+							$("#memebr_tansfer_link").addClass('hide');
+						}
+					}else if(entry.match_id==5){
+						$("#previous_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#current_month_amount").html(result.up_member_data.Amount);
+						$("#last_month_amount").html(entry.old_payment);
+						$("#previous_approved_by").html(entry.updated_user);
+					}
+					else if(entry.match_id==6){
+						$("#struckoff_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#struckoff_approved_by").html(entry.updated_user);
+					}
+					else if(entry.match_id==7){
+						$("#resign_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#resign_approved_by").html(entry.updated_user);
+					}
+					else if(entry.match_id==8){
+						$("#nric_old_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#nric_old_approved_by").html(entry.updated_user);
+					}else if(entry.match_id==9){
+						$("#nric_bank_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#nric_bank_approved_by").html(entry.updated_user);
+					}else if(entry.match_id==10){
+						$("#previous_unpaid_approve").prop('checked',entry.approval_status==1 ? true : false);
+						$("#previous_unpaid_approved_by").html(entry.updated_user);
+					}
+					
+				});
 				//var match_data = result.match;
 				/* $(".bank_match_row").addClass('hide');
 				$(".nric_match_row").addClass('hide');
@@ -637,7 +769,7 @@ $(document).on('submit','#approvalformValidate',function(event){
 			if(result.status==1){
 				var badge_color = result.approval_status == 1 ? 'green' : 'red';
 				var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
-				$("#approve_status_"+result.match_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
+				$("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
 				M.toast({
 					html: result.message
 				});
@@ -684,12 +816,11 @@ $(document).on('submit','form#filtersubmit',function(event){
 							table_row += "<td>"+entry.Amount+"</td>";
 							table_row += "<td>"+entry.due+"</td>";
 							table_row += "<td>"+entry.status_name+"</td>";
-							var approval_status = 1;
-							var app_status = approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
-							table_row += "<td id='approve_status_"+entry.match_auto_id+"'>"+app_status+"</td>";
+							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
 							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-							actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
-							actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.match_auto_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
 					});
@@ -737,12 +868,11 @@ $(window).scroll(function() {
 							table_row += "<td>"+entry.Amount+"</td>";
 							table_row += "<td>"+entry.due+"</td>";
 							table_row += "<td>"+entry.status_name+"</td>";
-							var approval_status = 1;
-							var app_status = approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
-							table_row += "<td id='approve_status_"+entry.memberid+"'>"+app_status+"</td>";
+							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
+							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
 							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-							actions += '<a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
-							actions += '<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.memberid+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
 					});
@@ -756,6 +886,13 @@ $(window).scroll(function() {
 			
    }
 });
+function ConfirmSubmit(){
+	if (confirm("{{ __('Are you sure you want to update?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 </script>
 @endsection
