@@ -949,6 +949,8 @@ class SubscriptionController extends CommonController
         $sub_member_id = $request->input('sub_member_id');
 		$match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_id)->get();
 		$total_match_count = 0;
+		$member_code = '';
+		$member_status = '';
 		foreach($match_data as $mkey => $match){
 			$match_id = $match->match_id;
 			$approval_status=0;
@@ -959,7 +961,21 @@ class SubscriptionController extends CommonController
 			}
 			if($match_id==2){
 				$nric_not_approve = $request->input('nric_not_approve');
+				$member_auto_id = $request->input('member_search_auto_id');
 				$approval_status= isset($nric_not_approve) ? 1 : 0;
+				if($approval_status==1){
+					if($member_auto_id!=""){
+						$memberdata = DB::table("membership")->where('id','=',$member_auto_id)->first();
+						$sub_member =DB::table("mon_sub_member")->where('id','=',$sub_member_id)->update(['MemberCode' => $member_auto_id, 'StatusId' => $memberdata->status_id]);
+						$member_code = $memberdata->member_number;
+						$member_status = CommonHelper::getStatusName($memberdata->status_id);
+					}else{
+						$approval_status= 0;
+					}
+				}else{
+					$approval_status= 0;
+				}
+				
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Not Matched', 'updated_by' => Auth::user()->id]);
 			}
 			if($match_id==3){
@@ -1102,7 +1118,7 @@ class SubscriptionController extends CommonController
 			}
 		}
         
-		$return_data = ['status' => 1, 'message' => 'Updated Succesfully', 'sub_member_auto_id' => $sub_member_id, 'approval_status' => $total_approval_status];
+		$return_data = ['status' => 1, 'message' => 'Updated Succesfully', 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_code, 'member_status' => $member_status, 'approval_status' => $total_approval_status];
 		echo json_encode($return_data);
 	}
     

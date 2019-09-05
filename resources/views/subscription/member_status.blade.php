@@ -268,12 +268,12 @@
 							@endphp
 							<tr style="overflow-x:auto;">
 								<td>{{ $member->up_member_name }}</td>
-								<td>{{ $member->member_number }}</td>
+								<td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td>
 								<td>{{ $member->company_name }}</td>
 								<td>{{ $member->up_nric }}</td>
 								<td>{{ $member->Amount }}</td>
 								<td>{{ $member->due }}</td>
-								<td>{{ $member->status_name }}</td>
+								<td id="member_status_{{ $member->sub_member_id }}">{{ $member->status_name }}</td>
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
@@ -350,13 +350,13 @@
 								</br>
 								<div class="row">
 									<div class="col s12">
-										Search Member Code/Name
+										Search Member Name/Code
 									    <div class="input-field inline">
-											<input id="member_search_match" name="member_search_match" type="text" class="validate">
+											<input id="member_search_match" name="member_search_match" type="text" class="validate" style="width:250px;">
 											<input id="member_search_auto_id" name="member_search_auto_id" type="text" class="validate hide">
 										</div>
 									</div>
-									<div class="col s12">
+									<div id="not-registered-area" class="col s12">
 										If the member is not registered
 										<a class="btn-sm-popup waves-light yellow darken-3 right" href="{{ route('master.addmembership', app()->getLocale())  }}">{{__('New Registration') }}</a>
 									</div>
@@ -630,7 +630,17 @@ $(document).ready(function(){
 						$("#nric_approve").prop('checked',entry.approval_status==1 ? true : false);
 					}
 					else if(entry.match_id==2){
+						$("#nric_not_approve").prop('checked',entry.approval_status==1 ? true : false);
 						$("#nric_not_approved_by").html(entry.updated_user);
+						
+						$("#not-registered-area").removeClass('hide');
+						if(entry.approval_status == 1){
+							$("#member_search_auto_id").val(result.up_member_data.MemberCode);
+							$("#member_search_match").val(result.registered_member_name+'/'+result.registered_member_number);
+							$("#member_search_match").attr('readonly',true);
+							$(".match_row_2").css('pointer-events','none');
+							$("#not-registered-area").addClass('hide');
+						}
 					}
 					else if(entry.match_id==3){
 						$("#member_approve").prop('checked',entry.approval_status==1 ? true : false);
@@ -770,6 +780,8 @@ $(document).on('submit','#approvalformValidate',function(event){
 				var badge_color = result.approval_status == 1 ? 'green' : 'red';
 				var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
 				$("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
+				$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
+				$("#member_status_"+result.sub_member_auto_id).html(result.member_status);
 				M.toast({
 					html: result.message
 				});
@@ -810,12 +822,12 @@ $(document).on('submit','form#filtersubmit',function(event){
 					//console.log(res);
 					$.each(res,function(key,entry){
 						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
-							table_row += "<td>"+entry.member_number+"</td>";
+							table_row += "<td id='member_code_"+entry.sub_member_id+"'>"+entry.member_number+"</td>";
 							table_row += "<td>"+entry.company_name+"</td>";
 							table_row += "<td>"+entry.up_nric+"</td>";
 							table_row += "<td>"+entry.Amount+"</td>";
 							table_row += "<td>"+entry.due+"</td>";
-							table_row += "<td>"+entry.status_name+"</td>";
+							table_row += "<td id='member_status_"+entry.sub_member_id+"'>"+entry.status_name+"</td>";
 							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
 							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
@@ -862,12 +874,12 @@ $(window).scroll(function() {
 					//console.log(res);
 					$.each(res,function(key,entry){
 						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
-							table_row += "<td>"+entry.member_number+"</td>";
+							table_row += "<td id='member_code_"+entry.sub_member_id+"'>"+entry.member_number+"</td>";
 							table_row += "<td>"+entry.company_name+"</td>";
 							table_row += "<td>"+entry.up_nric+"</td>";
 							table_row += "<td>"+entry.Amount+"</td>";
 							table_row += "<td>"+entry.due+"</td>";
-							table_row += "<td>"+entry.status_name+"</td>";
+							table_row += "<td id='member_status_"+entry.sub_member_id+"'>"+entry.status_name+"</td>";
 							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
 							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';

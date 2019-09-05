@@ -712,6 +712,7 @@ class SubscriptionAjaxController extends CommonController
 	   $data['up_member_data'] = $up_member_data;
 	   //$data['up_nric'] = $up_member_data->NRIC;
 	   $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
+	   $data['registered_member_number'] = CommonHelper::getmembercode_byid($member_id);
 	   $data['status'] = 1;
 	   $baseurl = URL::to('/');
 	   foreach($match_data as $mkey => $member){
