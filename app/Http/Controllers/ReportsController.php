@@ -301,66 +301,6 @@ class ReportsController extends Controller
         //dd($data);
         return view('reports.iframe_variationbank')->with('data',$data);
 	}
-	public function SubscriptionReport(Request $request, $lang)
-    {
-		$data['data_limit']=$this->limit;
-		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
-                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                                ->where('ms.Date', '=', date('Y-m-01'))->get();
-        return view('reports.subscription')->with('data',$data);  
-	}
-	public function SubscriptionFiltereport(Request $request, $lang){
-		$get_roles = Auth::user()->roles;
-        $user_role = $get_roles[0]->slug;
-        $user_id = Auth::user()->id;
-		
-		$month_year = $request->input('month_year');
-		$company_id = $request->input('company_id');
-		$monthno = '';
-        $yearno = '';
-        if($month_year!=""){
-          $fmmm_date = explode("/",$month_year);
-          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-        }
-		$data['data_limit']=$this->limit;
-		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
-                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
-		if($monthno!="" && $yearno!=""){
-			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
-			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
-		}
-		if($company_id!=""){
-			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
-		}
-		$company_list =  $company_view->get();
-		$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
-		foreach($company_list as $ckey => $company){
-            foreach($company as $newkey => $newvalue){
-                $data['company_view'][$ckey][$newkey] = $newvalue;
-            }
-			
-			$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
-			$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
-			$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
-			$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
-			$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
-			$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
-			
-            $data['company_view'][$ckey]['total_members'] = $total_members;
-            $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
-            $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
-            $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
-            $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
-            $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
-            $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
-			$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
-        }
-		echo json_encode($data);
-	}
 	
 	public function filterHalfShareReport(Request $request, $lang){
 		$month_year = $request->input('month_year');
@@ -794,7 +734,7 @@ class ReportsController extends Controller
         echo json_encode($members);
     }
 
-    //Variation  Report Starts	
+       //Variation  Report Starts	
 	public function VariationReport(Request $request, $lang)
     {
 		$data['data_limit']=$this->limit;
@@ -860,8 +800,143 @@ class ReportsController extends Controller
         }
         
         //dd($members);
-        echo json_encode($data['company_view'][$ckey][$newkey]);
+        echo json_encode($data);
     }
     //Vartion Reports End
+
+    //Subscription Report Stats
+    public function SubscriptionReport(Request $request, $lang)
+    {
+		$data['data_limit']=$this->limit;
+		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+        return view('reports.subscription')->with('data',$data);  
+    }
+    public function newSubscriptionReport(Request $request)
+    {
+        $data['data_limit']=$this->limit;
+		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+
+        $data['month_year']='';
+        $data['company_id']=''; 
+        $data['offset']=0;
+        return view('reports.iframe_subscriptionbank')->with('data',$data); 
+
+    }
+    public function SubscriptionFiltereport(Request $request, $lang){
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+		
+		$month_year = $request->input('month_year');
+		$company_id = $request->input('company_id');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        }
+		$data['data_limit']=$this->limit;
+		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+		if($monthno!="" && $yearno!=""){
+			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+		}
+		if($company_id!=""){
+			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+		}
+		$company_list =  $company_view->get();
+		$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
+		// foreach($company_list as $ckey => $company){
+        //     foreach($company as $newkey => $newvalue){
+        //         $data['company_view'][$ckey][$newkey] = $newvalue;
+        //     }
+			
+		// 	$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
+		// 	$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
+		// 	$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
+		// 	$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
+		// 	$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
+		// 	$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+			
+        //     $data['company_view'][$ckey]['total_members'] = $total_members;
+        //     $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
+		// 	$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
+        // }
+        $data['company_view'] = $company_list;
+        $data['data_limit']=$this->limit;
+        $data['month_year']=$month_year;
+        $data['company_id']=$company_id;
+        //echo json_encode($data);
+        return view('reports.iframe_subscriptionbank')->with('data',$data);
+    }
+    public function subscriptionReportloadMore($lang,Request $request)
+    {
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+		
+		$month_year = $request->input('month_year');
+		$company_id = $request->input('company_id');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        }
+		$data['data_limit']=$this->limit;
+		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+		if($monthno!="" && $yearno!=""){
+			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+		}
+		if($company_id!=""){
+			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+		}
+		$company_list =  $company_view->get();
+		$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
+		foreach($company_list as $ckey => $company){
+            foreach($company as $newkey => $newvalue){
+                $data['company_view'][$ckey][$newkey] = $newvalue;
+            }
+			
+			$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
+			$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
+			$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
+			$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
+			$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
+			$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+			
+            $data['company_view'][$ckey]['total_members'] = $total_members;
+            $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
+            $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
+            $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
+            $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
+            $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
+            $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
+			$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
+        }
+    
+        echo json_encode($data);
+    }
+    //Subscription Report Ends
 }
 
