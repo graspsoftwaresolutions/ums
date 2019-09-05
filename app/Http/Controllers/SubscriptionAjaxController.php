@@ -705,53 +705,31 @@ class SubscriptionAjaxController extends CommonController
         echo json_encode($json_data); 
     }
     public function SubscriptionMemberDetails(Request $request){
-       $sub_match_auto_id = $request->input('sub_match_auto_id');
-       $status_data = DB::table('mon_sub_member_match')->where('id','=',$sub_match_auto_id)->first();
-       $up_member_data = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->first();
-       $data['match'] = $status_data;
-       $data['match_id'] = $status_data->match_id;
-       $data['updated_user'] = CommonHelper::getUserName($status_data->updated_by);
-       $data['created_user'] = CommonHelper::getUserName($status_data->created_by);
-       $data['up_member_name'] = $up_member_data->Name;
-       if($status_data->match_id==3){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-            $data['uploaded_member_name'] = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('Name')->first();
-       }
-       if($status_data->match_id==4){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $company_name = CommonHelper::getCompanyIDbyMemberID($member_id);
-            $sub_company_name = CommonHelper::getCompanyIDbySubMemberID($status_data->mon_sub_member_id);
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-            $data['registered_bank_name'] = $company_name;
-            $data['uploaded_bank_name'] = $sub_company_name;
-        }
-        if($status_data->match_id==5){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-        }
-        if($status_data->match_id==6){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-        }
-        if($status_data->match_id==7){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-        }
-        if($status_data->match_id==8){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-        }
-        if($status_data->match_id==9){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-        }
-        if($status_data->match_id==10){
-            $member_id = DB::table('mon_sub_member')->where('id','=',$status_data->mon_sub_member_id)->pluck('MemberCode')->first();
-            $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
-        }
-       $data['status'] = 1;
-       echo json_encode($data); 
+       $sub_member_auto_id = $request->input('sub_member_auto_id');
+	   $up_member_data = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->first();
+	   $match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_auto_id)->get();
+	   $member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->pluck('MemberCode')->first();
+	   $data['up_member_name'] = $up_member_data->Name;
+	   $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
+	   $data['status'] = 1;
+	   foreach($match_data as $mkey => $member){
+		    $match_id = $member->match_id;
+		    foreach($member as $newkey => $newvalue){
+                $data['match'][$mkey][$newkey] = $newvalue;
+            }
+		    if($match_id==3){
+				$data['match'][$mkey]['uploaded_member_name'] = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->pluck('Name')->first();
+		    }
+		    if($match_id==4){
+				$company_name = CommonHelper::getCompanyIDbyMemberID($member_id);
+				$sub_company_name = CommonHelper::getCompanyIDbySubMemberID($sub_member_auto_id);
+				$data['match'][$mkey]['registered_bank_name'] = $company_name;
+				$data['match'][$mkey]['uploaded_bank_name'] = $sub_company_name;
+			}
+			$data['match'][$mkey]['updated_user'] = CommonHelper::getUserName($member->updated_by);
+			$data['match'][$mkey]['created_user'] = CommonHelper::getUserName($member->created_by);
+	   }
+       echo json_encode($data);  
     }
     public function getMoreSubscription(Request $request){
         $offset = $request->input('offset');

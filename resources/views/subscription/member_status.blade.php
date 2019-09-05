@@ -266,7 +266,7 @@
 								<td id="approve_status_{{ 1 }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
-								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ 1 }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
+								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
 							</tr> 
 						@endforeach
@@ -282,7 +282,7 @@
 	  <div id="modal-approval" class="modal">
 		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('approval.save',app()->getLocale()) }}">
         @csrf
-		<input type="text" class="hide" name="match_auto_id" id="match_auto_id">
+		<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
 		<div class="modal-content">
 		  <h4>Monthly subscription member approval</h4>
 		   <p>Member Name: <span id="view_member_name" class="bold"></span></p>
@@ -297,7 +297,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="nric_match_row" style="pointer-events: none;">
+						<tr class="nric_match_row hide" >
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -307,25 +307,25 @@
 								</p>
 							</td>
 							<td>
-							NRIC Matched
+							{{ CommonHelper::get_member_match_name(1) }}
 							
 							<td><span id="nric_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="nric_not_match_row">
+						<tr class="nric_not_match_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
 										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" />
-										
+										<span></span>
 									</label>
 								</p>
 							</td>
 							<td>
-							NRIC Not Matched
+							{{ CommonHelper::get_member_match_name(2) }}
 							
 							<td></td>
 						</tr>
-						<tr class="member_match_row">
+						<tr class="member_match_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -335,7 +335,7 @@
 								</p>
 							</td>
 							<td>
-								Mismatched Member Name
+								{{ CommonHelper::get_member_match_name(3) }}
 								</br>
 								&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_member_name" class="bold"></span></span>
 								</br>
@@ -343,7 +343,7 @@
 							</td>
 							<td><span id="name_approved_by" class="bold"></span></td>
 						</tr>
-						<tr class="bank_match_row">
+						<tr class="bank_match_row hide">
 							<td>
 								<p class="verify-approval">
 									<label>
@@ -353,7 +353,7 @@
 								</p>
 							</td>
 							<td>
-							Mismatched Bank
+							{{ CommonHelper::get_member_match_name(4) }}
 							</br>
 							&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_bank_name" class="bold"></span></span>
 							</br>
@@ -371,7 +371,7 @@
 									</label>
 								</p>
 							</td>
-							<td>Mismatched Previous Subscription</td>
+							<td>{{ CommonHelper::get_member_match_name(5) }}</td>
 							<td><span id="previous_approved_by" class="bold"></span></td>
 						</tr>
 						<tr class="struckoff_match_row">
@@ -383,7 +383,7 @@
 									</label>
 								</p>
 							</td>
-							<td>StruckOff Members</td>
+							<td>{{ CommonHelper::get_member_match_name(6) }}</td>
 							<td><span id="struckoff_approved_by" class="bold"></span></td>
 						</tr>
 						<tr class="resign_match_row">
@@ -395,7 +395,7 @@
 									</label>
 								</p>
 							</td>
-							<td>Resigned Members</td>
+							<td>{{ CommonHelper::get_member_match_name(7) }}</td>
 							<td><span id="resign_approved_by" class="bold"></span></td>
 						</tr>
 						<tr class="nric_old_match_row">
@@ -407,7 +407,7 @@
 									</label>
 								</p>
 							</td>
-							<td>NRIC Old Matched</td>
+							<td>{{ CommonHelper::get_member_match_name(8) }}</td>
 							<td><span id="nric_old_approved_by" class="bold"></span></td>
 						</tr>
 						<tr class="nric_bank_match_row">
@@ -419,7 +419,7 @@
 									</label>
 								</p>
 							</td>
-							<td>NRIC By Bank Matched</td>
+							<td>{{ CommonHelper::get_member_match_name(9) }}</td>
 							<td><span id="nric_bank_approved_by" class="bold"></span></td>
 						</tr>
 						<tr class="previous_unpaid_match_row">
@@ -431,7 +431,7 @@
 									</label>
 								</p>
 							</td>
-							<td>Previous Subscription Unpaid</td>
+							<td>{{ CommonHelper::get_member_match_name(10) }}</td>
 							<td><span id="previous_unpaid_approved_by" class="bold"></span></td>
 						</tr>
 					</tbody>
@@ -535,19 +535,21 @@ $(document).ready(function(){
 		  }
 		}
   });
-  function showApproval(match_id){
+  function showApproval(sub_member_id){
 	   $(".submitApproval").attr('disabled', false);
 	   $('.modal').modal();
-	   $("#match_auto_id").val(match_id);
+	   $("#sub_member_id").val(sub_member_id);
 	   loader.showLoader();
-		var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_match_auto_id=' + match_id;
+		var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
 		$.ajax({
 			url: url,
 			type: "GET",
 			dataType: "json",
 			success: function(result) {
-				var match_data = result.match;
-				$(".bank_match_row").addClass('hide');
+				console.log(result);
+				$("#view_member_name").html(result.up_member_name);
+				//var match_data = result.match;
+				/* $(".bank_match_row").addClass('hide');
 				$(".nric_match_row").addClass('hide');
 				$(".member_match_row").addClass('hide');
 				$(".nric_not_match_row").addClass('hide');
@@ -557,8 +559,8 @@ $(document).ready(function(){
 				$(".previous_subscription_match_row").addClass('hide');
 				$(".nric_bank_match_row").addClass('hide');
 				$(".previous_unpaid_match_row").addClass('hide');
-				$("#view_member_name").html(result.up_member_name);
-				if(match_data.match_id==1){
+				$("#view_member_name").html(result.up_member_name); */
+				/* if(match_data.match_id==1){
 					$(".nric_match_row").removeClass('hide');
 					$("#nric_approved_by").html(result.created_user);
 				}
@@ -613,7 +615,7 @@ $(document).ready(function(){
 					$(".nric_not_match_row").removeClass('hide');
 				}else{
 					$(".nric_match_row").removeClass('hide');
-				}
+				} */
 				$("#modal-approval").modal('open');
 				loader.hideLoader();
 			}
