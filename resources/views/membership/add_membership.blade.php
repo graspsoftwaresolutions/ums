@@ -140,7 +140,7 @@
 																		</div>
 																		<div class="col s12 m4">
 																			<label>
-																			<input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="Female">
+																			<input class="validate" required="" aria-required="true" id="gender1" name="gender" type="radio" value="Female">
 																			<span>{{__('Female') }}</span>
 																			</label>  
 																		</div>
@@ -184,6 +184,7 @@
 																	</div> 
 																	<div class="input-field col s12 m6" style="display:none;" id="member_old_div">
 																		<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
+																		<input type="text" name="old_member_id" value="" id="old_member_id" class="autocomplete">
 																		<label for="old_mumber_number">{{__('Old Number') }}</label>
 																		<span> 
 																		</span>
@@ -1018,6 +1019,36 @@
         //callback just to show it's working
         onSelect: function (suggestion) {
 			 $("#old_mumber_number").val(suggestion.number);
+			 $("#old_member_id").val(suggestion.auto_id);
+			 $("#name").val(suggestion.membername);
+			 $("#gender1").prop('checked',suggestion.gender=='Female' ? true : false);
+			 $("#gender").prop('checked',suggestion.gender=='Male' ? true : false);
+			 $("#address_one").val(suggestion.address_one);
+			 $("#address_three").val(suggestion.address_three);
+			 $("#address_two").val(suggestion.address_two);
+			 $("#branch").val(suggestion.branch_id).trigger("change");
+			 $("#city_id").val(suggestion.city_id).trigger("change");
+			 $("#company").val(suggestion.company_id).trigger("change");
+			 $("#designation").val(suggestion.designation_id).trigger("change");
+			 $("#dob").val(suggestion.dob);
+			 $("#doe").val(suggestion.doe);
+			 $("#doj").val(suggestion.doj);
+			 $("#email").val(suggestion.email);
+			 $("#employee_id").val(suggestion.employee_id);
+			 //$("#old_mumber_number").val(suggestion.gender);
+			 $("#levy").val(suggestion.levy).trigger("change");
+			 $("#levy_amount").val(suggestion.levy_amount);
+			 $("#member_title").val(suggestion.member_title_id).trigger("change");
+			 $("#mobile").val(suggestion.mobile);
+			 $("#new_ic").val(suggestion.new_ic);
+			 $("#old_ic").val(suggestion.old_ic);
+			 $("#postal_code").val(suggestion.postal_code);
+			 $("#race").val(suggestion.race_id).trigger("change");
+			 $("#salary").val(suggestion.salary);
+			 $("#state_id").val(suggestion.state_id).trigger("change");
+			 $("#tdf").val(suggestion.tdf).trigger("change");
+			 $("#tdf_amount").val(suggestion.tdf_amount);
+			 $('#dob').trigger('change');
         },
         showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',
@@ -1031,8 +1062,9 @@
 		$("#old_mumber_number").val('');
 	});
 	$(document).on('submit','form#fee_new_form',function(){
-    $("#new_fee_id").val("");
-});
+		$("#new_fee_id").val("");
+	});
+	
 </script>
 @include('membership.member_common_script')
 @endsection
