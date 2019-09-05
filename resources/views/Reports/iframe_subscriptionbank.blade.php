@@ -97,8 +97,6 @@
 		.tbody-area{
 			color:#000;
 		}
-		
-		
 	</style>
 	<script type="text/javascript">
 		function updateIframe(){
@@ -113,12 +111,12 @@
 	<div class="page-header" style="text-align: center">
 		<table width="100%">
 			<tr>
+			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">Variation Bank Report</h6>
+					<h6 style="text-align:center;">Subscription Bank Report</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -139,41 +137,52 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
-            <th>{{__('Bank Name')}}</th>
-            <th>{{__('# Current')}}</th>
-            <th>{{__('# Previous')}}</th>
-            <th>{{__('Different')}}</th>
-            <th>{{__('Unpaid')}}</th>
-            <th>{{__('Paid')}}</th>
+			<tr class="page-table-header-space">
+            <th width="20%">{{__('Bank Name')}}</th>
+						<th width="15%">{{__('# Member')}}</th>
+						<th width='10%'>{{__('Total Amount')}}</th>
+						<th width='15%'>{{__('Active')}}</th>
+						<th width='15%'>{{__('Defaulter')}}</th>
+						<th width='15%'>{{__('StruckOff')}}</th>
+						<th width='15%'>{{__('Resigned')}}</th>
+						<th width='15%'>{{__('SundryCr')}}</th>
 			</tr>
 		</thead>
+		@php 
+			$get_roles = Auth::user()->roles;
+			$user_role = $get_roles[0]->slug;
+			$user_id = Auth::user()->id;
+			$dateformat = date('Y-m-01');
+		@endphp 
 		<tbody class="tbody-area" width="100%">
-        @php
-			$last_month = date("Y-m-01", strtotime("first day of previous month"));
-		  @endphp
             @foreach($data['company_view'] as $company)
-                    @php
-                        $current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01'));
-                        $last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,$last_month);
-                        $member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
-                    @endphp
-                    <tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
-                        <td>{{ $company->company_name }}</td>
-                        <td>{{ $current_count }}</td>
-                        <td>{{ $last_month_count }}</td>
-                        <td><span class="badge {{$current_count-$last_month_count>0 ? 'green' : 'red'}}">{{ abs($current_count-$last_month_count) }}</span></td>
-                        <td>{{ 0 }}</td>
-                        <td>{{ $current_count }}</td>
-                    </tr> 
-            @endforeach
+						@php
+							$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
+							$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
+							$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
+							$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
+							$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
+							
+							$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+							$member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
+						@endphp
+						<tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
+							<td width="20%">{{ $company->company_name }}</td>
+							<td width='15%'>{{ $total_members }}</td>
+							<td width='10%'>{{ number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',') }}</td>
+							<td width='15%'>{{ number_format($active_amt,2, '.', ',') }}</td>
+							<td width='15%'>{{ number_format($default_amt,2, '.', ',') }}</td>
+							<td width='15%'>{{ number_format($struckoff_amt,2, '.', ',') }}</td>
+							<td width='15%'>{{ number_format($resign_amt,2, '.', ',') }}</td>
+							<td width='15%'>{{ number_format($sundry_amt,2, '.', ',') }}</td>
+						</tr> 
+					@endforeach
 		</tbody>
 		
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-<!-- <script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script> -->
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
@@ -192,7 +201,7 @@
 			autotable: false
 		}
 	});
-    $(window).scroll(function() {   
+	 $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
@@ -204,21 +213,28 @@
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-newvariation_report-more-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ url(app()->getLocale().'/get-subscription-more-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
-					if(res)
+					if(result)
 					{
-						//console.log(res);
+						res = result.company_view;
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='10%'>"+entry.companycode+"</td>";
-								table_row += "<td width='20%'>"+entry.branch_name+"</td>";
-								table_row += "<td width='25%'>"+entry.name+"</td>";
-								table_row += "<td width='20%'>"+entry.member_number+"</td>";
-								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-								table_row += "<td width='5%'>"+entry.total+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
+							var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
+							var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td width='30%'>"+entry.company_name+"</td>";
+								table_row += "<td width='20%'>"+entry.total_members+"</td>";
+								table_row += "<td width='10%'>"+entry.total_amount+"</td>";
+								table_row += "<td width='15%'>"+entry.active_amt+"</td>";
+								table_row += "<td width='15%'>"+entry.default_amt+"</td>";
+								table_row += "<td width='15%'>"+entry.struckoff_amt+"</td>";
+								table_row += "<td width='15%'>"+entry.resign_amt+"</td>";
+								table_row += "<td width='15%'>"+entry.sundry_amt+"</td></tr>";
+								$('#scroll-vert-hor tbody').append(table_row);
 						});
-						//loader.hideLoader();
+						if(!res){
+								var table_row = "<tr><td colspan='6'>No data found</td></tr>";
+								$('#scroll-vert-hor tbody').append(table_row);
+						}
+						loader.hideLoader();
 					}else{
 						
 					}

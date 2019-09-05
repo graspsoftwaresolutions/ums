@@ -280,6 +280,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-variation-report','ReportsController@VariationFiltereport')->name('reports.variationfilter');
 	Route::get('get-newvariation_report-more-report','ReportsController@variationBankReportloadMore');
 
+	//subscription Report
+	Route::get('subscription_report','ReportsController@SubscriptionReport')->name('reports.subscription');
+	Route::get('newsubscription_report','ReportsController@newSubscriptionReport')->name('reports.subscriptionnew');
+	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
+	Route::get('get-subscription-more-report','ReportsController@subscriptionReportloadMore');
+	
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
 	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
@@ -288,8 +294,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
 	
 	
-	Route::get('subscription_report','ReportsController@SubscriptionReport')->name('reports.subscription');
-	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
+	
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 	
 	
