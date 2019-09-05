@@ -82,67 +82,67 @@
                                             <table id="page-length-option" class="display">
                                                 <thead>
 												<tr>
-							<th>{{__('Union Branch Name')}}</th>
-							<th>{{__('Total')}}</th>
-							<th>{{__('BF')}}</th>
-							<th>{{__('INS')}}</th>
-							<th>{{__('SUBS')}}</th>
-							<th>{{__('1/2 Share')}}</th>
-							<th>{{__('10%ED - Fund')}}</th>
-							<th>{{__('Total Amount')}}</th>
-						</tr> 
-					</thead>
-					<tbody>
-					@php
-					$total_all=0;
-					$bf=0;
-					$ins=0;
-					$sub=0;
-					$hlf=0;
-					$t_per=0;
-					$bl_amt=0;
-					@endphp
-						@if(!empty($data))						
-						@foreach($data['half_share'] as $hlfshre)
-						@php
-						$bf += $hlfshre->bfamount;
-						$ins += $hlfshre->insamt;
-						$sub += round($hlfshre->subamt,2);
-						$tot = $hlfshre->bfamount + $hlfshre->insamt + round($hlfshre->subamt,2);
-						$totall = round($tot,2);
-						$total_all += $totall;
-						$hlf_sr = $totall / 2;
-						$hlf += $hlf_sr;
-						$tenper = round($hlf_sr * 10/100,2);
-						$t_per +=$tenper;
-						$balamtgn = round($hlf_sr - $tenper,2);
-						$bl_amt += $balamtgn;
-						@endphp
-							<tr>
-								<td>{{ $hlfshre->union_branch }}</td>
-								<td>{{ $totall }}</td>
-								<td>{{ $hlfshre->bfamount }}</td>
-								<td>{{ $hlfshre->insamt }}</td>
-								<td>{{ round($hlfshre->subamt,2) }}</td>
-								<td>{{ $hlf_sr }}</td>
-								<td>{{ $tenper }}</td>
-								<td>{{ $balamtgn }}</td>
-								
-							</tr> 
-						@endforeach
-						@endif
-						<tr style="font-weight:bold;">
-						
-								<td>Total</td>
-								<td>{{ $total_all }}</td>
-								<td>{{ $bf }}</td>
-								<td>{{ $ins }}</td>
-								<td>{{ $sub }}</td>
-								<td>{{ $hlf }}</td>
-								<td>{{ $t_per }}</td>
-								<td>{{ $bl_amt }}</td>
-						</tr>
-					</tbody>
+													<th>{{__('Union Branch Name')}}</th>
+													<th>{{__('Total')}}</th>
+													<th>{{__('BF')}}</th>
+													<th>{{__('INS')}}</th>
+													<th>{{__('SUBS')}}</th>
+													<th>{{__('1/2 Share')}}</th>
+													<th>{{__('10%ED - Fund')}}</th>
+													<th>{{__('Total Amount')}}</th>
+												</tr> 
+												</thead>
+												<tbody>
+												@php
+												$total_all=0;
+												$bf=0;
+												$ins=0;
+												$sub=0;
+												$hlf=0;
+												$t_per=0;
+												$bl_amt=0;
+												@endphp
+													@if(!empty($data))						
+													@foreach($data['half_share'] as $hlfshre)
+													@php
+													$bf += $hlfshre->bfamount;
+													$ins += $hlfshre->insamt;
+													$sub += round($hlfshre->subamt,2);
+													$tot = $hlfshre->bfamount + $hlfshre->insamt + round($hlfshre->subamt,2);
+													$totall = round($tot,2);
+													$total_all += $totall;
+													$hlf_sr = $totall / 2;
+													$hlf += $hlf_sr;
+													$tenper = round($hlf_sr * 10/100,2);
+													$t_per +=$tenper;
+													$balamtgn = round($hlf_sr - $tenper,2);
+													$bl_amt += $balamtgn;
+													@endphp
+														<tr>
+															<td>{{ $hlfshre->union_branch }}</td>
+															<td>{{ $totall }}</td>
+															<td>{{ $hlfshre->bfamount }}</td>
+															<td>{{ $hlfshre->insamt }}</td>
+															<td>{{ round($hlfshre->subamt,2) }}</td>
+															<td>{{ $hlf_sr }}</td>
+															<td>{{ $tenper }}</td>
+															<td>{{ $balamtgn }}</td>
+															
+														</tr> 
+													@endforeach
+													@endif
+													<tr style="font-weight:bold;">
+													
+															<td>Total</td>
+															<td>{{ $total_all }}</td>
+															<td>{{ $bf }}</td>
+															<td>{{ $ins }}</td>
+															<td>{{ $sub }}</td>
+															<td>{{ $hlf }}</td>
+															<td>{{ $t_per }}</td>
+															<td>{{ $bl_amt }}</td>
+													</tr>
+												</tbody>
 
 
                                             </table>

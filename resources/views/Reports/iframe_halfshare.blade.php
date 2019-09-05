@@ -97,6 +97,8 @@
 		.tbody-area{
 			color:#000;
 		}
+		
+		
 	</style>
 	<script type="text/javascript">
 		function updateIframe(){
@@ -111,12 +113,11 @@
 	<div class="page-header" style="text-align: center">
 		<table width="100%">
 			<tr>
-			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
+				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">Takaful Insurance Report</h6>
+					<h6 style="text-align:center;">New Members Report</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -137,26 +138,69 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space">
-				<th width="10%">{{__('Bank')}}</th>
-				<th width="20%">{{__('Branch')}}</th>
-				<th width="25%">{{__('Name')}}</th>
-				<th width="20%">{{__('Number')}}</th>
-				<th width="10%">{{__('NRIC')}}</th>
-				<th width="5%">{{__('Insurance Amount(RM)')}}</th>
+			<tr class="page-table-header-space" >
+            <th>{{__('Union Branch Name')}}</th>
+                <th>{{__('Total')}}</th>
+                <th>{{__('BF')}}</th>
+                <th>{{__('INS')}}</th>
+                <th>{{__('SUBS')}}</th>
+                <th>{{__('1/2 Share')}}</th>
+                <th>{{__('10%ED - Fund')}}</th>
+                <th>{{__('Total Amount')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
-			@foreach($data['member_view'] as $member)
-					<tr>
-						<td width="10%">{{$member->companycode}}</td>
-						<td width="20%">{{$member->branch_name}}</td>
-						<td width="25%">{{$member->name}}</td>
-						<td width="20%">{{$member->member_number}}</td>
-						<td width="10%">{{$member->new_ic}}</td>
-						<td width="5%">{{$member->total}}</td>
-					</tr> 
+            @php
+            $total_all=0;
+            $bf=0;
+            $ins=0;
+            $sub=0;
+            $hlf=0;
+            $t_per=0;
+            $bl_amt=0;
+            @endphp
+                @if(!empty($data))						
+                @foreach($data['half_share'] as $hlfshre)
+                @php
+                $bf += $hlfshre->bfamount;
+                $ins += $hlfshre->insamt;
+                $sub += round($hlfshre->subamt,2);
+                $tot = $hlfshre->bfamount + $hlfshre->insamt + round($hlfshre->subamt,2);
+                $totall = round($tot,2);
+                $total_all += $totall;
+                $hlf_sr = $totall / 2;
+                $hlf += $hlf_sr;
+                $tenper = round($hlf_sr * 10/100,2);
+                $t_per +=$tenper;
+                $balamtgn = round($hlf_sr - $tenper,2);
+                $bl_amt += $balamtgn;
+                @endphp
+                    <tr>
+                        <td>{{ $hlfshre->union_branch }}</td>
+                        <td>{{ $totall }}</td>
+                        <td>{{ $hlfshre->bfamount }}</td>
+                        <td>{{ $hlfshre->insamt }}</td>
+                        <td>{{ round($hlfshre->subamt,2) }}</td>
+                        <td>{{ $hlf_sr }}</td>
+                        <td>{{ $tenper }}</td>
+                        <td>{{ $balamtgn }}</td>
+                        
+                    </tr> 
+                @endforeach
+                @endif
+                <tr style="font-weight:bold;">
+                
+                        <td>Total</td>
+                        <td>{{ $total_all }}</td>
+                        <td>{{ $bf }}</td>
+                        <td>{{ $ins }}</td>
+                        <td>{{ $sub }}</td>
+                        <td>{{ $hlf }}</td>
+                        <td>{{ $t_per }}</td>
+                        <td>{{ $bl_amt }}</td>
+                </tr>
 			@endforeach
+			
 		</tbody>
 		
 	</table>
@@ -187,27 +231,31 @@
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    //loader.showLoader();
-			var month_year = "{{$data['month_year']}}";
+		    var from_date = "{{$data['from_date']}}";
+			var to_date = "{{$data['to_date']}}";
 			var company_id = "{{$data['company_id']}}";
 			var branch_id = "{{$data['branch_id']}}";
 			var member_auto_id = "{{$data['member_auto_id']}}";
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
+			var join_type = "{{$data['join_type']}}";
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-takaful-moremembers-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ URL::to('/en/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
-						//console.log(res);
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='10%'>"+entry.companycode+"</td>";
-								table_row += "<td width='20%'>"+entry.branch_name+"</td>";
-								table_row += "<td width='25%'>"+entry.name+"</td>";
-								table_row += "<td width='20%'>"+entry.member_number+"</td>";
+							var table_row = "<tr><td width='19%'>"+entry.name+"</td>";
+								table_row += "<td width='10%'>"+entry.member_number+"</td>";
 								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-								table_row += "<td width='5%'>"+entry.total+"</td></tr>";
+								table_row += "<td width='10%'>"+entry.companycode+"</td>";
+								table_row += "<td width='21%'>"+entry.branch_name+"</td>";
+								table_row += "<td width='10%'>"+entry.doj+"</td>";
+								table_row += "<td width='10%'>"+entry.entryfee+"</td>";
+								table_row += "<td width='6%'>"+entry.insfee+"</td>";
+								table_row += "<td width='6%'>"+entry.subs+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
 						//loader.hideLoader();
@@ -215,7 +263,9 @@
 						
 					}
 				}
-			});	
+			});
+		    
+				
 	   }
 	});
 </script>

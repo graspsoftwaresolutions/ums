@@ -274,14 +274,20 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-takaful-more-report','ReportsController@takafulReportMore')->name('reports.takfulmore');
 	Route::get('get-takaful-moremembers-report','ReportsController@takafulReportloadMore');
 
+	//Variation By bank 
+	Route::get('variation_report','ReportsController@VariationReport')->name('reports.variation');
+	Route::get('newvartation_report','ReportsController@newVariationReport')->name('reports.variationnew');
+	Route::get('get-variation-report','ReportsController@VariationFiltereport')->name('reports.variationfilter');
+	Route::get('get-newvariation_report-more-report','ReportsController@variationBankReportloadMore');
+
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
 	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
 	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare');
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
-	Route::get('variation_report','ReportsController@VariationReport')->name('reports.variation');
-	Route::get('get-variation-report','ReportsController@VariationFiltereport')->name('reports.variationfilter');
+	
+	
 	Route::get('subscription_report','ReportsController@SubscriptionReport')->name('reports.subscription');
 	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
