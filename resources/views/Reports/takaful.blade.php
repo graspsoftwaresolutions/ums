@@ -147,38 +147,7 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<iframe src="{{ route('reports.takaful',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
-		<div class="card hide">
-			<div class="card-content">
-				<table id="page-length-option" class="display" width="100%">
-					<thead>
-						<tr>
-							<th width="20%">{{__('Bank')}}</th>
-							<th width="20%">{{__('Branch')}}</th>
-							<th width="20%">{{__('Name')}}</th>
-							<th width="10%">{{__('Number')}}</th>
-							<th width="10%">{{__('NRIC')}}</th>
-							<th>{{__('Insurance Amount(RM)')}}</th>
-						</tr> 
-					</thead>
-					<tbody>
-						
-						@foreach($data['member_view'] as $member)
-							<tr>
-								<td>{{ $member->companycode }}</td>
-								<td>{{ $member->branch_name }}</td>
-								<td>{{ $member->name }}</td>
-								<td>{{ $member->member_number }}</td>
-								<td>{{ $member->new_ic }}</td>
-								<td>{{ $member->total }}</td>
-								
-							</tr> 
-						@endforeach
-					</tbody>
-					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
-				</table> 
-			</div>
-		</div>
+		<iframe src="{{ route('reports.takafulnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
 		</br>
 		</br>
 	</div>
@@ -378,8 +347,10 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
 			//loader.showLoader();
+			$("#memberoffset").val("{{$data['data_limit']}}");
+			$("#myframe").attr("src", "{{ URL::to('/en/get-takaful-more-report') }}?offset=0"+searchfilters,);
 			$('#page-length-option tbody').empty();
-			loader.showLoader();
+			/* //loader.showLoader();
 			$("#memberoffset").val("{{$data['data_limit']}}");
 			$.ajax({
 				type: "GET",
@@ -403,8 +374,8 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 						
 					}
 				}
-			});
-			//$("#search").attr('disabled',false);
+			}); */
+			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
 		}

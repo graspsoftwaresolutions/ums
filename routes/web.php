@@ -262,16 +262,22 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	//Reports
 	
+	//New Member Report
 	Route::get('newmember_report','ReportsController@newMemberReport')->name('reports.newmembers');
-	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
-	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
+	Route::get('newmembers_report','ReportsController@newMembersReport')->name('reports.membersnew');
 	Route::get('get-new-members-report','ReportsController@membersNewReportMore')->name('reports.newmoremembers');
 	Route::get('get-new-moremembers-report','ReportsController@membersNewReportloadMore');
+
+	//Takaful Report
+	Route::get('takaful_report','ReportsController@takafulnewReport')->name('reports.takaful');
+	Route::get('newtakaful_report','ReportsController@newTakaulReport')->name('reports.takafulnew');
+	Route::get('get-takaful-more-report','ReportsController@takafulReportMore')->name('reports.takfulmore');
+	Route::get('get-takaful-moremembers-report','ReportsController@takafulReportloadMore');
+
+	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
+	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
-	Route::get('get-takaful-report','ReportsController@takafulReport')->name('reports.takaful');
-	Route::get('get-takaful-more-report','ReportsController@takafulReportMore')->name('reports.takfulmore');
-	
 	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare');
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
 	Route::get('variation_report','ReportsController@VariationReport')->name('reports.variation');
@@ -279,8 +285,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription_report','ReportsController@SubscriptionReport')->name('reports.subscription');
 	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
-	Route::get('newmembers_report','ReportsController@newMembersReport')->name('reports.membersnew');
-	Route::get('takaful_report','ReportsController@takafulnewReport')->name('reports.takaful');
+	
+	
 	
 	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
 	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');

@@ -97,8 +97,6 @@
 		.tbody-area{
 			color:#000;
 		}
-		
-		
 	</style>
 	<script type="text/javascript">
 		function updateIframe(){
@@ -139,23 +137,23 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th width="20%">{{__('Bank')}}</th>
+				<th width="10%">{{__('Bank')}}</th>
 				<th width="20%">{{__('Branch')}}</th>
-				<th width="20%">{{__('Name')}}</th>
-				<th width="10%">{{__('Number')}}</th>
+				<th width="25%">{{__('Name')}}</th>
+				<th width="20%">{{__('Number')}}</th>
 				<th width="10%">{{__('NRIC')}}</th>
-				<th>{{__('Insurance Amount(RM)')}}</th>
+				<th width="5%">{{__('Insurance Amount(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
 					<tr>
-						<td>{{$member->companycode}}</td>
-						<td>{{$member->branch_name}}</td>
-						<td>{{$member->name}}</td>
-						<td>{{$member->member_number}}</td>
-						<td>{{$member->new_ic}}</td>
-						<td>{{$member->total}}</td>
+						<td width="10%">{{$member->companycode}}</td>
+						<td width="20%">{{$member->branch_name}}</td>
+						<td width="25%">{{$member->name}}</td>
+						<td width="20%">{{$member->member_number}}</td>
+						<td width="10%">{{$member->new_ic}}</td>
+						<td width="5%">{{$member->total}}</td>
 					</tr> 
 			@endforeach
 		</tbody>
@@ -188,31 +186,27 @@
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    //loader.showLoader();
-		    var from_date = "{{$data['from_date']}}";
-			var to_date = "{{$data['to_date']}}";
+			var month_year = "{{$data['month_year']}}";
 			var company_id = "{{$data['company_id']}}";
 			var branch_id = "{{$data['branch_id']}}";
 			var member_auto_id = "{{$data['member_auto_id']}}";
-			var join_type = "{{$data['join_type']}}";
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ URL::to('/en/get-takaful-moremembers-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
+						//console.log(res);
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='19%'>"+entry.name+"</td>";
-								table_row += "<td width='10%'>"+entry.member_number+"</td>";
+							var table_row = "<tr><td width='10%'>"+entry.companycode+"</td>";
+								table_row += "<td width='20%'>"+entry.branch_name+"</td>";
+								table_row += "<td width='25%'>"+entry.name+"</td>";
+								table_row += "<td width='20%'>"+entry.member_number+"</td>";
 								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-								table_row += "<td width='10%'>"+entry.companycode+"</td>";
-								table_row += "<td width='21%'>"+entry.branch_name+"</td>";
-								table_row += "<td width='10%'>"+entry.doj+"</td>";
-								table_row += "<td width='10%'>"+entry.entryfee+"</td>";
-								table_row += "<td width='6%'>"+entry.insfee+"</td>";
-								table_row += "<td width='6%'>"+entry.subs+"</td></tr>";
+								table_row += "<td width='5%'>"+entry.total+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
 						});
 						//loader.hideLoader();
@@ -220,9 +214,7 @@
 						
 					}
 				}
-			});
-		    
-				
+			});	
 	   }
 	});
 </script>
