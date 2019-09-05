@@ -184,7 +184,7 @@
 																	</div> 
 																	<div class="input-field col s12 m6" style="display:none;" id="member_old_div">
 																		<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
-																		<input type="text" name="old_member_id" value="" id="old_member_id" class="autocomplete">
+																		<input type="text" name="old_member_id" value="" id="old_member_id" class="autocomplete hide">
 																		<label for="old_mumber_number">{{__('Old Number') }}</label>
 																		<span> 
 																		</span>
