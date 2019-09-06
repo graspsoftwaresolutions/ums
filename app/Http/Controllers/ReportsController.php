@@ -915,6 +915,7 @@ class ReportsController extends Controller
         $data['date'] = date('M/Y');
         return view('reports.halfshare')->with('data',$data);
       // return view('reports.iframe_halfshare')->with('data',$data);
+      
     }
     public function newahalfshareReport($lang,Request $request)
     {
@@ -929,7 +930,7 @@ class ReportsController extends Controller
                  ->get();              
          $data['half_share'] = $half_s;
          $data['date'] = date('M/Y');
- 
+
          $data['month_year']='';
          $data['offset']=0;
          $data['data_limit']= '';
