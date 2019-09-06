@@ -764,7 +764,7 @@ class SubscriptionController extends CommonController
     }
 	
 	public function memberHistory($lang,$id){
-	$id = Crypt::decrypt($id);
+		$id = Crypt::decrypt($id);
     
         $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number','s.font_color')
 											->leftjoin('designation as d','d.id','=','m.designation_id')
@@ -778,12 +778,37 @@ class SubscriptionController extends CommonController
                                             ->where('m.id','=',$id)
                                             ->first();
 
-        $data['member_history'] = DB::table($this->membermonthendstatus_table.' as ms')
+        $data['last_month_record'] = DB::table($this->membermonthendstatus_table.' as ms')
                                             ->where('ms.MEMBER_CODE','=',$id)
-                                            ->OrderBy('ms.id','asc')
+                                            ->OrderBy('ms.StatusMonth','desc')
+                                            ->first();
+		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
+		
+		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+											'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
+											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+											->where('ms.MEMBER_CODE','=',$id)
+											->offset(0)
+											->limit($this->limit)
                                             ->get();
+		
+		if($old_member_id!=""){
+			$data['previous_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+											'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
+											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+											->where('ms.MEMBER_CODE','=',$old_member_id)
+											->offset(0)
+											->limit($this->limit)
+                                            ->get();
+		}else{
+			$data['previous_member_history'] = [];
+		}
                                             
-           
+        $data['data_limit'] = $this->limit;
+        $data['old_member_id'] = $old_member_id;
+        $data['member_id'] = $id;
         return view('subscription.member_history')->with('data',$data);
     }
     //Arrear 
@@ -978,7 +1003,7 @@ class SubscriptionController extends CommonController
 					}
 				}else{
 					$approval_status= 0;
-					$approval_masg= 'Please check anything to update';
+					//$approval_masg= 'Update';
 				}
 				
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Not Matched', 'updated_by' => Auth::user()->id]);
@@ -1011,7 +1036,7 @@ class SubscriptionController extends CommonController
 						$approval_status= 0;
 					}
 				}else{
-					$approval_masg= 'Please check anything to update';
+					//$approval_masg= 'Please check anything to update';
 				}
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
 			}

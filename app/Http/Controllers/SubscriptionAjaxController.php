@@ -206,9 +206,9 @@ class SubscriptionAjaxController extends CommonController
                 $actions ='';
                 $baseurl = URL::to('/');
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.$enc_id.'&branch_id='.Crypt::encrypt($branchid);
-                $histry = $memberid!='' ? route('subscription.submember', [app()->getLocale(),$enc_id]) : '#';
+                $histry = $memberid!='' ? route('member.history', [app()->getLocale(),$enc_id]) : '#';
                 if($memberid!=''){
-                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#FF69B4;'>history</i></a>";
+                    $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
                     $actions .="<a style='float: left; margin-left: 10px;' title='Member Transcation'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
                 }  
                 $nestedData['options'] = $actions;
@@ -855,5 +855,45 @@ class SubscriptionAjaxController extends CommonController
         //$queries = DB::getQueryLog();
                             //  dd($queries);
          return response()->json($res);
+    }
+
+    public function membershistoryMore($lang,Request $request)
+    {
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        
+        $offset = $request->input('offset');
+        $memberid = $request->input('member_id');
+        $load_type = $request->input('load_type');
+		
+        $data['data_limit']=$this->limit;
+
+        $data['member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid',DB::raw("DATE_FORMAT(`ms`.`StatusMonth`, '%b /%Y') as StatusMonth"),
+											'ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS',DB::raw("DATE_FORMAT(`ms`.`LASTPAYMENTDATE`, '%b /%Y') as LASTPAYMENTDATE"),'ms.TOTALMONTHSPAID','ms.SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number',DB::raw("ifnull(round(ms.SUBSCRIPTIONDUE+ms.TOTALMONTHSPAID),0) as total"))
+											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+											->where('ms.MEMBER_CODE','=',$memberid)
+											->offset($offset)
+											->limit($this->limit)
+                                            ->get();
+		
+		// $company_list =  $company_view->get();
+		// foreach($company_list as $ckey => $company){
+        //     foreach($company as $newkey => $newvalue){
+        //         $data['company_view'][$ckey][$newkey] = $newvalue;
+        //     }
+			
+        //     $data['company_view'][$ckey]['total_members'] = $total_members;
+        //     $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
+        //     $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
+		// 	$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
+        // }
+    
+        echo json_encode($data);
     }
 }

@@ -306,7 +306,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	
 	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
-	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');	
+	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');
+	Route::get('get-members-history','SubscriptionAjaxController@membershistoryMore')->name('subscription.history');
+	
+	
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
