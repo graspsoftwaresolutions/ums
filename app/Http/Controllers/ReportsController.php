@@ -584,11 +584,10 @@ class ReportsController extends Controller
 		->get();
 		//dd($members);
         $data['member_view'] = $members;
-        $data['month_year']='';
+        $data['month_year']=date('M/Y');
         $data['company_id']='';
         $data['branch_id']='';
         $data['member_auto_id']='';
-        $data['join_type']='';
         $data['offset']=0;
        return view('reports.iframe_takaful')->with('data',$data);  
     }
