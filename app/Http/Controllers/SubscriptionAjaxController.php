@@ -425,7 +425,7 @@ class SubscriptionAjaxController extends CommonController
             {
                 $nestedData['month_year'] = date('M/Y',strtotime($company->date));
                 $nestedData['company_name'] = $company->company_name;
-				$date = date('M/Y',strtotime($company->date));
+                $date = date('M/Y',strtotime($company->date));
                 $company_enc_id = Crypt::encrypt($company->id);
                 $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
 				
@@ -753,6 +753,40 @@ class SubscriptionAjaxController extends CommonController
        echo json_encode($data);  
     }
     public function getMoreSubscription(Request $request){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        if($user_role=='union'){
+			$company_ids = DB::table('company as c')
+							->pluck('c.id');
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.union_branch_id', '=',$union_branch_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else if($user_role=='company'){
+			$user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else if($user_role=='company-branch'){
+			$user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else{
+			$company_ids = [];
+        }
+        
         $offset = $request->input('offset');
         $filter_date = $request->input('filter_date');
         $member_status = $request->input('member_status');
@@ -790,7 +824,8 @@ class SubscriptionAjaxController extends CommonController
 			
 			if($member_auto_id!=0 && $member_auto_id!=""){
 				$members_qry = $members_qry->where('m.id','=',$member_auto_id);
-			}
+            }
+            $members_qry = $members_qry->whereIn('c.id', $company_ids);
 			$members_qry = $members_qry->where('sm.Date','=',$defaultdate);
 			$members_data = $members_qry->offset($offset)
               ->limit($data['data_limit'])

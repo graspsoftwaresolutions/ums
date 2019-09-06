@@ -1031,12 +1031,7 @@
 																	&nbsp;
 																</div>
 																
-																<div class="col s4 m4 right">
-																	Last Paid Date: 
-																	<div class="input-field inline" style="margin:0;">
-																		<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{ date('d/M/Y',strtotime($lastmonthendrecord->LASTPAYMENTDATE)) }}@endif" readonly style="height:2rem;">
-																	</div>
-																</div>
+																
                                                             </div>
 															
                                                         </div>
@@ -1228,11 +1223,11 @@
                                         </fieldset>
                                         @endif
 										<div class="row">
-											<div class="col s12 m12 center">
+											<div class="col s12 m8 center">
 													@php
 														$color = CommonHelper::getStatusColor($values->status_id);
 													@endphp
-													<h4 style="color:{{$color}}">{{ CommonHelper::getStatusName($values->status_id) }} 
+													<h4 style="color:{{$color}};font-size:2rem;">{{ CommonHelper::getStatusName($values->status_id) }} 
 													@if(!empty($lastmonthendrecord))
 														@if($lastmonthendrecord->TOTALMONTHSDUE>0)
 															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending
@@ -1243,6 +1238,12 @@
 														, 0 Arrears pending
 													@endif
 													</h4>
+											</div>
+											<div class="col s4 m4 right" style="padding-top: 15px;">
+												Last Paid Date: 
+												<div class="input-field inline" style="margin:0;">
+													<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{ date('d/M/Y',strtotime($lastmonthendrecord->LASTPAYMENTDATE)) }}@endif" readonly style="height:2rem;">
+												</div>
 											</div>
 										</div>
                                     </form>
