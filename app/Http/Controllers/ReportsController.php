@@ -470,10 +470,50 @@ class ReportsController extends Controller
 		//dd($data['member_count']);
         return view('Reports.statistics')->with('data',$data);  
     }
-    
-    public function statisticsReportMore(Request $request)
+    public function newStatisticReport($lang,Request $request)
     {
-		
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
+
+			$month_year = '';
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+			  $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+			  $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{	
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+
+        $members = DB::table('membership as m')
+        ->select('m.gender','c.branch_shortcode','m.doj')
+        ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+        ->leftjoin('status as s','s.id','=','m.status_id');
+        
+        if($monthno!="" && $yearno!=""){
+            $members = $members->where(DB::raw('month(m.doj)'),'=',$monthno);
+            $members = $members->where(DB::raw('year(m.doj)'),'=',$yearno);
+        }
+       
+		$data['month_year'] = date('M/Y');
+		$data['unionbranch_id'] = '';
+		$data['company'] = '' ;
+        $data['branch_id'] = '';
+        $data['data_limit'] = '';
+        $data['member_count'] =  $members->GroupBY('c.id')
+							->where(DB::raw('month(m.doj)'),'=',$monthno)  
+							->where(DB::raw('year(m.doj)'),'=',$yearno)->get(); 
+		      
+		//dd($data['member_count']);
+        return view('Reports.iframe_statistics')->with('data',$data); 
+    }
+    
+    public function statisticsReportMore($lang,Request $request)
+    {
+        $offset = $request->input('offset');
         $month_year = $request->input('month_year');
         $company_id = $request->input('company_id');
         $branch_id = $request->input('branch_id');
@@ -521,8 +561,11 @@ class ReportsController extends Controller
 		$data['month_year'] = $month_year;
 		$data['unionbranch_id'] = $unionbranch_id;
 		$data['company'] = $request->input('company_id');
-		$data['branch_id'] = $request->input('branch_id');
-        return view('Reports.statistics')->with('data',$data);  
+        $data['branch_id'] = $request->input('branch_id');
+        $data['data_limit']=$this->limit;
+        $data['offset']=$offset;
+        //return view('Reports.statistics')->with('data',$data); 
+        return view('reports.iframe_statistics')->with('data',$data);   
     }
 	public function takafulnewReport()
 	{
@@ -635,11 +678,12 @@ class ReportsController extends Controller
               //->dump()
               ->get();
 		$data['member_view'] = $members;
-        $data['data_limit']=$this->limit;
+       
         $data['month_year']=$month_year;
         $data['company_id']=$company_id;
         $data['branch_id']=$branch_id;
         $data['member_auto_id']=$member_auto_id;
+        $data['data_limit']=$this->limit;
         $data['offset']=$offset;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
