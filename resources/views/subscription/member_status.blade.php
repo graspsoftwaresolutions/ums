@@ -618,6 +618,7 @@ $(document).ready(function(){
 			success: function(result) {
 				console.log(result);
 				$(".match_case_row").addClass('hide');
+				$(".match_case_row").css('pointer-events','unset');
 				$("#view_member_name").html(result.up_member_data.Name);
 				$("#view_nric").html(result.up_member_data.NRIC);
 				$("#view_paid").html(result.up_member_data.Amount);
@@ -780,8 +781,10 @@ $(document).on('submit','#approvalformValidate',function(event){
 				var badge_color = result.approval_status == 1 ? 'green' : 'red';
 				var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
 				$("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
-				$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
-				$("#member_status_"+result.sub_member_auto_id).html(result.member_status);
+				if(result.member_match==2){
+					$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
+					$("#member_status_"+result.sub_member_auto_id).html(result.member_status);
+				}
 				M.toast({
 					html: result.message
 				});
