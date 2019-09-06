@@ -297,16 +297,28 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-new-halfsharefilter-report','ReportsController@newHalfshareReportfilter')->name('reports.newhalfsharefilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 
+	//Statstics iframe report 
+	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
+	Route::get('newstatistic_report','ReportsController@newStatisticReport')->name('reports.statsticsnew');
+	Route::get('get-statstics-more-report','ReportsController@statisticsReportMore')->name('reports.statsticmore');
+	Route::get('get-statstic-more-report','ReportsController@statisticReportloadMore');
+
+	//Members Iframe Report 
+	//reports.membersnewactive
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
-	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
+	Route::get('membersnewactive/{parameter}','ReportsController@membersNewActiveReport')->name('reports.membersnewactive');
+	
+	Route::get('get-membersstatus-more-report','ReportsController@membersReportMore')->name('reports.moremembers');
+	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
+
 	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
 	
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
 	
 	
-	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
-	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');
+	
+	//Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');
 	Route::get('get-members-history','SubscriptionAjaxController@membershistoryMore')->name('subscription.history');
 	
 	

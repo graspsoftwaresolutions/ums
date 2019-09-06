@@ -34,6 +34,17 @@
 		.sidenav-main{
 			z-index:9999;
 		}
+		.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 	@endif
 </style>
 @endsection
@@ -55,6 +66,7 @@
 						New members
 					@endif
 				]
+				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
 				@php
 					
@@ -84,10 +96,12 @@
 						$companylist = CommonHelper::getCompanyList($companyid);
 						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
 					} 
+
 					
 				@endphp
 				<form method="post" id="filtersubmit" action="">
 					@csrf  
+					<div id="hidesearch" class="row">
 					<div class="row">                          
 						<div class="col s12 m6 l3">
 							<label for="month_year">{{__('Month and Year')}}</label>
@@ -135,10 +149,15 @@
 							</div>
 						</div>
 					</div>
+					</div>
 				</form>  
 			</div>
 		</div>
-		<div class="card">
+		<div class="row">
+		<div class="col s12">
+			<iframe src="{{ route('reports.membersnewactive',[app()->getLocale(), $data['status_id']])  }}" id="myframe" height="400px" width="100%"></iframe>
+			
+		<div class="card hide">
 			<div class="card-content">
 				<table id="page-length-option" class="display ">
 					<thead>
@@ -174,6 +193,8 @@
 				
 			</div>
 			
+		</div>
+		</div>
 		</div>
 		</br>
 		</br>
@@ -366,7 +387,6 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 								table_row += "<td>"+entry.doj+"</td>";
 								table_row += "<td>"+entry.levy+"</td></tr>";
 								$('#page-length-option tbody').append(table_row);
-							
 						});
 					}else{
 						
@@ -387,33 +407,37 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 		if(month_year!="" || company_id!="" || branch_id!="" || member_auto_id!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
 			$("#memberoffset").val("{{$data['data_limit']}}");
+			
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-membersstatus-more-report') }}?offset=0"+searchfilters,);
+
 			//loader.showLoader();
-			$('#page-length-option tbody').empty();
-			loader.showLoader();
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.gender+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.levy+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						loader.hideLoader();
-					}else{
+			// $('#page-length-option tbody').empty();
+			// loader.showLoader();
+			// $.ajax({
+			// 	type: "GET",
+			// 	dataType: "json",
+			// 	url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
+			// 	success:function(res){
+			// 		if(res)
+			// 		{
+			// 			$.each(res,function(key,entry){
+			// 				var table_row = "<tr><td>"+entry.name+"</td>";
+			// 					table_row += "<td>"+entry.member_number+"</td>";
+			// 					table_row += "<td>"+entry.new_ic+"</td>";
+			// 					table_row += "<td>"+entry.gender+"</td>";
+			// 					table_row += "<td>"+entry.companycode+"</td>";
+			// 					table_row += "<td>"+entry.branch_name+"</td>";
+			// 					table_row += "<td>"+entry.doj+"</td>";
+			// 					table_row += "<td>"+entry.levy+"</td></tr>";
+			// 					$('#page-length-option tbody').append(table_row);
+			// 			});
+			// 			loader.hideLoader();
+			// 		}else{
 						
-					}
-				}
-			});
+			// 		}
+			// 	}
+			// });
+			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
 		}

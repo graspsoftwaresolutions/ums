@@ -34,6 +34,18 @@
 		.sidenav-main{
 			z-index:9999;
 		}
+
+		.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 	
 </style>
 @endsection
@@ -48,10 +60,9 @@
 				<h4 class="card-title">
 				
 				{{__('statistics Filter')}} 
-				
+				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
-				@php
-					
+				@php	
 					$userid = Auth::user()->id;
 					$get_roles = Auth::user()->roles;
 					$user_role = $get_roles[0]->slug;
@@ -83,9 +94,9 @@
 					} 
 					//dd($data['branch_id']);
 				@endphp
-				<form method="post" id="filtersubmit" action="{{ route('statistic_filter',app()->getLocale()) }}">
-                                                              
+				<form method="post" id="filtersubmit" action="">                                         
 					@csrf  
+					<div id="hidesearch" class="row">    
 					<div class="row">    
 						<div class="col s12 m6 l3">
 							<label for="month_year">{{__('Month')}}</label>
@@ -143,6 +154,7 @@
 							</div>
 						</div>
 					</div>
+					</div>
 				</form>  
 			</div>
 		</div>
@@ -150,8 +162,8 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-	
-		<div class="card">
+	<iframe src="{{ route('reports.statsticsnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+		<div class="card hide">
 		
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">
@@ -278,6 +290,7 @@
 		}
 	}
 @endphp
+@php $data['data_limit'] = '0'; @endphp  
 @endsection
 @section('footerSection')
 <!--<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script> -->
@@ -401,70 +414,31 @@ $("#member_statistic_sidebar_a_id").addClass('active');
 			  error.insertAfter(element);
 			  }
 			}
-	  });
-	  
-	  
-	// 	 $(document).on('submit','form#filtersubmit',function(event){
-	// 	event.preventDefault();
-	// 	$("#search").attr('disabled',true);
-	// 	var month_year = $("#month_year").val();
-	// 	var company_id = $("#company_id").val();
-	// 	var branch_id = $("#branch_id").val();
-	// 	var unionbranch_id = $('#unionbranch_id').val();
+	  });	
+	$(document).on('submit','form#filtersubmit',function(event){
 		
-	// 	$('#page-length-option tbody').empty();
-	// 	if(month_year!=""){
-	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&unionbranch_id='+unionbranch_id;
-	// 		//loader.showLoader();
-	// 		$('#page-length-option tbody').empty();
-	// 		loader.showLoader();
-	// 		$.ajax({
-	// 			type: "GET",
-	// 			dataType: "json",
-	// 			url : "{{ URL::to('/en/get-statistics-more-report') }}?offset=0"+searchfilters,
-	// 			success:function(res){
-	// 				if(res)
-	// 				{
-	// 					$.each(res,function(key,entry){
-	// 						var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-	// 						// var table_row = "<tr><td>"+entry.short_code+"</td>";
-							
-								
-	// 						$('#page-length-option tbody').append(table_row);
-	// 					});
-	// 					loader.hideLoader();
-	// 					$("#search").attr('disabled',false);
-	// 				}else{
-						
-	// 				}
-	// 			}
-	// 		});
-	// 		//$("#search").attr('disabled',false);
-	// 	}else{
-	// 		alert("please choose any filter");
-	// 	}
-	// 	//$("#submit-download").prop('disabled',true);
-	// });   
+		event.preventDefault();
+		$("#search").attr('disabled',true);
+		var month_year = $("#month_year").val();
+		var company_id = $("#company_id").val();
+		var branch_id = $("#branch_id").val();
+		var unionbranch_id = $('#unionbranch_id').val();
+		
+		$('#page-length-option tbody').empty();
+		if(month_year!=""){
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&unionbranch_id='+unionbranch_id;
+			//loader.showLoader();
+			$("#memberoffset").val("{{$data['data_limit']}}"); 
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-statstics-more-report') }}?offset=0"+searchfilters,);
+			//$('#page-length-option tbody').empty();
+			 //loader.showLoader();
+		
+			$("#search").attr('disabled',false);
+		}else{
+			alert("please choose any filter");
+		}
+		//$("#submit-download").prop('disabled',true);
+	});
 
 	$('#clear').click(function(){
 	$('#month_year').val("");	
