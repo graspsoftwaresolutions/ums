@@ -205,7 +205,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,
 			serviceUrl: "{{ URL::to('/get-company-member-list') }}?serachkey="+ $("#member_search").val(),
-			params: { 
+			params: {
 						company_id:  function(){ return $("#company_id").val();  },
 						branch_id:  function(){ return $("#branch_id").val();  } 
 					},
@@ -227,7 +227,6 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 			$("#member_search").val('');
 		});
-	
 	});
 	$('#company_id').change(function(){
 	   var CompanyID = $(this).val();

@@ -139,14 +139,14 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-            <th>{{__('Union Branch Name')}}</th>
-                <th>{{__('Total')}}</th>
-                <th>{{__('BF')}}</th>
-                <th>{{__('INS')}}</th>
-                <th>{{__('SUBS')}}</th>
-                <th>{{__('1/2 Share')}}</th>
-                <th>{{__('10%ED - Fund')}}</th>
-                <th>{{__('Total Amount')}}</th>
+				<th width='15%'>{{__('Union Branch Name')}}</th>
+				<th width='10%'>{{__('Total')}}</th>
+				<th width='10%'>{{__('BF')}}</th>
+				<th width='10%'>{{__('INS')}}</th>
+				<th width='10%'>{{__('SUBS')}}</th>
+				<th width='10%'>{{__('1/2 Share')}}</th>
+				<th width='10%'>{{__('10%ED - Fund')}}</th>
+				<th width='10%'>{{__('Total Amount')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
@@ -176,30 +176,30 @@
                 $bl_amt += $balamtgn;
                 @endphp
                     <tr>
-                        <td>{{ $hlfshre->union_branch }}</td>
-                        <td>{{ $totall }}</td>
-                        <td>{{ $hlfshre->bfamount }}</td>
-                        <td>{{ $hlfshre->insamt }}</td>
-                        <td>{{ round($hlfshre->subamt,2) }}</td>
-                        <td>{{ $hlf_sr }}</td>
-                        <td>{{ $tenper }}</td>
-                        <td>{{ $balamtgn }}</td>
+                        <td style="width:170px !important; border:1px ;">{{ $hlfshre->union_branch }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $totall }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $hlfshre->bfamount }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $hlfshre->insamt }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ round($hlfshre->subamt,2) }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $hlf_sr }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $tenper }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $balamtgn }}</td>
                         
                     </tr> 
                 @endforeach
                 @endif
                 <tr style="font-weight:bold;">
                 
-                        <td>Total</td>
-                        <td>{{ $total_all }}</td>
-                        <td>{{ $bf }}</td>
-                        <td>{{ $ins }}</td>
-                        <td>{{ $sub }}</td>
-                        <td>{{ $hlf }}</td>
-                        <td>{{ $t_per }}</td>
-                        <td>{{ $bl_amt }}</td>
+                        <td style="width:200px !important; border:1px  ;">Total</td>
+                        <td style="width:130px !important; border:1px ;">{{ $total_all }}</td>
+                        <td style="width:130px !important; border:1px ;">{{ $bf }}</td>
+                        <td style="width:140px !important; border:1px  ;">{{ $ins }}</td>
+                        <td style="width:130px !important; border:1px  ;">{{ $sub }}</td>
+                        <td style="width:130px !important; border:1px  ;">{{ $hlf }}</td>
+                        <td style="width:150px !important; border:1px  ;">{{ $t_per }}</td>
+                        <td style="width:140px !important; border:1px;">{{ $bl_amt }}</td>
                 </tr>
-			@endforeach
+	
 			
 		</tbody>
 		
@@ -231,41 +231,33 @@
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
 		    //loader.showLoader();
-		    var from_date = "{{$data['from_date']}}";
-			var to_date = "{{$data['to_date']}}";
-			var company_id = "{{$data['company_id']}}";
-			var branch_id = "{{$data['branch_id']}}";
-			var member_auto_id = "{{$data['member_auto_id']}}";
-			var join_type = "{{$data['join_type']}}";
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+		    var month_year = $("#month_year").val();
+			var searchfilters = '&month_year='+month_year;
 		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url : "{{ URL::to('/en/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
+				url : "{{ url(app()->getLocale().'/get-new-morehalfshare-report') }}?offset="+lastoffset+searchfilters,
 				success:function(res){
 					if(res)
 					{
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='19%'>"+entry.name+"</td>";
-								table_row += "<td width='10%'>"+entry.member_number+"</td>";
-								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-								table_row += "<td width='10%'>"+entry.companycode+"</td>";
-								table_row += "<td width='21%'>"+entry.branch_name+"</td>";
-								table_row += "<td width='10%'>"+entry.doj+"</td>";
-								table_row += "<td width='10%'>"+entry.entryfee+"</td>";
-								table_row += "<td width='6%'>"+entry.insfee+"</td>";
-								table_row += "<td width='6%'>"+entry.subs+"</td></tr>";
+							var table_row = "<tr><td width='19%'>"+Total+"</td>";
+								table_row += "<td width='10%'>"+entry.total_all+"</td>";
+								table_row += "<td width='10%'>"+entry.bf+"</td>";
+								table_row += "<td width='10%'>"+entry.ins+"</td>";
+								table_row += "<td width='21%'>"+entry.sub+"</td>";
+								table_row += "<td width='10%'>"+entry.hlf+"</td>";
+								table_row += "<td width='10%'>"+entry.t_per+"</td>";
+								table_row += "<td width='6%'>"+entry.bl_amt+"</td>";
 								$('#page-length-option tbody').append(table_row);
 						});
-						//loader.hideLoader();
+						loader.hideLoader();
 					}else{
 						
 					}
 				}
-			});
-		    
-				
+			});		
 	   }
 	});
 </script>

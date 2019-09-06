@@ -12,6 +12,19 @@
     href="{{ asset('public/assets/custom_respon.css') }}">
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
+<style>
+	.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -26,7 +39,7 @@
                         <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
                             <!-- Search for small screen-->
                             <div class="container">
-                                <div class="row">
+                              <div class="row">
                                     <div class="col s10 m6 l6">
                                         <h4 class="breadcrumbs-title mt-0 mb-0"><strong>{{__('Financial Half share Report') }}</strong></h4>
                                         <ol class="breadcrumbs mb-0">
@@ -42,16 +55,16 @@
                             </div>
                         </div>
 						<div class="col s12">
-							<div class="card">
+							<div class="card ">
 								<div class="card-content">
 									<h4 class="card-title">
 									
 									{{__('Date Filter')}} 
-									
-									</h4> 
-									
+									<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
+									</h4>
 									<form method="post" id="filtersubmit" action="{{ route('reports.filterhalfshare', app()->getLocale())  }}">
-										@csrf  
+										@csrf
+										<div id="hidesearch" class="row">  
 										<div class="row">                          
 											<div class="col s12 m6 l3">
 												<label for="month_year">{{__('Month and Year')}}</label>
@@ -68,21 +81,23 @@
 												</div>
 											</div>
 										</div>
+										</div>
 									</form>  
 								</div>
 							</div>
 							
 						</div>
                         <div class="col s12">
-                            <div class="card">
+						<iframe src="{{ route('reports.halfsharenew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+                            <div class="card hide">
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Financial Half share Report') }}</h4>
-                                    <div class="row">
+                                    <div class="row ">
                                         <div class="col s12">
                                             <table id="page-length-option" class="display">
                                                 <thead>
 												<tr>
-													<th>{{__('Union Branch Name')}}</th>
+													<th >{{__('Union Branch Name')}}</th>
 													<th>{{__('Total')}}</th>
 													<th>{{__('BF')}}</th>
 													<th>{{__('INS')}}</th>
@@ -132,7 +147,6 @@
 													@endforeach
 													@endif
 													<tr style="font-weight:bold;">
-													
 															<td>Total</td>
 															<td>{{ $total_all }}</td>
 															<td>{{ $bf }}</td>
@@ -143,16 +157,12 @@
 															<td>{{ $bl_amt }}</td>
 													</tr>
 												</tbody>
-
-
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                     
-
                     </div>
                     <!-- END: Page Main-->
                     @include('layouts.right-sidebar')
@@ -161,6 +171,7 @@
         </div>
     </div>
 </div>
+@php $data['data_limit'] ='25'; @endphp
 @endsection
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript">
@@ -200,6 +211,25 @@
 				//getDataStatus();
 			} 
 		 });
+		$(document).on('submit','form#filtersubmit',function(event){
+		event.preventDefault();
+		
+		$("#search").attr('disabled',true);
+		var month_year = $("#month_year").val();
+
+		//$('#page-length-option tbody').empty();
+		if(month_year!=""){
+			var searchfilters = '&month_year='+month_year;
+			$("#memberoffset").val("{{$data['data_limit']}}");
+			
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-halfshare-report') }}?offset=0"+searchfilters,);
+			$("#search").attr('disabled',false);
+		}else{
+			alert("please choose any filter");
+		}
+		//$("#submit-download").prop('disabled',true);
+	});
+
     $('#page-length-option').DataTable( {
 		"paging":   false,
         "info":     false,
@@ -243,7 +273,7 @@
             }
         ]
     } );
-} );
+});
 
 </script>
 @endsection

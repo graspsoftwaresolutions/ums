@@ -238,21 +238,7 @@ class ReportsController extends Controller
         return view('reports.takaful')->with('data',$data);  
     }
 	
-	 public function halfshareReport(Request $request, $lang)
-    {
-       $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
-       DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
-       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
-                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
-                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
-                ->where(DB::raw('month(mend.statusmonth)'),'=',date('m'))  
-                ->where(DB::raw('year(mend.statusmonth)'),'=',date('Y'))
-                ->groupBy('cb.union_branch_id')
-                ->get();              
-       $data['half_share'] = $half_s;
-       $data['date'] = date('M/Y');
-        return view('reports.halfshare')->with('data',$data);  
-	}
+	
 	
 	public function VariationFiltereport(Request $request, $lang)
     {
@@ -302,33 +288,7 @@ class ReportsController extends Controller
         return view('reports.iframe_variationbank')->with('data',$data);
 	}
 	
-	public function filterHalfShareReport(Request $request, $lang){
-		$month_year = $request->input('month_year');
-		$monthno = '';
-        $yearno = '';
-        if($month_year!=""){
-			$fmmm_date = explode("/",$month_year);
-			$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-			$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-			$data['date'] = $month_year;
-        }else{
-			$monthno = date('m');
-			$yearno = date('Y');
-			$data['date'] = date('M/Y');
-		}
-		$half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
-		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
-       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
-                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
-                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
-                ->where(DB::raw('month(mend.statusmonth)'),'=',$monthno)  
-                ->where(DB::raw('year(mend.statusmonth)'),'=',$yearno)
-                ->groupBy('cb.union_branch_id')
-                ->get();              
-		$data['half_share'] = $half_s;
-        return view('reports.halfshare')->with('data',$data); 
 
-	}
 	   
     public function newMembersReport(Request $request){
         //return $request->all();
@@ -938,5 +898,119 @@ class ReportsController extends Controller
         echo json_encode($data);
     }
     //Subscription Report Ends
+
+    //halfhsare starts
+    public function halfshareReport(Request $request, $lang)
+    {
+       $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+       DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(mend.statusmonth)'),'=',date('m'))  
+                ->where(DB::raw('year(mend.statusmonth)'),'=',date('Y'))
+                ->groupBy('cb.union_branch_id')
+                ->get();              
+        $data['half_share'] = $half_s;
+        $data['date'] = date('M/Y');
+        return view('reports.halfshare')->with('data',$data);
+      // return view('reports.iframe_halfshare')->with('data',$data);
+    }
+    public function newahalfshareReport($lang,Request $request)
+    {
+        $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+        DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+        'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                 ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                 ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                 ->where(DB::raw('month(mend.statusmonth)'),'=',date('m'))  
+                 ->where(DB::raw('year(mend.statusmonth)'),'=',date('Y'))
+                 ->groupBy('cb.union_branch_id')
+                 ->get();              
+         $data['half_share'] = $half_s;
+         $data['date'] = date('M/Y');
+ 
+         $data['month_year']='';
+         $data['offset']=0;
+         $data['data_limit']= '';
+         return view('reports.iframe_halfshare')->with('data',$data); 
+    }
+    public function newHalfshareReport($lang,Request $request)
+    {
+       $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+       DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(mend.statusmonth)'),'=',date('m'))  
+                ->where(DB::raw('year(mend.statusmonth)'),'=',date('Y'))
+                ->groupBy('cb.union_branch_id')
+                ->get();              
+        $data['half_share'] = $half_s;
+        $data['date'] = date('M/Y');
+
+        $data['month_year']='';
+        $data['offset']=0;
+        return view('reports.iframe_halfshare')->with('data',$data); 
+    }
+    public function halfshareFiltereport(Request $request, $lang){
+		$month_year = $request->input('month_year');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+			$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+			$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+			$data['date'] = $month_year;
+        }else{
+			$monthno = date('m');
+			$yearno = date('Y');
+			$data['date'] = date('M/Y');
+		}
+		$half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(mend.statusmonth)'),'=',$monthno)  
+                ->where(DB::raw('year(mend.statusmonth)'),'=',$yearno)
+                ->groupBy('cb.union_branch_id')
+                ->get();              
+        $data['half_share'] = $half_s;
+        $data['offset']=0;
+        $data['data_limit']= '';
+        return view('reports.iframe_halfshare')->with('data',$data); 
+
+    }
+    public function halfshareFiltereportLoadmore($lang,Request $request)
+    {
+        $month_year = $request->input('month_year');
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+			$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+			$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+			$data['date'] = $month_year;
+        }else{
+			$monthno = date('m');
+			$yearno = date('Y');
+			$data['date'] = date('M/Y');
+		}
+		$half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(mend.statusmonth)'),'=',$monthno)  
+                ->where(DB::raw('year(mend.statusmonth)'),'=',$yearno)
+                ->groupBy('cb.union_branch_id')
+                ->get();              
+        $data['half_share'] = $half_s;
+        $data['offset']=0;
+        $data['data_limit']= '';
+        echo json_encode($data);
+    }
+    //halfshare Ends
 }
 

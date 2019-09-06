@@ -286,23 +286,27 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-subscription-report','ReportsController@SubscriptionFiltereport')->name('reports.subscriptionfilter');
 	Route::get('get-subscription-more-report','ReportsController@subscriptionReportloadMore');
 	
+	//Finacial Half Share Report
+	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare'); 
+	Route::get('newhalfshare_report','ReportsController@newahalfshareReport')->name('reports.halfsharenew');
+	
+	//Route::get('get-new-halfshare-report','ReportsController@VariationFiltereport')->name('reports.variationfilter');
+	Route::get('get-new-morehalfshare-report','ReportsController@halfshareFiltereportLoadmore')->name('reports.halfsharefilter');
+	Route::get('get-new-halfshare-report','ReportsController@halfshareFiltereport')->name('reports.halfsharefilters');
+
+	Route::get('get-new-halfsharefilter-report','ReportsController@newHalfshareReportfilter')->name('reports.newhalfsharefilter');
+	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
+
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
 	Route::get('get-members-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
-	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare');
+	
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
 	
 	
-	
-	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
-	
-	
-	
 	Route::get('statistics_report','ReportsController@activeStatisticsReport')->name('reports.statistics');
-	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');
-	
-	
+	Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');	
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
