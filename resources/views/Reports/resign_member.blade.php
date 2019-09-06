@@ -32,6 +32,17 @@
 		.sidenav-main{
 			z-index:9999;
 		}
+		.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 	@endif
 </style>
 @endsection
@@ -46,7 +57,7 @@
 				<h4 class="card-title">
 				
 				{{__('Resign Members Filter')}} 
-				
+				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
 				@php
 					
@@ -79,7 +90,8 @@
 					
 				@endphp
 				<form method="post" id="filtersubmit" action="">
-					@csrf  
+					@csrf
+					<div id="hidesearch" class="row">   
 					<div class="row">    
 						<div class="col s12 m6 l4">
 							<label for="date_type">{{__('Date Type')}}</label>
@@ -140,6 +152,7 @@
 							</div>
 						</div>
 					</div>
+					</div>
 				</form>  
 			</div>
 		</div>
@@ -147,7 +160,8 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<div class="card">
+	<iframe src="{{ route('reports.resignmembernew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+		<div class="card hide">
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
@@ -344,50 +358,50 @@ $("#member_status4_sidebar_a_id").addClass('active');
 			  }
 			}
 	  });
-    $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    loader.showLoader();
-			console.log("event triggered");
-		    var from_date = $("#from_date").val();
-			var to_date = $("#to_date").val();
-			var company_id = $("#company_id").val();
-			var branch_id = $("#branch_id").val();
-			var member_auto_id = $("#member_auto_id").val();
-			var date_type = $("#date_type").val();
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-resign-members-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.resignation_date+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.contribution+"</td>";
-								table_row += "<td>"+entry.benifit+"</td>";
-								table_row += "<td>"+entry.total+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						loader.hideLoader();
-					}else{
+    // $(window).scroll(function() {   
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    loader.showLoader();
+	// 		console.log("event triggered");
+	// 	    var from_date = $("#from_date").val();
+	// 		var to_date = $("#to_date").val();
+	// 		var company_id = $("#company_id").val();
+	// 		var branch_id = $("#branch_id").val();
+	// 		var member_auto_id = $("#member_auto_id").val();
+	// 		var date_type = $("#date_type").val();
+	// 		var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ URL::to('/en/get-resign-members-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(res)
+	// 				{
+	// 					$.each(res,function(key,entry){
+	// 						var table_row = "<tr><td>"+entry.name+"</td>";
+	// 							table_row += "<td>"+entry.member_number+"</td>";
+	// 							table_row += "<td>"+entry.new_ic+"</td>";
+	// 							table_row += "<td>"+entry.doj+"</td>";
+	// 							table_row += "<td>"+entry.resignation_date+"</td>";
+	// 							table_row += "<td>"+entry.companycode+"</td>";
+	// 							table_row += "<td>"+entry.branch_name+"</td>";
+	// 							table_row += "<td>"+entry.contribution+"</td>";
+	// 							table_row += "<td>"+entry.benifit+"</td>";
+	// 							table_row += "<td>"+entry.total+"</td></tr>";
+	// 							$('#page-length-option tbody').append(table_row);
+	// 					});
+	// 					loader.hideLoader();
+	// 				}else{
 						
-					}
-				}
-			});
+	// 				}
+	// 			}
+	// 		});
 		    
 				
-	   }
-	});
+	//    }
+	// });
 	$(document).on('submit','form#filtersubmit',function(event){
 		event.preventDefault();
 		$("#search").attr('disabled',true);
@@ -400,38 +414,40 @@ $("#member_status4_sidebar_a_id").addClass('active');
 		$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
 			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
-			//loader.showLoader();
-			$('#page-length-option tbody').empty();
-			loader.showLoader();
-			$("#memberoffset").val("{{$data['data_limit']}}");
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-resign-members-report') }}?offset=0"+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.resignation_date+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.contribution+"</td>";
-								table_row += "<td>"+entry.benifit+"</td>";
-								table_row += "<td>"+entry.total+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						loader.hideLoader();
-						$("#search").attr('disabled',false);
-					}else{
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-resignedmembers-report') }}?offset=0"+searchfilters,);
+		// 	
+		//loader.showLoader();
+		// 	$('#page-length-option tbody').empty();
+		// 	loader.showLoader();
+		// 	$("#memberoffset").val("{{$data['data_limit']}}");
+		// 	$.ajax({
+		// 		type: "GET",
+		// 		dataType: "json",
+		// 		url : "{{ URL::to('/en/get-resign-members-report') }}?offset=0"+searchfilters,
+		// 		success:function(res){
+		// 			if(res)
+		// 			{
+		// 				$.each(res,function(key,entry){
+		// 					var table_row = "<tr><td>"+entry.name+"</td>";
+		// 						table_row += "<td>"+entry.member_number+"</td>";
+		// 						table_row += "<td>"+entry.new_ic+"</td>";
+		// 						table_row += "<td>"+entry.doj+"</td>";
+		// 						table_row += "<td>"+entry.resignation_date+"</td>";
+		// 						table_row += "<td>"+entry.companycode+"</td>";
+		// 						table_row += "<td>"+entry.branch_name+"</td>";
+		// 						table_row += "<td>"+entry.contribution+"</td>";
+		// 						table_row += "<td>"+entry.benifit+"</td>";
+		// 						table_row += "<td>"+entry.total+"</td></tr>";
+		// 						$('#page-length-option tbody').append(table_row);
+		// 				});
+		// 				loader.hideLoader();
+		// 				$("#search").attr('disabled',false);
+		// 			}else{
 						
-					}
-				}
-			});
-			//$("#search").attr('disabled',false);
+		// 			}
+		// 		}
+		// 	});
+			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
 		}

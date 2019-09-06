@@ -258,7 +258,42 @@ class ReportsController extends Controller
         $data['member_view'] = $members;
         return view('reports.resign_member')->with('data',$data);  
     }
-    public function membersResignReportMore(Request $request){
+
+    public function resignNewMemberReport()
+    {
+        $data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+        
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
+                    ->leftjoin('membership as m','m.id','=','rs.member_code')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('state as st','st.id','=','m.state_id')
+                    ->leftjoin('city as cit','cit.id','=','m.city_id')
+                    ->leftjoin('race as r','r.id','=','m.race_id');
+
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',date('Y-m-01'));
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',date('Y-m-t'));
+                  
+                    $members = $members->offset(0)
+                    ->limit($data['data_limit'])
+                    ->get();
+        $data['member_view'] = $members;
+        $data['from_date'] = date('01/M/Y');
+        $data['to_date'] = date('t/M/Y');
+        $data['company_id'] = '';
+        $data['branch_id'] = '';
+        $data['member_auto_id'] = '';
+        $data['date_type'] = '';
+        $data['join_type'] = '';
+
+        return view('reports.iframe_resign_member')->with('data',$data);  
+    }
+    public function membersResignReportMore($lang,Request $request){
+        //echo "hii";die;
         $offset = $request->input('offset');
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
@@ -299,8 +334,73 @@ class ReportsController extends Controller
               ->limit($this->limit)
               //->dump()
               ->get();
-        echo json_encode($members);
+        //echo json_encode($members);
+        $data['member_view'] = $members;
+        $data['from_date'] = $from_date;
+        $data['to_date'] = $to_date;
+        $data['company_id'] = $company_id;
+        $data['branch_id'] = $branch_id;
+        $data['member_auto_id'] = $member_auto_id;
+        $data['date_type'] = $date_type;
+        $data['data_limit'] = '';
+        //$data['join_type'] = '';
+        return view('reports.iframe_resign_member')->with('data',$data);     
+    }
+
+    public function membersResignReportLoadMore($lang,Request $request){
+        //echo "hii";die;
+        $offset = $request->input('offset');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $date_type = $request->input('date_type');
+        $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+        $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
+                ->leftjoin('membership as m','m.id','=','rs.member_code')
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('status as s','s.id','=','m.status_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->leftjoin('state as st','st.id','=','m.state_id')
+                ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('race as r','r.id','=','m.race_id');
+               if($fromdate!="" && $todate!="" && $date_type==1){
+                  $members = $members->where(DB::raw('date(rs.`resignation_date`)'),'>=',$fromdate);
+                  $members = $members->where(DB::raw('date(rs.`resignation_date`)'),'<=',$todate);
+               }
+               if($fromdate!="" && $todate!="" && $date_type==2){
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',$fromdate);
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',$todate);
+               }
+              if($branch_id!=""){
+                  $members = $members->where('m.branch_id','=',$branch_id);
+              }else{
+                  if($company_id!=""){
+                      $members = $members->where('c.company_id','=',$company_id);
+                  }
+              }
+             
+              
+          $members = $members->offset($offset)
+              ->limit($this->limit)
+              //->dump()
+              ->get();
+        //echo json_encode($members);
+        $data['member_view'] = $members;
+        $data['from_date'] = $from_date;
+        $data['to_date'] = $to_date;
+        $data['company_id'] = $company_id;
+        $data['branch_id'] = $branch_id;
+        $data['member_auto_id'] = $member_auto_id;
+        $data['date_type'] = $date_type;
+        $data['data_limit'] = '';
+        //$data['join_type'] = '';
+       // return view('reports.iframe_resign_member')->with('data',$data);  
+       return json_encode($data);
     }
 
     public function takafulReport()

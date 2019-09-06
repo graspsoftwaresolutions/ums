@@ -289,8 +289,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//Finacial Half Share Report
 	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare'); 
 	Route::get('newhalfshare_report','ReportsController@newahalfshareReport')->name('reports.halfsharenew');
-	
-	//Route::get('get-new-halfshare-report','ReportsController@VariationFiltereport')->name('reports.variationfilter');
 	Route::get('get-new-morehalfshare-report','ReportsController@halfshareFiltereportLoadmore')->name('reports.halfsharefilter');
 	Route::get('get-new-halfshare-report','ReportsController@halfshareFiltereport')->name('reports.halfsharefilters');
 
@@ -311,16 +309,18 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-membersstatus-more-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
 
-	Route::get('get-resign-members-report','ReportsController@membersResignReportMore')->name('reports.resignmoremembers');
-	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
+	
 	
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
 	
-	
-	
-	//Route::post('statistics_report','ReportsController@statisticsReportMore')->name('statistic_filter');
+
 	Route::get('get-members-history','SubscriptionAjaxController@membershistoryMore')->name('subscription.history');
 	
+	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
+	Route::get('reports.resignmembernew','ReportsController@resignNewMemberReport')->name('reports.resignmembernew');
+	Route::get('get-new-resignedmembers-report','ReportsController@membersResignReportMore')->name('get-new-resignedmembers-report');
+	
+	Route::get('get-resign-members-report','ReportsController@membersResignReportLoadMore')->name('get-new-resignedmembers-loadmoreport');
 	
 });
 /* Master */
