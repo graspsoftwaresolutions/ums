@@ -915,6 +915,8 @@ class ReportsController extends Controller
         return view('reports.halfshare')->with('data',$data);
       // return view('reports.iframe_halfshare')->with('data',$data);
       
+      //test
+      
     }
     public function newahalfshareReport($lang,Request $request)
     {
