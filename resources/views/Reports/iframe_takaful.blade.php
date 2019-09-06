@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
+	<title>{{$data['month_year']}}</title>
 	<style>
 		/* Styles go here */
 		
@@ -72,7 +73,7 @@
 			  color:#fff;
 			}
 			.tbody-area{
-				top:142px;
+				top: 162px;
 				position: absolute;
 			}
 		}

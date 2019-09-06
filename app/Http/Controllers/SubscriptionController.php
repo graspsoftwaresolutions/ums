@@ -951,6 +951,8 @@ class SubscriptionController extends CommonController
 		$total_match_count = 0;
 		$member_code = '';
 		$member_status = '';
+		$member_match = '';
+		$approval_masg = 'Updated Succesfully';
 		foreach($match_data as $mkey => $match){
 			$match_id = $match->match_id;
 			$approval_status=0;
@@ -960,6 +962,7 @@ class SubscriptionController extends CommonController
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Matched', 'updated_by' => Auth::user()->id]);
 			}
 			if($match_id==2){
+				$member_match = $match_id;
 				$nric_not_approve = $request->input('nric_not_approve');
 				$member_auto_id = $request->input('member_search_auto_id');
 				$approval_status= isset($nric_not_approve) ? 1 : 0;
@@ -970,10 +973,12 @@ class SubscriptionController extends CommonController
 						$member_code = $memberdata->member_number;
 						$member_status = CommonHelper::getStatusName($memberdata->status_id);
 					}else{
+						$approval_masg= "Nric can't verify, member should not found";
 						$approval_status= 0;
 					}
 				}else{
 					$approval_status= 0;
+					$approval_masg= 'Please check anything to update';
 				}
 				
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Not Matched', 'updated_by' => Auth::user()->id]);
@@ -1002,8 +1007,11 @@ class SubscriptionController extends CommonController
 					if($registered_bank_id==$uploaded_bank_id){
 						$approval_status= 1;
 					}else{
+						$approval_masg= "Bank can't verify, both banks are differenet";
 						$approval_status= 0;
 					}
+				}else{
+					$approval_masg= 'Please check anything to update';
 				}
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'Mismatched Bank', 'updated_by' => Auth::user()->id]);
 			}
@@ -1118,7 +1126,7 @@ class SubscriptionController extends CommonController
 			}
 		}
         
-		$return_data = ['status' => 1, 'message' => 'Updated Succesfully', 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_code, 'member_status' => $member_status, 'approval_status' => $total_approval_status];
+		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_code, 'member_status' => $member_status, 'approval_status' => $total_approval_status, 'member_match' => $member_match];
 		echo json_encode($return_data);
 	}
     

@@ -138,6 +138,7 @@ class MemberController extends CommonController
 					$member_user->roles()->attach($member_role);
 					// return $member_user;die;
 					$member['user_id'] = $member_user->id;
+					$member['old_member_number'] = $request->input('old_member_id');
 					
 					if($user_role == 'union'){
 						$member['is_request_approved'] = 1;
@@ -215,7 +216,7 @@ class MemberController extends CommonController
 			$member['mobile'] = $request->input('mobile');
 			$member['email'] = $request->input('email');
 			$member['designation_id'] = $request->input('designation');
-			$member['old_member_number'] = $request->input('old_mumber_number');
+			//$member['old_member_number'] = $request->input('old_mumber_number');
 			$member['salary'] = $request->input('salary');
 			$member['postal_code'] = $request->input('postal_code');
 			$member['race_id'] = $request->input('race');
@@ -458,12 +459,14 @@ class MemberController extends CommonController
     {
         $search = $request->input('query');
        // return $search;
-        $res['suggestions'] = DB::table('membership')->select(DB::raw('CONCAT(membership.name, " - ", membership.member_number) AS value'),'membership.member_number as number')
-            ->join('status','membership.status_id','=','status.id')        
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.member_number as number','m.id as auto_id','m.member_title_id as member_title_id','m.gender as gender','m.gender as gender','m.mobile as mobile','m.email as email',DB::raw("DATE_FORMAT(`m`.`doe`, '%d/%b/%Y') as doe"),'m.designation_id as designation_id','m.race_id as race_id','m.state_id as state_id','m.city_id as city_id','m.postal_code as postal_code','m.address_one as address_one','m.address_two as address_two','m.address_three as address_three',DB::raw("DATE_FORMAT(`m`.`doj`, '%d/%b/%Y') as doj"),DB::raw("DATE_FORMAT(`m`.`dob`, '%d/%b/%Y') as dob"),'m.salary as salary','m.old_ic as old_ic','m.new_ic as new_ic','m.branch_id as branch_id','m.levy as levy','m.levy_amount as levy_amount','m.tdf as tdf','m.tdf_amount as tdf_amount','m.employee_id as employee_id','c.id as company_id','m.name as membername')
+			->join('status','m.status_id','=','status.id') 
+			->leftjoin('company_branch as cb','cb.id','=','m.branch_id')       
+			->leftjoin('company as c','c.id','=','cb.company_id')       
         ->where('status.status_name','=','RESIGNED')
 		->where(function($query) use ($search){
-				$query->orWhere('membership.member_number', 'LIKE',"%{$search}%")
-					->orWhere('membership.name', 'LIKE',"%{$search}%");
+				$query->orWhere('m.member_number', 'LIKE',"%{$search}%")
+					->orWhere('m.name', 'LIKE',"%{$search}%");
 		})->limit(20)->get();
         //$res['suggestions'] = [ array('value' => 'United States', 'data' => 'us'), array('value' => 'India', 'data' => 'in') ];
         //echo json_encode($res); die;
