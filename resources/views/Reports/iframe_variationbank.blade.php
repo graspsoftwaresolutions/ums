@@ -140,31 +140,31 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-            <th>{{__('Bank Name')}}</th>
-            <th>{{__('# Current')}}</th>
-            <th>{{__('# Previous')}}</th>
-            <th>{{__('Different')}}</th>
-            <th>{{__('Unpaid')}}</th>
-            <th>{{__('Paid')}}</th>
+				<th style="width:300px">{{__('Bank Name')}}</th>
+				<th style="width:20%">{{__('# Current')}}</th>
+				<th style="width:20%">{{__('# Previous')}}</th>
+				<th width="10%">{{__('Different')}}</th>
+				<th width="10%">{{__('Unpaid')}}</th>
+				<th width="10%">{{__('Paid')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
-        @php
-			$last_month = date("Y-m-01", strtotime("first day of previous month"));
-		  @endphp
+		
             @foreach($data['company_view'] as $company)
                     @php
-                        $current_count = CommonHelper::getMonthlyPaidCount($company->cid,date('Y-m-01'));
-                        $last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,$last_month);
+                        $current_count = CommonHelper::getMonthlyPaidCount($company->cid,$data['month_year']);
+                        $last_month_count = CommonHelper::getMonthlyPaidCount($company->cid,$data['last_month_year']);
                         $member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
+						$last_paid_count = CommonHelper::getLastMonthlyPaidCount($company->cid,$data['month_year']);
+						$current_unpaid_count = CommonHelper::getcurrentMonthlyPaidCount($company->cid,$data['month_year']);
                     @endphp
                     <tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
-                        <td>{{ $company->company_name }}</td>
-                        <td>{{ $current_count }}</td>
-                        <td>{{ $last_month_count }}</td>
-                        <td><span class="badge {{$current_count-$last_month_count>0 ? 'green' : 'red'}}">{{ abs($current_count-$last_month_count) }}</span></td>
-                        <td>{{ 0 }}</td>
-                        <td>{{ $current_count }}</td>
+                        <td style="width:300px">{{ $company->company_name }}</td>
+                        <td style="width:20%">{{ $current_count }}</td>
+                        <td style="width:20%">{{ $last_month_count }}</td>
+                        <td width="10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
+                        <td width="10%">{{ $current_unpaid_count }}</td>
+                        <td width="10%">{{ $last_paid_count }}</td>
                     </tr> 
             @endforeach
 		</tbody>
@@ -192,7 +192,7 @@
 			autotable: false
 		}
 	});
-    $(window).scroll(function() {   
+   /*  $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();
 	   var limit = "{{$data['data_limit']}}";
 	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
@@ -225,7 +225,7 @@
 				}
 			});	
 	   }
-	});
+	}); */
 </script>
 
 </html>

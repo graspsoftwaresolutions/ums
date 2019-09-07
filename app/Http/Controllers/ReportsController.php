@@ -443,6 +443,8 @@ class ReportsController extends Controller
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
+		//return $monthno;
+		//return $yearno;
 		$data['data_limit']=$this->limit;
 		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
@@ -456,7 +458,7 @@ class ReportsController extends Controller
 		}
         $company_list =  $company_view->get();
         
-		foreach($company_list as $ckey => $company){
+		/* foreach($company_list as $ckey => $company){
             foreach($company as $newkey => $newvalue){
                 $data['company_view'][$ckey][$newkey] = $newvalue;
             }
@@ -469,10 +471,11 @@ class ReportsController extends Controller
             $data['company_view'][$ckey]['unpaid'] = 0;
             $data['company_view'][$ckey]['paid'] = $current_count;
             $data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
-        }
+        } */
       
         $data['company_view'] =  $company_list;
-        $data['month_year']= $month_year;
+        $data['month_year']= '01-'.$monthno.'-'.$yearno;
+        $data['last_month_year']= date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno.' -1 Month'));
         $data['company_id']= $company_id;
         $data['offset']=$offset;
         //dd($data);
@@ -942,13 +945,15 @@ class ReportsController extends Controller
     public function newVariationReport(Request $request)
     {
         $data['data_limit']=$this->limit;
+        $last_month = date("Y-m-01", strtotime("first day of previous month"));
         $data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
                                 ->where('ms.Date', '=', date('Y-m-01'))->get();
        
-        $data['month_year']='';
+        $data['month_year']=date('Y-m-01');
+        $data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
         $data['company_id']=''; 
         $data['offset']=0;
         return view('reports.iframe_variationbank')->with('data',$data);    
