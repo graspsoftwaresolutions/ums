@@ -48,6 +48,7 @@
 											echo 'invalid access'; die; 
 										}
 										$irc_status = $data['irc_status']; 
+										$new_resign_status = $data['resign_status']; 
 									@endphp 
 									@php 
 										$member_autoid = $values->mid; 
@@ -1039,9 +1040,10 @@
                                                 </ul>
                                             </div>
                                         </fieldset>
-                                        @if($irc_status==1)
+                                        @if($irc_status==1 || $new_resign_status==1)
                                         <h3>Resignation</h3> 
 											@php 
+												
 												$resignedrow = CommonHelper::getResignDataByMember($values->mid); 
 												$reasondata = CommonHelper::getResignData(); 
 												$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid); 
@@ -1072,6 +1074,7 @@
 													$chequedate = $resignedrow->chequedate != '0000-00-00 00:00:00' ? date('d/M/Y',strtotime($resignedrow->chequedate)) : ''; 
 													$totamount = $resignedrow->amount; 
 												} 
+												
 											@endphp
                                         <fieldset>
                                             <div class="col-sm-8 col-sm-offset-1">
@@ -1211,7 +1214,8 @@
                                                     <div class="col s12 m12 center">
                                                         @if(empty($resignedrow))
                                                         <button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn right" type="button">{{'Resign'}}</button>
-                                                        @endif @if(!empty($resignedrow))
+                                                        @endif 
+														@if(!empty($resignedrow))
                                                         <a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-effect waves-light pink m2 mdl-button">View resign Details</a>
 														<div class="col m2 hide">
 															<h5 style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">Member already resigned</h5>

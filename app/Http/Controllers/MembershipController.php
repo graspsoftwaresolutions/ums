@@ -78,9 +78,13 @@ class MembershipController extends Controller
     public function edit(Request $request, $lang,$id)
     {
 		$irc_status = 0;
+		$resign_status = 0;
         if(!empty($request->all())){
 			if($request->input('status')==1){
 				 $irc_status = 1;
+			}
+			if($request->input('status')==2){
+				 $resign_status = 1;
 			}
 	    }
         $id = Crypt::decrypt($id);
@@ -127,11 +131,13 @@ class MembershipController extends Controller
        
         $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
         $data['irc_status'] = $irc_status;
+        $data['resign_status'] = $resign_status;
         
         $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$id)->get();
       // return  $data; 
         // $data['user_type'] = 1;
         // return view('membership.add_membership')->with('data',$data);  
+		//dd($data);
         return view('membership.edit_membership')->with('data',$data); 
    
     }
@@ -717,6 +723,7 @@ class MembershipController extends Controller
                                     ->where('MemberCode','=',$member->id)->get();
 									
 				$ircstatus = CommonHelper::get_irc_confirmation_status($member->id);
+				$irc_env = CommonHelper::getIRCVariable();
               
                            
                 if(count($history_list)!=0)
@@ -726,11 +733,16 @@ class MembershipController extends Controller
 				$actions .="<a style='margin-left: 10px;' title='Payment History'  class='btn-sm waves-effect waves-light amber darken-4' href='$histry'><i class='material-icons'>history</i></a>";
 				
                 $baseurl = URL::to('/');
-                $editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
+               
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
                 $actions .="<a style='margin-left: 10px;' title='Member Transfer'  class='btn-sm waves-effect waves-light yellow darken-3' href='$member_transfer_link'><i class='material-icons' >transfer_within_a_station</i></a>";
-				if($ircstatus==1){
+				if($ircstatus==1 && $irc_env){
+					$editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
 					$actions .= "<a style='margin-left: 10px;' title='IRC Details'  class='btn-sm waves-effect waves-light purple' href='$editmemberirc_link'><i class='material-icons' >confirmation_number</i></a>";
+				}
+				if($irc_env==false){
+					$editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=2';
+					$actions .= "<a style='margin-left: 10px;' title='Resign Now'  class='btn-sm waves-effect waves-light red' href='$editmemberirc_link'><i class='material-icons' >block</i></a>";
 				}
                 
                

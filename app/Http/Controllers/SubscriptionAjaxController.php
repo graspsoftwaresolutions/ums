@@ -469,9 +469,9 @@ class SubscriptionAjaxController extends CommonController
 			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
 				$members_count = CommonHelper::statusSubsMembersCount($value->id, $user_role, $user_id, $dateformat);
-				$members_amount = round(CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat), 0);
+				$members_amount = CommonHelper::statusMembersAmount($value->id, $user_role, $user_id, $dateformat);
                 $status_data['count'][$value->id] = $members_count;
-                $status_data['amount'][$value->id] = $members_amount;
+                $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
 				$total_members_count += $members_count;
 				$total_members_amount += $members_amount;
             }
@@ -490,7 +490,7 @@ class SubscriptionAjaxController extends CommonController
 			$sundry_amount = round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id,$dateformat), 0);
 			$total_members_count += $sundry_count;
 			$total_members_amount += $sundry_amount;
-            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'sundry_amount' => $sundry_amount, 'sundry_count' => $sundry_count, 'total_members_amount' => $total_members_amount, 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'status' => 1];
+            $json_data = ['status_data' => $status_data, 'approval_data' => $approval_data, 'month_year_number' => strtotime($dateformat) , 'sundry_amount' => number_format($sundry_amount,2,".",","), 'sundry_count' => $sundry_count, 'total_members_amount' => number_format($total_members_amount,2,".",","), 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'status' => 1];
         }
         echo json_encode($json_data); 
     }
@@ -819,7 +819,7 @@ class SubscriptionAjaxController extends CommonController
 		$members_data = [];
 		if($filter_date!=""){
 			
-			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric'))
+			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric'))
 							->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
 							->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
 							->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')

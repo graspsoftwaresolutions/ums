@@ -225,14 +225,15 @@
 								@php
 									$member_sub_link = URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime('now'));
 									$member_status_count = CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id);
-									$member_status_amount = round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0);
+									$member_status_amount = CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id);
+									//$member_status_amount = round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0);
 								@endphp
 								
 								<tr class="monthly-sub-status" id="monthly_member_status_{{ $stat->id }}" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $stat->font_color }};">
 									<td>{{ $key+1 }} </td>
 									<td>{{ $stat->status_name }}</td>
 									<td id="member_status_count_{{ $stat->id }}"> {{ $member_status_count }}</td>
-									<td id="member_status_amount_{{ $stat->id }}">{{ $member_status_amount }} </td>
+									<td id="member_status_amount_{{ $stat->id }}">{{ number_format($member_status_amount,2,".",",") }} </td>
 								</tr>
 								@php
 									$total_members_count += $member_status_count;
@@ -241,13 +242,13 @@
 								@endforeach
 								@php
 									$total_sundry_count = CommonHelper::statusSubsMatchCount(2, $user_role, $user_id);
-									$total_sundry_amount = round(CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id), 0);
+									$total_sundry_amount = CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id);
 								@endphp
 								<tr class="monthly-sub-status" id="monthly_member_status_0" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=0&date='.strtotime('now')) }}" style="cursor:pointer;">
 									<td>{{ count($data['member_stat'])+1 }} </td>
 									<td>SUNDRY CREDITORS</td>
 									<td id="member_status_count_sundry">{{ $total_sundry_count }}</td>
-									<td id="member_status_amount_sundry">{{ $total_sundry_amount }} </td>
+									<td id="member_status_amount_sundry">{{ number_format($total_sundry_amount,2,".",",") }} </td>
 								</tr>
 								@php
 									$total_members_count += $total_sundry_count;
@@ -258,7 +259,7 @@
 								<tr class="monthly-sub-status" id="monthly_member_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
 									<td id="member_status_count_total">{{ $total_members_count }}</td>
-									<td id="member_status_amount_total"> {{ $total_members_amount }}</td>
+									<td id="member_status_amount_total"> {{ number_format($total_members_amount,2,".",",") }}</td>
 								</tr>
 							</tfoot>
 						 </table>

@@ -275,8 +275,11 @@
 								<td>{{ $member->due }}</td>
 								<td id="member_status_{{ $member->sub_member_id }}">{{ $member->status_name }}</td>
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
-								<td><a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
+								<td>
+								@if($member->member_number!='')
+								<a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
 								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
+								@endif
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
 							</tr> 
@@ -833,8 +836,12 @@ $(document).on('submit','form#filtersubmit',function(event){
 							table_row += "<td id='member_status_"+entry.sub_member_id+"'>"+entry.status_name+"</td>";
 							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
-							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-							actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							var actions ='';
+							var member_no = parseInt(entry.member_number);
+							if(!isNaN(member_no)){
+								actions += '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+								actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							}
 							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
@@ -885,8 +892,12 @@ $(window).scroll(function() {
 							table_row += "<td id='member_status_"+entry.sub_member_id+"'>"+entry.status_name+"</td>";
 							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
-							var actions = '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-							actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							var actions='';
+							var member_no = parseInt(entry.member_number);
+							if(!isNaN(member_no)){
+								actions += '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+								actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+							}
 							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);

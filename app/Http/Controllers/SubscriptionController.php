@@ -219,9 +219,9 @@ class SubscriptionController extends CommonController
 			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
 				$members_count = CommonHelper::statusSubsMembersCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
-				$members_amount = round(CommonHelper::statusMembersCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date), 0);
+				$members_amount = CommonHelper::statusMembersCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
                 $status_data['count'][$value->id] = $members_count;
-                $status_data['amount'][$value->id] = $members_amount;
+                $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
 				$total_members_count += $members_count;
 				$total_members_amount += $members_amount;
             }
@@ -240,7 +240,7 @@ class SubscriptionController extends CommonController
 			$sundry_amount = round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0);
 			$total_members_count += $sundry_count;
 			$total_members_amount += $sundry_amount;
-            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => $sundry_amount, 'sundry_count' => $sundry_count, 'total_members_amount' => $total_members_amount, 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => 'Data already uploaded for this company'];
+            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => number_format($sundry_amount,2,".",","), 'sundry_count' => $sundry_count, 'total_members_amount' => number_format($total_members_amount,2,".",","), 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => 'Data already uploaded for this company'];
         }else{
             $data =['status' =>0, 'status_data' => [], 'approval_data' => [] ,'message'  => 'No data found'];
         }
@@ -294,11 +294,11 @@ class SubscriptionController extends CommonController
             foreach($subscription_data as $subscription){
                 $nric = $subscription->NRIC;
                
-                $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric);
+                $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
                 
-                $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric);
+                $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
 				
-                $subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric);
+                $subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
                 
                 $up_sub_member =0;
                 $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)

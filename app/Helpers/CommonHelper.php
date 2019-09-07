@@ -1389,4 +1389,8 @@ class CommonHelper
 		}	
 		return $count;
 	}
+	 public static function getIRCVariable(){
+        $irc_val = env("IRC",false);
+        return $irc_val;
+    }
 }
