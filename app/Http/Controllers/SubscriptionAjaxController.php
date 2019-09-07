@@ -593,6 +593,9 @@ class SubscriptionAjaxController extends CommonController
 
 	public function ajax_arrear_list(Request $request,$lang)
     {
+        $userid = Auth::user()->id;
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
        // echo "hii"; die;
         $sl=0;
         $columns = array( 
@@ -613,6 +616,18 @@ class SubscriptionAjaxController extends CommonController
                     ->leftjoin('company as c','cb.company_id','=','c.id')
                     ->leftjoin('status as s','m.status_id','=','s.id')
                     ->orderBy('ar.id','DESC');
+        if($user_role == 'union'){
+            $commonqry = $commonqry;
+        }else if($user_role =='union-branch'){
+            $unionbranchid = CommonHelper::getUnionBranchID($userid);
+            $commonqry = $commonqry->where('cb.union_branch_id', '=' ,$unionbranchid);
+        }else if($user_role =='company'){
+            $companyid = CommonHelper::getCompanyID($userid);
+            $commonqry = $commonqry->where('cb.company_id', '=' ,$companyid);
+        }else if($user_role =='company-branch'){
+            $branchid = CommonHelper::getCompanyBranchID($userid);
+            $commonqry = $commonqry->where('cb.id', '=' ,$branchid);
+        }
         //  $queries = DB::getQueryLog();
 		// 					dd($queries);
         $totalData = $commonqry->count();
@@ -636,9 +651,11 @@ class SubscriptionAjaxController extends CommonController
 			->get()->toArray();
         }
         else {
-			$search = $request->input('search.value'); 
-			$sub_mem = $commonqry->where('m.id','LIKE',"%{$search}%")
-                       ->orWhere('ar.nric', 'LIKE',"%{$search}%")
+            
+            $search = $request->input('search.value'); 
+            $sub_mem =  $commonqry->where(function($query) use ($search){
+                $query->where('m.id', 'LIKE',"%{$search}%")
+                      ->orWhere('ar.nric', 'LIKE',"%{$search}%")
                        ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
                        ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
                        ->orWhere('c.company_name', 'LIKE',"%{$search}%")
@@ -646,6 +663,8 @@ class SubscriptionAjaxController extends CommonController
                        ->orWhere('m.member_number', 'LIKE',"%{$search}%")
                        ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
                        ->orWhere('m.name', 'LIKE',"%{$search}%");
+            });
+		
                        
 		    if( $limit != -1){
 			   $sub_mem = $sub_mem->offset($start)
@@ -654,17 +673,17 @@ class SubscriptionAjaxController extends CommonController
 		    $sub_mem = $sub_mem->orderBy($order,$dir)
 					  ->get()->toArray();
 			
-			
-			$totalFiltered =  $commonqry->where('m.id','LIKE',"%{$search}%")
-                                ->orWhere('ar.nric', 'LIKE',"%{$search}%")
-                                ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
-                                ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
-                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
-                                ->orWhere('s.status_name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-                                ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
-                                ->orWhere('m.name', 'LIKE',"%{$search}%")
-							   ->count();
+            $totalFiltered =  $commonqry->where(function($query) use ($search){
+                        $query->where('m.id', 'LIKE',"%{$search}%")
+                              ->orWhere('ar.nric', 'LIKE',"%{$search}%")
+                               ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
+                               ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
+                               ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                               ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                               ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                               ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
+                               ->orWhere('m.name', 'LIKE',"%{$search}%");
+                    })->count();
         }
       
         $data = array();

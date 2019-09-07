@@ -83,6 +83,47 @@ span.dtr-title::after {
 								
 							</div>
 						</div>
+						@php 
+							$auth_user = Auth::user();
+							$member_number_readonly = 'readonly';
+							$member_number_hide = 'hide';
+							$companylist = $data['company_view'];
+							$branchlist = [];
+							$companyid = '';
+							$branchid = '';
+							if(!empty($auth_user)){
+								$userid = Auth::user()->id;
+								$get_roles = Auth::user()->roles;
+								$user_role = $get_roles[0]->slug;
+								
+								$companylist = [];
+								
+								if($user_role =='union'){
+									$member_number_readonly = '';
+									$member_number_hide = '';
+									$companylist = $data['company_view'];
+								}
+								else if($user_role =='union-branch'){
+									$unionbranchid = CommonHelper::getUnionBranchID($userid);
+									$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+									
+								} 
+								else if($user_role =='company'){
+									$branchid = CommonHelper::getCompanyBranchID($userid);
+									$companyid = CommonHelper::getCompanyID($userid);
+									$companylist = CommonHelper::getCompanyList($companyid);
+									$branchlist = CommonHelper::getCompanyBranchList($companyid);
+									//print_r($branchlist);die;
+								}
+								else if($user_role =='company-branch'){
+									$branchid = CommonHelper::getCompanyBranchID($userid);
+									$companyid = CommonHelper::getCompanyID($userid);
+									$companylist = CommonHelper::getCompanyList($companyid);
+									$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+								}  
+							}
+							
+						@endphp
 					</div>
 				</div> 
 				<div class="col s12">
@@ -115,7 +156,7 @@ span.dtr-title::after {
 									<form method="post" id="advancedsearch">
 									@csrf  
 									<div class="row">   
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
 											<label>{{__('Union Branch Name') }}</label>
 											<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 												<option value="">{{__('Select Union') }}</option>
@@ -128,13 +169,13 @@ span.dtr-title::after {
 												<div class="errorTxt22"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
 											<label>{{__('Company Name') }}</label>
 											<input type="hidden" name="companyid" id="companyid">
 										
 												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22">
 												<option value=""> Select Company</option>
-												@foreach($data['company_view'] as $key=>$value)
+												@foreach($companylist as $key=>$value)
                                                         <option value="{{$value->id}}"
                                                             >{{$value->company_name}}</option>
                                                         @endforeach
@@ -144,7 +185,7 @@ span.dtr-title::after {
 											</div>
 										</div>
 										
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
 											<label>{{__('Company Branch Name') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
