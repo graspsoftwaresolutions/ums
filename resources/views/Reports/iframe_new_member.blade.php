@@ -140,31 +140,31 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th style="width:256px !important ;border : 1px solid ;" align="center">Name</th>
-				<th style="width: 100px !important; border : 1px solid ;"  align="center">Number</th>
-				<th style="width:150px !important ;border : 1px solid ;" align="center">NRIC</th>
-				<th style="width: 60px !important; border : 1px solid ;"  align="center">Bank</th>
-				<th style="width:256px !important ;border : 1px solid ;"  align="center">Branch</th>
-				<th style="width: 100px !important; border : 1px solid ;" align="center">DOJ</th>
-				<th style="width: 60px !important; border : 1px solid ;" align="center">ENT</th>
-				<th style="width: 60px !important; border : 1px solid ;" align="center">INS</th>
-				<th style="width: 60px !important; border : 1px solid ;"  align="center">SUBS</th>
+				<th style="width:351px  !important ;border : 1px solid #343d9f;" align="center">Name</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;"  align="center">Number</th>
+				<th  style="width:150px  !important ;border : 1px solid #343d9f;" align="center">NRIC</th>
+				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">Bank</th>
+				<th  style="width:200px  !important ;border : 1px solid #343d9f;" align="center">Branch</th>
+				<th style="width:130px  !important ;border : 1px solid #343d9f;" align="center">DOJ</th>
+				<th  style="width:70px  !important ;border : 1px solid #343d9f;" align="center">ENT</th>
+				<th style="width:70px  !important ;border : 1px solid #343d9f;" align="center">INS</th>
+				<th  style="width:70px  !important ;border : 1px solid #343d9f;" align="center">SUBS</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100% ">
 			@foreach($data['member_view'] as $member)
 				<tr>
-					<td style="width:256px !important ; border : 1px solid ;">{{ $member->name }}</td>
-					<td style="width:100px !important ; border : 1px solid ;">{{ $member->member_number }}</td>
+					<td style="width:351px !important ; border : 1px solid white;">{{ $member->name }}</td>
+					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->member_number }}</td>
 
-					<td style="width:150px !important ;border : 1px solid ;">{{ $member->new_ic }}</td>
-					<td  style="width: 60px !important; border : 1px solid ;">{{ $member->companycode }}</td>
-					<td  style="width:256px !important ;border : 1px solid ;">{{ $member->branch_name }}</td>
-					<td style="width: 100px !important; border : 1px solid ;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
+					<td style="width:150px  !important ;border : 1px solid white;">{{ $member->new_ic }}</td>
+					<td style="width:100px  !important ;border : 1px solid white;" >{{ $member->companycode }}</td>
+					<td  style="width:200px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
+					<td style="width:130px  !important ;border : 1px solid white;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
 					
-					<td style="width: 60px !important; border : 1px solid ;">{{ isset($member) ? $member->entryfee : ""}}</td>
-					<td style="width: 60px !important; border : 1px solid ;">{{  isset($member) ? $member->insfee  : "" }}</td>
-					<td style="width: 60px !important; border : 1px solid ;">{{  isset($member) ? $member->subs : "" }}</td>
+					<td style="width:70px  !important ;border : 1px solid white;">{{ isset($member) ? $member->entryfee : ""}}</td>
+					<td style="width:70px  !important ;border : 1px solid white;">{{  isset($member) ? $member->insfee  : "" }}</td>
+					<td style="width:70px  !important ;border : 1px solid white;">{{  isset($member) ? $member->subs : "" }}</td>
 					
 				</tr> 
 			@endforeach
