@@ -17,6 +17,7 @@ use App\Model\MemberNominees;
 use App\Model\MemberGuardian;
 use App\Model\MemberFee;
 use App\Model\Resignation;
+use App\Model\Membermonthendstatus;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -178,13 +179,31 @@ class MemberController extends CommonController
 						$redirect_failurl = app()->getLocale().'/edit-membership-profile';
 						$redirect_url = app()->getLocale().'/edit-membership-profile';
 					}
-					
 					if($user_role=='union'){
 						$activate_account = $request->input('activate_account');
 						$activate_account = isset($activate_account) ? 1 : 0;
 						if($activate_account==1){
+
 							$member['is_request_approved'] = $activate_account;
 							$member['status_id'] = 1;
+							
+							if($auto_id!=''){
+								$new_fee = new MemberFee();
+								$new_fee->member_id = $auto_id;
+								$new_fee->status = 1;
+								$new_fee->flag = 0;
+								$new_fee->save();
+								if($new_fee == true)
+								{
+									$new_monthend =	DB::insert('insert into membermonthendstatus1(MEMBER_CODE) values (?)', array($auto_id));
+									if($new_monthend == true)
+									{
+										$update = DB::table('member_fee')->where('member_id','=',$auto_id)->update(['flag'=>'1']);
+									}
+								}
+							}else{
+								return 0;
+							}
 						}
 						$edit_status_id = $request->input('status_id');
 						if(isset($edit_status_id)){

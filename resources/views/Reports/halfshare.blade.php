@@ -213,7 +213,7 @@ $("#member_halfshare_sidebar_a_id").addClass('active');
 			MonthFormat: 'M/yy',
 			OnAfterChooseMonth: function() { 
 				//getDataStatus();
-			} 
+			}
 		 });
 		$(document).on('submit','form#filtersubmit',function(event){
 		event.preventDefault();
