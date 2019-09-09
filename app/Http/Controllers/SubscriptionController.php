@@ -57,6 +57,7 @@ class SubscriptionController extends CommonController
     public function __construct() {
 		$this->limit = 25;
         ini_set('memory_limit', -1);
+		ini_set('max_execution_time', 500);
         $this->middleware('auth');
         //$this->middleware('module:master');       
         $this->Company = new Company;
@@ -1202,6 +1203,34 @@ class SubscriptionController extends CommonController
         
 		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_code, 'member_status' => $member_status, 'approval_status' => $total_approval_status, 'member_match' => $member_match];
 		echo json_encode($return_data);
+	}
+	
+	public function variation(){
+		$data['month_year'] = date('M/Y');
+		$data['month_year_full'] = date('Y-m-01');
+		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+                                ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
+                                ->where('mm.StatusMonth', '=', date('Y-m-01'))
+								->groupBY('mm.BANK_CODE')
+								->get();
+		return view('subscription.variation')->with('data', $data);
+	}
+	
+	public function variationFilter($lang, Request $request){
+		//return strtotime('now');
+		//$datestring = $request->input('date');
+		$datestring = strtotime('2019-04-01');
+		//return date('Y-m-01',strtotime($datestring));
+		$data['month_year'] = date('M/Y',$datestring);
+		$data['month_year_full'] = date('Y-m-01',$datestring);
+		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+                                ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
+                                ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
+								->groupBY('mm.BANK_CODE')
+								->get();
+		return view('subscription.variation_all')->with('data', $data);
 	}
     
     
