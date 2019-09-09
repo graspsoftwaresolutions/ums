@@ -200,6 +200,10 @@
 <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 
 <script>
+$("#reports_sidebars_id").addClass('active');
+$("#member_halfshare_sidebar_li_id").addClass('active');
+$("#member_halfshare_sidebar_a_id").addClass('active');
+
 
 //$(function() {
     //$('#page-length-option').DataTable();
