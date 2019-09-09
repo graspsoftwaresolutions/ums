@@ -899,19 +899,80 @@
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    <li>
-                                                        <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
+													<li>
+													<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
 															<div class="row">
-																@foreach($data['fee_view'] as $key=>$value)
-																<div class="col s6 m4">
-																	{{ CommonHelper::get_fee_name($value->fee_id) }}:
-																	<div class="input-field inline" style="margin-top:0;margin-bottom:0;">
-																		<input id="fee_readonly" type="text" class="validate" value="{{$value->fee_amount}}" readonly style="height:2rem;">
-																	</div>																	
+																		<form id="fee_new_form" name="fee_new_form">
+																		<div class="row">
+																			<div class="col s12 m6">
+																				<label for="new_fee_id">Fee name* </label>
+																				<select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
+																					<option value="">Select</option>
+																					@foreach($data['fee_list'] as $key=>$value)
+																					<option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+																					@endforeach
+																				</select>
+																				<div class="input-field">
+																					<div class="errorTxt50"></div>
+																				</div>
+																			</div>
+																			<div class="input-field col s12 m6">
+																				<label for="fee_amount" class="force-active">Fee amount *</label>
+																				<input id="fee_amount" name="fee_amount" value="0"  type="text">
+																			</div>
+																			<div class="clearfix"> </div>
+																			<div class="col s12 m12">
+																				<button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
+																				</button>
+																			</div>
+																		</div>
+																		</form>
+																		</br>
+																		<div class="row">
+																			<div class="col s12">
+																				<table id="fee_table" width="100%">
+																					<thead>
+																					
+																						<tr>
+																							<th data-field="feename">Fee Name</th>
+																							<th data-field="feeamount">Amount</th>
+																							<th data-field="action" width="25%">Action</th>
+																						</tr>
+																					
+																					</thead>
+																					<tbody>
+																						@foreach($data['fee_view'] as $key=>$value)
+																						<tr>
+																							<td data-field="feename">{{ CommonHelper::get_fee_name($value->fee_id) }}</td>
+																							<td data-field="feeamount">{{$value->fee_amount}}</td>
+																							
+																						</tr>
+																						@endforeach
+																						@php
+																						{{ $sl = 0; }}
+																						@endphp
+																						<input id="fee_row_id" class="hide" name="fee_row_id" value="{{ $sl }}"  type="text">
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
 																</div>
-																@endforeach
-															</div>
+                                                           
+                                                            </br>
+                                                            <div class="row">
+                                                                <div class="col s8 m8">
+																	&nbsp;
+																</div>
+																
+																
+                                                            </div>
+															
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                    <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fund Details') }}</div>
+                                                        <div class="collapsible-body ">
 															</br>
                                                             <div class="row">
 																@php
@@ -1617,6 +1678,9 @@
             $('#reference_number_text').text('Reference No');
         }
     });
+	$(document).on('submit','form#fee_new_form',function(){
+		$("#new_fee_id").val("");
+	});
 </script>
 @include('membership.member_common_script') 
 @endsection
