@@ -195,10 +195,21 @@ class MemberController extends CommonController
 								$new_fee->save();
 								if($new_fee == true)
 								{
-									$new_monthend =	DB::insert('insert into membermonthendstatus1(MEMBER_CODE) values (?)', array($auto_id));
-									if($new_monthend == true)
+									$fee_id = DB::table('member_fee')->select('fee_id')->where('member_id','=',$auto_id)->count();
+									$feeline_id = DB::table('member_fee')->select('fee_id')->where('member_id','=',$auto_id)->first();
+									if($fee_id > 0)
 									{
-										$update = DB::table('member_fee')->where('member_id','=',$auto_id)->update(['flag'=>'1']);
+										$subcription_amount = DB::table('member_fee as mf')->select('mf.fee_id','f.fee_name','f.fee_amount')
+															->leftjoin('fee as f','f.id','=','mf.fee_id')
+															->where('mf.fee_id','=',$feeline_id)
+															->where('mf.member_id','=',$auto_id)
+															->get();
+
+										$new_monthend =	DB::insert('insert into membermonthendstatus1(MEMBER_CODE) values (?)', array($auto_id));
+										if($new_monthend == true)
+										{
+											$update = DB::table('member_fee')->where('member_id','=',$auto_id)->update(['flag'=>'1']);
+										}
 									}
 								}
 							}else{
