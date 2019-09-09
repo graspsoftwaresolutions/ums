@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -201,47 +202,47 @@
 			autotable: false
 		}
 	});
-	 $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    //loader.showLoader();
-			var month_year = "{{$data['month_year']}}";
-			var company_id = "{{$data['company_id']}}";
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ url(app()->getLocale().'/get-subscription-more-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(result)
-					{
-						res = result.company_view;
-						$.each(res,function(key,entry){
-							var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
-							var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td width='30%'>"+entry.company_name+"</td>";
-								table_row += "<td width='20%'>"+entry.total_members+"</td>";
-								table_row += "<td width='10%'>"+entry.total_amount+"</td>";
-								table_row += "<td width='15%'>"+entry.active_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.default_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.struckoff_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.resign_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.sundry_amt+"</td></tr>";
-								$('#scroll-vert-hor tbody').append(table_row);
-						});
-						if(!res){
-								var table_row = "<tr><td colspan='6'>No data found</td></tr>";
-								$('#scroll-vert-hor tbody').append(table_row);
-						}
-						loader.hideLoader();
-					}else{
+	//  $(window).scroll(function() {   
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    //loader.showLoader();
+	// 		var month_year = "{{$data['month_year']}}";
+	// 		var company_id = "{{$data['company_id']}}";
+	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ url(app()->getLocale().'/get-subscription-more-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(result)
+	// 				{
+	// 					res = result.company_view;
+	// 					$.each(res,function(key,entry){
+	// 						var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
+	// 						var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td width='30%'>"+entry.company_name+"</td>";
+	// 							table_row += "<td width='20%'>"+entry.total_members+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.total_amount+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.active_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.default_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.struckoff_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.resign_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.sundry_amt+"</td></tr>";
+	// 							$('#scroll-vert-hor tbody').append(table_row);
+	// 					});
+	// 					if(!res){
+	// 							var table_row = "<tr><td colspan='6'>No data found</td></tr>";
+	// 							$('#scroll-vert-hor tbody').append(table_row);
+	// 					}
+	// 					loader.hideLoader();
+	// 				}else{
 						
-					}
-				}
-			});	
-	   }
-	});
+	// 				}
+	// 			}
+	// 		});	
+	//    }
+	// });
 </script>
 
 </html>

@@ -324,7 +324,8 @@ $("#variation_bank_sidebar_a_id").addClass('active');
 		var company_id = $("#company_id").val();
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
-			$("#myframe").attr("src", "{{ URL::to('/en/get-variation-report') }}?offset=0"+searchfilters,);
+			
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-variation-report') }}?offset=0"+searchfilters,);
 			// $('#scroll-vert-hor tbody').empty();
 			// //loader.showLoader();
 			// $.ajax({

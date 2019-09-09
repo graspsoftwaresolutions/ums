@@ -330,8 +330,8 @@ class ReportsController extends Controller
               }
              
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
+          $members = $members //->offset($offset)
+             // ->limit($this->limit)
               //->dump()
               ->get();
         //echo json_encode($members);
@@ -477,7 +477,7 @@ class ReportsController extends Controller
         $data['month_year']= '01-'.$monthno.'-'.$yearno;
         $data['last_month_year']= date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno.' -1 Month'));
         $data['company_id']= $company_id;
-        $data['offset']=$offset;
+        $data['offset']='';
         //dd($data);
         return view('reports.iframe_variationbank')->with('data',$data);
 	}
@@ -759,8 +759,9 @@ class ReportsController extends Controller
 		$data['unionbranch_id'] = $unionbranch_id;
 		$data['company'] = $request->input('company_id');
         $data['branch_id'] = $request->input('branch_id');
-        $data['data_limit']=$this->limit;
-        $data['offset']=$offset;
+        //$data['data_limit']=$this->limit;
+        $data['data_limit']='';
+        $data['offset']='';
         //return view('Reports.statistics')->with('data',$data); 
         return view('reports.iframe_statistics')->with('data',$data);   
     }
@@ -870,8 +871,8 @@ class ReportsController extends Controller
                   $members = $members->where('m.id','=',$member_auto_id);
               }
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
+          $members = $members //->offset($offset)
+             // ->limit($this->limit)
               //->dump()
               ->get();
 		$data['member_view'] = $members;
@@ -880,8 +881,9 @@ class ReportsController extends Controller
         $data['company_id']=$company_id;
         $data['branch_id']=$branch_id;
         $data['member_auto_id']=$member_auto_id;
-        $data['data_limit']=$this->limit;
-        $data['offset']=$offset;
+        //$data['data_limit']=$this->limit;
+        $data['data_limit']='';
+        $data['offset']='';
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
         return view('reports.iframe_takaful')->with('data',$data);  
@@ -1046,7 +1048,7 @@ class ReportsController extends Controller
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
-		$data['data_limit']=$this->limit;
+		$data['data_limit']='';
 		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id');
@@ -1081,7 +1083,7 @@ class ReportsController extends Controller
 		// 	$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
         // }
         $data['company_view'] = $company_list;
-        $data['data_limit']=$this->limit;
+        //$data['data_limit']=$this->limit;
         $data['month_year']=$month_year;
         $data['company_id']=$company_id;
         //echo json_encode($data);

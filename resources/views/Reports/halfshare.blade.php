@@ -220,7 +220,7 @@
 		//$('#page-length-option tbody').empty();
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year;
-			$("#memberoffset").val("{{$data['data_limit']}}");
+		//	$("#memberoffset").val("{{$data['data_limit']}}");
 			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-halfshare-report') }}?offset=0"+searchfilters,);
 			$("#search").attr('disabled',false);

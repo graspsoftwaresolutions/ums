@@ -158,7 +158,7 @@
                     <td style="width:60px; border:1px  ;">{{ $member->gender }}</td>
                     <td style="width:130px; border:1px  ;"> {{ $member->companycode }}</td>
                     <td style="width:200px; border:1px  ;">{{ $member->branch_name }}</td>
-                    <td style="width:100px; border:1px  ;">{{ $member->doj }}</td>
+                    <td style="width:100px; border:1px  ;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
                     <td style="width:100px; border:1px  ;">{{ $member->levy }}</td>	
                 </tr> 
             @endforeach

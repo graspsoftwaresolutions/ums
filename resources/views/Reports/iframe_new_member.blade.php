@@ -160,7 +160,7 @@
 					<td style="width:150px !important ;border : 1px solid ;">{{ $member->new_ic }}</td>
 					<td  style="width: 60px !important; border : 1px solid ;">{{ $member->companycode }}</td>
 					<td  style="width:256px !important ;border : 1px solid ;">{{ $member->branch_name }}</td>
-					<td style="width: 100px !important; border : 1px solid ;">{{ $member->doj }}</td>
+					<td style="width: 100px !important; border : 1px solid ;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
 					
 					<td style="width: 60px !important; border : 1px solid ;">{{ isset($member) ? $member->entryfee : ""}}</td>
 					<td style="width: 60px !important; border : 1px solid ;">{{  isset($member) ? $member->insfee  : "" }}</td>

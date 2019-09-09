@@ -226,40 +226,40 @@
 			autotable: false
 		}
 	});
-	 $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    //loader.showLoader();
-		    var month_year = $("#month_year").val();
-			var searchfilters = '&month_year='+month_year;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ url(app()->getLocale().'/get-new-morehalfshare-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='19%'>"+Total+"</td>";
-								table_row += "<td width='10%'>"+entry.total_all+"</td>";
-								table_row += "<td width='10%'>"+entry.bf+"</td>";
-								table_row += "<td width='10%'>"+entry.ins+"</td>";
-								table_row += "<td width='21%'>"+entry.sub+"</td>";
-								table_row += "<td width='10%'>"+entry.hlf+"</td>";
-								table_row += "<td width='10%'>"+entry.t_per+"</td>";
-								table_row += "<td width='6%'>"+entry.bl_amt+"</td>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						loader.hideLoader();
-					}else{
+	//  $(window).scroll(function() {   
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    //loader.showLoader();
+	// 	    var month_year = $("#month_year").val();
+	// 		var searchfilters = '&month_year='+month_year;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ url(app()->getLocale().'/get-new-morehalfshare-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(res)
+	// 				{
+	// 					$.each(res,function(key,entry){
+	// 						var table_row = "<tr><td width='19%'>"+Total+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.total_all+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.bf+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.ins+"</td>";
+	// 							table_row += "<td width='21%'>"+entry.sub+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.hlf+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.t_per+"</td>";
+	// 							table_row += "<td width='6%'>"+entry.bl_amt+"</td>";
+	// 							$('#page-length-option tbody').append(table_row);
+	// 					});
+	// 					loader.hideLoader();
+	// 				}else{
 						
-					}
-				}
-			});		
-	   }
-	});
+	// 				}
+	// 			}
+	// 		});		
+	//    }
+	// });
 </script>
 
 </html>
