@@ -141,8 +141,8 @@ class ReportsController extends Controller
                   $members = $members->where('m.status_id','=',$status_id);
               }
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
+          $members = $members //->offset($offset)
+             // ->limit($this->limit)
               //->dump()
               ->get();
 
@@ -151,8 +151,8 @@ class ReportsController extends Controller
         $data['company_id'] = $company_id; 
         $data['branch_id'] = $branch_id;      
         $data['member_auto_id'] = $member_auto_id;
-        $data['data_limit']=$this->limit;
-        
+        $data['data_limit']='';
+       // $data['data_limit']=$this->limit;
         
         return view('reports.iframe_members')->with('data',$data);     
        // echo json_encode($members);	 
@@ -505,6 +505,7 @@ class ReportsController extends Controller
                     $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
                     $members = $members->offset(0)
                     ->limit($data['data_limit'])
+                    //->dump()
                     ->get();
         $data['member_view'] = $members;
         $data['from_date']=date('01/M/Y');
@@ -527,6 +528,7 @@ class ReportsController extends Controller
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $entry_fee = DB::table('fee')->where('fee_shortcode','=','ENT')->pluck('fee_amount')->first();
+
         $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
         $total_fee = $entry_fee+$ins_fee;
           $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("ifnull(m.levy,'') as levy"),DB::raw("ifnull(m.levy_amount,'') as levy_amount"),'m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
@@ -558,12 +560,13 @@ class ReportsController extends Controller
                   $members = $members->where('m.id','=',$member_auto_id);
               }
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
-              //->dump()
+          $members = $members //->offset($offset)
+             // ->limit($this->limit)
+             // ->dump()
               ->get();
         $data['member_view'] = $members;
-        $data['data_limit']=$this->limit;
+       // $data['data_limit']=$this->limit;
+        $data['data_limit'] = '';
         $data['from_date']=$from_date;
         $data['to_date']=$to_date;
         $data['company_id']=$company_id;
@@ -619,7 +622,7 @@ class ReportsController extends Controller
               
           $members = $members->offset($offset)
               ->limit($this->limit)
-              //->dump()
+             // ->dump()
               ->get();
         echo json_encode($members);
     }
