@@ -1393,4 +1393,88 @@ class CommonHelper
         $irc_val = env("IRC",false);
         return $irc_val;
     }
+	
+	public static function getCompanyMembers($id,$date){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		$subscriptions = DB::table("membermonthendstatus1 as ms")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.LASTPAYMENTDATE as LASTPAYMENTDATE','ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+								->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+								->where(DB::raw('ms.BANK_CODE'),'=',$id)
+								->where(DB::raw('month(ms.StatusMonth)'),'=',$month)
+								->where(DB::raw('year(ms.StatusMonth)'),'=',$year)
+								//->limit(10)
+								//->dump()
+								->get();
+		return $subscriptions;
+	}
+	
+	public static function getMonthEndPaidCount($company_id, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		
+		$count = DB::table("membermonthendstatus1 as mm")
+                                ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
+								->where('mm.BANK_CODE','=',$company_id)
+								->where(DB::raw('month(mm.StatusMonth)'),'=',$month)
+								->where(DB::raw('year(mm.StatusMonth)'),'=',$year)
+								->count(); 
+								
+		/* $count = DB::table('mon_sub_member as sm')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+								->where('mc.CompanyCode','=',$company_id)
+								->where(DB::raw('month(ms.Date)'),'=',$month)
+								->where(DB::raw('year(ms.Date)'),'=',$year)
+								->count(); */
+		return 1;
+    }
+	
+	public static function getCompanyPaidSubs($bank_id,$member_id,$date){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		$subscriptions = DB::table("membermonthendstatus1 as ms")->select('ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT')
+								->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+								//->where(DB::raw('ms.BANK_CODE'),'=',$id)
+								->where(DB::raw('ms.MEMBER_CODE'),'=',$member_id)
+								->where(DB::raw('month(ms.StatusMonth)'),'=',$month)
+								->where(DB::raw('year(ms.StatusMonth)'),'=',$year)
+								->limit(1)
+								//->dump()
+								->first();
+								//dd($subscriptions);
+		if($subscriptions!=Null){
+			return $subscriptions->SUBSCRIPTION_AMOUNT;
+		}else{
+			return '*';
+		}
+	}
+	
+	public static function getMonthDifference($fromdate,$todate){
+		$date1 = strtotime($fromdate." 00:00:00");  
+		$date2 = strtotime($todate." 00:00:00");  
+		$diff_sign = $date2 - $date1;  
+		$months = 0;
+		if($diff_sign>0){
+			$diff = abs($date2 - $date1);  
+			$years = floor($diff / (365*60*60*24));  
+			$months = floor(($diff - $years * 365*60*60*24) 
+								   / (30*60*60*24));
+		}
+		
+		/* $date = Carbon::parse($fromdate.' 01:00:00');
+		$now = Carbon::parse($todate.' 01:00:00');
+
+		$diff = $date->diffInMonths($now); */
+		return $months;
+	}
 }
