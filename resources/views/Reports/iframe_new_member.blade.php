@@ -139,9 +139,9 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
-				<th width="19%" align="center">Name</th>
-				<th width="10%" align="center">Number</th>
+			<tr class="page-table-header-space">
+				<th width="190px" align="center">Name</th>
+				<th width="70px" align="center">Number</th>
 				<th width="10%" align="center">NRIC</th>
 				<th width="10%" align="center">Bank</th>
 				<th width="21%" align="center">Branch</th>
@@ -151,10 +151,10 @@
 				<th width="6%" align="center">SUBS</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="tbody-area" width="100% ">
 			@foreach($data['member_view'] as $member)
-				<tr>
-					<td width="19%">{{ $member->name }}</td>
+				<tr style="padding: 7px 4.4px">
+					<td width="190px">{{ $member->name }}</td>
 					<td width="10%">{{ $member->member_number }}</td>
 					<td width="10%">{{ $member->new_ic }}</td>
 					<td width="10%">{{ $member->companycode }}</td>
@@ -213,7 +213,7 @@
 					if(res)
 					{
 						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='19%'>"+entry.name+"</td>";
+							var table_row = "<tr><td width='190px'>"+entry.name+"</td>";
 								table_row += "<td width='10%'>"+entry.member_number+"</td>";
 								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
 								table_row += "<td width='10%'>"+entry.companycode+"</td>";

@@ -107,14 +107,15 @@ class MasterController extends CommonController {
     public function countrydestroy($lang,$id)
 	{
         $Country = new Country();
-        $country =  DB::table('membership as m')->where('m.country_id','=',$id)->count();
-        $country =  DB::table('member_guardian as mg')->where('mg.country_id','=',$id)->count();
-        $country =  DB::table('member_nominees as mn')->where('mn.country_id','=',$id)->count();
-        $country =  DB::table('company_branch as cb')->where('cb.country_id','=',$id)->count();
-        $country =  DB::table('state as s')->where('s.country_id','=',$id)->count();
-        $country =  DB::table('union_branch as ub')->where('ub.country_id','=',$id)->count();
-             
-        if($country > 0)
+        $country_member =  DB::table('membership as m')->where('m.country_id','=',$id)->count();
+        $country_guar =  DB::table('member_guardian as mg')->where('mg.country_id','=',$id)->count();
+        $country_nominee =  DB::table('member_nominees as mn')->where('mn.country_id','=',$id)->count();
+        $country_company =  DB::table('company_branch as cb')->where('cb.country_id','=',$id)->count();
+        $country_state =  DB::table('state as s')->where('s.country_id','=',$id)->count();
+        $country_union =  DB::table('union_branch as ub')->where('ub.country_id','=',$id)->count();
+        
+       // dd($country);
+        if($country_member > 0 || $country_guar > 0 || $country_guar > 0 || $country_nominee > 0 || $country_company > 0 || $country_state > 0 ||  $country_union > 0 )
         {
             $defdaultLang = app()->getLocale();
             return redirect($defdaultLang.'/country')->with('error','You cannot delete the country!');
@@ -176,14 +177,14 @@ class MasterController extends CommonController {
 	{
         $State = new state();
         //$State = state::find($id);
-        $state =  DB::table('membership as m')->where('m.state_id','=',$id)->count();
-        $state =  DB::table('member_guardian as mg')->where('mg.state_id','=',$id)->count();
-        $state =  DB::table('member_nominees as mn')->where('mn.state_id','=',$id)->count();
-        $state =  DB::table('company_branch as cb')->where('cb.state_id','=',$id)->count();
-        $state =  DB::table('union_branch as ub')->where('ub.state_id','=',$id)->count();
+        $state_membership =  DB::table('membership as m')->where('m.state_id','=',$id)->count();
+        $state_member_gua =  DB::table('member_guardian as mg')->where('mg.state_id','=',$id)->count();
+        $state_member_nomi =  DB::table('member_nominees as mn')->where('mn.state_id','=',$id)->count();
+        $state_company_bran =  DB::table('company_branch as cb')->where('cb.state_id','=',$id)->count();
+        $state_union_bran =  DB::table('union_branch as ub')->where('ub.state_id','=',$id)->count();
 
         $defdaultLang = app()->getLocale();
-        if($state > 0)
+        if($state_membership > 0 || $state_member_gua > 0 || $state_member_nomi > 0  || $state_company_bran > 0 ||  $state_union_bran > 0)
         {
             return redirect($defdaultLang.'/state')->with('error','You cannot delete the state');
         }
@@ -247,14 +248,14 @@ class MasterController extends CommonController {
 	{
         $city = new City();
         $City = City::find($id);
-        $City =  DB::table('membership as m')->where('m.city_id','=',$id)->count();
-        $City =  DB::table('member_guardian as mg')->where('mg.city_id','=',$id)->count();
-        $City =  DB::table('member_nominees as mn')->where('mn.city_id','=',$id)->count();
-        $City =  DB::table('company_branch as cb')->where('cb.city_id','=',$id)->count();
-        $City =  DB::table('union_branch as ub')->where('ub.city_id','=',$id)->count();
+        $City_membership =  DB::table('membership as m')->where('m.city_id','=',$id)->count();
+        $City_member_gua =  DB::table('member_guardian as mg')->where('mg.city_id','=',$id)->count();
+        $City_member_nomi =  DB::table('member_nominees as mn')->where('mn.city_id','=',$id)->count();
+        $City_company_bran =  DB::table('company_branch as cb')->where('cb.city_id','=',$id)->count();
+        $City_union_bran =  DB::table('union_branch as ub')->where('ub.city_id','=',$id)->count();
 
         $defdaultLang = app()->getLocale();
-        if($City > 0)
+        if($City_membership > 0 || $City_member_gua > 0 || $City_member_nomi > 0 || $City_company_bran  > 0 || $City_union_bran > 0)
         {
             return redirect($defdaultLang.'/city')->with('error','You cannot delete the City');
         }
