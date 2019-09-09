@@ -139,23 +139,23 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th width="10%">{{__('Bank')}}</th>
-				<th width="20%">{{__('Branch')}}</th>
-				<th width="25%">{{__('Name')}}</th>
-				<th width="20%">{{__('Number')}}</th>
-				<th width="10%">{{__('NRIC')}}</th>
-				<th width="5%">{{__('Insurance Amount(RM)')}}</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Branch')}}</th>
+				<th style="width:300px  !important ;border : 1px solid #343d9f;">{{__('Name')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Number')}}</th>
+				<th style="width:150px  !important ;border : 1px solid #343d9f;">{{__('NRIC')}}</th>
+				<th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('Insurance Amount(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
 					<tr>
-						<td width="10%">{{$member->companycode}}</td>
-						<td width="20%">{{$member->branch_name}}</td>
-						<td width="25%">{{$member->name}}</td>
-						<td width="20%">{{$member->member_number}}</td>
-						<td width="10%">{{$member->new_ic}}</td>
-						<td width="5%">{{$member->total}}</td>
+						<td style="width:100px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
+						<td style="width:200px  !important ;border : 1px solid white;">{{$member->branch_name}}</td>
+						<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
+						<td style="width:200px  !important ;border : 1px solid white;">{{$member->member_number}}</td>
+						<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
+						<td style="width:50px  !important ;border : 1px solid white;">{{$member->total}}</td>
 					</tr> 
 			@endforeach
 		</tbody>
