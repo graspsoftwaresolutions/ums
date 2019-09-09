@@ -347,8 +347,10 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		//$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
 			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
-			$("#memberoffset").val("{{$data['data_limit']}}");
-			$("#myframe").attr("src", "{{ URL::to('/en/get-new-members-report') }}?offset=0"+searchfilters,);
+		//	$("#memberoffset").val("{{$data['data_limit']}}");
+			//loader.showLoader();
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-members-report') }}?offset=0"+searchfilters,);
+			//loader.hideLoader();
 			//loader.showLoader();
 			/* $('#page-length-option tbody').empty();
 			//loader.showLoader();
@@ -378,6 +380,7 @@ $("#member_status0_sidebar_a_id").addClass('active');
 					}
 				}
 			}); */
+			//loader.hideLoader();
 			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");

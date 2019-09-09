@@ -346,7 +346,7 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
 			//loader.showLoader();
-			$("#memberoffset").val("{{$data['data_limit']}}");
+			//$("#memberoffset").val("{{$data['data_limit']}}");
 			$("#myframe").attr("src", "{{ URL::to('/en/get-takaful-more-report') }}?offset=0"+searchfilters,);
 			$('#page-length-option tbody').empty();
 			/* //loader.showLoader();

@@ -200,6 +200,10 @@
 <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 
 <script>
+$("#reports_sidebars_id").addClass('active');
+$("#member_halfshare_sidebar_li_id").addClass('active');
+$("#member_halfshare_sidebar_a_id").addClass('active');
+
 
 //$(function() {
     //$('#page-length-option').DataTable();
@@ -209,7 +213,7 @@
 			MonthFormat: 'M/yy',
 			OnAfterChooseMonth: function() { 
 				//getDataStatus();
-			} 
+			}
 		 });
 		$(document).on('submit','form#filtersubmit',function(event){
 		event.preventDefault();
@@ -220,7 +224,7 @@
 		//$('#page-length-option tbody').empty();
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year;
-			$("#memberoffset").val("{{$data['data_limit']}}");
+		//	$("#memberoffset").val("{{$data['data_limit']}}");
 			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-halfshare-report') }}?offset=0"+searchfilters,);
 			$("#search").attr('disabled',false);

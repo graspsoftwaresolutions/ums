@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -138,14 +139,14 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-            <th width="20%">{{__('Bank Name')}}</th>
-						<th width="15%">{{__('# Member')}}</th>
-						<th width='10%'>{{__('Total Amount')}}</th>
-						<th width='15%'>{{__('Active')}}</th>
-						<th width='15%'>{{__('Defaulter')}}</th>
-						<th width='15%'>{{__('StruckOff')}}</th>
-						<th width='15%'>{{__('Resigned')}}</th>
-						<th width='15%'>{{__('SundryCr')}}</th>
+            <th style="width:250px  !important ;border : 1px solid #343d9f;">{{__('Bank Name')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('# Member')}}</th>
+						<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('Total Amount')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Active')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Defaulter')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('StruckOff')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Resigned')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('SundryCr')}}</th>
 			</tr>
 		</thead>
 		@php 
@@ -167,14 +168,14 @@
 							$member_sub_link = URL::to(app()->getLocale().'/sub-company-members/'.Crypt::encrypt($company->id));
 						@endphp
 						<tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
-							<td width="20%">{{ $company->company_name }}</td>
-							<td width='15%'>{{ $total_members }}</td>
-							<td width='10%'>{{ number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',') }}</td>
-							<td width='15%'>{{ number_format($active_amt,2, '.', ',') }}</td>
-							<td width='15%'>{{ number_format($default_amt,2, '.', ',') }}</td>
-							<td width='15%'>{{ number_format($struckoff_amt,2, '.', ',') }}</td>
-							<td width='15%'>{{ number_format($resign_amt,2, '.', ',') }}</td>
-							<td width='15%'>{{ number_format($sundry_amt,2, '.', ',') }}</td>
+							<td style="width:250px  !important ;border : 1px solid white;">{{ $company->company_name }}</td>
+							<td style="width:100px  !important ;border : 1px solid white;">{{ $total_members }}</td>
+							<td style="width:130px  !important ;border : 1px solid white;">{{ number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',') }}</td>
+							<td style="width:100px  !important ;border : 1px solid white;">{{ number_format($active_amt,2, '.', ',') }}</td>
+							<td style="width:100px  !important ;border : 1px solid white;">{{ number_format($default_amt,2, '.', ',') }}</td>
+							<td style="width:100px  !important ;border : 1px solid white;">{{ number_format($struckoff_amt,2, '.', ',') }}</td>
+							<td style="width:100px  !important ;border : 1px solid white;">{{ number_format($resign_amt,2, '.', ',') }}</td>
+							<td style="width:100px  !important ;border : 1px solid white;">{{ number_format($sundry_amt,2, '.', ',') }}</td>
 						</tr> 
 					@endforeach
 		</tbody>
@@ -201,47 +202,47 @@
 			autotable: false
 		}
 	});
-	 $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    //loader.showLoader();
-			var month_year = "{{$data['month_year']}}";
-			var company_id = "{{$data['company_id']}}";
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ url(app()->getLocale().'/get-subscription-more-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(result)
-					{
-						res = result.company_view;
-						$.each(res,function(key,entry){
-							var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
-							var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td width='30%'>"+entry.company_name+"</td>";
-								table_row += "<td width='20%'>"+entry.total_members+"</td>";
-								table_row += "<td width='10%'>"+entry.total_amount+"</td>";
-								table_row += "<td width='15%'>"+entry.active_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.default_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.struckoff_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.resign_amt+"</td>";
-								table_row += "<td width='15%'>"+entry.sundry_amt+"</td></tr>";
-								$('#scroll-vert-hor tbody').append(table_row);
-						});
-						if(!res){
-								var table_row = "<tr><td colspan='6'>No data found</td></tr>";
-								$('#scroll-vert-hor tbody').append(table_row);
-						}
-						loader.hideLoader();
-					}else{
+	//  $(window).scroll(function() {   
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    //loader.showLoader();
+	// 		var month_year = "{{$data['month_year']}}";
+	// 		var company_id = "{{$data['company_id']}}";
+	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ url(app()->getLocale().'/get-subscription-more-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(result)
+	// 				{
+	// 					res = result.company_view;
+	// 					$.each(res,function(key,entry){
+	// 						var new_member_sub_link =base_url+"/{{app()->getLocale()}}/sub-company-members/"+entry.enc_id;
+	// 						var table_row = "<tr class='monthly-sub-status' data-href='"+new_member_sub_link+"'><td width='30%'>"+entry.company_name+"</td>";
+	// 							table_row += "<td width='20%'>"+entry.total_members+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.total_amount+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.active_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.default_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.struckoff_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.resign_amt+"</td>";
+	// 							table_row += "<td width='15%'>"+entry.sundry_amt+"</td></tr>";
+	// 							$('#scroll-vert-hor tbody').append(table_row);
+	// 					});
+	// 					if(!res){
+	// 							var table_row = "<tr><td colspan='6'>No data found</td></tr>";
+	// 							$('#scroll-vert-hor tbody').append(table_row);
+	// 					}
+	// 					loader.hideLoader();
+	// 				}else{
 						
-					}
-				}
-			});	
-	   }
-	});
+	// 				}
+	// 			}
+	// 		});	
+	//    }
+	// });
 </script>
 
 </html>

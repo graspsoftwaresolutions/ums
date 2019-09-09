@@ -140,29 +140,31 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th width="190px" align="center">Name</th>
-				<th width="70px" align="center">Number</th>
-				<th width="10%" align="center">NRIC</th>
-				<th width="10%" align="center">Bank</th>
-				<th width="21%" align="center">Branch</th>
-				<th width="10%" align="center">DOJ</th>
-				<th width="10%" align="center">ENT</th>
-				<th width="6%" align="center">INS</th>
-				<th width="6%" align="center">SUBS</th>
+				<th style="width:351px  !important ;border : 1px solid #343d9f;" align="center">Name</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;"  align="center">Number</th>
+				<th  style="width:150px  !important ;border : 1px solid #343d9f;" align="center">NRIC</th>
+				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">Bank</th>
+				<th  style="width:200px  !important ;border : 1px solid #343d9f;" align="center">Branch</th>
+				<th style="width:130px  !important ;border : 1px solid #343d9f;" align="center">DOJ</th>
+				<th  style="width:70px  !important ;border : 1px solid #343d9f;" align="center">ENT</th>
+				<th style="width:70px  !important ;border : 1px solid #343d9f;" align="center">INS</th>
+				<th  style="width:70px  !important ;border : 1px solid #343d9f;" align="center">SUBS</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100% ">
 			@foreach($data['member_view'] as $member)
-				<tr style="padding: 7px 4.4px">
-					<td width="190px">{{ $member->name }}</td>
-					<td width="10%">{{ $member->member_number }}</td>
-					<td width="10%">{{ $member->new_ic }}</td>
-					<td width="10%">{{ $member->companycode }}</td>
-					<td width="21%">{{ $member->branch_name }}</td>
-					<td width="10%">{{ $member->doj }}</td>
-					<td width="10%">{{ $member->entryfee }}</td>
-					<td width="6%">{{ $member->insfee }}</td>
-					<td width="6%">{{ $member->subs }}</td>
+				<tr>
+					<td style="width:351px !important ; border : 1px solid white;">{{ $member->name }}</td>
+					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->member_number }}</td>
+
+					<td style="width:150px  !important ;border : 1px solid white;">{{ $member->new_ic }}</td>
+					<td style="width:100px  !important ;border : 1px solid white;" >{{ $member->companycode }}</td>
+					<td  style="width:200px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
+					<td style="width:130px  !important ;border : 1px solid white;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
+					
+					<td style="width:70px  !important ;border : 1px solid white;">{{ isset($member) ? $member->entryfee : ""}}</td>
+					<td style="width:70px  !important ;border : 1px solid white;">{{  isset($member) ? $member->insfee  : "" }}</td>
+					<td style="width:70px  !important ;border : 1px solid white;">{{  isset($member) ? $member->subs : "" }}</td>
 					
 				</tr> 
 			@endforeach
@@ -192,48 +194,48 @@
 			autotable: false
 		}
 	});
-	 $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    //loader.showLoader();
-		    var from_date = "{{$data['from_date']}}";
-			var to_date = "{{$data['to_date']}}";
-			var company_id = "{{$data['company_id']}}";
-			var branch_id = "{{$data['branch_id']}}";
-			var member_auto_id = "{{$data['member_auto_id']}}";
-			var join_type = "{{$data['join_type']}}";
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='190px'>"+entry.name+"</td>";
-								table_row += "<td width='10%'>"+entry.member_number+"</td>";
-								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-								table_row += "<td width='10%'>"+entry.companycode+"</td>";
-								table_row += "<td width='21%'>"+entry.branch_name+"</td>";
-								table_row += "<td width='10%'>"+entry.doj+"</td>";
-								table_row += "<td width='10%'>"+entry.entryfee+"</td>";
-								table_row += "<td width='6%'>"+entry.insfee+"</td>";
-								table_row += "<td width='6%'>"+entry.subs+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						//loader.hideLoader();
-					}else{
+	//  $(window).scroll(function() {  
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    //loader.showLoader();
+	// 	    var from_date = "{{$data['from_date']}}";
+	// 		var to_date = "{{$data['to_date']}}";
+	// 		var company_id = "{{$data['company_id']}}";
+	// 		var branch_id = "{{$data['branch_id']}}";
+	// 		var member_auto_id = "{{$data['member_auto_id']}}";
+	// 		var join_type = "{{$data['join_type']}}";
+	// 		var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ URL::to('/en/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(res)
+	// 				{
+	// 					$.each(res,function(key,entry){
+	// 						var table_row = "<tr><td width='190px'>"+entry.name+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.member_number+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.new_ic+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.companycode+"</td>";
+	// 							table_row += "<td width='21%'>"+entry.branch_name+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.doj+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.entryfee+"</td>";
+	// 							table_row += "<td width='6%'>"+entry.insfee+"</td>";
+	// 							table_row += "<td width='6%'>"+entry.subs+"</td></tr>";
+	// 							$('#page-length-option tbody').append(table_row);
+	// 					});
+	// 					//loader.hideLoader();
+	// 				}else{
 						
-					}
-				}
-			});
+	// 				}
+	// 			}
+	// 		});
 		    
 				
-	   }
-	});
+	//    }
+	// });
 </script>
 
 </html>

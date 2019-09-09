@@ -139,23 +139,23 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th width="10%">{{__('Bank')}}</th>
-				<th width="20%">{{__('Branch')}}</th>
-				<th width="25%">{{__('Name')}}</th>
-				<th width="20%">{{__('Number')}}</th>
-				<th width="10%">{{__('NRIC')}}</th>
-				<th width="5%">{{__('Insurance Amount(RM)')}}</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Branch')}}</th>
+				<th style="width:300px  !important ;border : 1px solid #343d9f;">{{__('Name')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Number')}}</th>
+				<th style="width:150px  !important ;border : 1px solid #343d9f;">{{__('NRIC')}}</th>
+				<th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('Insurance Amount(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
 					<tr>
-						<td width="10%">{{$member->companycode}}</td>
-						<td width="20%">{{$member->branch_name}}</td>
-						<td width="25%">{{$member->name}}</td>
-						<td width="20%">{{$member->member_number}}</td>
-						<td width="10%">{{$member->new_ic}}</td>
-						<td width="5%">{{$member->total}}</td>
+						<td style="width:100px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
+						<td style="width:200px  !important ;border : 1px solid white;">{{$member->branch_name}}</td>
+						<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
+						<td style="width:200px  !important ;border : 1px solid white;">{{$member->member_number}}</td>
+						<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
+						<td style="width:50px  !important ;border : 1px solid white;">{{$member->total}}</td>
 					</tr> 
 			@endforeach
 		</tbody>
@@ -183,42 +183,42 @@
 			autotable: false
 		}
 	});
-	 $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    //loader.showLoader();
-			var month_year = "{{$data['month_year']}}";
-			var company_id = "{{$data['company_id']}}";
-			var branch_id = "{{$data['branch_id']}}";
-			var member_auto_id = "{{$data['member_auto_id']}}";
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-takaful-moremembers-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(res)
-					{
-						//console.log(res);
-						$.each(res,function(key,entry){
-							var table_row = "<tr><td width='10%'>"+entry.companycode+"</td>";
-								table_row += "<td width='20%'>"+entry.branch_name+"</td>";
-								table_row += "<td width='25%'>"+entry.name+"</td>";
-								table_row += "<td width='20%'>"+entry.member_number+"</td>";
-								table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-								table_row += "<td width='5%'>"+entry.total+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
-						});
-						//loader.hideLoader();
-					}else{
+	//  $(window).scroll(function() {   
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    //loader.showLoader();
+	// 		var month_year = "{{$data['month_year']}}";
+	// 		var company_id = "{{$data['company_id']}}";
+	// 		var branch_id = "{{$data['branch_id']}}";
+	// 		var member_auto_id = "{{$data['member_auto_id']}}";
+	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ URL::to('/en/get-takaful-moremembers-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(res)
+	// 				{
+	// 					//console.log(res);
+	// 					$.each(res,function(key,entry){
+	// 						var table_row = "<tr><td width='10%'>"+entry.companycode+"</td>";
+	// 							table_row += "<td width='20%'>"+entry.branch_name+"</td>";
+	// 							table_row += "<td width='25%'>"+entry.name+"</td>";
+	// 							table_row += "<td width='20%'>"+entry.member_number+"</td>";
+	// 							table_row += "<td width='10%'>"+entry.new_ic+"</td>";
+	// 							table_row += "<td width='5%'>"+entry.total+"</td></tr>";
+	// 							$('#page-length-option tbody').append(table_row);
+	// 					});
+	// 					//loader.hideLoader();
+	// 				}else{
 						
-					}
-				}
-			});	
-	   }
-	});
+	// 				}
+	// 			}
+	// 		});	
+	//    }
+	// });
 </script>
 
 </html>

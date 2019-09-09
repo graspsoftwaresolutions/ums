@@ -158,7 +158,7 @@
                     <td style="width:60px; border:1px  ;">{{ $member->gender }}</td>
                     <td style="width:130px; border:1px  ;"> {{ $member->companycode }}</td>
                     <td style="width:200px; border:1px  ;">{{ $member->branch_name }}</td>
-                    <td style="width:100px; border:1px  ;">{{ $member->doj }}</td>
+                    <td style="width:100px; border:1px  ;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
                     <td style="width:100px; border:1px  ;">{{ $member->levy }}</td>	
                 </tr> 
             @endforeach
@@ -187,45 +187,45 @@
 			autotable: false
 		}
 	});
-    $(window).scroll(function() {   
-	   var lastoffset = $("#memberoffset").val();
-	   var limit = "{{$data['data_limit']}}";
-	   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-		    //loader.showLoader();
-		    var month_year = "{{$data['month_year']}}";
-			var company_id = "{{$data['company_id']}}";
-			var branch_id = "{{$data['branch_id']}}";
-			var member_auto_id = "{{$data['member_auto_id']}}";
-            var status_id = $("#member_status").val();
+    // $(window).scroll(function() {   
+	//    var lastoffset = $("#memberoffset").val();
+	//    var limit = "{{$data['data_limit']}}";
+	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+	// 	    //loader.showLoader();
+	// 	    var month_year = "{{$data['month_year']}}";
+	// 		var company_id = "{{$data['company_id']}}";
+	// 		var branch_id = "{{$data['branch_id']}}";
+	// 		var member_auto_id = "{{$data['member_auto_id']}}";
+    //         var status_id = $("#member_status").val();
 
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
-		    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ url(app()->getLocale().'/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
-				success:function(res){
-					if(res)
-					{
-                        $.each(res,function(key,entry){
-							var table_row = "<tr><td>"+entry.name+"</td>";
-								table_row += "<td>"+entry.member_number+"</td>";
-								table_row += "<td>"+entry.new_ic+"</td>";
-								table_row += "<td>"+entry.gender+"</td>";
-								table_row += "<td>"+entry.companycode+"</td>";
-								table_row += "<td>"+entry.branch_name+"</td>";
-								table_row += "<td>"+entry.doj+"</td>";
-								table_row += "<td>"+entry.levy+"</td></tr>";
-								$('#page-length-option tbody').append(table_row);
+	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
+	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ url(app()->getLocale().'/get-new-moremembers-report') }}?offset="+lastoffset+searchfilters,
+	// 			success:function(res){
+	// 				if(res)
+	// 				{
+    //                     $.each(res,function(key,entry){
+	// 						var table_row = "<tr><td>"+entry.name+"</td>";
+	// 							table_row += "<td>"+entry.member_number+"</td>";
+	// 							table_row += "<td>"+entry.new_ic+"</td>";
+	// 							table_row += "<td>"+entry.gender+"</td>";
+	// 							table_row += "<td>"+entry.companycode+"</td>";
+	// 							table_row += "<td>"+entry.branch_name+"</td>";
+	// 							table_row += "<td>"+entry.doj+"</td>";
+	// 							table_row += "<td>"+entry.levy+"</td></tr>";
+	// 							$('#page-length-option tbody').append(table_row);
 							
-						});
-					}else{
+	// 					});
+	// 				}else{
 						
-					}
-				}
-			});		
-	   }
-	});
+	// 				}
+	// 			}
+	// 		});		
+	//    }
+	// });
 </script>
 
 </html>
