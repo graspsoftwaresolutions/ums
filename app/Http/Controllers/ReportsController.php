@@ -102,6 +102,8 @@ class ReportsController extends Controller
     }
 
 	public function membersReportMore(Request $request){
+        
+        //echo "hii";die;
         $offset = $request->input('offset');
         $month_year = $request->input('month_year');
         $company_id = $request->input('company_id');

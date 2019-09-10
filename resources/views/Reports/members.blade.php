@@ -398,6 +398,7 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 	//    }
 	// });
 	$(document).on('submit','form#filtersubmit',function(event){
+		
 		event.preventDefault();
 		var month_year = $("#month_year").val();
 		var company_id = $("#company_id").val();
