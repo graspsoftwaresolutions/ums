@@ -1419,11 +1419,12 @@ class CommonHelper
 		$year = date("Y", strtotime($date));
 		//return $month;
 		
-		$count = DB::table("membermonthendstatus1 as mm")
+		$count = DB::table("membermonthendstatus1 as mm")->select('mm.id')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
 								->where('mm.BANK_CODE','=',$company_id)
 								->where(DB::raw('month(mm.StatusMonth)'),'=',$month)
 								->where(DB::raw('year(mm.StatusMonth)'),'=',$year)
+								//->dump()
 								->count(); 
 								
 		/* $count = DB::table('mon_sub_member as sm')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
@@ -1433,7 +1434,7 @@ class CommonHelper
 								->where(DB::raw('month(ms.Date)'),'=',$month)
 								->where(DB::raw('year(ms.Date)'),'=',$year)
 								->count(); */
-		return 1;
+		return $count;
     }
 	
 	public static function getCompanyPaidSubs($bank_id,$member_id,$date){
