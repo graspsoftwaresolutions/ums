@@ -100,6 +100,36 @@
 										@csrf
 										<div class="row">
 											
+											<div class="col m3 s12">
+												<label for="doe">{{__('Group By') }}*</label>
+												<p>
+													<label>
+														<input name="groupby" type="radio" value="1" {{ $data['groupby']==1 ? 'checked' : ''}} />
+														<span>{{__('Union Branch') }} </span>
+													</label>
+												</p>
+												<p>
+													<label>
+														<input name="groupby" type="radio" value="2"  {{ $data['groupby']==2 ? 'checked' : ''}} />
+														<span>Bank </span>
+													</label>
+												</p>
+												<p>
+													<label>
+														<input name="groupby" type="radio" value="3"  {{ $data['groupby']==3 ? 'checked' : ''}} />
+														<span>Bank Branch</span>
+													</label>
+												</p>
+											</div>
+											<div class="col m3 s12">
+												<label for="doe">{{__('Display Subscription') }}</label>
+												<p>
+													<label>
+														<input name="display_subs" type="checkbox" value="1" {{ $data['DisplaySubscription']==true ? 'checked' : ''}} />
+														<span>{{__('Display Subscription') }} </span>
+													</label>
+												</p>
+											</div>
 											
 											<div class="input-field col m3 s12">
 												<label for="doe">{{__('Subscription Month') }}*</label>
@@ -131,10 +161,38 @@
 				<div class="card">
 					<div class="card-content">
 						<h4 class="card-title">Subscription 6 month variation
-						<a class="btn waves-effect waves-light cyan breadcrumbs-btn right " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full'])) }}">{{__('Print')}}</a>
+						<div class="right">
+							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1') }}" >{{__('Print')}}</a>
+							<a class="btn waves-effect waves-light " style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
+						</div>
 						</h4>
 					</div>
 					<div class="card-body">
+						@if($data['groupby']==1)
+						<table id="page-length-option" class="display" width="100%">
+							<thead>
+								<tr class="" >
+									<th>{{__('Union Branch Name')}}</th>
+									<th>{{__('Count')}}</th>
+								</tr>
+							</thead>
+							<tbody class="tbody-area" width="100%">
+								@php
+									//dd($data['month_year_full'])
+								@endphp
+								@foreach($data['union_branch_view'] as $union)
+										@php
+											$current_count = CommonHelper::getMonthEndPaidCount($union->union_branchid,$data['month_year_full'],1);
+										@endphp
+										<tr class="monthly-sub-status">
+											<td style="width:50%">{{ $union->union_branch_name }}</td>
+											<td style="width:20%">{{ $current_count }}</td>
+										</tr> 
+								@endforeach
+							</tbody>
+							
+						</table>
+						@elseif($data['groupby']==2)
 						<table id="page-length-option" class="display" width="100%">
 							<thead>
 								<tr class="" >
@@ -148,16 +206,43 @@
 								@endphp
 								@foreach($data['company_view'] as $company)
 										@php
-											$current_count = CommonHelper::getMonthEndPaidCount($company->company_id,$data['month_year_full']);
+											$current_count = CommonHelper::getMonthEndPaidCount($company->company_id,$data['month_year_full'],2);
 										@endphp
 										<tr class="monthly-sub-status">
-											<td style="width:300px">{{ $company->company_name }}</td>
+											<td style="width:50%">{{ $company->company_name }}</td>
 											<td style="width:20%">{{ $current_count }}</td>
 										</tr> 
 								@endforeach
 							</tbody>
 							
 						</table>
+						@elseif($data['groupby']==3)
+						<table id="page-length-option" class="display" width="100%">
+							<thead>
+								<tr class="" >
+									<th>{{__('Bank Name')}}</th>
+									<th>{{__('Branch Name')}}</th>
+									<th>{{__('Count')}}</th>
+								</tr>
+							</thead>
+							<tbody class="tbody-area" width="100%">
+								@php
+									//dd($data['month_year_full'])
+								@endphp
+								@foreach($data['branch_view'] as $branch)
+										@php
+											$current_count = CommonHelper::getMonthEndPaidCount($branch->branch_id,$data['month_year_full'],3);
+										@endphp
+										<tr class="monthly-sub-status">
+											<td style="width:30%">{{ $branch->company_name }}</td>
+											<td style="width:30%">{{ $branch->branch_name }}</td>
+											<td style="width:20%">{{ $current_count }}</td>
+										</tr> 
+								@endforeach
+							</tbody>
+							
+						</table>
+						@endif
 					</div> 
 				</div> 
 			</div> 

@@ -49,6 +49,7 @@ use Illuminate\Support\Facades\Storage;
 use Log;
 use Auth;
 use Facades\App\Repository\CacheMonthEnd;
+use PDF;
 
 
 
@@ -1212,8 +1213,12 @@ class SubscriptionController extends CommonController
 	public function variation(){
 		$data['month_year'] = date('M/Y');
 		$data['month_year_full'] = date('Y-m-01');
+		$data['groupby'] = 1;
+		$data['DisplaySubscription'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+		$data['company_view']=[];
+		$data['branch_view']=[];
 	/* 	$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01'))
@@ -1226,12 +1231,31 @@ class SubscriptionController extends CommonController
 	public function variationFilter($lang, Request $request){
 		//return $request->all();
 		$entry_date = $request->input('entry_date');
+		$groupby = $request->input('groupby');
+		$display_subs = $request->input('display_subs');
 		$fm_date = explode("/",$entry_date);
         $fm_date[1].'-'.$fm_date[0].'-'.'01';
         $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
-		$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+		$data['groupby'] = $groupby;
+		$data['DisplaySubscription'] = $display_subs;
+		if($groupby==1){
+			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+			$data['company_view']=[];
+			$data['branch_view']=[];
+		}
+		elseif($groupby==2){
+			$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+			$data['union_branch_view']=[];
+			$data['branch_view']=[];
+		}
+		else{
+			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+			$data['union_branch_view']=[];
+			$data['company_view']=[];
+		}
+		
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		/* $data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
@@ -1245,11 +1269,31 @@ class SubscriptionController extends CommonController
 	public function variationAll($lang, Request $request){
 		//return strtotime('now');
 		$datestring = $request->input('date');
+		$groupby = $request->input('groupby');
+		$display_subs = $request->input('display_subs');
 		//$datestring = strtotime('2019-04-01');
 		//return date('Y-m-01',strtotime($datestring));
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
-		$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+		$data['groupby'] = $groupby;
+		$data['DisplaySubscription'] = $display_subs;
+		$data['print'] = $request->input('print');
+		if($groupby==1){
+			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+			$data['company_view']=[];
+			$data['branch_view']=[];
+		}
+		elseif($groupby==2){
+			$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+			$data['union_branch_view']=[];
+			$data['branch_view']=[];
+		}
+		else{
+			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+			//dd($data['branch_view']);
+			$data['union_branch_view']=[];
+			$data['company_view']=[];
+		}
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 	/* 	$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
@@ -1258,7 +1302,13 @@ class SubscriptionController extends CommonController
 								->orWhere('mm.BANK_CODE', '=', 3)
 								->groupBY('mm.BANK_CODE')
 								->get(); */
-		return view('subscription.variation_all')->with('data', $data);
+		if($data['print']==1){
+			return view('subscription.variation_all')->with('data', $data);
+		}else{
+			$new['data'] = $data;
+			$pdf = PDF::loadView('subscription.variation_all', $new);  
+			return $pdf->download('subscription-variation.pdf');
+		}
 	}
     
     
