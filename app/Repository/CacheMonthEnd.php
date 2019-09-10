@@ -23,7 +23,7 @@ class CacheMonthEnd
 	}
 
 	public function getCompaniesByDate($datestring){
-		$key = "get.{$datestring}";
+		$key = "getCompaniesByDate.{$datestring}";
 		$cacheKey = $this->getCacheKey($key);
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
