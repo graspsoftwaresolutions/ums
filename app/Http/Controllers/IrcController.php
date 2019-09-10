@@ -178,8 +178,7 @@ class IrcController extends CommonController
 							->leftjoin('membership as m','irc.MemberCode','=','m.id')
 							->where('irc.account_type','=','irc-confirmation')
 							->where(function($query) use ($search){
-                                $query->orWhere('m.id','LIKE',"%{$search}%")
-                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                $query->orWhere('m.member_number', 'LIKE',"%{$search}%")
 									->orWhere('m.name', 'LIKE',"%{$search}%")
 									->orWhere('m.new_ic', 'LIKE',"%{$search}%")
 									->orWhere('m.old_ic', 'LIKE',"%{$search}%")
@@ -544,8 +543,7 @@ class IrcController extends CommonController
         $search = $request->input('query');
         $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','m.gender')      
                             ->where(function($query) use ($search){
-                                $query->orWhere('m.id','LIKE',"%{$search}%")
-                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                $query->orWhere('m.member_number', 'LIKE',"%{$search}%")
                                     ->orWhere('m.name', 'LIKE',"%{$search}%")
 									->orWhere('m.old_ic', 'LIKE',"%{$search}%")
 									->orWhere('m.new_ic', 'LIKE',"%{$search}%");
