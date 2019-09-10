@@ -57,7 +57,7 @@ class SubscriptionController extends CommonController
     public function __construct() {
 		$this->limit = 25;
         ini_set('memory_limit', -1);
-		ini_set('max_execution_time', 500);
+		ini_set('max_execution_time', 0);
         $this->middleware('auth');
         //$this->middleware('module:master');       
         $this->Company = new Company;
@@ -275,7 +275,7 @@ class SubscriptionController extends CommonController
 
     public function scanSubscriptions(Request $request){
         ini_set('memory_limit', -1);
-		ini_set('max_execution_time', '300');
+		ini_set('max_execution_time', '500');
         $limit = 100;
         $company_auto_id = $request->company_auto_id;
         $start =  $request->start;
@@ -514,6 +514,9 @@ class SubscriptionController extends CommonController
 												'TOTALSUBCRP_AMOUNT' => $total_subs,
 												'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
 												'TOTAL_MONTHS' => $diff_in_months,
+												'BANK_CODE' => $member_company_id,
+												'BRANCH_CODE' => $memberdata[0]->branch_id,
+												'NUBE_BRANCH_CODE' => $memberdata[0]->branch_id,
 												//'ENTRYMODE' => 0,
 												//'DEFAULTINGMONTHS' => 0,
 												'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
@@ -1214,13 +1217,32 @@ class SubscriptionController extends CommonController
                                 ->where('mm.StatusMonth', '=', date('Y-m-01'))
 								->groupBY('mm.BANK_CODE')
 								->get();
+		//return $data['company_view'];
 		return view('subscription.variation')->with('data', $data);
 	}
 	
 	public function variationFilter($lang, Request $request){
+		//return $request->all();
+		$entry_date = $request->input('entry_date');
+		$fm_date = explode("/",$entry_date);
+        $fm_date[1].'-'.$fm_date[0].'-'.'01';
+        $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
+		$data['month_year'] = date('M/Y',$datestring);
+		$data['month_year_full'] = date('Y-m-01',$datestring);
+		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+                                ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
+                                ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
+								->groupBY('mm.BANK_CODE')
+								->get();
+		//return $data['company_view'];
+		return view('subscription.variation')->with('data', $data);
+	}
+	
+	public function variationAll($lang, Request $request){
 		//return strtotime('now');
-		//$datestring = $request->input('date');
-		$datestring = strtotime('2019-04-01');
+		$datestring = $request->input('date');
+		//$datestring = strtotime('2019-04-01');
 		//return date('Y-m-01',strtotime($datestring));
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
@@ -1229,6 +1251,7 @@ class SubscriptionController extends CommonController
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
 								->groupBY('mm.BANK_CODE')
+								->dump()
 								->get();
 		return view('subscription.variation_all')->with('data', $data);
 	}

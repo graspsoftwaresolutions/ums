@@ -324,7 +324,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	
 	Route::get('subscription_variation','SubscriptionController@variation')->name('subscription.month');
-	Route::get('subscription-variation','SubscriptionController@variationFilter')->name('subscription.filter');
+	Route::get('subscription-variation','SubscriptionController@variationAll')->name('subscription.all');
+	Route::post('subscription_variation','SubscriptionController@variationFilter')->name('subscription.filter');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
