@@ -1306,8 +1306,16 @@ class SubscriptionController extends CommonController
 			return view('subscription.variation_all')->with('data', $data);
 		}else{
 			$new['data'] = $data;
+			$new['data']['print'] = '0';
+			//$data['print'] = 0;
+			//PDF::loadHTML(view('subscription.variation_all')->with('data', $data))->setPaper('a4', 'landscape')->setWarnings(false)->save('myfile.pdf');
+			/* $pdf = App::make('dompdf.wrapper');
+			$pdf->loadHTML(view('subscription.variation_all')->with('data', $data));
+			return $pdf->stream(); */
 			$pdf = PDF::loadView('subscription.variation_all', $new);  
-			return $pdf->download('subscription-variation.pdf');
+			return $pdf->download('subscription-variation.pdf'); 
+			//return view('subscription.variation_all')->with($new);
+			//dd($pdf);
 		}
 	}
     

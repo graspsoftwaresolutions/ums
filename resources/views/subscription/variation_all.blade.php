@@ -34,11 +34,7 @@
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-			var myFrame = $("#myframe").contents().find('body');
-			var textareaValue = $("textarea").val();
-			myFrame.html(textareaValue);
-		}
+		
 		@if($data['print']==1)
 			window.print();
 		@endif
@@ -60,10 +56,9 @@
 			</tr>
 		</table>
 	</div>
-	<!-- <div class="page-footer">
-    I'm The Footer
-  </div>-->
+	
 	@php
+	//dd($data);
 	if($data['groupby']==1){
 		$memberslist = $data['union_branch_view'];
 	}elseif($data['groupby']==2){
@@ -541,20 +536,8 @@
 			</tr>
 		</tbody>
 	</table>
-	</br>
 	
 </body>
-<script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
-<!--<![endif]-->
-<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
-<script>
-	
-</script>
+
 
 </html>
