@@ -116,7 +116,7 @@
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">Takaful Insurance Report</h6>
+					<h6 style="text-align:center;">NUBE RETIREMENT INSURANCE SCHEME</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
