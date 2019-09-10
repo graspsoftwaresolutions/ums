@@ -96,7 +96,7 @@
 						<div class="row">
 							<div class="col s12 m12">
 								<div class="row">
-									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
+									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_variation') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
 											
@@ -108,7 +108,7 @@
 											
 											<div class="col m3 s12 " style="padding-top:5px;">
 												</br>
-												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
+												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
 											</div>
 											
@@ -131,7 +131,7 @@
 				<div class="card">
 					<div class="card-content">
 						<h4 class="card-title">Subscription 6 month variation
-						<a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime('now')) }}">{{__('Print')}}</a>
+						<a class="btn waves-effect waves-light cyan breadcrumbs-btn right " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full'])) }}">{{__('Print')}}</a>
 						</h4>
 					</div>
 					<div class="card-body">
@@ -143,7 +143,9 @@
 								</tr>
 							</thead>
 							<tbody class="tbody-area" width="100%">
-							
+								@php
+									//dd($data['month_year_full'])
+								@endphp
 								@foreach($data['company_view'] as $company)
 										@php
 											$current_count = CommonHelper::getMonthEndPaidCount($company->company_id,$data['month_year_full']);
