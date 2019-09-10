@@ -896,7 +896,8 @@
 				
             },
             salary: {
-                required: true,
+				required: true,
+				digits: true,
             },
             branch: {
                 required: true,
@@ -921,7 +922,13 @@
             },
             designation_name : {
             required: true,
-            },  
+			},
+			levy_amount: {
+				digits : true,
+			},
+			tdf_amount: {
+                digits: true,
+            },
 	    },
 	   	messages: {
 			  member_title: {
@@ -974,7 +981,14 @@
 				remote: '{{__("IC Already Exists") }}',
             },
             salary: {
-                required:"Please Enter salary Name",
+				required:"Please Enter salary Name",
+				digits: "{{__("Please Enter numbers only") }}",
+			},
+			levy_amount: {
+                digits: "{{__("Please Enter numbers only") }}",
+			},
+			tdf_amount: {
+                digits: "{{__("Please Enter numbers only") }}",
             },
             branch: {
                 required:"Please Choose Company Name",

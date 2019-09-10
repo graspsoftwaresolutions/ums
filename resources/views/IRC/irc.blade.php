@@ -167,7 +167,7 @@
 	  <div class="container">
 	 
 		 <div class="card">
-		 <h5 class="padding-left-10">IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h5>
+		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
