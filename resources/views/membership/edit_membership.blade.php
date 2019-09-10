@@ -903,71 +903,62 @@
 													<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
 															<div class="row">
-																		<form id="fee_new_form" name="fee_new_form">
-																		<div class="row">
-																			<div class="col s12 m6">
-																				<label for="new_fee_id">Fee name* </label>
-																				<select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
-																					<option value="">Select</option>
-																					@foreach($data['fee_list'] as $key=>$value)
-																					<option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
-																					@endforeach
-																				</select>
-																				<div class="input-field">
-																					<div class="errorTxt50"></div>
-																				</div>
-																			</div>
-																			<div class="input-field col s12 m6">
-																				<label for="fee_amount" class="force-active">Fee amount *</label>
-																				<input id="fee_amount" name="fee_amount" value="0"  type="text">
-																			</div>
-																			<div class="clearfix"> </div>
-																			<div class="col s12 m12">
-																				<button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
-																				</button>
-																			</div>
-																		</div>
-																		</form>
-																		</br>
-																		<div class="row">
-																			<div class="col s12">
-																				<table id="fee_table" width="100%">
-																					<thead>
-																					
-																						<tr>
-																							<th data-field="feename">Fee Name</th>
-																							<th data-field="feeamount">Amount</th>
-																							<th data-field="action" width="25%">Action</th>
-																						</tr>
-																					
-																					</thead>
-																					<tbody>
-																						@foreach($data['fee_view'] as $key=>$value)
-																						<tr>
-																							<td data-field="feename">{{ CommonHelper::get_fee_name($value->fee_id) }}</td>
-																							<td data-field="feeamount">{{$value->fee_amount}}</td>
-																							
-																						</tr>
-																						@endforeach
-																						@php
-																						{{ $sl = 0; }}
-																						@endphp
-																						<input id="fee_row_id" class="hide" name="fee_row_id" value="{{ $sl }}"  type="text">
-																					</tbody>
-																				</table>
-																			</div>
-																		</div>
-																</div>
-                                                           
+                                                                <div class="col s12 m6">
+                                                                    <label for="new_fee_id">Fee name* </label>
+                                                                    <select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
+                                                                        <option value="">Select</option>
+                                                                        @foreach($data['fee_list'] as $key=>$value)
+                                                                        <option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <div class="input-field">
+                                                                        <div class="errorTxt50"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-field col s12 m6">
+                                                                    <label for="fee_amount" class="force-active">Fee amount *</label>
+                                                                    <input id="fee_amount" name="fee_amount" value="0" type="text">
+                                                                </div>
+                                                                <div class="clearfix"> </div>
+                                                                <div class="col s12 m12">
+                                                                    <button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
+                                                                        <i class="material-icons right">send</i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                             </br>
                                                             <div class="row">
-                                                                <div class="col s8 m8">
-																	&nbsp;
-																</div>
-																
-																
+                                                                <div class="col s12">
+                                                                    @php // print_r($data['fee_view']); @endphp
+                                                                    <table id="fee_table" width="100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th data-field="feename">Fee Name</th>
+                                                                                <th data-field="feeamount">Amount</th>
+                                                                                <th data-field="action" width="25%">Action</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @php {{ $sl = 0; }} @endphp @foreach($data['fee_view'] as $key=>$value)
+                                                                            <tr id="nominee_{{ $sl }}">
+                                                                                <td><span id="fee_name_label_{{ $sl }}">{{ CommonHelper::get_fee_name($value->fee_id) }}</span>
+                                                                                    <input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_{{ $sl }}" value="{{$value->id}}"></input>
+                                                                                    <input type="text" class="hide" name="fee_name_id[]" id="fee_name_id_{{ $sl }}" value="{{$value->fee_id}}"></input>
+                                                                                </td>
+                                                                                <td><span id="fee_amount_label_{{ $sl }}">{{$value->fee_amount}}</span>
+                                                                                    <input type="text" class="hide" name="fee_name_amount[]" id="fee_name_amount_{{ $sl }}" value="{{$value->fee_amount}}">
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a class="btn-floating waves-effect waves-light cyan edit_fee_row " href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
+                                                                                    <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            @php {{ $sl++; }} @endphp @endforeach
+                                                                            <input id="fee_row_id" class="hide" name="fee_row_id" value="{{ $sl }}" type="text">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
-															
                                                         </div>
                                                     </li>
                                                     <li>
@@ -1387,7 +1378,7 @@
             mobile: {
                 required: true,
             },
-            email: {
+           /*  email: {
                 required: true,
                 email: true,
                 remote: {
@@ -1401,7 +1392,7 @@
                     },
                     type: "post",
                 },
-            },
+            }, */
             doe: {
                 required: true,
             },
@@ -1469,10 +1460,10 @@
                 required: true,
             },
             country_id: "required",
-            cemail: {
+            /* cemail: {
                 required: true,
                 email: true
-            },
+            }, */
             city_name: {
                 required: true,
             },
@@ -1500,10 +1491,10 @@
                 required: "Please Enter your Number",
 
             },
-            email: {
+            /* email: {
                 required: "Please enter valid email",
                 remote: '{{__("Email Already exists") }}',
-            },
+            }, */
             designation: {
                 required: "Please choose  your Designation",
             },

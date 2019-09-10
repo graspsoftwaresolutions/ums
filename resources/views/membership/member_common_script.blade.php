@@ -252,7 +252,7 @@
 				}
 			}
 	}); */
-    $("#member_formValidate").validate({
+    /* $("#member_formValidate").validate({
         rules: {
             member_title:{
                 required: true,
@@ -455,7 +455,7 @@
             error.insertAfter(element);
         }
         }
-    });
+    }); */
 
 
 $('.modal').modal();
@@ -573,7 +573,8 @@ $('#add_fee').click(function(){
 		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_fee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
 		new_row += '</tr>';
 		$("#fee_amount").val('');
-		$(".selectpicker").val('').trigger("change");
+		$("#new_fee_id").val('').trigger("change");
+		//$(".selectpicker").val('').trigger("change");
 		//$('#test3').find('input:text').val('');    
 		$('#fee_table').append(new_row);
 		$("#add_fee").attr('disabled',false);
@@ -823,7 +824,12 @@ $('#nominee_state_id').change(function(){
 		});
 		$("#add_nominee").attr('disabled',false);
 		$("#nominee_row_id").val(nominee_row_id);
-		$(".selectpicker").val('').trigger("change");
+		//$(".selectpicker").val('').trigger("change");
+		$("#nominee_country_id").val('').trigger("change");
+		$("#nominee_state_id").val('').trigger("change");
+		$("#nominee_city_id").val('').trigger("change");
+		$("#sex").val('').trigger("change");
+		$("#relationship").val('').trigger("change");
 		
 	}
 	else{
