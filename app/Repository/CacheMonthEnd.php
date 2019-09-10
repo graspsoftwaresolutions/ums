@@ -38,6 +38,42 @@ class CacheMonthEnd
 		
 
 	}
+	
+	public function getUnionBranchByDate($datestring){
+		$key = "getUnionBranchByDate.{$datestring}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		{
+		    	$company_view = DB::table("membermonthendstatus1 as mm")->select('mm.NUBE_BRANCH_CODE as union_branchid','u.union_branch as union_branch_name')
+                                ->leftjoin('union_branch as u','mm.NUBE_BRANCH_CODE','=','u.id')
+                                ->where('mm.StatusMonth', '=', $datestring)
+								->groupBY('mm.NUBE_BRANCH_CODE')
+								->get();
+				return $company_view;
+		});
+		
+
+	}
+	
+	public function getBranchByDate($datestring){
+		$key = "getBranchByDate.{$datestring}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		{
+		    	$company_view = DB::table("membermonthendstatus1 as mm")->select('mm.BRANCH_CODE as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
+                                ->leftjoin('company_branch as cb','mm.BRANCH_CODE','=','cb.id')
+								->leftjoin('company as c','mm.BANK_CODE','=','c.id')
+                                ->where('mm.StatusMonth', '=', $datestring)
+								->groupBY('mm.BRANCH_CODE')
+								->get();
+				return $company_view;
+		});
+		
+
+	}
+
 
 
 	public function getCacheKey($key){

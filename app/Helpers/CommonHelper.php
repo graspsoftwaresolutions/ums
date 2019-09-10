@@ -1394,24 +1394,33 @@ class CommonHelper
         return $irc_val;
     }
 	
-	public static function getCompanyMembers($id,$date){
+	public static function getCompanyMembers($type_id,$date,$type){
 		if($date==""){
 			$date = date('Y-m-01');
 		}
 		$month = date("m", strtotime($date));
 		$year = date("Y", strtotime($date));
-		$subscriptions = DB::table("membermonthendstatus1 as ms")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.LASTPAYMENTDATE as LASTPAYMENTDATE','ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+		$subscription_qry = DB::table("membermonthendstatus1 as ms")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.LASTPAYMENTDATE as LASTPAYMENTDATE','ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
 								->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-								->where(DB::raw('ms.BANK_CODE'),'=',$id)
+								//->where(DB::raw('ms.BANK_CODE'),'=',$id)
 								->where(DB::raw('month(ms.StatusMonth)'),'=',$month)
-								->where(DB::raw('year(ms.StatusMonth)'),'=',$year)
+								->where(DB::raw('year(ms.StatusMonth)'),'=',$year);
 								//->limit(10)
 								//->dump()
-								->get();
+								//->get();
+		if($type==1){
+			$query = $subscription_qry->where('ms.NUBE_BRANCH_CODE','=',$type_id);
+		}else if($type==2){
+			$query = $subscription_qry->where('ms.BANK_CODE','=',$type_id);
+		}
+		else{
+			$query = $subscription_qry->where('ms.BRANCH_CODE','=',$type_id);
+		}
+		$subscriptions = $subscription_qry->get();		
 		return $subscriptions;
 	}
 	
-	public static function getMonthEndPaidCount($company_id, $date=false){
+	public static function getMonthEndPaidCount($type_id, $date, $type){
 		if($date==""){
 			$date = date('Y-m-01');
 		}
@@ -1419,14 +1428,21 @@ class CommonHelper
 		$year = date("Y", strtotime($date));
 		//return $month;
 		
-		$count = DB::table("membermonthendstatus1 as mm")->select('mm.id')
+		$query = DB::table("membermonthendstatus1 as mm")->select('mm.id')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
-								->where('mm.BANK_CODE','=',$company_id)
 								->where(DB::raw('month(mm.StatusMonth)'),'=',$month)
-								->where(DB::raw('year(mm.StatusMonth)'),'=',$year)
+								->where(DB::raw('year(mm.StatusMonth)'),'=',$year);
 								//->dump()
-								->count(); 
-								
+								//->count(); 
+		if($type==1){
+			$query = $query->where('mm.NUBE_BRANCH_CODE','=',$type_id);
+		}else if($type==2){
+			$query = $query->where('mm.BANK_CODE','=',$type_id);
+		}
+		else{
+			$query = $query->where('mm.BRANCH_CODE','=',$type_id);
+		}
+		$count = $query->count();				
 		/* $count = DB::table('mon_sub_member as sm')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
