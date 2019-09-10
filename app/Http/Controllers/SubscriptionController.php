@@ -48,6 +48,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Log;
 use Auth;
+use Facades\App\Repository\CacheMonthEnd;
 
 
 
@@ -1212,11 +1213,12 @@ class SubscriptionController extends CommonController
 		$data['month_year'] = date('M/Y');
 		$data['month_year_full'] = date('Y-m-01');
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+		$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+	/* 	$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01'))
 								->groupBY('mm.BANK_CODE')
-								->get();
+								->get(); */
 		//return $data['company_view'];
 		return view('subscription.variation')->with('data', $data);
 	}
@@ -1229,12 +1231,13 @@ class SubscriptionController extends CommonController
         $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
+		$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+		/* $data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
 								->groupBY('mm.BANK_CODE')
-								->get();
+								->get(); */
 		//return $data['company_view'];
 		return view('subscription.variation')->with('data', $data);
 	}
@@ -1246,13 +1249,15 @@ class SubscriptionController extends CommonController
 		//return date('Y-m-01',strtotime($datestring));
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
+		$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+	/* 	$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
+								->where('mm.BANK_CODE', '=', 2)
+								->orWhere('mm.BANK_CODE', '=', 3)
 								->groupBY('mm.BANK_CODE')
-								->dump()
-								->get();
+								->get(); */
 		return view('subscription.variation_all')->with('data', $data);
 	}
     

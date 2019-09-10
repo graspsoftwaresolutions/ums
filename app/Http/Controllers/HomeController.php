@@ -25,6 +25,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+		
         $this->middleware('auth');
         ini_set('memory_limit', '-1');
     }
@@ -36,6 +37,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+		
 		//$user = Auth::user();
         //dd($user->hasRole('developer'));
         $get_roles = Auth::user()->roles;
