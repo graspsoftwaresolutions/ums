@@ -598,7 +598,6 @@ class MemberController extends CommonController
             }else{
                 return redirect( app()->getLocale().'/home'); 
             }
-			 
 		}
 	}
 	
@@ -649,9 +648,11 @@ class MemberController extends CommonController
                             ->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
                                     ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+									->orWhere('m.name', 'LIKE',"%{$search}%")
+									->orWhere('m.old_ic', 'LIKE',"%{$search}%")
+									->orWhere('m.new_ic', 'LIKE',"%{$search}%");
                             })->limit(25)
-                            ->get();   
+                            ->get();  
          return response()->json($res);
 	}
 	public function getMembersListValues(Request $request)

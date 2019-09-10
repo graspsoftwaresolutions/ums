@@ -58,7 +58,7 @@
 			<div class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
-						class="common-label force-active">{{__('Membership Number') }}*</label>
+						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
 					<input id="member_number" name="resignedmemberno"  class="common-input"
 						type="text" required data-error=".errorTxt1" autocomplete="off">
 					<input type="hidden" name="resignedmemberno" id="memberid">
@@ -167,11 +167,11 @@
 	  <div class="container">
 	 
 		 <div class="card">
-		 <h5 class="padding-left-10">IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h5>
+		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
-						class="common-label force-active">{{__('Membership No') }}*</label>
+						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
 					<input id="irc_member_no"   name="ircmember" class="common-input"
 						type="text" required data-error=".errorTxt8">
 						<input type="hidden" name="ircmembershipno" id="irc_member_code">
@@ -273,7 +273,9 @@
 								<p>
 									<label>
 									<input type="checkbox" name="waspromoted" id="waspromoted" class="common-checkbox"  value="1"/>
-									<span>She/He was</span>
+									
+									
+									<span id="gen"></span>
 									</label> 
 								</p>	
 							</div>
@@ -300,7 +302,7 @@
 							<p>
 								<label>
 									<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1"/>
-									<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
+									<span id="gend"> </span>
 								</label> 
 							</p>
 						</div>		
@@ -493,6 +495,7 @@ $("#member_number").devbridgeAutocomplete({
 					$('#member_name').val(res.membername);
 					$('#person_name').val(res.membername);
 					$('#memberid').val(res.memberid);
+					$('#member_id').val(res.memberid);
 					$('#branch_name').val(res.branch_name);
 					$('#bank_name').val(res.company_name);
 					$('#dob').val(res.dob);
@@ -508,8 +511,18 @@ $("#member_number").devbridgeAutocomplete({
 					$('#doj').val(res.doj);
 					$('#race_name').val(res.race_name);
 					$('#nric_n').val(res.nric);
+					$('#genders').val(res.gender);
+
+					if(res.gender == 'Male')
+					{
+						$('#gen').append("He was");
+						$('#gend').append("I hearby confirm that He got He is no longer doing any clerical job function.");
+					}
+					else{
+						$('#gen').append("She was");
+						$('#gend').append("I hearby confirm that She got She is no longer doing any clerical job function.");
+					}
 				}
-        
 			});
 			
 	},

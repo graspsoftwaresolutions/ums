@@ -1445,6 +1445,13 @@
             },
             salary: {
                 required: true,
+                digits: true,
+            },
+            levy_amount: {
+                digits: true,
+            },
+            tdf_amount: {
+                digits: true,
             },
             branch: {
                 required: true,
@@ -1522,6 +1529,13 @@
             },
             salary: {
                 required: "Please Enter salary Name",
+				digits: "{{__("Please Enter numbers only") }}",
+            },
+            levy_amount: {
+                digits: "{{__("Please Enter numbers only") }}",
+            },
+            tdf_amount: {
+                digits: "{{__("Please Enter numbers only") }}",
             },
             branch: {
                 required: "Please Choose Company Name",
