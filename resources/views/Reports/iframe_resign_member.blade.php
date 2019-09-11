@@ -136,6 +136,7 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
+				<th style="width:101px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
                 <th style="width:200px !important;">{{__('Name')}}</th>
                 <th style="width:200px !important;">{{__('Number')}}</th>
                 <th style="width:200px !important;">{{__('NRIC')}}</th>
@@ -149,8 +150,12 @@
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
+			@php
+				$sno = 1;
+			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr>
+					<td style="width:101px !important ; border : 1px solid white;">{{ $sno }}</td>
                     <td style="width:200px !important;">{{ $member->name }}</td>
                     <td style="width:200px !important;">{{ $member->member_number }}</td>
                     <td style="width:150px !important;">{{ $member->new_ic }}</td>
@@ -162,8 +167,14 @@
                     <td style="width:200px !important;">{{ $member->benifit }}</td>
                     <td style="width:200px !important;">{{ $member->total }}</td>
 				</tr> 
+				@php
+					$sno++;
+				@endphp
 			@endforeach
-			
+			<tr>
+				<td colspan="11" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				
+			</tr> 
 		</tbody>
 		
 	</table>

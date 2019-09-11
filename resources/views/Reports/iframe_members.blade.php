@@ -100,11 +100,7 @@
 		}
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
@@ -142,6 +138,7 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
+				<th style="width:101px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
                 <th style="width:200px; border:1px  ;">{{__('Member Name')}}</th>
                 <th style="width:150px; border:1px  ;">{{__('Member Number')}}</th>
                 <th style="width:130px; border:1px  ;">{{__('NRIC')}}</th>
@@ -153,8 +150,13 @@
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
+			@php
+				$totalmembers = 0;
+				$sno = 1;
+			@endphp
             @foreach($data['member_view'] as $member)
                 <tr>
+					<td style="width:101px !important ; border : 1px solid white;">{{ $sno }}</td>
                     <td style="width:200px; border:1px  ;">{{ $member->name }}</td>
                     <td style="width:150px; border:1px  ;">{{ $member->member_number }}</td>
                     <td style="width:130px; border:1px  ;">{{ $member->new_ic }}</td>
@@ -164,7 +166,14 @@
                     <td style="width:100px; border:1px  ;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
                     <td style="width:100px; border:1px  ;">{{ $member->levy }}</td>	
                 </tr> 
+				@php
+					$sno++;
+				@endphp
             @endforeach
+			<tr>
+				<td colspan="9" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				
+			</tr> 
 		</tbody>
 		
 	</table>

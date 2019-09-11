@@ -126,7 +126,7 @@ type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script>
 
-$("#masters_sidebars_id").addClass('active');
+$("#subscriptions_sidebars_id").addClass('active');
 $("#subsarrear_sidebar_li_id").addClass('active');
 $("#subarrear_sidebar_a_id").addClass('active');
 

@@ -59,7 +59,7 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				
-				{{__('statistics Filter')}} 
+				{{__('Statistics Filter')}} 
 				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
 				@php	

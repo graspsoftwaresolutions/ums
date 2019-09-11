@@ -331,7 +331,7 @@ $(document).ready(function() {
 	
 	
 	$("#subscriptions_sidebars_id").addClass('active');
-	$("#subscription_sidebar_li_id").addClass('active');
-	$("#subscription_sidebar_a_id").addClass('active');
+	$("#subvariation_sidebar_li_id").addClass('active');
+	$("#subvariation_sidebar_sidebar_a_id").addClass('active');
 </script>
 @endsection

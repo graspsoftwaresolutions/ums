@@ -100,7 +100,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="col s12">
 						<ul class="tabs">
 							<li class="tab col m3"><a class="active" id="history1" href="#current_history">Current History</a></li>
+							@if( $data['old_member_id']!='')
 							<li class="tab col m3"><a href="#previous_history" id="history0">Previous History</a></li>
+							@endif
 						</ul>
 					</div>
 					<div id="current_history" class="col s12">
@@ -150,6 +152,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<input type="text" name="historyoffset" id="historyoffset" class="hide" value="{{$data['data_limit']}}"></input>
 						</div>
 					</div>
+					@if( $data['old_member_id']!='')
 					<div id="previous_history" class="col s12">
 						<div class="card">
 							<table id="page-previous-history" class="display ">
@@ -197,6 +200,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<input type="text" name="previoushistoryoffset" id="previoushistoryoffset" class="hide" value="{{$data['data_limit']}}"></input>
 						</div>
 					</div>
+					@endif
 				</div>
 				</br>
 			</div>

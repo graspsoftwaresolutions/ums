@@ -897,7 +897,7 @@ class SubscriptionController extends CommonController
     {
         $id = Crypt::decrypt($id);
        
-         $data =  DB::table('arrear_entry as ar')->select('ar.no_of_month','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric',DB::raw("DATE_FORMAT(ar.arrear_date,'%d/%b/%Y') as arrear_date"),'ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+         $data =  DB::table('arrear_entry as ar')->select('ar.no_of_months','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric',DB::raw("DATE_FORMAT(ar.arrear_date,'%d/%b/%Y') as arrear_date"),'ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
         ->leftjoin('membership as m','ar.membercode','=','m.id')
         ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
         ->leftjoin('company as c','cb.company_id','=','c.id')
