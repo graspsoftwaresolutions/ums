@@ -1686,8 +1686,8 @@
 	$(document).on('submit','form#fee_new_form',function(){
 		$("#new_fee_id").val("");
 	});
-	$('#resign_date').change(function(){
-	   var resign_date = $(this).val();
+	$('#resign_date,#doj').change(function(){
+	   var resign_date = $('#resign_date').val();
 	   var doj = $("#doj").val();
 	   if(resign_date!="" && doj!=''){
 			$.ajax({
