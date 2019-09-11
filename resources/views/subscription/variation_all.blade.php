@@ -21,8 +21,12 @@
 		  width: 100%;
 		}
 
-		#page-length-option td, #page-length-option th {
+		#page-length-option td, #page-length-one th {
 		  border: 1px solid #ddd;
+		  width: auto;
+			overflow: hidden;
+			word-wrap: break-word;
+			page-break-inside: avoid;
 		  padding: 8px;
 		}
 		
@@ -30,7 +34,20 @@
 			.export-button{
 				display:none;
 			}
+			#page-length-option td, #page-length-one th {
+				border: 1px solid #ddd;
+				width: auto;
+				overflow: hidden;
+				word-wrap: break-word;
+				page-break-inside: avoid;
+				padding: 8px;
+			}
 		}
+		@media print {
+			.footer-summary {page-break-after: always;}
+		}
+		html { overflow: visible }
+		
 		
 	</style>
 	<script type="text/javascript">
@@ -127,7 +144,7 @@
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="tbody-area">
 			@php
 				if($data['groupby']==1){
 					$typeid = $company->union_branchid;
@@ -462,7 +479,7 @@
 	@endphp
 	@endforeach
 	</br>
-	
+	<div class=' footer-summary'></div>
 	<table id="page-length-one" class="display" width="100%">
 		<thead>
 			
@@ -470,7 +487,7 @@
 				<th colspan="12" align="center">{{ __('Overall Summary') }}</th>
 			</tr>
 			<tr class="" >
-				<th colspan='6' width='55%'>{{__('Description')}}</th>
+				<th colspan='6' width='40%'>{{__('Description')}}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -5 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -4 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -3 Month')) }}</th>
@@ -479,7 +496,7 @@
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="tbody-area">
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">New Member</td>
 				<td>{{$overall_total_fifth_new}}</td>
