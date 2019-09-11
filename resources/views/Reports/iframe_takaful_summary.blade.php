@@ -132,22 +132,45 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Total Members')}}</th>
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Amount(RM)')}}</th>
+				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
+				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('Total Members')}}</th>
+				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('Amount(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
+			@php
+				$totalamt = 0;
+				$totalmembers = 0;
+				$sno = 1;
+			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr>
-					<td style="width:200px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
-					<td style="width:200px  !important ;border : 1px solid white;">{{$member->total_members}}</td>
-					<td style="width:200px  !important ;border : 1px solid white;">{{ number_format($member->totalsubs,2,".",",") }}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{$member->total_members}}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{ number_format($member->totalsubs,2,".",",") }}</td>
 				</tr> 
+				@php
+					$totalamt += $member->totalsubs;
+					$totalmembers += $member->total_members;
+					$sno++;
+				@endphp
 			@endforeach
+			<tr style="font-weight:bold;font-size:16px;">
+				<td style="width:400px  !important ;border : 1px solid white;"> Grand Total </td>
+				<td style="width:400px  !important ;border : 1px solid white;">{{ $totalmembers }}</td>
+				<td style="width:400px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
+			</tr> 
+			<tr style="font-weight:bold;font-size:16px;">
+				<td colspan="3" style="width:1200px !important ;text-align:right">FACILITATION FEES FOR THE MONTH OF {{$data['month_year_read']}}</td>
+			</tr>
+			<tr style="font-weight:bold;font-size:16px;">
+				<td colspan="3" style="width:1200px !important ;text-align:right">5% : {{ number_format((($totalamt*5)/100),2,".",",") }}</td>
+			</tr>
 		</tbody>
 		
 	</table>
+	<div style="clear:both;">&nbsp;</div>
+	
 </body>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>

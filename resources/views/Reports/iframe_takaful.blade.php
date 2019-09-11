@@ -138,6 +138,7 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('SNO')}}</th>
 				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
 				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Branch')}}</th>
 				<th style="width:300px  !important ;border : 1px solid #343d9f;">{{__('Name')}}</th>
@@ -149,9 +150,11 @@
 		<tbody class="tbody-area" width="100%">
 			@php
 				$totalamt = 0;
+				$sno = 1;
 			@endphp
 			@foreach($data['member_view'] as $member)
 					<tr>
+						<td style="width:100px  !important ;border : 1px solid white;">{{$sno}}</td>
 						<td style="width:100px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
 						<td style="width:200px  !important ;border : 1px solid white;">{{$member->branch_name}}</td>
 						<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
@@ -161,15 +164,15 @@
 					</tr> 
 					@php
 							$totalamt += $member->total;
+							$sno++;
 					@endphp
 			@endforeach
-		</tbody>
-		<tfoot>
 			<tr>
 				<td colspan="5" style="border : 1px solid white;"> Total </td>
 				<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
 			</tr> 
-		</tfoot>
+		</tbody>
+		
 		
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
