@@ -326,6 +326,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription_variation','SubscriptionController@variation')->name('subscription.month');
 	Route::get('subscription-variation','SubscriptionController@variationAll')->name('subscription.all');
 	Route::post('subscription_variation','SubscriptionController@variationFilter')->name('subscription.filter');
+	
+	Route::get('newtakaful_premium_report','ReportsController@PremiumTakaulReport')->name('takafulnew.premium');
+	Route::get('newtakaful_summary_report','ReportsController@SummaryTakaulReport')->name('takafulnew.summary');
+	Route::get('get-takaful-premium-report','ReportsController@PremiumTakaulmore')->name('premium.more');
+	Route::get('get-takaful-summary-report','ReportsController@SummaryTakaulmore')->name('summary.more');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

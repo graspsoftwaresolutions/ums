@@ -147,7 +147,25 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<iframe src="{{ route('reports.takafulnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+		<div class="row">
+			<div class="col s12">
+				<ul class="tabs">
+					<li class="tab col m3"><a class="active" id="report1" href="#member_report">Member Report</a></li>
+					<li class="tab col m3"><a href="#new_premium" id="report2">New Membership Premium</a></li>
+					<li class="tab col m3"><a href="#summary" id="report3">Summary</a></li>
+				</ul>
+			</div>
+			<div id="member_report" class="col s12">
+				<iframe src="{{ route('reports.takafulnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+			</div>
+			<div id="new_premium" class="col s12">
+				<iframe src="{{ route('takafulnew.premium',[app()->getLocale()]) }}" id="myframe_premium" height="400px" width="100%"></iframe>
+			</div>
+			<div id="summary" class="col s12">
+				<iframe src="{{ route('takafulnew.summary',[app()->getLocale()]) }}" id="myframe_summary" height="400px" width="100%"></iframe>
+			</div>
+		</div>
+		
 		
 	</div>
 </div> 
@@ -348,6 +366,8 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 			//loader.showLoader();
 			//$("#memberoffset").val("{{$data['data_limit']}}");
 			$("#myframe").attr("src", "{{ URL::to('/en/get-takaful-more-report') }}?offset=0"+searchfilters,);
+			$("#myframe_premium").attr("src", "{{ URL::to('/en/get-takaful-premium-report') }}?offset=0"+searchfilters,);
+			$("#myframe_summary").attr("src", "{{ URL::to('/en/get-takaful-summary-report') }}?offset=0"+searchfilters,);
 			$('#page-length-option tbody').empty();
 			/* //loader.showLoader();
 			$("#memberoffset").val("{{$data['data_limit']}}");
