@@ -632,8 +632,7 @@ class ReportsController extends Controller
     }
 
     public function activeStatisticsReport(Request $request, $lang)
-    {
-       
+    {      
 		$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
@@ -651,7 +650,7 @@ class ReportsController extends Controller
 		}
         
         $members = DB::table('membermonthendstatus1 as ms')
-        ->select('m.gender','c.branch_shortcode','m.doj')
+        ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
         ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
         ->leftjoin('status as s','s.id','=','m.status_id');
@@ -691,7 +690,7 @@ class ReportsController extends Controller
 		}
 
         $members = DB::table('membermonthendstatus1 as ms')
-        ->select('m.gender','c.branch_shortcode','m.doj')
+        ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
         ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
         ->leftjoin('status as s','s.id','=','m.status_id');
@@ -731,9 +730,8 @@ class ReportsController extends Controller
         }
         if(empty($unionbranch_id))
         {
-
             $members = DB::table('membermonthendstatus1 as ms')
-            ->select('m.gender','c.branch_shortcode','m.doj')
+            ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
             ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
             ->leftjoin('status as s','s.id','=','m.status_id');
@@ -741,7 +739,7 @@ class ReportsController extends Controller
         else{
             
             $members = DB::table('membermonthendstatus1 as ms')
-            ->select('m.gender','c.branch_shortcode','m.doj')
+            ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
             ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
             ->leftjoin('union_branch as ub','ub.id','=','c.union_branch_id')

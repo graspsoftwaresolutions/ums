@@ -165,8 +165,17 @@
 		<tbody  width="100%">
         @foreach($data['member_count'] as $values)
             <tr style="margin-top:50px !important;">
-                <td style='width:13% !important; border:1px ;'>{{$values->branch_shortcode}}</td>
-                @php
+				<td style='width:13% !important; border:1px ;'>
+					@php if($values->branch_shortcode==''){
+						echo $branch_name = substr($values->branch_name, 0, 16); 
+					}
+					else 
+					{
+						echo $values->branch_shortcode;
+					}
+				@endphp
+				</td>
+			    @php
                 $month_year = $data['month_year'];
                 
                 $subtotal1 = '0';
