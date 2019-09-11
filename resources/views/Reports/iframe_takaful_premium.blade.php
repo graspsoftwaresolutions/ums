@@ -142,14 +142,14 @@
 		</thead>
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
-					<tr>
-						<td style="width:100px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
-						<td style="width:200px  !important ;border : 1px solid white;">{{$member->branch_name}}</td>
-						<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
-						<td style="width:200px  !important ;border : 1px solid white;">{{$member->member_number}}</td>
-						<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
-						<td style="width:50px  !important ;border : 1px solid white;">{{$member->total}}</td>
-					</tr> 
+				<tr>
+					<td style="width:100px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
+					<td style="width:200px  !important ;border : 1px solid white;">{{$member->branch_name}}</td>
+					<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
+					<td style="width:200px  !important ;border : 1px solid white;">{{$member->member_number}}</td>
+					<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
+					<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($member->total,2,".",",") }}</td>
+				</tr> 
 			@endforeach
 		</tbody>
 		
@@ -174,7 +174,9 @@
 			autotable: false
 		}
 	});
-
+	$(document).ready( function() { 
+		$("html").css('opacity',1);
+    }); 
 </script>
 
 </html>

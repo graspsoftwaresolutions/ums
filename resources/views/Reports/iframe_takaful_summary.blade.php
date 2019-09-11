@@ -98,13 +98,7 @@
 			color:#000;
 		}
 	</style>
-	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
-	</script>
+
 </head>
 
 <body>
@@ -138,41 +132,22 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Branch')}}</th>
-				<th style="width:300px  !important ;border : 1px solid #343d9f;">{{__('Name')}}</th>
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Number')}}</th>
-				<th style="width:150px  !important ;border : 1px solid #343d9f;">{{__('NRIC')}}</th>
-				<th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('Insurance Amount(RM)')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Total Members')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Amount(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
-			@php
-				$totalamt = 0;
-			@endphp
 			@foreach($data['member_view'] as $member)
-					<tr>
-						<td style="width:100px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
-						<td style="width:200px  !important ;border : 1px solid white;">{{$member->branch_name}}</td>
-						<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
-						<td style="width:200px  !important ;border : 1px solid white;">{{$member->member_number}}</td>
-						<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
-						<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($member->total,2,".",",") }}</td>
-					</tr> 
-					@php
-							$totalamt += $member->total;
-					@endphp
+				<tr>
+					<td style="width:200px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
+					<td style="width:200px  !important ;border : 1px solid white;">{{$member->total_members}}</td>
+					<td style="width:200px  !important ;border : 1px solid white;">{{ number_format($member->totalsubs,2,".",",") }}</td>
+				</tr> 
 			@endforeach
 		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="5" style="border : 1px solid white;"> Total </td>
-				<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
-			</tr> 
-		</tfoot>
 		
 	</table>
-	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
@@ -182,7 +157,6 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
-@include('layouts.loader') 
 <script>
 	$('#tableID').tableExport({
 		type:'pdf',
@@ -194,50 +168,9 @@
 			autotable: false
 		}
 	});
-	//loader.showLoader();
 	$(document).ready( function() { 
 		$("html").css('opacity',1);
     }); 
-	document.addEventListener('DOMContentLoaded', function() {
-		//alert('page finished loading');
-		 
-	});
-	//  $(window).scroll(function() {   
-	//    var lastoffset = $("#memberoffset").val();
-	//    var limit = "{{$data['data_limit']}}";
-	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
-	// 	    //loader.showLoader();
-	// 		var month_year = "{{$data['month_year']}}";
-	// 		var company_id = "{{$data['company_id']}}";
-	// 		var branch_id = "{{$data['branch_id']}}";
-	// 		var member_auto_id = "{{$data['member_auto_id']}}";
-	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
-	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-	// 		$.ajax({
-	// 			type: "GET",
-	// 			dataType: "json",
-	// 			url : "{{ URL::to('/en/get-takaful-moremembers-report') }}?offset="+lastoffset+searchfilters,
-	// 			success:function(res){
-	// 				if(res)
-	// 				{
-	// 					//console.log(res);
-	// 					$.each(res,function(key,entry){
-	// 						var table_row = "<tr><td width='10%'>"+entry.companycode+"</td>";
-	// 							table_row += "<td width='20%'>"+entry.branch_name+"</td>";
-	// 							table_row += "<td width='25%'>"+entry.name+"</td>";
-	// 							table_row += "<td width='20%'>"+entry.member_number+"</td>";
-	// 							table_row += "<td width='10%'>"+entry.new_ic+"</td>";
-	// 							table_row += "<td width='5%'>"+entry.total+"</td></tr>";
-	// 							$('#page-length-option tbody').append(table_row);
-	// 					});
-	// 					//loader.hideLoader();
-	// 				}else{
-						
-	// 				}
-	// 			}
-	// 		});	
-	//    }
-	// });
 </script>
 
 </html>
