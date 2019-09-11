@@ -66,7 +66,7 @@ class SubscriptionController extends CommonController
         $this->MonthlySubscription = new MonthlySubscription;
         $this->MonthlySubscriptionMember = new MonthlySubscriptionMember;
         $this->Status = new Status;
-        $this->membermonthendstatus_table = "membermonthendstatus1";
+        $this->membermonthendstatus_table = "membermonthendstatus";
         $this->ArrearEntry = new ArrearEntry;
         $bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
         $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
@@ -1220,7 +1220,7 @@ class SubscriptionController extends CommonController
 		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 		$data['company_view']=[];
 		$data['branch_view']=[];
-	/* 	$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+	/* 	$data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01'))
 								->groupBY('mm.BANK_CODE')
@@ -1258,7 +1258,7 @@ class SubscriptionController extends CommonController
 		}
 		
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		/* $data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+		/* $data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
 								->groupBY('mm.BANK_CODE')
@@ -1296,7 +1296,7 @@ class SubscriptionController extends CommonController
 			$data['company_view']=[];
 		}
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-	/* 	$data['company_view'] = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+	/* 	$data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01',$datestring))
 								->where('mm.BANK_CODE', '=', 2)

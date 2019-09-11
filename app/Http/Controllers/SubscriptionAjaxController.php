@@ -52,7 +52,7 @@ class SubscriptionAjaxController extends CommonController
     public function __construct() {
         $this->limit = 25;
         ini_set('memory_limit', '-1');
-        $this->membermonthendstatus_table = "membermonthendstatus1";
+        $this->membermonthendstatus_table = "membermonthendstatus";
     }
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){

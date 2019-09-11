@@ -945,7 +945,7 @@ class CommonHelper
 		return $resign;
     }
 	public static function getlastMonthEndByMember($memberid){
-		$lastrecord =  DB::table('membermonthendstatus1 as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+		$lastrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
 						->OrderBy('ms.StatusMonth','desc')->limit(1)->first();
 		return $lastrecord;
     }
@@ -1400,7 +1400,7 @@ class CommonHelper
 		}
 		$month = date("m", strtotime($date));
 		$year = date("Y", strtotime($date));
-		$subscription_qry = DB::table("membermonthendstatus1 as ms")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.LASTPAYMENTDATE as LASTPAYMENTDATE','ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+		$subscription_qry = DB::table("membermonthendstatus as ms")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.LASTPAYMENTDATE as LASTPAYMENTDATE','ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
 								->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 								//->where(DB::raw('ms.BANK_CODE'),'=',$id)
 								->where(DB::raw('month(ms.StatusMonth)'),'=',$month)
@@ -1428,7 +1428,7 @@ class CommonHelper
 		$year = date("Y", strtotime($date));
 		//return $month;
 		
-		$query = DB::table("membermonthendstatus1 as mm")->select('mm.id')
+		$query = DB::table("membermonthendstatus as mm")->select('mm.id')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
 								->where(DB::raw('month(mm.StatusMonth)'),'=',$month)
 								->where(DB::raw('year(mm.StatusMonth)'),'=',$year);
@@ -1459,7 +1459,7 @@ class CommonHelper
 		}
 		$month = date("m", strtotime($date));
 		$year = date("Y", strtotime($date));
-		$subscriptions = DB::table("membermonthendstatus1 as ms")->select('ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT')
+		$subscriptions = DB::table("membermonthendstatus as ms")->select('ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT')
 								->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 								//->where(DB::raw('ms.BANK_CODE'),'=',$id)
 								->where(DB::raw('ms.MEMBER_CODE'),'=',$member_id)

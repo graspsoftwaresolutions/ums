@@ -12,7 +12,7 @@ class CacheMonthEnd
 	CONST CACHE_KEY="membersend";
 
 	public function __construct() {
-		$this->membermonthendstatus_table = "membermonthendstatus1";
+		$this->membermonthendstatus_table = "membermonthendstatus";
 	}
 
 	public function all($orderBy){
@@ -32,7 +32,7 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
-		    	$company_view = DB::table("membermonthendstatus1 as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
+		    	$company_view = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', $datestring)
 								->groupBY('mm.BANK_CODE')
@@ -49,7 +49,7 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
-		    	$company_view = DB::table("membermonthendstatus1 as mm")->select('mm.NUBE_BRANCH_CODE as union_branchid','u.union_branch as union_branch_name')
+		    	$company_view = DB::table("membermonthendstatus as mm")->select('mm.NUBE_BRANCH_CODE as union_branchid','u.union_branch as union_branch_name')
                                 ->leftjoin('union_branch as u','mm.NUBE_BRANCH_CODE','=','u.id')
                                 ->where('mm.StatusMonth', '=', $datestring)
 								->groupBY('mm.NUBE_BRANCH_CODE')
@@ -66,7 +66,7 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
-		    	$company_view = DB::table("membermonthendstatus1 as mm")->select('mm.BRANCH_CODE as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
+		    	$company_view = DB::table("membermonthendstatus as mm")->select('mm.BRANCH_CODE as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
                                 ->leftjoin('company_branch as cb','mm.BRANCH_CODE','=','cb.id')
 								->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', $datestring)

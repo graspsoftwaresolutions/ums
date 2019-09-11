@@ -16,7 +16,7 @@ class ReportsController extends Controller
     {
         ini_set('memory_limit', '-1');
         $this->limit = 25;
-		$this->membermonthendstatus_table = "membermonthendstatus1";		
+		$this->membermonthendstatus_table = "membermonthendstatus";		
     }
     public function newMemberReport()
     {
@@ -649,7 +649,7 @@ class ReportsController extends Controller
 			$yearno = date('Y');
 		}
         
-        $members = DB::table('membermonthendstatus1 as ms')
+        $members = DB::table('membermonthendstatus as ms')
         ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
         ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -689,7 +689,7 @@ class ReportsController extends Controller
 			$yearno = date('Y');
 		}
 
-        $members = DB::table('membermonthendstatus1 as ms')
+        $members = DB::table('membermonthendstatus as ms')
         ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
         ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -730,7 +730,7 @@ class ReportsController extends Controller
         }
         if(empty($unionbranch_id))
         {
-            $members = DB::table('membermonthendstatus1 as ms')
+            $members = DB::table('membermonthendstatus as ms')
             ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
             ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -738,7 +738,7 @@ class ReportsController extends Controller
         }
         else{
             
-            $members = DB::table('membermonthendstatus1 as ms')
+            $members = DB::table('membermonthendstatus as ms')
             ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
             ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -1069,7 +1069,7 @@ class ReportsController extends Controller
     //halfhsare starts
     public function halfshareReport(Request $request, $lang)
     {
-       $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+       $half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
        DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
        'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
                 ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
@@ -1088,7 +1088,7 @@ class ReportsController extends Controller
     }
     public function newahalfshareReport($lang,Request $request)
     {
-        $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+        $half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
         DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
         'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
                  ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
@@ -1107,7 +1107,7 @@ class ReportsController extends Controller
     }
     public function newHalfshareReport($lang,Request $request)
     {
-       $half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+       $half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
        DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
        'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
                 ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
@@ -1137,7 +1137,7 @@ class ReportsController extends Controller
 			$yearno = date('Y');
 			$data['date'] = date('M/Y');
 		}
-		$half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+		$half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
 		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
        'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
                 ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
@@ -1167,7 +1167,7 @@ class ReportsController extends Controller
 			$yearno = date('Y');
 			$data['date'] = date('M/Y');
 		}
-		$half_s = DB::table('membermonthendstatus1 as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+		$half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
 		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
        'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
                 ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 

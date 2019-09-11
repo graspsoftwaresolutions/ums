@@ -200,7 +200,7 @@ class MemberController extends CommonController
 								// 	if($fee_id > 0)
 								// 	{
 								// 		
-								// 		$new_monthend =	DB::insert('insert into membermonthendstatus1(MEMBER_CODE) values (?)', array($auto_id));
+								// 		$new_monthend =	DB::insert('insert into membermonthendstatus(MEMBER_CODE) values (?)', array($auto_id));
 								// 		if($new_monthend == true)
 								// 		{
 								// 			$update = DB::table('member_fee')->where('member_id','=',$auto_id)->update(['flag'=>'1']);

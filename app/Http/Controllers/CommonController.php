@@ -40,7 +40,7 @@ class CommonController extends Controller
 	public function __construct()
     {
         ini_set('memory_limit', '-1');
-        $this->membermonthendstatus_table = "membermonthendstatus1";
+        $this->membermonthendstatus_table = "membermonthendstatus";
 	}
 	public function userDetail(Request $request)
     {
