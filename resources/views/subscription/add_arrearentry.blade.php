@@ -70,7 +70,7 @@
 			<h5 class="padding-left-10"> Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Back') }}</a></h5>
 			<div class="row">
 				 <div class="input-field col s12 m6">
-                                          <label for="nric" class="common-label force-active">{{__('NRIC') }}*</label>
+                                          <label for="nric" class="common-label force-active">{{__('NRIC or Member Name or Member Number') }}*</label>
                                           <input id="nric" class="common-input"
                                               name="nric" type="text" data-error=".errorTxt1">
                                           <div class="errorTxt1"></div>
@@ -132,8 +132,38 @@
                                               <input id="arrear_amount" class="common-input"
                                               name="arrear_amount" type="text" data-error=".errorTxt6">
                                               <div class="errorTxt6"></div>
-                                      <div class="clearfix" style="clear:both"></div>
+                                                 <div class="clearfix" style="clear:both"></div>
                                         </div>
+                                        <div class="col s12 m6">
+                                          <label
+                                              class="common-label  force-active">{{__('No of Months') }}*</label>
+                                              <input id="no_of_months" class="common-input"
+                                              name="no_of_months" type="text" data-error=".errorTxt7">
+                                              <div class="errorTxt7"></div>
+                                                 <div class="clearfix" style="clear:both"></div>
+                                        </div>  
+                                            <!-- <div class="col s12 m12">
+                                          <table id="page-length-option" class="display">
+                                             <tr>
+                                                <th>Fee Name</th>
+                                                <th>Fee Amount</th>
+                                                <th>No of Months</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                            <tbody>
+                                            @foreach($data['fee_view'] as $values)
+                                            <tr>
+                                                <td>{{$values->fee_name}}</td>
+                                                <td>{{$values->fee_amount}}</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+
+                                          </table>
+                                        </div> -->
+
 										<div class="col s12 m12">
 										<div class="row">
 										<div class="input-field col s12 m2">
@@ -190,6 +220,10 @@ rules: {
     required: true,
     digits: true,
   },
+  no_of_months : {
+    required: true,
+    digits: true,
+  }
 },
 //For custom messages
 messages: {
@@ -206,6 +240,10 @@ messages: {
     required: '{{__("Please Enter Arrear Amount") }}',
     digits: '{{__("please Enter numbers only")}}'
   },
+  no_of_months : {
+    required: '{{__("Please Enter No of Months") }}',
+    digits: '{{__("please Enter numbers only")}}'
+  }
 },
 errorElement: 'div',
 errorPlacement: function(error, element) {

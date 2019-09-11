@@ -606,11 +606,12 @@ class SubscriptionAjaxController extends CommonController
             $sl++ => 'ar.branch_id',
             $sl++ => 'ar.arrear_date',
             $sl++ => 'ar.arrear_amount',
+            $sl++ => 'ar.no_of_months',
             $sl++ => 'ar.status_id',
         );
         
        // DB::enableQueryLog();
-		$commonqry = DB::table('arrear_entry as ar')->select('ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+		$commonqry = DB::table('arrear_entry as ar')->select('ar.no_of_months','ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
                     ->leftjoin('membership as m','ar.membercode','=','m.id')
                     ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                     ->leftjoin('company as c','cb.company_id','=','c.id')
@@ -662,10 +663,9 @@ class SubscriptionAjaxController extends CommonController
                        ->orWhere('s.status_name', 'LIKE',"%{$search}%")
                        ->orWhere('m.member_number', 'LIKE',"%{$search}%")
                        ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
-                       ->orWhere('m.name', 'LIKE',"%{$search}%");
-            });
-		
-                       
+                       ->orWhere('m.name', 'LIKE',"%{$search}%")
+                       ->orWhere('ar.no_of_months', 'LIKE',"%{$search}%");
+            });          
 		    if( $limit != -1){
 			   $sub_mem = $sub_mem->offset($start)
 						->limit($limit);
@@ -682,7 +682,8 @@ class SubscriptionAjaxController extends CommonController
                                ->orWhere('s.status_name', 'LIKE',"%{$search}%")
                                ->orWhere('m.member_number', 'LIKE',"%{$search}%")
                                ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
-                               ->orWhere('m.name', 'LIKE',"%{$search}%");
+                               ->orWhere('m.name', 'LIKE',"%{$search}%")
+                               ->orWhere('ar.no_of_months', 'LIKE',"%{$search}%");
                     })->count();
         }
       
@@ -698,6 +699,7 @@ class SubscriptionAjaxController extends CommonController
                 $nestedData['branch_id'] = $arrear->branch_name;
                 $nestedData['arrear_date'] = date('d/M/ Y',strtotime($arrear->arrear_date));
                 $nestedData['arrear_amount'] = $arrear->arrear_amount;
+                $nestedData['no_of_months'] = $arrear->no_of_months;
                 $nestedData['status_id'] = $arrear->status_name;
                 $font_color = $arrear->font_color;
                 $nestedData['font_color'] = $font_color;
