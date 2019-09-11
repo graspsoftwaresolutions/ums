@@ -11,6 +11,10 @@ class CacheMonthEnd
 {
 	CONST CACHE_KEY="membersend";
 
+	public function __construct() {
+		$this->membermonthendstatus_table = "membermonthendstatus1";
+	}
+
 	public function all($orderBy){
 		/* $key = "all.{$orderBy}";
 		$cacheKey = $this->getCacheKey($key);
@@ -69,6 +73,26 @@ class CacheMonthEnd
 								->groupBY('mm.BRANCH_CODE')
 								->get();
 				return $company_view;
+		});
+		
+
+	}
+	
+	public function getMonthEndByDate($datestring){
+		$key = "getMonthEndByDate.{$datestring}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		{
+			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
+					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+					->where('ms.StatusMonth', '=', $datestring)
+					->get();
+		    	
+			return $members_view;
 		});
 		
 
