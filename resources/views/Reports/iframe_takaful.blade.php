@@ -21,6 +21,14 @@
 		
 		}
 		
+		#page-length-option,#page-length-one {
+		  border-collapse: collapse;
+		  width: 100%;
+		}
+		#page-length-option td, #page-length-one th {
+		  border: 1px solid #ddd;
+		}
+		
 		.page-footer {
 		  position: fixed;
 		  bottom: 0;
@@ -168,7 +176,7 @@
 					@endphp
 			@endforeach
 			<tr>
-				<td colspan="5" style="border : 1px solid white;"> Total </td>
+				<td style="width:1100px  !important ;border : 1px solid white;" colspan="6" style="border : 1px solid white;"> Total </td>
 				<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
 			</tr> 
 		</tbody>

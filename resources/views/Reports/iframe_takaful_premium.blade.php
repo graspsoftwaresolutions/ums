@@ -124,6 +124,10 @@
     I'm The Footer
   </div>-->
 	<table id="page-length-option" class="display" width="100%">
+		@php
+			$totalamt = 0;
+			$sno = 1;
+		@endphp
 		<thead>
 			<tr style="border-bottom:none;">
 				<td style="border:none;">
@@ -150,7 +154,16 @@
 					<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
 					<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($member->total,2,".",",") }}</td>
 				</tr> 
+				@php
+					$totalamt += $member->total;
+					$sno++;
+				@endphp
+				
 			@endforeach
+				<tr>
+					<td style="width:1100px  !important ;border : 1px solid white;" colspan="5" style="border : 1px solid white;"> Total </td>
+					<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
+				</tr> 
 		</tbody>
 		
 	</table>

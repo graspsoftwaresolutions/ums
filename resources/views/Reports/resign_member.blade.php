@@ -161,7 +161,7 @@
 <div class="row">
 	<div class="col s12">
 	<iframe src="{{ route('reports.resignmembernew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
-		<div class="card hide">
+		<!--div class="card hide">
 			<div class="card-content">
 				<table id="page-length-option" class="display" width="100%">
 					<thead>
@@ -199,7 +199,7 @@
 					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 				</table> 
 			</div>
-		</div>
+		</div-->
 		</br>
 		</br>
 	</div>

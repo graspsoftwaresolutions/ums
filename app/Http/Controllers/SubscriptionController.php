@@ -519,6 +519,7 @@ class SubscriptionController extends CommonController
 												'BANK_CODE' => $member_company_id,
 												'BRANCH_CODE' => $memberdata[0]->branch_id,
 												'NUBE_BRANCH_CODE' => $memberdata[0]->branch_id,
+												'MEMBERTYPE_CODE' => $memberdata[0]->designation_id,
 												//'ENTRYMODE' => 0,
 												//'DEFAULTINGMONTHS' => 0,
 												'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
@@ -1168,6 +1169,7 @@ class SubscriptionController extends CommonController
 			$total_subs_to_paid = $diff_in_months==0 ? $sub_member->Amount : ($diff_in_months*$sub_member->Amount);
 			$total_pending = $total_subs_to_paid - $total_subs;
 			//dd($member_code);
+			$branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
 			$monthend_data = [
 									'StatusMonth' => $cur_date, 
 									'MEMBER_CODE' => $member_id,
@@ -1177,6 +1179,10 @@ class SubscriptionController extends CommonController
 									'TOTALSUBCRP_AMOUNT' => $total_subs,
 									'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
 									'TOTAL_MONTHS' => $diff_in_months,
+									'BANK_CODE' => $branchdata->company_id,
+									'BRANCH_CODE' => $memberdata->branch_id,
+									'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
+									'MEMBERTYPE_CODE' => $memberdata->designation_id,
 									//'ENTRYMODE' => 0,
 									//'DEFAULTINGMONTHS' => 0,
 									'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,

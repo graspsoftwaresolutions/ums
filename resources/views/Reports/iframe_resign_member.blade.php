@@ -101,11 +101,7 @@
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+	
 	</script>
 </head>
 
@@ -140,31 +136,31 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-                <th width="15%">{{__('Name')}}</th>
-                <th width="10%">{{__('Number')}}</th>
-                <th width="10%">{{__('NRIC')}}</th>
-                <th width="10%">{{__('joined')}}</th>
-                <th width="10%">{{__('Resigned')}}</th>
-                <th width="10%">{{__('Bank')}}</th>
-                <th width="20%">{{__('Branch')}}</th>
-                <th width="6%">{{__('Contribution')}}</th>
-                <th width="6%">{{__('Benifit')}}</th>
-                <th width="6%">{{__('Total')}}</th>
+                <th style="width:200px !important;">{{__('Name')}}</th>
+                <th style="width:200px !important;">{{__('Number')}}</th>
+                <th style="width:200px !important;">{{__('NRIC')}}</th>
+                <th style="width:200px !important;">{{__('joined')}}</th>
+                <th style="width:200px !important;">{{__('Resigned')}}</th>
+                <th style="width:200px !important;">{{__('Bank')}}</th>
+                <th style="width:200px !important;">{{__('Branch')}}</th>
+                <th style="width:200px !important;">{{__('Contribution')}}</th>
+                <th style="width:200px !important;">{{__('Benifit')}}</th>
+                <th style="width:200px !important;">{{__('Total')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
 			@foreach($data['member_view'] as $member)
 				<tr>
-                    <td>{{ $member->name }}</td>
-                    <td>{{ $member->member_number }}</td>
-                    <td>{{ $member->new_ic }}</td>
-                    <td>{{ $member->doj }}</td>
-                    <td>{{ $member->resignation_date }}</td>
-                    <td>{{ $member->companycode }}</td>
-                    <td>{{ $member->branch_name }}</td>
-                    <td>{{ $member->contribution }}</td>
-                    <td>{{ $member->benifit }}</td>
-                    <td>{{ $member->total }}</td>
+                    <td style="width:200px !important;">{{ $member->name }}</td>
+                    <td style="width:200px !important;">{{ $member->member_number }}</td>
+                    <td style="width:150px !important;">{{ $member->new_ic }}</td>
+                    <td style="width:130px !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
+                    <td style="width:150px !important;">{{ date("d/M/Y",strtotime($member->resignation_date)) }}</td>
+                    <td style="width:130px !important;">{{ $member->companycode }}</td>
+                    <td style="width:200px !important;">{{ $member->branch_name }}</td>
+                    <td style="width:200px !important;">{{ $member->contribution }}</td>
+                    <td style="width:200px !important;">{{ $member->benifit }}</td>
+                    <td style="width:200px !important;">{{ $member->total }}</td>
 				</tr> 
 			@endforeach
 			

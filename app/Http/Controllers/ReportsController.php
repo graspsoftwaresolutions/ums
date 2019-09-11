@@ -37,9 +37,7 @@ class ReportsController extends Controller
                     
                     $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
                     $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
-                    $members = $members->offset(0)
-                    ->limit($data['data_limit'])
-                    ->get();
+                    $members = $members->get();
         $data['member_view'] = $members;
         return view('reports.new_member')->with('data',$data);  
     }
@@ -63,9 +61,7 @@ class ReportsController extends Controller
                 }
                 $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
                 $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
-		        $members = $members->offset(0)
-				->limit($data['data_limit'])
-                ->get();
+		        $members = $members->get();
         $data['member_view'] = $members;
 
         return view('reports.members')->with('data',$data);  
@@ -90,9 +86,7 @@ class ReportsController extends Controller
                 }
                 $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
                 $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
-		        $members = $members->offset(0)
-				->limit($data['data_limit'])
-                ->get();
+		        $members = $members->get();
        
         $data['member_view'] = $members;
         $data['month_year'] = date('M/Y');
@@ -203,10 +197,7 @@ class ReportsController extends Controller
                   $members = $members->where('m.status_id','=',$status_id);
               }
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
-              //->dump()
-              ->get();
+          $members = $members->get();
        // return view('reports.iframe_members')->with('data',$data);     
         echo json_encode($members);
     }
@@ -256,9 +247,7 @@ class ReportsController extends Controller
                     $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',date('Y-m-01'));
                     $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',date('Y-m-t'));
                   
-                    $members = $members->offset(0)
-                    ->limit($data['data_limit'])
-                    ->get();
+                    $members = $members->get();
         $data['member_view'] = $members;
         return view('reports.resign_member')->with('data',$data);  
     }
@@ -282,9 +271,7 @@ class ReportsController extends Controller
                     $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',date('Y-m-01'));
                     $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',date('Y-m-t'));
                   
-                    $members = $members->offset(0)
-                    ->limit($data['data_limit'])
-                    ->get();
+                    $members = $members->get();
         $data['member_view'] = $members;
         $data['from_date'] = date('01/M/Y');
         $data['to_date'] = date('t/M/Y');
@@ -389,10 +376,7 @@ class ReportsController extends Controller
               }
              
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
-              //->dump()
-              ->get();
+          $members = $members->get();
         //echo json_encode($members);
         $data['member_view'] = $members;
         $data['from_date'] = $from_date;
@@ -426,9 +410,7 @@ class ReportsController extends Controller
         $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
         $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
                   
-		$members = $members->offset(0)
-		->limit($data['data_limit'])
-		->get();
+		$members = $members->get();
         $data['member_view'] = $members;
         return view('reports.takaful')->with('data',$data);  
     }
@@ -507,10 +489,7 @@ class ReportsController extends Controller
                     
                     $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
                     $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
-                    $members = $members->offset(0)
-                    ->limit($data['data_limit'])
-                    //->dump()
-                    ->get();
+                    $members = $members->get();
         $data['member_view'] = $members;
         $data['from_date']=date('01/M/Y');
         $data['to_date']=date('t/M/Y');
@@ -624,10 +603,7 @@ class ReportsController extends Controller
                   $members = $members->where('m.id','=',$member_auto_id);
               }
               
-          $members = $members->offset($offset)
-              ->limit($this->limit)
-             // ->dump()
-              ->get();
+          $members = $members->get();
         echo json_encode($members);
     }
 
@@ -793,11 +769,7 @@ class ReportsController extends Controller
         $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
         $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
                   
-		$members = $members->offset(0)
-		->limit($data['data_limit'])
-		//->GroupBy('c.id')
-		//->dump()
-		->get();
+		$members = $members->get();
 		//dd($members);
         $data['member_view'] = $members;
         $data['month_year']='';
@@ -851,10 +823,7 @@ class ReportsController extends Controller
                 $members = $members->where('m.id','=',$member_auto_id);
             }
             
-          $members = $members->offset($offset)
-              ->limit($this->limit)
-              //->dump()
-              ->get();
+          $members = $members->get();
 		//dd($members);
         echo json_encode($members);
     }
