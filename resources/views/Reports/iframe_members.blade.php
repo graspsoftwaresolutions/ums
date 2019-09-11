@@ -117,8 +117,10 @@
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA
 					<br/> 
-					@php //dd($data['member_view']->status_id); @endphp
-					<h6 style="text-align:center;">Members Report</h6>
+					@php //$status_name =  $data['member_view'][0]->status_name;
+						//dd($data['member_view'][0]);	
+					 @endphp
+					<h6 style="text-align:center;">MEMBERS REPORT</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
