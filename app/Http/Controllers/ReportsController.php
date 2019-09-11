@@ -7,6 +7,7 @@ use App\Helpers\CommonHelper;
 use DB;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
+use Facades\App\Repository\CacheMonthEnd;
 
 class ReportsController extends Controller
 {
@@ -815,21 +816,22 @@ class ReportsController extends Controller
         $data['data_limit']=$this->limit;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
-        $members = DB::table($this->membermonthendstatus_table.' as ms')
-					->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-                    ->leftjoin('company as com','com.id','=','c.company_id')
-                    ->leftjoin('status as s','s.id','=','m.status_id')
-                    ->leftjoin('designation as d','m.designation_id','=','d.id')
-                    ->leftjoin('state as st','st.id','=','m.state_id')
-                    ->leftjoin('city as cit','cit.id','=','m.city_id')
-                    ->leftjoin('race as r','r.id','=','m.race_id');
+        $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01'));
+        // $members = DB::table($this->membermonthendstatus_table.' as ms')
+		// 			->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+		// 			->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+        //             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+        //             ->leftjoin('company as com','com.id','=','c.company_id');
+        //             //->leftjoin('status as s','s.id','=','m.status_id')
+        //             //->leftjoin('designation as d','m.designation_id','=','d.id')
+        //             //->leftjoin('state as st','st.id','=','m.state_id')
+        //             //->leftjoin('city as cit','cit.id','=','m.city_id')
+        //             //->leftjoin('race as r','r.id','=','m.race_id');
       
-        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
-        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
+        // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
+        // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
                   
-		$members = $members->get();
+		// $members = $members->get();
 		//dd($members);
         $data['member_view'] = $members;
         $data['month_year']=date('M/Y');
@@ -878,10 +880,7 @@ class ReportsController extends Controller
                   $members = $members->where('m.id','=',$member_auto_id);
               }
               
-          $members = $members //->offset($offset)
-             // ->limit($this->limit)
-              //->dump()
-              ->get();
+          $members = $members->get();
 		$data['member_view'] = $members;
        
         $data['month_year']=$month_year;
@@ -1347,6 +1346,34 @@ class ReportsController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
         return view('reports.iframe_takaful_premium')->with('data',$data);  
+    }
+
+    public function SummaryTakaulReport($lang,Request $request){
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+        $members = DB::table($this->membermonthendstatus_table.' as ms')
+					->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('state as st','st.id','=','m.state_id')
+                    ->leftjoin('city as cit','cit.id','=','m.city_id')
+                    ->leftjoin('race as r','r.id','=','m.race_id');
+      
+        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
+        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
+                  
+		$members = $members->get();
+		//dd($members);
+        $data['member_view'] = $members;
+        $data['month_year']=date('M/Y');
+        $data['company_id']='';
+        $data['branch_id']='';
+        $data['member_auto_id']='';
+        $data['offset']=0;
+       return view('reports.iframe_takaful_summary')->with('data',$data);  
     }
 }
 
