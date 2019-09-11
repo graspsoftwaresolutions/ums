@@ -87,6 +87,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th>{{__('Branch') }}</th>
                                                       <th>{{__('arrear_date') }}</th>
                                                       <th>{{__('Arrear Amount') }}</th>
+                                                      <th>{{__('No of Months') }}</th>
                                                       <th>{{__('Status') }}</th>
                                                       <th style="text-align:center;"> {{__('Action') }}</th>
                                                   </tr>
@@ -158,6 +159,7 @@ $(function () {
                 {"data": "branch_id"},
                 {"data": "arrear_date"},
 				{"data": "arrear_amount"},
+                {"data": "no_of_months"},
 				{"data": "status_id"},
                 {"data": "options"}
 			],
