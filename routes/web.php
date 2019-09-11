@@ -345,6 +345,7 @@ Route::get('get-unionbankbranch-list','CommonController@getUnionBranchesList');
 Route::get('get-cities-list','CommonController@getCitiesList');
 Route::get('get-branch-list','CommonController@getBranchList');
 Route::get('get-age','CommonController@getAge');
+Route::get('get-serviceyear','MembershipController@ServiceYear');
 Route::get('get-fee-options','CommonController@getFeesList');
 
 // commom member functions

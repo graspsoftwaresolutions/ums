@@ -1686,6 +1686,27 @@
 	$(document).on('submit','form#fee_new_form',function(){
 		$("#new_fee_id").val("");
 	});
+	$('#resign_date').change(function(){
+	   var resign_date = $(this).val();
+	   var doj = $("#doj").val();
+	   if(resign_date!="" && doj!=''){
+			$.ajax({
+				type:"GET",
+				dataType:"json",
+				url:"{{URL::to('/get-serviceyear') }}?resign_date="+resign_date+"&doj="+doj,
+				success:function(res){
+					if(res){
+						$("#service_year").val(res);
+					}else{
+						$("#service_year").val(0);
+					}
+				}
+			});
+	   }else{
+		  $("#"+reflect_age).val(0);
+	   }
+		
+	});
 </script>
 @include('membership.member_common_script') 
 @endsection

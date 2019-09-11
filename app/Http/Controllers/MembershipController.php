@@ -1174,6 +1174,27 @@ class MembershipController extends Controller
         $pdf = PDF::loadView('membership.pdf_resign', $data);  
         return $pdf->download('resignation-'.$member_data->member_number.'.pdf');
     }
+	
+	public function ServiceYear(Request $request)
+    {
+         $resign = $request->input('resign_date');
+         $doj_one = $request->input('doj');
+		 
+		 $resign_date = explode("/",$resign);
+		 $doj = explode("/",$doj_one);
+		 
+		 $resign_dates = $resign_date[2]."-".$resign_date[1]."-".$resign_date[0];
+         $resign_dates = date('Y-m-d 00:00:00', strtotime($resign_dates));
+		 //dd($resign_dates);
+		 
+		 $dojs = $doj[2]."-".$doj[1]."-".$doj[0];
+         $dojs = date('Y-m-d 00:00:00', strtotime($dojs));
+		 // dd($dojs);
+		 
+		 $years = $resign_dates->diffInYears($dojs);
+
+         echo 1;
+    }
 
     
 }
