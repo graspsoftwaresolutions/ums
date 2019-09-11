@@ -23,6 +23,10 @@
 
 		#page-length-option td, #page-length-one th {
 		  border: 1px solid #ddd;
+		  width: auto;
+			overflow: hidden;
+			word-wrap: break-word;
+			page-break-inside: avoid;
 		  padding: 8px;
 		}
 		
@@ -30,10 +34,20 @@
 			.export-button{
 				display:none;
 			}
+			#page-length-option td, #page-length-one th {
+				border: 1px solid #ddd;
+				width: auto;
+				overflow: hidden;
+				word-wrap: break-word;
+				page-break-inside: avoid;
+				padding: 8px;
+			}
 		}
 		@media print {
 			.footer-summary {page-break-after: always;}
 		}
+		html { overflow: visible }
+		
 		
 	</style>
 	<script type="text/javascript">
