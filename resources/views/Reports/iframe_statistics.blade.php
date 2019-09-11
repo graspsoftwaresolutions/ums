@@ -171,7 +171,7 @@
 					}
 					else 
 					{
-					echo $values->branch_shortcode;
+						echo $values->branch_shortcode;
 					}
 				@endphp
 				</td>
