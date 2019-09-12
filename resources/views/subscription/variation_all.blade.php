@@ -311,13 +311,15 @@
 				if($member->STATUS_CODE==4){
 					$total_resigned++;
 				}
+				$lastpaydate = CommonHelper::getLastPayDate($member->member_id, $member->pay_date);
+				$lastpaydate = $lastpaydate!='' ? date('M Y',strtotime($lastpaydate)) : '';
 			@endphp
 			<tr style="font-weight:bold;">
 				<td>{{$count}}</td>
 				<td>{{ $member->member_number }}</td>
 				<td>{{ $member->name }}</td>
 				<td>{{ date('M Y',strtotime($member->doj)) }}</td>
-				<td>{{ date('M Y',strtotime($member->LASTPAYMENTDATE)) }}</td>
+				<td>{{ $lastpaydate }}</td>
 				<td>{{ $payable_subs }}</td>
 				<td>{{ $fifth_paid_status }}
 					@if($data['DisplaySubscription']==1)

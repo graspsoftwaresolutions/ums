@@ -1223,7 +1223,19 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = 1;
 		$data['DisplaySubscription'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+		$company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+								->leftjoin('membership as m','m.id','=','mm.MemberCode')
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->leftjoin('company as c','cb.company_id','=','c.id')
+                                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+                                ->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+								->groupBY('cb.union_branch_id')
+								->get();
+		$data['union_branch_view'] = $company_view;
 		$data['company_view']=[];
 		$data['branch_view']=[];
 	/* 	$data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
@@ -1248,7 +1260,19 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
 		if($groupby==1){
-			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+			$company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+								->leftjoin('membership as m','m.id','=','mm.MemberCode')
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->leftjoin('company as c','cb.company_id','=','c.id')
+                                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+								->where('mm.MemberCode', '!=', Null)
+								->groupBY('cb.union_branch_id')
+								->get();
+			$data['union_branch_view'] = $company_view;
 			$data['company_view']=[];
 			$data['branch_view']=[];
 		}

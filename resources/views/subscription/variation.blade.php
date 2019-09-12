@@ -38,6 +38,13 @@
 		float: left;
 		height: 2.4rem;
 	}
+	.bold{
+		font-weight: bold;
+	}
+	.table-footer {
+		cursor:pointer;
+		background: #dbdbf7;font-weight:bold;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -178,7 +185,7 @@
 							</thead>
 							<tbody class="tbody-area" width="100%">
 								@php
-									//dd($data['month_year_full'])
+									$totalno2=0;
 								@endphp
 								@foreach($data['union_branch_view'] as $union)
 										@php
@@ -188,7 +195,15 @@
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
 											<td style="width:20%">{{ $current_count }}</td>
 										</tr> 
+										@php
+											$totalno2 += $current_count;
+										@endphp
+										
 								@endforeach
+								<tr class="bold table-footer">
+									<td style="width:50%">Total</td>
+									<td style="width:20%">{{ $totalno2 }}</td>
+								</tr> 
 							</tbody>
 							
 						</table>
@@ -202,7 +217,7 @@
 							</thead>
 							<tbody class="tbody-area" width="100%">
 								@php
-									//dd($data['month_year_full'])
+									$totalno1=0;
 								@endphp
 								@foreach($data['company_view'] as $company)
 										@php
@@ -212,7 +227,15 @@
 											<td style="width:50%">{{ $company->company_name }}</td>
 											<td style="width:20%">{{ $current_count }}</td>
 										</tr> 
+										@php
+											$totalno1 += $current_count;
+										@endphp
+										
 								@endforeach
+								<tr class="bold table-footer">
+									<td style="width:50%">Total</td>
+									<td style="width:20%">{{ $totalno1 }}</td>
+								</tr> 
 							</tbody>
 							
 						</table>
@@ -227,6 +250,7 @@
 							</thead>
 							<tbody class="tbody-area" width="100%">
 								@php
+									$totalno=0;
 									//dd($data['month_year_full'])
 								@endphp
 								@foreach($data['branch_view'] as $branch)
@@ -238,7 +262,14 @@
 											<td style="width:30%">{{ $branch->branch_name }}</td>
 											<td style="width:20%">{{ $current_count }}</td>
 										</tr> 
+										@php
+											$totalno += $current_count;
+										@endphp
 								@endforeach
+								<tr class="bold table-footer">
+									<td colspan="2" style="width:60%">Total</td>
+									<td style="width:20%">{{ $totalno }}</td>
+								</tr> 
 							</tbody>
 							
 						</table>
