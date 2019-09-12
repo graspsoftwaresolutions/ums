@@ -384,3 +384,7 @@ Route::get('/maintenance', function () {
 Route::get('/form-wizard', 'CustomerController@FormWizard');
 
 Route::get('irc','IRCController@index');
+
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+});

@@ -50,6 +50,7 @@ use Log;
 use Auth;
 use Facades\App\Repository\CacheMonthEnd;
 use PDF;
+use Artisan;
 
 
 
@@ -566,8 +567,9 @@ class SubscriptionController extends CommonController
             $return_data = ['status' => 1 ,'message' => 'status and member code updated successfully, Redirecting to subscription details...','redirect_url' =>  URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id)];
         }else{
             $return_data = ['status' => 0 ,'message' => 'Invalid company id'];
-        }
-       echo json_encode($return_data);
+		}
+		Artisan::call('cache:clear');
+       	echo json_encode($return_data);
     }
 	
 	public function recursiveCompany($company_code,$member_company_id){
@@ -1212,7 +1214,7 @@ class SubscriptionController extends CommonController
 				DB::table($this->membermonthendstatus_table)->insert($monthend_data);
 			}
 		}
-        
+        Artisan::call('cache:clear');
 		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_code, 'member_status' => $member_status, 'approval_status' => $total_approval_status, 'member_match' => $member_match];
 		echo json_encode($return_data);
 	}
@@ -1223,19 +1225,19 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = 1;
 		$data['DisplaySubscription'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
-		$company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
-                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-								->leftjoin('membership as m','m.id','=','mm.MemberCode')
-								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-								->leftjoin('company as c','cb.company_id','=','c.id')
-                                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-                                ->where('ms.Date', '=', $data['month_year_full'])
-                                ->where('mm.update_status', '=', 1)
-                                ->where('mm.MemberCode', '!=', Null)
-								->groupBY('cb.union_branch_id')
-								->get();
-		$data['union_branch_view'] = $company_view;
+		// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+        //                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+		// 						->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+		// 						->leftjoin('membership as m','m.id','=','mm.MemberCode')
+		// 						->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+		// 						->leftjoin('company as c','cb.company_id','=','c.id')
+        //                         ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+        //                         ->where('ms.Date', '=', $data['month_year_full'])
+        //                         ->where('mm.update_status', '=', 1)
+        //                         ->where('mm.MemberCode', '!=', Null)
+		// 						->groupBY('cb.union_branch_id')
+		// 						->get();
+		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 		$data['company_view']=[];
 		$data['branch_view']=[];
 	/* 	$data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
@@ -1260,19 +1262,19 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
 		if($groupby==1){
-			$company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
-                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-								->leftjoin('membership as m','m.id','=','mm.MemberCode')
-								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-								->leftjoin('company as c','cb.company_id','=','c.id')
-                                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-                                ->where('ms.Date', '=', $data['month_year_full'])
-								->where('mm.update_status', '=', 1)
-								->where('mm.MemberCode', '!=', Null)
-								->groupBY('cb.union_branch_id')
-								->get();
-			$data['union_branch_view'] = $company_view;
+			// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+            //                     ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+			// 					->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+			// 					->leftjoin('membership as m','m.id','=','mm.MemberCode')
+			// 					->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+			// 					->leftjoin('company as c','cb.company_id','=','c.id')
+            //                     ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+            //                     ->where('ms.Date', '=', $data['month_year_full'])
+			// 					->where('mm.update_status', '=', 1)
+			// 					->where('mm.MemberCode', '!=', Null)
+			// 					->groupBY('cb.union_branch_id')
+			// 					->get();
+			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 			$data['company_view']=[];
 			$data['branch_view']=[];
 		}
