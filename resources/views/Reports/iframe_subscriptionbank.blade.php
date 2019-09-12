@@ -153,7 +153,7 @@
 			$get_roles = Auth::user()->roles;
 			$user_role = $get_roles[0]->slug;
 			$user_id = Auth::user()->id;
-			$dateformat = date('Y-m-01');
+			$dateformat = $data['month_year'];
 		@endphp 
 		<tbody class="tbody-area" width="100%">
             @foreach($data['company_view'] as $company)
