@@ -331,6 +331,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('newtakaful_summary_report','ReportsController@SummaryTakaulReport')->name('takafulnew.summary');
 	Route::get('get-takaful-premium-report','ReportsController@PremiumTakaulmore')->name('premium.more');
 	Route::get('get-takaful-summary-report','ReportsController@SummaryTakaulmore')->name('summary.more');
+	Route::get('statistic_union_report','ReportsController@UnionStatisticReport')->name('statsticsnew.union');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

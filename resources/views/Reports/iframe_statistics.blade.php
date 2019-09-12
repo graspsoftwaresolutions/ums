@@ -140,101 +140,43 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-                            <th style="width:15% !important; border:1px ;">{{__('Branch Code')}}</th>
-							@foreach($data['race_view'] as $values)
-								<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
-							@endforeach
-							<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
-							@foreach($data['race_view'] as $values)
-								<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
-							@endforeach
-							<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
-							<th style="width:3% !important; border:1px ;">{{__('Total')}}</th>
-							@foreach($data['race_view'] as $values)
-								<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
-							@endforeach
-							<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
-							@foreach($data['race_view'] as $values)
-								<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
-							@endforeach
-							<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
-							<th style="width:3% !important; border:1px ;">{{__('Total')}}</th>
-							<th style="width:3% !important; border:1px ;">{{__('G.Total')}}</th>
+				<th style="width:15% !important; border:1px ;">{{__('Branch Code')}}</th>
+				@foreach($data['race_view'] as $values)
+					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
+				@endforeach
+				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
+				@foreach($data['race_view'] as $values)
+					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
+				@endforeach
+				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('Total')}}</th>
+				@foreach($data['race_view'] as $values)
+					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
+				@endforeach
+				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
+				@foreach($data['race_view'] as $values)
+					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
+				@endforeach
+				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('G.Total')}}</th>
 			</tr>
 		</thead>
 		<tbody  width="100%">
         @foreach($data['member_count'] as $values)
             <tr style="margin-top:50px !important;">
 				<td style='width:13% !important; border:1px ;'>
-					@php if($values->branch_shortcode==''){
-						echo $branch_name = substr($values->branch_name, 0, 16); 
-					}
-					else 
-					{
-						echo $values->branch_shortcode;
-					}
-				@endphp
+					@php 
+						if($values->branch_shortcode==''){
+							echo $branch_name = substr($values->branch_name, 0, 16); 
+						}
+						else 
+						{
+							echo $values->branch_shortcode;
+						}
+					@endphp
 				</td>
-			    @php
-                $month_year = $data['month_year'];
-                
-                $subtotal1 = '0';
-                $subtotal2 = '0';
-                $subtotaldefaulter2 = '0';
-                $defaultertotal = '0';
-                    $total = '0';
-                    $subtotaldefaulter1 = '0';
-                    $status_active = 'ACTIVE';
-                    $status_defaulter = 'DEFAULTER';
-                    $grandtotal = '0';
-                @endphp
-                @foreach($data['race_view'] as $value)
-                @php $race_id = $value->id;
-                    $male_count = CommonHelper::get_male_gender_race_count($race_id,$values->branch_shortcode,$status_active,$month_year)
-                    @endphp
-                    <td style="width:3% !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
-                @php
-                    $subtotal1 += $male_count; 
-                    @endphp
-                @endforeach
-                <td style="width:3% !important; border:1px ;"> {{$subtotal1}}</td>
-                @foreach($data['race_view'] as $value)
-                @php $race_id = $value->id;
-                    $female_count = CommonHelper::get_female_gender_race_count($race_id,$values->branch_shortcode,$status_active,$month_year)
-                    @endphp
-                    <td style="width:3% !important; border:1px ;">{{$female_count}}</td>
-                    @php
-                    $subtotal2 += $female_count; 
-                    $total = $subtotal1 + $subtotal2; 
-                    @endphp
-                @endforeach
-                <td style="width:3% !important; border:1px ;"> {{$subtotal2}}</td>
-                <td style="width:3% !important; border:1px ;">{{$total}}</td>
-
-                @foreach($data['race_view'] as $value)
-                @php $race_id = $value->id;
-                    $maledefaulter_count = CommonHelper::get_male_gender_race_count_defaulter($race_id,$values->branch_shortcode,$status_defaulter,$month_year)
-                    @endphp
-                    <td style="width:3% !important; border:1px ;">{{$maledefaulter_count}}</td>
-                @php
-                    $subtotaldefaulter1 += $maledefaulter_count; 
-                    @endphp
-                @endforeach
-                <td style="width:3% !important; border:1px ;"> {{$subtotaldefaulter1}}</td>
-                @foreach($data['race_view'] as $value)
-                @php $race_id = $value->id;
-                    $femaledefaulter_count = CommonHelper::get_female_gender_race_count_defaulter($race_id,$values->branch_shortcode,$status_defaulter,$month_year)
-                    @endphp
-                    <td style="width:3% !important; border:1px ;padding-left: 0px;">{{$femaledefaulter_count}}</td>
-                    @php
-                    $subtotaldefaulter2 += $femaledefaulter_count; 
-                    $defaultertotal = $subtotaldefaulter1 + $subtotaldefaulter2; 
-                    $grandtotal = $defaultertotal + $total;
-                    @endphp
-                @endforeach
-                <td style="width:3% !important; border:1px ;">{{$subtotaldefaulter2}}</td>
-                <td style="width:3% !important; border:1px ;">{{$defaultertotal}}</td>
-                <td style="width:3% !important; border:1px ;">{{$grandtotal}}</td>
+			    
             </tr> 
             @endforeach
 		</tbody>

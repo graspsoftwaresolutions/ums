@@ -610,84 +610,38 @@ class ReportsController extends Controller
     public function activeStatisticsReport(Request $request, $lang)
     {      
 		$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
 
-			$month_year = '';
-		$monthno = '';
-        $yearno = '';
-        if($month_year!=""){
-			$fmmm_date = explode("/",$month_year);
-			  $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-			  $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-        }else{	
-			$monthno = date('m');
-			$yearno = date('Y');
-		}
+		$monthno = date('m');
+		$yearno = date('Y');
         
-        $members = DB::table('membermonthendstatus as ms')
-        ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
-        ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
-        ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-        ->leftjoin('status as s','s.id','=','m.status_id');
-
-        if($monthno!="" && $yearno!=""){
-            $members = $members->where(DB::raw('month(m.doj)'),'=',$monthno);
-            $members = $members->where(DB::raw('year(m.doj)'),'=',$yearno);
-        }
-       
 		$data['month_year'] = date('M/Y');
 		$data['unionbranch_id'] = '';
 		$data['company'] = '' ;
 		$data['branch_id'] = '';
-        $data['member_count'] =  $members->GroupBY('c.id')
-							->where(DB::raw('month(m.doj)'),'=',$monthno)  
-							->where(DB::raw('year(m.doj)'),'=',$yearno)->get(); 
-		      
-		//dd($data['member_count']);
-        return view('Reports.statistics')->with('data',$data);  
+      
+        return view('reports.statistics')->with('data',$data);  
     }
     public function newStatisticReport($lang,Request $request)
     {
-        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        //$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
+       // $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
 
-			$month_year = '';
-		$monthno = '';
-        $yearno = '';
-        if($month_year!=""){
-			$fmmm_date = explode("/",$month_year);
-			  $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-			  $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-        }else{	
-			$monthno = date('m');
-			$yearno = date('Y');
-		}
+		$monthno = date('m');
+		$yearno = date('Y');
 
-        $members = DB::table('membermonthendstatus as ms')
-        ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
-        ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
-        ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-        ->leftjoin('status as s','s.id','=','m.status_id');
-        
-        if($monthno!="" && $yearno!=""){
-            $members = $members->where(DB::raw('month(m.doj)'),'=',$monthno);
-            $members = $members->where(DB::raw('year(m.doj)'),'=',$yearno);
-        }
-       // $members->dump();
-      // dd($members);
+        $members = CacheMonthEnd::getMonthEndCompaniesByDate(date('Y-m-01'));
+       
 		$data['month_year'] = date('M/Y');
 		$data['unionbranch_id'] = '';
 		$data['company'] = '' ;
         $data['branch_id'] = '';
         $data['data_limit'] = '';
-        $data['member_count'] =  $members->GroupBY('c.id')
-							->where(DB::raw('month(m.doj)'),'=',$monthno)  
-							->where(DB::raw('year(m.doj)'),'=',$yearno)->get(); 
+        $data['member_count'] =  $members; 
 		      
 		//dd($data['member_count']);
-        return view('Reports.iframe_statistics')->with('data',$data); 
+        return view('reports.iframe_statistics')->with('data',$data); 
     }
     
     public function statisticsReportMore($lang,Request $request)
@@ -703,50 +657,37 @@ class ReportsController extends Controller
           $fmmm_date = explode("/",$month_year);
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-        }
-        if(empty($unionbranch_id))
-        {
-            $members = DB::table('membermonthendstatus as ms')
-            ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
-            ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
-            ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-            ->leftjoin('status as s','s.id','=','m.status_id');
-        }
-        else{
-            
-            $members = DB::table('membermonthendstatus as ms')
-            ->select('m.gender','c.branch_shortcode','m.doj','c.branch_name','c.id as branchid')
-            ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
-            ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-            ->leftjoin('union_branch as ub','ub.id','=','c.union_branch_id')
-            ->leftjoin('status as s','s.id','=','m.status_id');
-        }
+        }else{
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+        $members = DB::table('membermonthendstatus as ms')
+						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
+						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE');
 		
         if($branch_id!=""){
-            $members = $members->where('m.branch_id','=',$branch_id);
+            $members = $members->where('ms.BRANCH_CODE','=',$branch_id);
         }elseif($company_id!= ''){
-             $members = $members->where('c.company_id','=',$company_id);
+             $members = $members->where('ms.BANK_CODE','=',$company_id);
         }
         elseif($unionbranch_id!= ''){
-            $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+            $members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
         }
        
-        $data['member_count'] =   $members->GroupBY('c.id')
-							->where(DB::raw('month(m.doj)'),'=',$monthno)  
-							->where(DB::raw('year(m.doj)'),'=',$yearno)
-							
-							//->dump()
-							->get();
-		$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['member_count'] =   $members->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
+									->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)
+									->GroupBY('ms.BRANCH_CODE')
+									->get();
+		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();  
+        //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
 		$data['month_year'] = $month_year;
 		$data['unionbranch_id'] = $unionbranch_id;
-		$data['company'] = $request->input('company_id');
-        $data['branch_id'] = $request->input('branch_id');
-        //$data['data_limit']=$this->limit;
+		$data['company'] = $company_id;
+        $data['branch_id'] = $branch_id;
         $data['data_limit']='';
-        $data['offset']='';
+        $data['offset']=0;
         //return view('Reports.statistics')->with('data',$data); 
         return view('reports.iframe_statistics')->with('data',$data);   
     }

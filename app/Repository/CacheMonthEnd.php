@@ -134,6 +134,26 @@ class CacheMonthEnd
 		
 
 	}
+	
+	public function getMonthEndCompaniesByDate($datestring){
+		$key = "getMonthEndCompaniesByDate.{$datestring}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		{
+			 $members = DB::table('membermonthendstatus as ms')
+						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
+						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						->where('ms.StatusMonth', '=', $datestring)
+								->groupBY('ms.BRANCH_CODE')
+								->get();
+		    	
+			return $members;
+		});
+		
+
+	}
 
 
 

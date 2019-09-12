@@ -162,8 +162,25 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-	<iframe src="{{ route('reports.statsticsnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+		<div class="row">
+			<div class="col s12">
+				<ul class="tabs">
+					<li class="tab col m3"><a class="active" id="report1" href="#bank_branch_report">Bank Branch Report</a></li>
+					<li class="tab col m3"><a href="#union_branch_report" id="report2">{{ __('Union Branch Report') }}</a></li>
+				</ul>
+			</div>
+			<div id="bank_branch_report" class="col s12">
+				<iframe src="{{ route('reports.statsticsnew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+			</div>
+			<div id="union_branch_report" class="col s12">
+				<iframe src="{{ route('statsticsnew.union',[app()->getLocale()]) }}" id="myframe_union" height="400px" width="100%"></iframe>
+			</div>
+			
+		</div>
+		
+		
 	</div>
+
 </div> 
 @php	
 	$ajaxcompanyid = '';
