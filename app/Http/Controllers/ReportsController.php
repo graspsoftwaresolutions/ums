@@ -861,7 +861,7 @@ class ReportsController extends Controller
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
                                 ->where('ms.Date', '=', date('Y-m-01'))->get();
 
-        $data['month_year']='';
+        $data['month_year']=date('Y-m-01');
         $data['company_id']=''; 
         $data['offset']=0;
         return view('reports.iframe_subscriptionbank')->with('data',$data); 
@@ -917,7 +917,7 @@ class ReportsController extends Controller
         // }
         $data['company_view'] = $company_list;
         //$data['data_limit']=$this->limit;
-        $data['month_year']=$month_year;
+        $data['month_year']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         $data['company_id']=$company_id;
         //echo json_encode($data);
         return view('reports.iframe_subscriptionbank')->with('data',$data);

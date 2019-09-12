@@ -195,7 +195,7 @@
 			@endphp
 			@foreach($company_members as $member)
 			@php
-				$salary = $member->salary;
+				$salary = $member->salary==Null ? 0 : $member->salary;
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;

@@ -1057,7 +1057,8 @@ class CommonHelper
         }
         if($user_role=='union'){
             $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` where `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
-            $members_count = $members_qry[0]->count;
+			
+			$members_count = $members_qry[0]->count;
         }
         else if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
