@@ -14,27 +14,7 @@
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
-	@if(count($data['member_view'])<10)
-		#main.main-full {
-			height: 750px;
-		}
-		
-		.footer {
-		   position: fixed;
-		   margin-top:50px;
-		   left: 0;
-		   bottom: 0;
-		   width: 100%;
-		   height:auto;
-		   background-color: red;
-		   color: white;
-		   text-align: center;
-		   z-index:999;
-		} 
-		.sidenav-main{
-			z-index:9999;
-		}
-	@endif
+	
 	.btn, .btn-sm-one {
 		line-height: 36px;
 		display: inline-block;

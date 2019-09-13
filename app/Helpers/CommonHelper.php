@@ -1075,7 +1075,7 @@ class CommonHelper
         }
 		return $members_count;
     }
-	public static function get_male_gender_race_count($raceid,$branchshortcode,$status_active,$month_year)
+	public static function get_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender)
     {
 	 
 		// $month_year  = '';
@@ -1091,7 +1091,19 @@ class CommonHelper
 			$yearno = date('Y');
 		}
 		
-        $male_count = DB::table('membership as m')->select('m.gender','m.doj')
+		$male_count = DB::table('membermonthendstatus as ms')
+						->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						//->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						//->leftjoin('race as r','m.race_id','=','r.id')
+						->where('m.race_id','=',$raceid)
+						->where('ms.BRANCH_CODE','=',$branchid)
+						->where('m.gender','=',$gender)
+						->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
+						->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)  
+						->where('ms.STATUS_CODE','=',$status_active)
+						->count();
+		
+       /*  $male_count = DB::table('membership as m')->select('m.gender','m.doj')
                     ->leftjoin('race as r','m.race_id','=','r.id')
 					->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 					->leftjoin('status as s','s.id','=','m.status_id')
@@ -1100,12 +1112,12 @@ class CommonHelper
 
      
         $male_count =  $male_count->where('r.id','=',$raceid)
-					->where('cb.branch_shortcode','=',$branchshortcode)
+					->where('cb.branch_shortcode','=',$branchid)
 					->where(DB::raw('month(m.doj)'),'=',$monthno)  
 					->where(DB::raw('year(m.doj)'),'=',$yearno)  
 					->where('s.status_name','=',$status_active)
                     //->dump()   
-                    ->count();
+                    ->count(); */
         return $male_count;
 		
 
@@ -1558,5 +1570,10 @@ class CommonHelper
 			}
 			
 		}
+	}
+	
+	public static function get_status_idbyname($statusname){
+		$status = DB::table("status")->where('status_name', '=', $statusname)->pluck('id')->first();
+		return $status;
 	}
 }

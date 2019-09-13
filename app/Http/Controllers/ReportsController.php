@@ -15,6 +15,7 @@ class ReportsController extends Controller
 	public function __construct()
     {
         ini_set('memory_limit', '-1');
+		ini_set('max_execution_time', 800); 
         $this->limit = 25;
 		$this->membermonthendstatus_table = "membermonthendstatus";		
     }
@@ -1098,18 +1099,18 @@ class ReportsController extends Controller
         $data['data_limit']=$this->limit;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
-       // $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01'));
-        $members = DB::table($this->membermonthendstatus_table.' as ms')
-					->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-                    ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-                    ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
+       $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01'));
+        // $members = DB::table($this->membermonthendstatus_table.' as ms')
+		// 			->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+		// 			->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+        //             ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+        //             ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
                    
       
-        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
-        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
+        // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
+        // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
                   
-		$members = $members->get();
+		// $members = $members->get();
 		//dd($members);
         $data['member_view'] = $members;
         $data['month_year']=date('M/Y');
@@ -1133,27 +1134,33 @@ class ReportsController extends Controller
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
-        $members = DB::table($this->membermonthendstatus_table.' as ms')
-            ->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','com.short_code as companycode','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-            ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-            ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-            ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
-            if($monthno!="" && $yearno!=""){
-                $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
-                $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
-            }
-            if($branch_id!=""){
-                $members = $members->where('ms.BRANCH_CODE','=',$branch_id);
-            }else{
-                if($company_id!=""){
-                    $members = $members->where('ms.BANK_CODE','=',$company_id);
+        if($branch_id!="" || $company_id!="" || $member_auto_id!=""){
+            $members = DB::table($this->membermonthendstatus_table.' as ms')
+                ->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','com.short_code as companycode','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+                ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
+                if($monthno!="" && $yearno!=""){
+                    $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
+                    $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
+                    $members = $members->where(DB::raw('month(m.doj)'), '!=', $monthno);
+                    $members = $members->where(DB::raw('year(m.doj)'), '!=', $yearno);
                 }
-            }
-            if($member_auto_id!=""){
-                $members = $members->where('m.id','=',$member_auto_id);
-            }
-            
-        $members = $members->get();
+                if($branch_id!=""){
+                    $members = $members->where('ms.BRANCH_CODE','=',$branch_id);
+                }else{
+                    if($company_id!=""){
+                        $members = $members->where('ms.BANK_CODE','=',$company_id);
+                    }
+                }
+                if($member_auto_id!=""){
+                    $members = $members->where('m.id','=',$member_auto_id);
+                }
+                
+            $members = $members->get();
+        }else{
+            $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])));
+        }
 		$data['member_view'] = $members;
        
         $data['month_year']=$month_year;
@@ -1170,16 +1177,17 @@ class ReportsController extends Controller
     public function PremiumTakaulReport($lang,Request $request){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
-        $members = DB::table($this->membermonthendstatus_table.' as ms')
-                ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-                ->leftjoin('company as com','com.id','=','c.company_id');
+        $members = CacheMonthEnd::getPremiumMonthEndByDate(date('Y-m-01'));
+        // $members = DB::table($this->membermonthendstatus_table.' as ms')
+        //         ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+        //         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+        //         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+        //         ->leftjoin('company as com','com.id','=','c.company_id');
       
-        $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
-        $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
+        // $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
+        // $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
                   
-		$members = $members->get();
+		// $members = $members->get();
 		
 		//dd($members);
         $data['member_view'] = $members;
@@ -1204,8 +1212,9 @@ class ReportsController extends Controller
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
+        if($branch_id!="" || $company_id!="" || $member_auto_id!=""){
 			$members = DB::table($this->membermonthendstatus_table.' as ms')
-                ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+                ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
                 ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id');
@@ -1225,6 +1234,9 @@ class ReportsController extends Controller
               }
               
           $members = $members->get();
+        }else{
+            $members = CacheMonthEnd::getPremiumMonthEndByDate(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])));
+        }
 		$data['member_view'] = $members;
        
         $data['month_year']=$month_year;
@@ -1242,16 +1254,17 @@ class ReportsController extends Controller
     public function SummaryTakaulReport($lang,Request $request){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
-        $members = DB::table($this->membermonthendstatus_table.' as ms')
-                ->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`SUBSCRIPTION_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
-                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-                ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-                ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
+        $members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01'));
+        // $members = DB::table($this->membermonthendstatus_table.' as ms')
+        //         ->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`SUBSCRIPTION_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+        //         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+        //         ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+        //         ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
       
-        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
-        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
+        // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
+        // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
                   
-		$members = $members->groupBY('ms.BANK_CODE')->get();
+		// $members = $members->groupBY('ms.BANK_CODE')->get();
 		//dd($members);
         $data['member_view'] = $members;
         $data['month_year']=date('M/Y');
@@ -1277,21 +1290,25 @@ class ReportsController extends Controller
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $month_year_read =  date('M Y',strtotime($yearno.'-'.$monthno.'-'.'01'));
         }
-        $members =  DB::table($this->membermonthendstatus_table.' as ms')
-                ->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`SUBSCRIPTION_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
-                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-                ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-                ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
-            if($monthno!="" && $yearno!=""){
-                $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
-                $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
-            }
-            if($company_id!=""){
-                $members = $members->where('c.company_id','=',$company_id);
-            }
-          
+        if($branch_id!="" || $company_id!="" || $member_auto_id!=""){
+            $members =  DB::table($this->membermonthendstatus_table.' as ms')
+                    ->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+                    ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                    ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+                    ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
+                if($monthno!="" && $yearno!=""){
+                    $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
+                    $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
+                }
+                if($company_id!=""){
+                    $members = $members->where('c.company_id','=',$company_id);
+                }
             
-        $members = $members->groupBY('ms.BANK_CODE')->get();
+                
+            $members = $members->groupBY('ms.BANK_CODE')->get();
+        }else{
+            $members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])));
+        }
 		$data['member_view'] = $members;
        
         $data['month_year']=$month_year;

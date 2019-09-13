@@ -56,6 +56,10 @@
 				display:none !important;
 			}
 			.page-header,.page-table-header-space {
+				background: #fff; /* for demo */
+			    color:#000;
+			}
+			.page-header,.page-table-header-space1 {
 			  background: #fff; /* for demo */
 			  color:#000;
 			}
@@ -65,7 +69,15 @@
 			  width: 100%;
 			  position: fixed;
 			  top:101px;
-			  margin-bottom:20px;
+			  z-index:999;
+                background: #343d9f; /* for demo */
+				  color:#fff;
+			}
+			
+			.page-table-header-space1 {
+			  width: 100%;
+			  position: fixed;
+			  top:160px;
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
@@ -73,7 +85,7 @@
               
 			}
 			.tbody-area{
-				top:142px;
+				top:182px;
 				position: absolute;
 			}
 		}
@@ -139,7 +151,14 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
+			<tr class="page-table-header-space" style="border:1px solid #000;">
+				<th style="width:15% !important; border:1px ;"></th>
+				<th colspan="{{ (count($data['race_view'])*2)+2 }}" style="border:1px ;">BENEFIT</th>
+				<th colspan="{{ (count($data['race_view'])*2)+2 }}" style="border:1px ;">NON BENEFIT</th>
+				
+				<th style="width:3% !important; border:1px ;"></th>
+			</tr>
+			<tr class="page-table-header-space1" >
 				<th style="width:15% !important; border:1px ;">{{__('Branch Code')}}</th>
 				@foreach($data['race_view'] as $values)
 					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
@@ -162,7 +181,7 @@
 				<th style="width:3% !important; border:1px ;">{{__('G.Total')}}</th>
 			</tr>
 		</thead>
-		<tbody  width="100%">
+		<tbody class="tbody-area" width="100%">
         @foreach($data['member_count'] as $values)
             <tr style="margin-top:50px !important;">
 				<td style='width:13% !important; border:1px ;'>
@@ -176,7 +195,69 @@
 						}
 					@endphp
 				</td>
-			    
+			    @php
+					$month_year = $data['month_year'];
+					$subtotal1 = 0;
+					$subtotal2 = 0;
+					$subtotaldefaulter2 = 0;
+					$defaultertotal = 0;
+					$total = 0;
+					$subtotaldefaulter1 = 0;
+					$status_active = CommonHelper::get_status_idbyname('ACTIVE');
+					$status_defaulter = CommonHelper::get_status_idbyname('DEFAULTER');
+					$grandtotal = 0;
+					$male_count = 0;
+				@endphp
+				@foreach($data['race_view'] as $race)
+				@php 
+					$race_id = $race->id;
+					$male_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Male');
+				@endphp
+					<td style="width:3% !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
+				@php
+					$subtotal1 += $male_count; 
+				@endphp
+				@endforeach
+				<td style="width:3% !important; border:1px ;"> {{$subtotal1}}</td>
+				@foreach($data['race_view'] as $value)
+					@php 
+					$race_id = $value->id;
+						$female_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Female');
+					@endphp
+					<td style="width:3% !important; border:1px ;">{{$female_count}}</td>
+					@php
+					$subtotal2 += $female_count; 
+					@endphp
+				@endforeach
+				@php 
+					$total = $subtotal1 + $subtotal2; 
+				@endphp
+				<td style="width:3% !important; border:1px ;"> {{$subtotal2}}</td>
+				<td style="width:3% !important; border:1px ;">{{$total}}</td>
+				@foreach($data['race_view'] as $value)
+				@php $race_id = $value->id;
+					$maledefaulter_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Male');
+				@endphp
+					<td style="width:3% !important; border:1px ;">{{$maledefaulter_count}}</td>
+				@php
+					$subtotaldefaulter1 += $maledefaulter_count; 
+					@endphp
+				@endforeach
+				<td style="width:3% !important; border:1px ;"> {{$subtotaldefaulter1}}</td>
+				@foreach($data['race_view'] as $value)
+				@php $race_id = $value->id;
+					$femaledefaulter_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Female');
+				@endphp
+					<td style="width:3% !important; border:1px ;padding-left: 0px;">{{$femaledefaulter_count}}</td>
+					@php
+						$subtotaldefaulter2 += $femaledefaulter_count; 
+						$defaultertotal = $subtotaldefaulter1 + $subtotaldefaulter2; 
+						$grandtotal = $defaultertotal + $total;
+					@endphp
+				@endforeach
+				<td style="width:3% !important; border:1px ;">{{$subtotaldefaulter2}}</td>
+				<td style="width:3% !important; border:1px ;">{{$defaultertotal}}</td>
+				<td style="width:3% !important; border:1px ;">{{$grandtotal}}</td>
             </tr> 
             @endforeach
 		</tbody>
