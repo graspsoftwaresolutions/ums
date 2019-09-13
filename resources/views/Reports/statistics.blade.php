@@ -15,8 +15,6 @@
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
 
-		
-
 		.btn, .btn-sm-one {
 		line-height: 36px;
 		display: inline-block;

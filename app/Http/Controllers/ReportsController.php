@@ -658,10 +658,14 @@ class ReportsController extends Controller
           $fmmm_date = explode("/",$month_year);
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }else{
 			$monthno = date('m');
-			$yearno = date('Y');
-		}
+            $yearno = date('Y');
+            $fulldate = date('Y-m-01');
+        }
+        $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        $members = CacheMonthEnd::getMonthEndStatisticsFilter(date('Y-m-01'));
         $members = DB::table('membermonthendstatus as ms')
 						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
 						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
@@ -679,7 +683,8 @@ class ReportsController extends Controller
         $data['member_count'] =   $members->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
 									->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)
 									->GroupBY('ms.BRANCH_CODE')
-									->get();
+                                    ->get();
+        
 		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
