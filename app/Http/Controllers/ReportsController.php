@@ -1143,8 +1143,9 @@ class ReportsController extends Controller
                 if($monthno!="" && $yearno!=""){
                     $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
                     $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
-                    $members = $members->where(DB::raw('month(m.doj)'), '!=', $monthno);
-                    $members = $members->where(DB::raw('year(m.doj)'), '!=', $yearno);
+                    $members = $members->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno);
+                    //$members = $members->where(DB::raw('month(m.doj)'), '!=', $monthno);
+                   // $members = $members->where(DB::raw('year(m.doj)'), '!=', $yearno);
                 }
                 if($branch_id!=""){
                     $members = $members->where('ms.BRANCH_CODE','=',$branch_id);

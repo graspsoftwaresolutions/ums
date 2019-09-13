@@ -129,8 +129,9 @@ class CacheMonthEnd
 					->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 					->where('ms.StatusMonth', '=', $datestring)
-					->where(DB::raw('month(m.doj)'), '!=', $monthno)
-					->where(DB::raw('year(m.doj)'), '!=', $yearno)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
+					//->where(DB::raw('month(m.doj)'), '!=', $monthno)
+					//->where(DB::raw('year(m.doj)'), '!=', $yearno)
 					->get();
 		    	
 			return $members_view;

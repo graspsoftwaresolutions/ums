@@ -161,7 +161,7 @@
 				<td style="width:400px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
 			</tr> 
 			<tr style="font-weight:bold;font-size:16px;">
-				<td colspan="3" style="width:1200px !important ;text-align:right">FACILITATION FEES FOR THE MONTH OF {{$data['month_year_read']}}</td>
+				<td colspan="3" style="width:1100px !important ;text-align:right;padding-right:0px;">FACILITATION FEES FOR THE MONTH OF {{$data['month_year_read']}}</td>
 			</tr>
 			<tr style="font-weight:bold;font-size:16px;">
 				<td colspan="3" style="width:1200px !important ;text-align:right">5% : {{ number_format((($totalamt*5)/100),2,".",",") }}</td>

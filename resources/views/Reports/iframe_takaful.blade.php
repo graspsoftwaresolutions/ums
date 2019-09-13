@@ -150,7 +150,7 @@
 				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
 				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Branch')}}</th>
 				<th style="width:300px  !important ;border : 1px solid #343d9f;">{{__('Name')}}</th>
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Number')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('MemberID')}}</th>
 				<th style="width:150px  !important ;border : 1px solid #343d9f;">{{__('NRIC')}}</th>
 				<th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('Insurance Amount(RM)')}}</th>
 			</tr>
@@ -175,9 +175,13 @@
 							$sno++;
 					@endphp
 			@endforeach
-			<tr>
-				<td style="width:1100px  !important ;border : 1px solid white;" colspan="6" style="border : 1px solid white;"> Total </td>
+			<tr style="font-weight:bold;">
+				<td style="width:1100px  !important ;border : 1px solid white;" colspan="6" style="border : 1px solid white;"> Total Amount</td>
 				<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($totalamt,2,".",",") }}</td>
+			</tr> 
+			<tr style="font-weight:bold;">
+				<td style="width:1100px  !important ;border : 1px solid white;" colspan="6" style="border : 1px solid white;"> Total Members</td>
+				<td style="width:50px  !important ;border : 1px solid white;">{{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		
