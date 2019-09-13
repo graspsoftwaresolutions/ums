@@ -334,7 +334,7 @@ class SubscriptionController extends CommonController
 				$nric_matched = 0;
                 if($subscription_new_qry->count() > 0){
                    
-                    $memberdata = $subscription_new_qry->select('status_id','id','branch_id','name')->get();
+                    $memberdata = $subscription_new_qry->select('status_id','id','branch_id','name','designation_id')->get();
                     $up_sub_member =1;
                     $subMemberMatch->match_id = 1;
 					$nric_matched = 1;
@@ -342,14 +342,14 @@ class SubscriptionController extends CommonController
                 }else if($subscription_old_qry->count() > 0){
                     
                     $up_sub_member =1;
-                    $memberdata = $subscription_old_qry->select('status_id','id','branch_id','name')->get();
+                    $memberdata = $subscription_old_qry->select('status_id','id','branch_id','name','designation_id')->get();
                     $subMemberMatch->match_id = 8;
 					//$nric_matched = 1;
                 }
 				else if($subscription_empid_qry->count() > 0){
                     
                     $up_sub_member =1;
-                    $memberdata = $subscription_empid_qry->select('status_id','id','branch_id','name')->get();
+                    $memberdata = $subscription_empid_qry->select('status_id','id','branch_id','name','designation_id')->get();
                     $subMemberMatch->match_id = 9;
                 }
                
