@@ -130,6 +130,7 @@ class CacheMonthEnd
 					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 					->where('ms.StatusMonth', '=', $datestring)
 					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
+					//->dump()
 					//->where(DB::raw('month(m.doj)'), '!=', $monthno)
 					//->where(DB::raw('year(m.doj)'), '!=', $yearno)
 					->get();
@@ -140,18 +141,57 @@ class CacheMonthEnd
 
 	}
 
+	public function getMonthEndByDateFilter($datestring,$company_id,$branchid,$memberid){
+		$key = "getMonthEndByDateFilter.{$datestring}.c.{$company_id}.b.{$branchid}.m.{$memberid}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$company_id,$branchid,$memberid)
+		{
+			$monthno = date('m',strtotime($datestring));
+			$yearno = date('Y',strtotime($datestring));
+			
+			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
+					->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+					->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
+					->where('ms.StatusMonth', '=', $datestring)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno);
+
+			if($branchid!=""){
+				$members_view = $members_view->where('ms.BRANCH_CODE','=',$branchid);
+			}else{
+				if($company_id!=""){
+					$members_view = $members_view->where('ms.BANK_CODE','=',$company_id);
+				}
+			}
+			if($memberid!=""){
+				$members_view = $members_view->where('m.id','=',$memberid);
+			}
+				
+			$members_view = $members_view->get();
+		    	
+			return $members_view;
+		});
+
+	}
+
 	public function getPremiumMonthEndByDate($datestring){
 		$key = "getPremiumMonthEndByDate.{$datestring}";
 		$cacheKey = $this->getCacheKey($key);
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
+			$monthno = date('m',strtotime($datestring));
+			$yearno = date('Y',strtotime($datestring));
 			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
 				         ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
 				         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 				         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-				         ->leftjoin('company as com','com.id','=','c.company_id')
-						->where('m.doj', '=', $datestring)
+						 ->leftjoin('company as com','com.id','=','c.company_id')
+						 ->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+						 ->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+						//->where('m.doj', '=', $datestring)
 						->get();
 		    	
 			return $members_view;
@@ -172,6 +212,29 @@ class CacheMonthEnd
 						->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 						->where('ms.StatusMonth', '=', $datestring)
 						->groupBY('ms.BANK_CODE')
+						//->dump()
+						->get();
+		    	
+			return $members_view;
+		});
+		
+	}
+
+	public function getSummaryMonthEndByDateFilter($datestring,$companyid){
+		$key = "getSummaryMonthEndByDateFilter.{$datestring}.c.{$companyid}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$companyid)
+		{
+			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
+						->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						->leftjoin('company as com','com.id','=','ms.BANK_CODE')
+						->where('ms.StatusMonth', '=', $datestring)
+						->where('c.company_id','=',$companyid)
+						->groupBY('ms.BANK_CODE')
+						//->dump()
 						->get();
 		    	
 			return $members_view;
