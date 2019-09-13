@@ -164,17 +164,21 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					@if( $data['old_member_id']!='')
 					<div id="previous_history" class="col s12">
 						<div class="card">
+							@php
+								$slno1=1;
+							@endphp
 							<table id="page-previous-history" class="display ">
 								<thead>
 									<tr>
-										<th>{{__('Date')}}</th>
-										<th>{{__('Subs')}}</th>
-										<th>{{__('BF')}}</th>
-										<th>{{__('Ins')}}</th>
-										<th>{{__('Month')}}</th>
-										<th>{{__('LastPaid')}}</th>
-										<th>{{__('PAID')}}</th>
-										<th>{{__('DUE')}}</th>
+										<th>{{__('S.No')}}</th>
+										<th>{{__('History Date')}}</th>
+										<th>{{__('Subs.Paid')}}</th>
+										<th>{{__('BF Paid')}}</th>
+										<th>{{__('Ins.Paid')}}</th>
+										<th>{{__('Month.Paid')}}</th>
+										<th>{{__('LastPaymentDate')}}</th>
+										<th>{{__('Tot.Mon.Paid')}}</th>
+										<th>{{__('Tot.Mon.Due')}}</th>
 										<th>{{__('Total')}}</th>
 										<th>{{__('AccSubs')}}</th>
 										<th>{{__('AccBF')}}</th>
@@ -184,6 +188,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<tbody>
 									@foreach($data['previous_member_history'] as $history)
 									<tr style="color:{{$history->font_color}}">
+										<td>{{$slno1}}</td>
 										<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }}</td>
 										<td>{{ $history->SUBSCRIPTION_AMOUNT }}</td>
 										<td>{{ $history->BF_AMOUNT }}</td>
@@ -198,15 +203,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->ACCINSURANCE }}</td>
 										
 									</tr> 
+									@php
+										$slno1++;
+									@endphp
 									@endforeach
 									@if(count($data['previous_member_history'])==0)
 										<tr>
-											<td colspan="12">NO DATA AVAILABLE</td>
+											<td colspan="13">NO DATA AVAILABLE</td>
 										</tr> 
 									@endif
 								</tbody>
 							</table>
 							<input type="text" name="previoushistoryoffset" id="previoushistoryoffset" class="hide" value="{{$data['data_limit']}}"></input>
+							<input type="text" name="previoustotalhistory" id="previoustotalhistory" class="hide" value="{{$slno1}}"></input>
 						</div>
 					</div>
 					@endif
@@ -254,6 +263,7 @@ $(function() {
 				var memberid = "{{$data['member_id']}}";
 				$("#historyoffset").val(parseInt(lastoffset)+parseInt(limit));
 				var reflect_table = 'page-current-history';
+				var reflect_serial_text = 'totalhistory';
 				var load_type = 1;
 				var totalhistory = parseInt($("#totalhistory").val());
 			}else{
@@ -263,7 +273,8 @@ $(function() {
 				var memberid = "{{$data['old_member_id']}}";
 				var reflect_table = 'page-previous-history';
 				var load_type = 0;
-				var totalhistory = parseInt($("#totalhistory").val());
+				var totalhistory = parseInt($("#previoustotalhistory").val());
+				var reflect_serial_text = 'previoustotalhistory';
 			}
 			$.ajax({
 				type: "GET",
@@ -290,7 +301,7 @@ $(function() {
 								$('#'+reflect_table+' tbody').append(table_row);
 							totalhistory+=1;
 						});
-						$("#totalhistory").val(totalhistory);
+						$("#"+reflect_serial_text).val(totalhistory);
 					}else{
 						
 					}
