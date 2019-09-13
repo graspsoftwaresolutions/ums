@@ -130,6 +130,10 @@ class CacheMonthEnd
 					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 					->where('ms.StatusMonth', '=', $datestring)
 					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
+					->where(function ($query) {
+						$query->where('ms.STATUS_CODE', '=', 1)
+							  ->orWhere('ms.STATUS_CODE', '=', 2);
+					})
 					//->dump()
 					//->where(DB::raw('month(m.doj)'), '!=', $monthno)
 					//->where(DB::raw('year(m.doj)'), '!=', $yearno)
@@ -156,7 +160,11 @@ class CacheMonthEnd
 					->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 					->where('ms.StatusMonth', '=', $datestring)
-					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno);
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
+					->where(function ($query) {
+						$query->where('ms.STATUS_CODE', '=', 1)
+							  ->orWhere('ms.STATUS_CODE', '=', 2);
+					});
 
 			if($branchid!=""){
 				$members_view = $members_view->where('ms.BRANCH_CODE','=',$branchid);
@@ -211,6 +219,10 @@ class CacheMonthEnd
 						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 						->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 						->where('ms.StatusMonth', '=', $datestring)
+						->where(function ($query) {
+							$query->where('ms.STATUS_CODE', '=', 1)
+								  ->orWhere('ms.STATUS_CODE', '=', 2);
+						})
 						->groupBY('ms.BANK_CODE')
 						//->dump()
 						->get();
@@ -233,6 +245,10 @@ class CacheMonthEnd
 						->leftjoin('company as com','com.id','=','ms.BANK_CODE')
 						->where('ms.StatusMonth', '=', $datestring)
 						->where('c.company_id','=',$companyid)
+						->where(function ($query) {
+							$query->where('ms.STATUS_CODE', '=', 1)
+								  ->orWhere('ms.STATUS_CODE', '=', 2);
+						})
 						->groupBY('ms.BANK_CODE')
 						//->dump()
 						->get();
