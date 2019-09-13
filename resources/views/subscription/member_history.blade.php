@@ -88,7 +88,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<td width="25%">{{__('Last paid Date')}}</td>
 									<td width="25%"  style="color:{{$member->font_color}}">: 
 									@if(!empty($data['last_month_record']))
-									{{ date('M/ Y',strtotime($data['last_month_record']->StatusMonth)) }}
+									{{ date('M/ Y',strtotime($data['current_member_history'][0]->LASTPAYMENTDATE)) }}
 									@endif
 									</td>
 								</tr>
@@ -107,17 +107,21 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 					<div id="current_history" class="col s12">
 						<div class="card">
+							@php
+								$slno=1;
+							@endphp
 							<table id="page-current-history" class="display ">
 								<thead>
 									<tr>
-										<th>{{__('Date')}}</th>
-										<th>{{__('Subs')}}</th>
-										<th>{{__('BF')}}</th>
-										<th>{{__('Ins')}}</th>
-										<th>{{__('Month')}}</th>
-										<th>{{__('LastPaid')}}</th>
-										<th>{{__('PAID')}}</th>
-										<th>{{__('DUE')}}</th>
+										<th>{{__('S.No')}}</th>
+										<th>{{__('History Date')}}</th>
+										<th>{{__('Subs.Paid')}}</th>
+										<th>{{__('BF Paid')}}</th>
+										<th>{{__('Ins.Paid')}}</th>
+										<th>{{__('Month.Paid')}}</th>
+										<th>{{__('LastPaymentDate')}}</th>
+										<th>{{__('Tot.Mon.Paid')}}</th>
+										<th>{{__('Tot.Mon.Due')}}</th>
 										<th>{{__('Total')}}</th>
 										<th>{{__('AccSubs')}}</th>
 										<th>{{__('AccBF')}}</th>
@@ -127,6 +131,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<tbody>
 									@foreach($data['current_member_history'] as $history)
 									<tr style="color:{{$history->font_color}}">
+										<td>{{$slno}}</td>
 										<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }}</td>
 										<td>{{ $history->SUBSCRIPTION_AMOUNT }}</td>
 										<td>{{ $history->BF_AMOUNT }}</td>
@@ -141,15 +146,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->ACCINSURANCE }}</td>
 										
 									</tr> 
+									@php
+										$slno++;
+									@endphp
 									@endforeach
 									@if(count($data['current_member_history'])==0)
 										<tr>
-											<td colspan="12">NO DATA AVAILABLE</td>
+											<td colspan="13">NO DATA AVAILABLE</td>
 										</tr> 
 									@endif
 								</tbody>
 							</table>
 							<input type="text" name="historyoffset" id="historyoffset" class="hide" value="{{$data['data_limit']}}"></input>
+							<input type="text" name="totalhistory" id="totalhistory" class="hide" value="{{$slno}}"></input>
 						</div>
 					</div>
 					@if( $data['old_member_id']!='')
@@ -246,6 +255,7 @@ $(function() {
 				$("#historyoffset").val(parseInt(lastoffset)+parseInt(limit));
 				var reflect_table = 'page-current-history';
 				var load_type = 1;
+				var totalhistory = parseInt($("#totalhistory").val());
 			}else{
 				var lastoffset = $("#previoushistoryoffset").val();
 				var limit = "{{$data['data_limit']}}";
@@ -253,6 +263,7 @@ $(function() {
 				var memberid = "{{$data['old_member_id']}}";
 				var reflect_table = 'page-previous-history';
 				var load_type = 0;
+				var totalhistory = parseInt($("#totalhistory").val());
 			}
 			$.ajax({
 				type: "GET",
@@ -263,7 +274,8 @@ $(function() {
 					{
 						res = result.member_history;
 						$.each(res,function(key,entry){
-							var table_row = "<tr style='color:"+entry.font_color+";'><td>"+entry.StatusMonth+"</td>";
+							var table_row = "<tr style='color:"+entry.font_color+";'><td>"+totalhistory+"</td>";
+								table_row += "<td>"+entry.StatusMonth+"</td>";
 								table_row += "<td>"+entry.SUBSCRIPTION_AMOUNT+"</td>";
 								table_row += "<td>"+entry.BF_AMOUNT+"</td>";
 								table_row += "<td>"+entry.INSURANCE_AMOUNT+"</td>";
@@ -276,8 +288,9 @@ $(function() {
 								table_row += "<td>"+entry.ACCBF+"</td>";
 								table_row += "<td>"+entry.ACCINSURANCE+"</td></tr>";
 								$('#'+reflect_table+' tbody').append(table_row);
-							
+							totalhistory+=1;
 						});
+						$("#totalhistory").val(totalhistory);
 					}else{
 						
 					}
