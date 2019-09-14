@@ -22,9 +22,14 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Log;
+use Facades\App\Repository\CacheMonthEnd;
 
 class CommonHelper
 {
+	public function __construct() {
+        $this->membermonthendstatus_table = "membermonthendstatus";
+    }
+	
     public static function encryption(string $string)
     {
         return strtoupper($string);
@@ -1575,5 +1580,11 @@ class CommonHelper
 	public static function get_status_idbyname($statusname){
 		$status = DB::table("status")->where('status_name', '=', $statusname)->pluck('id')->first();
 		return $status;
+	}
+	
+	public static function getMontendcompanySummary($companies,$date){
+		$members = CacheMonthEnd::getMontendcompanyGroup($companies,$date);
+		
+		return $members;
 	}
 }

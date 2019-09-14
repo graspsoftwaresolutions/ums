@@ -72,7 +72,7 @@
 			  color:#fff;
 			}
 			.tbody-area{
-				top: 162px;
+				top: 145px;
 				position: absolute;
 			}
 		}
@@ -143,17 +143,23 @@
 				$totalmembers = 0;
 				$sno = 1;
 			@endphp
-			@foreach($data['member_view'] as $member)
+			@foreach($data['head_company_view'] as $company)
+				@php
+					$company_data = CommonHelper::getMontendcompanySummary($company['company_list'],$data['month_year_full']);
+					//dd($company_data);
+				@endphp
+				@if($company_data->total_members>0)
 				<tr>
-					<td style="width:400px  !important ;border : 1px solid white;">{{$member->companycode}}</td>
-					<td style="width:400px  !important ;border : 1px solid white;">{{$member->total_members}}</td>
-					<td style="width:400px  !important ;border : 1px solid white;">{{ number_format($member->totalsubs,2,".",",") }}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{$company['companycode']}}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{ $company_data->total_members }}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{ $company_data->totalsubs }}</td>
 				</tr> 
 				@php
-					$totalamt += $member->totalsubs;
-					$totalmembers += $member->total_members;
+					$totalamt += $company_data->totalsubs;
+					$totalmembers += $company_data->total_members;
 					$sno++;
 				@endphp
+				@endif
 			@endforeach
 			<tr style="font-weight:bold;font-size:16px;">
 				<td style="width:400px  !important ;border : 1px solid white;"> Grand Total </td>

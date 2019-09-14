@@ -1254,8 +1254,28 @@ class ReportsController extends Controller
 
     public function SummaryTakaulReport($lang,Request $request){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
+                                            ->where(function ($query) {
+                                                $query->where('head_of_company', '=', '')
+                                                        ->orWhereNull('head_of_company');
+                                            })->get();
+
+        foreach($head_company_view as $mkey => $company){
+            $companyid = $company->id;
+            //$company_str_List ="'".$companyid."'";
+            $company_ids = DB::table('company')->where('head_of_company','=',$companyid)->pluck('id')->toArray();
+            $res_company = array_merge($company_ids, [$companyid]); 
+            
+           
+            foreach($company as $newkey => $newvalue){
+                $data['head_company_view'][$mkey][$newkey] = $newvalue;
+            }
+            $data['head_company_view'][$mkey]['company_list'] = $res_company;
+            //$company_str_List ='';
+           
+        }
        
-        $members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01'));
+        //$members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01'));
         // $members = DB::table($this->membermonthendstatus_table.' as ms')
         //         ->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`SUBSCRIPTION_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
         //         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
@@ -1267,14 +1287,15 @@ class ReportsController extends Controller
                   
 		// $members = $members->groupBY('ms.BANK_CODE')->get();
 		//dd($members);
-        $data['member_view'] = $members;
+        $data['member_view'] = [];
         $data['month_year']=date('M/Y');
         $data['company_id']='';
         $data['branch_id']='';
         $data['member_auto_id']='';
         $data['offset']=0;
-		$data['month_year_read']=date('M Y');
-       return view('reports.iframe_takaful_summary')->with('data',$data);  
+        $data['month_year_read']=date('M Y');
+        $data['month_year_full']=date('Y-m-01');
+        return view('reports.iframe_takaful_summary')->with('data',$data);  
     }
     public function SummaryTakaulmore(Request $request){
         $offset = $request->input('offset');
@@ -1293,11 +1314,31 @@ class ReportsController extends Controller
           $month_year_read =  date('M Y',strtotime($yearno.'-'.$monthno.'-'.'01'));
         }
         if($company_id!=""){
-            $members = CacheMonthEnd::getSummaryMonthEndByDateFilter(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])),$company_id);
+           // $members = CacheMonthEnd::getSummaryMonthEndByDateFilter(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])),$company_id);
         }else{
-            $members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])));
+           // $members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])));
         }
-		$data['member_view'] = $members;
+        $data['member_view'] = [];
+        
+        $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
+                                            ->where(function ($query) {
+                                                $query->where('head_of_company', '=', '')
+                                                        ->orWhereNull('head_of_company');
+                                            })->get();
+
+        foreach($head_company_view as $mkey => $company){
+            $companyid = $company->id;
+            //$company_str_List ="'".$companyid."'";
+            $company_ids = DB::table('company')->where('head_of_company','=',$companyid)->pluck('id')->toArray();
+            $res_company = array_merge($company_ids, [$companyid]); 
+           
+            foreach($company as $newkey => $newvalue){
+                $data['head_company_view'][$mkey][$newkey] = $newvalue;
+            }
+            $data['head_company_view'][$mkey]['company_list'] = $res_company;
+            //$company_str_List ='';
+           
+        }
        
         $data['month_year']=$month_year;
         $data['company_id']=$company_id;
@@ -1306,7 +1347,8 @@ class ReportsController extends Controller
         //$data['data_limit']=$this->limit;
         $data['data_limit']='';
         $data['offset']='';
-		$data['month_year_read']=$month_year_read;
+        $data['month_year_read']=$month_year_read;
+        $data['month_year_full']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
         return view('reports.iframe_takaful_summary')->with('data',$data);  

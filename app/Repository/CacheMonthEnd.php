@@ -214,7 +214,7 @@ class CacheMonthEnd
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
 			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
-						->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+						->select('com.company_name','com.short_code as companycode',DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
 						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 						->leftjoin('company as com','com.id','=','ms.BANK_CODE')
@@ -239,7 +239,7 @@ class CacheMonthEnd
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$companyid)
 		{
 			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
-						->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+						->select('com.company_name','com.short_code as companycode',DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
 						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 						->leftjoin('company as com','com.id','=','ms.BANK_CODE')
@@ -276,6 +276,33 @@ class CacheMonthEnd
 		});
 		
 
+	}
+
+	public function getMontendcompanyGroup($companies,$datestring){
+		$company_str_List ='';
+		foreach($companies as $cids){
+			$company_str_List .=$cids.",";
+		}
+		$key = "getMontendcompanyGroup.{$datestring}.c.{$company_str_List}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($companies,$datestring)
+		{
+			$monthno = date('m',strtotime($datestring));
+			$yearno = date('Y',strtotime($datestring));
+			$members = DB::table('membermonthendstatus as ms')
+                ->select(DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+                ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
+      
+				$members = $members->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno);
+				$members = $members->whereIn('ms.BANK_CODE', $companies);
+						
+				$members = $members->first();
+		    	
+			return $members;
+		});
 	}
 
 
