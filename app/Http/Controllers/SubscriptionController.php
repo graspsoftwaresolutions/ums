@@ -1229,9 +1229,9 @@ class SubscriptionController extends CommonController
 									'ACCINSURANCE' => $this->ins_amount,
 									//'CURRENT_YDTINSURANCE' => 0,
 								];
+			$updata = ['update_status' => 1,'approval_status' => $approval_status];
+			$savedata = MonthlySubscriptionMember::where('id',$sub_member_id)->update($updata);
 			if($mont_count>0){
-				$updata = ['update_status' => 1,'approval_status' => $approval_status];
-                $savedata = MonthlySubscriptionMember::where('id',$sub_member_id)->update($updata);
 				DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_code)->update($monthend_data);
 			}else{
 				DB::table($this->membermonthendstatus_table)->insert($monthend_data);
