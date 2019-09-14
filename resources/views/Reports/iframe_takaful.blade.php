@@ -107,11 +107,7 @@
 		}
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
@@ -168,10 +164,10 @@
 						<td style="width:300px  !important ;border : 1px solid white;">{{$member->name}}</td>
 						<td style="width:200px  !important ;border : 1px solid white;">{{$member->member_number}}</td>
 						<td style="width:150px  !important ;border : 1px solid white;">{{$member->new_ic}}</td>
-						<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($member->total,2,".",",") }}</td>
+						<td style="width:50px  !important ;border : 1px solid white;">{{ number_format($data['total_ins'],2,".",",") }}</td>
 					</tr> 
 					@php
-							$totalamt += $member->total;
+							$totalamt += $data['total_ins'];
 							$sno++;
 					@endphp
 			@endforeach

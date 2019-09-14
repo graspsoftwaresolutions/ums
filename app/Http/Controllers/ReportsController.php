@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
 use Facades\App\Repository\CacheMonthEnd;
+use App\Model\Fee;
 
 class ReportsController extends Controller
 {
@@ -17,7 +18,11 @@ class ReportsController extends Controller
         ini_set('memory_limit', '-1');
 		ini_set('max_execution_time', 800); 
         $this->limit = 25;
-		$this->membermonthendstatus_table = "membermonthendstatus";		
+		$this->membermonthendstatus_table = "membermonthendstatus";	
+		$bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
+        $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        $this->bf_amount = $bf_amount=='' ? 0 : $bf_amount;
+        $this->ins_amount = $ins_amount=='' ? 0 : $ins_amount;		
     }
     public function newMemberReport()
     {
@@ -1105,7 +1110,7 @@ class ReportsController extends Controller
         $data['data_limit']=$this->limit;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
-       $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01'));
+        $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01'));
         // $members = DB::table($this->membermonthendstatus_table.' as ms')
 		// 			->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
 		// 			->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
@@ -1123,6 +1128,7 @@ class ReportsController extends Controller
         $data['company_id']='';
         $data['branch_id']='';
         $data['member_auto_id']='';
+        $data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']=0;
        return view('reports.iframe_takaful')->with('data',$data);  
     }
@@ -1169,6 +1175,7 @@ class ReportsController extends Controller
         $data['member_auto_id']=$member_auto_id;
         //$data['data_limit']=$this->limit;
         $data['data_limit']='';
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']='';
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
@@ -1195,6 +1202,7 @@ class ReportsController extends Controller
         $data['company_id']='';
         $data['branch_id']='';
         $data['member_auto_id']='';
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']=0;
         return view('reports.iframe_takaful_premium')->with('data',$data);  
     }
@@ -1213,6 +1221,23 @@ class ReportsController extends Controller
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
         if($branch_id!="" || $company_id!="" || $member_auto_id!=""){
+			$members = DB::table('mon_sub_member as mm')
+					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','mm.NRIC as new_ic','c.branch_name as branch_name','com.short_code as companycode')
+					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+					->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+					->leftjoin('membership as m','m.id','=','mm.MemberCode')
+					->leftjoin('company_branch as c','c.id','=','m.branch_id')
+					->leftjoin('company as com','com.id','=','sc.CompanyCode')
+					->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(function ($query) {
+						$query->where('mm.StatusId', '=', 1)
+							  ->orWhere('mm.StatusId', '=', 2);
+					})
+					//->where('mm.approval_status', '=', 1)
+					->where('mm.update_status', '=', 1);
+					
+			/* 		
 			$members = DB::table($this->membermonthendstatus_table.' as ms')
                 ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
                 ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
@@ -1222,12 +1247,12 @@ class ReportsController extends Controller
                 $members = $members->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno);
                 $members = $members->where(DB::raw('month(m.`doj`)'),'=',$monthno);
                 $members = $members->where(DB::raw('year(m.`doj`)'),'=',$yearno);
-              }
+              } */
               if($branch_id!=""){
                   $members = $members->where('m.branch_id','=',$branch_id);
               }else{
                   if($company_id!=""){
-                      $members = $members->where('c.company_id','=',$company_id);
+                      $members = $members->where('sc.CompanyCode','=',$company_id);
                   }
               }
               if($member_auto_id!=""){
@@ -1244,6 +1269,7 @@ class ReportsController extends Controller
         $data['company_id']=$company_id;
         $data['branch_id']=$branch_id;
         $data['member_auto_id']=$member_auto_id;
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         //$data['data_limit']=$this->limit;
         $data['data_limit']='';
         $data['offset']='';
@@ -1293,6 +1319,7 @@ class ReportsController extends Controller
         $data['branch_id']='';
         $data['member_auto_id']='';
         $data['offset']=0;
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['month_year_read']=date('M Y');
         $data['month_year_full']=date('Y-m-01');
         return view('reports.iframe_takaful_summary')->with('data',$data);  
@@ -1348,6 +1375,7 @@ class ReportsController extends Controller
         $data['data_limit']='';
         $data['offset']='';
         $data['month_year_read']=$month_year_read;
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['month_year_full']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);

@@ -152,10 +152,10 @@
 				<tr>
 					<td style="width:400px  !important ;border : 1px solid white;">{{$company['companycode']}}</td>
 					<td style="width:400px  !important ;border : 1px solid white;">{{ $company_data->total_members }}</td>
-					<td style="width:400px  !important ;border : 1px solid white;">{{ $company_data->totalsubs }}</td>
+					<td style="width:400px  !important ;border : 1px solid white;">{{ number_format($data['total_ins']*$company_data->total_members,2,".",",") }}</td>
 				</tr> 
 				@php
-					$totalamt += $company_data->totalsubs;
+					$totalamt += $data['total_ins']*$company_data->total_members;
 					$totalmembers += $company_data->total_members;
 					$sno++;
 				@endphp

@@ -703,6 +703,7 @@ class SubscriptionController extends CommonController
     }
 
     public function companyMembers($lang,$id){
+		Artisan::call('cache:clear');
         $company_auto_id = Crypt::decrypt($id);
         $data['company_auto_id'] = $company_auto_id;
         $status_all = Status::where('status','=',1)->get();   

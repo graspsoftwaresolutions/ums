@@ -123,21 +123,36 @@ class CacheMonthEnd
 		{
 			$monthno = date('m',strtotime($datestring));
 			$yearno = date('Y',strtotime($datestring));
-			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
-					->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-					->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
-					->where('ms.StatusMonth', '=', $datestring)
+
+			$members_view = DB::table('mon_sub_member as mm')
+					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','mm.NRIC as new_ic','c.branch_name as branch_name','com.short_code as companycode')
+					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+					->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+					->leftjoin('membership as m','m.id','=','mm.MemberCode')
+					->leftjoin('company_branch as c','c.id','=','m.branch_id')
+					->leftjoin('company as com','com.id','=','sc.CompanyCode')
+					->where('ms.Date', '=', $datestring)
 					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
 					->where(function ($query) {
-						$query->where('ms.STATUS_CODE', '=', 1)
-							  ->orWhere('ms.STATUS_CODE', '=', 2);
+						$query->where('mm.StatusId', '=', 1)
+							  ->orWhere('mm.StatusId', '=', 2);
 					})
-					//->dump()
-					//->where(DB::raw('month(m.doj)'), '!=', $monthno)
-					//->where(DB::raw('year(m.doj)'), '!=', $yearno)
+					//->where('mm.approval_status', '=', 1)
+					->where('mm.update_status', '=', 1)
 					->get();
+
+			// $members_view = DB::table($this->membermonthendstatus_table.' as ms')
+			// 		->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+			// 		->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+			// 		->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+			// 		->leftjoin('company as com','com.id','=','ms.BANK_CODE')
+			// 		->where('ms.StatusMonth', '=', $datestring)
+			// 		->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
+			// 		->where(function ($query) {
+			// 			$query->where('ms.STATUS_CODE', '=', 1)
+			// 				  ->orWhere('ms.STATUS_CODE', '=', 2);
+			// 		})
+			// 		->get();
 		    	
 			return $members_view;
 		});
@@ -153,24 +168,41 @@ class CacheMonthEnd
 		{
 			$monthno = date('m',strtotime($datestring));
 			$yearno = date('Y',strtotime($datestring));
-			
-			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
-					->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-					->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-					->leftjoin('company as com','com.id','=','ms.BANK_CODE')
-					->where('ms.StatusMonth', '=', $datestring)
+
+			$members_view = DB::table('mon_sub_member as mm')
+					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','mm.NRIC as new_ic','c.branch_name as branch_name','com.short_code as companycode')
+					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+					->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+					->leftjoin('membership as m','m.id','=','mm.MemberCode')
+					->leftjoin('company_branch as c','c.id','=','m.branch_id')
+					->leftjoin('company as com','com.id','=','sc.CompanyCode')
+					->where('ms.Date', '=', $datestring)
 					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
 					->where(function ($query) {
-						$query->where('ms.STATUS_CODE', '=', 1)
-							  ->orWhere('ms.STATUS_CODE', '=', 2);
-					});
+						$query->where('mm.StatusId', '=', 1)
+							  ->orWhere('mm.StatusId', '=', 2);
+					})
+					//->where('mm.approval_status', '=', 1)
+					->where('mm.update_status', '=', 1);
+					
+			
+			// $members_view = DB::table($this->membermonthendstatus_table.' as ms')
+			// 		->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+			// 		->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+			// 		->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+			// 		->leftjoin('company as com','com.id','=','ms.BANK_CODE')
+			// 		->where('ms.StatusMonth', '=', $datestring)
+			// 		->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
+			// 		->where(function ($query) {
+			// 			$query->where('ms.STATUS_CODE', '=', 1)
+			// 				  ->orWhere('ms.STATUS_CODE', '=', 2);
+			// 		});
 
 			if($branchid!=""){
-				$members_view = $members_view->where('ms.BRANCH_CODE','=',$branchid);
+				$members_view = $members_view->where('m.branch_id','=',$branchid);
 			}else{
 				if($company_id!=""){
-					$members_view = $members_view->where('ms.BANK_CODE','=',$company_id);
+					$members_view = $members_view->where('sc.CompanyCode','=',$company_id);
 				}
 			}
 			if($memberid!=""){
@@ -192,15 +224,30 @@ class CacheMonthEnd
 		{
 			$monthno = date('m',strtotime($datestring));
 			$yearno = date('Y',strtotime($datestring));
-			$members_view = DB::table($this->membermonthendstatus_table.' as ms')
-				         ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-				         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-				         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-						 ->leftjoin('company as com','com.id','=','c.company_id')
-						 ->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
-						 ->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno)
-						//->where('m.doj', '=', $datestring)
-						->get();
+			$members_view = DB::table('mon_sub_member as mm')
+					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','mm.NRIC as new_ic','c.branch_name as branch_name','com.short_code as companycode')
+					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+					->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+					->leftjoin('membership as m','m.id','=','mm.MemberCode')
+					->leftjoin('company_branch as c','c.id','=','m.branch_id')
+					->leftjoin('company as com','com.id','=','sc.CompanyCode')
+					->where('ms.Date', '=', $datestring)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(function ($query) {
+						$query->where('mm.StatusId', '=', 1)
+							  ->orWhere('mm.StatusId', '=', 2);
+					})
+					//->where('mm.approval_status', '=', 1)
+					->where('mm.update_status', '=', 1)
+					->get();
+			// $members_view = DB::table($this->membermonthendstatus_table.' as ms')
+			// 	         ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+			// 	         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+			// 	         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+			// 			 ->leftjoin('company as com','com.id','=','c.company_id')
+			// 			 ->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+			// 			 ->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+			// 			->get();
 		    	
 			return $members_view;
 		});
@@ -290,18 +337,35 @@ class CacheMonthEnd
 		{
 			$monthno = date('m',strtotime($datestring));
 			$yearno = date('Y',strtotime($datestring));
-			$members = DB::table('membermonthendstatus as ms')
-                ->select(DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
-                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-                ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-                ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
+			$members_view = DB::table('mon_sub_member as mm')
+					->select(DB::raw("count(mm.id) as total_members"))
+					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+					->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+					//->leftjoin('membership as m','m.id','=','mm.MemberCode')
+					//->leftjoin('company_branch as c','c.id','=','m.branch_id')
+					//->leftjoin('company as com','com.id','=','sc.CompanyCode')
+					->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(function ($query) {
+						$query->where('mm.StatusId', '=', 1)
+							  ->orWhere('mm.StatusId', '=', 2);
+					})
+					->whereIn('sc.CompanyCode', $companies)
+					//->where('mm.approval_status', '=', 1)
+					->where('mm.update_status', '=', 1)
+					->first();
+
+			// $members = DB::table('membermonthendstatus as ms')
+            //     ->select(DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`INSURANCE_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
+            //     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+            //     ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+            //     ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
       
-				$members = $members->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno);
-				$members = $members->whereIn('ms.BANK_CODE', $companies);
+			// 	$members = $members->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno);
+			// 	$members = $members->whereIn('ms.BANK_CODE', $companies);
 						
-				$members = $members->first();
+			// 	$members = $members->first();
 		    	
-			return $members;
+			return $members_view;
 		});
 	}
 
