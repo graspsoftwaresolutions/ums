@@ -51,6 +51,7 @@ use Auth;
 use Facades\App\Repository\CacheMonthEnd;
 use PDF;
 use Artisan;
+use Facades\App\Repository\CacheMembers;
 
 
 
@@ -278,16 +279,30 @@ class SubscriptionController extends CommonController
 
     public function scanSubscriptions(Request $request){
         ini_set('memory_limit', -1);
-		ini_set('max_execution_time', '500');
+		ini_set('max_execution_time', '1000');
         $limit = 100;
         $company_auto_id = $request->company_auto_id;
         $start =  $request->start;
-        $return_data = ['status' => 0 ,'message' => ''];
+		$return_data = ['status' => 0 ,'message' => ''];
+		if($start==0){
+			Artisan::call('cache:clear');
+		}
+		
+		/* $members = CacheMembers::all('id');
+		$arr_old_ic=[];
+		$arr_new_ic=[];
+		$arr_employee_ic=[];
+		foreach($members as $member){
+			$arr_old_ic[]=$member->old_ic;
+			$arr_new_ic[]=$member->new_ic;
+			$arr_employee_ic[]=$member->employee_id;
+		} */
+
         if($company_auto_id!=""){
            
             $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount','MonthlySubscriptionCompanyId')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
-                                                            ->where('update_status','=',0)
+                                                            ->where('update_status','!=',1)
                                                             ->offset(0)
                                                             ->limit($limit)
                                                             ->get();
@@ -296,30 +311,41 @@ class SubscriptionController extends CommonController
             $count =0;
 			
             foreach($subscription_data as $subscription){
-                $nric = $subscription->NRIC;
-               
-                $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
-                
-                $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
+				$nric = $subscription->NRIC;
+				$approval_status=0;
+				$memberdata = [];
+			   
+			    $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+			
 				
-                $subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
+				/* $new_nric_exists=0;
+                if (in_array($nric, $arr_new_ic))
+                {
+                    $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
+                    $new_nric_exists=1;
+                }
+                $old_nric_exists=0;
+                if (in_array($nric, $arr_old_ic))
+                {
+                    $subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
+                    $old_nric_exists=1;
+                }
+                $empid_nric_exists=0;
+                if (in_array($nric, $arr_employee_ic))
+                {
+                    $subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric)->OrderBy('m.doj','desc')->limit(1);
+                    $empid_nric_exists=1;
+                } */
                 
                 $up_sub_member =0;
-                $match_count =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)
+                $match_res =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)
 									->where(function($query) {
 										  $query->where('match_id', 1)
 											->orWhere('match_id', 8)
 											->orWhere('match_id', 9)
 											->orWhere('match_id', 2);
-									  })->count();
-                if($match_count>0){
-                    $match_res =  MonthlySubMemberMatch::where('mon_sub_member_id', '=',$subscription->id)
-										->where(function($query) {
-										  $query->where('match_id', 1)
-											->orWhere('match_id', 8)
-											->orWhere('match_id', 9)
-											->orWhere('match_id', 2);
-									    })->get();
+									  })->get();
+                if(count($match_res)>0){
                     $matchid = $match_res[0]->id;
                     $subMemberMatch = MonthlySubMemberMatch::find($matchid);
                 }else{
@@ -332,30 +358,31 @@ class SubscriptionController extends CommonController
                // DB::enableQueryLog();
 				$insert_month_end = 0;
 				$nric_matched = 0;
-                if($subscription_new_qry->count() > 0){
-                   
-                    $memberdata = $subscription_new_qry->select('status_id','id','branch_id','name','designation_id')->get();
-                    $up_sub_member =1;
-                    $subMemberMatch->match_id = 1;
+				if(count($subscription_new_qry) > 0){
+					$memberdata = $subscription_new_qry;
+					$up_sub_member =1;
+					$subMemberMatch->match_id = 1;
 					$nric_matched = 1;
-                   
-                }else if($subscription_old_qry->count() > 0){
+				}else{
+					$subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+					if(count($subscription_old_qry) > 0){
+						$up_sub_member =1;
+						$memberdata = $subscription_old_qry;
+						$subMemberMatch->match_id = 8;
+						//$nric_matched = 1;
+					}else{
+						$subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',$nric)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+						if(count($subscription_empid_qry) > 0){
                     
-                    $up_sub_member =1;
-                    $memberdata = $subscription_old_qry->select('status_id','id','branch_id','name','designation_id')->get();
-                    $subMemberMatch->match_id = 8;
-					//$nric_matched = 1;
-                }
-				else if($subscription_empid_qry->count() > 0){
-                    
-                    $up_sub_member =1;
-                    $memberdata = $subscription_empid_qry->select('status_id','id','branch_id','name','designation_id')->get();
-                    $subMemberMatch->match_id = 9;
-                }
-               
-                else{
-                    $subMemberMatch->match_id = 2;
-                }
+							$up_sub_member =1;
+							$memberdata = $subscription_empid_qry;
+							$subMemberMatch->match_id = 9;
+						} else{
+							$subMemberMatch->match_id = 2;
+						}
+					}
+				}
+              
                 $subMemberMatch->save();
               
                 $upstatus=1;
@@ -371,8 +398,11 @@ class SubscriptionController extends CommonController
                         $upstatus=0;
                     }
 					
-                    $company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
-                    $member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
+					$company_code = CacheMembers::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
+					
+                    //$company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
+                    $member_company_id = CacheMembers::getcompanyidbyBranchid($memberdata[0]->branch_id);
+                    //$member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
 					
 					$match_company_status = $this->recursiveCompany($company_code,$member_company_id);
                 
@@ -404,32 +434,26 @@ class SubscriptionController extends CommonController
 						$insert_month_end = 0;
                     }
 					
-					$cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$subscription->MonthlySubscriptionCompanyId)->pluck('Date')->first();
+					$cur_date = CacheMembers::getDatebycompanyid($subscription->MonthlySubscriptionCompanyId);
 					$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
 
-                    $old_subscription_count = DB::table("mon_sub_member as mm")
+                    $old_subscription_res = DB::table("mon_sub_member as mm")->select('mm.Amount')
 							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
 							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
 							->where('mm.MemberCode','=',$member_code)
 							->where('ms.Date','=',$last_month)
                             ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
-                            ->count();
+                            ->get();
 							
-					$member_doj = DB::table("membership as m")->where('m.id','=',$member_code)->pluck('doj')->first();
+					$member_doj = CacheMembers::getDojbyMemberCode($member_code);
+					//$member_doj = DB::table("membership as m")->where('m.id','=',$member_code)->pluck('doj')->first();
 					$member_month_yr = date('m-Y',strtotime($member_doj));
 					$cur_month_yr = date('m-Y',strtotime($cur_date));
 					//dd($member_month_yr);
 					//dd($old_subscription_count);
 					if($member_month_yr!=$cur_month_yr){
-						if($old_subscription_count>0){
-							$old_subscription_amount = DB::table("mon_sub_member as mm")
-								->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-								->where('mm.MemberCode','=',$member_code)
-								->where('ms.Date','=',$last_month)
-								->orderBY('mm.MonthlySubscriptionCompanyId','desc')
-								->pluck('Amount')
-								->first();
+						if(count($old_subscription_res)>0){
+							$old_subscription_amount = $old_subscription_res[0]->Amount;
 							//dd($old_subscription_amount);
 							if($old_subscription_amount!=$subscription->Amount){
 								$subMemberMatch_three = MonthlySubMemberMatch::where('match_id','=',5)->where('mon_sub_member_id','=',$subscription->id)->first();
@@ -484,15 +508,11 @@ class SubscriptionController extends CommonController
                     }
 					
 					if($insert_month_end==1 && $nric_matched==1){
-						
-						$total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
-						->where('MemberCode', '=', $member_code)
-						->first();
+						$approval_status=1;
+						$total_subs_obj = CacheMembers::getTotalAmtByCode($member_code);
 						$total_subs = $total_subs_obj->amount;
 						
-						$total_count = DB::table('mon_sub_member')
-						->where('MemberCode', '=', $member_code)
-						->count();
+						$total_count = CacheMembers::getTotalSubsByCode($member_code);
 						
 						$paid_bf = $total_subs-($total_count*$this->bf_amount);
 						
@@ -506,7 +526,8 @@ class SubscriptionController extends CommonController
 						$total_subs_to_paid = $diff_in_months==0 ? $subscription->Amount : ($diff_in_months*$subscription->Amount);
 						$total_pending = $total_subs_to_paid - $total_subs;
 						
-						$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_code)->count();
+						$mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
+						//$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_code)->count();
 						//dd($member_code);
 						$monthend_data = [
 												'StatusMonth' => $cur_date, 
@@ -555,7 +576,7 @@ class SubscriptionController extends CommonController
 
                
                 if( $upstatus==1){
-                    $updata = ['update_status' => 1];
+                    $updata = ['update_status' => 1,'approval_status' => $approval_status];
                     $savedata = MonthlySubscriptionMember::where('id',$subscription->id)->update($updata);
                 }
                 
@@ -568,7 +589,7 @@ class SubscriptionController extends CommonController
         }else{
             $return_data = ['status' => 0 ,'message' => 'Invalid company id'];
 		}
-		Artisan::call('cache:clear');
+		//Artisan::call('cache:clear');
        	echo json_encode($return_data);
     }
 	
@@ -579,7 +600,7 @@ class SubscriptionController extends CommonController
 			//Call the function again. Increment number by one.
 			return true;
 		}else{
-			$company_data = Company::find($member_company_id);
+			$company_data = CacheMembers::getHeadcompanyidbyid($member_company_id);
 			if($company_code == $company_data->head_of_company){
 				return true;
 			}else{
@@ -1209,6 +1230,8 @@ class SubscriptionController extends CommonController
 									//'CURRENT_YDTINSURANCE' => 0,
 								];
 			if($mont_count>0){
+				$updata = ['update_status' => 1,'approval_status' => $approval_status];
+                $savedata = MonthlySubscriptionMember::where('id',$sub_member_id)->update($updata);
 				DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_code)->update($monthend_data);
 			}else{
 				DB::table($this->membermonthendstatus_table)->insert($monthend_data);

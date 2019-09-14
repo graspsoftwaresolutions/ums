@@ -22,6 +22,7 @@ use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
 use Auth;
+use Artisan;
 
 
 class MemberController extends CommonController
@@ -476,7 +477,7 @@ class MemberController extends CommonController
         }else{
             return redirect($redirect_failurl)->with('error','Name and email is invalid');
         }
-
+		Artisan::call('cache:clear');
         
     }
 	
