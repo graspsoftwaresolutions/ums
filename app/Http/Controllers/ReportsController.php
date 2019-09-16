@@ -1283,9 +1283,10 @@ class ReportsController extends Controller
         $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
                                             ->where(function ($query) {
                                                 $query->where('head_of_company', '=', '')
+                                                    ->orWhere('head_of_company', '=', 0)
                                                         ->orWhereNull('head_of_company');
                                             })->get();
-
+        //dd($head_company_view);
         foreach($head_company_view as $mkey => $company){
             $companyid = $company->id;
             //$company_str_List ="'".$companyid."'";
@@ -1350,6 +1351,7 @@ class ReportsController extends Controller
         $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
                                             ->where(function ($query) {
                                                 $query->where('head_of_company', '=', '')
+                                                         ->orWhere('head_of_company', '=', 0)
                                                         ->orWhereNull('head_of_company');
                                             })->get();
 
