@@ -305,6 +305,7 @@ class CacheMonthEnd
 		
 	}
 	
+	//statistics report
 	public function getMonthEndCompaniesByDate($datestring){
 		$key = "getMonthEndCompaniesByDate.{$datestring}";
 		$cacheKey = $this->getCacheKey($key);
@@ -315,8 +316,45 @@ class CacheMonthEnd
 						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
 						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
 						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						->where(function ($query) {
+							$query->where('ms.STATUS_CODE', '=', 1)
+								  ->orWhere('ms.STATUS_CODE', '=', 2);
+						})
 						->where('ms.StatusMonth', '=', $datestring)
 								->groupBY('ms.BRANCH_CODE')
+								->get();
+		    	
+			return $members;
+		});
+		
+
+	}
+
+	public function getMonthEndStatisticsFilter($datestring,$union,$company,$branch){
+		$key = "getMonthEndStatisticsFilter.{$datestring}.u.{$union}.c.{$company}.b.{$branch}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union,$company,$branch)
+		{
+			 $members = DB::table('membermonthendstatus as ms')
+						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
+						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						->where(function ($query) {
+							$query->where('ms.STATUS_CODE', '=', 1)
+								  ->orWhere('ms.STATUS_CODE', '=', 2);
+						})
+						->where('ms.StatusMonth', '=', $datestring);
+			if($branch!=""){
+				$members = $members->where('ms.BRANCH_CODE','=',$branch);
+			}
+			if($company!=""){
+				$members = $members->where('ms.BANK_CODE','=',$company);
+			}
+			if($union!=""){
+				$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);
+			}
+			$members = $members->groupBY('ms.BRANCH_CODE')
 								->get();
 		    	
 			return $members;
@@ -367,6 +405,115 @@ class CacheMonthEnd
 		    	
 			return $members_view;
 		});
+	}
+
+	public function get_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender){
+		$key = "get_gender_race_count.{$raceid}.b.{$branchid}.s.{$status_active}.m.{$month_year}.g.{$gender}";
+		$cacheKey = $this->getCacheKey($key);
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($raceid,$branchid,$status_active,$month_year,$gender)
+		{
+			if($month_year!=""){
+				$fmmm_date = explode("/",$month_year);
+				$monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+				$yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+			}else{		
+				$monthno = date('m');
+				$yearno = date('Y');
+			}
+
+			$male_count = DB::table('membermonthendstatus as ms')
+						->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						//->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						//->leftjoin('race as r','m.race_id','=','r.id')
+						->where('m.race_id','=',$raceid)
+						->where('ms.BRANCH_CODE','=',$branchid)
+						->where('m.gender','=',$gender)
+						->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
+						->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)  
+						->where('ms.STATUS_CODE','=',$status_active)
+						->count(); 
+			return $male_count;
+		});
+	}
+	
+	public function get_union_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender){
+		$key = "get_union_gender_race_count.{$raceid}.b.{$branchid}.s.{$status_active}.m.{$month_year}.g.{$gender}";
+		$cacheKey = $this->getCacheKey($key);
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($raceid,$branchid,$status_active,$month_year,$gender)
+		{
+			if($month_year!=""){
+				$fmmm_date = explode("/",$month_year);
+				$monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+				$yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+			}else{		
+				$monthno = date('m');
+				$yearno = date('Y');
+			}
+
+			$male_count = DB::table('membermonthendstatus as ms')
+						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+						//->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						//->leftjoin('race as r','m.race_id','=','r.id')
+						->where('m.race_id','=',$raceid)
+						->where('ms.NUBE_BRANCH_CODE','=',$branchid)
+						->where('m.gender','=',$gender)
+						->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
+						->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)  
+						->where('ms.STATUS_CODE','=',$status_active)
+						->count(); 
+			return $male_count;
+		});
+	}
+	
+	public function getMonthEndUnionByDate($datestring){
+		$key = "getMonthEndUnionByDate.{$datestring}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		{
+			 $members = DB::table('membermonthendstatus as ms')
+						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid')
+						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						//->leftjoin('company_branch as cb','c.id','=','ms.BRANCH_CODE')
+						->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+						->where(function ($query) {
+							$query->where('ms.STATUS_CODE', '=', 1)
+								  ->orWhere('ms.STATUS_CODE', '=', 2);
+						})
+						->where('ms.StatusMonth', '=', $datestring)
+								->groupBY('ms.NUBE_BRANCH_CODE')
+								->get();
+		    	
+			return $members;
+		});
+	}
+	
+	public function getMonthEndUnionStatisticsFilter($datestring,$union){
+		$key = "getMonthEndUnionStatisticsFilter.{$datestring}.u.{$union}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union)
+		{
+			 $members = DB::table('membermonthendstatus as ms')
+						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid')
+						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+						->where(function ($query) {
+							$query->where('ms.STATUS_CODE', '=', 1)
+								  ->orWhere('ms.STATUS_CODE', '=', 2);
+						})
+						->where('ms.StatusMonth', '=', $datestring);
+			
+			if($union!=""){
+				$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);
+			}
+			$members = $members->groupBY('ms.NUBE_BRANCH_CODE')
+								->get();
+		    	
+			return $members;
+		});
+		
+
 	}
 
 

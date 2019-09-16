@@ -114,11 +114,7 @@
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
@@ -130,7 +126,7 @@
 				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">OVER ALL BANK BRANCH REPORT</h6>
+					<h6 style="text-align:center;">OVER ALL UNION BRANCH REPORT</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -184,15 +180,9 @@
 		<tbody class="tbody-area" width="100%">
         @foreach($data['member_count'] as $values)
             <tr style="margin-top:50px !important;">
-				<td style='width:201px !important; border:1px ;'>
+				<td style='width:211px !important; border:1px ;'>
 					@php 
-						if($values->branch_shortcode==''){
-							echo $branch_name = substr($values->branch_name, 0, 16); 
-						}
-						else 
-						{
-							echo $values->branch_shortcode;
-						}
+						echo $branch_name = substr($values->branch_name, 0, 16); 
 					@endphp
 				</td>
 			    @php
@@ -211,7 +201,7 @@
 				@foreach($data['race_view'] as $race)
 				@php 
 					$race_id = $race->id;
-					$male_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Male');
+					$male_count = CommonHelper::get_union_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Male');
 				@endphp
 					<td style="width:41px !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
 				@php
@@ -222,7 +212,7 @@
 				@foreach($data['race_view'] as $value)
 					@php 
 					$race_id = $value->id;
-						$female_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Female');
+						$female_count = CommonHelper::get_union_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Female');
 					@endphp
 				<td style="width:41px !important; border:1px ;">{{$female_count}}</td>
 					@php
@@ -236,7 +226,7 @@
 				<td style="width:50px !important; border:1px ;">{{$total}}</td>
 				@foreach($data['race_view'] as $value)
 				@php $race_id = $value->id;
-					$maledefaulter_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Male');
+					$maledefaulter_count = CommonHelper::get_union_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Male');
 				@endphp
 					<td style="width:60px !important; border:1px ;">{{$maledefaulter_count}}</td>
 				@php
@@ -246,7 +236,7 @@
 				<td style="width:41px !important; border:1px ;"> {{$subtotaldefaulter1}}</td>
 				@foreach($data['race_view'] as $value)
 				@php $race_id = $value->id;
-					$femaledefaulter_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Female');
+					$femaledefaulter_count = CommonHelper::get_union_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Female');
 				@endphp
 					<td style="width:41px !important; border:1px ;padding-left: 0px;">{{$femaledefaulter_count}}</td>
 					@php

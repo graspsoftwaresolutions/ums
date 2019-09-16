@@ -16,7 +16,7 @@ class ReportsController extends Controller
 	public function __construct()
     {
         ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 800); 
+		ini_set('max_execution_time', 1000); 
         $this->limit = 25;
 		$this->membermonthendstatus_table = "membermonthendstatus";	
 		$bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
@@ -670,25 +670,26 @@ class ReportsController extends Controller
             $fulldate = date('Y-m-01');
         }
         $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-        $members = CacheMonthEnd::getMonthEndStatisticsFilter(date('Y-m-01'));
-        $members = DB::table('membermonthendstatus as ms')
-						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
-						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
-						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE');
-		
-        if($branch_id!=""){
-            $members = $members->where('ms.BRANCH_CODE','=',$branch_id);
-        }elseif($company_id!= ''){
-             $members = $members->where('ms.BANK_CODE','=',$company_id);
-        }
-        elseif($unionbranch_id!= ''){
-            $members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
+        $datefilter = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        
+        if($branch_id!="" || $company_id!= '' || $unionbranch_id!= ''){
+            
+            if($branch_id!=""){
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($datefilter,'','',$branch_id);
+                
+            }elseif($company_id!= ''){
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($datefilter,'',$company_id,'');
+                //$members = $members->where('ms.BANK_CODE','=',$company_id);
+            }
+            elseif($unionbranch_id!= ''){
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($datefilter,$unionbranch_id,'','');
+                //$members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
+            }
+        }else{
+            $members = CacheMonthEnd::getMonthEndCompaniesByDate($datefilter);
         }
        
-        $data['member_count'] =   $members->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
-									->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)
-									->GroupBY('ms.BRANCH_CODE')
-                                    ->get();
+        $data['member_count'] =   $members;
         
 		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
@@ -699,6 +700,7 @@ class ReportsController extends Controller
         $data['branch_id'] = $branch_id;
         $data['data_limit']='';
         $data['offset']=0;
+        //dd($data);
         //return view('Reports.statistics')->with('data',$data); 
         return view('reports.iframe_statistics')->with('data',$data);   
     }
@@ -1420,6 +1422,75 @@ class ReportsController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
         return view('reports.iframe_takaful_summary')->with('data',$data);  
+    }
+	
+	public function UnionStatisticReport($lang,Request $request)
+    {
+        //$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
+       // $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
+
+		$monthno = date('m');
+		$yearno = date('Y');
+
+        $members = CacheMonthEnd::getMonthEndUnionByDate(date('Y-m-01'));
+		
+		//dd($members);
+       
+		$data['month_year'] = date('M/Y');
+		$data['unionbranch_id'] = '';
+		$data['company'] = '' ;
+        $data['branch_id'] = '';
+        $data['data_limit'] = '';
+        $data['member_count'] =  $members; 
+		      
+		//dd($data['member_count']);
+        return view('reports.iframe_union_statistics')->with('data',$data); 
+    }
+	
+	public function statisticUnionReportFilter($lang,Request $request)
+    {
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        }else{
+			$monthno = date('m');
+            $yearno = date('Y');
+            $fulldate = date('Y-m-01');
+        }
+        $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        $datefilter = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        
+        if($unionbranch_id!= ''){
+            
+           $members = CacheMonthEnd::getMonthEndUnionStatisticsFilter($datefilter,$unionbranch_id);
+        }else{
+            $members = CacheMonthEnd::getMonthEndUnionByDate($datefilter);
+        }
+       
+        $data['member_count'] =   $members;
+        
+		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
+		$data['month_year'] = $month_year;
+		$data['unionbranch_id'] = $unionbranch_id;
+		$data['company'] = $company_id;
+        $data['branch_id'] = $branch_id;
+        $data['data_limit']='';
+        $data['offset']=0;
+        //dd($data);
+        //return view('Reports.statistics')->with('data',$data); 
+        return view('reports.iframe_union_statistics')->with('data',$data);   
     }
 }
 

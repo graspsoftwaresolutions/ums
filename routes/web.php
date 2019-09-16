@@ -300,6 +300,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('newstatistic_report','ReportsController@newStatisticReport')->name('reports.statsticsnew');
 	Route::get('get-statstics-more-report','ReportsController@statisticsReportMore')->name('reports.statsticmore');
 	Route::get('get-statstic-more-report','ReportsController@statisticReportloadMore');
+	Route::get('get-statstics-union-report','ReportsController@statisticUnionReportFilter');
 
 	//Members Iframe Report 
 	//reports.membersnewactive

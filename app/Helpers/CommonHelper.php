@@ -1096,7 +1096,8 @@ class CommonHelper
 			$yearno = date('Y');
 		}
 		
-		$male_count = DB::table('membermonthendstatus as ms')
+		$male_count = CacheMonthEnd::get_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender);
+		/* $male_count = DB::table('membermonthendstatus as ms')
 						->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
 						//->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 						//->leftjoin('race as r','m.race_id','=','r.id')
@@ -1106,7 +1107,7 @@ class CommonHelper
 						->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
 						->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)  
 						->where('ms.STATUS_CODE','=',$status_active)
-						->count();
+						->count(); */
 		
        /*  $male_count = DB::table('membership as m')->select('m.gender','m.doj')
                     ->leftjoin('race as r','m.race_id','=','r.id')
@@ -1127,6 +1128,23 @@ class CommonHelper
 		
 
     }
+	
+	public static function get_union_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender){
+		$monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+			$fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{		
+			$monthno = date('m');
+			$yearno = date('Y');
+		}
+		
+		
+		$male_count = CacheMonthEnd::get_union_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender);
+		return $male_count;
+	}
 	public static function get_female_gender_race_count($raceid,$branchshortcode,$status_active,$month_year)
     {
  

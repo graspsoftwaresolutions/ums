@@ -321,7 +321,9 @@ $("#member_statistic_sidebar_a_id").addClass('active');
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&unionbranch_id='+unionbranch_id;
 			//loader.showLoader();
 			//$("#memberoffset").val("{{$data['data_limit']}}"); 
+			$("#myframe,#myframe_union").contents().find("html").css('opacity',0);
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-statstics-more-report') }}?offset=0"+searchfilters,);
+			$("#myframe_union").attr("src", "{{ url(app()->getLocale().'/get-statstics-union-report') }}?offset=0"+searchfilters,);
 			//$('#page-length-option tbody').empty();
 			 //loader.showLoader();
 		
