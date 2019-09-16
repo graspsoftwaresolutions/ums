@@ -422,7 +422,8 @@ class CacheMonthEnd
 			}
 
 			$male_count = DB::table('membermonthendstatus as ms')
-						->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->select('ms.id')
+						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						//->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 						//->leftjoin('race as r','m.race_id','=','r.id')
 						->where('m.race_id','=',$raceid)
