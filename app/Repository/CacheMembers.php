@@ -13,6 +13,10 @@ use App\Model\Company;
 class CacheMembers
 {
 	CONST CACHE_KEY="members";
+	
+	public function __construct() {
+		$this->membermonthendstatus_table = "membermonthendstatus";
+	}
 
 	public function all($orderBy){
 	    $key = "all.{$orderBy}";

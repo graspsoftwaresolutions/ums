@@ -72,8 +72,8 @@ class SubscriptionController extends CommonController
         $this->ArrearEntry = new ArrearEntry;
         $bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
         $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        $this->bf_amount = $bf_amount=='' ? 0 : $bf_amount;
-        $this->ins_amount = $ins_amount=='' ? 0 : $ins_amount;
+        $this->bf_amount = $bf_amount=='' ? 3 : $bf_amount;
+        $this->ins_amount = $ins_amount=='' ? 7 : $ins_amount;
     }
     //excel file download and upload it
     public function index() {
@@ -534,7 +534,7 @@ class SubscriptionController extends CommonController
 												'MEMBER_CODE' => $member_code,
 												'SUBSCRIPTION_AMOUNT' => $subscription->Amount,
 												'BF_AMOUNT' => $this->bf_amount,
-												'LASTPAYMENTDATE' => $old_subscription_count>0 ? $last_month : NULL,
+												'LASTPAYMENTDATE' => count($old_subscription_res)>0 ? $last_month : NULL,
 												'TOTALSUBCRP_AMOUNT' => $total_subs,
 												'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
 												'TOTAL_MONTHS' => $diff_in_months,
