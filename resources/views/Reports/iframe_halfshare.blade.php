@@ -162,10 +162,15 @@
                 @if(!empty($data))						
                 @foreach($data['half_share'] as $hlfshre)
                 @php
-                $bf += $hlfshre->bfamount;
-                $ins += $hlfshre->insamt;
-                $sub += round($hlfshre->subamt,2);
-                $tot = $hlfshre->bfamount + $hlfshre->insamt + round($hlfshre->subamt,2);
+				$bf_amount = $hlfshre->count*$data['bf_amount'];
+				$ins_amount = $hlfshre->count*$data['ins_amount'];
+                $bf += $bf_amount;
+                $ins += $ins_amount;
+				$payamount = $hlfshre->subamt;
+				$total_ins = $hlfshre->count*$data['total_ins'];
+				$sub_amt = $payamount-$total_ins;
+                $sub += $sub_amt;
+                $tot = $payamount;
                 $totall = round($tot,2);
                 $total_all += $totall;
                 $hlf_sr = $totall / 2;
@@ -178,9 +183,9 @@
                     <tr>
                         <td style="width:170px !important; border:1px ;">{{ $hlfshre->union_branch }}</td>
                         <td style="width:100px !important; border:1px ;">{{ $totall }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $hlfshre->bfamount }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $hlfshre->insamt }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ round($hlfshre->subamt,2) }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $bf_amount }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $ins_amount }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ $sub_amt }}</td>
                         <td style="width:100px !important; border:1px ;">{{ $hlf_sr }}</td>
                         <td style="width:100px !important; border:1px ;">{{ $tenper }}</td>
                         <td style="width:100px !important; border:1px ;">{{ $balamtgn }}</td>

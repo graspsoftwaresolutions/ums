@@ -288,7 +288,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	//Finacial Half Share Report
 	Route::get('halfshare_report','ReportsController@halfshareReport')->name('reports.halfshare'); 
-	Route::get('newhalfshare_report','ReportsController@newahalfshareReport')->name('reports.halfsharenew');
+	Route::get('newhalfshare_report','ReportsController@newhalfshareReport')->name('reports.halfsharenew');
 	Route::get('get-new-morehalfshare-report','ReportsController@halfshareFiltereportLoadmore')->name('reports.halfsharefilter');
 	Route::get('get-new-halfshare-report','ReportsController@halfshareFiltereport')->name('reports.halfsharefilters');
 
