@@ -202,16 +202,19 @@
 				@php 
 					$race_id = $race->id;
 					$male_count = CommonHelper::get_union_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Male');
+					
 				@endphp
 					<td style="width:41px !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
 				@php
 					$subtotal1 += $male_count; 
+					
 				@endphp
 				@endforeach
 				<td style="width:60px !important; border:1px ;"> {{$subtotal1}}</td>
 				@foreach($data['race_view'] as $value)
 					@php 
 					$race_id = $value->id;
+					//dd($male_count);
 						$female_count = CommonHelper::get_union_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Female');
 					@endphp
 				<td style="width:41px !important; border:1px ;">{{$female_count}}</td>

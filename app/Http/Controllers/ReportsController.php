@@ -1434,6 +1434,7 @@ class ReportsController extends Controller
 		$yearno = date('Y');
 
         $members = CacheMonthEnd::getMonthEndUnionByDate(date('Y-m-01'));
+       // dd( $members);
 		
 		//dd($members);
        
