@@ -1182,7 +1182,7 @@
                                                     <div class="input-field col s6">
                                                         <div class="row">
                                                             <div class="input-field col s6">
-                                                                <input type="text" id="service_year" name="service_year" value="{{ $service_year }}" readonly >
+                                                                <input type="text" id="service_year" name="service_year" value="{{ $service_year }}" readonly  >
                                                                 <label for="service_year" class="force-active">Service Year</label>
                                                             </div>
                                                             <div class="input-field col s6">
@@ -1708,7 +1708,30 @@
 	   }
 		
 	});
+	$('#resign_reason').change(function(){
+		getBfAmount();
+	});
 	function getBfAmount(){
+		//alert('hi');
+		var service_year = $('#service_year').val();
+		var resign_reason = $('#resign_reason').val();
+		var status_id = $('#status_id').val();
+		if(service_year!=0 && resign_reason!='' && status_id==1){
+			$.ajax({
+				type:"GET",
+				dataType:"json",
+				url:"{{URL::to('/get-bf-amount') }}?service_year="+service_year+"&resign_reason="+resign_reason,
+				success:function(res){
+					if(res){
+						$("#benefit_amount").val(res);
+					}else{
+						$("#benefit_amount").val(0);
+					}
+				}
+			});
+		}else{
+			$("#benefit_amount").val(0);
+		}
 		
 	}
 </script>

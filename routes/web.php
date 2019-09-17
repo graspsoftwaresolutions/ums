@@ -354,6 +354,7 @@ Route::get('get-branch-list','CommonController@getBranchList');
 Route::get('get-age','CommonController@getAge');
 Route::get('get-serviceyear','MembershipController@ServiceYear');
 Route::get('get-fee-options','CommonController@getFeesList');
+Route::get('get-bf-amount','MembershipController@getBFAmount');
 
 // commom member functions
 Route::post('add-nominee','MemberController@addNominee');

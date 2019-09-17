@@ -20,6 +20,7 @@ use App\Model\MemberFee;
 use App\Model\CompanyBranch;
 use App\Model\UnionBranch;
 use App\Model\Resignation;
+use App\Model\Reason;
 use App\Helpers\CommonHelper;
 use App\Mail\SendMemberMailable;
 use URL;
@@ -1207,6 +1208,58 @@ class MembershipController extends Controller
 		 $years = $date2->diffInYears($date1);
 
          echo $years;
+    }
+
+    public function getBFAmount(Request $request){
+        $service_year = $request->input('service_year');
+        $resign_reason = $request->input('resign_reason');
+       
+        $bfamount = 0; 
+        if($service_year>0 && $resign_reason!=''){
+            $reasondata =  Reason::where('id',$resign_reason)->first();
+            $five_year_amount = $reasondata->five_year_amount;
+            $fiveplus_year_amount = $reasondata->fiveplus_year_amount;
+            $one_year_amount = $reasondata->one_year_amount;
+            $minimum_year = $reasondata->minimum_year;
+            $minimum_refund = $reasondata->minimum_refund;
+            $maximum_refund = $reasondata->maximum_refund;
+            $bfamount = 0; 
+            if($reasondata->is_benefit_valid==1){
+                if($reasondata->reason_name=='DECEASED'){
+                    if($service_year>=$minimum_year){
+                        $fiveplusyears =$service_year - $minimum_year; 
+                        $paid_amount = ($fiveplusyears*$fiveplus_year_amount)+$five_year_amount;
+                        if($paid_amount<=$minimum_refund){
+                            $bfamount = $minimum_refund; 
+                        }else if($paid_amount>$minimum_refund && $paid_amount<$maximum_refund){
+                            $bfamount = $paid_amount; 
+                        }else{
+                            $bfamount = $maximum_refund; 
+                        }
+                    }
+                }else{
+                    if($service_year>=$minimum_year){
+                        if($service_year>=5){
+                            $fiveplusyears =$service_year - 5; 
+                            $paid_amount = ($fiveplusyears*$fiveplus_year_amount)+$five_year_amount;
+                        }else{
+                            $paid_amount = $service_year*$one_year_amount;
+                        }
+                        //$paid_amount = $service_year*$one_year_amount;
+                        if($paid_amount>=$maximum_refund){
+                            $bfamount = $maximum_refund;
+                        }else{
+                            $bfamount = $paid_amount;
+                        }
+                       
+                    }
+                }
+            }
+            
+        }else{
+            $bfamount = 0; 
+        }
+        echo $bfamount;
     }
 
     
