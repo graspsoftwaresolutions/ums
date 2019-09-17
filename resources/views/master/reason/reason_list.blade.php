@@ -68,37 +68,89 @@
                             </div>
                         </div>
                         <div id="modal_add_edit" class="modal">
-                        <div class="modal-header" id="modal-header">                            
+							<div class="modal-header" id="modal-header">                            
                                 <h4>{{__('Reason Details') }}</h4>
-                                </div>
-                                <div class="modal-content">
-                                <form class="formValidate" id="add_formValidate" method="post"
+                            </div>
+							 <form class="formValidate" id="add_formValidate" method="post"
                                     action="{{ route('master.reasonSave',app()->getLocale()) }}">
                                     @csrf
-                                    <input type="hidden" name="id" id="updateid">
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                            <label for="reason_name"
-                                                class="common-label force-active">{{__('Reason Name') }}*</label>
-                                            <input id="reason_name" class="common-input" autofocus name="reason_name" type="text"
-                                                data-error=".errorTxt1">
-                                            <div class="errorTxt1"></div>
-                                        </div>
-                                        <div class="clearfix" style="clear:both"></div>
-                                        </div></div>
-                                        <div class="modal-footer">
-                                            
-                                            <button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
-                                                type="submit" name="action">{{__('Update')}}
-                                            </button>
-                                            <button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
-                                                style="display:none;" type="submit" name="action">{{__('Save')}}
-                                            </button>
-                                            <a href="#!"
-                                                class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close') }}</a>
-                                        
-                                    </div>
-                                </form>
+								<div class="modal-content">
+									<input type="hidden" name="id" id="updateid">
+									<div class="row">
+										<div class="input-field col s12">
+											<label for="reason_name"
+												class="common-label force-active">{{__('Reason Name') }}*</label>
+											<input id="reason_name" class="common-input" autofocus name="reason_name" type="text"
+												data-error=".errorTxt1">
+											<div class="errorTxt1"></div>
+										</div>
+										<div class="input-field col s6">
+											<p>
+												<label for="is_benefit_valid">
+													<input id="is_benefit_valid" class="" name="is_benefit_valid" type="checkbox" value="1" />
+													<span>{{__('IsBenefit Valid') }}</span>
+												</label>
+											</p>
+										</div>
+										<div class="input-field col s6 hide benefit-fields">
+											<label for="minimum_year"
+												class="common-label force-active">{{__('Minimum Year') }}*</label>
+											<input id="minimum_year" class="common-input " autofocus name="minimum_year" type="text"
+												data-error=".errorTxt2">
+											<div class="errorTxt2"></div>
+										</div>
+										<div class="clearfix" style="clear:both"></div>
+										<div class="input-field col s6 hide benefit-fields">
+											<label for="minimum_refund"
+												class="common-label force-active">{{__('Minimum Refund') }}*</label>
+											<input id="minimum_refund" class="common-input" name="minimum_refund" type="text"
+												data-error=".errorTxt3">
+											<div class="errorTxt3"></div>
+										</div>
+										<div class="input-field col s6 hide benefit-fields">
+											<label for="maximum_refund"
+												class="common-label force-active">{{__('Maximum Refund') }}*</label>
+											<input id="maximum_refund" class="common-input" name="maximum_refund" type="text"
+												data-error=".errorTxt4">
+											<div class="errorTxt4"></div>
+										</div>
+										<div class="clearfix" style="clear:both"></div>
+										<div class="input-field col s6 hide benefit-fields">
+											<label for="five_year_amount"
+												class="common-label force-active">{{__('5yr Amount') }}*</label>
+											<input id="five_year_amount" class="common-input" name="five_year_amount" type="text"
+												data-error=".errorTxt5">
+											<div class="errorTxt5"></div>
+										</div>
+										<div class="input-field col s6 hide benefit-fields">
+											<label for="fiveplus_year_amount"
+												class="common-label force-active">{{__('After 5yr Amount') }}*</label>
+											<input id="fiveplus_year_amount" class="common-input" name="fiveplus_year_amount" type="text"
+												data-error=".errorTxt6">
+											<div class="errorTxt6"></div>
+										</div>
+										<div class="input-field col s6 hide benefit-fields">
+											<label for="one_year_amount"
+												class="common-label force-active">{{__('1yr Amount') }}*</label>
+											<input id="one_year_amount" class="common-input" name="one_year_amount" type="text"
+												data-error=".errorTxt7">
+											<div class="errorTxt7"></div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									
+									<button id="modal-update-btn" class="btn waves-effect waves-light submit edit_hide_btn "
+										type="submit" name="action">{{__('Update')}}
+									</button>
+									<button id="modal-save-btn" class="btn waves-effect waves-light submit add_hide"
+										style="display:none;" type="submit" name="action">{{__('Save')}}
+									</button>
+									<a href="#!"
+										class="modal-action modal-close btn waves-effect waves-light cyan">{{__('Close') }}</a>
+
+								</div>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -140,7 +192,7 @@ $("#add_formValidate").validate({
             remote: {
                 url: "{{ url(app()->getLocale().'/reason_nameexists')}}",
                 data: {
-                    race_id: function() {
+                    reason_id: function() {
                         return $("#updateid").val();
                     },
                     _token: "{{csrf_token()}}",
@@ -244,6 +296,8 @@ function showaddForm() {
     $('#reason_name').val("");
     $('.modal').modal();
     $('#updateid').val("");
+	$(".benefit-fields").addClass('hide');
+	$("#is_benefit_valid").prop('checked',false);
     $('.common-label').removeClass('force-active');
 }
 function showeditForm(relationid) {
@@ -260,6 +314,19 @@ function showeditForm(relationid) {
             $('#updateid').val(result.id);
             $('#updateid').attr('data-autoid', result.id);
             $('#reason_name').val(result.reason_name);
+			if(result.is_benefit_valid==1){
+				$("#is_benefit_valid").prop('checked',true);
+				$(".benefit-fields").removeClass('hide');
+			}else{
+				$("#is_benefit_valid").prop('checked',false);
+				$(".benefit-fields").addClass('hide');
+			}
+			$('#minimum_year').val(result.minimum_year);
+			$('#minimum_refund').val(result.minimum_refund);
+			$('#maximum_refund').val(result.maximum_refund);
+			$('#five_year_amount').val(result.five_year_amount);
+			$('#fiveplus_year_amount').val(result.fiveplus_year_amount);
+			$('#one_year_amount').val(result.one_year_amount);
             loader.hideLoader();
             $('.common-label').addClass('force-active');
             $("#modal_add_edit").modal('open');
@@ -270,6 +337,13 @@ function showeditForm(relationid) {
 $(document).on('submit','form#add_formValidate',function(){
     $("#modal-save-btn").prop('disabled',true);
     $("#modal-update-btn").prop('disabled',true);
+});
+$(document).on('click','#is_benefit_valid',function(){
+	 if($(this).prop("checked") == true){
+		$(".benefit-fields").removeClass('hide');
+	 }else{
+		 $(".benefit-fields").addClass('hide');
+	 }
 });
 </script>
 @endsection

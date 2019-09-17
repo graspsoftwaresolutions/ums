@@ -461,8 +461,13 @@ class MasterController extends CommonController {
             'reason_name.required'=>'please enter Reason name',
         ]);
         $data = $request->all();   
+		$is_benefit_valid = $request->input('is_benefit_valid');
+		if(!isset($is_benefit_valid)){
+			$request->request->add(['is_benefit_valid' => 0]);
+		}
         $defdaultLang = app()->getLocale();
-        
+		$data = $request->all();   
+        //return $data = $request->all();   
         if(!empty($request->id)){
             $data_exists = $this->checkReasonExists($request->input('reason_name'),$request->id);
         }else{

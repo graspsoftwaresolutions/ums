@@ -23,7 +23,7 @@ class CacheMembers
 		$cacheKey = $this->getCacheKey($key);
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($cacheKey,$orderBy)
 		{
-		    return DB::table('membership')->select('new_ic','old_ic','employee_id')->get();
+		    //return DB::table('membership')->select('new_ic','old_ic','employee_id')->get();
 		}); 
 		
 	}
