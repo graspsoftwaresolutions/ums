@@ -315,7 +315,7 @@ class SubscriptionController extends CommonController
 				$approval_status=0;
 				$memberdata = [];
 			   
-			    $subscription_new_qry =  DB::table('membership as m')->where('m.new_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+			    $subscription_new_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.new_ic)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 			
 				
 				/* $new_nric_exists=0;
@@ -364,14 +364,14 @@ class SubscriptionController extends CommonController
 					$subMemberMatch->match_id = 1;
 					$nric_matched = 1;
 				}else{
-					$subscription_old_qry =  DB::table('membership as m')->where('m.old_ic', '=',$nric)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+					$subscription_old_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.old_ic)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 					if(count($subscription_old_qry) > 0){
 						$up_sub_member =1;
 						$memberdata = $subscription_old_qry;
 						$subMemberMatch->match_id = 8;
 						//$nric_matched = 1;
 					}else{
-						$subscription_empid_qry =  DB::table('membership as m')->where('m.employee_id', '=',(int)$nric)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+						$subscription_empid_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.employee_id)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 						if(count($subscription_empid_qry) > 0){
                     
 							$up_sub_member =1;
