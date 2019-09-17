@@ -182,13 +182,13 @@
                 @endphp
                     <tr>
                         <td style="width:170px !important; border:1px ;">{{ $hlfshre->union_branch }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $totall }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $bf_amount }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $ins_amount }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $sub_amt }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $hlf_sr }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $tenper }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ $balamtgn }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($totall,2,".",",") }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($bf_amount,2,".",",") }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($ins_amount,2,".",",") }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($sub_amt,2,".",",") }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($hlf_sr,2,".",",") }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($tenper,2,".",",") }}</td>
+                        <td style="width:100px !important; border:1px ;">{{ number_format($balamtgn,2,".",",") }}</td>
                         
                     </tr> 
                 @endforeach
@@ -196,10 +196,10 @@
                 <tr style="font-weight:bold;">
                 
                         <td style="width:200px !important; border:1px  ;">Total</td>
-                        <td style="width:130px !important; border:1px ;">{{ $total_all }}</td>
-                        <td style="width:130px !important; border:1px ;">{{ $bf }}</td>
-                        <td style="width:140px !important; border:1px  ;">{{ $ins }}</td>
-                        <td style="width:130px !important; border:1px  ;">{{ $sub }}</td>
+                        <td style="width:130px !important; border:1px ;">{{ number_format($total_all,2,".",",") }}</td>
+                        <td style="width:130px !important; border:1px ;">{{ number_format($bf,2,".",",") }}</td>
+                        <td style="width:140px !important; border:1px  ;">{{ number_format($ins,2,".",",") }}</td>
+                        <td style="width:130px !important; border:1px  ;">{{ number_format($sub,2,".",",") }}</td>
                         <td style="width:130px !important; border:1px  ;">{{ number_format($hlf,2,".",",") }}</td>
                         <td style="width:150px !important; border:1px  ;">{{ number_format($t_per,2,".",",") }}</td>
                         <td style="width:140px !important; border:1px;">{{ number_format($bl_amt,2,".",",") }}</td>
