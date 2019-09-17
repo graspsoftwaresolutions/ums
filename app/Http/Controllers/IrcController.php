@@ -183,7 +183,9 @@ class IrcController extends CommonController
 									->orWhere('m.new_ic', 'LIKE',"%{$search}%")
 									->orWhere('m.old_ic', 'LIKE',"%{$search}%")
 									->orWhere('irc.MemberCode', 'LIKE',"%{$search}%");
-                            })->limit(25)
+							})
+							->where('m.status_id','!=',4)
+							->limit(25)
 							->get(); 
          return response()->json($res);
 	}
@@ -552,4 +554,22 @@ class IrcController extends CommonController
                             ->get();   
          return response()->json($res);
 	}
+
+	 public function getAutomemberslist(Request $request){
+        $searchkey = $request->input('serachkey');
+        $search = $request->input('query');
+        //DB::enableQueryLog();
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number as member_code')      
+                            ->where(function($query) use ($search){
+                                $query->orWhere('m.id','LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+							})
+							->where('m.status_id','!=',4)
+							->limit(25)
+                            ->get();        
+        //$queries = DB::getQueryLog();
+                            //  dd($queries);
+         return response()->json($res);
+    }
 }

@@ -185,7 +185,7 @@
 	$("#irc_account_sidebar_a_id").addClass('active');
     $("#member_search").devbridgeAutocomplete({
         //lookup: countries,
-        serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
+        serviceUrl: "{{ URL::to('/get-ircauto-member-list') }}?serachkey="+ $("#member_search").val(),
         type:'GET',
         //callback just to show it's working
         onSelect: function (suggestion) {

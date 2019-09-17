@@ -381,14 +381,14 @@
 								{{ CommonHelper::get_member_match_name(3) }}
 									&nbsp;&nbsp;
 									<p>
-										<span class="bold">From Bank: <span id="registered_member_name" class="bold"></span></span> 
+										<span class="bold">From Union: <span id="registered_member_name" class="bold"></span></span> 
 										<label>
 											<input name="nameverify" type="radio" checked value="1" />
 											<span>is it correct?</span>
 										</label>
 									</p>
 								<p>
-									<span class="bold">From Union: <span id="uploaded_member_name" class="bold"></span></span>
+									<span class="bold">From Bank: <span id="uploaded_member_name" class="bold"></span></span>
 									<label>
 										<input name="nameverify" type="radio" value="2" />
 										<span>is it correct?</span>
@@ -410,9 +410,9 @@
 							<td>
 								{{ CommonHelper::get_member_match_name(4) }}
 								</br>
-								&nbsp;&nbsp;<span class="bold">From Bank: <span id="registered_bank_name" class="bold"></span></span>
+								&nbsp;&nbsp;<span class="bold">From Union: <span id="registered_bank_name" class="bold"></span></span>
 								</br>
-								&nbsp;&nbsp;<span class="bold">From Union: <span id="uploaded_bank_name" class="bold"></span></span>
+								&nbsp;&nbsp;<span class="bold">From Bank: <span id="uploaded_bank_name" class="bold"></span></span>
 								<input type="text" name="registered_bank_id" class="hide" id="registered_bank_id" value="" />
 								<input type="text" name="uploaded_bank_id" class="hide" id="uploaded_bank_id" value="" />
 								<a title='Member Transfer' id="memebr_tansfer_link" class='btn-sm-popup waves-effect waves-light yellow darken-3' href=''>Member Transfer</a>

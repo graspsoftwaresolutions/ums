@@ -173,7 +173,7 @@
                 $tot = $payamount;
                 $totall = round($tot,2);
                 $total_all += $totall;
-                $hlf_sr = $totall / 2;
+                $hlf_sr = round($sub_amt / 2,2);
                 $hlf += $hlf_sr;
                 $tenper = round($hlf_sr * 10/100,2);
                 $t_per +=$tenper;
@@ -200,9 +200,9 @@
                         <td style="width:130px !important; border:1px ;">{{ $bf }}</td>
                         <td style="width:140px !important; border:1px  ;">{{ $ins }}</td>
                         <td style="width:130px !important; border:1px  ;">{{ $sub }}</td>
-                        <td style="width:130px !important; border:1px  ;">{{ $hlf }}</td>
-                        <td style="width:150px !important; border:1px  ;">{{ $t_per }}</td>
-                        <td style="width:140px !important; border:1px;">{{ $bl_amt }}</td>
+                        <td style="width:130px !important; border:1px  ;">{{ number_format($hlf,2,".",",") }}</td>
+                        <td style="width:150px !important; border:1px  ;">{{ number_format($t_per,2,".",",") }}</td>
+                        <td style="width:140px !important; border:1px;">{{ number_format($bl_amt,2,".",",") }}</td>
                 </tr>
 	
 			
@@ -220,6 +220,9 @@
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script>
+	$(document).ready( function() { 
+		$("html").css('opacity',1);
+    });
 	$('#tableID').tableExport({
 		type:'pdf',
 		jspdf: {

@@ -152,7 +152,7 @@ $("#member_halfshare_sidebar_a_id").addClass('active');
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year;
 		//	$("#memberoffset").val("{{$data['data_limit']}}");
-			
+			$("#myframe").contents().find("html").css('opacity',0);
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-halfshare-report') }}?offset=0"+searchfilters,);
 			$("#search").attr('disabled',false);
 		}else{
