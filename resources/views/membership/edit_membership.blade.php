@@ -1182,7 +1182,7 @@
                                                     <div class="input-field col s6">
                                                         <div class="row">
                                                             <div class="input-field col s6">
-                                                                <input type="text" id="service_year" name="service_year" value="{{ $service_year }}">
+                                                                <input type="text" id="service_year" name="service_year" value="{{ $service_year }}" readonly >
                                                                 <label for="service_year" class="force-active">Service Year</label>
                                                             </div>
                                                             <div class="input-field col s6">
@@ -1702,11 +1702,15 @@
 					}
 				}
 			});
+			getBfAmount();
 	   }else{
 		  $("#"+reflect_age).val(0);
 	   }
 		
 	});
+	function getBfAmount(){
+		
+	}
 </script>
 @include('membership.member_common_script') 
 @endsection
