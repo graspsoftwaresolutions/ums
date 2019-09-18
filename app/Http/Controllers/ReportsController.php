@@ -1261,6 +1261,9 @@ class ReportsController extends Controller
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
         if($branch_id!="" || $company_id!="" || $member_auto_id!=""){
+            $last_month_no = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1].' -1 Month'));
+			$last_month_year = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1].' -1 Month'));
+
 			$members = DB::table('mon_sub_member as mm')
 					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','mm.NRIC as new_ic','c.branch_name as branch_name','com.short_code as companycode')
 					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
@@ -1269,7 +1272,7 @@ class ReportsController extends Controller
 					->leftjoin('company_branch as c','c.id','=','m.branch_id')
 					->leftjoin('company as com','com.id','=','sc.CompanyCode')
 					->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
-					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $last_month_no.'-'.$last_month_year)
 					->where(function ($query) {
 						$query->where('mm.StatusId', '=', 1)
 							  ->orWhere('mm.StatusId', '=', 2);

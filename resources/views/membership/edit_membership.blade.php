@@ -1700,9 +1700,10 @@
 					}else{
 						$("#service_year").val(0);
 					}
+					getBfAmount();
 				}
 			});
-			getBfAmount();
+			
 	   }else{
 		  $("#"+reflect_age).val(0);
 	   }
@@ -1712,7 +1713,6 @@
 		getBfAmount();
 	});
 	function getBfAmount(){
-		//alert('hi');
 		var service_year = $('#service_year').val();
 		var resign_reason = $('#resign_reason').val();
 		var status_id = $('#status_id').val();
