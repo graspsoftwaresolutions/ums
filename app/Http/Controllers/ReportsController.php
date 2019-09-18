@@ -16,7 +16,7 @@ class ReportsController extends Controller
 	public function __construct()
     {
         ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 1000); 
+		ini_set('max_execution_time', 10000); 
         $this->limit = 25;
 		$this->membermonthendstatus_table = "membermonthendstatus";	
 		$bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
