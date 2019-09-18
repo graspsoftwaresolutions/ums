@@ -128,20 +128,27 @@
 													</label>
 												</p>
 											</div>
+											<div class="input-field col m3 s12">
+												<label for="doe">{{__('Subscription Month') }}*</label>
+												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
+											</div>
 											<div class="col m3 s12">
-												<label for="doe">{{__('Display Subscription') }}</label>
+												<label for="doe">&nbsp;</label>
 												<p>
 													<label>
 														<input name="display_subs" type="checkbox" value="1" {{ $data['DisplaySubscription']==true ? 'checked' : ''}} />
 														<span>{{__('Display Subscription') }} </span>
 													</label>
 												</p>
+												<p style="padding-top:10px;">
+													<label>
+														<input name="6month-variation" type="checkbox" value="1" {{ $data['DisplaySubscription']==true ? 'checked' : ''}} />
+														<span>{{__('Last 6 Months Variation') }} </span>
+													</label>
+												</p>
 											</div>
 											
-											<div class="input-field col m3 s12">
-												<label for="doe">{{__('Subscription Month') }}*</label>
-												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
-											</div>
+											
 											
 											<div class="col m3 s12 " style="padding-top:5px;">
 												</br>
@@ -167,7 +174,7 @@
 			<div class="container">
 				<div class="card">
 					<div class="card-content">
-						<h4 class="card-title">Subscription 6 month variation
+						<h4 class="card-title">Subscription variation
 						<div class="right">
 							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1') }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
@@ -180,7 +187,11 @@
 							<thead>
 								<tr class="" >
 									<th>{{__('Union Branch Name')}}</th>
-									<th>{{__('Count')}}</th>
+									<th>{{__('#Current')}}</th>
+									<th>{{__('#Previous')}}</th>
+									<th>{{__('Different')}}</th>
+									<th>{{__('Unpaid')}}</th>
+									<th>{{__('Paid')}}</th>
 								</tr>
 							</thead>
 							<tbody class="tbody-area" width="100%">
@@ -193,7 +204,11 @@
 										@endphp
 										<tr class="monthly-sub-status">
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
-											<td style="width:20%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
 										</tr> 
 										@php
 											$totalno2 += $current_count;
@@ -202,7 +217,11 @@
 								@endforeach
 								<tr class="bold table-footer">
 									<td style="width:50%">Total</td>
-									<td style="width:20%">{{ $totalno2 }}</td>
+									<td style="width:10%">{{ $totalno2 }}</td>
+									<td style="width:10%">{{ $totalno2 }}</td>
+									<td style="width:10%">{{ $totalno2 }}</td>
+									<td style="width:10%">{{ $totalno2 }}</td>
+									<td style="width:10%">{{ $totalno2 }}</td>
 								</tr> 
 							</tbody>
 							
@@ -212,7 +231,11 @@
 							<thead>
 								<tr class="" >
 									<th>{{__('Bank Name')}}</th>
-									<th>{{__('Count')}}</th>
+									<th>{{__('#Current')}}</th>
+									<th>{{__('#Previous')}}</th>
+									<th>{{__('Different')}}</th>
+									<th>{{__('Unpaid')}}</th>
+									<th>{{__('Paid')}}</th>
 								</tr>
 							</thead>
 							<tbody class="tbody-area" width="100%">
@@ -225,7 +248,11 @@
 										@endphp
 										<tr class="monthly-sub-status">
 											<td style="width:50%">{{ $company->company_name }}</td>
-											<td style="width:20%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
 										</tr> 
 										@php
 											$totalno1 += $current_count;
@@ -234,7 +261,11 @@
 								@endforeach
 								<tr class="bold table-footer">
 									<td style="width:50%">Total</td>
-									<td style="width:20%">{{ $totalno1 }}</td>
+									<td style="width:10%">{{ $totalno1 }}</td>
+									<td style="width:10%">{{ $totalno1 }}</td>
+									<td style="width:10%">{{ $totalno1 }}</td>
+									<td style="width:10%">{{ $totalno1 }}</td>
+									<td style="width:10%">{{ $totalno1 }}</td>
 								</tr> 
 							</tbody>
 							
@@ -245,7 +276,11 @@
 								<tr class="" >
 									<th>{{__('Bank Name')}}</th>
 									<th>{{__('Branch Name')}}</th>
-									<th>{{__('Count')}}</th>
+									<th>{{__('#Current')}}</th>
+									<th>{{__('#Previous')}}</th>
+									<th>{{__('Different')}}</th>
+									<th>{{__('Unpaid')}}</th>
+									<th>{{__('Paid')}}</th>
 								</tr>
 							</thead>
 							<tbody class="tbody-area" width="100%">
@@ -258,17 +293,25 @@
 											$current_count = CommonHelper::getMonthEndPaidCount($branch->branch_id,$data['month_year_full'],3);
 										@endphp
 										<tr class="monthly-sub-status">
-											<td style="width:30%">{{ $branch->company_name }}</td>
+											<td style="width:20%">{{ $branch->company_name }}</td>
 											<td style="width:30%">{{ $branch->branch_name }}</td>
-											<td style="width:20%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
 										</tr> 
 										@php
 											$totalno += $current_count;
 										@endphp
 								@endforeach
 								<tr class="bold table-footer">
-									<td colspan="2" style="width:60%">Total</td>
-									<td style="width:20%">{{ $totalno }}</td>
+									<td colspan="2" style="width:50%">Total</td>
+									<td>{{ $totalno }}</td>
+									<td>{{ $totalno }}</td>
+									<td>{{ $totalno }}</td>
+									<td>{{ $totalno }}</td>
+									<td>{{ $totalno }}</td>
 								</tr> 
 							</tbody>
 							
