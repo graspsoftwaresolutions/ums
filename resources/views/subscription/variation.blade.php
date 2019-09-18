@@ -196,32 +196,42 @@
 							</thead>
 							<tbody class="tbody-area" width="100%">
 								@php
-									$totalno2=0;
+									$totalno21=0;
+									$totalno22=0;
+									$totalno23=0;
+									$totalno24=0;
+									$totalno25=0;
 								@endphp
 								@foreach($data['union_branch_view'] as $union)
 										@php
 											$current_count = CommonHelper::getMonthEndPaidCount($union->union_branchid,$data['month_year_full'],1);
+											$last_month_count = CommonHelper::getUnionMonthlyPaidCount($union->union_branchid,$data['last_month_year']);
+											$last_paid_count = CommonHelper::getUnionLastMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
+											$current_unpaid_count = CommonHelper::getUnioncurrentMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 										@endphp
 										<tr class="monthly-sub-status">
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $last_month_count }}</td>
+											<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
+											<td style="width:10%">{{ $current_unpaid_count }}</td>
+											<td style="width:10%">{{ $last_paid_count }}</td>
 										</tr> 
 										@php
-											$totalno2 += $current_count;
+											$totalno21 += $current_count;
+											$totalno22 += $last_month_count;
+											$totalno24 += $current_unpaid_count;
+											$totalno25 += $last_paid_count;
 										@endphp
 										
 								@endforeach
 								<tr class="bold table-footer">
 									<td style="width:50%">Total</td>
-									<td style="width:10%">{{ $totalno2 }}</td>
-									<td style="width:10%">{{ $totalno2 }}</td>
-									<td style="width:10%">{{ $totalno2 }}</td>
-									<td style="width:10%">{{ $totalno2 }}</td>
-									<td style="width:10%">{{ $totalno2 }}</td>
+									<td style="width:10%">{{ $totalno21 }}</td>
+									<td style="width:10%">{{ $totalno22 }}</td>
+									<td style="width:10%">--</td>
+									<td style="width:10%">{{ $totalno24 }}</td>
+									<td style="width:10%">{{ $totalno25 }}</td>
 								</tr> 
 							</tbody>
 							
@@ -297,33 +307,44 @@
 							</thead>
 							<tbody class="tbody-area" width="100%">
 								@php
-									$totalno=0;
+									$totalno1=0;
+									$totalno2=0;
+									$totalno3=0;
+									$totalno4=0;
+									$totalno5=0;
 									//dd($data['month_year_full'])
 								@endphp
 								@foreach($data['branch_view'] as $branch)
 										@php
 											$current_count = CommonHelper::getMonthEndPaidCount($branch->branch_id,$data['month_year_full'],3);
+											$last_month_count = CommonHelper::getBranchMonthlyPaidCount($branch->branch_id,$data['last_month_year']);
+											$last_paid_count = CommonHelper::getBranchLastMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
+											$current_unpaid_count = CommonHelper::getBranchcurrentMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 										@endphp
 										<tr class="monthly-sub-status">
 											<td style="width:20%">{{ $branch->company_name }}</td>
 											<td style="width:30%">{{ $branch->branch_name }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
+											<td style="width:10%">{{ $last_month_count }}</td>
+											<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
+											<td style="width:10%">{{ $current_unpaid_count }}</td>
+											<td style="width:10%">{{ $last_paid_count }}</td>
 										</tr> 
 										@php
-											$totalno += $current_count;
+											$totalno1 += $current_count;
+											$totalno2 += $last_month_count;
+											$totalno3 += 0;
+											$totalno4 += $current_unpaid_count;
+											$totalno5 += $last_paid_count;
 										@endphp
 								@endforeach
 								<tr class="bold table-footer">
 									<td colspan="2" style="width:50%">Total</td>
-									<td>{{ $totalno }}</td>
-									<td>{{ $totalno }}</td>
-									<td>{{ $totalno }}</td>
-									<td>{{ $totalno }}</td>
-									<td>{{ $totalno }}</td>
+									<td>{{ $totalno1 }}</td>
+									<td>{{ $totalno2 }}</td>
+									<td>--</td>
+									<td>{{ $totalno4 }}</td>
+									<td>{{ $totalno5 }}</td>
 								</tr> 
 							</tbody>
 							
