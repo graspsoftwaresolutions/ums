@@ -1246,6 +1246,8 @@ class SubscriptionController extends CommonController
 	public function variation(){
 		$data['month_year'] = date('M/Y');
 		$data['month_year_full'] = date('Y-m-01');
+		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
+		
 		$data['groupby'] = 1;
 		$data['DisplaySubscription'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
@@ -1284,6 +1286,7 @@ class SubscriptionController extends CommonController
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
 		$data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));
+		
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
 		if($groupby==1){

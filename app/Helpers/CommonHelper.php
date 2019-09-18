@@ -1605,4 +1605,187 @@ class CommonHelper
 		
 		return $members;
 	}
+	
+	public static function getUnionMonthlyPaidCount($unionid, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		
+		$count = DB::table('mon_sub_member as sm')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                //->leftjoin('company as c','mc.CompanyCode','=','c.id')
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->where('cb.union_branch_id','=',$unionid)
+								->where(DB::raw('month(ms.Date)'),'=',$month)
+								->where(DB::raw('year(ms.Date)'),'=',$year)
+								->count();
+		return $count;
+    }
+	
+	public static function getUnionLastMonthlyPaidCount($unionid, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		$last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+		
+		$members = DB::table('mon_sub_member as sm')->select('sm.MemberCode')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->where('cb.union_branch_id','=',$unionid)
+								->where(DB::raw('month(ms.Date)'),'=',$month)
+								->where(DB::raw('year(ms.Date)'),'=',$year)
+								->get();
+		$count = 0;						
+		foreach($members as $member){
+			$memebr_id = $member->MemberCode;
+			$old_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$memebr_id)
+							->where('ms.Date','=',$last_month)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			if($old_subscription_count==0){
+				$count++;
+			}
+		}	
+		return $count;
+	}
+	
+	public static function getUnioncurrentMonthlyPaidCount($unionid, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		$last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+		$last_month_no = date("m", strtotime($last_month));
+		$last_year_no = date("Y", strtotime($last_month));
+		
+		$members = DB::table('mon_sub_member as sm')->select('sm.MemberCode')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->where('cb.union_branch_id','=',$unionid)
+								->where(DB::raw('month(ms.Date)'),'=',$last_month_no)
+								->where(DB::raw('year(ms.Date)'),'=',$last_year_no)
+								->get();
+		$count = 0;						
+		foreach($members as $member){
+			$memebr_id = $member->MemberCode;
+			$current_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$memebr_id)
+							->where(DB::raw('month(ms.Date)'),'=',$month)
+							->where(DB::raw('year(ms.Date)'),'=',$year)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			if($current_subscription_count==0){
+				$count++;
+			}
+		}	
+		return $count;
+	}
+	
+	public static function getBranchMonthlyPaidCount($branchid, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		
+		$count = DB::table('mon_sub_member as sm')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                //->leftjoin('company as c','mc.CompanyCode','=','c.id')
+								//->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->where('m.branch_id','=',$branchid)
+								->where(DB::raw('month(ms.Date)'),'=',$month)
+								->where(DB::raw('year(ms.Date)'),'=',$year)
+								->count();
+		return $count;
+    }
+	
+	public static function getBranchLastMonthlyPaidCount($branchid, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		$last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+		
+		$members = DB::table('mon_sub_member as sm')->select('sm.MemberCode')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                //->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->where('m.branch_id','=',$branchid)
+								->where(DB::raw('month(ms.Date)'),'=',$month)
+								->where(DB::raw('year(ms.Date)'),'=',$year)
+								->get();
+		$count = 0;						
+		foreach($members as $member){
+			$memebr_id = $member->MemberCode;
+			$old_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$memebr_id)
+							->where('ms.Date','=',$last_month)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			if($old_subscription_count==0){
+				$count++;
+			}
+		}	
+		return $count;
+	}
+	
+	public static function getBranchcurrentMonthlyPaidCount($branchid, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		$last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+		$last_month_no = date("m", strtotime($last_month));
+		$last_year_no = date("Y", strtotime($last_month));
+		
+		$members = DB::table('mon_sub_member as sm')->select('sm.MemberCode')->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                //->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->where('m.branch_id','=',$branchid)
+								->where(DB::raw('month(ms.Date)'),'=',$last_month_no)
+								->where(DB::raw('year(ms.Date)'),'=',$last_year_no)
+								->get();
+		$count = 0;						
+		foreach($members as $member){
+			$memebr_id = $member->MemberCode;
+			$current_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$memebr_id)
+							->where(DB::raw('month(ms.Date)'),'=',$month)
+							->where(DB::raw('year(ms.Date)'),'=',$year)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			if($current_subscription_count==0){
+				$count++;
+			}
+		}	
+		return $count;
+	}
+	
 }
