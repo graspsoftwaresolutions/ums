@@ -121,12 +121,12 @@
 			
 			<tr class="" >
 				@if($data['groupby']==1)
-				<th colspan="12">{{ $company->union_branch_name }}</th>
+				<th colspan="@if($data['variation']==1) 12 @else 7 @endif">{{ $company->union_branch_name }}</th>
 				@elseif($data['groupby']==2)
-				<th colspan="12">{{ $company->company_name }}</th>
+				<th colspan="@if($data['variation']==1) 12 @else 7 @endif">{{ $company->company_name }}</th>
 				@else
-				<th colspan="6">{{ $company->company_name }}</th>
-				<th colspan="6">{{ $company->branch_name }}</th>
+				<th colspan="@if($data['variation']==1) 6 @else 3 @endif">{{ $company->company_name }}</th>
+				<th colspan="@if($data['variation']==1) 6 @else 4 @endif">{{ $company->branch_name }}</th>
 				@endif
 			</tr>
 			<tr class="" >
@@ -136,11 +136,13 @@
 				<th width='10%'>{{__('Joining')}}</th>
 				<th width='5%'>{{__('Last Paid')}}</th>
 				<th width='5%'>{{__('Subs')}}</th>
+				@if($data['variation']==1)
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -5 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -4 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -3 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -2 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				@endif
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 			</tr>
 		</thead>
@@ -321,6 +323,7 @@
 				<td>{{ date('M Y',strtotime($member->doj)) }}</td>
 				<td>{{ $lastpaydate }}</td>
 				<td>{{ $payable_subs }}</td>
+				@if($data['variation']==1)
 				<td>{{ $fifth_paid_status }}
 					@if($data['DisplaySubscription']==1)
 						@php
@@ -371,6 +374,7 @@
 						@endphp
 					@endif
 				</td>
+				@endif
 				<td>{{ $this_paid }}
 					@if($data['DisplaySubscription']==1)
 						@php
@@ -391,56 +395,68 @@
 			@endforeach
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">New Member</td>
+				@if($data['variation']==1)
 				<td>{{$total_fifth_new}}</td>
 				<td>{{$total_fourth_new}}</td>
 				<td>{{$total_third_new}}</td>
 				<td>{{$total_second_new}}</td>
 				<td>{{$total_last_new}}</td>
+				@endif
 				<td>0</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Resign Member</td>
+				@if($data['variation']==1)
 				<td>{{$total_resigned}}</td>
 				<td>{{$total_resigned}}</td>
 				<td>{{$total_resigned}}</td>
 				<td>{{$total_resigned}}</td>
 				<td>{{$total_resigned}}</td>
+				@endif
 				<td>{{$total_resigned}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Unpaid</td>
+				@if($data['variation']==1)
 				<td>{{$total_fifth_unpaid}}</td>
 				<td>{{$total_fourth_unpaid}}</td>
 				<td>{{$total_third_unpaid}}</td>
 				<td>{{$total_second_unpaid}}</td>
 				<td>{{$total_last_unpaid}}</td>
+				@endif
 				<td>{{$total_this_unpaid}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">No Difference</td>
+				@if($data['variation']==1)
 				<td>{{$no_diff}}</td>
 				<td>{{$no_diff}}</td>
 				<td>{{$no_diff}}</td>
 				<td>{{$no_diff}}</td>
 				<td>{{$no_diff}}</td>
+				@endif
 				<td>{{$no_diff}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Decrement</td>
+				@if($data['variation']==1)
 				<td>{{$total_fifth_dec}}</td>
 				<td>{{$total_fouth_dec}}</td>
 				<td>{{$total_third_dec}}</td>
 				<td>{{$total_second_dec}}</td>
 				<td>{{$total_last_dec}}</td>
+				@endif
 				<td>{{$total_this_dec}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Increment</td>
+				@if($data['variation']==1)
 				<td>{{$total_fifth_inc}}</td>
 				<td>{{$total_fouth_inc}}</td>
 				<td>{{$total_third_inc}}</td>
 				<td>{{$total_second_inc}}</td>
 				<td>{{$total_last_inc}}</td>
+				@endif
 				<td>{{$total_this_inc}}</td>
 			</tr>
 		</tbody>
@@ -486,71 +502,85 @@
 		<thead>
 			
 			<tr class="" >
-				<th colspan="12" align="center">{{ __('Overall Summary') }}</th>
+				<th colspan="@if($data['variation']==1) 12 @else 7 @endif" align="center">{{ __('Overall Summary') }}</th>
 			</tr>
 			<tr class="" >
 				<th colspan='6' width='40%'>{{__('Description')}}</th>
+				@if($data['variation']==1)
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -5 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -4 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -3 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -2 Month')) }}</th>
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				@endif
 				<th width='10%'>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area">
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">New Member</td>
+				@if($data['variation']==1)
 				<td>{{$overall_total_fifth_new}}</td>
 				<td>{{$overall_total_fourth_new}}</td>
 				<td>{{$overall_total_third_new}}</td>
 				<td>{{$overall_total_second_new}}</td>
 				<td>{{$overall_total_last_new}}</td>
+				@endif
 				<td>0</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Resign Member</td>
+				@if($data['variation']==1)
 				<td>{{$overall_total_resigned}}</td>
 				<td>{{$overall_total_resigned}}</td>
 				<td>{{$overall_total_resigned}}</td>
 				<td>{{$overall_total_resigned}}</td>
 				<td>{{$overall_total_resigned}}</td>
+				@endif
 				<td>{{$overall_total_resigned}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Unpaid</td>
+				@if($data['variation']==1)
 				<td>{{$overall_total_fifth_unpaid}}</td>
 				<td>{{$overall_total_fourth_unpaid}}</td>
 				<td>{{$overall_total_third_unpaid}}</td>
 				<td>{{$overall_total_second_unpaid}}</td>
 				<td>{{$overall_total_last_unpaid}}</td>
+				@endif
 				<td>{{$overall_total_this_unpaid}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">No Difference</td>
+				@if($data['variation']==1)
 				<td>{{$overall_no_diff}}</td>
 				<td>{{$overall_no_diff}}</td>
 				<td>{{$overall_no_diff}}</td>
 				<td>{{$overall_no_diff}}</td>
 				<td>{{$overall_no_diff}}</td>
+				@endif
 				<td>{{$overall_no_diff}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Decrement</td>
+				@if($data['variation']==1)
 				<td>{{$overall_total_fifth_dec}}</td>
 				<td>{{$overall_total_fouth_dec}}</td>
 				<td>{{$overall_total_third_dec}}</td>
 				<td>{{$overall_total_second_dec}}</td>
 				<td>{{$overall_total_last_dec}}</td>
+				@endif
 				<td>{{$overall_total_this_dec}}</td>
 			</tr>
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">Increment</td>
+				@if($data['variation']==1)
 				<td>{{$overall_total_fifth_inc}}</td>
 				<td>{{$overall_total_fouth_inc}}</td>
 				<td>{{$overall_total_third_inc}}</td>
 				<td>{{$overall_total_second_inc}}</td>
 				<td>{{$overall_total_last_inc}}</td>
+				@endif
 				<td>{{$overall_total_this_inc}}</td>
 			</tr>
 		</tbody>

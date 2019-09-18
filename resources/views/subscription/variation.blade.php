@@ -142,7 +142,7 @@
 												</p>
 												<p style="padding-top:10px;">
 													<label>
-														<input name="6month-variation" type="checkbox" value="1" {{ $data['DisplaySubscription']==true ? 'checked' : ''}} />
+														<input name="sixmonth-variation" type="checkbox" value="1" {{ $data['sixmonthvariation']==true ? 'checked' : ''}} />
 														<span>{{__('Last 6 Months Variation') }} </span>
 													</label>
 												</p>
@@ -176,7 +176,7 @@
 					<div class="card-content">
 						<h4 class="card-title">Subscription variation
 						<div class="right">
-							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1') }}" >{{__('Print')}}</a>
+							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['sixmonthvariation']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>

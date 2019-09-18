@@ -1250,6 +1250,7 @@ class SubscriptionController extends CommonController
 		
 		$data['groupby'] = 1;
 		$data['DisplaySubscription'] = false;
+		$data['sixmonthvariation'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
         //                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
@@ -1281,6 +1282,7 @@ class SubscriptionController extends CommonController
 		$entry_date = $request->input('entry_date');
 		$groupby = $request->input('groupby');
 		$display_subs = $request->input('display_subs');
+		$sixmonthvariation = $request->input('sixmonth-variation');
 		$fm_date = explode("/",$entry_date);
         $fm_date[1].'-'.$fm_date[0].'-'.'01';
         $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
@@ -1290,6 +1292,7 @@ class SubscriptionController extends CommonController
 		
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
+		$data['sixmonthvariation'] = $sixmonthvariation;
 		if($groupby==1){
 			// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
             //                     ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
@@ -1356,6 +1359,7 @@ class SubscriptionController extends CommonController
 		$datestring = $request->input('date');
 		$groupby = $request->input('groupby');
 		$display_subs = $request->input('display_subs');
+		$variation = $request->input('variation');
 		//$datestring = strtotime('2019-04-01');
 		//return date('Y-m-01',strtotime($datestring));
 		$data['month_year'] = date('M/Y',$datestring);
@@ -1363,6 +1367,7 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
 		$data['print'] = $request->input('print');
+		$data['variation'] = $request->input('variation');
 		if($groupby==1){
 			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 			$data['company_view']=[];

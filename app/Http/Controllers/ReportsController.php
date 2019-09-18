@@ -1272,7 +1272,7 @@ class ReportsController extends Controller
 					->leftjoin('company_branch as c','c.id','=','m.branch_id')
 					->leftjoin('company as com','com.id','=','sc.CompanyCode')
 					->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
-					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $last_month_no.'-'.$last_month_year)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
 					->where(function ($query) {
 						$query->where('mm.StatusId', '=', 1)
 							  ->orWhere('mm.StatusId', '=', 2);

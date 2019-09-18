@@ -134,7 +134,7 @@ class CacheMonthEnd
 					->leftjoin('company_branch as c','c.id','=','m.branch_id')
 					->leftjoin('company as com','com.id','=','sc.CompanyCode')
 					->where('ms.Date', '=', $datestring)
-					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $last_month_no.'-'.$last_month_year)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
 					->where(function ($query) {
 						$query->where('mm.StatusId', '=', 1)
 							  ->orWhere('mm.StatusId', '=', 2);
@@ -182,7 +182,7 @@ class CacheMonthEnd
 					->leftjoin('company_branch as c','c.id','=','m.branch_id')
 					->leftjoin('company as com','com.id','=','sc.CompanyCode')
 					->where('ms.Date', '=', $datestring)
-					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $last_month_no.'-'.$last_month_year)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '!=', $monthno.'-'.$yearno)
 					->where(function ($query) {
 						$query->where('mm.StatusId', '=', 1)
 							  ->orWhere('mm.StatusId', '=', 2);
@@ -241,7 +241,7 @@ class CacheMonthEnd
 					->leftjoin('company_branch as c','c.id','=','m.branch_id')
 					->leftjoin('company as com','com.id','=','sc.CompanyCode')
 					->where('ms.Date', '=', $datestring)
-					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $last_month_no.'-'.$last_month_year)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
 					->where(function ($query) {
 						$query->where('mm.StatusId', '=', 1)
 							  ->orWhere('mm.StatusId', '=', 2);
