@@ -401,10 +401,10 @@ class SubscriptionController extends CommonController
 					$company_code = CacheMembers::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
 					
                     //$company_code = CommonHelper::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
-                    $member_company_id = CacheMembers::getcompanyidbyBranchid($memberdata[0]->branch_id);
-                    //$member_company_id = CommonHelper::getcompanyidbyBranchid($memberdata[0]->branch_id);
+                    //$member_company_id = CacheMembers::getcompanyidbyBranchid($memberdata[0]->branch_id);
+                    $branch_data = CacheMembers::getbranchbyBranchid($memberdata[0]->branch_id);
 					
-					$match_company_status = $this->recursiveCompany($company_code,$member_company_id);
+					$match_company_status = $this->recursiveCompany($company_code,$branch_data->company_id);
                 
                     if(!$match_company_status){
 						$subMemberMatch_one = MonthlySubMemberMatch::where('match_id','=',4)->where('mon_sub_member_id','=',$subscription->id)->first();
@@ -538,9 +538,9 @@ class SubscriptionController extends CommonController
 												'TOTALSUBCRP_AMOUNT' => $total_subs,
 												'TOTALBF_AMOUNT' => $total_count*$this->bf_amount,
 												'TOTAL_MONTHS' => $diff_in_months,
-												'BANK_CODE' => $member_company_id,
+												'BANK_CODE' => $branch_data->company_id,
+												'NUBE_BRANCH_CODE' => $branch_data->union_branch_id,
 												'BRANCH_CODE' => $memberdata[0]->branch_id,
-												'NUBE_BRANCH_CODE' => $memberdata[0]->branch_id,
 												'MEMBERTYPE_CODE' => $memberdata[0]->designation_id,
 												//'ENTRYMODE' => 0,
 												//'DEFAULTINGMONTHS' => 0,
