@@ -1264,6 +1264,7 @@ class SubscriptionController extends CommonController
 		// 						->groupBY('cb.union_branch_id')
 		// 						->get();
 		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+		
 		$data['company_view']=[];
 		$data['branch_view']=[];
 	/* 	$data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
@@ -1305,9 +1306,31 @@ class SubscriptionController extends CommonController
 			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 			$data['company_view']=[];
 			$data['branch_view']=[];
+			$data['head_company_view']=[];
 		}
 		elseif($groupby==2){
-			$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+			$head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
+			->where(function ($query) {
+				$query->where('head_of_company', '=', '')
+					->orWhere('head_of_company', '=', 0)
+						->orWhereNull('head_of_company');
+			})->get();
+				//dd($head_company_view);
+			foreach($head_company_view as $mkey => $company){
+				$companyid = $company->id;
+				//$company_str_List ="'".$companyid."'";
+				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->pluck('id')->toArray();
+				$res_company = array_merge($company_ids, [$companyid]); 
+
+
+				foreach($company as $newkey => $newvalue){
+					$data['head_company_view'][$mkey][$newkey] = $newvalue;
+				}
+				$data['head_company_view'][$mkey]['company_list'] = $res_company;
+				//$company_str_List ='';
+
+			}
+			//$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
 			$data['union_branch_view']=[];
 			$data['branch_view']=[];
 		}
@@ -1315,6 +1338,7 @@ class SubscriptionController extends CommonController
 			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
 			$data['union_branch_view']=[];
 			$data['company_view']=[];
+			$data['head_company_view']=[];
 		}
 		
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();

@@ -255,31 +255,35 @@
 									$totalno13=0;
 									$totalno14=0;
 									$totalno15=0;
+									//dd($data['head_company_view']);
 								@endphp
-								@foreach($data['company_view'] as $company)
-										@php
-											$current_count = CommonHelper::getMonthEndPaidCount($company->company_id,$data['month_year_full'],2);
-											//$current_count = CommonHelper::getMonthlyPaidCount($company->company_id,$data['month_year_full']);
-											$last_month_count = CommonHelper::getMonthlyPaidCount($company->company_id,$data['last_month_year']);
-											$last_paid_count = CommonHelper::getLastMonthlyPaidCount($company->company_id,$data['month_year_full']);
-											$current_unpaid_count = CommonHelper::getcurrentMonthlyPaidCount($company->company_id,$data['month_year_full']);
-										@endphp
-										<tr class="monthly-sub-status">
-											<td style="width:50%">{{ $company->company_name }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
-											<td style="width:10%">{{ $last_month_count }}</td>
-											<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
-											<td style="width:10%">{{ $current_unpaid_count }}</td>
-											<td style="width:10%">{{ $last_paid_count }}</td>
-										</tr> 
-										@php
-											$totalno11 += $current_count;
-											$totalno12 += $last_month_count;
-											$totalno13 += $current_count-$last_month_count;
-											$totalno14 += $current_unpaid_count;
-											$totalno15 += $last_paid_count;
-										@endphp
-										
+								@foreach($data['head_company_view'] as $company)
+									@php
+									
+										$company_data = CommonHelper::getMontendcompanyVariation($company['company_list'],$data['month_year_full']);
+										$last_company_data = CommonHelper::getMontendcompanyVariation($company['company_list'],$data['last_month_year']);
+										$current_count = $company_data->total_members;
+										$last_month_count = $last_company_data->total_members;
+										$last_paid_count = CommonHelper::getGroupLastMonthlyPaidCount($company['company_list'],$data['month_year_full']);
+										$current_unpaid_count = CommonHelper::getGroupcurrentMonthlyPaidCount($company['company_list'],$data['month_year_full']);
+									@endphp
+									@if($company_data->total_members>0)
+									<tr class="monthly-sub-status">
+										<td style="width:50%">{{ $company['company_name'] }}</td>
+										<td style="width:10%">{{ $current_count }}</td>
+										<td style="width:10%">{{ $last_month_count }}</td>
+										<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
+										<td style="width:10%">{{ $current_unpaid_count }}</td>
+										<td style="width:10%">{{ $last_paid_count }}</td>
+									</tr> 
+									@php
+										$totalno11 += $current_count;
+										$totalno12 += $last_month_count;
+										$totalno13 += $current_count-$last_month_count;
+										$totalno14 += $current_unpaid_count;
+										$totalno15 += $last_paid_count;
+									@endphp
+									@endif	
 								@endforeach
 								<tr class="bold table-footer">
 									<td style="width:50%">Total</td>

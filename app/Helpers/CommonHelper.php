@@ -1788,4 +1788,69 @@ class CommonHelper
 		return $count;
 	}
 	
+	public static function getMontendcompanyVariation($companies,$date){
+		$members = CacheMonthEnd::getMontendcompanyGroupVariation($companies,$date);
+		
+		return $members;
+	}
+	
+	public static function getGroupLastMonthlyPaidCount($companies,$date){
+		$members = CacheMonthEnd::getMontendcompanymembers($companies,$date);
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		$last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+		
+		$count = 0;						
+		foreach($members as $member){
+			$memebr_id = $member->memberid;
+			$old_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$memebr_id)
+							->where('ms.Date','=',$last_month)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			if($old_subscription_count==0){
+				$count++;
+			}
+		}	
+		return $count;
+		
+		return $members;
+	}
+	
+	public static function getGroupcurrentMonthlyPaidCount($companies, $date=false){
+		if($date==""){
+			$date = date('Y-m-01');
+		}
+		$month = date("m", strtotime($date));
+		$year = date("Y", strtotime($date));
+		//return $month;
+		$last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+		$last_month_no = date("m", strtotime($last_month));
+		$last_year_no = date("Y", strtotime($last_month));
+		
+		$members = CacheMonthEnd::getMontendcompanymembers($companies,$last_month);
+		
+		$count = 0;						
+		foreach($members as $member){
+			$memebr_id = $member->memberid;
+			$current_subscription_count = DB::table("mon_sub_member as mm")
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.MemberCode','=',$memebr_id)
+							->where(DB::raw('month(ms.Date)'),'=',$month)
+							->where(DB::raw('year(ms.Date)'),'=',$year)
+                            ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                            ->count();
+			if($current_subscription_count==0){
+				$count++;
+			}
+		}	
+		return $count;
+	}
+	
 }
