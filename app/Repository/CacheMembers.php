@@ -44,6 +44,15 @@ class CacheMembers
 		{
 		    return CompanyBranch::where('id',$branchid)->pluck('company_id')->first();
 		}); 
+	}
+	
+	public function getbranchbyBranchid($branchid){
+		$key = "getbranchbyBranchid.{$branchid}";
+		$cacheKey = $this->getCacheKey($key);
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($cacheKey,$branchid)
+		{
+		    return CompanyBranch::where('id',$branchid)->first();
+		}); 
     }
 	
 	public function getHeadcompanyidbyid($companyid){
