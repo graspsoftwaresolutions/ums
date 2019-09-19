@@ -330,7 +330,7 @@ class AjaxController extends CommonController
                     ->orWhere('email', 'LIKE',"%{$search}%")
                     ->count();
         }
-        $data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
+        $data = $this->CommonAjaxReturnold($users, 0, 'master.destroy', 0);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  

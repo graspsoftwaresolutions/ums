@@ -461,7 +461,7 @@
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6 ">
-                                                        <label>Company Name*</label>
+                                                        <label>Bank Name*</label>
                                                         </br>
                                                         <p style="margin-top:10px;font-weight:bold;">
                                                             @php

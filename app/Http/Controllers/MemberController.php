@@ -561,7 +561,8 @@ class MemberController extends CommonController
     }
 	
 	public function editMemberProfile(){
- 
+		$irc_status = 0;
+		$resign_status = 0;
 		$auth_user = Auth::user();
 		$auth_user_id = Auth::user()->id;
 		$check_member = $auth_user->hasRole('member');
@@ -616,6 +617,7 @@ class MemberController extends CommonController
                 
                     $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
 					$data['irc_status'] = 0;
+					$data['resign_status'] = $resign_status;
                     
                     $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$member_id)->get();
                

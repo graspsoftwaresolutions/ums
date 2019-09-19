@@ -28,7 +28,7 @@ class IrcController extends CommonController
 	public function ircIndex()
     {
 		$data['reason_view'] = Reason::where('status','=','1')->get();
-		return view('IRC.irc')->with('data',$data);
+		return view('irc.irc')->with('data',$data);
 	}
 	
 	public function ListIrcAccount() {
@@ -423,7 +423,6 @@ class IrcController extends CommonController
 				$data[] = $nestedData;
 			}
         }
-        //$data = $this->CommonAjaxReturn($users, 0, 'master.destroy', 0);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -451,7 +450,7 @@ class IrcController extends CommonController
 		$data['reason_view'] = Reason::where('status','=','1')->get();
 
 
-		return view('IRC.edit_irc')->with('data',$data);
+		return view('irc.edit_irc')->with('data',$data);
 	}
 
 	public function saveIrc(Request $request)
