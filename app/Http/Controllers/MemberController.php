@@ -242,6 +242,7 @@ class MemberController extends CommonController
 			$member['mobile'] = $request->input('mobile');
 			$member['email'] = $request->input('email');
 			$member['designation_id'] = $request->input('designation');
+			$member['old_member_number'] = $request->input('old_member_id');
 			//$member['old_member_number'] = $request->input('old_mumber_number');
 			$member['salary'] = $request->input('salary');
 			$member['postal_code'] = $request->input('postal_code');

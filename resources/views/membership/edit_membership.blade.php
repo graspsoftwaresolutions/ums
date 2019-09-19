@@ -322,6 +322,13 @@
                                                         <div class="errorTxt26"></div>
                                                     </div>
                                                     <div class="col s12 m6">
+                                                        @php
+                                                            $old_membercode = '';
+                                                            if($values->old_member_number!="" && $values->old_member_number!=Null){
+                                                                $old_membercode = CommonHelper::getmembercode_byid($values->old_member_number);
+                                                            }
+                                                            
+                                                        @endphp
                                                         @if($user_role!='member')
                                                         <div class="input-field col s12 m6">
                                                             <p>
@@ -331,15 +338,16 @@
                                                                 </label>
                                                             </p>
                                                         </div>
-                                                        <div class="col s12 m6 " style="display:@php echo $values->old_member_number!=" " ? 'block' : 'none'; @endphp" id="member_old_div">
+                                                        <div class="col s12 m6 " style="display:@php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'block' : 'none'; @endphp" id="member_old_div">
                                                             <span> 
-														<input type="text" value="{{$values->old_member_number}}" id="old_mumber_number" name="old_mumber_number">
+														<input type="text" value="{{$old_membercode}}" id="old_mumber_number" name="old_mumber_number">
 														</span>
                                                         </div>
                                                         @else
                                                         <input type="checkbox" id="rejoined" class="hide" @php echo $values->old_member_number!="" ? 'checked' : ''; @endphp/>
                                                         </br>
-                                                        @php echo $values->old_member_number!="" ? 'Old Number: '.$values->old_member_number : ''; @endphp @endif
+                                                        @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'Old Number: '.$old_membercode : ''; @endphp @endif
+                                                        <input type="text" name="old_member_id" value="{{$values->old_member_number}}" id="old_member_id" class=" hide">
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6">
@@ -1784,6 +1792,24 @@
 		}
 		
 	}
+    $("#old_mumber_number").devbridgeAutocomplete({
+        //lookup: countries,
+        serviceUrl: "{{ URL::to('/get-oldmember-list') }}?serachkey="+ $("#old_mumber_number").val(),
+        type:'GET',
+        //callback just to show it's working
+        onSelect: function (suggestion) {
+             $("#old_mumber_number").val(suggestion.number);
+             $("#old_member_id").val(suggestion.auto_id);
+            
+        },
+        showNoSuggestionNotice: true,
+        noSuggestionNotice: 'Sorry, no matching results',
+        onSearchComplete: function (query, suggestions) {
+            if(!suggestions.length){
+                //$("#old_mumber_number").val('');
+            }
+        }
+    });
 </script>
 @include('membership.member_common_script') 
 @endsection
