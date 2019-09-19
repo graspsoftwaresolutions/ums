@@ -326,7 +326,7 @@
                                                         <div class="input-field col s12 m6">
                                                             <p>
                                                                 <label>
-                                                                    <input type="checkbox" id="rejoined" @php echo $values->old_member_number!="" ? 'checked' : ''; @endphp/>
+                                                                    <input type="checkbox" id="rejoined" @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'checked' : ''; @endphp/>
                                                                     <span>Rejoined</span>
                                                                 </label>
                                                             </p>
