@@ -23,6 +23,12 @@ use App\Mail\SendMemberMailable;
 use URL;
 use Auth;
 use Artisan;
+use Facades\App\Repository\CacheMembers;
+use App\Model\MonthlySubscription;
+use App\Model\MonthlySubscriptionCompany;
+use App\Model\MonthlySubscriptionMember;
+use App\Model\MonSubCompanyAttach;
+use App\Model\MonthlySubMemberMatch;
 
 
 class MemberController extends CommonController
@@ -38,6 +44,7 @@ class MemberController extends CommonController
         //$this->middleware('auth');
 		$this->Membership = new Membership;
         $this->MemberGuardian = new MemberGuardian;  
+        $this->membermonthendstatus_table = "membermonthendstatus";
     }
 
     /**
@@ -461,8 +468,15 @@ class MemberController extends CommonController
 				}
 			}
 			Artisan::call('cache:clear');
+			$payment_data = [
+				'member_id' => $member_id,
+				'due_amount' => 0,
+				'created_by' => Auth::user()->id,
+				'created_at' => date('Y-m-d'),
+			];
 			if($user_role == 'union'){
 				$memberdata = Membership::find($member_id);
+				$branch_data = CacheMembers::getbranchbyBranchid($memberdata->branch_id);
 				$feedata = DB::table('member_fee as mf')
 							->select('f.fee_shortcode','mf.fee_amount as fee_amount')
 							->leftjoin('fee as f','f.id','=','mf.fee_id')
@@ -475,10 +489,155 @@ class MemberController extends CommonController
 				if(count($feedata)==2 && $memberdata->is_request_approved==1){
 					if($memberdata->salary>0){
 						$subsamount = CommonHelper::getsubscription_bysalary($memberdata->salary);
+						$bf_amt = 0;
+						$ins_amt = 0;
+						foreach ($feedata as $key => $value) {
+							if($value->fee_shortcode=='BF'){
+								$bf_amt = $value->fee_amount;
+							}
+							elseif($value->fee_shortcode=='INS'){
+								$ins_amt = $value->fee_amount;
+							}
+						}
+						$doj = $memberdata->doj;
+						$subs_month = date('Y-m-01',strtotime($doj));
+						$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_id)->count();
+						
+						$monthend_data = [
+												'StatusMonth' => $subs_month, 
+												'MEMBER_CODE' => $member_id,
+												'SUBSCRIPTION_AMOUNT' => $subsamount,
+												'BF_AMOUNT' => $bf_amt,
+												'LASTPAYMENTDATE' => $subs_month,
+												'TOTALSUBCRP_AMOUNT' => $subsamount,
+												'TOTALBF_AMOUNT' => $bf_amt,
+												'TOTAL_MONTHS' => 1,
+												'BANK_CODE' => $branch_data->company_id,
+												'NUBE_BRANCH_CODE' => $branch_data->union_branch_id,
+												'BRANCH_CODE' => $memberdata->branch_id,
+												'MEMBERTYPE_CODE' => $memberdata->designation_id,
+												//'ENTRYMODE' => 0,
+												//'DEFAULTINGMONTHS' => 0,
+												'TOTALMONTHSDUE' => 0,
+												'TOTALMONTHSPAID' => 1,
+												'SUBSCRIPTIONDUE' => 0,
+												'BFDUE' => 0,
+												'ACCSUBSCRIPTION' => $subsamount,
+												'ACCBF' => $bf_amt,
+												'ACCBENEFIT' => $bf_amt,
+												//'CURRENT_YDTBF' => 0,
+												//'CURRENT_YDTSUBSCRIPTION' => 0,
+												'STATUS_CODE' => $memberdata->status_id,
+												'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+												'ENTRY_DATE' => date('Y-m-d'),
+												'ENTRY_TIME' => date('h:i:s'),
+												'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+												'INSURANCE_AMOUNT' => $ins_amt,
+												'TOTALINSURANCE_AMOUNT' => $ins_amt,
+												'TOTALMONTHSCONTRIBUTION' => 1,
+												'INSURANCEDUE' => 0,
+												'ACCINSURANCE' => $ins_amt,
+												//'CURRENT_YDTINSURANCE' => 0,
+											];
+							
+						if($mont_count>0){
+							DB::table($this->membermonthendstatus_table)->where('StatusMonth', $subs_month)->where('MEMBER_CODE', $member_id)->update($monthend_data);
+						}else{
+							DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+						}
+
+						$subscription_qry = MonthlySubscription::where('Date','=',$subs_month);
+						$subscription_count = $subscription_qry->count();
+						if($subscription_count>0){
+							$subscription_month = $subscription_qry->get();
+							$month_auto_id = $subscription_month[0]->id;
+						}else{
+							$subscription_month = new MonthlySubscription();
+							$subscription_month->Date = $subs_month;
+							$subscription_month->created_by = Auth::user()->id;
+							$subscription_month->created_on = date('Y-m-d');
+							$subscription_month->save();
+							$month_auto_id =  $subscription_month->id;
+						}
+						
+						$subscription_company_qry = MonthlySubscriptionCompany::where('MonthlySubscriptionId','=',$month_auto_id)->where('CompanyCode',$branch_data->company_id);
+						$subscription_company_count = $subscription_company_qry->count();
+						if($subscription_company_count>0){
+							$subscription_company =$subscription_company_qry->get();
+							$company_auto_id = $subscription_company[0]->id;
+						}else{
+							$subscription_company = new MonthlySubscriptionCompany();
+							$subscription_company->MonthlySubscriptionId = $month_auto_id;
+							$subscription_company->CompanyCode = $branch_data->company_id;
+							$subscription_company->created_by = Auth::user()->id;
+							$subscription_company->created_on = date('Y-m-d');
+							$subscription_company->save();
+					
+							$company_auto_id =  $subscription_company->id;
+						}
+
+						$nric_no = $memberdata->new_ic;
+						if($nric_no==''){
+							$nric_no = $memberdata->old_ic;
+						}
+						if($nric_no==''){
+							$nric_no = $memberdata->employee_id;
+						}
+						if($nric_no!='' && $nric_no!=Null){
+							$subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)
+                                                ->where('MemberCode',$member_id);
+                  			$subscription_member_count = $subscription_member_qry->count();
+
+                  			if($subscription_member_count>0){
+		                        $subscription_member_res = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)
+		                        ->where('MemberCode',$member_id)->get();
+		                        $company_member_id = $subscription_member_res[0]->id;
+		                        $subscription_member = MonthlySubscriptionMember::find($company_member_id);
+		                    }else{
+		                        $subscription_member = new MonthlySubscriptionMember();
+		                        $subscription_member->MonthlySubscriptionCompanyId = $company_auto_id;
+		                    }
+		                    $subscription_member->NRIC = $nric_no;
+		                    $subscription_member->Name = $memberdata->name;
+		                    $subscription_member->Amount = $subsamount+$bf_amt+$ins_amt;
+		                    $subscription_member->StatusId = $memberdata->status_id;
+		                    $subscription_member->update_status = 1;
+		                    $subscription_member->MemberCode = $member_id;
+		                    $subscription_member->created_by = Auth::user()->id;
+							$subscription_member->created_on = date('Y-m-d');
+							$subscription_member->approval_status =1;
+							$subscription_member->save();
+							
+							$subMemberMatch = new MonthlySubMemberMatch();
+							$subMemberMatch->mon_sub_member_id = $subscription_member->id;
+							$subMemberMatch->created_by = Auth::user()->id;
+							$subMemberMatch->created_on = date('Y-m-d');
+							$subMemberMatch->match_id = 1;
+							$subMemberMatch->approval_status =1;
+							$subMemberMatch->save();
+						}
 
 					}
-					
+					$payment_data = [
+						'last_paid_date' => $subs_month, 
+						'member_id' => $member_id,
+						'due_amount' => 0,
+						'created_by' => Auth::user()->id,
+						'created_at' => date('Y-m-d'),
+					];
+				}else{
+					$payment_data = [
+						'member_id' => $member_id,
+						'due_amount' => 0,
+						'created_by' => Auth::user()->id,
+						'created_at' => date('Y-m-d'),
+					];
 				}
+			}
+			$member_pay_count = DB::table('member_payments')->where('member_id', '=', $member_id)->count();
+			
+			if($member_pay_count==0){
+				DB::table('member_payments')->insert($payment_data);
 			}
 			if($auto_id==''){
 				$mail_data = array(
@@ -699,5 +858,9 @@ class MemberController extends CommonController
 			// $queries = DB::getQueryLog();
 			// dd($queries);
 			return response()->json($res);
+	}
+
+	public function AddPaymentEntry(){
+		
 	}
 }

@@ -1579,7 +1579,7 @@
                 required: "Please Enter New Ic Number",
             },
             salary: {
-                required: "Please Enter salary Name",
+                required: "Please Enter salary",
 				digits: "{{__("Please Enter numbers only") }}",
             },
             levy_amount: {

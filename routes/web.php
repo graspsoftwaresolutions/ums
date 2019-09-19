@@ -392,3 +392,5 @@ Route::get('irc','IRCController@index');
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
 });
+
+Route::get('addpayments','MemberController@AddPaymentEntry');

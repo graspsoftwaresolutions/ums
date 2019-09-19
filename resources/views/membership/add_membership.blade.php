@@ -762,7 +762,7 @@
 <script>
    
 	var form = $("#wizard2").show();
- 	
+
 	form.steps({
 	    headerTag: "h3",
 	    bodyTag: "fieldset",
@@ -983,7 +983,7 @@
 				remote: '{{__("IC Already Exists") }}',
             },
             salary: {
-				required:"Please Enter salary Name",
+				required:"Please Enter salary",
 				digits: "{{__("Please Enter numbers only") }}",
 			},
 			levy_amount: {
