@@ -76,7 +76,9 @@ var loader = {
 <!-- BEGIN PAGE LEVEL JS-->
 <!--script src="{{ asset('public/assets/js/scripts/intro.js') }}" type="text/javascript"></script-->
 <!-- END PAGE LEVEL JS-->
-@php $logo = CommonHelper::getLogo(); @endphp
+@php $logo = CommonHelper::getLogo(); 
+  $logourl = asset('public/assets/images/logo/'.$logo);
+@endphp
 <script>
 $(window).on("resize", function() {
    resizetable();
@@ -85,24 +87,24 @@ $(window).on("resize", function() {
 function resizetable() {
    if($(window).width() < 976){
       if($('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo').length > 0){
-         $('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo img').attr('src',{{ asset('public/assets/images/logo/@php echo $logo @endphp') }});
+         $('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo img').attr('src','{{ $logourl }}');
       }
       if($('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo').length > 0){
-         $('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo img').attr('src',{{ asset('public/assets/images/logo/@php echo $logo @endphp') }});
+         $('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo img').attr('src','{{ $logourl }}');
       }
       if($('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo').length > 0){
-         $('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo img').attr('src',{{ asset('public/assets/images/logo/@php echo $logo @endphp') }});
+         $('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo img').attr('src','{{ $logourl }}');
       }
    }
    else{
       if($('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo').length > 0){
-         $('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo img').attr('src',{{ asset('public/assets/images/logo/@php echo $logo @endphp') }});
+         $('.vertical-layout.vertical-gradient-menu .sidenav-dark .brand-logo img').attr('src','{{ $logourl }}');
       }
       if($('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo').length > 0){
-         $('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo img').attr('src',{{ asset('public/assets/images/logo/@php echo $logo @endphp') }});
+         $('.vertical-layout.vertical-dark-menu .sidenav-dark .brand-logo img').attr('src','{{ $logourl }}');
       }
       if($('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo').length > 0){
-         $('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo img').attr('src',{{ asset('public/assets/images/logo/@php echo $logo @endphp') }});
+         $('.vertical-layout.vertical-modern-menu .sidenav-light .brand-logo img').attr('src','{{ $logourl }}');
       }
    }
 }

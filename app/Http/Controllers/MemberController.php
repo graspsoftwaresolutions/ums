@@ -260,9 +260,12 @@ class MemberController extends CommonController
 			$member['employee_id'] =  $request->input('employee_id');
 			$member['status'] = 1;
 			
-			$fm_date = explode("/",$request->input('dob'));         							
+			
+			$fm_date = explode("/",$request->input('dob')); 
+			//return $request->input('dob');     						
 			$dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
 			$dob = date('Y-m-d', strtotime($dob1));
+			//return $dob;        	
 			$member['dob'] = $dob;
 
 			$fmm_date = explode("/",$request->input('doe'));           							
@@ -459,15 +462,20 @@ class MemberController extends CommonController
 			Artisan::call('cache:clear');
 			if($user_role == 'union'){
 				$memberdata = Membership::find($member_id);
-				$feecount = DB::table('member_fee as mf')
+				$feedata = DB::table('member_fee as mf')
+							->select('f.fee_shortcode','mf.fee_amount as fee_amount')
 							->leftjoin('fee as f','f.id','=','mf.fee_id')
 							->where('mf.member_id','=',$member_id)
 							->where(function($query) use ($member_id){
-									$query->orWhere('f.fee_shortcode','=','HQ')
-										->orWhere('f.fee_shortcode','=','ENT');
+									$query->orWhere('f.fee_shortcode','=','INS')
+										->orWhere('f.fee_shortcode','=','BF');
 								})       
-							->count();
-				if($feecount==2){
+							->get();
+				if(count($feedata)==2 && $memberdata->is_request_approved==1){
+					if($memberdata->salary>0){
+						$subsamount = CommonHelper::getsubscription_bysalary($memberdata->salary);
+
+					}
 					
 				}
 			}

@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-app.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-theme.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <link class="rtl_switch_page_css" href="{{ asset('public/css/steps.css') }}" rel="stylesheet" type="text/css">
 @endsection
 @section('main-content')
@@ -169,7 +170,7 @@
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<input type="text" class="datepicker" id="doe" value="{{ old('doe') }}" name="doe">
+																	<input type="text" class="datepicker-normal" id="doe" value="{{ old('doe') }}" name="doe">
 																	<label for="doe" class="force-active">{{__('Date of Emp') }}*</label>
 																	<div class="errorTxt7"></div>
 																</div>
@@ -755,12 +756,13 @@
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/js/jquery.steps.js') }}"></script>
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 @endsection
 @section('footerSecondSection')
 <script>
    
 	var form = $("#wizard2").show();
- 
+ 	
 	form.steps({
 	    headerTag: "h3",
 	    bodyTag: "fieldset",
@@ -1078,7 +1080,14 @@
 	$(document).on('submit','form#fee_new_form',function(){
 		$("#new_fee_id").val("");
 	});
-	
+	$('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        autoHide: true,
+    });
+    $('.datepicker-normal').datepicker({
+        format: 'dd/mm/yyyy',
+        autoHide: true,
+    });
 </script>
 @include('membership.member_common_script')
 @endsection

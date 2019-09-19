@@ -18,6 +18,7 @@ use App\Model\Status;
 use App\Model\MonthlySubscriptionCompany;
 use App\Model\Irc;
 use App\Model\Resignation;
+use App\Model\Fee;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -1851,6 +1852,17 @@ class CommonHelper
 			}
 		}	
 		return $count;
+	}
+
+	public static function getsubscription_bysalary($salary){
+		$netsalary = (float)$salary;
+		$bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
+        $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        $bf_amount = $bf_amount=='' ? 3 : $bf_amount;
+		$ins_amount = $ins_amount=='' ? 7 : $ins_amount;
+		$one_percent = ($netsalary*1)/100;
+		$subs_amt = $one_percent-($bf_amount+$ins_amount);
+		return $subs_amt;
 	}
 	
 }

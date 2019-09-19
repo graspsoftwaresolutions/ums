@@ -25,6 +25,7 @@
 </style>
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-app.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-theme.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <link class="rtl_switch_page_css" href="{{ asset('public/css/steps.css') }}" rel="stylesheet" type="text/css"> @endsection @section('main-content')
 <div id="">
     <div class="row">
@@ -40,6 +41,7 @@
                                     <h4 class="card-title">Edit Membership</h4> 
 									@include('includes.messages') 
 									@php 
+
 										$get_roles = Auth::user()->roles; 
 										$user_role = $get_roles[0]->slug; 
 										if(isset($data['member_view'])){
@@ -244,7 +246,7 @@
                                                             </div>
                                                             <div class="col s12 m2 input-field inline">
                                                                 <!--<label>Date</label> -->
-                                                                <input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=" "  ? date('d/M/Y',strtotime($irc_data->branchcommitteedate)) : '' }}">
+                                                                <input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=" "  ? date('d/m/Y',strtotime($irc_data->branchcommitteedate)) : '' }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -315,7 +317,7 @@
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6">
-                                                        <input type="text" value="{{ date('d/M/Y',strtotime($values->doe)) }}" class="datepicker" id="doe" name="doe">
+                                                        <input type="text" value="{{ date('d/m/Y',strtotime($values->doe)) }}" class="datepicker" id="doe" name="doe">
                                                         <label for="doe" class="force-active">Date of Emp</label>
                                                         <div class="errorTxt26"></div>
                                                     </div>
@@ -427,7 +429,7 @@
                                                         <div class="row">
                                                             <div class="input-field col s12 m8">
                                                                 <label for="dob" class="force-active">Date of Birth *</label>
-                                                                <input id="dob" name="dob" value="{{ date('d/M/Y',strtotime($values->dob)) }}" data-reflectage="member_age" class="datepicker" type="text">
+                                                                <input id="dob" name="dob" value="{{ date('d/m/Y',strtotime($values->dob)) }}" data-reflectage="member_age" class="datepicker-normal" type="text">
                                                             </div>
                                                             <div class="input-field col s12 m4">
                                                                 <label for="member_age" class="force-active">Age</label>
@@ -437,7 +439,7 @@
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6">
-                                                        <input type="text" class="datepicker" id="doj" value="{{ date('d/M/Y',strtotime($values->doj)) }}" name="doj">
+                                                        <input type="text" class="datepicker" id="doj" value="{{ date('d/m/Y',strtotime($values->doj)) }}" name="doj">
                                                         <label for="doj" class="force-active">Date of Joining</label>
                                                         <div class="errorTxt"></div>
                                                     </div>
@@ -458,19 +460,30 @@
                                                         <div class="errorTxt13"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="col s12 m6 hide">
+                                                    <div class="col s12 m6 ">
                                                         <label>Company Name*</label>
-                                                        <select name="company_id" id="company" class="error browser-default selectpicker">
+                                                        </br>
+                                                        <p style="margin-top:10px;font-weight:bold;">
+                                                            @php
+                                                                $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
+                                                            @endphp
+                                                            {{ CommonHelper::getCompanyName($m_companyid) }}
+                                                        </p>
+                                                       
+                                                        <div class="input-field hide">
+                                                             <select name="company_id" id="company" class="error browser-default selectpicker hide">
                                                             <option value="">Select</option>
                                                             @foreach($data['company_view'] as $value)
                                                             <option @php //if($value->id == $values->company_id) { echo "selected";} @endphp value="{{$value->id}}">{{$value->company_name}}</option>
                                                             @endforeach
                                                         </select>
-                                                        <div class="input-field">
                                                             <div class="errorTxt14"></div>
                                                         </div>
                                                     </div>
-                                                    @php $auth_user = Auth::user(); $check_union = $auth_user->hasRole('union'); if($check_union){ $branch_requird = 'required'; $branch_disabled = ''; $branch_hide = ''; $branch_id = ''; }else{ $branch_requird = ''; $branch_disabled = 'disabled'; $branch_hide = 'hide'; $branch_id = $auth_user->branch_id; } $branch_hide = 'hide'; @endphp
+
+                                                    @php 
+
+                                                    $auth_user = Auth::user(); $check_union = $auth_user->hasRole('union'); if($check_union){ $branch_requird = 'required'; $branch_disabled = ''; $branch_hide = ''; $branch_id = ''; }else{ $branch_requird = ''; $branch_disabled = 'disabled'; $branch_hide = 'hide'; $branch_id = $auth_user->branch_id; } $branch_hide = 'hide'; @endphp
                                                     <div class=" col s12 m6 {{ $branch_hide }}">
                                                         <label>Branch Name*</label>
                                                         <select name="branch_id" id="branch" data-error=".errorTxt15" class="error browser-default selectpicker">
@@ -495,6 +508,7 @@
                                                         </div>
                                                     </div>
                                                     @endif
+                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6">
                                                         <label>{{__('Levy') }}</label>
                                                         <select name="levy" id="levy" class="error browser-default selectpicker">
@@ -504,11 +518,12 @@
                                                             <option value="NO" {{ $values->levy == 'NO' ? 'selected' : '' }}>No</option>
                                                         </select>
                                                     </div>
-                                                    <div class="clearfix"></div>
+                                                    
                                                     <div class="input-field col s12 m6">
                                                         <input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
                                                         <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
                                                     </div>
+                                                    <div class="clearfix"></div>
                                                     <div class="col s12 m6">
                                                         <label>{{__('TDF') }}</label>
                                                         <select name="tdf" id="tdf" class="error browser-default selectpicker">
@@ -518,11 +533,12 @@
                                                             <option value="NO" {{ $values->tdf == 'NO' ? 'selected' : '' }}>No</option>
                                                         </select>
                                                     </div>
-                                                    <div class="clearfix"></div>
+                                                   
                                                     <div class="input-field col s12 m6">
                                                         <input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
                                                         <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
                                                     </div>
+                                                     <div class="clearfix"></div>
                                                     <div class="input-field col s12 m6">
                                                         <label for="employee_id" class="force-active">Employee ID</label>
                                                         <input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
@@ -783,7 +799,11 @@
                                                         <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">filter_center_focus</i>{{__('Guardian Details') }}</div>
                                                         <div class="collapsible-body">
                                                             <div class="row">
-                                                                @php if(count($data['gardian_view'])>0) { $gardian_row = $data['gardian_view'][0]; } @endphp
+                                                                @php 
+
+                                                                if(count($data['gardian_view'])>0) { 
+                                                                 
+                                                                 $gardian_row = $data['gardian_view'][0]; } @endphp
                                                                 <div class="input-field col s12 m4">
                                                                     <label for="guardian_name" class="force-active">Guardian name* </label>
                                                                     <input id="guardian_name" name="guardian_name" value="@isset($gardian_row) @php echo $gardian_row->guardian_name; @endphp @endisset" type="text">
@@ -793,7 +813,7 @@
                                                                         <div class=" col s12 m8">
                                                                             <p>
                                                                                 <label for="gaurdian_dob" class="force-active">DOB *</label>
-                                                                                <input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="@isset($gardian_row) {{ date('d/M/Y',strtotime($gardian_row->dob)) }} @endisset" class="datepicker" type="text">
+                                                                                <input id="gaurdian_dob" name="gaurdian_dob" data-reflectage="gaurdian_age" value="@isset($gardian_row) {{ date('d/m/Y',strtotime($gardian_row->dob)) }} @endisset" class="datepicker" type="text">
                                                                             </p>
                                                                         </div>
                                                                         <div class="col s12 m4">
@@ -804,6 +824,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="col s12 m4">
                                                                     <label for="guardian_sex" class="force-active">SEX *</label>
                                                                     <select name="guardian_sex" id="guardian_sex" class="error browser-default selectpicker">
@@ -896,6 +917,7 @@
                                                                     <input id="guardian_phone" name="guardian_phone" type="text" value="@isset($gardian_row) @php echo $gardian_row->phone; @endphp @endisset">
                                                                 </div>
                                                                 <div class="clearfix"> </div>
+
                                                             </div>
                                                         </div>
                                                     </li>
@@ -939,24 +961,43 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+
+                                                                            @php
+
+                                                                                $m_salary = $values->salary;
+                                                                                $m_subscription = CommonHelper::getsubscription_bysalary( $m_salary);
+                                                                            @endphp
+
+                                                                            <tr>
+                                                                                <td>Subscription</td>
+                                                                                <td>{{$m_subscription}}</td>
+                                                                                <td></td>
+                                                                            </tr>
+
                                                                             @php {{ $sl = 0; }} @endphp @foreach($data['fee_view'] as $key=>$value)
                                                                             <tr id="nominee_{{ $sl }}">
                                                                                 <td><span id="fee_name_label_{{ $sl }}">{{ CommonHelper::get_fee_name($value->fee_id) }}</span>
                                                                                     <input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_{{ $sl }}" value="{{$value->id}}"></input>
                                                                                     <input type="text" class="hide" name="fee_name_id[]" id="fee_name_id_{{ $sl }}" value="{{$value->fee_id}}"></input>
                                                                                 </td>
+
                                                                                 <td><span id="fee_amount_label_{{ $sl }}">{{$value->fee_amount}}</span>
                                                                                     <input type="text" class="hide" name="fee_name_amount[]" id="fee_name_amount_{{ $sl }}" value="{{$value->fee_amount}}">
                                                                                 </td>
+
                                                                                 <td>
-                                                                                    <a class="btn-floating waves-effect waves-light cyan edit_fee_row " href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
+                                                                                    <a class="btn-floating waves-effect waves-light cyan edit_fee_row hide" href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
                                                                                     <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
                                                                                 </td>
+
                                                                             </tr>
                                                                             @php {{ $sl++; }} @endphp @endforeach
+
                                                                             <input id="fee_row_id" class="hide" name="fee_row_id" value="{{ $sl }}" type="text">
                                                                         </tbody>
+
                                                                     </table>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1112,7 +1153,7 @@
 												$resignstatus = 0; $resign_date = ''; $relation_code = ''; $pay_mode = ''; $chequeno = ''; $voucher_date = ''; $chequedate = ''; $chequedate = ''; $totamount = 0; 
 												if(!empty($resignedrow)){ 
 													$resignstatus = 0; 
-													$resign_date = date('d/M/Y',strtotime($resignedrow->resignation_date)); 
+													$resign_date = date('d/m/Y',strtotime($resignedrow->resignation_date)); 
 													$totalmonthspaid = $resignedrow->months_contributed; 
 													$bfcontribuion = $resignedrow->accbf; 
 													$insamount = $resignedrow->insuranceamount; 
@@ -1122,8 +1163,8 @@
 													$accbenefit = $resignedrow->accbenefit; 
 													$pay_mode = $resignedrow->paymode; 
 													$chequeno = $resignedrow->chequeno; 
-													$voucher_date = $resignedrow->voucher_date != '0000-00-00 00:00:00' ? date('d/M/Y',strtotime($resignedrow->voucher_date)) : ''; 
-													$chequedate = $resignedrow->chequedate != '0000-00-00 00:00:00' ? date('d/M/Y',strtotime($resignedrow->chequedate)) : ''; 
+													$voucher_date = $resignedrow->voucher_date != '0000-00-00 00:00:00' ? date('d/m/Y',strtotime($resignedrow->voucher_date)) : ''; 
+													$chequedate = $resignedrow->chequedate != '0000-00-00 00:00:00' ? date('d/m/Y',strtotime($resignedrow->chequedate)) : ''; 
 													$totamount = $resignedrow->amount; 
 												} 
 												
@@ -1281,6 +1322,7 @@
 										<div class="row">
 											<div class="col s12 m8 center">
 													@php
+
 														$color = CommonHelper::getStatusColor($values->status_id);
 													@endphp
 													<h4 style="color:{{$color}};font-size:2rem;">{{ CommonHelper::getStatusName($values->status_id) }} 
@@ -1298,7 +1340,7 @@
 											<div class="col s4 m4 right" style="padding-top: 15px;">
 												Last Paid Date: 
 												<div class="input-field inline" style="margin:0;">
-													<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{ date('d/M/Y',strtotime($lastmonthendrecord->LASTPAYMENTDATE)) }}@endif" readonly style="height:2rem;">
+													<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{ date('d/m/Y',strtotime($lastmonthendrecord->LASTPAYMENTDATE)) }}@endif" readonly style="height:2rem;">
 												</div>
 											</div>
 										</div>
@@ -1325,6 +1367,7 @@
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/js/jquery.steps.js') }}"></script>
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 @endsection @section('footerSecondSection')
 <script>
     var form = $("#wizard2").show();
@@ -1588,7 +1631,12 @@
         $(".selectpicker-new").select2();
     });
     $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'dd/mm/yyyy',
+        autoHide: true,
+    });
+    $('.datepicker-normal').datepicker({
+        format: 'dd/mm/yyyy',
+        autoHide: true,
     });
 
     $(document.body).on('click', '.delete_nominee_db', function() {
@@ -1687,6 +1735,7 @@
 		$("#new_fee_id").val("");
 	});
 	$('#resign_date,#doj').change(function(){
+
 	   var resign_date = $('#resign_date').val();
 	   var doj = $("#doj").val();
 	   if(resign_date!="" && doj!=''){
@@ -1713,6 +1762,7 @@
 		getBfAmount();
 	});
 	function getBfAmount(){
+        //alert('test');
 		var service_year = $('#service_year').val();
 		var resign_reason = $('#resign_reason').val();
 		var status_id = $('#status_id').val();

@@ -77,11 +77,11 @@ class CommonController extends Controller
     public function getAge(Request $request)
     {
          $dob1 = $request->dob;
-           
+         
          $fmm_date = explode("/",$dob1);					
          $dob2 = $fmm_date[2]."-".$fmm_date[1]."-".$fmm_date[0];
          $dob = date('Y-m-d', strtotime($dob2));
-
+        //dd($dob);
          $years = Carbon::parse($dob)->age;
 
          echo $years;

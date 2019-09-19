@@ -546,9 +546,7 @@ $('#company').change(function(){
 	   $('#branch').empty();
    }
 });
-$('.datepicker').datepicker({
-	format: 'yyyy-mm-dd'
-});
+
 $('#add_fee').click(function(){
 	var fee_row_id = parseInt($("#fee_row_id").val())+1;
 	var member_auto_id =   $("#auto_id").val();
