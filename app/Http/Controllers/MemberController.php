@@ -456,6 +456,21 @@ class MemberController extends CommonController
 					
 				}
 			}
+			Artisan::call('cache:clear');
+			if($user_role == 'union'){
+				$memberdata = Membership::find($member_id);
+				$feecount = DB::table('member_fee as mf')
+							->leftjoin('fee as f','f.id','=','mf.fee_id')
+							->where('mf.member_id','=',$member_id)
+							->where(function($query) use ($member_id){
+									$query->orWhere('f.fee_shortcode','=','HQ')
+										->orWhere('f.fee_shortcode','=','ENT');
+								})       
+							->count();
+				if($feecount==2){
+					
+				}
+			}
 			if($auto_id==''){
 				$mail_data = array(
 					'name' => $member_name,
@@ -465,7 +480,7 @@ class MemberController extends CommonController
 				);
 				$cc_mail = CommonHelper::getCCTestMail();
 				$status = Mail::to($member_email)->cc([$cc_mail])->send(new SendMemberMailable($mail_data));
-
+				
 				if( count(Mail::failures()) > 0 ) {
 					return redirect($redirect_url)->with('message','Member Account created successfully, Failed to send mail');
 				}else{
@@ -475,9 +490,10 @@ class MemberController extends CommonController
 				 return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
 			}
         }else{
+			Artisan::call('cache:clear');
             return redirect($redirect_failurl)->with('error','Name and email is invalid');
         }
-		Artisan::call('cache:clear');
+		
         
     }
 	
