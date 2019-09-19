@@ -5,7 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class state extends Model
+class State extends Model
 {
     protected $table = 'state';
     protected $fillable = [
