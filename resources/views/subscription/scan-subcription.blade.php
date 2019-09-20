@@ -169,8 +169,9 @@
 							$('#scanning-details').addClass('gradient-45deg-green-teal ');
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
 							loader.hideLoader();
+							TriggerPendingMembers(company_id);
 							setTimeout(function(){
-								window.location.href = result.redirect_url;
+								//window.location.href = result.redirect_url;
 							}, 1500);
 						}
 						
@@ -182,6 +183,22 @@
 		}else{
 			//$("#type option[value='2']").remove();
 		}
+	}
+	function TriggerPendingMembers(companyid){
+		var url_one = "{{ url(app()->getLocale().'/process-memberstatus') }}" + '?company_auto_id=' + companyid;
+		$.ajax({
+			url: url_one,
+			type: "GET",
+			dataType: 'JSON',
+			success: function(result) {
+				
+				if(result.status==1){
+					
+				}else{
+					
+				}
+			}
+		});
 	}
 </script>
 @endsection

@@ -29,6 +29,7 @@ use App\Model\MonthlySubscriptionCompany;
 use App\Model\MonthlySubscriptionMember;
 use App\Model\MonSubCompanyAttach;
 use App\Model\MonthlySubMemberMatch;
+use Log;
 
 
 class MemberController extends CommonController
@@ -930,8 +931,10 @@ class MemberController extends CommonController
 					'created_at' => date('Y-m-d'),
 				];
 				$member_pay_count = DB::table('member_payments')->where('member_id', '=', $memberid)->count();
+				
 			
-				if($member_pay_count==0){
+				if($member_pay_count<1){
+					//Log::info($memberid);
 					DB::table('member_payments')->insert($payment_data);
 				}
 			}

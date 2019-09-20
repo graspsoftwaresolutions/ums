@@ -44,6 +44,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use Artisan;
+use App\Jobs\UpdateMemberStatus;
+
 
 
 class SubscriptionAjaxController extends CommonController
@@ -951,5 +954,12 @@ class SubscriptionAjaxController extends CommonController
         // }
     
         echo json_encode($data);
+    }
+
+    public function UpdateMemberStatus($lang,Request $request){
+        $company_auto_id = $request->company_auto_id;
+        Artisan::call('queue:work --tries=1');
+        UpdateMemberStatus::dispatch($company_auto_id);
+        echo 1;
     }
 }
