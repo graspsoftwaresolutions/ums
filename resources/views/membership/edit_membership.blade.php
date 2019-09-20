@@ -330,7 +330,7 @@
                                                             
                                                         @endphp
                                                         @if($user_role!='member')
-                                                        <div class="input-field col s12 m6">
+                                                        <div class="input-field col s12 m3">
                                                             <p>
                                                                 <label>
                                                                     <input type="checkbox" id="rejoined" @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'checked' : ''; @endphp/>
@@ -338,7 +338,7 @@
                                                                 </label>
                                                             </p>
                                                         </div>
-                                                        <div class="col s12 m6 " style="display:@php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'block' : 'none'; @endphp" id="member_old_div">
+                                                        <div class="col s12 m9 " style="display:@php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'block' : 'none'; @endphp" id="member_old_div">
                                                             <span> 
 														<input type="text" value="{{$old_membercode}}" id="old_mumber_number" name="old_mumber_number">
 														</span>

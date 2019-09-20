@@ -468,10 +468,16 @@ class MemberController extends CommonController
 				}
 			}
 			Artisan::call('cache:clear');
+
+			if(!empty(Auth::user())){
+				$created_by = Auth::user()->id;
+			}else{
+				$created_by = $member_user->id;
+			}
 			$payment_data = [
 				'member_id' => $member_id,
 				'due_amount' => 0,
-				'created_by' => Auth::user()->id,
+				'created_by' => $created_by,
 				'created_at' => date('Y-m-d'),
 			];
 			if($user_role == 'union'){
@@ -626,12 +632,53 @@ class MemberController extends CommonController
 						'created_at' => date('Y-m-d'),
 					];
 				}else{
+					$subs_month = date('Y-m-01',strtotime($doj));
+					$member_subs_id = DB::table("mon_sub_member as mm")->select('mm.id as msid')
+					->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+					->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+					->where('ms.Date', '=', $subs_month)
+					->where('mm.MemberCode', '=', $member_id)
+					->pluck('msid')->first();
+
+					if($member_subs_id!=''){
+						$mont_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $member_subs_id)->delete();
+						$mont_count = DB::table('mon_sub_member')->where('id', '=', $member_subs_id)->delete();
+					}
+
+					$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_id)->delete();
 					$payment_data = [
 						'member_id' => $member_id,
 						'due_amount' => 0,
 						'created_by' => Auth::user()->id,
 						'created_at' => date('Y-m-d'),
 					];
+				}
+			}else{
+				$memberdata = Membership::find($member_id);
+				$doj = $memberdata->doj;
+				$feecount = DB::table('member_fee as mf')
+				->select('f.fee_shortcode','mf.fee_amount as fee_amount')
+				->leftjoin('fee as f','f.id','=','mf.fee_id')
+				->where('mf.member_id','=',$member_id)
+				->where(function($query) use ($member_id){
+						$query->orWhere('f.fee_shortcode','=','INS')
+							->orWhere('f.fee_shortcode','=','BF');
+					})       
+				->count();
+				if($feecount<2){
+					$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_id)->delete();
+
+					$subs_month = date('Y-m-01',strtotime($doj));
+					$member_subs_id = DB::table("mon_sub_member as mm")->select('mm.id')
+					->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+					->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+					->where('ms.Date', '=', $subs_month)
+					->where('mm.MemberCode', '=', $member_id)
+					->first();
+
+					if($member_subs_id!=''){
+						$mont_count = DB::table('mon_sub_member')->where('id', '=', $member_subs_id)->delete();
+					}
 				}
 			}
 			$member_pay_count = DB::table('member_payments')->where('member_id', '=', $member_id)->count();
@@ -672,8 +719,11 @@ class MemberController extends CommonController
         $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.member_number as number','m.id as auto_id','m.member_title_id as member_title_id','m.gender as gender','m.gender as gender','m.mobile as mobile','m.email as email',DB::raw("DATE_FORMAT(`m`.`doe`, '%d/%b/%Y') as doe"),'m.designation_id as designation_id','m.race_id as race_id','m.state_id as state_id','m.city_id as city_id','m.postal_code as postal_code','m.address_one as address_one','m.address_two as address_two','m.address_three as address_three',DB::raw("DATE_FORMAT(`m`.`doj`, '%d/%b/%Y') as doj"),DB::raw("DATE_FORMAT(`m`.`dob`, '%d/%b/%Y') as dob"),'m.salary as salary','m.old_ic as old_ic','m.new_ic as new_ic','m.branch_id as branch_id','m.levy as levy','m.levy_amount as levy_amount','m.tdf as tdf','m.tdf_amount as tdf_amount','m.employee_id as employee_id','c.id as company_id','m.name as membername')
 			->join('status','m.status_id','=','status.id') 
 			->leftjoin('company_branch as cb','cb.id','=','m.branch_id')       
-			->leftjoin('company as c','c.id','=','cb.company_id')       
-        ->where('status.status_name','=','RESIGNED')
+			->leftjoin('company as c','c.id','=','cb.company_id')
+			->where(function($query) use ($search){
+					$query->where('status.status_name','=','RESIGNED')
+						->orWhere('status.status_name','=','STRUCKOFF');
+			})       
 		->where(function($query) use ($search){
 				$query->orWhere('m.member_number', 'LIKE',"%{$search}%")
 					->orWhere('m.name', 'LIKE',"%{$search}%");
@@ -861,6 +911,24 @@ class MemberController extends CommonController
 	}
 
 	public function AddPaymentEntry(){
-		
+		if(!empty(Auth::user())){
+			$members = CacheMembers::all('id');
+			foreach($members as $member){
+				$memberid = $member->id;
+				$payment_data = [
+					'member_id' => $memberid,
+					'due_amount' => 0,
+					'created_by' => Auth::user()->id,
+					'created_at' => date('Y-m-d'),
+				];
+				$member_pay_count = DB::table('member_payments')->where('member_id', '=', $memberid)->count();
+			
+				if($member_pay_count==0){
+					DB::table('member_payments')->insert($payment_data);
+				}
+			}
+		}else{
+			echo 'please login to insert';
+		}
 	}
 }
