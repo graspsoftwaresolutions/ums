@@ -890,6 +890,9 @@
 						db_autoid: function() {
 							return $("#auto_id").val();
 						},
+						old_db_autoid: function() {
+							return $("#old_member_id").val();
+						},
 						_token: "{{csrf_token()}}",
 						new_ic: $(this).data('new_ic')
 					},

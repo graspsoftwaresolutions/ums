@@ -716,7 +716,7 @@ class MemberController extends CommonController
     {
         $search = $request->input('query');
        // return $search;
-        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.member_number as number','m.id as auto_id','m.member_title_id as member_title_id','m.gender as gender','m.gender as gender','m.mobile as mobile','m.email as email',DB::raw("DATE_FORMAT(`m`.`doe`, '%d/%b/%Y') as doe"),'m.designation_id as designation_id','m.race_id as race_id','m.state_id as state_id','m.city_id as city_id','m.postal_code as postal_code','m.address_one as address_one','m.address_two as address_two','m.address_three as address_three',DB::raw("DATE_FORMAT(`m`.`doj`, '%d/%b/%Y') as doj"),DB::raw("DATE_FORMAT(`m`.`dob`, '%d/%b/%Y') as dob"),'m.salary as salary','m.old_ic as old_ic','m.new_ic as new_ic','m.branch_id as branch_id','m.levy as levy','m.levy_amount as levy_amount','m.tdf as tdf','m.tdf_amount as tdf_amount','m.employee_id as employee_id','c.id as company_id','m.name as membername')
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.member_number as number','m.id as auto_id','m.member_title_id as member_title_id','m.gender as gender','m.gender as gender','m.mobile as mobile','m.email as email',DB::raw("DATE_FORMAT(`m`.`doe`, '%d/%m/%Y') as doe"),'m.designation_id as designation_id','m.race_id as race_id','m.state_id as state_id','m.city_id as city_id','m.postal_code as postal_code','m.address_one as address_one','m.address_two as address_two','m.address_three as address_three',DB::raw("DATE_FORMAT(`m`.`doj`, '%d/%m/%Y') as doj"),DB::raw("DATE_FORMAT(`m`.`dob`, '%d/%m/%Y') as dob"),'m.salary as salary','m.old_ic as old_ic','m.new_ic as new_ic','m.branch_id as branch_id','m.levy as levy','m.levy_amount as levy_amount','m.tdf as tdf','m.tdf_amount as tdf_amount','m.employee_id as employee_id','c.id as company_id','m.name as membername')
 			->join('status','m.status_id','=','status.id') 
 			->leftjoin('company_branch as cb','cb.id','=','m.branch_id')       
 			->leftjoin('company as c','c.id','=','cb.company_id')
@@ -855,7 +855,7 @@ class MemberController extends CommonController
 	{
 		$new_ic =  $request->input('new_ic');
         $db_autoid = $request->input('db_autoid');
-		
+		$old_db_autoid = $request->input('old_db_autoid');
 		if(!empty($autoid))
         {
             $usernewic_exists = Membership::where([
@@ -865,7 +865,15 @@ class MemberController extends CommonController
         }
         else
         {
-            $usernewic_exists = Membership::where('new_ic','=',$new_ic)->count(); 
+			if(!empty($old_db_autoid)){
+				$usernewic_exists = Membership::where([
+					['new_ic','=',$new_ic],
+					['id','!=',$old_db_autoid],
+					])->count();
+			}else{
+				$usernewic_exists = Membership::where('new_ic','=',$new_ic)->count(); 
+			}
+            
         } 
         if($usernewic_exists > 0)
         {
