@@ -171,7 +171,7 @@
 							loader.hideLoader();
 							TriggerPendingMembers(company_id);
 							setTimeout(function(){
-								//window.location.href = result.redirect_url;
+								window.location.href = result.redirect_url;
 							}, 1500);
 						}
 						
@@ -193,7 +193,7 @@
 			success: function(result) {
 				
 				if(result.status==1){
-					
+					console.log('status updates started');
 				}else{
 					
 				}
