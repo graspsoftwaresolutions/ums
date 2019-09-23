@@ -869,7 +869,8 @@ class MembershipController extends Controller
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
         
-		$datefilter = $request->input('datefilter');
+        $datefilter = $request->input('datefilter');
+        $memberid = $request->input('memberid');
         $dateformat = '';  
         $yearformat = '';  
         $monthformat = '';  
@@ -969,9 +970,17 @@ class MembershipController extends Controller
         if(empty($request->input('search.value')))
         {            
             if( $limit == -1){
+                $historylist = $commonselectqry;
+                if($memberid!=""){
+                    $historylist = $commonselectqry->where('m.id','=',$memberid);
+                }
                 $historylist = $commonselectqry->get();
             }else{
-                $historylist = $commonselectqry->offset($start)
+                $historylist = $commonselectqry;
+                if($memberid!=""){
+                    $historylist = $commonselectqry->where('m.id','=',$memberid);
+                }
+                $historylist = $historylist->offset($start)
                                             ->limit($limit)
                                             ->orderBy($order,$dir)
                                             ->get();
@@ -985,8 +994,11 @@ class MembershipController extends Controller
 			$historylist =  $commonselectqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
 									->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
 								   
-								//->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
-								
+                                //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
+                                $historylist = $commonselectqry;
+								if($memberid!=""){
+                                    $historylist = $historylist->where('m.id','=',$memberid);
+                                }
 								
 								if( $limit != -1){
 									$historylist = $historylist->offset($start)->limit($limit);
@@ -996,7 +1008,10 @@ class MembershipController extends Controller
 
 			$historycount = $commoncountqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
 								 ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
-								
+                                
+                                if($memberid!=""){
+                                    $historycount = $historycount->where('m.id','=',$memberid);
+                                }
 								//->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
 							   
 								$totalFiltered = $historycount->count();
