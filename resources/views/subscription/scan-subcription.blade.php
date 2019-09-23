@@ -47,6 +47,9 @@
 									@endphp
 									</br>
 									</br>
+									<p class="card-title">Month :  {{ $data['month_year'] }}</p>
+									<p class="card-title">Bank :  {{ $data['company_name'] }} </p>
+									</br>
 									<div id="scanning-details" class="hide gradient-45deg-amber-amber padding-1 medium-small" style="color:#fff">
 									{{__('Updating Member details, please dont refresh page....') }}
 									</div>

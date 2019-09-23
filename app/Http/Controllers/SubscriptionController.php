@@ -706,8 +706,14 @@ class SubscriptionController extends CommonController
     
     public function viewScanSubscriptions($lang,$id)
     {
-        $company_auto_id = Crypt::decrypt($id);
-        $data['company_auto_id'] = $company_auto_id;
+		$company_auto_id = Crypt::decrypt($id);
+		$company_data = DB::table('mon_sub_company as mc')->select('mc.CompanyCode','c.company_name','ms.Date')
+						->leftjoin('mon_sub as ms', 'ms.id' ,'=','mc.MonthlySubscriptionId')
+						->leftjoin('company as c', 'c.id' ,'=','mc.CompanyCode')
+						->where('mc.id','=',$company_auto_id)->first();
+		$data['company_auto_id'] = $company_auto_id;
+		$data['company_name'] = $company_data->company_name;
+		$data['month_year'] = date('M/Y',strtotime($company_data->Date));
         $memberrowcount = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->where('update_status','=',0)->count();
         $data['row_count'] = $memberrowcount;
         return view('subscription.scan-subcription')->with('data',$data);
