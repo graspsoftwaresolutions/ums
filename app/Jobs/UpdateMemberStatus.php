@@ -11,6 +11,8 @@ use DB;
 use Auth;
 use Log;
 use Facades\App\Repository\CacheMembers;
+use Carbon\Carbon;
+use App\Model\Membership;
 
 
 
@@ -18,9 +20,9 @@ class UpdateMemberStatus implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $sub_company_id;
-    //protected $sub_id;
+    protected $sub_id;
     protected $company_id;
-    //protected $subs_date;
+    protected $subs_date;
     /**
      * Create a new job instance.
      *
@@ -46,7 +48,9 @@ class UpdateMemberStatus implements ShouldQueue
     public function handle()
     {
         $company_auto_id = $this->sub_company_id;
-        Log::info('status updates started for company id: '.$company_auto_id);
+        //Log::useFiles(storage_path().'/logs/status-updates.log');
+        Log::channel('customlog')->info('status updates started for company id: '.$company_auto_id);
+
         $company_id = $this->company_id;
         $members =  DB::table('membership as m')
                     ->select('m.id')
@@ -66,12 +70,17 @@ class UpdateMemberStatus implements ShouldQueue
                 $member_doj = CacheMembers::getDojbyMemberCode($member->id);
                 $to_one = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
                 $from_one = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
+                
                 $diff_in_months_one = $to_one->diffInMonths($from_one);
+                Log::channel('customlog')->info('member#:'.$member->id.'month diff: '.$diff_in_months);
                 if($diff_in_months_one>=3 && $diff_in_months>=3 && $diff_in_months<=11){
-                    $updata = ['status_id' => 2,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => Auth::user()->id];
+                    Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=2');
+
+                    $updata = ['status_id' => 2,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
                     $savedata = Membership::where('id',$member->id)->update($updata);
                 }else if ($diff_in_months_one>=3 && $diff_in_months>=12){
-                    $updata = ['status_id' => 3,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => Auth::user()->id];
+                    Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=3');
+                    $updata = ['status_id' => 3,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
                     $savedata = Membership::where('id',$member->id)->update($updata);
                 }
             }

@@ -958,8 +958,9 @@ class SubscriptionAjaxController extends CommonController
 
     public function UpdateMemberStatus($lang,Request $request){
         $company_auto_id = $request->company_auto_id;
-        Artisan::call('queue:work --tries=1');
+        //Artisan::call('queue:work --tries=1 --timeout=10000');
         UpdateMemberStatus::dispatch($company_auto_id);
+        Artisan::call('queue:work --tries=1 --timeout=10000');
         echo 1;
     }
 }
