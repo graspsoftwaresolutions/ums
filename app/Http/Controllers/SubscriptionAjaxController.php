@@ -824,13 +824,14 @@ class SubscriptionAjaxController extends CommonController
 		$members_data = [];
 		if($filter_date!=""){
 			
-			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric'))
+			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,mp.due_amount'))
 							->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
 							->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
 							->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
 							->leftjoin('membership as member','m.MemberCode','=','member.id')
 							->leftjoin('company as c','sc.CompanyCode','=','c.id')
-							->leftjoin('status as s','m.StatusId','=','s.id');
+                            ->leftjoin('status as s','m.StatusId','=','s.id')
+                            ->leftjoin('member_payments as mp','mp.member_id','=','member.id');
 							//->leftjoin('mon_sub_match_table as match','mm.match_id','=','match.id');
 			if(isset($company_id) && $company_id!=''){
 				$members_qry = $members_qry->where('m.MonthlySubscriptionCompanyId','=',$company_id);
