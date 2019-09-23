@@ -6,9 +6,11 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
-
 <style>
 	#main .section-data-tables .dataTables_wrapper table.dataTable div.datepicker-calendar th, #main .section-data-tables .dataTables_wrapper table.dataTable  div.datepicker-calendar td {
 		padding: 0;
@@ -20,6 +22,70 @@
 		font-weight: 500;
 		line-height: 47px;
 		display: block;
+	}
+	button.dt-button, div.dt-button, a.dt-button {
+		margin-left: 5px;
+		
+		background-image: none;
+
+	}
+
+	@media only screen and (max-width: 640px) {
+		div.dt-buttons {
+			margin-top: 9px !important;
+			float: none !important;
+			text-align: center;
+		}
+	}
+	button.buttons-excel, a.dt-button {
+		background: #227849;
+		color: #fff;
+		background-image: none;
+	}
+	button.buttons-pdf, a.dt-button {
+		background: #ff0000;
+		color: #fff;
+		background-image: none;
+	}
+	.buttons-excel:hover {
+		background: #227849;
+		background: -webkit-linear-gradient(45deg, #227849, #227849) !important;
+		background: -moz- oldlinear-gradient(45deg, #227849, #227849) !important;
+		background: -o-linear-gradient(45deg, #227849, #227849) !important;
+		background: linear-gradient(45deg, #227849, #227849) !important;
+		color: #fff;
+		background-image: none;
+	}
+	.buttons-pdf:hover {
+		background: #ff0000;
+		background: -webkit-linear-gradient(45deg, #ff0000, #ff0000) !important;
+		background: -moz- oldlinear-gradient(45deg, #ff0000, #ff0000) !important;
+		background: -o-linear-gradient(45deg, #ff0000, #ff0000) !important;
+		background: linear-gradient(45deg, #ff0000, #ff0000) !important;
+		color: #fff;
+		background-image: none;
+	}
+	button.dt-button, div.dt-button, a.dt-button {
+		position: relative;
+		display: inline-block;
+		box-sizing: border-box;
+		margin-right: 0.333em;
+		margin-bottom: 0.333em;
+		padding: 0.3em 0.4em;
+		border: 1px solid #999;
+		border-radius: 2px;
+		cursor: pointer;
+		font-size: 0.88em;
+		line-height: 0.3em;
+		white-space: nowrap;
+		overflow: hidden;
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='white', EndColorStr='#e9e9e9');
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		text-decoration: none;
+		outline: none;
 	}
 </style>
 <style type="text/css">
@@ -149,9 +215,17 @@
 
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 
- <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
- <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
- <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
 <script>
  $("#member_transfer_sidebar_a_id").addClass('active');
 	
@@ -159,6 +233,42 @@
 	
     var dataTable =  $('#page-length-option').DataTable({
 			"responsive": true,
+			dom: 'lBfrtip', 
+			
+        buttons: [
+			{
+               extend: 'excel',
+               text:      '<i class="material-icons">explicit</i>',
+			   footer: false,
+			   exportOptions: {
+					columns: [0,1,2,3,4]
+				},
+                title : 'Member Transfer List',
+                titleAttr: 'excel',
+				style: 'background:#227849;',
+		   },
+		   {
+			   extend: 'pdf',
+               text:      '<i class="material-icons">picture_as_pdf</i>',
+			   footer: true,
+			   exportOptions: {
+				columns: [0,1,2,3,4]
+                },
+                titleAttr: 'pdf',
+				title : 'Member Transfer List'
+		   },
+		   
+			{
+               extend: 'print',
+               text:      '<i class="material-icons">print</i>',
+			   footer: false,
+			   exportOptions: {
+				columns: [0,1,2,3,4]
+				},
+                title : 'Member Transfer List',
+                titleAttr: 'print',
+		   }  
+		],
 			"searching": false,
 			"lengthMenu": [
 				[10, 25, 50, -1],
