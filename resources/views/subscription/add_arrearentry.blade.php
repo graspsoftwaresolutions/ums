@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css"
@@ -195,6 +195,7 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 @endsection
 @section('footerSecondSection')
 <script>
@@ -295,7 +296,10 @@ $("#nric").devbridgeAutocomplete({
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
-
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    autoHide: true,
+});
 
 </script>
 @endsection

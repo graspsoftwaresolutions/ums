@@ -87,7 +87,7 @@ class SubscriptionAjaxController extends CommonController
 	 	$designation_id = $request->input('designation_id');
         
 
-		$commonqry = DB::table('mon_sub')->select('mon_sub.id','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
+		$commonqry = DB::table('mon_sub')->select('mon_sub.id as mid','mon_sub_member.id as mmid','mon_sub.Date','mon_sub_company.MonthlySubscriptionId',
         'mon_sub_company.CompanyCode','company.company_name','company.id','mon_sub_member.Name','mon_sub_member.membercode','mon_sub_member.nric','mon_sub_member.amount','status.status_name as statusId','status.font_color','mon_sub_member.created_by','m.branch_id','m.member_number as member_number')
         ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
         ->join('company','company.id','=','mon_sub_company.CompanyCode')
@@ -180,7 +180,7 @@ class SubscriptionAjaxController extends CommonController
         {
             foreach ($result as $resultdata)
             {
-                $autoid = $resultdata->id;
+                $autoid = $resultdata->mmid;
                 // foreach($resultdata as $newkey => $newvalue){
                 //     if($newkey=='id'){
                 //         $autoid = $newvalue;
@@ -210,9 +210,15 @@ class SubscriptionAjaxController extends CommonController
                 $baseurl = URL::to('/');
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.$enc_id.'&branch_id='.Crypt::encrypt($branchid);
                 $histry = $memberid!='' ? route('member.history', [app()->getLocale(),$enc_id]) : '#';
+                $member_delete_link = $baseurl.'/'.app()->getLocale().'/subscription_delete?sub_id='.$autoid;
+                
+                $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Subscription'  class='' onClick='return EditSubscription(".$autoid.")' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
+                $actions .="<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='$member_delete_link'><i class='material-icons' style='color:red'>delete</i></a>";
                 if($memberid!=''){
+                    
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
-                    $actions .="<a style='float: left; margin-left: 10px;' title='Member Transcation'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+                    $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+                    
                 }  
                 $nestedData['options'] = $actions;
                 $data[] = $nestedData;
