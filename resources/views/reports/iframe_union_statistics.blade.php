@@ -178,6 +178,11 @@
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
+		@php
+			$total_male_count = 0;
+			$total_female_count = 0; 
+			$total_grandtotal = 0;
+		@endphp
         @foreach($data['member_count'] as $values)
             <tr style="margin-top:50px !important;">
 				<td style='width:211px !important; border:1px ;'>
@@ -207,7 +212,7 @@
 					<td style="width:41px !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
 				@php
 					$subtotal1 += $male_count; 
-					
+					$total_male_count += $male_count; 
 				@endphp
 				@endforeach
 				<td style="width:60px !important; border:1px ;"> {{$subtotal1}}</td>
@@ -219,7 +224,8 @@
 					@endphp
 				<td style="width:41px !important; border:1px ;">{{$female_count}}</td>
 					@php
-					$subtotal2 += $female_count; 
+						$subtotal2 += $female_count; 
+						$total_female_count += $female_count; 
 					@endphp
 				@endforeach
 				@php 
@@ -248,11 +254,46 @@
 						$grandtotal = $defaultertotal + $total;
 					@endphp
 				@endforeach
+				@php
+					$total_grandtotal += $grandtotal;
+				@endphp
 				<td style="width:41px !important; border:1px ;">{{$subtotaldefaulter2}}</td>
 				<td style="width:41px !important; border:1px ;">{{$defaultertotal}}</td>
 				<td style="width:41px !important; border:1px ;">{{$grandtotal}}</td>
             </tr> 
             @endforeach
+			<tr style="">
+				<td style=''>
+					Total
+				</td>
+			   
+				@foreach($data['race_view'] as $race)
+				
+					<td style="width:41px !important; border:1px ; padding-left: 5px;"></td>
+			
+				@endforeach
+				<td style="width:60px !important; border:1px ;"> </td>
+				@foreach($data['race_view'] as $value)
+				
+				<td style="width:41px !important; border:1px ;"></td>
+					
+				@endforeach
+				
+				<td style="width:60px !important; border:1px ;"></td>
+				<td style="width:50px !important; border:1px ;"></td>
+				@foreach($data['race_view'] as $value)
+				
+					<td style="width:60px !important; border:1px ;"></td>
+			
+				@endforeach
+				<td style="width:41px !important; border:1px ;"> </td>
+				@foreach($data['race_view'] as $value)
+					<td style="width:41px !important; border:1px ;padding-left: 0px;"></td>
+				@endforeach
+				<td style="width:41px !important; border:1px ;"></td>
+				<td style="width:41px !important; border:1px ;"></td>
+				<td style="width:41px !important; border:1px ;">{{$total_grandtotal}}</td>
+            </tr> 
 		</tbody>
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>

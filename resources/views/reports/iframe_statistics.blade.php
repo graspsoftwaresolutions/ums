@@ -183,6 +183,9 @@
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
+		@php
+			$total_grandtotal = 0;
+		@endphp
         @foreach($data['member_count'] as $values)
             <tr style="margin-top:50px !important;">
 				<td style='width:201px !important; border:1px ;'>
@@ -256,11 +259,42 @@
 						$grandtotal = $defaultertotal + $total;
 					@endphp
 				@endforeach
+				@php
+					$total_grandtotal += $grandtotal;
+				@endphp
 				<td style="width:41px !important; border:1px ;">{{$subtotaldefaulter2}}</td>
 				<td style="width:41px !important; border:1px ;">{{$defaultertotal}}</td>
 				<td style="width:41px !important; border:1px ;">{{$grandtotal}}</td>
             </tr> 
             @endforeach
+			<tr style="">
+				<td style=''>
+					Total
+				</td>
+			    
+				@foreach($data['race_view'] as $race)
+					<td style="width:41px !important; border:1px ; padding-left: 5px;"></td>
+				@endforeach
+				<td style="width:60px !important; border:1px ;"> </td>
+				@foreach($data['race_view'] as $value)
+				
+				<td style="width:41px !important; border:1px ;"></td>
+					
+				@endforeach
+			
+				<td style="width:60px !important; border:1px ;"> </td>
+				<td style="width:50px !important; border:1px ;"></td>
+				@foreach($data['race_view'] as $value)
+					<td style="width:60px !important; border:1px ;"></td>
+				@endforeach
+				<td style="width:41px !important; border:1px ;"></td>
+				@foreach($data['race_view'] as $value)
+					<td style="width:41px !important; border:1px ;padding-left: 0px;"></td>
+				@endforeach
+				<td style="width:41px !important; border:1px ;"></td>
+				<td style="width:41px !important; border:1px ;"></td>
+				<td style="width:41px !important; border:1px ;">{{$total_grandtotal}}</td>
+            </tr> 
 		</tbody>
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
