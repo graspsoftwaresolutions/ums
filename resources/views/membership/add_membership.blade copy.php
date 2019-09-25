@@ -123,13 +123,11 @@
 																	</div>
 																	<input id="auto_id" name="auto_id" value=""  type="text" class="hide">
 																</div>
-																<input id="member_number" name="member_number" value=""  type="hidden"  data-error=".errorTxt2">
-																<!--	
 																<div class="input-field col s12 m6 {{ $member_number_hide }}">
-																	<input id="member_number" name="member_number" value=""  type="hidden" class="validate" {{ $member_number_readonly }} data-error=".errorTxt2">
+																	<input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}" required type="text" class="validate" {{ $member_number_readonly }} data-error=".errorTxt2">
 																	<label for="member_number" class="force-active">{{__('Member Number') }} *</label>
 																	<div class="errorTxt2"></div>
-																</div>-->
+																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<label for="name" class="force-active">{{__('Member Name') }} *</label>
@@ -806,9 +804,9 @@
 	    	member_title:{
                 required: true,
             },
-          /*  member_number: {
+            member_number: {
                 required: true,
-            },*/
+            },
             name: {
                 required: true,
 				minlength:3,
@@ -942,10 +940,10 @@
                 required: "Please Enter Your Title ",
                 
             },
-            /*member_number: {
+            member_number: {
                 required: "Please Enter Member NUmber",
                 
-            },*/
+            },
             name: {
                 required: "Please Enter Your Name",
                 
