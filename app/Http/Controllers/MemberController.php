@@ -79,7 +79,7 @@ class MemberController extends CommonController
         //return $request->all();
         $request->validate([
             'member_title'=>'required',
-            'member_number'=>'required',
+            //'member_number'=>'required',
             'name'=>'required',
             'gender'=>'required',
             'mobile'=>'required',
@@ -99,7 +99,7 @@ class MemberController extends CommonController
         ],
         [
             'member_title.required'=>'Please Enter Your Title',
-            'member_number.required'=>'Please Enter Member NUmber',
+            //'member_number.required'=>'Please Enter Member NUmber',
             'name.required'=>'Please Enter Your Name',
             'gender.required'=>'Please choose Gender',
             'mobile.required'=>'Please Enter Mobile Number',
@@ -239,12 +239,15 @@ class MemberController extends CommonController
 				}
 			}
 			$member['member_title_id'] = $request->input('member_title');
-			if($number_count>0){
+			/*if($number_count>0){
 				$member_number = CommonHelper::get_auto_member_number();
 			}else{
 				$member_number = $request->input('member_number');
+			}*/
+			if(!empty($request->input('member_number'))){
+				$member['member_number']  = $request->input('member_number');
 			}
-			$member['member_number'] = $member_number;
+			//$member['member_number'] = $member_number;
 			$member['name'] = $request->input('name');
 			$member['gender'] = $request->input('gender');
 			$member['mobile'] = $request->input('mobile');
@@ -294,6 +297,10 @@ class MemberController extends CommonController
 			
 			if($auto_id==''){
 				$member_id = $this->Membership->StoreMembership($member);
+				$member['member_number'] = CommonHelper::get_auto_member_number();
+				//dd($member);
+				$update_memno = DB::table('membership')->where('id','=',$member_id)->update($member);
+				
 				if(!$member_id){
 					return redirect($redirect_failurl)->with('error','Failed to Register');
 				}
