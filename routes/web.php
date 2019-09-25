@@ -334,6 +334,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-takaful-summary-report','ReportsController@SummaryTakaulmore')->name('summary.more');
 	Route::get('statistic_union_report','ReportsController@UnionStatisticReport')->name('statsticsnew.union');
 	Route::get('process-memberstatus','SubscriptionAjaxController@UpdateMemberStatus');
+	Route::get('subscription_delete','SubscriptionController@DeleteSubscription');
+	Route::post('update_subscription','SubscriptionController@saveApproval')->name('subscription.update');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
@@ -386,7 +388,7 @@ Route::get('/maintenance', function () {
     return view('errors.maintenance');
 });
 
-Route::get('/form-wizard', 'CustomerController@FormWizard');
+Route::get('/test-card', 'CustomerController@TestWizard');
 
 Route::get('irc','IRCController@index');
 

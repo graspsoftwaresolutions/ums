@@ -938,7 +938,7 @@ class SubscriptionController extends CommonController
     {
         $id = Crypt::decrypt($id);
        
-         $data =  DB::table('arrear_entry as ar')->select('ar.no_of_months','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric',DB::raw("DATE_FORMAT(ar.arrear_date,'%d/%b/%Y') as arrear_date"),'ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+         $data =  DB::table('arrear_entry as ar')->select('ar.no_of_months','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric',DB::raw("DATE_FORMAT(ar.arrear_date,'%d/%m/%Y') as arrear_date"),'ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
         ->leftjoin('membership as m','ar.membercode','=','m.id')
         ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
         ->leftjoin('company as c','cb.company_id','=','c.id')
@@ -1439,6 +1439,49 @@ class SubscriptionController extends CommonController
 			//dd($pdf);
 		}
 	}
-    
+	
+	public function DeleteSubscription($lang, Request $request)
+	{
+		$sub_member_id = $request->input('sub_id');
+		$member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id','ms.Date as date','mm.MonthlySubscriptionCompanyId as MonthlySubscriptionCompanyId')
+                    ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                    ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                    ->where('mm.id', '=', $sub_member_id)
+                    ->first();
+        $historydel = DB::table('membermonthendstatus')
+                            ->where('StatusMonth','=',$member_data->date)
+                            ->where('MEMBER_CODE','=',$member_data->member_id)
+                            ->delete();
+        if($historydel!=0){
+            $historylast = DB::table('membermonthendstatus')
+                            ->select('LASTPAYMENTDATE','SUBSCRIPTIONDUE')
+                            ->where('MEMBER_CODE','=',$member_data->member_id)
+                            ->orderBy('StatusMonth','DESC')
+                            ->first();
+            if($historylast!=Null){
+               $LASTPAYMENTDATE = $historylast->LASTPAYMENTDATE;
+               $SUBSCRIPTIONDUE = $historylast->SUBSCRIPTIONDUE;
+               $payment_data = [
+                    'last_paid_date' => $LASTPAYMENTDATE,
+                    'due_amount' => $SUBSCRIPTIONDUE,
+                    'updated_by' => Auth::user()->id,
+                ];
+                DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
+            }
+        }
+        $matchel = DB::table('mon_sub_member_match')
+                            ->where('mon_sub_member_id','=',$sub_member_id)
+                            ->delete();
+        $submemberdel = DB::table('mon_sub_member')
+                            ->where('id','=',$sub_member_id)
+                            ->delete();
+        $enc_id = Crypt::encrypt($member_data->MonthlySubscriptionCompanyId); 
+        if($submemberdel){
+            
+            return redirect(URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id))->with('message', 'Subscription deleted Successfully');
+        }else{
+             return redirect(URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id))->with('error', 'Failed to delete');
+        }
+	}
     
 }

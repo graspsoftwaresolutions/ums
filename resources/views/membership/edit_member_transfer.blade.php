@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('headSection')
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 	<style type="text/css">
 		.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 		.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -82,7 +83,7 @@
 								</div>
 								<div class=" col s4">
 									<label for="transfer_date">{{__('Transfer Date')}}</label>
-									<input id="transfer_date" type="text" class=" datepicker" value="{{ date('d/M/Y', strtotime($data['historydata']->transfer_date)) }}" name="transfer_date"  >
+									<input id="transfer_date" type="text" class=" datepicker" value="{{ date('d/m/Y', strtotime($data['historydata']->transfer_date)) }}" name="transfer_date"  >
 									<input id="history_id" type="text" class=" hide" value="{{ $data['historydata']->id }}" name="history_id"  >
 									
 								</div>
@@ -360,7 +361,7 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 @endsection
 @section('footerSecondSection')
 <script>
@@ -544,6 +545,10 @@
 				error.insertAfter(element);
 			}
 		}
+	});
+	$('.datepicker').datepicker({
+		format: 'dd/mm/yyyy',
+		autoHide: true,
 	});
 </script>
 @endsection

@@ -20,4 +20,10 @@ class CustomerController extends Controller
 		$data['user_type'] = 1;
        return view('membership.test_membership')->with('data',$data);  
     }
+
+    public function TestWizard()
+    {
+    	$data = [];
+    	return view('membership.card_membership')->with('data',$data);  
+    }
 }
