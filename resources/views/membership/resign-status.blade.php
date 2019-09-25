@@ -19,6 +19,10 @@
 							<div class="card-content">
 								<h4 class="card-title">{{__('Resign Info') }} 
 									<a  href="{{ route('resign.pdf', [app()->getLocale(),Crypt::encrypt($member_data->id)])  }}" class="btn waves-effect waves-light right">Download PDF</a>
+									&nbsp;
+									<a style="margin-right:10px;" class="btn waves-effect waves-light cyan  breadcrumbs-btn right" href="{{ route('master.membership', app()->getLocale())  }}">{{__('Member Query') }}</a>
+									
+									<a style="margin-right:10px;" class="btn waves-effect waves-light cyan  breadcrumbs-btn right hide" href="{{ route('master.editmembership', [app()->getLocale(),Crypt::encrypt($member_data->id)])  }}">{{__('Back') }}</a>
 								</h4>
 								<div class="card-alert-nonclose card  gradient-45deg-green-teal">
 									<div class="card-content white-text">

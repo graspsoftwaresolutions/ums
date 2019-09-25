@@ -1333,7 +1333,12 @@
 
 														$color = CommonHelper::getStatusColor($values->status_id);
 													@endphp
-													<h4 style="color:{{$color}};font-size:2rem;">{{ CommonHelper::getStatusName($values->status_id) }} 
+                                                  
+													<h4 style="color:{{$color}};font-size:2rem;">
+                                                    {{ CommonHelper::getStatusName($values->status_id) }} 
+                                                    @if(!empty($resignedrow))
+                                                       - {{ $resign_date }}
+                                                    @endif
 													@if(!empty($lastmonthendrecord))
 														@if($lastmonthendrecord->TOTALMONTHSDUE>0)
 															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending
