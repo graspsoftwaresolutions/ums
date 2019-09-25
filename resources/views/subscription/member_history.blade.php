@@ -87,8 +87,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<td width="25%">{{__('Last paid Date')}}</td>
 									<td width="25%"  style="color:{{$member->font_color}}">: 
+									
 									@if(!empty($data['last_month_record']))
-									{{ date('M/ Y',strtotime($data['current_member_history'][0]->LASTPAYMENTDATE)) }}
+									{{ date('M/ Y',strtotime($data['last_month_record']->LASTPAYMENTDATE)) }}
 									@endif
 									</td>
 								</tr>
