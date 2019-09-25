@@ -1774,11 +1774,12 @@
 		var service_year = $('#service_year').val();
 		var resign_reason = $('#resign_reason').val();
 		var status_id = $('#status_id').val();
-		if(service_year!=0 && resign_reason!='' && status_id==1){
+        var doj = $('#doj').val();
+		if(service_year!=0 && resign_reason!='' && status_id==1 && doj!=''){
 			$.ajax({
 				type:"GET",
 				dataType:"json",
-				url:"{{URL::to('/get-bf-amount') }}?service_year="+service_year+"&resign_reason="+resign_reason,
+				url:"{{URL::to('/get-bf-amount') }}?service_year="+service_year+"&resign_reason="+resign_reason+"&doj="+doj,
 				success:function(res){
 					if(res){
 						$("#benefit_amount").val(res);
