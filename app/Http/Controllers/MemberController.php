@@ -83,7 +83,7 @@ class MemberController extends CommonController
             'name'=>'required',
             'gender'=>'required',
             'mobile'=>'required',
-            'email'=>'required',
+            //'email'=>'required',
             'doe'=>'required',
             'designation'=>'required',
             'race'=>'required',
@@ -103,7 +103,7 @@ class MemberController extends CommonController
             'name.required'=>'Please Enter Your Name',
             'gender.required'=>'Please choose Gender',
             'mobile.required'=>'Please Enter Mobile Number',
-            'email.required'=>'Please Enter Email Address',
+            //'email.required'=>'Please Enter Email Address',
             'doe.required'=>'Please choose DOE',
             'designation.required'=>'Please choose  your Designation',
             'race.required'=>'Please Choose your Race ',
@@ -119,11 +119,30 @@ class MemberController extends CommonController
         ]);
 
         $member_name = $request->input('name');
-        $member_email = $request->input('email');
+		$member_email = $request->input('email');
+
+		
+
 		$number_count = 0;
-        if($member_name!="" &&  $member_email!=""){
+        if($member_name!=""){
 			
 			if($auto_id==''){
+
+				if($request->input('member_number')!=""){
+					$number_count = DB::table('membership')->where('member_number', $request->input('member_number'))->count();
+				}
+				
+				if($number_count>0){
+					$member_number = CommonHelper::get_auto_member_number();
+				}else{
+					$member_number = $request->input('member_number');
+				}
+
+				if($member_email==''){
+					$membername_nospace = strtolower(str_replace(' ', '', $member_name));
+					$member_email = $membername_nospace.'_'.$member_number.'@gmail.com';
+				}
+
 				$member_role = Role::where('slug', 'member')->first();
 				$randompass = CommonHelper::random_password(5,true);
 
@@ -171,12 +190,11 @@ class MemberController extends CommonController
 					}
 					
 				}
-				if($request->input('member_number')!=""){
-					$number_count = DB::table('membership')->where('member_number', $request->input('member_number'))->count();
-					
-				}
+				
 				
 			}else{
+				$member_email = $request->input('email');
+				$member_number = $request->input('member_number');
 				if(!empty(Auth::user())){
 					$user_id = Auth::user()->id;
 					$get_roles = User::find($user_id)->roles;
@@ -239,19 +257,15 @@ class MemberController extends CommonController
 				}
 			}
 			$member['member_title_id'] = $request->input('member_title');
-			/*if($number_count>0){
-				$member_number = CommonHelper::get_auto_member_number();
-			}else{
-				$member_number = $request->input('member_number');
-			}*/
-			if(!empty($request->input('member_number'))){
-				$member['member_number']  = $request->input('member_number');
-			}
-			//$member['member_number'] = $member_number;
+			
+			// if(!empty($request->input('member_number'))){
+			// 	$member['member_number']  = $request->input('member_number');
+			// }
+			$member['member_number'] = $member_number;
 			$member['name'] = $request->input('name');
 			$member['gender'] = $request->input('gender');
 			$member['mobile'] = $request->input('mobile');
-			$member['email'] = $request->input('email');
+			$member['email'] = $member_email;
 			$member['designation_id'] = $request->input('designation');
 			$member['old_member_number'] = $request->input('old_member_id');
 			//$member['old_member_number'] = $request->input('old_mumber_number');
@@ -297,9 +311,9 @@ class MemberController extends CommonController
 			
 			if($auto_id==''){
 				$member_id = $this->Membership->StoreMembership($member);
-				$member['member_number'] = CommonHelper::get_auto_member_number();
+				//$member['member_number'] = CommonHelper::get_auto_member_number();
 				//dd($member);
-				$update_memno = DB::table('membership')->where('id','=',$member_id)->update($member);
+				//$update_memno = DB::table('membership')->where('id','=',$member_id)->update($member);
 				
 				if(!$member_id){
 					return redirect($redirect_failurl)->with('error','Failed to Register');

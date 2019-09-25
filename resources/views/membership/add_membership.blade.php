@@ -123,13 +123,13 @@
 																	</div>
 																	<input id="auto_id" name="auto_id" value=""  type="text" class="hide">
 																</div>
-																<input id="member_number" name="member_number" value=""  type="hidden"  data-error=".errorTxt2">
-																<!--	
-																<div class="input-field col s12 m6 {{ $member_number_hide }}">
-																	<input id="member_number" name="member_number" value=""  type="hidden" class="validate" {{ $member_number_readonly }} data-error=".errorTxt2">
+																<!--input id="member_number" name="member_number" value=""  type="hidden"  data-error=".errorTxt2"-->
+																	
+																<div class="input-field col s12 m6 hide">
+																	<input id="member_number" name="member_number" value="{{ CommonHelper::get_auto_member_number() }}"   type="hidden" {{ $member_number_readonly }} data-error=".errorTxt2">
 																	<label for="member_number" class="force-active">{{__('Member Number') }} *</label>
 																	<div class="errorTxt2"></div>
-																</div>-->
+																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<label for="name" class="force-active">{{__('Member Name') }} *</label>
@@ -166,7 +166,7 @@
 																	<div class="errorTxt5"></div>
 																</div>
 																<div class="input-field col s12 m6">
-																	<label for="email" class="force-active">{{__('Email') }} *</label>
+																	<label for="email" class="force-active">{{__('Email') }} </label>
 																	<input id="email" name="email" value="{{ old('email') }}" type="email" data-error=".errorTxt6">
 																	<div class="errorTxt6"></div>
 																</div>
@@ -277,7 +277,7 @@
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<label for="address_three" class="force-active">{{__('Address Line 3') }}*</label>
+																	<label for="address_three" class="force-active">{{__('Address Line 3') }}</label>
 																	<input id="address_three" name="address_three" value="{{ old('address_three') }}" type="text" data-error=".errorTxt16">
 																	<div class="errorTxt16"></div>
 																</div>
@@ -510,7 +510,7 @@
 																				</div>
 																				<div class="clearfix"> </div>
 																				<div class="input-field col s12 m4">
-																					<label for="nominee_address_three">Address Line 3*</label>
+																					<label for="nominee_address_three">Address Line 3</label>
 																					<input id="nominee_address_three" name="nominee_address_three" type="text" value="" >
 																				</div>
 																				<div class="input-field col s12 m4">
@@ -660,7 +660,7 @@
 																				</div>
 																				<div class="clearfix"> </div>
 																				<div class="input-field col s12 m4">
-																					<label for="guardian_address_three">Address Line 3*</label>
+																					<label for="guardian_address_three">Address Line 3</label>
 																					<input id="guardian_address_three" name="guardian_address_three" type="text" value="" >
 																				</div>
 																				<div class="input-field col s12 m4">
@@ -823,7 +823,7 @@
                 required: true,	
             },
             email: {
-                required: true,
+                //required: true,
 				email:true,
 				remote: {
 					url: "{{ url(app()->getLocale().'/member_emailexists')}}",
@@ -873,9 +873,9 @@
 			address_two: {
                 required:true,
             },
-			address_three: {
-                required:true,
-            },
+			// address_three: {
+   //              required:true,
+   //          },
             dob: {
                 required:true,
             }, 
@@ -958,7 +958,7 @@
                 
             },
             email: {
-                required: "Please enter valid email",
+                //required: "Please enter valid email",
 				remote: '{{__("Email Already exists") }}',
             },
             designation: {

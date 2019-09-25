@@ -429,8 +429,8 @@
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6">
-                                                        <label for="address_three" class="force-active">Address Line 3*</label>
-                                                        <input id="address_three" name="address_three" required type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
+                                                        <label for="address_three" class="force-active">Address Line 3</label>
+                                                        <input id="address_three" name="address_three"  type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
                                                         <div class="errorTxt10"></div>
                                                     </div>
                                                     <div class="col s12 m6">
@@ -1480,9 +1480,9 @@
             address_two: {
                 required: true,
             },
-            address_three: {
-                required: true,
-            },
+            // address_three: {
+            //     required: true,
+            // },
             dob: {
                 required: true,
             },
