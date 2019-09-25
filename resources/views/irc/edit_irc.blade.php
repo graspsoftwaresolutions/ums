@@ -278,7 +278,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								</p>	
 							</div>
 							<div class="col s12 m3 ">								
-									<input type="text" id="person_name" readonly value="{{$dataresigneddata->ircname}}">
+									<input type="text" id="person_name" readonly value="{{$dataresigneddata->resignedmembername}}">
 							</div>
 						</div>						
 					</div>

@@ -143,7 +143,7 @@
                                                                 </label>
                                                             </div>
                                                             <div class="col s12 m3 ">
-                                                                <input type="text" name="irc_person_name" style="width:200%" value=" {{ !empty($irc_data) ? $irc_data->ircname : ''}}">
+                                                                <input type="text" name="irc_person_name" style="width:200%" value=" {{ !empty($irc_data) ? $irc_data->resignedmembername : ''}}">
                                                             </div>
                                                         </div>
                                                     </div>
