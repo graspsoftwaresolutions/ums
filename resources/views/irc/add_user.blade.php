@@ -106,8 +106,8 @@
 											</div>
 											<div class="input-field col s12 m6 hide" id="memberarea">
 												<label for="member_search" class="force-active">{{__('Member Name')}}</label>
-												<input id="member_search" type="text" required autocomplete="off" class="validate " data-error=".errorTxt6" value="" name="member_search">
-												<input id="member_code" type="text" required autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
+												<input id="member_search" type="text" autocomplete="off" class="validate " data-error=".errorTxt6" value="" name="member_search">
+												<input id="member_code" type="text" autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
 												<div class="errorTxt6"></div>
 											</div>
 											<div class="input-field col s12 m6 hide" id="brancharea">

@@ -335,7 +335,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('statistic_union_report','ReportsController@UnionStatisticReport')->name('statsticsnew.union');
 	Route::get('process-memberstatus','SubscriptionAjaxController@UpdateMemberStatus');
 	Route::get('subscription_delete','SubscriptionController@DeleteSubscription');
-	Route::post('update_subscription','SubscriptionController@saveApproval')->name('subscription.update');
+	Route::post('update_subscription','SubscriptionController@saveSubscription')->name('subscription.update');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

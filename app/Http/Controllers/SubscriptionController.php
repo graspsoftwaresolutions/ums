@@ -1484,5 +1484,11 @@ class SubscriptionController extends CommonController
              return redirect(URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id))->with('error', 'Failed to delete');
         }
 	}
+
+
+    public function saveSubscription($lang, Request $request){
+        return $request->all();
+        $sub_member_id = $request->input('sub_member_id');
+    }
     
 }
