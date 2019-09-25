@@ -334,7 +334,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                     <input placeholder="NRIC" name="sub_member_nric" id="sub_member_nric" type="text" class="validate">
                     <label for="sub_member_nric">NRIC</label>
                 </div>
-				
+				<div class="clearfix"></div>
 				<div class="input-field col s6">
 					<input  placeholder="Amount" name="sub_member_amount" id="sub_member_amount" type="text" class="validate">
 					<label for="sub_member_amount">Amount</label>
@@ -804,5 +804,43 @@ function EditSubscription(autoid){
 			}
 		});
 }
+$('#subsformValidate').validate({
+	rules: {
+		sub_member_name: {
+			required: true,
+		},
+		sub_member_nric: {
+			required: true,
+		},
+		
+		sub_member_amount: {
+			required: true,
+			digits: true,
+		},
+	},
+	//For custom messages
+	messages: {
+			sub_member_nric: {
+				required: '{{__("Please Enter NRIC") }}',
+			},
+			sub_member_name: {
+				required: '{{__("Please Enter Member Name") }}',
+			},
+			
+			sub_member_amount: {
+				required: '{{__("Please Enter Member Amount") }}',
+				digits: '{{__("please Enter numbers only")}}'
+			},
+	},
+	errorElement: 'div',
+	errorPlacement: function(error, element) {
+	var placement = $(element).data('error');
+	if (placement) {
+		$(placement).append(error)
+	} else {
+		error.insertAfter(element);
+	}
+	}
+});
 </script>
 @endsection

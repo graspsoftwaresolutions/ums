@@ -1487,8 +1487,39 @@ class SubscriptionController extends CommonController
 
 
     public function saveSubscription($lang, Request $request){
-        return $request->all();
-        $sub_member_id = $request->input('sub_member_id');
+        //return $request->all();
+        $sub_member_id = $request->input('sub_member_auto_id');
+        $sub_member_name = $request->input('sub_member_name');
+        $sub_member_nric = $request->input('sub_member_nric');
+        $sub_member_amount = $request->input('sub_member_amount');
+        if($sub_member_id!=''){
+            $active_member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id')
+                    ->where('mm.id', '=', $sub_member_id)
+                    ->whereNotNull('mm.MemberCode')
+                    ->where('mm.update_status', '=', 1)
+                    ->get();
+            if(count($active_member_data)>0){
+                $member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id','ms.Date as date','mm.MonthlySubscriptionCompanyId as MonthlySubscriptionCompanyId')
+                    ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                    ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                    ->where('mm.id', '=', $sub_member_id)
+                    ->first();
+            }
+            $matchel = DB::table('mon_sub_member_match')
+                            ->where('mon_sub_member_id','=',$sub_member_id)
+                            ->delete();
+
+            $updata = ['MemberCode' => Null, 'StatusId' => Null, 'update_status' => 0, 'NRIC' => $sub_member_nric, 'Name' => $sub_member_name, 'Amount' => $sub_member_amount];
+                        //DB::enableQueryLog();
+            $savedata = MonthlySubscriptionMember::where('id',$sub_member_id)->update($updata);
+
+            $sub_data = DB::table("mon_sub_member as mm")->select('mm.MonthlySubscriptionCompanyId')
+                    ->where('mm.id', '=', $sub_member_id)
+                    ->first();
+
+            $enc_id = Crypt::encrypt($sub_data->MonthlySubscriptionCompanyId); 
+            return redirect(URL::to('/'.app()->getLocale().'/scan-subscription/'.$enc_id))->with('message', 'Subscription updated Successfully');
+        }
     }
     
 }

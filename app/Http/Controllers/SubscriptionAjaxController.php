@@ -145,14 +145,16 @@ class SubscriptionAjaxController extends CommonController
 			->get()->toArray();
         }
         else {
-			$search = $request->input('search.value'); 
-            $sub_mem = $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
-                        ->orWhere('m.id', 'LIKE',"%{$search}%")
-					   ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
-					   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
-					   ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
-					   ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-					   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
+            $search = $request->input('search.value'); 
+            
+            $sub_mem = $commonqry->where(function($query) use ($search){
+                            $query->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+                            ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+                            ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+                            ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                            ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
+                        });  
+          
 		    if( $limit != -1){
 			   $sub_mem = $sub_mem->offset($start)
 						->limit($limit);
@@ -161,14 +163,13 @@ class SubscriptionAjaxController extends CommonController
 					  ->get()->toArray();
 			
 			
-            $totalFiltered =  $commonqry->where('mon_sub_member.id','LIKE',"%{$search}%")
-                             ->orWhere('m.id', 'LIKE',"%{$search}%")
-                            ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
-							    ->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
-							   ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
-                               ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
-                               ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-							   ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%")
+            $totalFiltered =  $commonqry->where(function($query) use ($search){
+                                    $query->orWhere('mon_sub_member.Name', 'LIKE',"%{$search}%")
+                                    ->orWhere('mon_sub_member.MemberCode', 'LIKE',"%{$search}%")
+                                    ->orWhere('mon_sub_member.NRIC', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('mon_sub_member.Amount', 'LIKE',"%{$search}%");
+                                })  
 							   ->count();
         }
     //     var_dump($sub_mem);
