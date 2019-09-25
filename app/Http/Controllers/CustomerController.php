@@ -19,7 +19,12 @@ class CustomerController extends Controller
 		$data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
 		$data['user_type'] = 1;
        return view('membership.test_membership')->with('data',$data);  
-    }
+	}
+	
+	public function Testbackcard(){
+		$data = [];
+    	return view('membership.card_back_membership')->with('data',$data);  
+	}
 
     public function TestWizard()
     {
