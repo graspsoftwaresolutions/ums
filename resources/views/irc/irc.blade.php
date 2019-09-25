@@ -515,12 +515,12 @@ $("#member_number").devbridgeAutocomplete({
 
 					if(res.gender == 'Male')
 					{
-						$('#gen').append("He was");
-						$('#gend').append("I hearby confirm that He got He is no longer doing any clerical job function.");
+						$('#gen').html("He was");
+						$('#gend').html("I hearby confirm that He got He is no longer doing any clerical job function.");
 					}
 					else{
-						$('#gen').append("She was");
-						$('#gend').append("I hearby confirm that She got She is no longer doing any clerical job function.");
+						$('#gen').html("She was");
+						$('#gend').html("I hearby confirm that She got She is no longer doing any clerical job function.");
 					}
 				}
 			});
