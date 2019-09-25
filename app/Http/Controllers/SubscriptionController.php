@@ -829,7 +829,8 @@ class SubscriptionController extends CommonController
         $data['last_month_record'] = DB::table($this->membermonthendstatus_table.' as ms')
                                             ->where('ms.MEMBER_CODE','=',$id)
                                             ->OrderBy('ms.StatusMonth','desc')
-                                            ->first();
+											->first();
+											//dd($data['last_month_record']->LASTPAYMENTDATE);
 		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
 		
 		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
