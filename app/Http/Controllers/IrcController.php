@@ -47,12 +47,12 @@ class IrcController extends CommonController
 		$member_code = $request->input('member_code');
 		$account_type = $request->input('account_type');
 		$union_branch_id = $request->input('union_branch_id');
-		// if($account_type=='irc-confirmation' && $member_code==""){
-		// 	return redirect( app()->getLocale().'/add_irc_account')->with('error','Please pick a member'); 
-		// }
-		// if($account_type=='irc-branch-committee' && $union_branch_id==""){
-		// 	return redirect( app()->getLocale().'/add_irc_account')->with('error','Please select Branch'); 
-		// }
+		if($account_type=='irc-confirmation' && $member_code==""){
+			return redirect( app()->getLocale().'/add_irc_account')->with('error','Please pick a member'); 
+		}
+		if($account_type=='irc-branch-committee' && $union_branch_id==""){
+			return redirect( app()->getLocale().'/add_irc_account')->with('error','Please select Branch'); 
+		}
 		
 		
 		$user_role = Role::where('slug', $account_type)->first();

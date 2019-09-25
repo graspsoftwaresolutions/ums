@@ -126,6 +126,7 @@
 							</div>
 							<div class="input-field col s6 right-align">
 								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+								<input type="button" id="member_print" class="btn cyan hide" name="search" name="member_print" value="{{__('Print')}}">
 							</div>
 						</div>
 					</div>
@@ -396,7 +397,15 @@ $('#clear').click(function(){
 	$('#member_search').val("");
 	$(".selectpicker").val('').trigger("change"); 
 });
-
+$(document).on('click','#member_print',function(event){
+	var from_date = $("#from_date").val();
+	var to_date = $("#to_date").val();
+	var company_id = $("#company_id").val();
+	var branch_id = $("#branch_id").val();
+	var member_auto_id = $("#member_auto_id").val();
+	var join_type = $("#join_type").val();
+	window.location.replace('test','');
+});
 </script>
 
 @endsection

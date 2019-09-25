@@ -389,6 +389,7 @@ Route::get('/maintenance', function () {
 });
 
 Route::get('/test-card', 'CustomerController@TestWizard');
+Route::get('/test-backcard', 'CustomerController@Testbackcard');
 
 Route::get('irc','IRCController@index');
 
@@ -397,3 +398,5 @@ Route::get('/clear-cache', function() {
 });
 
 Route::get('addpayments','MemberController@AddPaymentEntry');
+
+Route::get('get-ircbranch-member-list','IrcController@getUnionAutomemberslist');
