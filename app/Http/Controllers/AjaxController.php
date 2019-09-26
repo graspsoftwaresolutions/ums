@@ -1059,13 +1059,52 @@ class AjaxController extends CommonController
 
     //Ajax Datatable FormType List
     public function ajax_company_list(Request $request){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
 
+        if($user_role=='union'){
+			$company_ids = DB::table('company as c')
+							->pluck('c.id');
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.union_branch_id', '=',$union_branch_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else if($user_role=='company'){
+			$user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else if($user_role=='company-branch'){
+			$user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else{
+			$company_ids = [];
+        }
+        //dd($company_ids);
         $columns = array(
             0 => 'company_name',
             1 => 'short_code',
             2 => 'id'
         );
-        $totalData = Company::count();
+        if($user_role!='union'){
+            $totalData = Company::whereIn('id', $company_ids)->count();
+        }else{
+            $totalData = Company::count();
+        }
+        
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -1074,44 +1113,45 @@ class AjaxController extends CommonController
         $dir = $request->input('order.0.dir');
         if(empty($request->input('search.value')))
         {            
-            if( $limit == -1){
-                $Company = Company::select('id','company_name','short_code')->orderBy($order,$dir)
-                ->where('status','=','1')
-                ->get();
-            }else{
-                $Company = Company::select('id','company_name','short_code')->offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->where('status','=','1')
-                ->get();
+            $Company = Company::select('id','company_name','short_code')->orderBy($order,$dir)
+            ->where('status','=','1');
+            if($limit != -1){
+                $Company = $Company->offset($start)->limit($limit);
             }
+            if($user_role!='union'){
+                $Company = $Company->whereIn('id', $company_ids);
+            }
+            $Company = $Company->get();
+         // dd( count($Company) );
         }
         else {
-        $search = $request->input('search.value'); 
-        if($limit == -1){
-            $Company     = Company::select('id','company_name','short_code')->where('id','LIKE',"%{$search}%")
-                        ->orWhere('company_name', 'LIKE',"%{$search}%")
-                         ->orWhere('short_code', 'LIKE',"%{$search}%")
-                        ->where('status','=','1')
-                        ->orderBy($order,$dir)
-                        ->get();
-        }else{
-            $Company      = Company::select('id','company_name','short_code')->where('id','LIKE',"%{$search}%")
+            $search = $request->input('search.value'); 
+            $Company  = Company::select('id','company_name','short_code')->where('id','LIKE',"%{$search}%")
+                            ->orWhere('company_name', 'LIKE',"%{$search}%")
+                            ->orWhere('short_code', 'LIKE',"%{$search}%")
+                            ->where('status','=','1');
+            if($user_role!='union'){
+                $Company = $Company->whereIn('id', $company_ids);
+            }
+            if($limit == -1){
+                $Company     = $Company->orderBy($order,$dir)->get();
+            }else{
+                $Company     = $Company->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                            ->get();
+            }
+            $totalFiltered = Company::where('id','LIKE',"%{$search}%")
                         ->orWhere('company_name', 'LIKE',"%{$search}%")
                         ->orWhere('short_code', 'LIKE',"%{$search}%")
-                        ->offset($start)
-                        ->limit($limit)
-                        ->where('status','=','1')
-                        ->orderBy($order,$dir)
-                        ->get();
-        }
-        $totalFiltered = Company::where('id','LIKE',"%{$search}%")
-                    ->orWhere('company_name', 'LIKE',"%{$search}%")
-                    ->orWhere('short_code', 'LIKE',"%{$search}%")
-                    ->where('status','=','1')
-                    ->count();
+                        ->where('status','=','1');
+            if($user_role!='union'){
+                $totalFiltered = $totalFiltered->whereIn('id', $company_ids);
+            }
+            $totalFiltered = $totalFiltered->count();
         }
         $table = "company";
+        //$data =[];
         $data = $this->CommonAjaxReturn($Company->toArray(), 0, 'master.companydestroy', 0,$table);
         
         $json_data = array(

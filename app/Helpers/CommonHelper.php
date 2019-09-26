@@ -419,7 +419,7 @@ class CommonHelper
                 $members_count = DB::table('membership as m')
                                     ->join('company_branch as c','c.id','=','m.branch_id')
                                     ->where('c.union_branch_id','=',$union_branch_id)
-                                    ->where('cb.company_id','=',$autoid)->count();
+                                    ->where('c.company_id','=',$autoid)->count();
             }
             else if($table=="company_branch")
             {

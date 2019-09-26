@@ -188,8 +188,8 @@
 @section('footerSecondSection')
 <script>
 $("#reports_sidebars_id").addClass('active');
-$("#subscription_bank_sidebar_li_id").addClass('active');
-$("#subscription_bank_sidebar_a_id").addClass('active');
+$("#member_due_sidebar_li_id").addClass('active');
+$("#member_due_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		$('#scroll-vert-hor').DataTable({

@@ -349,7 +349,10 @@ class CommonController extends Controller
                     $actions .="";
                 }
 				else{
-                    $actions .="&nbsp; <a href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons' style='color:red;'>delete</i></a></label>";
+                    if($user_role=='union'){
+                        $actions .="&nbsp; <a href='$delete' onclick='return ConfirmDeletion()' ><i class='material-icons' style='color:red;'>delete</i></a></label>";
+                    }
+                    
                 }
                 
                

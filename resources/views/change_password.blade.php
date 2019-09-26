@@ -38,8 +38,13 @@
 							@csrf
 							<div class="row">
 								<div class="input-field col s12">
-									<h5 class="ml-4">{{ __('Change Password') }}</h5>
+									<h5 class="ml-4">{{ __('Change Password') }} [ {{ Auth::user()->name }} ]</h5>
 									@include('includes.messages')
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12 center">
+									EMAIL : {{ Auth::user()->email }}
 								</div>
 							</div>
 							<div class="input-field col s12{{ $errors->has('current-password') ? ' has-error' : '' }}">
