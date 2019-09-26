@@ -616,6 +616,53 @@ class CacheMonthEnd
 		});
 	}
 
+	public function getMonthEndDue($datestring){
+		$key = "getMonthEndDue.{$datestring}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		{
+			 $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.new_ic as ic',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+			     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+			     ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
+			     ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
+			     ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+				 ->where('ms.StatusMonth', '=', $datestring)
+				 ->groupBy('ms.MEMBER_CODE')
+			     ->orderBy('ms.id','desc')
+				 ->get();
+		    	
+			return $members;
+		});
+	}
+
+	public function getMonthEndDueFilter($datestring,$company_id,$unionbranch_id){
+		$key = "getMonthEndDueFilter.{$datestring}.c.{$company_id}.u.{$unionbranch_id}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$company_id,$unionbranch_id)
+		{
+			$members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.new_ic as ic',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+			     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+			     ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
+			     ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
+				 ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+				 ->where('ms.StatusMonth', '=', $datestring);
+			if($company_id!=""){
+				$members = $members->where('ms.BANK_CODE','=',$company_id);
+			}else{
+				if($unionbranch_id!=""){
+					$members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
+				}
+			}
+			$members = $members->groupBy('ms.MEMBER_CODE')
+			     ->orderBy('ms.id','desc')
+				 ->get();
+		    	
+			return $members;
+		});
+	}
+
 
 	public function getCacheKey($key){
 		$key = strtoupper($key);

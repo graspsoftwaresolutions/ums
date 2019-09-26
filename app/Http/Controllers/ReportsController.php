@@ -1566,16 +1566,18 @@ class ReportsController extends Controller
         return view('reports.due')->with('data',$data);  
     }
     public function IframeDueReport(){
-        $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.new_ic as ic',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
-            ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-            ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
-            ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
-            ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
-            ->groupBy('ms.MEMBER_CODE')
-            ->orderBy('ms.id','desc');
-        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
-        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
-        $members = $members->get();
+        // $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.new_ic as ic',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+        //     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+        //     ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
+        //     ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
+        //     ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+        //     ->groupBy('ms.MEMBER_CODE')
+        //     ->orderBy('ms.id','desc');
+        // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
+        // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
+        // $members = $members->get();
+
+        $members = CacheMonthEnd::getMonthEndDue(date('Y-m-01'));
 
         $data['member_view'] = $members;
         return view('reports.iframe_due')->with('data',$data);
@@ -1587,28 +1589,35 @@ class ReportsController extends Controller
         $unionbranch_id = $request->input('unionbranch_id');
 		$monthno = date('d');
         $yearno = date('Y');
+        $full_year = date('Y-m-01');
         if($month_year!=""){
           $fmmm_date = explode("/",$month_year);
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+          $full_year = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
-        $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
-            ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-            ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
-            ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
-            ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
-            ->groupBy('ms.MEMBER_CODE')
-            ->orderBy('ms.id','desc');
-        if($company_id!=""){
-            $members = $members->where('ms.BANK_CODE','=',$company_id);
+        if($company_id=="" && $unionbranch_id==""){
+            $members = CacheMonthEnd::getMonthEndDue($full_year);
         }else{
-            if($unionbranch_id!=""){
-                $members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
-            }
+            $members = CacheMonthEnd::getMonthEndDueFilter($full_year,$company_id,$unionbranch_id);
         }
-        $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
-        $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
-        $members = $members->get();
+        // $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+        //     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+        //     ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
+        //     ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
+        //     ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+        //     ->groupBy('ms.MEMBER_CODE')
+        //     ->orderBy('ms.id','desc');
+        // if($company_id!=""){
+        //     $members = $members->where('ms.BANK_CODE','=',$company_id);
+        // }else{
+        //     if($unionbranch_id!=""){
+        //         $members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
+        //     }
+        // }
+        // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
+        // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
+        // $members = $members->get();
         $data['member_view'] = $members;
         return view('reports.iframe_due')->with('data',$data);
     }
