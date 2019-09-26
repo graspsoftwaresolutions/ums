@@ -79,11 +79,25 @@
 				<form method="post" id="filtersubmit" action="">
 				<div id="hidesearch" class="row">    
 					@csrf  
-					<div class="row">                          
-						<div class="col s12 m6 l3 hide">
+					<div class="row">
+						<div class="col s12 m6 l3">
 							<label for="month_year">{{__('Month and Year')}}</label>
 							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
-						</div>
+						</div>        
+						<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
+							<label>{{__('Union Branch Name') }}</label>
+							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+								<option value="">{{__('Select Union') }}</option>
+								@foreach($data['unionbranch_view'] as $value)
+                                <option value="{{$value->id}}">
+                                    {{$value->union_branch}}</option>
+                                @endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt22"></div>
+							</div>
+						</div>                  
+						
 						<div class="col s12 m6 l3">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
@@ -223,9 +237,10 @@ $("#subscription_bank_sidebar_a_id").addClass('active');
 		event.preventDefault();
 		var month_year = $("#month_year").val();
 		var company_id = $("#company_id").val();
+		var unionbranch_id = $("#unionbranch_id").val();
 		if(month_year!=""){
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id;
-			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-subscription-report') }}?offset=0"+searchfilters,);
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&unionbranch_id='+unionbranch_id;
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-due-report') }}?offset=0"+searchfilters,);
 			// $('#scroll-vert-hor tbody').empty();
 			// //loader.showLoader();
 			// $.ajax({

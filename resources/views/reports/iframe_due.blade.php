@@ -113,11 +113,11 @@
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES, MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">Due REPORT</h6>
+					<h6 style="text-align:center;">DUE REPORT</h6>
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Subscription Bank Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Subscription Bank Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Due Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Due Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -162,7 +162,7 @@
 							<td style="width:170px  !important ;border : 1px solid white;">{{ $member->name }}</td>
 							<td style="width:120px  !important ;border : 1px solid white;">{{ $member->ic }}</td>
 							<td style="width:130px  !important ;border : 1px solid white;">{{ $member->company_name }}</td>
-							<td style="width:120px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
+							<td style="width:130px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
 							<td style="width:120px  !important ;border : 1px solid white;">{{ $member->unionbranch }}</td>
 							<td style="width:120px  !important ;border : 1px solid white;">{{ $member->doj }}</td>
 							<td style="width:100px  !important ;border : 1px solid white;">{{ $member->TOTALMONTHSDUE }}</td>
