@@ -59,9 +59,10 @@
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
-					<input id="member_number" name="resignedmemberno"  class="common-input"
+					<input id="member_number" name="member_number"  class="common-input"
 						type="text" required data-error=".errorTxt1" autocomplete="off">
 					<input type="hidden" name="resignedmemberno" id="memberid">
+					<input type="hidden" name="union_branch_id" id="union_branch_id">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s4">
@@ -172,7 +173,7 @@
 				<div class="input-field col s6">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
-					<input id="irc_member_no"   name="ircmember" class="common-input"
+					<input id="irc_member_no" name="ircmember" class="common-input"
 						type="text" required data-error=".errorTxt8">
 						<input type="hidden" name="ircmembershipno" id="irc_member_code">
 					<div class="errorTxt8"></div>
@@ -496,6 +497,7 @@ $("#member_number").devbridgeAutocomplete({
 					$('#person_name').val(res.membername);
 					$('#memberid').val(res.memberid);
 					$('#member_id').val(res.memberid);
+					$('#union_branch_id').val(res.union_branch_id);
 					$('#branch_name').val(res.branch_name);
 					$('#bank_name').val(res.company_name);
 					$('#dob').val(res.dob);
@@ -545,6 +547,9 @@ $("#irc_member_no").devbridgeAutocomplete({
 	//lookup: countries,
 	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
 	type:'GET',
+	params: { 
+		union_branch_id:  function(){ return $("#union_branch_id").val();  },
+	},
 	//callback just to show it's working
 	onSelect: function (suggestion) {
 			$("#irc_member_no").val(suggestion.member_number);	

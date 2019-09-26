@@ -1557,5 +1557,25 @@ class ReportsController extends Controller
         //return view('Reports.statistics')->with('data',$data); 
         return view('reports.iframe_union_statistics')->with('data',$data);   
     }
+
+    public function DueReport()
+    {
+        $data = [];
+        $data['company_list'] = DB::table('company')->where('status','=','1')->get();
+        return view('reports.due')->with('data',$data);  
+    }
+    public function IframeDueReport(){
+        $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(ms.LASTPAYMENTDATE) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.new_ic as ic','m.doj','c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+            ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+            ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
+            ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
+            ->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
+            ->groupBy('ms.MEMBER_CODE')
+            ->orderBy('ms.id','desc');
+        $members = $members->get();
+
+        $data['member_view'] = $members;
+        return view('reports.iframe_due')->with('data',$data);
+    }
 }
 

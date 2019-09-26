@@ -1284,6 +1284,53 @@ class MembershipController extends Controller
         echo $bfamount;
     }
 
+    public function MembersNewPrint(Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $status_id = $request->input('status_id');
+        $monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','cb.branch_name as branch_name')
+                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+                ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','cb.company_id')
+                ->leftjoin('status as s','s.id','=','mm.StatusId');
+                //->leftjoin('designation as d','m.designation_id','=','d.id')
+                //->leftjoin('state as st','st.id','=','m.state_id')
+                //->leftjoin('city as cit','cit.id','=','m.city_id')
+                //->leftjoin('race as r','r.id','=','m.race_id');
+                if($status_id!="" && $status_id!=0){
+                    $members = $members->where('mm.StatusId','=',$status_id);
+                }
+                if($monthno!="" && $yearno!=""){
+                  $members = $members->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+                  $members = $members->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+                }
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }else{
+                    if($company_id!=""){
+                        $members = $members->where('cb.company_id','=',$company_id);
+                    }
+                }
+                if($member_auto_id!=""){
+                    $members = $members->where('m.id','=',$member_auto_id);
+                }
+            $members = $members->get();
+        $data['member_view'] = $members;
+        return view('membership.card_membership')->with('data',$data);  
+    }
+
     
 }
 

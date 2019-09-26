@@ -173,9 +173,11 @@ class IrcController extends CommonController
 	{
 		
 		$searchkey = $request->input('searchkey');
-        $search = $request->input('query');
+		$search = $request->input('query');
+		$union_branch_id = $request->input('union_branch_id');
 		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
 							->leftjoin('membership as m','irc.MemberCode','=','m.id')
+							->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
 							->where('irc.account_type','=','irc-confirmation')
 							->where(function($query) use ($search){
                                 $query->orWhere('m.member_number', 'LIKE',"%{$search}%")
@@ -185,6 +187,7 @@ class IrcController extends CommonController
 									->orWhere('irc.MemberCode', 'LIKE',"%{$search}%");
 							})
 							->where('m.status_id','!=',4)
+							->where('cb.union_branch_id','=',$union_branch_id)
 							->limit(25)
 							->get(); 
          return response()->json($res);

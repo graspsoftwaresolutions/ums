@@ -336,6 +336,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('process-memberstatus','SubscriptionAjaxController@UpdateMemberStatus');
 	Route::get('subscription_delete','SubscriptionController@DeleteSubscription');
 	Route::post('update_subscription','SubscriptionController@saveSubscription')->name('subscription.update');
+	Route::get('get-new-members-print','MembershipController@MembersNewPrint')->name('reports.newmembersprint');
+	Route::get('due_report','ReportsController@DueReport')->name('reports.due');
+	Route::get('iframe_due_report','ReportsController@IframeDueReport')->name('reports.due_iframe');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

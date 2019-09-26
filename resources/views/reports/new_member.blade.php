@@ -404,7 +404,8 @@ $(document).on('click','#member_print',function(event){
 	var branch_id = $("#branch_id").val();
 	var member_auto_id = $("#member_auto_id").val();
 	var join_type = $("#join_type").val();
-	window.location.replace('test','');
+	var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+	var win = window.open("{{ url(app()->getLocale().'/get-new-members-print?offset=0') }}"+searchfilters, '_blank');
 });
 </script>
 
