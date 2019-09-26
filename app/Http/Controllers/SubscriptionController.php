@@ -1468,6 +1468,13 @@ class SubscriptionController extends CommonController
                     'updated_by' => Auth::user()->id,
                 ];
                 DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
+            }else{
+                $payment_data = [
+                    'last_paid_date' => Null,
+                    'due_amount' => Null,
+                    'updated_by' => Auth::user()->id,
+                ];
+                DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
             }
         }
         $matchel = DB::table('mon_sub_member_match')

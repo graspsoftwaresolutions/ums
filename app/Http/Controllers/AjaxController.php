@@ -1165,7 +1165,41 @@ class AjaxController extends CommonController
 
     //Company Details End
     public function AjaxCompanyBranchList(Request $request){
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+
+        if($user_role=='union'){
+			$company_ids = DB::table('company as c')
+							->pluck('c.id');
+		}else if($user_role=='union-branch'){
+			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.union_branch_id', '=',$union_branch_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else if($user_role=='company'){
+			$user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else if($user_role=='company-branch'){
+			$user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+							->pluck('c.id');
+		}else{
+			$company_ids = [];
+        }
 
         $columns = array( 
             0 => 'company_id', 
@@ -1176,8 +1210,11 @@ class AjaxController extends CommonController
         );
 
        
-        $totalData = DB::table('company_branch as b')->where('b.status','=','1')
-                                ->count();
+        $totalData = DB::table('company_branch as b')->where('b.status','=','1');
+        if($user_role!='union'){
+            $totalData = $totalData->whereIn('b.company_id', $company_ids);
+        }
+        $totalData = $totalData->count();                 
         $totalFiltered = $totalData; 
         $limit = $request->input('length');
         
@@ -1186,62 +1223,42 @@ class AjaxController extends CommonController
         $dir = $request->input('order.0.dir');
 
         if(empty($request->input('search.value')))
-        {            
-            if( $limit == -1){
-                $companybranchs = DB::table('company_branch as b')
-				->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
-				->leftjoin('company as c','c.id','=','b.company_id')
-                ->where('b.status','=','1')
-                ->orderBy($order,$dir)
-                ->get()->toArray();
-            }else{
-                $companybranchs = DB::table('company_branch as b')
-				->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
-				->leftjoin('company as c','c.id','=','b.company_id')
-                ->where('b.status','=','1')
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->get()->toArray();
+        {
+            $companybranchs = DB::table('company_branch as b')
+            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+            ->leftjoin('company as c','c.id','=','b.company_id')
+            ->where('b.status','=','1');
+            if($limit != -1){
+                $companybranchs = $companybranchs->offset($start)->limit($limit);
             }
-                
-        
+            if($user_role!='union'){
+                $companybranchs = $companybranchs->whereIn('b.company_id', $company_ids);
+            }
+            $companybranchs = $companybranchs->get()->toArray();
+
         }
         else {
-        $search = $request->input('search.value'); 
-        if( $limit == -1){
+            $search = $request->input('search.value'); 
             $companybranchs = DB::table('company_branch as b')
-                            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
-                            ->leftjoin('company as c','c.id','=','b.company_id')
-                            ->where('b.status','=','1')
-                            ->where(function($query) use ($search){
-                                $query->orWhere('b.id','LIKE',"%{$search}%")
-                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
-                                ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
-                                ->orWhere('b.is_head', 'LIKE',"%{$search}%")
-                                ->orWhere('b.email', 'LIKE',"%{$search}%");
-                            })
-                            ->orderBy($order,$dir)
-                            ->get()->toArray();
-        }else{
-            $companybranchs =  DB::table('company_branch as b')
-                            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
-                            ->leftjoin('company as c','c.id','=','b.company_id')
-                            ->where('b.status','=','1')
-                            ->where(function($query) use ($search){
-                                $query->orWhere('b.id','LIKE',"%{$search}%")
-                                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
-                                ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
-                                ->orWhere('b.is_head', 'LIKE',"%{$search}%")
-                                ->orWhere('b.email', 'LIKE',"%{$search}%");
-                            })
-                            ->offset($start)
-                            ->limit($limit)
-                            ->orderBy($order,$dir)
-                            ->get()->toArray();
-                            
-        }
+            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+            ->leftjoin('company as c','c.id','=','b.company_id')
+            ->where('b.status','=','1');
+            if($limit != -1){
+                $companybranchs = $companybranchs->offset($start)->limit($limit);
+            }
+            if($user_role!='union'){
+                $companybranchs = $companybranchs->whereIn('b.company_id', $company_ids);
+            }
+            $companybranchs = $companybranchs->where(function($query) use ($search){
+                $query->orWhere('b.id','LIKE',"%{$search}%")
+                ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
+                ->orWhere('b.is_head', 'LIKE',"%{$search}%")
+                ->orWhere('b.email', 'LIKE',"%{$search}%");
+            });
+            $companybranchs = $companybranchs->get()->toArray();
 
+           
              $totalFiltered = DB::table('company_branch as b')
                             ->leftjoin('company as c','c.id','=','b.company_id')
                             ->where('b.status','=','1')
@@ -1251,8 +1268,11 @@ class AjaxController extends CommonController
                                 ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
                                 ->orWhere('b.is_head', 'LIKE',"%{$search}%")
                                 ->orWhere('b.email', 'LIKE',"%{$search}%");
-                            })
-                            ->count();
+                            });
+            if($user_role!='union'){
+                $totalFiltered = $totalFiltered->whereIn('b.company_id', $company_ids);
+            }
+            $totalFiltered = $totalFiltered->count();
           
     }
     $table = "company_branch";
