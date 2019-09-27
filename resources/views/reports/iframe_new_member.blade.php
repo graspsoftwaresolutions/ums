@@ -74,7 +74,7 @@
 			  font-size: 14px;
 			}
 			.tbody-area{
-				top:162px;
+				top:172px;
 				position: absolute;
 			}
 		}

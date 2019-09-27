@@ -73,7 +73,7 @@
 			  color:#fff;
 			}
 			.tbody-area{
-				top:142px;
+				top:152px;
 				position: absolute;
 			}
 		}
