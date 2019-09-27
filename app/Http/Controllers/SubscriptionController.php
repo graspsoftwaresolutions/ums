@@ -506,10 +506,8 @@ class SubscriptionController extends CommonController
 						$subMemberMatch_six->save();
 						$insert_month_end = 0;
                     }
-					
-					if($insert_month_end==1 && $nric_matched==1){
-						$approval_status=1;
-						$total_subs_obj = CacheMembers::getTotalAmtByCode($member_code);
+                    $mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
+                        $total_subs_obj = CacheMembers::getTotalAmtByCode($member_code);
 						$total_subs = $total_subs_obj->amount;
 						
 						$total_count = CacheMembers::getTotalSubsByCode($member_code);
@@ -526,12 +524,15 @@ class SubscriptionController extends CommonController
 						$total_subs_to_paid = $diff_in_months==0 ? $subscription->Amount : ($diff_in_months*$subscription->Amount);
 						$total_pending = $total_subs_to_paid - $total_subs;
 						
-						$mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
+						
                         $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE')
                             ->where('ms.MEMBER_CODE','=',$member_code)
                             ->orderBY('ms.StatusMonth','desc')
                             ->first();
                         $m_subs_amt = number_format($subscription->Amount-($this->bf_amount+$this->ins_amount),2);
+					if($insert_month_end==1 && $nric_matched==1){
+						$approval_status=1;
+						
 						//$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_code)->count();
 						//dd($member_code);
 						$monthend_data = [
@@ -570,11 +571,7 @@ class SubscriptionController extends CommonController
 												'INSURANCEDUE' => $ins_due,
 												//'CURRENT_YDTINSURANCE' => 0,
 											];
-						if($mont_count>0){
-							DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_code)->update($monthend_data);
-						}else{
-							DB::table($this->membermonthendstatus_table)->insert($monthend_data);
-						}
+						
 						$payment_data = [
 							'last_paid_date' => $cur_date,
 							'due_amount' => $total_pending,
@@ -582,7 +579,49 @@ class SubscriptionController extends CommonController
 						];
 						DB::table('member_payments')->where('member_id', $member_code)->update($payment_data);
 						
-					}
+					}else{
+                        $monthend_data = [
+                            'StatusMonth' => $cur_date, 
+                            'MEMBER_CODE' => $member_code,
+                            'SUBSCRIPTION_AMOUNT' => 0,
+                            'BF_AMOUNT' => 0,
+                            'LASTPAYMENTDATE' => $cur_date,
+                            'TOTALSUBCRP_AMOUNT' => 0,
+                            'TOTALBF_AMOUNT' => 0,
+                            'TOTAL_MONTHS' => 1,
+                            'BANK_CODE' => $branch_data->company_id,
+                            'NUBE_BRANCH_CODE' => $branch_data->union_branch_id,
+                            'BRANCH_CODE' => $memberdata[0]->branch_id,
+                            'MEMBERTYPE_CODE' => $memberdata[0]->designation_id,
+                            'ENTRYMODE' => 'S',
+                            //'DEFAULTINGMONTHS' => 0,
+                            'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
+                            'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+                            'SUBSCRIPTIONDUE' => 0,
+                            'BFDUE' => 0,
+                            'ACCSUBSCRIPTION' => 0,
+                            'ACCINSURANCE' => 0,
+                            //'ACCBENEFIT' => 0,
+                            //'CURRENT_YDTBF' => 0,
+                            //'CURRENT_YDTSUBSCRIPTION' => 0,
+                            'STATUS_CODE' => $memberdata[0]->status_id,
+                            'RESIGNED' => $memberdata[0]->status_id==4 ? 1 : 0,
+                            'ENTRY_DATE' => date('Y-m-d'),
+                            'ENTRY_TIME' => date('h:i:s'),
+                            'STRUCKOFF' => $memberdata[0]->status_id==3 ? 1 : 0,
+                            'INSURANCE_AMOUNT' => 0,
+                            'TOTALINSURANCE_AMOUNT' => 0,
+                            'TOTALMONTHSCONTRIBUTION' => 0,
+                            'INSURANCEDUE' => $ins_due,
+                            //'CURRENT_YDTINSURANCE' => 0,
+                        ];
+                    }
+                    if($mont_count>0){
+                        DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_code)->update($monthend_data);
+                    }else{
+                        DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+                    }
+
                 }
 
                

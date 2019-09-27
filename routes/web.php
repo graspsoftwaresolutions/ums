@@ -347,7 +347,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('iframe_advice_resign_report','ReportsController@IframeAdviceResignReport')->name('advice.resignmember');
 	Route::get('get-new-unionmembers-report','ReportsController@newMembersUnionFilterReport')->name('reports.unionmembers');
 	Route::get('get-filter-resignedadvice-report','ReportsController@ResignMembersFilterReport')->name('advice.resign');
-	Route::get('get-filter-newadvice-report','ReportsController@AdvanceNewMembersFilterReport')->name('advice.resign');
+	Route::get('get-filter-newadvice-report','ReportsController@AdvanceNewMembersFilterReport')->name('advice.new');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
