@@ -27,6 +27,7 @@ class ReportsController extends Controller
     public function newMemberReport()
     {
         $data['data_limit']=$this->limit;
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
         $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
@@ -34,19 +35,19 @@ class ReportsController extends Controller
         $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
         $total_fee = $entry_fee+$ins_fee;
         
-        $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
-                    ->join('membership as m','c.id','=','m.branch_id')
-                    ->leftjoin('company as com','com.id','=','c.company_id')
-                    ->leftjoin('status as s','s.id','=','m.status_id')
-                    ->leftjoin('designation as d','m.designation_id','=','d.id')
-                    ->leftjoin('state as st','st.id','=','m.state_id')
-                    ->leftjoin('city as cit','cit.id','=','m.city_id')
-                    ->leftjoin('race as r','r.id','=','m.race_id');
+        // $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
+        //             ->join('membership as m','c.id','=','m.branch_id')
+        //             ->leftjoin('company as com','com.id','=','c.company_id')
+        //             ->leftjoin('status as s','s.id','=','m.status_id')
+        //             ->leftjoin('designation as d','m.designation_id','=','d.id')
+        //             ->leftjoin('state as st','st.id','=','m.state_id')
+        //             ->leftjoin('city as cit','cit.id','=','m.city_id')
+        //             ->leftjoin('race as r','r.id','=','m.race_id');
                     
-                    $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
-                    $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
-                    $members = $members->get();
-        $data['member_view'] = $members;
+        //             $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
+        //             $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
+        //             $members = $members->get();
+        $data['member_view'] = [];
         return view('reports.new_member')->with('data',$data);  
     }
 	
@@ -534,23 +535,28 @@ class ReportsController extends Controller
         //return $request->all();
         $data['data_limit']=$this->limit;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
-        $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
-        $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
-        $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
-        $total_fee = $entry_fee+$ins_fee;
+        // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
+        // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
+        // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
+        // $total_fee = $entry_fee+$ins_fee;
         
-        $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
-                    ->join('membership as m','c.id','=','m.branch_id')
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        ,'m.gender'
+        ,'com.company_name'
+        ,'m.doj'
+        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
+        ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
                     ->leftjoin('status as s','s.id','=','m.status_id')
                     ->leftjoin('designation as d','m.designation_id','=','d.id')
-                    ->leftjoin('state as st','st.id','=','m.state_id')
-                    ->leftjoin('city as cit','cit.id','=','m.city_id')
-                    ->leftjoin('race as r','r.id','=','m.race_id');
+                    ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
                     
                     $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
                     $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
+                    $members = $members->orderBy('m.member_number','asc');
                     $members = $members->get();
         $data['member_view'] = $members;
         $data['from_date']=date('01/M/Y');
@@ -569,23 +575,30 @@ class ReportsController extends Controller
         $company_id = $request->input('company_id');
         $branch_id = $request->input('branch_id');
         $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $from_member_no = $request->input('from_member_no');
+        $to_member_no = $request->input('to_member_no');
         $join_type = $request->input('join_type');
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
-        $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
+        // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
 
-        $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
-        $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
-        $total_fee = $entry_fee+$ins_fee;
-          $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("ifnull(m.levy,'') as levy"),DB::raw("ifnull(m.levy_amount,'') as levy_amount"),'m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
-              ->join('membership as m','c.id','=','m.branch_id')
+        // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
+        // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
+        // $total_fee = $entry_fee+$ins_fee;
+          $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+          ,'m.gender'
+          ,'com.company_name'
+          ,'m.doj'
+          ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+          ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
+          ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date')
+              ->leftjoin('company_branch as c','c.id','=','m.branch_id')
               ->leftjoin('company as com','com.id','=','c.company_id')
               ->leftjoin('status as s','s.id','=','m.status_id')
               ->leftjoin('designation as d','m.designation_id','=','d.id')
-              ->leftjoin('state as st','st.id','=','m.state_id')
-              ->leftjoin('city as cit','cit.id','=','m.city_id')
-              ->leftjoin('race as r','r.id','=','m.race_id');
+              ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
               if($fromdate!="" && $todate!=""){
                   $members = $members->where(DB::raw('date(m.`doj`)'),'>=',$fromdate);
                   $members = $members->where(DB::raw('date(m.`doj`)'),'<=',$todate);
@@ -593,6 +606,9 @@ class ReportsController extends Controller
               if($branch_id!=""){
                   $members = $members->where('m.branch_id','=',$branch_id);
               }else{
+                  if($unionbranch_id!=''){
+                    $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+                  }
                   if($company_id!=""){
                       $members = $members->where('c.company_id','=',$company_id);
                   }
@@ -606,11 +622,12 @@ class ReportsController extends Controller
               if($member_auto_id!=""){
                   $members = $members->where('m.id','=',$member_auto_id);
               }
-              
-          $members = $members //->offset($offset)
-             // ->limit($this->limit)
-             // ->dump()
-              ->get();
+              if($from_member_no!="" && $to_member_no!=""){
+                    $members = $members->where('m.member_number','>=',$from_member_no);
+                    $members = $members->where('m.member_number','<=',$to_member_no);
+              }
+              $members = $members->orderBy('m.member_number','asc');
+          $members = $members->get();
         $data['member_view'] = $members;
        // $data['data_limit']=$this->limit;
         $data['data_limit'] = '';
@@ -625,54 +642,60 @@ class ReportsController extends Controller
         return view('reports.iframe_new_member')->with('data',$data);  
         
     }
-    public function membersNewReportloadMore(Request $request){
-        $offset = $request->input('offset');
-        $from_date = $request->input('from_date');
-        $to_date = $request->input('to_date');
-        $company_id = $request->input('company_id');
-        $branch_id = $request->input('branch_id');
-        $member_auto_id = $request->input('member_auto_id');
-        $join_type = $request->input('join_type');
-        $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
-        $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
-        $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
+    // public function membersNewReportloadMore(Request $request){
+    //     $offset = $request->input('offset');
+    //     $from_date = $request->input('from_date');
+    //     $to_date = $request->input('to_date');
+    //     $company_id = $request->input('company_id');
+    //     $branch_id = $request->input('branch_id');
+    //     $member_auto_id = $request->input('member_auto_id');
+    //     $unionbranch_id = $request->input('unionbranch_id');
+    //     $from_member_no = $request->input('from_member_no');
+    //     $to_member_no = $request->input('to_member_no');
+    //     $join_type = $request->input('join_type');
+    //     $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+    //     $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+    //     $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
       
-        $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
-        $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
-        $total_fee = $entry_fee+$ins_fee;
-          $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("ifnull(m.levy,'') as levy"),DB::raw("ifnull(m.levy_amount,'') as levy_amount"),'m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
-              ->join('membership as m','c.id','=','m.branch_id')
-              ->leftjoin('company as com','com.id','=','c.company_id')
-              ->leftjoin('status as s','s.id','=','m.status_id')
-              ->leftjoin('designation as d','m.designation_id','=','d.id')
-              ->leftjoin('state as st','st.id','=','m.state_id')
-              ->leftjoin('city as cit','cit.id','=','m.city_id')
-              ->leftjoin('race as r','r.id','=','m.race_id');
-              if($fromdate!="" && $todate!=""){
-                  $members = $members->where(DB::raw('date(m.`doj`)'),'>=',$fromdate);
-                  $members = $members->where(DB::raw('date(m.`doj`)'),'<=',$todate);
-              }
-              if($branch_id!=""){
-                  $members = $members->where('m.branch_id','=',$branch_id);
-              }else{
-                  if($company_id!=""){
-                      $members = $members->where('c.company_id','=',$company_id);
-                  }
-              }
-              if($join_type==2){
-                $members = $members->where('m.old_member_number','!=',NULL);
-              }
-              if($join_type==1){
-                $members = $members->where('m.old_member_number','=',NULL);
-              }
-              if($member_auto_id!=""){
-                  $members = $members->where('m.id','=',$member_auto_id);
-              }
+    //     $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+    //     $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
+    //     $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
+    //     $total_fee = $entry_fee+$ins_fee;
+    //       $members = DB::table('company_branch as c')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("ifnull(m.levy,'') as levy"),DB::raw("ifnull(m.levy_amount,'') as levy_amount"),'m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name',DB::raw("{$entry_fee} as entryfee"),DB::raw("{$ins_fee} as insfee"),DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"))
+    //           ->join('membership as m','c.id','=','m.branch_id')
+    //           ->leftjoin('company as com','com.id','=','c.company_id')
+    //           ->leftjoin('status as s','s.id','=','m.status_id')
+    //           ->leftjoin('designation as d','m.designation_id','=','d.id')
+    //           ->leftjoin('state as st','st.id','=','m.state_id')
+    //           ->leftjoin('city as cit','cit.id','=','m.city_id')
+    //           ->leftjoin('race as r','r.id','=','m.race_id');
+    //           if($fromdate!="" && $todate!=""){
+    //               $members = $members->where(DB::raw('date(m.`doj`)'),'>=',$fromdate);
+    //               $members = $members->where(DB::raw('date(m.`doj`)'),'<=',$todate);
+    //           }
+    //           if($branch_id!=""){
+    //               $members = $members->where('m.branch_id','=',$branch_id);
+    //           }else{
+    //               if($unionbranch_id!=''){
+
+    //               }
+    //               if($company_id!=""){
+    //                   $members = $members->where('c.company_id','=',$company_id);
+    //               }
+    //           }
+    //           if($join_type==2){
+    //             $members = $members->where('m.old_member_number','!=',NULL);
+    //           }
+    //           if($join_type==1){
+    //             $members = $members->where('m.old_member_number','=',NULL);
+    //           }
+    //           if($member_auto_id!=""){
+    //               $members = $members->where('m.id','=',$member_auto_id);
+    //           }
               
-          $members = $members->get();
-        echo json_encode($members);
-    }
+    //       $members = $members->get();
+    //     echo json_encode($members);
+    // }
 
     public function activeStatisticsReport(Request $request, $lang)
     {      
@@ -1620,6 +1643,149 @@ class ReportsController extends Controller
         // $members = $members->get();
         $data['member_view'] = $members;
         return view('reports.iframe_due')->with('data',$data);
+    }
+
+    public function AdviceReport(Request $request, $lang){
+        $data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['member_view'] = [];
+        return view('reports.branch_advice')->with('data',$data);  
+    }
+
+    public function IframeAdviceReport()
+    {
+        $data['data_limit']=$this->limit;
+        
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
+                    ->leftjoin('membership as m','m.id','=','rs.member_code')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('state as st','st.id','=','m.state_id')
+                    ->leftjoin('city as cit','cit.id','=','m.city_id')
+                    ->leftjoin('race as r','r.id','=','m.race_id');
+
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',date('Y-m-01'));
+                    $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',date('Y-m-t'));
+                  
+                    $members = $members->get();
+        $data['member_view'] = $members;
+        $data['from_date'] = date('01/M/Y');
+        $data['to_date'] = date('t/M/Y');
+        $data['company_id'] = '';
+        $data['unionbranch_id'] = '';
+        $data['branch_id'] = '';
+        $data['member_auto_id'] = '';
+        $data['date_type'] = '';
+
+        return view('reports.iframe_advice_resign')->with('data',$data);  
+    }
+
+    public function newMembersUnionReport(Request $request,$lang)
+    {
+        $data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        ,'m.gender'
+        ,'com.company_name'
+        ,'m.doj'
+        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
+        ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','u.union_branch as union_branchname')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('member_payments as mp','m.id','=','mp.member_id')
+                    ->leftjoin('union_branch as u','u.id','=','c.union_branch_id');
+                    
+                    $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
+                    $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
+                    $members = $members->orderBy('m.member_number','asc');
+                    $members = $members->get();
+        $data['member_view'] = $members;
+        $data['from_date']=date('01/M/Y');
+        $data['to_date']=date('t/M/Y');
+        $data['company_id']='';
+        $data['branch_id']='';
+        $data['member_auto_id']='';
+        $data['join_type']='';
+        $data['offset']=0;
+        return view('reports.iframe_union_new_member')->with('data',$data); 
+    }
+
+    public function newMembersUnionFilterReport(Request $request){
+        $offset = $request->input('offset');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $from_member_no = $request->input('from_member_no');
+        $to_member_no = $request->input('to_member_no');
+        $join_type = $request->input('join_type');
+        $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+        $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        ,'m.gender'
+        ,'com.company_name'
+        ,'m.doj'
+        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
+        ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','u.union_branch as union_branchname')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('member_payments as mp','m.id','=','mp.member_id')
+                    ->leftjoin('union_branch as u','u.id','=','c.union_branch_id');
+        if($fromdate!="" && $todate!=""){
+            $members = $members->where(DB::raw('date(m.`doj`)'),'>=',$fromdate);
+            $members = $members->where(DB::raw('date(m.`doj`)'),'<=',$todate);
+        }
+        if($branch_id!=""){
+            $members = $members->where('m.branch_id','=',$branch_id);
+        }else{
+            if($unionbranch_id!=''){
+                $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+            }
+            if($company_id!=""){
+                $members = $members->where('c.company_id','=',$company_id);
+            }
+        }
+        if($join_type==2){
+            $members = $members->where('m.old_member_number','!=',NULL);
+        }
+        if($join_type==1){
+            $members = $members->where('m.old_member_number','=',NULL);
+        }
+        if($member_auto_id!=""){
+            $members = $members->where('m.id','=',$member_auto_id);
+        }
+        if($from_member_no!="" && $to_member_no!=""){
+                $members = $members->where('m.member_number','>=',$from_member_no);
+                $members = $members->where('m.member_number','<=',$to_member_no);
+        }
+        $members = $members->orderBy('m.member_number','asc');
+        $members = $members->get();
+
+       
+        $data['member_view'] = $members;
+       // $data['data_limit']=$this->limit;
+        $data['data_limit'] = '';
+        $data['from_date']=$from_date;
+        $data['to_date']=$to_date;
+        $data['company_id']=$company_id;
+        $data['branch_id']=$branch_id;
+        $data['member_auto_id']=$member_auto_id;
+        $data['join_type']=$join_type;
+        $data['offset']=$offset;
+        return view('reports.iframe_union_new_member')->with('data',$data); 
     }
 }
 

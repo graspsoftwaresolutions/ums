@@ -71,10 +71,9 @@
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
-			  font-size: 14px;
 			}
 			.tbody-area{
-				top:162px;
+				top:152px;
 				position: absolute;
 			}
 		}
@@ -120,11 +119,11 @@
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA
 					<br/> 
-					<h6 style="text-align:center;">New Members Report</h6>
+					<h6 style="text-align:center;">Union Branch Report</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'New Members Report',bootstrap: true});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'New Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -145,14 +144,12 @@
 				<th style="width:50px  !important ;border : 1px solid #343d9f;" align="center">S.NO</th>
 				<th style="width:100px  !important ;border : 1px solid #343d9f;"  align="center">M/NO</th>
 				<th style="width:351px  !important ;border : 1px solid #343d9f;" align="center">MEMBER NAME</th>
-				<th style="width:180px  !important ;border : 1px solid #343d9f;" align="center">NRIC</th>
 				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">GENDER</th>
 				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">BANK</th>
+				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">UNION BRANCH</th>
 				<th  style="width:200px  !important ;border : 1px solid #343d9f;" align="center">BANK </br>BRANCH</th>
 				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">MEMBER </br> TYPE</th>
 				<th style="width:140px  !important ;border : 1px solid #343d9f;" align="center">DATE OF </br> JOINING</th>
-				<th  style="width:80px  !important ;border : 1px solid #343d9f;" align="center">LEVY</th>
-				<th style="width:80px  !important ;border : 1px solid #343d9f;" align="center">TDF</th>
 				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">LAST PAID </br> DATE</th>
 			</tr>
 		</thead>
@@ -166,16 +163,13 @@
 					<td style="width:50px !important ; border : 1px solid white;">{{ $sno }}</td>
 					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->member_number }}</td>
 					<td style="width:351px !important ; border : 1px solid white;">{{ $member->name }}</td>
-					<td style="width:160px  !important ;border : 1px solid white;">{{ $member->ic }}</td>
 					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->gender }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;" >{{ $member->companycode }}</td>
+					<td style="width:120px  !important ;border : 1px solid white;" >{{ $member->companycode }}</td>
+					<td  style="width:120px  !important ;border : 1px solid white;">{{ $member->union_branchname }}</td>
 					<td  style="width:200px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
 					<td style="width:100px  !important ;border : 1px solid white;">{{ isset($member) ? $member->designation_name : ""}}</td>
 					<td style="width:130px  !important ;border : 1px solid white;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
 					
-					<td style="width:80px  !important ;border : 1px solid white;">{{  $member->levy }}</td>
-					<td style="width:80px  !important ;border : 1px solid white;">{{  $member->tdf }}</td>
-				
 					<td style="width:100px  !important ;border : 1px solid white;">{{  $member->last_paid_date!="" ? date('d/M/Y',strtotime($member->last_paid_date)) : '' }}</td>
 					
 				</tr> 
@@ -183,10 +177,11 @@
 					$sno++;
 				@endphp
 			@endforeach
-			<tr width="100%">
+			<tr>
 				<td colspan="1" style="width:50px !important ; border : 1px solid white;font-weight:bold;">Total</td>
 				<td colspan="1" style="width:100px !important ; border : 1px solid white;font-weight:bold;">Member's</td>
 				<td colspan="1" style="width:351px !important ; border : 1px solid white;font-weight:bold;">Count : {{ $sno-1 }}</td>
+				
 			</tr> 
 		</tbody>
 		
@@ -201,12 +196,17 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
-<!--script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
-<script type="text/javascript" src="https://www.jqueryscript.net/demo/export-table-json-csv-txt-pdf/src/tableHTMLExport.js"></script-->
 <script>
-	
+	$('#tableID').tableExport({
+		type:'pdf',
+		jspdf: {
+			orientation: 'p',
+			margins: {
+				left:20, top:10
+			},
+			autotable: false
+		}
+	});
 	//  $(window).scroll(function() {  
 	//    var lastoffset = $("#memberoffset").val();
 	//    var limit = "{{$data['data_limit']}}";

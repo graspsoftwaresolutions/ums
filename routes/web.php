@@ -340,6 +340,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('due_report','ReportsController@DueReport')->name('reports.due');
 	Route::get('iframe_due_report','ReportsController@IframeDueReport')->name('reports.due_iframe');
 	Route::get('get-due-report','ReportsController@IframeDueFiltereport')->name('reports.duefilter');
+
+	Route::get('advice_report','ReportsController@AdviceReport')->name('reports.advice');
+	Route::get('union_new_members','ReportsController@newMembersUnionReport')->name('union.newmembers');
+	Route::get('iframe_advice_report','ReportsController@IframeAdviceReport')->name('branch.advice');
+	Route::get('get-new-unionmembers-report','ReportsController@newMembersUnionFilterReport')->name('reports.unionmembers');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
