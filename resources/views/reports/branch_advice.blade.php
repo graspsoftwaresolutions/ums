@@ -129,7 +129,7 @@
 						
 						<div class="clearfix"/>
 
-						<div class="col s12 m6 l4">
+						<div class="col s12 m6 l4 hide">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " autocomplete="off" name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
@@ -164,10 +164,10 @@
 				</ul>
 			</div>
 			<div id="new_member_report" class="col s12">
-				<iframe src="{{ route('branch.advice',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+				<iframe src="{{ route('advice.newmember',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
 			</div>
 			<div id="resign_member_report" class="col s12">
-				<iframe src="{{ route('branch.advice',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+				<iframe src="{{ route('advice.resignmember',[app()->getLocale()]) }}" id="myresignframe" height="400px" width="100%"></iframe>
 			</div>
 			
 		</div>
@@ -331,12 +331,13 @@ $("#member_status4_sidebar_a_id").addClass('active');
 		var company_id = $("#company_id").val();
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
+		var unionbranch_id = $("#unionbranch_id").val();
 		var date_type = $("#date_type").val();
 		$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
-			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-resignedmembers-report') }}?offset=0"+searchfilters,);
-		
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type+'&unionbranch_id='+unionbranch_id;
+			$("#myresignframe").attr("src", "{{ url(app()->getLocale().'/get-filter-resignedadvice-report') }}?offset=0"+searchfilters,);
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-filter-newadvice-report') }}?offset=0"+searchfilters,);
 			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
