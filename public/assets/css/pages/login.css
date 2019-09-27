@@ -33,4 +33,15 @@
 #login-page .card-panel.border-radius-6.login-card
 {
     margin-left: 0 !important;
+	margin-top: 155px;
 }
+
+.gradient-45deg-purple-deep-orange-login {
+    background: #8e24aa;
+    background: -webkit-linear-gradient(45deg, #8e24aa, #ff6e40) !important;
+    background: -moz- oldlinear-gradient(45deg, #8e24aa, #ff6e40) !important;
+    background: -o-linear-gradient(45deg, #8e24aa, #ff6e40) !important;
+    background: linear-gradient(45deg, #f04b36, #ff6e40) !important;
+}
+
+

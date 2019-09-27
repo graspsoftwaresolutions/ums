@@ -8,7 +8,8 @@
 					<form method="POST" id="LoginformValidate" action="{{ route('login', app()->getLocale()) }}">
                         @csrf
 						<div class="row">
-							<div class="input-field col s12">
+							@include('includes.messages')
+							<div class="input-field col s12 hide">
 								<h5 class="ml-4">{{ __('Login') }}
 									<select name="language" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language" class="browser-default" style="float: right;color: #333;font:size:16px;">
 										<option {{ app()->getLocale()=='en' ? 'selected' : '' }} value="{{ url('en') }}" >English</option>
@@ -23,7 +24,7 @@
 							<div class="input-field col s12">
 								<i class="material-icons prefix pt-2">person_outline</i>
 								<input id="email" name="email" type="email" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required >
-								<label for="email" class="center-align">{{ __('E-Mail Address') }}</label>
+								<label for="email" class="center-align hide">{{ __('E-Mail Address') }}</label>
 								@error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -35,7 +36,7 @@
 							<div class="input-field col s12">
 								<i class="material-icons prefix pt-2">lock_outline</i>
 								<input id="password-field" name="password" type="password" class="@error('password') is-invalid @enderror" required onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false">
-								<label for="password">{{ __('Password') }}</label>
+								<label for="password" class="hide">{{ __('Password') }}</label>
 								
 							</div>
 						</div>
@@ -50,13 +51,19 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="input-field col s12">
-								<button type="submit" class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">
+							<div class="input-field col s3 ">
+								&nbsp;
+							</div>
+							<div class="input-field col s6">
+								<button type="submit" class="btn waves-effect waves-light border-round center-align gradient-45deg-purple-deep-orange-login col s12">
                                     {{ __('Login') }}
                                 </button>
 							</div>
+							<div class="input-field col s3 ">
+								&nbsp;
+							</div>
 						</div>
-						<div class="row">
+						<div class="row hide">
 							<div class="input-field col s6 m6 l6">
 								<p class="margin medium-small">
 									 <a href="{{ route('register', app()->getLocale()) }}">{{ __('Register Now!') }}</a>
