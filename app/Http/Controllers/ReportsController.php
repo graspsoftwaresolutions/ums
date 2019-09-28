@@ -1944,5 +1944,105 @@ class ReportsController extends Controller
 
         return view('reports.iframe_advice_new')->with('data',$data);  
     }
+
+    public function BranchStatusReport(Request $request, $lang){
+        $data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+
+        return view('reports.branch_status')->with('data',$data);  
+    }
+
+    public function IframeBranchStatusReport(Request $request,$lang){
+        $data['data_limit']=$this->limit;
+        $date = date('d-m-y');
+         $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'))
+                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+                ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','cb.company_id')
+                ->leftjoin('status as s','s.id','=','mm.StatusId')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->where(function($query) use ($date){
+                    $query->orWhere('mm.StatusId','=',1)
+                        ->orWhere('mm.StatusId', '=',2);
+                });
+               
+                $members = $members->where(DB::raw('month(ms.`Date`)'),'=',date('m'));
+                $members = $members->where(DB::raw('year(ms.`Date`)'),'=',date('Y'));
+            $members = $members->get();
+       
+       
+        $data['member_view'] = $members;
+        $data['month_year'] = date('M/Y');
+        $data['company_id'] = '';   
+        $data['branch_id'] = '';      
+        $data['unionbranch_id'] = '';  
+        $data['member_auto_id'] = '';  
+        $data['member_search'] = '';
+       return view('reports.iframe_branch_status')->with('data',$data);
+    }
+
+    public function IframeBranchStatusFilterReport($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $status_id = $request->input('status_id');
+        $monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+          $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+
+        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'))
+                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+                ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','cb.company_id')
+                ->leftjoin('status as s','s.id','=','mm.StatusId')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->where(function($query) use ($month_year){
+                    $query->orWhere('mm.StatusId','=',1)
+                        ->orWhere('mm.StatusId', '=',2);
+                });
+               
+                if($monthno!="" && $yearno!=""){
+                  $members = $members->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+                  $members = $members->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+                }
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }else{
+                    if($unionbranch_id!=""){
+                        $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                    }
+                    if($company_id!=""){
+                        $members = $members->where('cb.company_id','=',$company_id);
+                    }
+                }
+                if($member_auto_id!=""){
+                    $members = $members->where('m.id','=',$member_auto_id);
+                }
+            $members = $members->get();
+       
+       
+        $data['member_view'] = $members;
+        $data['company_id'] = '';
+        $data['unionbranch_id'] = '';
+        $data['branch_id'] = '';
+        $data['member_auto_id'] = '';
+        $data['date_type'] = '';
+        $data['month_year'] = $month_year;
+        
+
+        return view('reports.iframe_branch_status')->with('data',$data);  
+    }
 }
 

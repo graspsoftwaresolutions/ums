@@ -31,6 +31,9 @@
 		}
 		
 		@media print{
+			@if($data['variation']==1)
+			@page {size: landscape}
+			@endif
 			.export-button{
 				display:none;
 			}
