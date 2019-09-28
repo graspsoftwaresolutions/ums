@@ -289,8 +289,8 @@ span.dtr-title::after {
 										<thead>
 											<tr>
 												<th width="20%" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
-												<th width="5%">{{__('Member ID') }}</th>
-												<th width="5%">{{__('Member Name') }}</th>
+												<th width="5%">{{__('Mem/ID') }}</th>
+												<th width="5%">{{__('Mem/Name') }}</th>
 												<th width="5%">{{__('Type')}} </th>
 												<th width="5%">{{__('M/F')}}</th>
 												<th width="5%">{{__('Bank Code') }}</th>

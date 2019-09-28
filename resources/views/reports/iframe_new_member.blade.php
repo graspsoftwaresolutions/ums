@@ -99,7 +99,10 @@
 		.tbody-area{
 			color:#000;
 		}
+	.styleiframetble tr{
+		border-bottom:1px solid black !important;
 		
+	}	
 		
 	</style>
 	<script type="text/javascript">
@@ -133,7 +136,7 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-	<table id="page-length-option" class="display" width="100%">
+	<table id="page-length-option" class="display styleiframetble" width="100%">
 		<thead>
 			<tr style="border-bottom:none;">
 				<td style="border:none;">
