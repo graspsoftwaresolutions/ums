@@ -47,6 +47,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -140,12 +141,12 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-				<th style="width:300px">{{__('Bank Name')}}</th>
-				<th style="width:20%">{{__('# Current')}}</th>
-				<th style="width:20%">{{__('# Previous')}}</th>
-				<th width="10%">{{__('Different')}}</th>
-				<th width="10%">{{__('Unpaid')}}</th>
-				<th width="10%">{{__('Paid')}}</th>
+				<th style="width:300px">{{__('BANK NAME')}}</th>
+				<th style="width:20%">{{__('# CURRENT')}}</th>
+				<th style="width:20%">{{__('# PREVIOUS')}}</th>
+				<th width="10%">{{__('DIFFERENT')}}</th>
+				<th width="10%">{{__('UNPAID')}}</th>
+				<th width="10%">{{__('PAID')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">

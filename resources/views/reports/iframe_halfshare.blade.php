@@ -47,6 +47,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -139,14 +140,14 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-				<th width='15%'>{{__('Union Branch Name')}}</th>
-				<th width='10%'>{{__('Total')}}</th>
+				<th width='15%'>{{__('UNION BRANCH NAME')}}</th>
+				<th width='10%'>{{__('TOTAL')}}</th>
 				<th width='10%'>{{__('BF')}}</th>
 				<th width='10%'>{{__('INS')}}</th>
 				<th width='10%'>{{__('SUBS')}}</th>
-				<th width='10%'>{{__('1/2 Share')}}</th>
-				<th width='10%'>{{__('10%ED - Fund')}}</th>
-				<th width='10%'>{{__('Total Amount')}}</th>
+				<th width='10%'>{{__('1/2 SHARE')}}</th>
+				<th width='10%'>{{__('10%ED - FUND')}}</th>
+				<th width='10%'>{{__('TOTAL AMOUNT')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">

@@ -48,6 +48,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -139,14 +140,14 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-            <th style="width:250px  !important ;border : 1px solid #343d9f;">{{__('Bank Name')}}</th>
-						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('# Member')}}</th>
-						<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('Total Amount')}}</th>
-						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Active')}}</th>
-						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Defaulter')}}</th>
-						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('StruckOff')}}</th>
-						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Resigned')}}</th>
-						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('SundryCr')}}</th>
+            <th style="width:250px  !important ;border : 1px solid #343d9f;">{{__('BANK NAME')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('# MEMBER')}}</th>
+						<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('TOTAL AMOUNT')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('ACTIVE')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('DEFAULTER')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('STRUCKOFF')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('RESIGNED')}}</th>
+						<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('SUNDRYCR')}}</th>
 			</tr>
 		</thead>
 		@php 

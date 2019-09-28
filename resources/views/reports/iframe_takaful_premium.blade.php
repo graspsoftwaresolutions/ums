@@ -47,6 +47,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -137,12 +138,12 @@
 			</tr>
 			<tr class="page-table-header-space">
 				<th style="width:87px  !important ;border : 1px solid #343d9f;">{{__('SNO')}}</th>
-				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
-				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('Branch')}}</th>
-				<th style="width:320px  !important ;border : 1px solid #343d9f;">{{__('Name')}}</th>
-				<th style="width:172px  !important ;border : 1px solid #343d9f;">{{__('MemberID')}}</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('BANK')}}</th>
+				<th style="width:200px  !important ;border : 1px solid #343d9f;">{{__('BRANCH')}}</th>
+				<th style="width:320px  !important ;border : 1px solid #343d9f;">{{__('NAME')}}</th>
+				<th style="width:172px  !important ;border : 1px solid #343d9f;">{{__('MEMBERID')}}</th>
 				<th style="width:220px  !important ;border : 1px solid #343d9f;text-align: center;">{{__('NRIC')}}</th>
-				<th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('Insurance Amount(RM)')}}</th>
+				<th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('INSURANCE AMOUNT(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">

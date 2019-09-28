@@ -48,6 +48,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -135,16 +136,16 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-            <th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('Slno')}}</th>
-				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('# Member')}}</th>
-				<th style="width:170px  !important ;border : 1px solid #343d9f;">{{__('Member Name')}}</th>
+            <th style="width:50px  !important ;border : 1px solid #343d9f;">{{__('SNO')}}</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('# MEMBER')}}</th>
+				<th style="width:170px  !important ;border : 1px solid #343d9f;">{{__('MEMBER NAME')}}</th>
 				<th style="width:120px  !important ;border : 1px solid #343d9f;">{{__('NRIC')}}</th>
-				<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
-				<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('Bank Branch')}}</th>
-				<th style="width:120px  !important ;border : 1px solid #343d9f;">{{__('Union Branch')}}</th>
-				<th style="width:120px  !important ;border : 1px solid #343d9f;">{{__('Doj')}}</th>
-				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Due Month')}}</th>
-				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('Last Paid Date')}}</th>
+				<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('BANK')}}</th>
+				<th style="width:130px  !important ;border : 1px solid #343d9f;">{{__('BANK BRANCH')}}</th>
+				<th style="width:120px  !important ;border : 1px solid #343d9f;">{{__('UNION BRANCH')}}</th>
+				<th style="width:120px  !important ;border : 1px solid #343d9f;">{{__('DOJ')}}</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('DUE MONTH')}}</th>
+				<th style="width:100px  !important ;border : 1px solid #343d9f;">{{__('LAST PAID DATE')}}</th>
 			</tr>
 		</thead>
 		@php 

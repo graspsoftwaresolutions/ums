@@ -47,6 +47,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}	
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -160,26 +161,26 @@
 				<th style="width:3% !important; border:1px ;"></th>
 			</tr>
 			<tr class="page-table-header-space1" >
-				<th style="width:15% !important; border:1px ;">{{__('Branch Code')}}</th>
+				<th style="width:15% !important; border:1px ;">{{__('BRANCH CODE')}}</th>
 				@foreach($data['race_view'] as $values)
 					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
 				@foreach($data['race_view'] as $values)
 					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('TOTAL')}}</th>
 				@foreach($data['race_view'] as $values)
 					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
 				@foreach($data['race_view'] as $values)
 					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.Total')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('Total')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('G.Total')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('TOTAL')}}</th>
+				<th style="width:3% !important; border:1px ;">{{__('G.TOTAL')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
