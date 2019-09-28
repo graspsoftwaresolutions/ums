@@ -4,9 +4,11 @@
 .login-bg
 {
     background-image: url('../../images/gallery/flat-bg.png');
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
     background-repeat: no-repeat;
-    -webkit-background-size: cover;
-            background-size: cover;
+    background-size: cover;
 }
 
 #login-page
@@ -33,7 +35,7 @@
 #login-page .card-panel.border-radius-6.login-card
 {
     margin-left: 0 !important;
-	margin-top: 155px;
+	margin-top: 100px;
 }
 
 .gradient-45deg-purple-deep-orange-login {
