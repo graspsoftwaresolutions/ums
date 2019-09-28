@@ -217,7 +217,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	
 	Route::get('subscription.sub_payment','SubscriptionController@subPayment')->name('subscription.sub_payment');
-	Route::get('subscription.sub_paymenthistory','SubscriptionController@subPaymentHistory')->name('subscription.sub_paymenthistory');
+	Route::get('subscription_paymenthistory','SubscriptionController@subPaymentHistory')->name('subscription.sub_paymenthistory');
 	Route::get('member_transfer','MembershipController@memberTransfer')->name('master.transfer');
 	
 	Route::post('ajax_arrear_list','SubscriptionAjaxController@ajax_arrear_list');

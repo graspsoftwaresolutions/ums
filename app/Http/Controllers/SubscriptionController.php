@@ -823,31 +823,79 @@ class SubscriptionController extends CommonController
         $user_id = Auth::user()->id;
         $member_id = Membership::where('user_id','=',$user_id)->first();
         $id = $member_id->id;
-      
-            $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
-            ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
-            ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
-            ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
-            ->leftjoin('status as status','status.id','=','sm.StatusId')
-            //->where('s.Date','=',date('Y-m-01'))
-            ->orderBY('s.Date','desc')
-            ->where('m.id','=',$id)
-            ->get();
 
-            if(count($data['member_subscription_details']) == 0)
-            {
-                 return view('subscription.subscription_payment')->with('message','No transaction Done');
-            }
+        //$id = Crypt::decrypt($id);
+    
+        $data['member_details'] = DB::table('membership as m')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','m.new_ic as new_ic','m.old_ic as old_ic','d.designation_name as membertype','p.person_title as persontitle','cb.branch_name','c.company_name','m.doj','s.status_name','m.member_number','s.font_color')
+											->leftjoin('designation as d','d.id','=','m.designation_id')
+											->leftjoin('persontitle as p','p.id','=','m.member_title_id')
+											->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+											->leftjoin('company as c','c.id','=','cb.company_id')
+											->leftjoin('race as r','r.id','=','m.race_id')
+											->leftjoin('status as s','s.id','=','m.status_id')
+                                            //->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
+                                            //->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
+                                            ->where('m.id','=',$id)
+                                            ->first();
+
+        $data['last_month_record'] = DB::table($this->membermonthendstatus_table.' as ms')
+                                            ->where('ms.MEMBER_CODE','=',$id)
+                                            ->OrderBy('ms.StatusMonth','desc')
+											->first();
+	
+		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
+		
+		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
+											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+											->where('ms.MEMBER_CODE','=',$id)
+											->offset(0)
+											->limit($this->limit)
+                                            ->get();
+		
+		if($old_member_id!=""){
+			$data['previous_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+			'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number')
+											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+											->where('ms.MEMBER_CODE','=',$old_member_id)
+											->offset(0)
+											->limit($this->limit)
+                                            ->get();
+		}else{
+			$data['previous_member_history'] = [];
+		}
+                                            
+        $data['data_limit'] = $this->limit;
+        $data['old_member_id'] = $old_member_id;
+        $data['member_id'] = $id;
+        return view('subscription.member_history')->with('data',$data);
+      
+            // $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date')
+            // ->leftjoin('membership as m','m.id','=','sm.MemberCode') 
+            // ->leftjoin('mon_sub_company as sc','sm.MonthlySubscriptionCompanyId','=','sc.id')
+            // ->leftjoin('mon_sub as s','sc.MonthlySubscriptionId','=','s.id') 
+            // ->leftjoin('status as status','status.id','=','sm.StatusId')
+            // //->where('s.Date','=',date('Y-m-01'))
+            // ->orderBY('s.Date','desc')
+            // ->where('m.id','=',$id)
+            // ->get();
+
+            // if(count($data['member_subscription_details']) == 0)
+            // {
+            //      return view('subscription.subscription_payment')->with('message','No transaction Done');
+            // }
  
-            DB::enableQueryLog();
-            $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
-                    ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
-                    ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
-                    ->leftjoin('status as status','status.id','=','sm.StatusId')
-                    ->leftjoin('membership as m','m.id','=','sm.MemberCode')
-                    ->where('m.id','=',$id)
-                    ->get();  
-            return view('subscription.subscription_paymenthistory')->with('data',$data);
+            // DB::enableQueryLog();
+            // $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name')
+            //         ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
+            //         ->leftjoin('mon_sub as s','s.id','=','sc.MonthlySubscriptionId')
+            //         ->leftjoin('status as status','status.id','=','sm.StatusId')
+            //         ->leftjoin('membership as m','m.id','=','sm.MemberCode')
+            //         ->where('m.id','=',$id)
+            //         ->get();  
+            // return view('subscription.subscription_paymenthistory')->with('data',$data);
     }
 	
 	public function memberHistory($lang,$id){
