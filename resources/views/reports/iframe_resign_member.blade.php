@@ -47,6 +47,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -137,16 +138,16 @@
 			</tr>
 			<tr class="page-table-header-space" >
 				<th style="width:101px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
-                <th style="width:200px !important;">{{__('Name')}}</th>
-                <th style="width:200px !important;">{{__('Number')}}</th>
+                <th style="width:200px !important;">{{__('NAME')}}</th>
+                <th style="width:200px !important;">{{__('M/NO')}}</th>
                 <th style="width:200px !important;">{{__('NRIC')}}</th>
-                <th style="width:200px !important;">{{__('joined')}}</th>
-                <th style="width:200px !important;">{{__('Resigned')}}</th>
-                <th style="width:200px !important;">{{__('Bank')}}</th>
-                <th style="width:200px !important;">{{__('Branch')}}</th>
-                <th style="width:200px !important;">{{__('Contribution')}}</th>
-                <th style="width:200px !important;">{{__('Benifit')}}</th>
-                <th style="width:200px !important;">{{__('Total')}}</th>
+                <th style="width:200px !important;">{{__('JOINED')}}</th>
+                <th style="width:200px !important;">{{__('RESIGNED')}}</th>
+                <th style="width:200px !important;">{{__('BANK')}}</th>
+                <th style="width:200px !important;">{{__('BANK BRANCH')}}</th>
+                <th style="width:200px !important;">{{__('CONTRIBUTION')}}</th>
+                <th style="width:200px !important;">{{__('BENEFIT')}}</th>
+                <th style="width:200px !important;">{{__('TOTAL')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">

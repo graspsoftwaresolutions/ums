@@ -47,6 +47,7 @@
 		}
 		
 		@media print {
+			@page {size: landscape}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -132,9 +133,9 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space">
-				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('Bank')}}</th>
-				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('Total Members')}}</th>
-				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('Amount(RM)')}}</th>
+				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('BANK')}}</th>
+				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('TOTAL MEMBERS')}}</th>
+				<th style="width:400px  !important ;border : 1px solid #343d9f;">{{__('AMOUNT(RM)')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
