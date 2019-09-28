@@ -116,7 +116,7 @@
 					@php $status_name =  CommonHelper::get_member_status_name($data['status_id']);
 						//dd($data['member_view'][0]);	
 					 @endphp
-					<h6 style="text-align:center;">{{$status_name}} MEMBERS REPORT</h6>
+					<h6 style="text-align:center;">UNION BRANCH REPORT</h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -140,17 +140,16 @@
 			<tr class="page-table-header-space">
 				<th style="width:51px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
 				 <th style="width:130px; border:1px  ;">{{__('M/NO')}}</th>
-                <th style="width:260px; border:1px  ;">{{__('MEMBER NAME')}}</th>
+                <th style="width:230px; border:1px  ;">{{__('MEMBER NAME')}}</th>
                
-                <th style="width:150px; border:1px  ;" align="center">{{__('NRIC')}}</th>
                 <th style="width:60px; border:1px  ;">{{__('GENDER')}}</th>
                 <th style="width:130px; border:1px  ;">{{__('BANK')}}</th>
-                <th style="width:250px; border:1px  ;">{{__('BANK BRANCH')}}</th>
+                <th style="width:100px; border:1px  ;">{{__('UNION BRANCH')}}</th>
+                <th style="width:230px; border:1px  ;">{{__('BANK BRANCH')}}</th>
                 <th style="width:60px; border:1px  ;">{{__('MEMBER TYPE')}}</th>
                 
                 <th style="width:100px; border:1px  ;">{{__('DOJ')}}</th>
-                <th style="width:100px; border:1px  ;">{{__('LEVY')}}</th>
-                <th style="width:100px; border:1px  ;">{{__('TDF')}}</th>
+       
                  <th style="width:100px; border:1px  ;">{{__('LAST PAID DATE')}}</th>
 
 			</tr>
@@ -165,14 +164,14 @@
 					<td style="width:51px !important ; border : 1px solid white;">{{ $sno }}</td>
 					<td style="width:130px; border:1px  ;">{{ $member->member_number }}</td>
                     <td style="width:200px; border:1px  ;">{{ $member->name }}</td>
-                    <td style="width:130px; border:1px  ;">{{ $member->ic }}</td>
+                   
                     <td style="width:60px; border:1px  ;">{{ $member->gender }}</td>
                     <td style="width:130px; border:1px  ;"> {{ $member->companycode }}</td>
+                    <td style="width:100px; border:1px  ;">{{ $member->union_branch }}</td>
                     <td style="width:200px; border:1px  ;">{{ $member->branch_name }}</td>
                     <td style="width:60px; border:1px  ;">{{ $member->designation_name }}</td>
                     <td style="width:100px; border:1px  ;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
-                    <td style="width:100px; border:1px  ;">{{ $member->levy }}</td>	
-                    <td style="width:100px; border:1px  ;">{{ $member->tdf }}</td>	
+                  
                     <td style="width:100px; border:1px  ;">{{ $member->last_paid_date }}</td>	
                 </tr> 
 				@php
@@ -180,7 +179,7 @@
 				@endphp
             @endforeach
 			<tr>
-				<td colspan="9" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td colspan="10" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 				
 			</tr> 
 		</tbody>

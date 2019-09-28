@@ -14,27 +14,7 @@
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
-	@if(count($data['member_view'])<10)
-		#main.main-full {
-			height: 750px;
-		}
-		
-		.footer {
-		   position: fixed;
-		   margin-top:50px;
-		   left: 0;
-		   bottom: 0;
-		   width: 100%;
-		   height:auto;
-		   background-color: red;
-		   color: white;
-		   text-align: center;
-		   z-index:999;
-		} 
-		.sidenav-main{
-			z-index:9999;
-		}
-		.btn, .btn-sm-one {
+	.btn, .btn-sm-one {
 		line-height: 36px;
 		display: inline-block;
 		height: 35px;
@@ -45,7 +25,6 @@
 		border-radius: 4px;
 		-webkit-tap-highlight-color: transparent;
 	}
-	@endif
 </style>
 @endsection
 @section('main-content')
@@ -107,6 +86,19 @@
 							<label for="month_year">{{__('Month and Year')}}</label>
 							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
 						</div>
+						<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
+							<label>{{__('Union Branch Name') }}</label>
+							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+								<option value="">{{__('Select Union') }}</option>
+								@foreach($data['unionbranch_view'] as $value)
+                                <option value="{{$value->id}}">
+                                    {{$value->union_branch}}</option>
+                                @endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt22"></div>
+							</div>
+						</div>   
 						<div class="col s12 m6 l3">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
@@ -131,7 +123,21 @@
 								<div class="errorTxt23"></div>
 							</div>
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 ">
+							<label for="from_member_no">{{__('M/No From')}}</label>
+							<input id="from_member_no" type="text" class="validate " name="from_member_no" data-error=".errorTxt26">
+							<div class="input-field">
+								<div class="errorTxt26"></div>
+							</div>
+						</div>
+						<div class="col s12 m6 l3 ">
+							<label for="to_member_no">{{__('M/No To')}}</label>
+							<input id="to_member_no" type="text" class="validate " name="to_member_no" data-error=".errorTxt27">
+							<div class="input-field">
+								<div class="errorTxt27"></div>
+							</div>
+						</div>
+						<div class="col s12 m6 l3 hide">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
@@ -140,6 +146,7 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>
+						<div class="clearfix"/>
 						<div class="row">
 							<div class="input-field col s6 right">
 								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
@@ -153,52 +160,33 @@
 				</form>  
 			</div>
 		</div>
-		<div class="row">
-		<div class="col s12">
-			<iframe src="{{ route('reports.membersnewactive',[app()->getLocale(), $data['status_id']])  }}" id="myframe" height="400px" width="100%"></iframe>
-			
-		<div class="card hide">
-			<div class="card-content">
-				<table id="page-length-option" class="display ">
-					<thead>
-						<tr>
-							<th>{{__('Member Name')}}</th>
-							<th>{{__('Member Number')}}</th>
-							<th>{{__('NRIC')}}</th>
-							<th>{{__('Gender')}}</th>
-							<th>{{__('Bank')}}</th>
-							<th>{{__('Branch')}}</th>
-							<th>{{__('DOJ')}}</th>
-							<th>{{__('Levy')}}</th>
-						</tr> 
-					</thead>
-					<tbody>
-						
-						@foreach($data['member_view'] as $member)
-							<tr>
-								<td>{{ $member->name }}</td>
-								<td>{{ $member->member_number }}</td>
-								<td>{{ $member->new_ic }}</td>
-								<td>{{ $member->gender }}</td>
-								<td>{{ $member->companycode }}</td>
-								<td>{{ $member->branch_name }}</td>
-								<td>{{ $member->doj }}</td>
-								<td>{{ $member->levy }}</td>
-								
-							</tr> 
-						@endforeach
-					</tbody>
-					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
-				</table> 
-				
-			</div>
-			
-		</div>
-		</div>
-		</div>
+		
 		</br>
 		</br>
 	</div>
+	<div class="row">
+		<div class="col s12">
+			<div class="row">
+				<div class="col s12">
+					<ul class="tabs">
+						<li class="tab col m3"><a class="active" id="report1" href="#member_report">Member Report</a></li>
+						<li class="tab col m3"><a href="#union_member_report" id="report2">Union Branch Report</a></li>
+					</ul>
+				</div>
+				<div id="member_report" class="col s12">
+					<iframe src="{{ route('reports.membersnewactive',[app()->getLocale(), $data['status_id']])  }}" id="myframe" height="400px" width="100%"></iframe>
+				</div>
+				<div id="union_member_report" class="col s12">
+					<iframe src="{{ route('union.membersnewactive',[app()->getLocale(), $data['status_id']]) }}" id="myunionframe" height="400px" width="100%"></iframe>
+				</div>
+				
+			</div>
+			</br>
+			</br>
+			
+		</div>
+	</div> 
+
 </div> 
 @php	
 	$ajaxcompanyid = '';
@@ -359,44 +347,7 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 			  }
 			}
 		});
-    // $(window).scroll(function() {   
-	//    var lastoffset = $("#memberoffset").val();
-	//    var limit = "{{$data['data_limit']}}";
-	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
-	// 	    var month_year = $("#month_year").val();
-	// 		var company_id = $("#company_id").val();
-	// 		var branch_id = $("#branch_id").val();
-	// 		var member_auto_id = $("#member_auto_id").val();
-	// 		var status_id = $("#member_status").val();
-	// 		var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
-	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-	// 		$.ajax({
-	// 			type: "GET",
-	// 			dataType: "json",
-	// 			url : "{{ URL::to('/en/get-members-report') }}?offset="+lastoffset+searchfilters,
-	// 			success:function(res){
-	// 				if(res)
-	// 				{
-	// 					$.each(res,function(key,entry){
-	// 						var table_row = "<tr><td>"+entry.name+"</td>";
-	// 							table_row += "<td>"+entry.member_number+"</td>";
-	// 							table_row += "<td>"+entry.new_ic+"</td>";
-	// 							table_row += "<td>"+entry.gender+"</td>";
-	// 							table_row += "<td>"+entry.companycode+"</td>";
-	// 							table_row += "<td>"+entry.branch_name+"</td>";
-	// 							table_row += "<td>"+entry.doj+"</td>";
-	// 							table_row += "<td>"+entry.levy+"</td></tr>";
-	// 							$('#page-length-option tbody').append(table_row);
-	// 					});
-	// 				}else{
-						
-	// 				}
-	// 			}
-	// 		});
-		    
-				
-	//    }
-	// });
+   
 	$(document).on('submit','form#filtersubmit',function(event){
 		
 		event.preventDefault();
@@ -404,40 +355,18 @@ $("#member_status{{strtolower($data['status_id'])}}_sidebar_a_id").addClass('act
 		var company_id = $("#company_id").val();
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
+		var unionbranch_id = $("#unionbranch_id").val();
 		var status_id = $("#member_status").val();
+		var from_member_no = $("#from_member_no").val();
+		var to_member_no = $("#to_member_no").val();
 		if(month_year!="" || company_id!="" || branch_id!="" || member_auto_id!=""){
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id;
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&status_id='+status_id+'&unionbranch_id='+unionbranch_id+'&from_member_no='+from_member_no+'&to_member_no='+to_member_no;
 			//$("#memberoffset").val("{{$data['data_limit']}}");
-			
+			$("#myframe,#myunionframe").contents().find("html").css('opacity',0);
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-membersstatus-more-report') }}?offset=0"+searchfilters,);
+			$("#myunionframe").attr("src", "{{ url(app()->getLocale().'/get-membersstatus-union-report') }}?offset=0"+searchfilters,);
 
-			//loader.showLoader();
-			// $('#page-length-option tbody').empty();
-			// loader.showLoader();
-			// $.ajax({
-			// 	type: "GET",
-			// 	dataType: "json",
-			// 	url : "{{ URL::to('/en/get-members-report') }}?offset=0"+searchfilters,
-			// 	success:function(res){
-			// 		if(res)
-			// 		{
-			// 			$.each(res,function(key,entry){
-			// 				var table_row = "<tr><td>"+entry.name+"</td>";
-			// 					table_row += "<td>"+entry.member_number+"</td>";
-			// 					table_row += "<td>"+entry.new_ic+"</td>";
-			// 					table_row += "<td>"+entry.gender+"</td>";
-			// 					table_row += "<td>"+entry.companycode+"</td>";
-			// 					table_row += "<td>"+entry.branch_name+"</td>";
-			// 					table_row += "<td>"+entry.doj+"</td>";
-			// 					table_row += "<td>"+entry.levy+"</td></tr>";
-			// 					$('#page-length-option tbody').append(table_row);
-			// 			});
-			// 			loader.hideLoader();
-			// 		}else{
-						
-			// 		}
-			// 	}
-			// });
+		
 			$("#search").attr('disabled',false);
 		}else{
 			alert("please choose any filter");
