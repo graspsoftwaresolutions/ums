@@ -79,7 +79,7 @@
 
 			#page-length-option td, #page-length-option th {
 			  border: 1px solid #ddd !important;
-			  //padding: 8px;
+			  padding: 4px;
 			}
 			html {
 			    font-family: 'Muli', sans-serif;
@@ -88,7 +88,15 @@
 			    color: rgba(0, 0, 0, .87);
 			    font-size: 12px;
 			}
+			.nric_no{
+				width:10% !important;
+			}
 			tr.page-break  { display: block; page-break-before: always; }
+			.report-address{
+				font-weight:bold;
+				font-size:14px;
+			}
+			#pageNumber { content: counter(page) }
 		}
 		@media not print {
 			table {
@@ -110,6 +118,9 @@
 			.tbody-area{
 				top:172px;
 				position: absolute;
+			}
+			.nric_no{
+				width:150px !important;
 			}
 		}
 		td, th {
@@ -137,6 +148,20 @@
 		border-bottom:1px solid black !important;
 		
 	}	*/
+		#pageNumber { content: counter(page) }
+	
+		@page:left{
+			@bottom-left {
+				content: "Page " counter(page) " of " counter(pages);
+			}
+		}
+		h1 {
+			counter-reset: section;
+		}
+		h1:after {
+			
+			content: "Section " counter(section) ": ";
+		}
 		
 	</style>
 	<script type="text/javascript">
@@ -150,10 +175,11 @@
 			<tr>
 			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" style="vertical-align: middle;" height="50"></td>
-				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA
+				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" style="vertical-align: middle;float: right;" height="50"></td>
+				<td width="50%" style="text-align:center;">
+					<span class="report-address" style="font-weight: bold;font-size:14px;">MEMBER NAME OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
-					<h6 style="text-align:center;">New Members Report</h6>
+					<h6 style="text-align:center;">New Members Report  </h6>
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
@@ -174,16 +200,16 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" style="">
+			<tr class="page-table-header-space" style="font-weight: bold;">
 				<th style="width:50px  !important ;" align="center">S.NO</th>
 				<th style="width:100px  !important ;"  align="center">M/NO</th>
 				<th style="width:351px  !important ;" align="center">MEMBER NAME</th>
-				<th style="width:180px  !important ;" align="center">NRIC</th>
+				<th class="nric_no" align="center">NRIC</th>
 				<th  style="width:100px  !important ;" align="center">GENDER</th>
 				<th  style="width:120px  !important ;" align="center">BANK</th>
 				<th  style="width:200px  !important ;" align="center">BANK </br>BRANCH</th>
-				<th  style="width:100px  !important ;" align="center">MEMBER </br> TYPE</th>
-				<th style="width:140px  !important ;" align="center">DATE OF </br> JOINING</th>
+				<th  style="width:50px  !important ;" align="center">TYPE</th>
+				<th style="width:140px  !important ;" align="center">DOJ</th>
 				<th  style="width:80px  !important ;" align="center">LEVY</th>
 				<th style="width:80px  !important ;" align="center">TDF</th>
 				<th  style="width:100px  !important ;" align="center">LAST PAID </br> DATE</th>
@@ -199,11 +225,11 @@
 					<td style="width:50px !important ; ">{{ $sno }}</td>
 					<td style="width:100px  !important ;">{{ $member->member_number }}</td>
 					<td style="width:351px !important ; ">{{ $member->name }}</td>
-					<td style="width:160px  !important ;">{{ $member->ic }}</td>
+					<td class="nric_no">{{ $member->ic }}</td>
 					<td style="width:100px  !important ;">{{ $member->gender }}</td>
 					<td style="width:100px  !important ;" >{{ $member->companycode }}</td>
 					<td  style="width:200px  !important ;">{{ $member->branch_name }}</td>
-					<td style="width:100px  !important ;">{{ isset($member) ? $member->designation_name : ""}}</td>
+					<td style="width:50px  !important ;">{{ isset($member) ? $member->designation_name : ""}}</td>
 					<td style="width:130px  !important ;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
 					
 					<td style="width:80px  !important ;">{{  $member->levy }}</td>
