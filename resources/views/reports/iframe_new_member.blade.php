@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<title>New Member Report</title>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
@@ -68,6 +69,7 @@
 			  z-index:999;
 			}
 			.page-header,.page-table-header-space {
+				font-weight: bold;
 			  //background: #fff; /* for demo */
 			  //color:#000;
 			}
@@ -106,6 +108,7 @@
 			    border-collapse: none;
 			}
 			.page-table-header-space {
+				font-weight: bold;
 			  width: 100%;
 			  position: fixed;
 			  top:101px;
@@ -177,7 +180,7 @@
 				<td width="20%"></td>
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" style="vertical-align: middle;float: right;" height="50"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">MEMBER NAME OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
 					<h6 style="text-align:center;">New Members Report  </h6>
 				</td>
@@ -200,7 +203,7 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" style="font-weight: bold;">
+			<tr class="page-table-header-space" style="">
 				<th style="width:50px  !important ;" align="center">S.NO</th>
 				<th style="width:100px  !important ;"  align="center">M/NO</th>
 				<th style="width:351px  !important ;" align="center">MEMBER NAME</th>

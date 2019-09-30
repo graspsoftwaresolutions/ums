@@ -10,7 +10,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
 	<style>
 		/* Styles go here */
-		
+		tr {
+		    border-bottom: none !important; 
+		}
+
 		.page-header, .page-header-space {
 		  height: 100px;
 		  z-index:999;
@@ -25,7 +28,7 @@
 		  position: fixed;
 		  bottom: 0;
 		  width: 100%;
-		  border-top: 1px solid black; /* for demo */
+		  //border-top: 1px solid black; /* for demo */
 		  background: #fff; /* for demo */
 		  color:#000;
 		}
@@ -43,11 +46,14 @@
 		}
 		
 		@page {
-		  margin: 20mm
+		  margin: 3mm
 		}
 		
 		@media print {
-			@page {size: landscape}
+			@page {
+				size: landscape; 
+				margin: 3mm;
+			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -57,12 +63,48 @@
 			.export-button{
 				display:none !important;
 			}
-			.page-header,.page-table-header-space {
-			  background: #fff; /* for demo */
-			  color:#000;
+			.page-header, .page-header-space {
+			  height: 70px;
+			  z-index:999;
 			}
+			.page-header,.page-table-header-space {
+			  //background: #fff; /* for demo */
+			  //color:#000;
+			}
+			#page-length-option {
+			  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+
+			#page-length-option td, #page-length-option th {
+			  border: 1px solid #ddd !important;
+			  padding: 4px;
+			}
+			html {
+			    font-family: 'Muli', sans-serif;
+			    font-weight: normal;
+			    line-height: 1; 
+			    color: rgba(0, 0, 0, .87);
+			    font-size: 12px;
+			}
+			.nric_no{
+				width:10% !important;
+			}
+			
+			.report-address{
+				font-weight:bold;
+				font-size:14px;
+			}
+			
 		}
 		@media not print {
+			table {
+			    display: table;
+			    width: 100%;
+			    border-spacing: 0;
+			    border-collapse: none;
+			}
 			.page-table-header-space {
 			  width: 100%;
 			  position: fixed;
@@ -71,10 +113,14 @@
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
+			  font-size: 14px;
 			}
 			.tbody-area{
 				top:172px;
 				position: absolute;
+			}
+			.nric_no{
+				width:150px !important;
 			}
 		}
 		td, th {
@@ -82,7 +128,7 @@
 			padding: 7px 5px;
 			text-align: left;
 			vertical-align: middle;
-			border-radius: 2px;
+			//border-radius: 2px;
 		}
 		.btn, .btn-large, .btn-small, .btn-flat {
 			line-height: 36px;
@@ -98,15 +144,12 @@
 		.tbody-area{
 			color:#000;
 		}
+	
 		
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
@@ -116,8 +159,9 @@
 			<tr>
 			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
-				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA
+				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="50%" style="text-align:center;">
+					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
 					<h6 style="text-align:center;">Union Branch Report</h6>
 				</td>
@@ -134,8 +178,8 @@
   </div>-->
 	<table id="page-length-option" class="display" width="100%">
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
+			<tr style="border:none !important;">
+				<td style="border:none !important;">
 					<!--place holder for the fixed-position header-->
 					<div class="page-header-space"></div>
 				</td>
@@ -148,8 +192,8 @@
 				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">BANK</th>
 				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">UNION BRANCH</th>
 				<th  style="width:200px  !important ;border : 1px solid #343d9f;" align="center">BANK </br>BRANCH</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">MEMBER </br> TYPE</th>
-				<th style="width:140px  !important ;border : 1px solid #343d9f;" align="center">DATE OF </br> JOINING</th>
+				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">TYPE</th>
+				<th style="width:140px  !important ;border : 1px solid #343d9f;" align="center">DOJ</th>
 				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">LAST PAID </br> DATE</th>
 			</tr>
 		</thead>
@@ -178,9 +222,7 @@
 				@endphp
 			@endforeach
 			<tr>
-				<td colspan="1" style="width:50px !important ; border : 1px solid white;font-weight:bold;">Total</td>
-				<td colspan="1" style="width:100px !important ; border : 1px solid white;font-weight:bold;">Member's</td>
-				<td colspan="1" style="width:351px !important ; border : 1px solid white;font-weight:bold;">Count : {{ $sno-1 }}</td>
+				<td colspan="10" style="width:auto !important ; border : 1px solid white;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 				
 			</tr> 
 		</tbody>

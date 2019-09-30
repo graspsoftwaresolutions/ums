@@ -11,6 +11,10 @@
 	<style>
 		/* Styles go here */
 		
+		tr {
+		    border-bottom: none !important; 
+		}
+
 		.page-header, .page-header-space {
 		  height: 100px;
 		  z-index:999;
@@ -21,19 +25,11 @@
 		
 		}
 		
-		#page-length-option,#page-length-one {
-		  border-collapse: collapse;
-		  width: 100%;
-		}
-		#page-length-option td, #page-length-one th {
-		  border: 1px solid #ddd;
-		}
-		
 		.page-footer {
 		  position: fixed;
 		  bottom: 0;
 		  width: 100%;
-		  border-top: 1px solid black; /* for demo */
+		  //border-top: 1px solid black; /* for demo */
 		  background: #fff; /* for demo */
 		  color:#000;
 		}
@@ -51,11 +47,14 @@
 		}
 		
 		@page {
-		  margin: 20mm
+		  margin: 3mm
 		}
 		
 		@media print {
-			@page {size: landscape}
+			@page {
+				size: landscape; 
+				margin: 3mm;
+			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -65,12 +64,48 @@
 			.export-button{
 				display:none !important;
 			}
-			.page-header,.page-table-header-space {
-			  background: #fff; /* for demo */
-			  color:#000;
+			.page-header, .page-header-space {
+			  height: 70px;
+			  z-index:999;
 			}
+			.page-header,.page-table-header-space {
+			  //background: #fff; /* for demo */
+			  //color:#000;
+			}
+			#page-length-option {
+			  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+
+			#page-length-option td, #page-length-option th {
+			  border: 1px solid #ddd !important;
+			  padding: 4px;
+			}
+			html {
+			    font-family: 'Muli', sans-serif;
+			    font-weight: normal;
+			    line-height: 1; 
+			    color: rgba(0, 0, 0, .87);
+			    font-size: 12px;
+			}
+			.nric_no{
+				width:10% !important;
+			}
+			
+			.report-address{
+				font-weight:bold;
+				font-size:14px;
+			}
+			
 		}
 		@media not print {
+			table {
+			    display: table;
+			    width: 100%;
+			    border-spacing: 0;
+			    border-collapse: none;
+			}
 			.page-table-header-space {
 			  width: 100%;
 			  position: fixed;
@@ -79,10 +114,14 @@
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
+			  font-size: 14px;
 			}
 			.tbody-area{
-				top: 162px;
+				top:160px;
 				position: absolute;
+			}
+			.nric_no{
+				width:150px !important;
 			}
 		}
 		td, th {
@@ -90,7 +129,7 @@
 			padding: 7px 5px;
 			text-align: left;
 			vertical-align: middle;
-			border-radius: 2px;
+			//border-radius: 2px;
 		}
 		.btn, .btn-large, .btn-small, .btn-flat {
 			line-height: 36px;
@@ -118,8 +157,9 @@
 			<tr>
 			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
-				<td width="50%" style="text-align:center;">NATIONAL UNION BANK OF EMPLOYEES, MALAYSIA
+				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="50%" style="text-align:center;">
+					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
 					<h6 style="text-align:center;">NUBE RETIREMENT INSURANCE SCHEME</h6>
 				</td>

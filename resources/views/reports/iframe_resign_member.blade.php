@@ -11,6 +11,10 @@
 	<style>
 		/* Styles go here */
 		
+		tr {
+		    border-bottom: none !important; 
+		}
+
 		.page-header, .page-header-space {
 		  height: 100px;
 		  z-index:999;
@@ -25,7 +29,7 @@
 		  position: fixed;
 		  bottom: 0;
 		  width: 100%;
-		  border-top: 1px solid black; /* for demo */
+		  //border-top: 1px solid black; /* for demo */
 		  background: #fff; /* for demo */
 		  color:#000;
 		}
@@ -43,11 +47,14 @@
 		}
 		
 		@page {
-		  margin: 20mm
+		  margin: 3mm
 		}
 		
 		@media print {
-			@page {size: landscape}
+			@page {
+				size: landscape; 
+				margin: 3mm;
+			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
@@ -57,12 +64,48 @@
 			.export-button{
 				display:none !important;
 			}
-			.page-header,.page-table-header-space {
-			  background: #fff; /* for demo */
-			  color:#000;
+			.page-header, .page-header-space {
+			  height: 70px;
+			  z-index:999;
 			}
+			.page-header,.page-table-header-space {
+			  //background: #fff; /* for demo */
+			  //color:#000;
+			}
+			#page-length-option {
+			  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+
+			#page-length-option td, #page-length-option th {
+			  border: 1px solid #ddd !important;
+			  padding: 4px;
+			}
+			html {
+			    font-family: 'Muli', sans-serif;
+			    font-weight: normal;
+			    line-height: 1; 
+			    color: rgba(0, 0, 0, .87);
+			    font-size: 12px;
+			}
+			.nric_no{
+				width:10% !important;
+			}
+			
+			.report-address{
+				font-weight:bold;
+				font-size:14px;
+			}
+			
 		}
 		@media not print {
+			table {
+			    display: table;
+			    width: 100%;
+			    border-spacing: 0;
+			    border-collapse: none;
+			}
 			.page-table-header-space {
 			  width: 100%;
 			  position: fixed;
@@ -71,10 +114,14 @@
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
+			  font-size: 14px;
 			}
 			.tbody-area{
-				top:142px;
+				top:137px;
 				position: absolute;
+			}
+			.nric_no{
+				width:150px !important;
 			}
 		}
 		td, th {
@@ -82,7 +129,7 @@
 			padding: 7px 5px;
 			text-align: left;
 			vertical-align: middle;
-			border-radius: 2px;
+			//border-radius: 2px;
 		}
 		.btn, .btn-large, .btn-small, .btn-flat {
 			line-height: 36px;
@@ -112,8 +159,9 @@
 			<tr>
 			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
-				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA
+				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="50%" style="text-align:center;">
+					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
 					<h6 style="text-align:center;">RESIGNATION REPORT</h6>
 				</td>
@@ -137,17 +185,17 @@
 				</td>
 			</tr>
 			<tr class="page-table-header-space" >
-				<th style="width:101px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
-                <th style="width:200px !important;">{{__('NAME')}}</th>
-                <th style="width:200px !important;">{{__('M/NO')}}</th>
-                <th style="width:200px !important;">{{__('NRIC')}}</th>
-                <th style="width:200px !important;">{{__('JOINED')}}</th>
-                <th style="width:200px !important;">{{__('RESIGNED')}}</th>
-                <th style="width:200px !important;">{{__('BANK')}}</th>
+				<th style="width:51px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
+                <th style="width:200px !important;" align="center">{{__('NAME')}}</th>
+                <th style="width:120px !important;" align="center">{{__('M/NO')}}</th>
+                <th style="width:150px !important;text-align: center;" align="center">{{__('NRIC')}}</th>
+                <th style="width:100px !important;">{{__('JOINED')}}</th>
+                <th style="width:100px !important;">{{__('RESIGNED')}}</th>
+                <th style="width:100px !important;">{{__('BANK')}}</th>
                 <th style="width:200px !important;">{{__('BANK BRANCH')}}</th>
-                <th style="width:200px !important;">{{__('CONTRIBUTION')}}</th>
-                <th style="width:200px !important;">{{__('BENEFIT')}}</th>
-                <th style="width:200px !important;">{{__('TOTAL')}}</th>
+                <th style="width:100px !important;">{{__('CONTRIBUTION')}}</th>
+                <th style="width:100px !important;">{{__('BENEFIT')}}</th>
+                <th style="width:100px !important;">{{__('TOTAL')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
@@ -156,17 +204,17 @@
 			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr>
-					<td style="width:101px !important ; border : 1px solid white;">{{ $sno }}</td>
+					<td style="width:51px !important ; border : 1px solid white;">{{ $sno }}</td>
                     <td style="width:200px !important;">{{ $member->name }}</td>
-                    <td style="width:200px !important;">{{ $member->member_number }}</td>
+                    <td style="width:120px !important;">{{ $member->member_number }}</td>
                     <td style="width:150px !important;">{{ $member->new_ic }}</td>
-                    <td style="width:130px !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
-                    <td style="width:150px !important;">{{ date("d/M/Y",strtotime($member->resignation_date)) }}</td>
-                    <td style="width:130px !important;">{{ $member->companycode }}</td>
+                    <td style="width:100px !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
+                    <td style="width:100px !important;">{{ date("d/M/Y",strtotime($member->resignation_date)) }}</td>
+                    <td style="width:100px !important;">{{ $member->companycode }}</td>
                     <td style="width:200px !important;">{{ $member->branch_name }}</td>
                     <td style="width:200px !important;">{{ $member->contribution }}</td>
-                    <td style="width:200px !important;">{{ $member->benifit }}</td>
-                    <td style="width:200px !important;">{{ $member->total }}</td>
+                    <td style="width:100px !important;">{{ $member->benifit }}</td>
+                    <td style="width:100px !important;">{{ $member->total }}</td>
 				</tr> 
 				@php
 					$sno++;
