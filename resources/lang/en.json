@@ -447,5 +447,6 @@
   "Pending IRC List" : "Pending IRC List",
   "Confirm IRC List" : "Confirm IRC List",
   "IRC List" : "IRC List",
-  "To Company Branch Details" : "To Bank Branch Details"
+  "To Company Branch Details" : "To Bank Branch Details",
+  "Company-branch" : "Bank Branch"
 }

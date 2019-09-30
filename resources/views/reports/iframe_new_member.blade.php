@@ -83,7 +83,7 @@
 			    font-weight: normal;
 			    line-height: 1; 
 			    color: rgba(0, 0, 0, .87);
-			    font-size: 14px;
+			    font-size: 12px;
 			}
 			tr.page-break  { display: block; page-break-before: always; }
 		}
