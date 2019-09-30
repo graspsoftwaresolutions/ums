@@ -215,9 +215,7 @@
 				@endphp
 			@endforeach
 			<tr width="100%">
-				<td colspan="1" style="width:50px !important ; font-weight:bold;">Total</td>
-				<td colspan="1" style="width:100px !important ; font-weight:bold;">Member's</td>
-				<td colspan="1" style="width:351px !important ; font-weight:bold;">Count : {{ $sno-1 }}</td>
+				<td colspan="12" style="width:50px !important ; font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		
