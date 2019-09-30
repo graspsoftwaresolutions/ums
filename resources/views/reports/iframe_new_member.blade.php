@@ -10,7 +10,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
 	<style>
 		/* Styles go here */
-		
+		tr {
+		    border-bottom: none !important; 
+		}
+
 		.page-header, .page-header-space {
 		  height: 100px;
 		  z-index:999;
@@ -25,7 +28,7 @@
 		  position: fixed;
 		  bottom: 0;
 		  width: 100%;
-		  border-top: 1px solid black; /* for demo */
+		  //border-top: 1px solid black; /* for demo */
 		  background: #fff; /* for demo */
 		  color:#000;
 		}
@@ -57,12 +60,40 @@
 			.export-button{
 				display:none !important;
 			}
-			.page-header,.page-table-header-space {
-			  background: #fff; /* for demo */
-			  color:#000;
+			.page-header, .page-header-space {
+			  height: 70px;
+			  z-index:999;
 			}
+			.page-header,.page-table-header-space {
+			  //background: #fff; /* for demo */
+			  //color:#000;
+			}
+			#page-length-option {
+			  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+
+			#page-length-option td, #page-length-option th {
+			  border: 1px solid #ddd !important;
+			  //padding: 8px;
+			}
+			html {
+			    font-family: 'Muli', sans-serif;
+			    font-weight: normal;
+			    line-height: 1; 
+			    color: rgba(0, 0, 0, .87);
+			    font-size: 14px;
+			}
+			tr.page-break  { display: block; page-break-before: always; }
 		}
 		@media not print {
+			table {
+			    display: table;
+			    width: 100%;
+			    border-spacing: 0;
+			    border-collapse: none;
+			}
 			.page-table-header-space {
 			  width: 100%;
 			  position: fixed;
@@ -83,7 +114,7 @@
 			padding: 7px 5px;
 			text-align: left;
 			vertical-align: middle;
-			border-radius: 2px;
+			//border-radius: 2px;
 		}
 		.btn, .btn-large, .btn-small, .btn-flat {
 			line-height: 36px;
@@ -99,28 +130,24 @@
 		.tbody-area{
 			color:#000;
 		}
-	.styleiframetble tr{
+	/*.styleiframetble tr{
 		border-bottom:1px solid black !important;
 		
-	}	
+	}	*/
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
 <body>
 	<div class="page-header" style="text-align: center">
-		<table width="100%">
+		<table width="100%" style="border: none;">
 			<tr>
 			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="50"></td>
+				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" style="vertical-align: middle;" height="50"></td>
 				<td width="50%" style="text-align:center;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA
 					<br/> 
 					<h6 style="text-align:center;">New Members Report</h6>
@@ -138,58 +165,59 @@
   </div>-->
 	<table id="page-length-option" class="display styleiframetble" width="100%">
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
+			<tr style="border:none !important;">
+				<td style="border:none !important;">
 					<!--place holder for the fixed-position header-->
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
-			<tr class="page-table-header-space">
-				<th style="width:50px  !important ;border : 1px solid #343d9f;" align="center">S.NO</th>
-				<th style="width:100px  !important ;border : 1px solid #343d9f;"  align="center">M/NO</th>
-				<th style="width:351px  !important ;border : 1px solid #343d9f;" align="center">MEMBER NAME</th>
-				<th style="width:180px  !important ;border : 1px solid #343d9f;" align="center">NRIC</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">GENDER</th>
-				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">BANK</th>
-				<th  style="width:200px  !important ;border : 1px solid #343d9f;" align="center">BANK </br>BRANCH</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">MEMBER </br> TYPE</th>
-				<th style="width:140px  !important ;border : 1px solid #343d9f;" align="center">DATE OF </br> JOINING</th>
-				<th  style="width:80px  !important ;border : 1px solid #343d9f;" align="center">LEVY</th>
-				<th style="width:80px  !important ;border : 1px solid #343d9f;" align="center">TDF</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">LAST PAID </br> DATE</th>
+			<tr class="page-table-header-space" style="">
+				<th style="width:50px  !important ;" align="center">S.NO</th>
+				<th style="width:100px  !important ;"  align="center">M/NO</th>
+				<th style="width:351px  !important ;" align="center">MEMBER NAME</th>
+				<th style="width:180px  !important ;" align="center">NRIC</th>
+				<th  style="width:100px  !important ;" align="center">GENDER</th>
+				<th  style="width:120px  !important ;" align="center">BANK</th>
+				<th  style="width:200px  !important ;" align="center">BANK </br>BRANCH</th>
+				<th  style="width:100px  !important ;" align="center">MEMBER </br> TYPE</th>
+				<th style="width:140px  !important ;" align="center">DATE OF </br> JOINING</th>
+				<th  style="width:80px  !important ;" align="center">LEVY</th>
+				<th style="width:80px  !important ;" align="center">TDF</th>
+				<th  style="width:100px  !important ;" align="center">LAST PAID </br> DATE</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100% ">
+		<tbody class="tbody-area" width="100%">
 			@php
 				$totalmembers = 0;
 				$sno = 1;
 			@endphp
 			@foreach($data['member_view'] as $member)
-				<tr>
-					<td style="width:50px !important ; border : 1px solid white;">{{ $sno }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->member_number }}</td>
-					<td style="width:351px !important ; border : 1px solid white;">{{ $member->name }}</td>
-					<td style="width:160px  !important ;border : 1px solid white;">{{ $member->ic }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->gender }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;" >{{ $member->companycode }}</td>
-					<td  style="width:200px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;">{{ isset($member) ? $member->designation_name : ""}}</td>
-					<td style="width:130px  !important ;border : 1px solid white;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
+				<tr >
+					<td style="width:50px !important ; ">{{ $sno }}</td>
+					<td style="width:100px  !important ;">{{ $member->member_number }}</td>
+					<td style="width:351px !important ; ">{{ $member->name }}</td>
+					<td style="width:160px  !important ;">{{ $member->ic }}</td>
+					<td style="width:100px  !important ;">{{ $member->gender }}</td>
+					<td style="width:100px  !important ;" >{{ $member->companycode }}</td>
+					<td  style="width:200px  !important ;">{{ $member->branch_name }}</td>
+					<td style="width:100px  !important ;">{{ isset($member) ? $member->designation_name : ""}}</td>
+					<td style="width:130px  !important ;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
 					
-					<td style="width:80px  !important ;border : 1px solid white;">{{  $member->levy }}</td>
-					<td style="width:80px  !important ;border : 1px solid white;">{{  $member->tdf }}</td>
+					<td style="width:80px  !important ;">{{  $member->levy }}</td>
+					<td style="width:80px  !important ;">{{  $member->tdf }}</td>
 				
-					<td style="width:100px  !important ;border : 1px solid white;">{{  $member->last_paid_date!="" ? date('d/M/Y',strtotime($member->last_paid_date)) : '' }}</td>
+					<td style="width:100px  !important ;">{{  $member->last_paid_date!="" ? date('d/M/Y',strtotime($member->last_paid_date)) : '' }}</td>
 					
 				</tr> 
+				
 				@php
 					$sno++;
 				@endphp
 			@endforeach
 			<tr width="100%">
-				<td colspan="1" style="width:50px !important ; border : 1px solid white;font-weight:bold;">Total</td>
-				<td colspan="1" style="width:100px !important ; border : 1px solid white;font-weight:bold;">Member's</td>
-				<td colspan="1" style="width:351px !important ; border : 1px solid white;font-weight:bold;">Count : {{ $sno-1 }}</td>
+				<td colspan="1" style="width:50px !important ; font-weight:bold;">Total</td>
+				<td colspan="1" style="width:100px !important ; font-weight:bold;">Member's</td>
+				<td colspan="1" style="width:351px !important ; font-weight:bold;">Count : {{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		
