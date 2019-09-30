@@ -1,10 +1,14 @@
 /*----------------------------------------
     Login Page
 ------------------------------------------*/
-.login-bg
+html,body{
+    margin:0px !important;
+    padding:0px !important;
+}
+body
 {
     background-image: url('../../images/gallery/flat-bg.png');
-    height: 100%;
+    xbackground-size:100% 100% !important;
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
