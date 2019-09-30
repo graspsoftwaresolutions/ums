@@ -263,6 +263,8 @@ function showeditForm(roleid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#name').val(result.name);
             $('#slug').val(result.slug);
+            $('#name').attr('readonly', true);
+            $('#slug').attr('readonly', true);
             $(".module_id").attr('checked',false);
             $.each(resultdata['roles_module'],function(key,value){
                 var moduleid = value['id'];
