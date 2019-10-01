@@ -102,7 +102,7 @@
 						<br/>
 						<p>BANK-ID : {{ $member->companycode }}</p>
 						<p>I/C NO : {{ $member->ic }}</p>
-						<p>DATE JOINED: {{ $member->doj }}</p>
+						<p>DATE JOINED: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
 						<p>MEMBERSHIP NO: {{ $member->member_number }}</p>
 					</div>
 				</div>
