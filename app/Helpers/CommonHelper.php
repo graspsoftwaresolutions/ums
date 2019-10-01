@@ -1129,6 +1129,22 @@ class CommonHelper
 		
 
     }
+
+    public static function get_all_gender_race_count($branchid,$month_year){
+        $monthno = '';
+        $yearno = '';
+        if($month_year!=""){
+            $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }else{      
+            $monthno = date('m');
+            $yearno = date('Y');
+        }
+        
+        $male_count = CacheMonthEnd::get_all_gender_race_count($branchid,$month_year);
+        return $male_count;
+    }
 	
 	public static function get_union_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender){
 		$monthno = '';
@@ -1864,5 +1880,15 @@ class CommonHelper
 		$subs_amt = $one_percent-($bf_amount+$ins_amount);
 		return $subs_amt;
 	}
+
+    public static function get_group_gender_race_count($over_all_count,$race_id,$status,$gender){
+        $total_count = 0;
+        foreach ($over_all_count as $key => $value) {
+           if($value->race_id==$race_id && $value->STATUS_CODE==$status && $value->gender==$gender){
+                $total_count += $value->count;
+           }
+        }
+        return $total_count;
+    }
 	
 }

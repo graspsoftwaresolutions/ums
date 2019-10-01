@@ -38,12 +38,15 @@
 							@csrf
 							<div class="row">
 								<div class="input-field col s12">
-									<h5 class="ml-4">{{ __('Change Password') }} [ {{ Auth::user()->name }} ]</h5>
+									<h5 class="ml-4">{{ __('Change Password') }} </h5>
 									@include('includes.messages')
 								</div>
 							</div>
 							<div class="row">
-								<div class="input-field col s12 center">
+								<div class="input-field col s12 " style="padding:0px;margin:0px 30px;">
+									NAME : {{ Auth::user()->name }}
+								</div>
+								<div class="input-field col s12 " style="padding:0px;margin:0px 30px;">
 									EMAIL : {{ Auth::user()->email }}
 								</div>
 							</div>

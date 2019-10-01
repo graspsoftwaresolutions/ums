@@ -751,7 +751,7 @@ class ReportsController extends Controller
         $data['data_limit'] = '';
         $data['member_count'] =  $members; 
 		      
-		//dd($data['member_count']);
+		
         return view('reports.iframe_statistics')->with('data',$data); 
     }
     
@@ -791,6 +791,19 @@ class ReportsController extends Controller
                 //$members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
             }
         }else{
+            // $members = DB::table('membermonthendstatus as ms')
+            // ->select('c.branch_shortcode','c.branch_name','c.id as branchid','m.race_id','m.gender')
+            // ->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+            // ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+            // ->where(function ($query) {
+            //     $query->where('ms.STATUS_CODE', '=', 1)
+            //           ->orWhere('ms.STATUS_CODE', '=', 2);
+            // })
+            // ->where('ms.StatusMonth', '=', $datefilter)
+            //         ->groupBY('ms.BRANCH_CODE')
+            //         ->groupBY('m.race_id')
+            //         ->groupBY('m.gender')
+            //         ->get();
             $members = CacheMonthEnd::getMonthEndCompaniesByDate($datefilter);
         }
        

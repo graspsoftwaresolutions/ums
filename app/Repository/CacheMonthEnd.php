@@ -364,6 +364,7 @@ class CacheMonthEnd
 				$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);
 			}
 			$members = $members->groupBY('ms.BRANCH_CODE')
+								//->dump()
 								->get();
 		    	
 			return $members;
@@ -441,7 +442,41 @@ class CacheMonthEnd
 						->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
 						->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)  
 						->where('ms.STATUS_CODE','=',$status_active)
+						//->dump()
 						->count(); 
+			return $male_count;
+		});
+	}
+
+	public function get_all_gender_race_count($branchid,$month_year){
+		$key = "get_all_gender_race_count.{$branchid}.m.{$month_year}";
+		$cacheKey = $this->getCacheKey($key);
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($branchid,$month_year)
+		{
+			if($month_year!=""){
+				$fmmm_date = explode("/",$month_year);
+				$monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+				$yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+			}else{		
+				$monthno = date('m');
+				$yearno = date('Y');
+			}
+
+			$male_count = DB::select(DB::raw('SELECT count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE FROM `membermonthendstatus` AS `ms` LEFT JOIN `membership` AS `m` ON `m`.`id` = `ms`.`MEMBER_CODE` WHERE `ms`.`BRANCH_CODE` = "'.$branchid.'" AND MONTH(ms.StatusMonth) = "'.$monthno.'" AND YEAR(ms.StatusMonth) = "'.$yearno.'" AND (`ms`.`STATUS_CODE` = 1 or `ms`.`STATUS_CODE`=2) group by `ms`.`STATUS_CODE`,m.race_id,m.gender'));
+
+			// $male_count = DB::table('membermonthendstatus as ms')
+			// 			->select('ms.id')
+			// 			->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+			// 			//->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+			// 			//->leftjoin('race as r','m.race_id','=','r.id')
+			// 			->where('m.race_id','=',$raceid)
+			// 			->where('ms.BRANCH_CODE','=',$branchid)
+			// 			->where('m.gender','=',$gender)
+			// 			->where(DB::raw('month(ms.StatusMonth)'),'=',$monthno)  
+			// 			->where(DB::raw('year(ms.StatusMonth)'),'=',$yearno)  
+			// 			->where('ms.STATUS_CODE','=',$status_active)
+			// 			->dump()
+			// 			->count(); 
 			return $male_count;
 		});
 	}

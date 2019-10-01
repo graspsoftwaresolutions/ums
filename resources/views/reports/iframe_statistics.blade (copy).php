@@ -228,7 +228,7 @@
 						{
 							echo $values->branch_shortcode;
 						}
-						
+						print_r($over_all_count);
 					@endphp
 				</td>
 			    @php
@@ -247,6 +247,7 @@
 				@foreach($data['race_view'] as $race)
 				@php 
 					$race_id = $race->id;
+					//$male_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Male');
 					$male_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,1,'Male');
 				@endphp
 					<td style="width:41px !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
@@ -257,8 +258,8 @@
 				<td style="width:60px !important; border:1px ;"> {{$subtotal1}}</td>
 				@foreach($data['race_view'] as $value)
 					@php 
-						$race_id = $value->id;
-						$female_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,1,'Female');
+					$race_id = $value->id;
+						$female_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_active,$month_year,'Female');
 					@endphp
 				<td style="width:41px !important; border:1px ;">{{$female_count}}</td>
 					@php
@@ -271,9 +272,8 @@
 				<td style="width:60px !important; border:1px ;"> {{$subtotal2}}</td>
 				<td style="width:50px !important; border:1px ;">{{$total}}</td>
 				@foreach($data['race_view'] as $value)
-				@php 
-					$race_id = $value->id;
-					$maledefaulter_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,2,'Male');
+				@php $race_id = $value->id;
+					$maledefaulter_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Male');
 				@endphp
 					<td style="width:60px !important; border:1px ;">{{$maledefaulter_count}}</td>
 				@php
@@ -283,7 +283,7 @@
 				<td style="width:41px !important; border:1px ;"> {{$subtotaldefaulter1}}</td>
 				@foreach($data['race_view'] as $value)
 				@php $race_id = $value->id;
-					$femaledefaulter_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,2,'Female');
+					$femaledefaulter_count = CommonHelper::get_gender_race_count($race_id,$values->branchid,$status_defaulter,$month_year,'Female');
 				@endphp
 					<td style="width:41px !important; border:1px ;padding-left: 0px;">{{$femaledefaulter_count}}</td>
 					@php
