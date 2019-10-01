@@ -4,6 +4,7 @@
 		@page {
 		  size: 21cm 29.7cm;
 		  font-size: 10px !important;
+		  margin: 0mm;
 		}
 		p{
 			padding:5px 2px;
@@ -24,6 +25,7 @@
 		}
 		.column-right {
 		  float: left;
+		  width: 5.2cm;
 		  padding: 10px;
 		  
 		}
@@ -53,192 +55,60 @@
 			#page-content{
 				font-size: 10px !important;
 			}
+			
 		}
+		table td,th{
+			font-size: 10px !important;
+		}
+		
 		
 	</style>
 </head>
 
 <body>
-	
+
 	<div id="page-content">
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
+		@foreach($data['member_view'] as $member)
+		<div class="label">
+			<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
 
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
+			<p>NAME : {{ $member->name }}</p>
+			<p>BANK : {{ $member->company_name }}</p>
+			<div class="">
+				<div class="" >
+					<div class="column-left">
+						
+					</div>
+					<div class="column-right" >
+						<table>
+							<tr>
+								<td width="15%" style="vertical-align: super;">
+									ADD:
+								</td>
+								<td width="85%">
+									{{ $member->address_one }}
+											<br/>
+									@php
+										if($member->city_name!=''){
+											echo $member->city_name.'-';
+										}
+									@endphp
+									{{ $member->postal_code }} 
+								</td>
+							</tr>
+						</table>
+						
+						<br/>
+						<br/>
+						<p>BANK-ID : {{ $member->companycode }}</p>
+						<p>I/C NO : {{ $member->ic }}</p>
+						<p>DATE JOINED: {{ $member->doj }}</p>
+						<p>MEMBERSHIP NO: {{ $member->member_number }}</p>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="label">
-	<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
-
-	<p>NAME : </p>
-	<p>BANK : </p>
-	<div class="">
-		<div class="" >
-			<div class="column-left">
-				
-			</div>
-			<div class="column-right" >
-				ADD:
-				<br/>
-				<br/>
-				<p>BANK-ID : </p>
-				<p>I/C NO : </p>
-				<p>DATE JOINED: </p>
-				<p>MEMBERSHIP NO: </p>
-			</div>
-		</div>
-	</div>
-</div>
-
-
+		@endforeach
 	</div>
 	<script type="text/javascript">
 		window.print();

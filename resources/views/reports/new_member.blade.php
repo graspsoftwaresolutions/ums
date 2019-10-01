@@ -156,6 +156,7 @@
 							<div class="input-field col s6 right-align">
 								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
 								<input type="button" id="member_print" class="btn cyan" name="search" name="member_print" value="{{__('Card Print')}}">
+								<input type="button" id="bank_member_print" class="btn purple" name="search" name="bank_member_print" value="{{__('Back Card Print')}}">
 							</div>
 						</div>
 					</div>
@@ -377,8 +378,24 @@ $(document).on('click','#member_print',function(event){
 	var branch_id = $("#branch_id").val();
 	var member_auto_id = $("#member_auto_id").val();
 	var join_type = $("#join_type").val();
-	var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type;
+	var unionbranch_id = $("#unionbranch_id").val();
+	var from_member_no = $("#from_member_no").val();
+	var to_member_no = $("#to_member_no").val();
+	var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type+'&unionbranch_id='+unionbranch_id+'&from_member_no='+from_member_no+'&to_member_no='+to_member_no;
 	var win = window.open("{{ url(app()->getLocale().'/get-new-members-print?offset=0') }}"+searchfilters, '_blank');
+});
+$(document).on('click','#bank_member_print',function(event){
+	var from_date = $("#from_date").val();
+	var to_date = $("#to_date").val();
+	var company_id = $("#company_id").val();
+	var branch_id = $("#branch_id").val();
+	var member_auto_id = $("#member_auto_id").val();
+	var join_type = $("#join_type").val();
+	var unionbranch_id = $("#unionbranch_id").val();
+	var from_member_no = $("#from_member_no").val();
+	var to_member_no = $("#to_member_no").val();
+	var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&join_type='+join_type+'&unionbranch_id='+unionbranch_id+'&from_member_no='+from_member_no+'&to_member_no='+to_member_no;
+	var win = window.open("{{ url(app()->getLocale().'/get-new-members-back-print?offset=0') }}"+searchfilters, '_blank');
 });
 $('.datepicker,.datepicker-custom').datepicker({
     format: 'dd/mm/yyyy',

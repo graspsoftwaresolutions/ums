@@ -4,6 +4,7 @@
 		@page {
 		  size: 21cm 29.7cm;
 		  font-size: 10px !important;
+		   margin: 0mm;
 		}
 		p{
 			padding:5px 2px;
@@ -61,7 +62,7 @@
 <body>
 	
 	<div id="page-content">
-		@for($i=0; $i<8; $i++)
+		@foreach($data['member_view'] as $member)
 		<div class="label">
 				
 			@php $logo = CommonHelper::getLogo(); @endphp
@@ -71,7 +72,7 @@
 			<hr style="width:200px;float:right;">
 			<p style="text-align:center;font-size:15px;float:right;">Hon. General Secretary</p>
 		</div>
-		@endfor
+		@endforeach
 
 
 	</div>
