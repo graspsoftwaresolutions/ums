@@ -366,6 +366,7 @@ class IrcController extends CommonController
 			$irclist =  $commonselect->where(function($query) use ($search){
 							$query->orWhere('i.id','LIKE',"%{$search}%")
 								->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+								->orWhere('m.member_number', 'LIKE',"%{$search}%")
 								->orWhere('i.resignedmembericno', 'LIKE',"%{$search}%");
 						});
 			
@@ -373,17 +374,17 @@ class IrcController extends CommonController
 				$irclist =  $irclist->offset($start)
 									->limit($limit);
 			}
-			
+			//$irc->resignedmemberno
 			$irclist =  $irclist->orderBy($order,$dir)
 							->get()->toArray(); 
 		
 			$totalFiltered =$commonselect->where(function($query) use ($search){
 									$query->orWhere('i.id','LIKE',"%{$search}%")
 										->orWhere('i.resignedmembername', 'LIKE',"%{$search}%")
+										->orWhere('m.member_number', 'LIKE',"%{$search}%")
 										->orWhere('i.resignedmembericno', 'LIKE',"%{$search}%");
 								})->count();
         }
-		
 		$data = array();
         if(!empty($irclist))
         {
