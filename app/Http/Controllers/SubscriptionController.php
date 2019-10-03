@@ -812,7 +812,8 @@ class SubscriptionController extends CommonController
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$id)
 											->offset(0)
-											->limit($this->limit)
+                                            ->limit($this->limit)
+                                            ->OrderBy('ms.StatusMonth','asc')
                                             ->get();
 		
 		if($old_member_id!=""){
@@ -822,7 +823,8 @@ class SubscriptionController extends CommonController
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$old_member_id)
 											->offset(0)
-											->limit($this->limit)
+                                            ->limit($this->limit)
+                                            ->OrderBy('ms.StatusMonth','asc')
                                             ->get();
 		}else{
 			$data['previous_member_history'] = [];
@@ -887,7 +889,8 @@ class SubscriptionController extends CommonController
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$id)
 											->offset(0)
-											->limit($this->limit)
+                                            ->limit($this->limit)
+                                            ->OrderBy('ms.StatusMonth','asc')
                                             ->get();
 		
 		if($old_member_id!=""){
@@ -897,7 +900,8 @@ class SubscriptionController extends CommonController
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$old_member_id)
 											->offset(0)
-											->limit($this->limit)
+                                            ->limit($this->limit)
+                                            ->OrderBy('ms.StatusMonth','asc')
                                             ->get();
 		}else{
 			$data['previous_member_history'] = [];
