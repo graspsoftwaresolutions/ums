@@ -217,11 +217,15 @@
 			$total_female_count = 0; 
 			$total_grandtotal = 0;
 			$month_year = $data['month_year'];
+			$uniques = array();
+			foreach ($data['member_count'] as $obj) {
+			    $uniques[$obj->branchid] = $obj;
+			}
+
 		@endphp
-        @foreach($data['member_count'] as $values)
+        @foreach($uniques as $values)
         	@php
-			
-			$over_all_count = CommonHelper::get_all_union_gender_race_count($values->branchid,$month_year);
+				$over_all_count = CommonHelper::group_all_union_gender_race_count($data['member_count'],$values->branchid,$month_year);
 			@endphp
             <tr style="margin-top:50px !important;">
 				<td style='width:211px !important; border:1px ;'>

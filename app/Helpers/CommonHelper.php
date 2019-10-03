@@ -1145,6 +1145,34 @@ class CommonHelper
         $male_count = CacheMonthEnd::get_all_gender_race_count($branchid,$month_year);
         return $male_count;
     }
+
+    public static function group_all_gender_race_count($total_data,$branchid,$month_year){
+       //dd($total_data);
+        $total_count = 0;
+        $form_branch = array();
+        foreach ($total_data as $key => $value) {
+            if($value->branchid==$branchid){
+                $form_branch[] = $value;
+            }
+           
+        }
+        return $form_branch;
+        //return $male_count;
+    }
+
+    public static function group_all_union_gender_race_count($total_data,$branchid,$month_year){
+       //dd($total_data);
+        $total_count = 0;
+        $form_branch = array();
+        foreach ($total_data as $key => $value) {
+            if($value->branchid==$branchid){
+                $form_branch[] = $value;
+            }
+           
+        }
+        return $form_branch;
+        //return $male_count;
+    }
 	
 	public static function get_union_gender_race_count($raceid,$branchid,$status_active,$month_year,$gender){
 		$monthno = '';

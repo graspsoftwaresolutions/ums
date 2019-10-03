@@ -321,17 +321,19 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
-			 $members = DB::table('membermonthendstatus as ms')
-						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
-						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
-						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-						->where(function ($query) {
-							$query->where('ms.STATUS_CODE', '=', 1)
-								  ->orWhere('ms.STATUS_CODE', '=', 2);
-						})
-						->where('ms.StatusMonth', '=', $datestring)
-								->groupBY('ms.BRANCH_CODE')
-								->get();
+			//  $members = DB::table('membermonthendstatus as ms')
+			// 			->select('c.branch_shortcode','c.branch_name','c.id as branchid')
+			// 			//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+			// 			->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+			// 			->where(function ($query) {
+			// 				$query->where('ms.STATUS_CODE', '=', 1)
+			// 					  ->orWhere('ms.STATUS_CODE', '=', 2);
+			// 			})
+			// 			->where('ms.StatusMonth', '=', $datestring)
+			// 					->groupBY('ms.BRANCH_CODE')
+			// 					->get();
+
+			$members = DB::select(DB::raw('SELECT c.branch_shortcode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE FROM `membermonthendstatus` AS `ms` LEFT JOIN `company_branch` AS `c` ON `c`.`id` = `ms`.`BRANCH_CODE` LEFT JOIN `membership` AS `m` ON `m`.`id` = `ms`.`MEMBER_CODE` WHERE ms.StatusMonth = "'.$datestring.'" AND (`ms`.`STATUS_CODE` = 1 or `ms`.`STATUS_CODE`=2) group by ms.BRANCH_CODE,`ms`.`STATUS_CODE`,m.race_id,m.gender'));
 		    	
 			return $members;
 		});
@@ -346,8 +348,8 @@ class CacheMonthEnd
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union,$company,$branch)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
-						->select('c.branch_shortcode','c.branch_name','c.id as branchid')
-						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+			 			->select(DB::raw("c.branch_shortcode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE"))
+						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
 						->where(function ($query) {
 							$query->where('ms.STATUS_CODE', '=', 1)
@@ -364,6 +366,9 @@ class CacheMonthEnd
 				$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);
 			}
 			$members = $members->groupBY('ms.BRANCH_CODE')
+								->groupBY('ms.STATUS_CODE')
+								->groupBY('m.race_id')
+								->groupBY('m.gender')
 								//->dump()
 								->get();
 		    	
@@ -541,8 +546,8 @@ class CacheMonthEnd
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
-						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid')
-						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid',DB::raw("count(*) as count"),'m.race_id','m.gender','ms.STATUS_CODE')
+						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						//->leftjoin('company_branch as cb','c.id','=','ms.BRANCH_CODE')
 						->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
 						->where(function ($query) {
@@ -551,6 +556,9 @@ class CacheMonthEnd
 						})
 						->where('ms.StatusMonth', '=', $datestring)
 								->groupBY('ms.NUBE_BRANCH_CODE')
+								->groupBY('ms.STATUS_CODE')
+								->groupBY('m.race_id')
+								->groupBY('m.gender')
 								->get();
 		    	
 			return $members;
@@ -564,8 +572,8 @@ class CacheMonthEnd
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
-						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid')
-						//->leftjoin('membership as m','m.branch_id','=','ms.BRANCH_CODE')
+						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid',DB::raw("count(*) as count"),'m.race_id','m.gender','ms.STATUS_CODE')
+						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
 						->where(function ($query) {
 							$query->where('ms.STATUS_CODE', '=', 1)
@@ -577,6 +585,9 @@ class CacheMonthEnd
 				$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);
 			}
 			$members = $members->groupBY('ms.NUBE_BRANCH_CODE')
+								->groupBY('ms.STATUS_CODE')
+								->groupBY('m.race_id')
+								->groupBY('m.gender')
 								->get();
 		    	
 			return $members;
