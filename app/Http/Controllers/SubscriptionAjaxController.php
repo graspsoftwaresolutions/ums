@@ -942,7 +942,8 @@ class SubscriptionAjaxController extends CommonController
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$memberid)
 											->offset($offset)
-											->limit($this->limit)
+                                            ->limit($this->limit)
+                                            ->OrderBy('ms.StatusMonth','asc')
                                             ->get();
 		
 		// $company_list =  $company_view->get();
