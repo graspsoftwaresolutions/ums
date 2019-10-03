@@ -1070,10 +1070,16 @@
 																				<input id="email_inline" type="text" class="validate" readonly style="height:2rem;" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCBF}}@endif">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+																			UC &nbsp;&nbsp; :
+																		    <div class="input-field inline" style="margin:0;">
+																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE}}@endif" style="height:2rem;">
+																		    </div>
+																		</div>
 																		<div class="col s12">
 																			Ins &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE}}@endif" style="height:2rem;">
+																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE + $lastmonthendrecord->ACCBF }}@endif" style="height:2rem;">
 																		    </div>
 																		</div>
 																	</div>
