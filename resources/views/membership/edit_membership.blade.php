@@ -1037,10 +1037,16 @@
 																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->BF_AMOUNT}}@endif" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+                                                                            UC &nbsp;&nbsp; :
+                                                                            <div class="input-field inline" style="margin:0;">
+                                                                                <input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
+                                                                            </div>
+                                                                        </div>
 																		<div class="col s12">
 																			Ins &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
+																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->BF_AMOUNT+$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
 																		    </div>
 																		</div>
 																	</div>
@@ -1064,10 +1070,16 @@
 																				<input id="email_inline" type="text" class="validate" readonly style="height:2rem;" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCBF}}@endif">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+																			UC &nbsp;&nbsp; :
+																		    <div class="input-field inline" style="margin:0;">
+																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE}}@endif" style="height:2rem;">
+																		    </div>
+																		</div>
 																		<div class="col s12">
 																			Ins &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE}}@endif" style="height:2rem;">
+																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE + $lastmonthendrecord->ACCBF }}@endif" style="height:2rem;">
 																		    </div>
 																		</div>
 																	</div>
@@ -1091,12 +1103,21 @@
 																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        @php
+                                                                            $total_ins_count = CommonHelper::getTotalInsCount($values->mid);
+                                                                        @endphp
 																		<div class="col s12">
-																			Ins &nbsp;&nbsp; :
+																			UC &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
+																				<input id="email_inline" type="text" class="validate" value="{{$total_ins_count}}" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+                                                                            Ins &nbsp;&nbsp; :
+                                                                            <div class="input-field inline" style="margin:0;">
+                                                                                <input id="email_inline" type="text" class="validate" value="{{$total_ins_count}}" readonly style="height:2rem;">
+                                                                            </div>
+                                                                        </div>
 																	</div>
 																</div>
 																<div class="col s6 m3">
