@@ -1945,5 +1945,11 @@ class CommonHelper
         }
         return $total_count;
     }
+
+    public static function getTotalInsCount($memberid){
+        $countrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+                        ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->count();
+        return $countrecord;
+    }
 	
 }

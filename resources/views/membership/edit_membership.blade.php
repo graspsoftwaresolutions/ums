@@ -1103,12 +1103,21 @@
 																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        @php
+                                                                            $total_ins_count = CommonHelper::getTotalInsCount($values->mid);
+                                                                        @endphp
 																		<div class="col s12">
-																			Ins &nbsp;&nbsp; :
+																			UC &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
+																				<input id="email_inline" type="text" class="validate" value="{{$total_ins_count}}" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+                                                                            Ins &nbsp;&nbsp; :
+                                                                            <div class="input-field inline" style="margin:0;">
+                                                                                <input id="email_inline" type="text" class="validate" value="{{$total_ins_count}}" readonly style="height:2rem;">
+                                                                            </div>
+                                                                        </div>
 																	</div>
 																</div>
 																<div class="col s6 m3">
