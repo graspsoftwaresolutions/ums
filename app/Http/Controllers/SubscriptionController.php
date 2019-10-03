@@ -529,6 +529,7 @@ class SubscriptionController extends CommonController
 						$mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
                         $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE')
                             ->where('ms.MEMBER_CODE','=',$member_code)
+                            ->where('ms.StatusMonth','<',$cur_date)
                             ->orderBY('ms.StatusMonth','desc')
                             ->first();
                         $m_subs_amt = number_format($subscription->Amount-($this->bf_amount+$this->ins_amount),2);
@@ -1266,6 +1267,7 @@ class SubscriptionController extends CommonController
 			$branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
 			$last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE')
 			->where('ms.MEMBER_CODE','=',$member_id)
+            ->where('ms.StatusMonth','<',$cur_date)
 			->orderBY('ms.StatusMonth','desc')
 			->first();
 			$m_subs_amt = number_format($sub_member->Amount-($this->bf_amount+$this->ins_amount),2);
