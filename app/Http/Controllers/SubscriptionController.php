@@ -527,7 +527,7 @@ class SubscriptionController extends CommonController
 						$total_pending = $total_subs_to_paid - $total_subs;
 						
 						$mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
-                        $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE')
+                        $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE')
                             ->where('ms.MEMBER_CODE','=',$member_code)
                             ->orderBY('ms.StatusMonth','desc')
                             ->first();
@@ -549,11 +549,11 @@ class SubscriptionController extends CommonController
 												'MEMBERTYPE_CODE' => $memberdata[0]->designation_id,
 												'ENTRYMODE' => 'S',
 												//'DEFAULTINGMONTHS' => 0,
-												'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
+												'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
 												'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
 												'SUBSCRIPTIONDUE' => $total_pending,
 												'BFDUE' => 0,
-												'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$subscription->Amount : $subscription->Amount,
+												'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
 												'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
                                                 'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
 												//'ACCBENEFIT' => 0,
@@ -1264,7 +1264,7 @@ class SubscriptionController extends CommonController
 			$total_pending = $total_subs_to_paid - $total_subs;
 			//dd($member_code);
 			$branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
-			$last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE')
+			$last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE')
 			->where('ms.MEMBER_CODE','=',$member_id)
 			->orderBY('ms.StatusMonth','desc')
 			->first();
@@ -1286,11 +1286,11 @@ class SubscriptionController extends CommonController
                                 'MEMBERTYPE_CODE' => $memberdata->designation_id,
                                 'ENTRYMODE' => 'S',
                                 //'DEFAULTINGMONTHS' => 0,
-                                'TOTALMONTHSDUE' => $diff_in_months==0 ? 0 : $diff_in_months-$total_count,
+                                'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
                                 'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
                                 'SUBSCRIPTIONDUE' => $total_pending,
                                 'BFDUE' => 0,
-                                'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$sub_member->Amount : $sub_member->Amount,
+                                'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
                                 'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
                                 'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
                                 //'ACCBENEFIT' => 0,
