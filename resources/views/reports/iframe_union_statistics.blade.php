@@ -241,8 +241,7 @@
 					$defaultertotal = 0;
 					$total = 0;
 					$subtotaldefaulter1 = 0;
-					$status_active = CommonHelper::get_status_idbyname('ACTIVE');
-					$status_defaulter = CommonHelper::get_status_idbyname('DEFAULTER');
+					
 					$grandtotal = 0;
 					$male_count = 0;
 				@endphp

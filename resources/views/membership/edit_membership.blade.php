@@ -1037,10 +1037,16 @@
 																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->BF_AMOUNT}}@endif" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+                                                                            UC &nbsp;&nbsp; :
+                                                                            <div class="input-field inline" style="margin:0;">
+                                                                                <input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
+                                                                            </div>
+                                                                        </div>
 																		<div class="col s12">
 																			Ins &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
+																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->BF_AMOUNT+$lastmonthendrecord->INSURANCE_AMOUNT}}@endif" class="validate" readonly style="height:2rem;">
 																		    </div>
 																		</div>
 																	</div>
