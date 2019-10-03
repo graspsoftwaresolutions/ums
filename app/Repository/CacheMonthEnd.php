@@ -333,7 +333,7 @@ class CacheMonthEnd
 			// 					->groupBY('ms.BRANCH_CODE')
 			// 					->get();
 
-			$members = DB::select(DB::raw('SELECT c.branch_shortcode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE FROM `membermonthendstatus` AS `ms` LEFT JOIN `company_branch` AS `c` ON `c`.`id` = `ms`.`BRANCH_CODE` LEFT JOIN `membership` AS `m` ON `m`.`id` = `ms`.`MEMBER_CODE` WHERE ms.StatusMonth = "'.$datestring.'" AND (`ms`.`STATUS_CODE` = 1 or `ms`.`STATUS_CODE`=2) group by ms.BRANCH_CODE,`ms`.`STATUS_CODE`,m.race_id,m.gender'));
+			$members = DB::select(DB::raw('SELECT c.branch_shortcode,comp.short_code as companycode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE FROM `membermonthendstatus` AS `ms` LEFT JOIN `company_branch` AS `c` ON `c`.`id` = `ms`.`BRANCH_CODE` LEFT JOIN `company` AS `comp` ON `comp`.`id` = `ms`.`BANK_CODE` LEFT JOIN `membership` AS `m` ON `m`.`id` = `ms`.`MEMBER_CODE` WHERE ms.StatusMonth = "'.$datestring.'" AND (`ms`.`STATUS_CODE` = 1 or `ms`.`STATUS_CODE`=2) group by ms.BRANCH_CODE,`ms`.`STATUS_CODE`,m.race_id,m.gender'));
 		    	
 			return $members;
 		});
@@ -348,9 +348,10 @@ class CacheMonthEnd
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union,$company,$branch)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
-			 			->select(DB::raw("c.branch_shortcode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE"))
+			 			->select(DB::raw("c.branch_shortcode,comp.short_code as companycode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE"))
 						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+						->leftjoin('company as comp','comp.id','=','ms.BANK_CODE')
 						->where(function ($query) {
 							$query->where('ms.STATUS_CODE', '=', 1)
 								  ->orWhere('ms.STATUS_CODE', '=', 2);

@@ -226,11 +226,11 @@
 				<td style='width:201px !important; border:1px ;'>
 					@php 
 						if($values->branch_shortcode==''){
-							echo $branch_name = substr($values->branch_name, 0, 16); 
+							echo $branch_name = $values->companycode.'_'.substr($values->branch_name, 0, 16); 
 						}
 						else 
 						{
-							echo $values->branch_shortcode;
+							echo $values->companycode.'_'.$values->branch_shortcode;
 						}
 						
 					@endphp
