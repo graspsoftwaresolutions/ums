@@ -896,8 +896,8 @@ class SubscriptionAjaxController extends CommonController
         $approval_status = $request->input('approval_status');
         $search = $request->input('query');
        
-        $member_query = DB::table('mon_sub_member_match as mm')->select(DB::raw('CONCAT(sm.Name, " - ", sm.NRIC) AS value'),'sm.NRIC as number','m.id as member_code','sm.id as sub_member_id')      
-                            ->leftjoin('mon_sub_member as sm','sm.id','=','mm.mon_sub_member_id')
+        $member_query = DB::table('mon_sub_member as sm')->select(DB::raw('CONCAT(sm.Name, " - ", sm.NRIC) AS value'),'sm.NRIC as number','m.id as member_code','sm.id as sub_member_id')      
+                            //->leftjoin('mon_sub_member as sm','sm.id','=','mm.mon_sub_member_id')
                             ->leftjoin('mon_sub_company as sc','sc.id','=','sm.MonthlySubscriptionCompanyId')
                             ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
                             ->leftjoin('membership as m','m.id','=','sm.MemberCode')
@@ -906,10 +906,10 @@ class SubscriptionAjaxController extends CommonController
             $member_query = $member_query->where('sm.MonthlySubscriptionCompanyId','=',$company_id);
         }
         if($member_status!=""){
-            $member_query = $member_query->where('sm.StatusId','=',$member_status);
+            //$member_query = $member_query->where('sm.StatusId','=',$member_status);
         }
         if($approval_status!=""){
-            $member_query = $member_query->where('mm.match_id','=',$approval_status);
+            //$member_query = $member_query->where('mm.match_id','=',$approval_status);
         }
         $member_query = $member_query->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
