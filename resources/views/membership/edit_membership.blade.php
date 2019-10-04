@@ -1142,6 +1142,12 @@
 																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" class="validate" readonly style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        <div class="col s12">
+																			UC &nbsp;&nbsp; :
+																		    <div class="input-field inline" style="margin:0;">
+																				<input id="email_inline" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" type="text" class="validate" readonly style="height:2rem;">
+																		    </div>
+																		</div>
 																		<div class="col s12">
 																			Ins &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
