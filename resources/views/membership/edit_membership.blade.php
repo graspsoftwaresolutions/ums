@@ -1076,10 +1076,13 @@
 																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE}}@endif" style="height:2rem;">
 																		    </div>
 																		</div>
+                                                                        @php
+                                                                            $total_ins_count = CommonHelper::getTotalInsCount($values->mid);
+                                                                        @endphp
 																		<div class="col s12">
 																			Ins &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->ACCINSURANCE + $lastmonthendrecord->ACCBF }}@endif" style="height:2rem;">
+																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{ ($lastmonthendrecord->BF_AMOUNT+$lastmonthendrecord->INSURANCE_AMOUNT) * $total_ins_count }}@endif" style="height:2rem;">
 																		    </div>
 																		</div>
 																	</div>
@@ -1137,6 +1140,12 @@
 																			BF &nbsp; &nbsp;:
 																		    <div class="input-field inline" style="margin:0;">
 																				<input id="email_inline" type="text" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" class="validate" readonly style="height:2rem;">
+																		    </div>
+																		</div>
+                                                                        <div class="col s12">
+																			UC &nbsp;&nbsp; :
+																		    <div class="input-field inline" style="margin:0;">
+																				<input id="email_inline" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSDUE}}@endif" type="text" class="validate" readonly style="height:2rem;">
 																		    </div>
 																		</div>
 																		<div class="col s12">
