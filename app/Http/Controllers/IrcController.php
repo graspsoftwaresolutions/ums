@@ -171,11 +171,20 @@ class IrcController extends CommonController
 
 	public function getIrcMembersList(Request $request)
 	{
+		$userid = Auth::user()->id;
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+		$membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
+		$c_head = DB::table('membership as m')->select('m.id')
+							->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+							->where('m.id','=',$membercode)
+							->where('cb.is_head','=',1)
+							->count();
 		
 		$searchkey = $request->input('searchkey');
 		$search = $request->input('query');
 		$union_branch_id = $request->input('union_branch_id');
-		$res['suggestions'] = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
+		$ircsuggestions = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
 							->leftjoin('membership as m','irc.MemberCode','=','m.id')
 							->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
 							->where('irc.account_type','=','irc-confirmation')
@@ -186,10 +195,13 @@ class IrcController extends CommonController
 									->orWhere('m.old_ic', '=',"{$search}")
 									->orWhere('irc.MemberCode', '=',"{$search}");
 							})
-							->where('m.status_id','!=',4)
-							->where('cb.union_branch_id','=',$union_branch_id)
-							->limit(25)
-							->get(); 
+							->where('m.status_id','!=',4);
+		if($c_head!=1){
+			$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$union_branch_id);
+		}					
+	
+		$res['suggestions'] = $ircsuggestions->limit(25)
+								->get(); 
          return response()->json($res);
 	}
 	public function getIrcMembersListValues(Request $request)
