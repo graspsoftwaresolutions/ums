@@ -177,10 +177,12 @@ class IrcController extends CommonController
 		$membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
 		$c_head = DB::table('membership as m')->select('m.id')
 							->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
 							->where('m.id','=',$membercode)
-							->where('cb.is_head','=',1)
+							->where('u.is_head','=',1)
+							//->dump()
 							->count();
-		
+		//dd(2);
 		$searchkey = $request->input('searchkey');
 		$search = $request->input('query');
 		$union_branch_id = $request->input('union_branch_id');
