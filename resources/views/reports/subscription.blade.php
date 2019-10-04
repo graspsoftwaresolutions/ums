@@ -14,28 +14,7 @@
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
-	@if(count($data['company_view'])<10)
-		#main.main-full {
-			height: 750px;
-		}
-		
-		.footer {
-		   position: fixed;
-		   margin-top:50px;
-		   left: 0;
-		   bottom: 0;
-		   width: 100%;
-		   height:auto;
-		   background-color: red;
-		   color: white;
-		   text-align: center;
-		   z-index:999;
-		} 
-		.sidenav-main{
-			z-index:9999;
-		}
-		
-	@endif
+
 	.monthly-sub-status:hover{
 		background-color: #eeeeee !important;
 		cursor:pointer;
