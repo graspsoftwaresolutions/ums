@@ -132,7 +132,7 @@
 								<td width="15%" style="vertical-align: super;">
 									<span class="font-one"> ADD: </span>
 								</td>
-								<td width="85%">
+								<td width="85%" style="line-height: 13px;">
 									{{ $member->address_one }}
 									@if($member->address_two!='')
 										{{ $member->address_two }}
