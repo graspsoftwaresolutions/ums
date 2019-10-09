@@ -1,5 +1,7 @@
 <html>
 <head>
+
+	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/print-font.css')}}">
 	<style type="text/css" media="all">
 		@page {
 		  size: 21cm 29.7cm;
@@ -90,8 +92,12 @@
 			word-spacing: -2px;
 		}
 		.font-one{
-			font-family: arial;
+			font-family: 'SwitzerlandCondBlack';
+			word-spacing: 0px;
+			font-weight: normal;
 		}
+
+		
 		
 		
 	</style>
@@ -106,7 +112,7 @@
 		@foreach($data['member_view'] as $member)
 		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
 			<div class="label-inner" >
-			<p style="padding:5px 0px;" class="font-one">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
+			<p style="padding:5px 0px;font-family: SwitzerlandCondBlack;" class="font-one">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
 
 			<p style="margin-left: 38px;"> <span class="font-one"> NAME </span>: {{ $member->name }}</p>
 			<p style="margin-left: 38px;padding-bottom:8px" ><span class="font-one">BANK </span> : {{ $member->company_name }}</p>
