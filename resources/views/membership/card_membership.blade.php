@@ -18,7 +18,7 @@
 		/* Create two equal columns that floats next to each other */
 		.column-left {
 		  float: left;
-		  width: 2.5cm;
+		  width: 2.8cm;
 		  padding: 10px;
 		  height: 3.5cm;
 		  border: 1px solid;
@@ -40,13 +40,34 @@
 			 clear: both;
 		}
 		.label {
+			box-sizing: content-box;
 		  display: inline-block;
 		  width: 8.9cm;
+
 		  height: 6.4cm;
-		  //border: 1px solid black;
+		 // border-collapse: collapse;
+		  
+		  border-bottom: 1px dotted black;
+		  border-right: 1px dotted black;
+		  //outline-style: dotted;
+		  //padding-top: 0.7cm;
+		  //padding-left: 1cm;
+
+		  margin-left: 0.4cm;
+		  padding-left: 0.5cm;
+		  padding-right: 0.1cm;
+
+		  //padding-left: 0.5cm;
+		  //padding-right: 0.5cm;
+		  padding-top: 0.9cm;
+		  padding-bottom: 0cm;
+		    
+   			
+		}
+		.label-inner {
 		  padding: 5px;
-		  margin-left: 1cm;
-		  margin-top: 0.7cm;
+		 
+		
 		}
 		#page-content{
 			font-size: 10px !important;
@@ -59,6 +80,12 @@
 		}
 		table td,th{
 			font-size: 10px !important;
+			font-family: "Courier New";
+			font-weight: bold;
+		}
+		html{
+			font-family: "Courier New";
+			font-weight: bold;
 		}
 		
 		
@@ -72,13 +99,14 @@
 			$slno = 0;
 		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label" @if($slno%2==0)style="border-right: 1px dotted black;"@endif >
-			<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
+		<div class="label" style="@if($slno%2==0)@endif @if($slno<2)border-top: 1px dotted black;@endif border-left: 1px dotted black;">
+			<div class="label-inner" >
+			<p style="font-family: arial;">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
 
 			<p style="margin-left: 38px;">NAME : {{ $member->name }}</p>
 			<p style="margin-left: 38px;">BANK : {{ $member->company_name }}</p>
 			<div class="">
-				<div class="" >
+				
 					<div class="column-left">
 						
 					</div>
@@ -90,6 +118,9 @@
 								</td>
 								<td width="85%">
 									{{ $member->address_one }}
+									@if($member->address_two!='')
+										{{ $member->address_two }}
+									@endif
 											<br/>
 									@php
 										if($member->city_name!=''){
@@ -139,7 +170,8 @@
 						</table>
 						
 					</div>
-				</div>
+				
+			</div>
 			</div>
 		</div>
 		@php
@@ -149,6 +181,6 @@
 	</div>
 	<script type="text/javascript">
 		window.print();
-	</script>>
+	</script>
 </body>
 </html>

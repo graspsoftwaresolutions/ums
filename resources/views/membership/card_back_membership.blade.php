@@ -39,13 +39,20 @@
 			 clear: both;
 		}
 		.label {
+		  box-sizing: content-box;
 		  display: inline-block;
 		  width: 8.9cm;
 		  height: 6.4cm;
-		  //border: 1px solid black;
-		  padding: 5px;
-		  margin-left: 1cm;
-		  margin-top: 0.7cm;
+		 
+		  border-bottom: 1px dotted black;
+		  border-right: 1px dotted black;
+		  
+		  //padding: 5px;
+		   margin-left: 0.4cm;
+		  padding-left: 0.5cm;
+		  padding-right: 0.1cm;
+		  padding-top: 0.9cm;
+		  padding-bottom: 0cm;
 		}
 		#page-content{
 			font-size: 10px !important;
@@ -62,16 +69,22 @@
 <body>
 	
 	<div id="page-content">
+		@php
+			$slno = 0;
+		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label">
+		<div class="label" style="@if($slno%2==0)@endif @if($slno<2)border-top: 1px dotted black;@endif border-left: 1px dotted black;">
 				
-			@php $logo = CommonHelper::getLogo(); @endphp
-			<center style="padding-top:40px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="60"></center>
+			@php $logo = 'nube_log_cyan.png'; @endphp
+			<center style="padding: 5px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="90"></center>
 			
-			<p style="text-align:center;font-size:15px;padding-bottom:40px;">This Membership Card must be returned to </br> the Union on cessation of membership</p>
+			<p style="text-align:center;font-size:15px;padding-bottom:40px;padding-top:10px;">This Membership Card must be returned to </br> the Union on cessation of membership</p>
 			<hr style="width:200px;float:right;">
-			<p style="text-align:center;font-size:15px;float:right;">Hon. General Secretary</p>
+			<p style="text-align:center;font-size:15px;float:right;">Hon. General Secretary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 		</div>
+		@php
+			$slno++;
+		@endphp
 		@endforeach
 
 
