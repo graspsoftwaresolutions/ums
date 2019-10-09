@@ -18,9 +18,9 @@
 		/* Create two equal columns that floats next to each other */
 		.column-left {
 		  float: left;
-		  width: 3.4cm;
+		  width: 2.5cm;
 		  padding: 10px;
-		  height: 4.2cm;
+		  height: 3.5cm;
 		  border: 1px solid;
 		}
 		.column-right {
@@ -68,12 +68,15 @@
 <body>
 
 	<div id="page-content">
+		@php
+			$slno = 0;
+		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label">
+		<div class="label" @if($slno%2==0)style="border-right: 1px dotted black;"@endif >
 			<p>NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</p>
 
-			<p>NAME : {{ $member->name }}</p>
-			<p>BANK : {{ $member->company_name }}</p>
+			<p style="margin-left: 38px;">NAME : {{ $member->name }}</p>
+			<p style="margin-left: 38px;">BANK : {{ $member->company_name }}</p>
 			<div class="">
 				<div class="" >
 					<div class="column-left">
@@ -100,14 +103,48 @@
 						
 						<br/>
 						<br/>
-						<p>BANK-ID : {{ $member->companycode }}</p>
-						<p>I/C NO : {{ $member->ic }}</p>
-						<p>DATE JOINED: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
-						<p>MEMBERSHIP NO: {{ $member->member_number }}</p>
+						<table>
+							<tr>
+								<td>
+									BANK-ID
+								</td>
+								<td>
+									: {{ $member->companycode }}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									I/C NO
+								</td>
+								<td>
+									: {{ $member->ic }}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									DATE JOINED
+								</td>
+								<td>
+									: {{ date('d/M/Y',strtotime($member->doj)) }}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									MEMBERSHIP NO
+								</td>
+								<td>
+									: {{ $member->member_number }}
+								</td>
+							</tr>
+						</table>
+						
 					</div>
 				</div>
 			</div>
 		</div>
+		@php
+			$slno++;
+		@endphp
 		@endforeach
 	</div>
 	<script type="text/javascript">

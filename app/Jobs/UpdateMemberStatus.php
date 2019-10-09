@@ -72,6 +72,10 @@ class UpdateMemberStatus implements ShouldQueue
                 $from_one = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
                 
                 $diff_in_months_one = $to_one->diffInMonths($from_one);
+                if($member->id==25439){
+                    Log::channel('customlog')->info('member#:'.$member->id.'to month: '.$to.'From month'.$from);
+                    Log::channel('customlog')->info('member#:'.$member->id.'doj: '.$to_one.'From month'.$from);
+                }
                 Log::channel('customlog')->info('member#:'.$member->id.'month diff: '.$diff_in_months);
                 if($diff_in_months_one>=3 && $diff_in_months>=3 && $diff_in_months<=11){
                     Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=2');
