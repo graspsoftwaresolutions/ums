@@ -56,6 +56,11 @@
 		  padding-top: 0.3cm;
 		  padding-bottom: 0cm;
 		}
+		.label-inner {
+		  padding: 5px;
+		 
+		
+		}
 		#page-content{
 			font-size: 10px !important;
 		}
@@ -76,13 +81,14 @@
 		@endphp
 		@foreach($data['member_view'] as $member)
 		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
-				
+			<div class="label-inner" >
 			@php $logo = 'nube_log_cyan.png'; @endphp
-			<center style="padding:10px 0px 0px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="100"></center>
+			<center style="padding:5px 0px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="100"></center>
 			
 			<p style="text-align:center;font-size:15px;padding-bottom:30px;padding-top:10px;">This Membership Card must be returned to </br> the Union on cessation of membership</p>
 			<hr style="width:200px;float:right;">
 			<p style="text-align:center;font-size:15px;float:right;">Hon. General Secretary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			</div>
 		</div>
 		@php
 			$slno++;
