@@ -7,7 +7,7 @@
 		  margin: 0mm;
 		}
 		p{
-			padding:5px 2px;
+			padding:2px 2px;
 			margin:0;		
 		}	
 		
@@ -53,9 +53,9 @@
 		  //padding-top: 0.7cm;
 		  //padding-left: 1cm;
 
-		  margin-left: 0.4cm;
-		  padding-left: 0.5cm;
-		  padding-right: 0.1cm;
+		  margin-left: 0.3cm;
+		  padding-left: 0.4cm;
+		  padding-right: 0.4cm;
 
 		  //padding-left: 0.5cm;
 		  //padding-right: 0.5cm;
@@ -101,12 +101,17 @@
 		@foreach($data['member_view'] as $member)
 		<div class="label" style="@if($slno%2==0)@endif @if($slno<2)border-top: 1px dotted black;@endif border-left: 1px dotted black;">
 			<div class="label-inner" >
-			<p style="font-family: arial;">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
+			<p style="font-family: arial;padding:5px 0px;">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
 
 			<p style="margin-left: 38px;">NAME : {{ $member->name }}</p>
 			<p style="margin-left: 38px;">BANK : {{ $member->company_name }}</p>
 			<div class="">
-				
+					@php
+						$total_addr = $member->address_one;
+						$total_addr .= $member->address_two;
+						$total_addr .= $member->city_name;
+						$total_addr .= $member->postal_code;
+					@endphp
 					<div class="column-left">
 						
 					</div>
@@ -121,19 +126,26 @@
 									@if($member->address_two!='')
 										{{ $member->address_two }}
 									@endif
-											<br/>
+									
 									@php
 										if($member->city_name!=''){
 											echo $member->city_name.'-';
 										}
+										echo strlen($total_addr);
 									@endphp
-									{{ $member->postal_code }} 
+									{{ $member->postal_code }}
+									@if(strlen($total_addr)<60)
+									<br/>
+									<br/>
+									@endif
+									@if(strlen($total_addr)<=38)
+									<br/>
+									@endif
 								</td>
 							</tr>
 						</table>
 						
-						<br/>
-						<br/>
+						
 						<table>
 							<tr>
 								<td>

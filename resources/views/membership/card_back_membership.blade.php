@@ -48,9 +48,11 @@
 		  border-right: 1px dotted black;
 		  
 		  //padding: 5px;
-		   margin-left: 0.4cm;
-		  padding-left: 0.5cm;
-		  padding-right: 0.1cm;
+		 
+		  margin-left: 0.3cm;
+		  padding-left: 0.4cm;
+		  padding-right: 0.4cm;
+
 		  padding-top: 0.9cm;
 		  padding-bottom: 0cm;
 		}
@@ -89,5 +91,8 @@
 
 
 	</div>
+	<script type="text/javascript">
+		window.print();
+	</script>
 </body>
 </html>
