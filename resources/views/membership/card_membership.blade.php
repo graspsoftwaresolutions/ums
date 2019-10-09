@@ -19,14 +19,14 @@
 		.column-left {
 		  float: left;
 		  width: 2.8cm;
-		  padding: 10px;
+		  padding: 5px;
 		  height: 3.5cm;
 		  border: 1px solid;
 		}
 		.column-right {
 		  float: left;
 		  width: 5.2cm;
-		  padding: 10px;
+		  padding: 5px;
 		  
 		}
 
@@ -44,7 +44,7 @@
 		  display: inline-block;
 		  width: 8.9cm;
 
-		  height: 6.4cm;
+		  height: 6.3cm;
 		 // border-collapse: collapse;
 		  
 		  border-bottom: 1px dotted black;
@@ -54,12 +54,12 @@
 		  //padding-left: 1cm;
 
 		  margin-left: 0.3cm;
-		  padding-left: 0.4cm;
-		  padding-right: 0.4cm;
+		  padding-left: 0.3cm;
+		  padding-right: 0.3cm;
 
-		  //padding-left: 0.5cm;
-		  //padding-right: 0.5cm;
-		  padding-top: 0.9cm;
+		  //padding-left: 0.4cm;
+		  //padding-right: 0.4cm;
+		  padding-top: 0.3cm;
 		  padding-bottom: 0cm;
 		    
    			
@@ -82,10 +82,15 @@
 			font-size: 10px !important;
 			font-family: "Courier New";
 			font-weight: bold;
+			word-spacing: -2px;
 		}
 		html{
 			font-family: "Courier New";
 			font-weight: bold;
+			word-spacing: -2px;
+		}
+		.font-one{
+			font-family: arial;
 		}
 		
 		
@@ -101,10 +106,10 @@
 		@foreach($data['member_view'] as $member)
 		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
 			<div class="label-inner" >
-			<p style="font-family: arial;padding:5px 0px;">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
+			<p style="padding:5px 0px;" class="font-one">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
 
-			<p style="margin-left: 38px;">NAME : {{ $member->name }}</p>
-			<p style="margin-left: 38px;">BANK : {{ $member->company_name }}</p>
+			<p style="margin-left: 38px;"> <span class="font-one"> NAME </span>: {{ $member->name }}</p>
+			<p style="margin-left: 38px;padding-bottom:8px" ><span class="font-one">BANK </span> : {{ $member->company_name }}</p>
 			<div class="">
 					@php
 						$total_addr = $member->address_one;
@@ -119,7 +124,7 @@
 						<table>
 							<tr>
 								<td width="15%" style="vertical-align: super;">
-									ADD:
+									<span class="font-one"> ADD: </span>
 								</td>
 								<td width="85%">
 									{{ $member->address_one }}
@@ -131,7 +136,7 @@
 										if($member->city_name!=''){
 											echo $member->city_name.'-';
 										}
-										echo strlen($total_addr);
+										
 									@endphp
 									{{ $member->postal_code }}
 									@if(strlen($total_addr)<60)
@@ -149,7 +154,7 @@
 						<table>
 							<tr>
 								<td>
-									BANK-ID
+									<span class="font-one"> BANK-ID </span>
 								</td>
 								<td>
 									: {{ $member->companycode }}
@@ -157,7 +162,7 @@
 							</tr>
 							<tr>
 								<td>
-									I/C NO
+									<span class="font-one"> I/C NO </span>
 								</td>
 								<td>
 									: {{ $member->ic }}
@@ -165,7 +170,7 @@
 							</tr>
 							<tr>
 								<td>
-									DATE JOINED
+									<span class="font-one"> DATE JOINED </span>
 								</td>
 								<td>
 									: {{ date('d/M/Y',strtotime($member->doj)) }}
@@ -173,7 +178,7 @@
 							</tr>
 							<tr>
 								<td>
-									MEMBERSHIP NO
+									<span class="font-one">MEMBERSHIP NO </span>
 								</td>
 								<td>
 									: {{ $member->member_number }}
