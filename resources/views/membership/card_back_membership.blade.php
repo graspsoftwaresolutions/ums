@@ -75,7 +75,7 @@
 			$slno = 0;
 		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label" style="@if($slno%2==0)@endif @if($slno<2)border-top: 1px dotted black;@endif border-left: 1px dotted black;">
+		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
 				
 			@php $logo = 'nube_log_cyan.png'; @endphp
 			<center style="padding: 5px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="90"></center>

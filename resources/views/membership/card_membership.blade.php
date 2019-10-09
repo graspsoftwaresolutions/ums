@@ -99,7 +99,7 @@
 			$slno = 0;
 		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label" style="@if($slno%2==0)@endif @if($slno<2)border-top: 1px dotted black;@endif border-left: 1px dotted black;">
+		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
 			<div class="label-inner" >
 			<p style="font-family: arial;padding:5px 0px;">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
 
