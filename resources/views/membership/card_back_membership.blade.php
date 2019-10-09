@@ -42,7 +42,7 @@
 		  box-sizing: content-box;
 		  display: inline-block;
 		  width: 8.9cm;
-		  height: 6.4cm;
+		  height: 6.3cm;
 		 
 		  border-bottom: 1px dotted black;
 		  border-right: 1px dotted black;
@@ -50,10 +50,10 @@
 		  //padding: 5px;
 		 
 		  margin-left: 0.3cm;
-		  padding-left: 0.4cm;
-		  padding-right: 0.4cm;
+		  padding-left: 0.3cm;
+		  padding-right: 0.3cm;
 
-		  padding-top: 0.9cm;
+		  padding-top: 0.3cm;
 		  padding-bottom: 0cm;
 		}
 		#page-content{
@@ -78,7 +78,7 @@
 		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
 				
 			@php $logo = 'nube_log_cyan.png'; @endphp
-			<center style="padding: 5px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="90"></center>
+			<center style="padding:10px 0px 0px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="100"></center>
 			
 			<p style="text-align:center;font-size:15px;padding-bottom:40px;padding-top:10px;">This Membership Card must be returned to </br> the Union on cessation of membership</p>
 			<hr style="width:200px;float:right;">

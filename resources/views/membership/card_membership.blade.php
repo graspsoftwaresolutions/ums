@@ -27,7 +27,7 @@
 		}
 		.column-right {
 		  float: left;
-		  width: 5.2cm;
+		  width: 5.8cm;
 		  padding: 5px;
 		  
 		}
@@ -142,14 +142,17 @@
 										if($member->city_name!=''){
 											echo $member->city_name.'-';
 										}
-										
+										//echo strlen($total_addr);
 									@endphp
 									{{ $member->postal_code }}
-									@if(strlen($total_addr)<60)
+									@if(strlen($total_addr)<=64)
 									<br/>
+									
+									@endif
+									@if(strlen($total_addr)<=48)
 									<br/>
 									@endif
-									@if(strlen($total_addr)<=38)
+									@if(strlen($total_addr)<=20)
 									<br/>
 									@endif
 								</td>
