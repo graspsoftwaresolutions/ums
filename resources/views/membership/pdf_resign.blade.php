@@ -58,7 +58,7 @@
 				<td width="39%">{{ $member_data->name }}</td>
 				<td width="20%">DATE</td>
 				<td width="1%">:</td>
-				<td width="19%">{{ date('d/M/Y',strtotime($resign_data->entry_date)) }}</td>
+				<td width="19%">{{ date('d/M/Y',strtotime($resign_data->voucher_date)) }}</td>
 			</tr>
 			<tr>
 				<td>MEMBERSHIP NO</td>
@@ -90,7 +90,7 @@
 				</td>
 				<td>RESIGNATION DATE</td>
 				<td>:</td>
-				<td>{{ date('d/M/Y',strtotime($resign_data->voucher_date)) }}</td>
+				<td>{{ date('d/M/Y',strtotime($resign_data->resignation_date)) }}</td>
 			</tr>
 			<tr>
 				<td>REASON FOR CLAIM</td>
@@ -111,13 +111,13 @@
 				<td class="align-right">{{ $resign_data->amount }}</td>
 			</tr>
 			<tr>
-				<td class="align-right">@RM {{ $resign_data->accbenefit }} PER MONTH (RM {{ $resign_data->accbenefit }} x {{ $resign_data->months_contributed }} )</td>
-				<td class="align-right">{{ $resign_data->months_contributed*$resign_data->accbenefit }}</td>
+				<td class="align-right">@RM {{ 3 }} PER MONTH (RM {{ 3 }} x {{ $resign_data->months_contributed }} )</td>
+				<td class="align-right">{{ $resign_data->months_contributed*3 }}</td>
 				<td class="align-right"></td>
 			</tr>
 			<tr>
 				<td class="align-right">BENEFIT PAYABLE FROM UNION : {{ $resign_data->service_year }}YEARS</td>
-				<td class="align-right">{{ $resign_data->accbf }}</td>
+				<td class="align-right">{{ $resign_data->accbenefit }}</td>
 				<td class="align-right"></td>
 			</tr>
 			<tr>
