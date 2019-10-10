@@ -1240,7 +1240,7 @@ class MembershipController extends Controller
         if($dojtime<=$bftime){
             $beforemay = 1;
         }
-        $memberstatus =  DB::table('membermonthendstatus as ms')->where('StatusMonth', '=',$resigndate)->where('MemberCode', '=',$auto_id)->pluck('STATUS_CODE')->first();
+        $memberstatus =  DB::table('membermonthendstatus as ms')->where('StatusMonth', '=',$resigndate)->where('MEMBER_CODE', '=',$auto_id)->pluck('STATUS_CODE')->first();
         $bfamount = 0; 
         if($service_year>0 && $resign_reason!='' && $beforemay==1 && $memberstatus==1){
             $reasondata =  Reason::where('id',$resign_reason)->first();
