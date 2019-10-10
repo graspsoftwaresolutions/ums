@@ -1,6 +1,7 @@
 <html>
 <head>
 	<style type="text/css" media="all">
+	
 		@page {
 		  size: 21cm 29.7cm;
 		  font-size: 10px !important;
@@ -44,17 +45,19 @@
 		  width: 8.9cm;
 		  height: 6.3cm;
 		 
-		  border-bottom: 1px dotted black;
-		  border-right: 1px dotted black;
+		  //border-bottom: 1px dotted black;
+		 //border-right: 1px dotted black;
+
+		  //margin: 0.3cm 0cm 0cm 1cm;
 		  
-		  //padding: 5px;
+		  /* padding: 5px; */
 		 
-		  margin-left: 0.3cm;
+		  margin-right: 0.3cm;
 		  padding-left: 0.3cm;
 		  padding-right: 0.3cm;
 
 		  padding-top: 0.3cm;
-		  padding-bottom: 0cm;
+		  padding-bottom: 0cm; 
 		}
 		.label-inner {
 		  padding: 5px;
@@ -62,6 +65,9 @@
 		
 		}
 		#page-content{
+			size: 21cm 29.7cm;
+		 	font-size: 10px !important;
+		  	margin: 0mm;
 			font-size: 10px !important;
 		}
 		@media print{
@@ -80,7 +86,7 @@
 			$slno = 0;
 		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
+		<div class="label" style="">
 			<div class="label-inner" >
 			@php $logo = 'nube_log_cyan.png'; @endphp
 			<center style="padding:5px 0px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="100"></center>
