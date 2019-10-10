@@ -982,7 +982,7 @@ class CommonHelper
 	
 	public static function getBankCode($branchid){
 		$company_id = CompanyBranch::where('id',$branchid)->pluck('company_id')->first();
-		$shortcode = Company::find($company_id)->pluck('short_code')->first();
+		$shortcode = Company::where('id','=',$company_id)->pluck('short_code')->first();
         
         return $shortcode;
     }
@@ -1950,6 +1950,17 @@ class CommonHelper
         $countrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
                         ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->count();
         return $countrecord;
-    }
+	}
+	
+	public static function getBranchShortCode($branchid){
+		$shortcode = CompanyBranch::where('id',$branchid)->pluck('branch_shortcode')->first();
+        
+        return $shortcode;
+	}
+	
+	public static function getInsuranceData($memberid){
+		$members_pay = DB::select(DB::raw("SELECT count(*) as count,TOTALINSURANCE_AMOUNT FROM `membermonthendstatus` where TOTALINSURANCE_AMOUNT!=0 and MEMBER_CODE=$memberid"));
+		return $members_pay;
+	}
 	
 }

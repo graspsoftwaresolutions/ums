@@ -71,7 +71,7 @@
 			<tr>
 				<td>BRANCH CODE</td>
 				<td>:</td>
-				<td>{{ $member_data->branch_id }}</td>
+				<td>{{ CommonHelper::getBranchShortCode($member_data->branch_id) }}</td>
 				<td>CLAIMER NAME</td>
 				<td>:</td>
 				<td>{{ $resign_data->claimer_name }}</td>
@@ -120,8 +120,11 @@
 				<td class="align-right">{{ $resign_data->accbenefit }}</td>
 				<td class="align-right"></td>
 			</tr>
+			@php
+				$data = CommonHelper::getInsuranceData($member_data->id)[0];
+			@endphp
 			<tr>
-				<td class="align-right">Insurance Amount</td>
+				<td class="align-right">INSURANCE AMOUNT @if($data->count!=0)(RM $data->count x  $data->TOTALINSURANCE_AMOUNT )@endif</td>
 				<td class="align-right">{{ $resign_data->insuranceamount }}</td>
 				<td class="align-right"></td>
 			</tr>
