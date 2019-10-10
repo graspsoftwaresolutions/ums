@@ -55,16 +55,16 @@
 											<table id="page-length-option" class="display">
 												<thead>
 													<tr>
-														<td colspan="4">&nbsp;</td>
-														<td colspan="2"><input type="text" id="common-search-input" class="common-search-input " placeholder="Search here" value="" ></td>
-														<td>Status</td>
-														<td colspan="2" valign="middle">
+														<th colspan="4">&nbsp;</th>
+														<th colspan="2"><input type="text" id="common-search-input" class="common-search-input " placeholder="Search here" value="" ></th>
+														<th>Status</th>
+														<th colspan="2" valign="middle">
 															<select id="common-search-status" class="browser-default">
 																<option @if($data['irc_status']==""){{ 'selected' }} @endif value="">All</option>
 																<option @if($data['irc_status']==1){{ 'selected' }} @endif value="1">Confirm</option>
 																<option @if($data['irc_status']=="0"){{ 'selected' }} @endif value="0">Pending</option>
 															</select>
-														</td>
+														</th>
 														
 													</tr>
 													<tr>

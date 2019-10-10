@@ -90,7 +90,7 @@
 				</td>
 				<td>RESIGNATION DATE</td>
 				<td>:</td>
-				<td>{{ date('d/M/Y',strtotime($resign_data->resignation_date)) }}</td>
+				<td>{{ date('d/M/Y',strtotime($resign_data->voucher_date)) }}</td>
 			</tr>
 			<tr>
 				<td>REASON FOR CLAIM</td>

@@ -1732,7 +1732,8 @@
         var resign_date = $("#resign_date").val();
         var last_paid = $("#last_paid").val();
         var resign_reason = $("#resign_reason").val();
-        if (resign_date != "" && last_paid != "" && resign_reason != "") {
+        var payment_confirmation = $("#payment_confirmation").val();
+        if (resign_date != "" && last_paid != "" && resign_reason != "" && payment_confirmation!="") {
             @if(empty($resignedrow))
             if (confirm("{{ __('Are you sure you want to Resign?') }}")) {
                 $("#resignstatus").val(1);
@@ -1810,13 +1811,15 @@
         //alert('test');
 		var service_year = $('#service_year').val();
 		var resign_reason = $('#resign_reason').val();
+		var resign_date = $('#resign_date').val();
 		var status_id = $('#status_id').val();
+		var auto_id = $('#auto_id').val();
         var doj = $('#doj').val();
-		if(service_year!=0 && resign_reason!='' && status_id==1 && doj!=''){
+		if(service_year!=0 && resign_reason!='' && doj!=''){
 			$.ajax({
 				type:"GET",
 				dataType:"json",
-				url:"{{URL::to('/get-bf-amount') }}?service_year="+service_year+"&resign_reason="+resign_reason+"&doj="+doj,
+				url:"{{URL::to('/get-bf-amount') }}?service_year="+service_year+"&resign_reason="+resign_reason+"&doj="+doj+"&resign_date="+resign_date+"&auto_id="+auto_id,
 				success:function(res){
 					if(res){
 						$("#benefit_amount").val(res);

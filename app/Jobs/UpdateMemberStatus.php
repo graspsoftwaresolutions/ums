@@ -72,20 +72,22 @@ class UpdateMemberStatus implements ShouldQueue
                 $from_one = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
                 
                 $diff_in_months_one = $to_one->diffInMonths($from_one);
-                if($member->id==25439){
+                //if($member->id==25439){
                     Log::channel('customlog')->info('member#:'.$member->id.'to month: '.$to.'From month'.$from);
                     Log::channel('customlog')->info('member#:'.$member->id.'doj: '.$to_one.'From month'.$from);
-                }
+                //}
                 Log::channel('customlog')->info('member#:'.$member->id.'month diff: '.$diff_in_months);
-                if($diff_in_months_one>=3 && $diff_in_months>=3 && $diff_in_months<=11){
+
+                $membercount =  DB::table('mon_sub_member as sm')->where('MonthlySubscriptionCompanyId', '=',$company_auto_id)->where('MemberCode', '=',$member->id)->count();
+                if($diff_in_months_one>=3 && $diff_in_months>=3 && $diff_in_months<=11 && $membercount==0){
                     Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=2');
 
                     $updata = ['status_id' => 2,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
-                    $savedata = Membership::where('id',$member->id)->update($updata);
-                }else if ($diff_in_months_one>=3 && $diff_in_months>=12){
+                    $savedata = Membership::where('id',$member->id)->where('status_id','!=',2)->update($updata);
+                }else if ($diff_in_months_one>=3 && $diff_in_months>=12 && $membercount==0){
                     Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=3');
                     $updata = ['status_id' => 3,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
-                    $savedata = Membership::where('id',$member->id)->update($updata);
+                    $savedata = Membership::where('id',$member->id)->where('status_id','!=',3)->update($updata);
                 }
             }
         }

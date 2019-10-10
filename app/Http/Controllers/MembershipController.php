@@ -1228,16 +1228,21 @@ class MembershipController extends Controller
     public function getBFAmount(Request $request){
         $service_year = $request->input('service_year');
         $resign_reason = $request->input('resign_reason');
+        $resign_date = $request->input('resign_date');
+        $auto_id = $request->input('auto_id');
         $doj = $request->input('doj');
-        $fmmm_date = explode("/",$doj);           	
+        $fmmm_date = explode("/",$doj);           
+        $resignfrom_date = explode("/",$resign_date);  	
         $dojtime = strtotime($fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0]);
+        $resigndate = date('Y-m-01',strtotime($resignfrom_date[2]."-".$resignfrom_date[1]."-01"));
         $bftime = strtotime('2017-05-31');
         $beforemay = 0;
         if($dojtime<=$bftime){
             $beforemay = 1;
         }
+        $memberstatus =  DB::table('membermonthendstatus as ms')->where('StatusMonth', '=',$resigndate)->where('MemberCode', '=',$auto_id)->pluck('STATUS_CODE')->first();
         $bfamount = 0; 
-        if($service_year>0 && $resign_reason!='' && $beforemay==1){
+        if($service_year>0 && $resign_reason!='' && $beforemay==1 && $memberstatus==1){
             $reasondata =  Reason::where('id',$resign_reason)->first();
             $five_year_amount = $reasondata->five_year_amount;
             $fiveplus_year_amount = $reasondata->fiveplus_year_amount;
