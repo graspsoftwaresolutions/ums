@@ -73,8 +73,9 @@ class UpdateMemberStatus implements ShouldQueue
                 
                 $diff_in_months_one = $to_one->diffInMonths($from_one);
                 //if($member->id==25439){
-                    Log::channel('customlog')->info('member#:'.$member->id.'to month: '.$to.'From month'.$from);
-                    Log::channel('customlog')->info('member#:'.$member->id.'doj: '.$to_one.'From month'.$from);
+                    Log::channel('customlog')->info('code ok');
+                    Log::channel('customlog')->info('member#:'.$member->id.'to month: '.$last_pay_date.'From month'.$upload_date);
+                    Log::channel('customlog')->info('member#:'.$member->id.'doj: '.$member_doj.'From month'.$upload_date);
                 //}
                 Log::channel('customlog')->info('member#:'.$member->id.'month diff: '.$diff_in_months);
 
