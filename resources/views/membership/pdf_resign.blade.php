@@ -79,7 +79,15 @@
 			<tr>
 				<td>IC NO</td>
 				<td>:</td>
-				<td>{{ $member_data->ic_no }}</td>
+				<td>
+					@if($member_data->new_ic!='')
+					{{  $member_data->new_ic  }}
+					@elseif($member_data->old_ic!='')
+					{{  $member_data->old_ic  }}
+					@else
+					{{  $member_data->employee_id  }}
+					@endif
+				</td>
 				<td>RESIGNATION DATE</td>
 				<td>:</td>
 				<td>{{ date('d/M/Y',strtotime($resign_data->resignation_date)) }}</td>
