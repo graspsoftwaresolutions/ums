@@ -1267,7 +1267,7 @@
                                                                 <label for="service_year" class="force-active">Service Year</label>
                                                             </div>
                                                             <div class="input-field col s6">
-                                                                <input type="text" id="benefit_year" name="benefit_year" readonly>
+                                                                <input type="text" id="benefit_year" name="benefit_year" value="{{ $service_year }}" readonly>
                                                                 <label for="benefit_year" class="force-active">Benefit Year</label>
                                                             </div>
                                                         </div>
@@ -1792,8 +1792,10 @@
 				success:function(res){
 					if(res){
 						$("#service_year").val(res);
+                        $("#benefit_year").val(res);
 					}else{
 						$("#service_year").val(0);
+                        $("#benefit_year").val(0);
 					}
 					getBfAmount();
 				}
@@ -1826,10 +1828,12 @@
 					}else{
 						$("#benefit_amount").val(0);
 					}
+                    $('#benefit_amount').trigger('keyup');
 				}
 			});
 		}else{
 			$("#benefit_amount").val(0);
+            $('#benefit_amount').trigger('keyup');
 		}
 		
 	}
