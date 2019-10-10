@@ -116,7 +116,7 @@
 				<td class="align-right"></td>
 			</tr>
 			<tr>
-				<td class="align-right">BENEFIT PAYABLE FROM UNION : {{ $resign_data->service_year }}YEARS</td>
+				<td class="align-right">BENEFIT PAYABLE FROM UNION : {{ $resign_data->service_year }} YEARS</td>
 				<td class="align-right">{{ $resign_data->accbenefit }}</td>
 				<td class="align-right"></td>
 			</tr>
@@ -124,7 +124,7 @@
 				$data = CommonHelper::getInsuranceData($member_data->id)[0];
 			@endphp
 			<tr>
-				<td class="align-right">INSURANCE AMOUNT @if($data->count!=0)(RM $data->count x  $data->TOTALINSURANCE_AMOUNT )@endif</td>
+				<td class="align-right">INSURANCE AMOUNT @if($data->count!=0)(RM {{$data->TOTALINSURANCE_AMOUNT}} x  {{$data->count}} )@endif</td>
 				<td class="align-right">{{ $resign_data->insuranceamount }}</td>
 				<td class="align-right"></td>
 			</tr>
