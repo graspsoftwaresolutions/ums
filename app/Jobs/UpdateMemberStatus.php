@@ -57,6 +57,8 @@ class UpdateMemberStatus implements ShouldQueue
                     ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
                     ->leftjoin('company as c','c.id','=','cb.company_id')
                     ->where('cb.company_id', '=',$company_id)
+                    ->where('m.status_id', '!=',3)
+                    ->where('m.status_id', '!=',4)
                     ->get();
         foreach($members as $member){
             $paydata =  DB::table('member_payments')->where('member_id', '=',$member->id)->first();
@@ -73,7 +75,7 @@ class UpdateMemberStatus implements ShouldQueue
                 
                 $diff_in_months_one = $to_one->diffInMonths($from_one);
                 //if($member->id==25439){
-                    Log::channel('customlog')->info('code ok');
+                    Log::channel('customlog')->info('code ok-');
                     Log::channel('customlog')->info('member#:'.$member->id.'to month: '.$last_pay_date.'From month'.$upload_date);
                     Log::channel('customlog')->info('member#:'.$member->id.'doj: '.$member_doj.'From month'.$upload_date);
                 //}
