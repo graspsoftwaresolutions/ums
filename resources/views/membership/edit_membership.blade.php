@@ -1179,16 +1179,18 @@
 												$reasondata = CommonHelper::getResignData(); 
 												$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid); 
 												$lastpaid = ''; $totalmonthspaid = ''; $bfcontribuion = ''; $insamount = ''; $service_year = ''; $unioncontribution = ''; $accbenefit = ''; 
+												$totamount = 0; 
 												if(!empty($lastmonthendrow)){ 
-													$lastpaid = date('M/Y',strtotime($lastmonthendrow->StatusMonth)); 
+													$lastpaid = date('M/Y',strtotime($lastmonthendrow->LASTPAYMENTDATE)); 
 													$totalmonthspaid = $lastmonthendrow->TOTALMONTHSPAID; 
 													$bfcontribuion = $lastmonthendrow->ACCBF; 
 													$insamount = $lastmonthendrow->ACCINSURANCE; 
 													$service_year = CommonHelper::calculate_age($values->doj); 
 													$unioncontribution = $lastmonthendrow->ACCINSURANCE; 
-													$accbenefit = $lastmonthendrow->ACCBENEFIT; 
+													$accbenefit = $lastmonthendrow->BF_AMOUNT; 
+													$totamount = $accbenefit+$bfcontribuion+$insamount;
 												} 
-												$resignstatus = 0; $resign_date = ''; $relation_code = ''; $pay_mode = ''; $chequeno = ''; $voucher_date = ''; $chequedate = ''; $chequedate = ''; $totamount = 0; 
+												$resignstatus = 0; $resign_date = ''; $relation_code = ''; $pay_mode = ''; $chequeno = ''; $voucher_date = ''; $chequedate = ''; $chequedate = ''; 
 												if(!empty($resignedrow)){ 
 													$resignstatus = 0; 
 													$resign_date = date('d/m/Y',strtotime($resignedrow->resignation_date)); 
@@ -1213,7 +1215,7 @@
                                                     </br>
                                                     <div class="input-field col s6">
                                                         <label for="resign_date" class="force-active">Resign Date *</label>
-                                                        <input type="text" class="datepicker" id="resign_date" data-error=".errorTxt500" name="resign_date" value="{{$resign_date}}">
+                                                        <input type="text" class="datepicker" id="resign_date" data-error=".errorTxt500" name="resign_date" value="{{$resign_date}}" autocomplete="false">
                                                         <input type="text" class="hide" id="totalarrears" value="{{$totalmonthspaid}}" name="totalarrears">
                                                         <input type="text" class="hide" id="resignstatus" value="{{$resignstatus}}" name="resignstatus">
                                                         <div class="errorTxt500"></div>
