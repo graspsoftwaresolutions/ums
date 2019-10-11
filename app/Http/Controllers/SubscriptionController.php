@@ -526,12 +526,18 @@ class SubscriptionController extends CommonController
 						$total_subs_to_paid = $diff_in_months==0 ? $subscription->Amount : ($diff_in_months*$subscription->Amount);
 						$total_pending = $total_subs_to_paid - $total_subs;
 						
-						$mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
-                        $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.TOTALMONTHSCONTRIBUTION')
-                            ->where('ms.MEMBER_CODE','=',$member_code)
-                            ->where('ms.StatusMonth','<',$cur_date)
-                            ->orderBY('ms.StatusMonth','desc')
+                        $mont_count = CacheMembers::getMonthEndMemberStatus($cur_date, $member_code);
+                        
+                        // $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.TOTALMONTHSCONTRIBUTION')
+                        //     ->where('ms.MEMBER_CODE','=',$member_code)
+                        //     ->where('ms.StatusMonth','<',$cur_date)
+                        //     ->orderBY('ms.StatusMonth','desc')
+                        //     ->first();
+
+                        $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION')
+                            ->where('ms.member_id','=',$member_code)
                             ->first();
+
                         $m_subs_amt = number_format($subscription->Amount-($this->bf_amount+$this->ins_amount),2);
 						//$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_code)->count();
 						//dd($member_code);
