@@ -1128,7 +1128,8 @@ class SubscriptionController extends CommonController
            $data['member'] = $members_data;
            $data['status_type'] = 4;
            $data['status'] = 0;
-		}
+        }
+        
 		return view('subscription.member_status')->with('data',$data);
     }
 	

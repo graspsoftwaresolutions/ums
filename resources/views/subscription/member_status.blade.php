@@ -243,6 +243,31 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
+				@php
+					//dd($approval_status);
+				@endphp
+				@if($approval_status==1 || $approval_status==3 || $approval_status>=5)
+					@if($approval_status==3)
+						&nbsp;&nbsp;
+						
+							<span class="bold">From Union:
+							<label>
+								<input name="bulknameverify" type="radio" checked value="1" />
+								<span>is it correct?</span>
+							</label>
+						&nbsp;&nbsp;
+						<span class="bold">From Bank:
+						<label>
+							<input name="bulknameverify" type="radio" value="2" />
+							<span>is it correct?</span>
+						</label>
+					
+					
+					@endif
+					<input type="hidden" name="approval_status_ref" id="approval_status_ref" value="{{ $approval_status }}" />
+					<button name="submitAll" id="submitAll" onclick="return SubmitAllVerication();" class="btn waves-effect">Approve All</button>
+
+				@endif
 				<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 				<table id="page-length-option" class="display nowrap" width="100%">
 					<thead>
@@ -260,6 +285,7 @@
 					</thead>
 					<tbody>
 						@php
+
 							//dd($data['member'])
 						@endphp
 						@foreach($data['member'] as  $key => $member)
@@ -918,6 +944,31 @@ function ConfirmSubmit(){
     } else {
         return false;
     }
+}
+function SubmitAllVerication(){
+	var approval_status = '{{ $data['status'] }}';
+	var companyid = '{{ $companyid }}';
+	var approval_date = '{{ $data['filter_date'] }}';
+	var bulknameverify = $("input[name='bulknameverify']:checked").val();
+	if ( typeof bulknameverify == 'undefined') {
+	  bulknameverify='';
+	}
+	
+	var searchfilters = '&approval_status='+approval_status+'&companyid='+companyid+'&approval_date='+approval_date+'&bulknameverify='+bulknameverify;
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url : "{{ URL::to('/en/save-subscription-approve') }}?offset=0"+searchfilters,
+		success:function(result){
+			if(result)
+			{
+				alert('successfully updated');
+				loader.hideLoader();
+			}else{
+				
+			}
+		}
+	});
 }
 
 </script>
