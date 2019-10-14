@@ -561,3 +561,7 @@
 #59 /var/www/html/ums/index.php(21): require_once('/var/www/html/u...')
 #60 {main}
 "} 
+[2019-10-14 12:00:51] local.ERROR: Maximum execution time of 30 seconds exceeded {"userId":6,"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Maximum execution time of 30 seconds exceeded at /var/www/html/ums/vendor/laravel/framework/src/Illuminate/Database/Connection.php:805)
+[stacktrace]
+#0 {main}
+"} 
