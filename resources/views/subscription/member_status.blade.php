@@ -953,7 +953,7 @@ function SubmitAllVerication(){
 	if ( typeof bulknameverify == 'undefined') {
 	  bulknameverify='';
 	}
-	
+	loader.showLoader();
 	var searchfilters = '&approval_status='+approval_status+'&companyid='+companyid+'&approval_date='+approval_date+'&bulknameverify='+bulknameverify;
 	$.ajax({
 		type: "GET",
