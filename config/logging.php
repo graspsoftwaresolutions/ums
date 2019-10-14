@@ -95,6 +95,11 @@ return [
 		    'path' => storage_path('logs/custom.log'),
 		    'level' => 'info',
 		],
+        'approvallog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/approvallog.log'),
+            'level' => 'info',
+        ],
 
     ],
 
