@@ -39,13 +39,14 @@ use App\Exports\SubscriptionExport;
 use App\Imports\SubscriptionImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\ToArray;
-use Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use Artisan;
 use App\Jobs\UpdateMemberStatus;
+
 
 
 
@@ -56,6 +57,10 @@ class SubscriptionAjaxController extends CommonController
         $this->limit = 25;
         ini_set('memory_limit', '-1');
         $this->membermonthendstatus_table = "membermonthendstatus";
+        $bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
+        $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        $this->bf_amount = $bf_amount=='' ? 3 : $bf_amount;
+        $this->ins_amount = $ins_amount=='' ? 7 : $ins_amount;
     }
     //Ajax Datatable Countries List //Users List 
     public function ajax_submember_list(Request $request){
@@ -971,5 +976,163 @@ class SubscriptionAjaxController extends CommonController
         UpdateMemberStatus::dispatch($company_auto_id);
         Artisan::call('queue:work --tries=1 --timeout=10000');
         echo 1;
+    }
+
+    public function ApproveSubscriptionAll($lang,Request $request){
+        ini_set('memory_limit', -1);
+		ini_set('max_execution_time', 0);
+        $approval_status = $request->input('approval_status');
+        $companyid = $request->input('companyid');
+        $approval_date = $request->input('approval_date');
+        $bulknameverify = $request->input('bulknameverify');
+
+        $approvaldate = date('Y-m-01',$approval_date);
+
+        $members_qry =  DB::table('mon_sub_member as m')->select('m.id','m.MemberCode','m.Name','m.MonthlySubscriptionCompanyId','m.Amount')
+        ->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
+        ->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
+        ->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
+        ->where('m.approval_status','!=',1)
+        ->where('mm.match_id','=',$approval_status)
+        ->where('sm.Date','=',$approvaldate);
+        if($companyid!=null){
+            $members_qry =  $members_qry->where('m.MonthlySubscriptionCompanyId','=',$companyid);
+        }
+        $members_qry = $members_qry->get();
+        //dd($members_qry);
+        foreach($members_qry as $members){
+            $submemberid = $members->id;
+            $memberid = $members->MemberCode;
+            $uploaded_member_name = $members->Name;
+            if($approval_status==3){
+               
+				if($approval_status==1){
+					if($bulknameverify==1){
+						DB::table('mon_sub_member')->where('id', '=', $sub_member_id)->update(['Name' =>  CommonHelper::getmemberName($memberid)]);
+					}else{
+						
+						DB::table('membership')->where('id', '=', $memberid)->update(['name' => $uploaded_member_name]);
+					}
+				}
+				DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $submemberid)->where('match_id','=' ,3)->update(['approval_status' => 1, 'description' => 'Mismatched Member Name', 'updated_by' => Auth::user()->id]);
+            }else{
+                DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $submemberid)->where('match_id','=' ,$approval_status)->update(['approval_status' => 1, 'updated_by' => Auth::user()->id]);
+            }
+            $match_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$submemberid)->count();
+           
+            $app_match_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$submemberid)->where('approval_status','=',1)->count();
+            
+            if($match_count==$app_match_count){
+              
+               // DB::table('mon_sub_member')->where('id', '=', $submemberid)->update(['approval_status' => 1, 'updated_by' => Auth::user()->id]);
+                $sub_member =DB::table("mon_sub_member")->where('id','=',$submemberid)->first();
+                $sub_company_id = $members->MonthlySubscriptionCompanyId;
+                $member_id = $members->MemberCode;
+                $sub_amount = $members->Amount;
+                $cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$sub_company_id)->pluck('Date')->first();
+                $last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
+                $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
+                $memberdata =DB::table("membership")->where('id','=',$member_id)->first();
+                $total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
+                            ->where('MemberCode', '=', $member_id)
+                            ->first();
+                $member_doj = $memberdata->doj;
+                $total_subs = $total_subs_obj->amount;
+                
+                $total_count = DB::table('mon_sub_member')
+                ->where('MemberCode', '=', $member_id)
+                ->count();
+                
+                $old_subscription_count = DB::table("mon_sub_member as mm")
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->where('mm.MemberCode','=',$member_id)
+                                ->where('ms.Date','=',$last_month)
+                                ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+                                ->count();
+                
+                $paid_bf = $total_subs-($total_count*$this->bf_amount);
+                
+                    
+                $to = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
+                $from = Carbon::createFromFormat('Y-m-d H:s:i', $cur_date.' 9:30:34');
+                $diff_in_months = $to->diffInMonths($from);
+                
+                $bf_due = ($diff_in_months-$total_count)*$this->bf_amount;
+                $ins_due = ($diff_in_months-$total_count)*$this->ins_amount;
+                $total_subs_to_paid = $diff_in_months==0 ? $sub_amount : ($diff_in_months*$sub_amount);
+                $total_pending = $total_subs_to_paid - $total_subs;
+                //dd($member_code);
+                $branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
+                $last_subscription_res = DB::table($this->membermonthendstatus_table." as ms")->select('ms.LASTPAYMENTDATE','ms.ACCINSURANCE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.SUBSCRIPTIONDUE','ms.TOTALMONTHSCONTRIBUTION')
+                ->where('ms.MEMBER_CODE','=',$member_id)
+                ->where('ms.StatusMonth','<',$cur_date)
+                ->orderBY('ms.StatusMonth','desc')
+                ->first();
+                $m_subs_amt = number_format($sub_amount-($this->bf_amount+$this->ins_amount),2);
+            
+                
+                $monthend_data = [
+                                    'StatusMonth' => $cur_date, 
+                                    'MEMBER_CODE' => $member_id,
+                                    'SUBSCRIPTION_AMOUNT' => $m_subs_amt,
+                                    'BF_AMOUNT' => $this->bf_amount,
+                                    'LASTPAYMENTDATE' => $cur_date,
+                                    'TOTALSUBCRP_AMOUNT' => $m_subs_amt,
+                                    'TOTALBF_AMOUNT' => $this->bf_amount,
+                                    'TOTAL_MONTHS' => 1,
+                                    'BANK_CODE' => $branchdata->company_id,
+                                    'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
+                                    'BRANCH_CODE' => $memberdata->branch_id,
+                                    'MEMBERTYPE_CODE' => $memberdata->designation_id,
+                                    'ENTRYMODE' => 'S',
+                                    //'DEFAULTINGMONTHS' => 0,
+                                    'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
+                                    'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+                                    'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
+                                    'BFDUE' => 0,
+                                    'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
+                                    'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
+                                    'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+                                    //'ACCBENEFIT' => 0,
+                                    //'CURRENT_YDTBF' => 0,
+                                    //'CURRENT_YDTSUBSCRIPTION' => 0,
+                                    'STATUS_CODE' => $memberdata->status_id,
+                                    'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                                    'ENTRY_DATE' => date('Y-m-d'),
+                                    'ENTRY_TIME' => date('h:i:s'),
+                                    'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                                    'INSURANCE_AMOUNT' => $this->ins_amount,
+                                    'TOTALINSURANCE_AMOUNT' => $this->ins_amount,
+                                    'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+                                    'INSURANCEDUE' => $ins_due,
+                                    //'CURRENT_YDTINSURANCE' => 0,
+                                ];
+                
+                $updata = ['update_status' => 1,'approval_status' => 1];
+                $savedata = MonthlySubscriptionMember::where('id',$submemberid)->update($updata);
+                //DB::connection()->enableQueryLog();
+
+                if($mont_count>0){
+                
+                    $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
+                    //$queries = DB::getQueryLog();
+                // dd($statuss);
+                }else{
+                    DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+                }
+                $payment_data = [
+                    'last_paid_date' => $cur_date,
+                    'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+                    'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+                    'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
+                    'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
+                    'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+                    'updated_by' => Auth::user()->id,
+                ];
+                DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+            }
+        }
+        return '1';
     }
 }

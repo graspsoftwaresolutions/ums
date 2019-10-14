@@ -1,34 +1,33 @@
 <html>
 <head>
-
-	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/print-font.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/print-font.css')}}">
+	
 	<style type="text/css" media="all">
+	
 		@page {
 		  size: 21cm 29.7cm;
 		  font-size: 10px !important;
-		  margin: 0mm;
+		   margin: 0mm;
 		}
+		
 		p{
-			padding:2px 2px;
+			padding:5px 2px;
 			margin:0;		
 		}	
 		
-		* {
-		  box-sizing: border-box;
-		}
+		
 		
 		/* Create two equal columns that floats next to each other */
 		.column-left {
 		  float: left;
-		  width: 2.8cm;
-		  padding: 5px;
-		  height: 3.5cm;
+		  width: 3.4cm;
+		  padding: 10px;
+		  height: 4.2cm;
 		  border: 1px solid;
 		}
 		.column-right {
 		  float: left;
-		  width: 5.8cm;
-		  padding: 5px;
+		  padding: 10px;
 		  
 		}
 
@@ -41,169 +40,224 @@
 		.clearfix{
 			 clear: both;
 		}
+		.label:first-child {
+			
+		}
 		.label {
-			box-sizing: content-box;
+		  box-sizing: content-box;
 		  display: inline-block;
-		  width: 8.9cm;
+		  width: 8.8cm;
+		  height: 6.2cm;
+		 border-left: 1px dotted black;
+		
+		 xborder-bottom: 1px dotted black;
+		 xborder-right: 1px dotted black;
 
-		  height: 6.3cm;
-		 // border-collapse: collapse;
+		  xmargin: 0.3cm 0cm 0cm 1cm;
 		  
-		  border-bottom: 1px dotted black;
-		  border-right: 1px dotted black;
-		  //outline-style: dotted;
-		  //padding-top: 0.7cm;
-		  //padding-left: 1cm;
+		  /* padding: 5px; */
+		 
+		  xmargin-right: 0.3cm;
+		  xpadding-left: 0.3cm;
+		  xpadding-right: 0.3cm;
 
-		  margin-left: 0.3cm;
-		  padding-left: 0.3cm;
-		  padding-right: 0.3cm;
-
-		  //padding-left: 0.4cm;
-		  //padding-right: 0.4cm;
-		  padding-top: 0.3cm;
-		  padding-bottom: 0cm;
-		    
-   			
+		  xpadding-top: 0.3cm;
+		  padding-bottom: 0cm; 
 		}
 		.label-inner {
-		  padding: 5px;
-		 
+			width:100% !important;
+			height:100% !important;
+		  xpadding: 5px;	 
+		  border-bottom: 1px dotted black;
+		 border-right: 1px dotted black;
 		
 		}
 		#page-content{
+			size: 21cm 29.7cm;
+		 	font-size: 10px !important;
+			 margin-top:1mm;
+			  
 			font-size: 10px !important;
+		}
+		.label-inner img{
+			width:100%;
+			height:100%;
+			xborder:1px solid red;
 		}
 		@media print{
+			
 			#page-content{
 				font-size: 10px !important;
+				margin-left:10px;
+				margin-top:1mm;
 			}
-			
 		}
-		table td,th{
-			font-size: 10px !important;
+		#labelstart{
+			margin-top:34px;
+			margin-left:100px;
+			position:absolute;
+			font-size:12px;
 			font-family: "Courier New";
 			font-weight: bold;
-			word-spacing: -2px;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:220px;
+			xdisplay: block;
+			xoverflow: hidden;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			xwhite-space: nowrap;
+			word-spacing: -5px;
+			xborder:1px solid red;
 		}
-		html{
+		#labelbank{
+			margin-top:73px;
+			margin-left:160px;
+			position:absolute;
+			font-size:12px;
 			font-family: "Courier New";
 			font-weight: bold;
-			word-spacing: -2px;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:160px;
+			xdisplay: block;
+			xxoverflow: hidden;
+			xwhite-space: nowrap;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			word-spacing: -5px;
+			xborder:1px solid red;
 		}
-		.font-one{
-			font-family: 'SwitzerlandCondBlack';
-			word-spacing: 0px;
-			font-weight: normal;
+		#labeladdr{
+			margin-top:110px;
+			margin-left:158px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:160px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			word-spacing: -5px;
 		}
-
 		
-		
-		
+		#labelbankcode{
+			margin-top:158px;
+			margin-left:217px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			word-spacing: -5px;
+		}
+		#labelicno{
+			margin-top:175px;
+			margin-left:215px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			xborder:1px solid red;
+			word-spacing: -5px;
+		}
+		#labeldoj{
+			margin-top:191px;
+			margin-left:215px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			xborder:1px solid red;
+			word-spacing: -5px;
+		}
+		#labelmemno{
+			margin-top:208px;
+			margin-left:215px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			xborder:1px solid red;
+			word-spacing: normal;
+			word-spacing: -5px;
+		}
+		body{
+			border-top: 1px dotted black;
+			border-left: 1px dotted black;
+		}
 	</style>
 </head>
 
 <body>
-
-	<div id="page-content">
+	
+	<div id="page-content" xstyle="border:1px solid green;">
 		@php
 			$slno = 0;
 		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label" style="@if($slno%2==0)@endif border-top: 1px dotted black; border-collapse: collapse; border-left: 1px dotted black;">
+		<div class="label" >
 			<div class="label-inner" >
-			<p style="padding:5px 0px;font-family: SwitzerlandCondBlack;" class="font-one">NATIONAL UNION OF BANK EMPLOYEES PENINSULAR MALAYSIA</p>
-
-			<p style="margin-left: 38px;"> <span class="font-one"> NAME </span>: {{ $member->name }}</p>
-			<p style="margin-left: 38px;padding-bottom:8px" ><span class="font-one">BANK </span> : {{ $member->company_name }}</p>
-			<div class="">
-					@php
-						$total_addr = $member->address_one;
-						$total_addr .= $member->address_two;
-						$total_addr .= $member->city_name;
-						$total_addr .= $member->postal_code;
-					@endphp
-					<div class="column-left">
-						
-					</div>
-					<div class="column-right" >
-						<table>
-							<tr>
-								<td width="15%" style="vertical-align: super;">
-									<span class="font-one"> ADD: </span>
-								</td>
-								<td width="85%" style="line-height: 13px;">
-									{{ $member->address_one }}
-									@if($member->address_two!='')
-										{{ $member->address_two }}
-									@endif
-									
-									@php
-										if($member->city_name!=''){
-											echo $member->city_name.'-';
-										}
-										//echo strlen($total_addr);
-									@endphp
-									{{ $member->postal_code }}
-									@if(strlen($total_addr)<=64)
-									<br/>
-									
-									@endif
-									@if(strlen($total_addr)<=48)
-									<br/>
-									@endif
-									@if(strlen($total_addr)<=20)
-									<br/>
-									@endif
-								</td>
-							</tr>
-						</table>
-						
-						
-						<table>
-							<tr>
-								<td>
-									<span class="font-one"> BANK-ID </span>
-								</td>
-								<td>
-									: {{ $member->companycode }}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="font-one"> I/C NO </span>
-								</td>
-								<td>
-									: {{ $member->ic }}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="font-one"> DATE JOINED </span>
-								</td>
-								<td>
-									: {{ date('d/M/Y',strtotime($member->doj)) }}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="font-one">MEMBERSHIP NO </span>
-								</td>
-								<td>
-									: {{ $member->member_number }}
-								</td>
-							</tr>
-						</table>
-						
-					</div>
-				
-			</div>
-			</div>
+			<span id="labelstart">{{ $member->name }}</span>
+			<span id="labelbank">{{ $member->company_name }}</span>
+			<span id="labeladdr">
+			{{ $member->address_one }} </br>
+			{{ $member->address_two }}	</br>		
+			@php
+			echo $member->city_name." ". $member->postal_code;
+			@endphp
+			</span>
+			<span id="labelbankcode">{{ $member->companycode }}</span>
+			<span id="labelicno">{{ $member->ic }}</span>
+			<span id="labeldoj">{{ date('d/M/Y',strtotime($member->doj)) }}</span>
+			<span id="labelmemno">{{ $member->member_number }}</span>
+			<center><img src="{{ asset('public/assets/images/logo/idfront.png') }}"></center>
+		<!--	<center><img src="{{ asset('public/assets/images/logo/frontcardfinal.png') }}" alt="Membership logo"></center>
+		--><!--	<center><img src="{{ asset('public/assets/images/logo/fronttext.png') }}" alt="Membership logo"></center>
+			-->
+			<!--
+			@php $logo = 'nube_log_cyan.png'; @endphp
+			<center style="padding:5px 0px;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo" height="100"></center>
+			
+			<p style="text-align:center;font-size:15px;padding-bottom:30px;padding-top:10px;">This Membership Card must be returned to </br> the Union on cessation of membership</p>
+			<hr style="width:200px;float:right;">
+			<p style="text-align:center;font-size:15px;float:right;">Hon. General Secretary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			--></div>
 		</div>
 		@php
 			$slno++;
 		@endphp
 		@endforeach
+
+
 	</div>
 	<script type="text/javascript">
 		window.print();
