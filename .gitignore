@@ -18,3 +18,4 @@ yarn-error.log
 /nbproject/private/
 /.vscode
 /storage/logs
+*.log
