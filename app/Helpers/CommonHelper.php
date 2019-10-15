@@ -1962,5 +1962,13 @@ class CommonHelper
 		$members_pay = DB::select(DB::raw("SELECT count(*) as count,TOTALINSURANCE_AMOUNT FROM `membermonthendstatus` where TOTALINSURANCE_AMOUNT!=0 and MEMBER_CODE=$memberid"));
 		return $members_pay;
 	}
+
+    public static function get_duemonths_monthend($memberid, $date){
+        $date = date('Y-m-01',$date);
+        $members_due = DB::select(DB::raw("SELECT TOTALMONTHSDUE FROM `membermonthendstatus` WHERE `MEMBER_CODE` = $memberid and StatusMonth<='$date' ORDER BY `membermonthendstatus`.`StatusMonth` DESC limit 1"));
+        $members_due = empty($members_due) ? 0 : $members_due[0]->TOTALMONTHSDUE;
+      // dd($members_due);
+        return $members_due;
+    }
 	
 }

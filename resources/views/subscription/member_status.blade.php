@@ -290,7 +290,10 @@
 						@endphp
 						@foreach($data['member'] as  $key => $member)
 							@php
+								//dd($member);
 								$approval_status = CommonHelper::get_overall_approval_status($member->sub_member_id);
+								$duemonths = CommonHelper::get_duemonths_monthend($member->memberid, $data['filter_date']);
+								
 							@endphp
 							<tr style="overflow-x:auto;">
 								<td>{{ $member->up_member_name }}</td>
@@ -298,7 +301,7 @@
 								<td>{{ $member->company_name }}</td>
 								<td>{{ $member->up_nric }}</td>
 								<td>{{ $member->Amount }}</td>
-								<td>{{ $member->due_amount }}</td>
+								<td>{{ $duemonths }}</td>
 								<td id="member_status_{{ $member->sub_member_id }}">{{ $member->status_name }}</td>
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td>
@@ -853,12 +856,13 @@ $(document).on('submit','form#filtersubmit',function(event){
 					res = result.member;
 					//console.log(res);
 					$.each(res,function(key,entry){
+						//console.log(entry);
 						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
 							table_row += "<td id='member_code_"+entry.sub_member_id+"'>"+entry.member_number+"</td>";
 							table_row += "<td>"+entry.company_name+"</td>";
 							table_row += "<td>"+entry.up_nric+"</td>";
 							table_row += "<td>"+entry.Amount+"</td>";
-							table_row += "<td>"+entry.due_amount+"</td>";
+							table_row += "<td>"+entry.due_months+"</td>";
 							table_row += "<td id='member_status_"+entry.sub_member_id+"'>"+entry.status_name+"</td>";
 							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
@@ -914,7 +918,7 @@ $(window).scroll(function() {
 							table_row += "<td>"+entry.company_name+"</td>";
 							table_row += "<td>"+entry.up_nric+"</td>";
 							table_row += "<td>"+entry.Amount+"</td>";
-							table_row += "<td>"+entry.due_amount+"</td>";
+							table_row += "<td>"+entry.due_months+"</td>";
 							table_row += "<td id='member_status_"+entry.sub_member_id+"'>"+entry.status_name+"</td>";
 							var app_status = entry.approval_status==1 ? '<span class="badge green">Approved</span>' : '<span class="badge red">Pending</span>';
 							table_row += "<td id='approve_status_"+entry.sub_member_id+"'>"+app_status+"</td>";
@@ -970,7 +974,7 @@ function SubmitAllVerication(){
 		},
 		error: function( objRequest ){
 			alert('Server error, page will get refreshed and start it again');
-			location.reload();
+			//location.reload();
 		}
 	});
 }
