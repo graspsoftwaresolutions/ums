@@ -838,14 +838,14 @@ class SubscriptionAjaxController extends CommonController
 		$members_data = [];
 		if($filter_date!=""){
 			
-			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,mp.due_amount'))
+			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric'))
 							->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
 							->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
 							->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
 							->leftjoin('membership as member','m.MemberCode','=','member.id')
 							->leftjoin('company as c','sc.CompanyCode','=','c.id')
-                            ->leftjoin('status as s','m.StatusId','=','s.id')
-                            ->leftjoin('member_payments as mp','mp.member_id','=','member.id');
+                            ->leftjoin('status as s','m.StatusId','=','s.id');
+                            //->leftjoin('member_payments as mp','mp.member_id','=','member.id')
 							//->leftjoin('mon_sub_match_table as match','mm.match_id','=','match.id');
 			if(isset($company_id) && $company_id!=''){
 				$members_qry = $members_qry->where('m.MonthlySubscriptionCompanyId','=',$company_id);
@@ -891,6 +891,7 @@ class SubscriptionAjaxController extends CommonController
             $enc_member = Crypt::encrypt($member->memberid);
             $data['member'][$mkey]['enc_member'] = $enc_member;
             $data['member'][$mkey]['approval_status'] = CommonHelper::get_overall_approval_status($member->sub_member_id);
+            $data['member'][$mkey]['due_months'] = CommonHelper::get_duemonths_monthend($member->memberid,$filter_date);
         }
         
         echo json_encode($data); 
@@ -994,14 +995,18 @@ class SubscriptionAjaxController extends CommonController
         ->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
         ->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
         ->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
-        ->where('m.approval_status','!=',1)
+        ->where(function($query) use ($approval_date){
+            $query->orWhere('m.approval_status','=','0')
+              ->orWhereNull('m.approval_status');
+            })
+        //->where('m.approval_status','!=',1)
         ->where('mm.match_id','=',$approval_status)
         ->where('sm.Date','=',$approvaldate);
         if($companyid!=null){
             $members_qry =  $members_qry->where('m.MonthlySubscriptionCompanyId','=',$companyid);
         }
         $members_qry = $members_qry->get();
-        //dd($members_qry);
+       // dd($members_qry);
         foreach($members_qry as $members){
             $submemberid = $members->id;
             $memberid = $members->MemberCode;
