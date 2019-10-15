@@ -967,6 +967,10 @@ function SubmitAllVerication(){
 			}else{
 				
 			}
+		},
+		error: function( objRequest ){
+			alert('Server error, page will get refreshed and start it again');
+			location.reload();
 		}
 	});
 }
