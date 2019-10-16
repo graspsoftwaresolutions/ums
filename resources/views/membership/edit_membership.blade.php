@@ -44,7 +44,7 @@
                         <div class="col s12">
                             <div class="card theme-mda">
                                 <div class="card-content">
-                                    <h4 class="card-title">Edit Membership</h4> 
+                                    <h4 class="card-title">@if($data['view_status']==1) View @else Edit @endif Membership</h4> 
 									@include('includes.messages') 
 									@php 
 
