@@ -70,13 +70,24 @@ class UpdateMemberStatus implements ShouldQueue
                 if($last_pay_date!='' && $last_pay_date!='0000-00-00'){
                     $to = Carbon::createFromFormat('Y-m-d H:s:i', $last_pay_date.' 3:30:34');
                     $from = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
-                    $diff_in_months = $to->diffInMonths($from);
+                    $strlastpaid = strtotime($last_pay_date);
+                    $diff_in_months = 0;
+                    if($strlastpaid<$file_upload_date){
+                        $diff_in_months = $to->diffInMonths($from);
+                    }
 
                     $member_doj = CacheMembers::getDojbyMemberCode($member->id);
                     $to_one = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
                     $from_one = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
+
+                    $strdoj = strtotime($member_doj);
+                   
                     
-                    $diff_in_months_one = $to_one->diffInMonths($from_one);
+                    $diff_in_months_one = 0;
+                    if($strdoj<$file_upload_date){
+                        $diff_in_months_one = $to_one->diffInMonths($from_one);
+                    }
+                    
                     //if($member->id==25439){
                         Log::channel('customlog')->info('code-'.$member->id);
                         Log::channel('customlog')->info('member#:'.$member->id.'to month: '.$last_pay_date.'From month'.$upload_date);

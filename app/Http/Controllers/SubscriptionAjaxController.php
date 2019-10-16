@@ -1006,6 +1006,7 @@ class SubscriptionAjaxController extends CommonController
             $members_qry =  $members_qry->where('m.MonthlySubscriptionCompanyId','=',$companyid);
         }
         $members_qry = $members_qry->get();
+        Log::channel('approvallog')->info('data: '.json_encode($members_qry));
        // dd($members_qry);
         foreach($members_qry as $members){
             $submemberid = $members->id;
@@ -1087,7 +1088,7 @@ class SubscriptionAjaxController extends CommonController
             
                 $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
                 
-                Log::channel('approvallog')->info('approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
+               // Log::channel('approvallog')->info('approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                 
                 $monthend_data = [
                                     'StatusMonth' => $cur_date, 
@@ -1130,11 +1131,12 @@ class SubscriptionAjaxController extends CommonController
                 //DB::connection()->enableQueryLog();
 
                 if($mont_count>0){
-                
+                    Log::channel('approvallog')->info('up approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                     $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
                     //$queries = DB::getQueryLog();
                 // dd($statuss);
                 }else{
+                    Log::channel('approvallog')->info('insert approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                     DB::table($this->membermonthendstatus_table)->insert($monthend_data);
                 }
                 $payment_data = [
