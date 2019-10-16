@@ -43,6 +43,7 @@ class CacheMonthEnd
 								->where('mm.update_status', '=', 1)
 								->where('mm.MemberCode', '!=', Null)
 								->groupBY('cb.company_id')
+								//->limit(2000)
 								->get();
 		    	// $company_view = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                 //                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
@@ -72,6 +73,7 @@ class CacheMonthEnd
 								->where('mm.update_status', '=', 1)
 								->where('mm.MemberCode', '!=', Null)
 								->groupBY('cb.union_branch_id')
+								//->limit(2000)
 								->get();
 			// $company_view = DB::table("membermonthendstatus as mm")->select('mm.NUBE_BRANCH_CODE as union_branchid','u.union_branch as union_branch_name')
 			// 				->leftjoin('union_branch as u','mm.NUBE_BRANCH_CODE','=','u.id')
@@ -101,6 +103,7 @@ class CacheMonthEnd
 								->where('mm.update_status', '=', 1)
 								->where('mm.MemberCode', '!=', Null)
 								->groupBY('m.branch_id')
+								//->limit(2000)
 								->get();
 
 		    	// $company_view = DB::table("membermonthendstatus as mm")->select('mm.BRANCH_CODE as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
@@ -730,6 +733,43 @@ class CacheMonthEnd
 				 ->get();
 		    	
 			return $members;
+		});
+	}
+
+	public function getVariationMembers($type_id,$date,$type){
+		$key = "getVariationMembers.{$date}.typeid.{$type_id}.type.{$type}";
+		$cacheKey = $this->getCacheKey($key);
+		
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($type_id,$date,$type)
+		{	
+			if($date==""){
+				$date = date('Y-m-01');
+			}
+			$month = date("m", strtotime($date));
+			$year = date("Y", strtotime($date));
+			
+			$subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+						->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+						->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+						->leftjoin('membership as m','m.id','=','mm.MemberCode')
+						->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+						->leftjoin('company as c','cb.company_id','=','c.id')
+						->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+						->where('mm.update_status', '=', 1)
+						->where('mm.MemberCode', '!=', Null)
+						->where(DB::raw('month(ms.Date)'),'=',$month)
+						->where(DB::raw('year(ms.Date)'),'=',$year);
+		
+			if($type==1){
+				$subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
+			}else if($type==2){
+				$subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
+			}
+			else{
+				$subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
+			}
+			$subscriptions = $subscription_qry->get();		
+			return $subscriptions;
 		});
 	}
 

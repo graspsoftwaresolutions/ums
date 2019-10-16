@@ -103,5 +103,14 @@
 		color: #fff;
 		background-color: #ff5a92 !important;
 	}
+	.input-field > label {
+	    color: #000 !important;
+	}
+	label {
+	    color: #000 !important;
+	}
+	html {
+	    color: #000 !important;
+	}
 	  
 </style>

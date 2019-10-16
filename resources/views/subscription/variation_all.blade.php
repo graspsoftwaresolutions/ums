@@ -37,13 +37,14 @@
 			.export-button{
 				display:none;
 			}
-			#page-length-option td, #page-length-one th {
-				border: 1px solid #ddd;
-				width: auto;
-				overflow: hidden;
-				word-wrap: break-word;
-				page-break-inside: avoid;
-				padding: 8px;
+			body {margin: 0;}
+			#page-length-option td, #page-length-option th {
+			  border: 1px solid #ddd !important;
+			  padding: 4px;
+			}
+			.report-address{
+				font-weight:bold;
+				font-size:14px;
 			}
 		}
 		@media print {
@@ -56,7 +57,7 @@
 	<script type="text/javascript">
 		
 		@if($data['print']==1)
-			window.print();
+			//window.print();
 		@endif
 	</script>
 </head>
@@ -115,6 +116,7 @@
 	$overall_total_last_dec=0;
 	$overall_total_this_dec=0;
 	$overall_no_diff=0;
+	//dd($memberslist);
 	@endphp
 	
 	@foreach($memberslist as $company)

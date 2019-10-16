@@ -1476,23 +1476,24 @@ class CommonHelper
     }
 	
 	public static function getCompanyMembers($type_id,$date,$type){
-		if($date==""){
-			$date = date('Y-m-01');
-		}
-		$month = date("m", strtotime($date));
-		$year = date("Y", strtotime($date));
+        $members = CacheMonthEnd::getVariationMembers($type_id,$date,$type);
+		// if($date==""){
+		// 	$date = date('Y-m-01');
+		// }
+		// $month = date("m", strtotime($date));
+		// $year = date("Y", strtotime($date));
 		
-		$subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
-					->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-					->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-					->leftjoin('membership as m','m.id','=','mm.MemberCode')
-					->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-					->leftjoin('company as c','cb.company_id','=','c.id')
-					->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-					->where('mm.update_status', '=', 1)
-					->where('mm.MemberCode', '!=', Null)
-					->where(DB::raw('month(ms.Date)'),'=',$month)
-					->where(DB::raw('year(ms.Date)'),'=',$year);
+		// $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+		// 			->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+		// 			->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+		// 			->leftjoin('membership as m','m.id','=','mm.MemberCode')
+		// 			->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+		// 			->leftjoin('company as c','cb.company_id','=','c.id')
+		// 			->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+		// 			->where('mm.update_status', '=', 1)
+		// 			->where('mm.MemberCode', '!=', Null)
+		// 			->where(DB::raw('month(ms.Date)'),'=',$month)
+		// 			->where(DB::raw('year(ms.Date)'),'=',$year);
 		
 		/* $subscription_qry = DB::table("membermonthendstatus as ms")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.LASTPAYMENTDATE as LASTPAYMENTDATE','ms.SUBSCRIPTION_AMOUNT as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
 								->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
@@ -1502,16 +1503,16 @@ class CommonHelper
 								//->limit(10)
 								//->dump()
 								//->get(); */
-		if($type==1){
-			$subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
-		}else if($type==2){
-			$subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
-		}
-		else{
-			$subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
-		}
-		$subscriptions = $subscription_qry->get();		
-		return $subscriptions;
+		// if($type==1){
+		// 	$subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
+		// }else if($type==2){
+		// 	$subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
+		// }
+		// else{
+		// 	$subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
+		// }
+		// $subscriptions = $subscription_qry->get();		
+		return $members;
 	}
 	
 	public static function getMonthEndPaidCount($type_id, $date, $type){
