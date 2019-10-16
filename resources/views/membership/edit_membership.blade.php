@@ -20,6 +20,12 @@
         pointer-events: none;
         background-color: #f4f8fb !important;
     }
+    .readonlyarea{
+        pointer-events: none;
+        background-color: #f4f8fb !important;  
+    }
+    $(".readonlyarea :input").attr("readonly", true);
+
     
     $("#irc_confirmation_area :input").attr("readonly", true);
 </style>
@@ -258,7 +264,7 @@
                                         <h3>Member Details</h3>
                                         <fieldset>
                                             </br>
-                                            <div class="col-sm-8 col-sm-offset-1">
+                                            <div class="col-sm-8 col-sm-offset-1 @if($data['view_status']==1) readonlyarea @endif" >
                                                 <div class="row">
                                                     <div class="col s12 m6">
                                                         <input id="auto_id" name="auto_id" value="{{$values->mid}}" type="text" class="hide">
@@ -589,12 +595,12 @@
                                         </fieldset>
                                         <h3>Additional Details</h3>
                                         <fieldset>
-                                            <div class="row">
+                                            <div class="row "">
                                                 <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
                                                     <li class="active">
                                                         <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">details</i> {{__('Nominee Details') }}</div>
                                                         <div class="collapsible-body">
-                                                            <div id="nominee_add_section" class="row">
+                                                            <div id="nominee_add_section" class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="input-field col s12 m4">
                                                                     <label for="nominee_name">Nominee name* </label>
                                                                     <input id="nominee_name" name="nominee_name" value="" type="text">
@@ -806,7 +812,7 @@
                                                     <li>
                                                         <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">filter_center_focus</i>{{__('Guardian Details') }}</div>
                                                         <div class="collapsible-body">
-                                                            <div class="row">
+                                                            <div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 @php 
 
                                                                 if(count($data['gardian_view'])>0) { 
@@ -932,7 +938,7 @@
 													<li>
 													<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
-															<div class="row">
+															<div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="col s12 m6">
                                                                     <label for="new_fee_id">Fee name* </label>
                                                                     <select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
@@ -957,7 +963,7 @@
                                                                 </div>
                                                             </div>
                                                             </br>
-                                                            <div class="row">
+                                                            <div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="col s12">
                                                                     @php // print_r($data['fee_view']); @endphp
                                                                     <table id="fee_table" width="100%">
@@ -1014,7 +1020,7 @@
                                                     <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fund Details') }}</div>
                                                         <div class="collapsible-body ">
 															</br>
-                                                            <div class="row">
+                                                            <div class="row @if($data['view_status']==1) readonlyarea @endif">
 																@php
 																	$lastmonthendrecord = CommonHelper::getlastMonthEndByMember($values->mid); 
 																@endphp
@@ -1417,6 +1423,15 @@
 <script>
     var form = $("#wizard2").show();
 
+    @if($data['view_status']==1)
+        form.steps({
+           headerTag: "h3",
+           bodyTag: "fieldset",
+        enableAllSteps: true,
+         enablePagination: false
+         
+        });
+    @else
     form.steps({
         headerTag: "h3",
         bodyTag: "fieldset",
@@ -1661,6 +1676,7 @@
             }
         },
     });
+    @endif
     $('#bf_contribution,#benefit_amount,#insurance_amount').keyup(function() {
         var bf_contribution = $('#bf_contribution').val();
         var insurance_amount = $('#insurance_amount').val();

@@ -133,6 +133,7 @@ class MembershipController extends Controller
         $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
         $data['irc_status'] = $irc_status;
         $data['resign_status'] = $resign_status;
+        $data['view_status'] = 0;
         
         $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$id)->get();
       // return  $data; 
@@ -719,9 +720,13 @@ class MembershipController extends Controller
                 $delete = "";
                                
                 $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
+                $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
                 
                 $actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
+
+                $actions .="<a style='margin-left: 10px;' title='Edit' class='btn-sm waves-effect waves-light purple modal-trigger' href='$view'><i class='material-icons'>remove_red_eye
+                </i></a>";
                 
                // $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
@@ -1406,6 +1411,59 @@ class MembershipController extends Controller
 
        
         return view('membership.card_back_membership')->with('data',$data); 
+    }
+
+    public function viewMember(Request $request, $lang,$id){
+        $irc_status = 0;
+        $resign_status = 0;
+        
+        $id = Crypt::decrypt($id);
+        $data['member_view'] = DB::table('membership')->select('membership.id as mid','membership.member_title_id','membership.member_number','membership.name','membership.gender','membership.designation_id','membership.email','membership.mobile',
+        'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
+        'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
+        'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved',
+        'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount')
+        ->leftjoin('country','membership.country_id','=','country.id')
+        ->leftjoin('state','membership.state_id','=','state.id')
+        ->leftjoin('city','membership.city_id','=','city.id')
+        ->leftjoin('company_branch','membership.branch_id','=','company_branch.id')
+        ->leftjoin('persontitle','membership.member_title_id','=','persontitle.id')
+        ->leftjoin('race','membership.race_id','=','race.id')
+        ->leftjoin('designation','membership.designation_id','=','designation.id')
+        ->where([
+        ['membership.id','=',$id]
+        ])->get();
+
+        //     $queries = DB::getQueryLog();
+        //   dd($queries);
+
+        $country_id = $data['member_view'][0]->country_id;
+
+        $state_id = $data['member_view'][0]->state_id;
+        $city_id = $data['member_view'][0]->city_id;
+
+        $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
+        //$company_id = $data['member_view'][0]->company_id;
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
+        $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
+        $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
+        $data['branch_view'] = DB::table('company_branch')->where('status','=','1')->where('company_id', $company_id)->get();
+        $data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
+        $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
+        $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        $data['relationship_view'] = DB::table('relation')->where('status','=','1')->get();
+        $data['nominee_view'] = DB::table('member_nominees')->where('status','=','1')->where('member_id','=',$id)->get();
+        $data['gardian_view'] = DB::table('member_guardian')->where('status','=','1')->where('member_id','=',$id)->get();
+
+        $data['fee_list'] = DB::table('fee')->where('status','=','1')->get();
+        $data['irc_status'] = $irc_status;
+        $data['resign_status'] = $resign_status;
+        $data['view_status'] = 1;
+
+        $data['fee_view'] = DB::table('member_fee')->where('status','=','1')->where('member_id','=',$id)->get();
+        return view('membership.edit_membership')->with('data',$data); 
     }
 
     
