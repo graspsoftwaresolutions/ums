@@ -1462,6 +1462,8 @@ class SubscriptionController extends CommonController
 	}
 	
 	public function variationAll($lang, Request $request){
+        ini_set('memory_limit', -1);
+		ini_set('max_execution_time', 0);
 		//return strtotime('now');
 		$datestring = $request->input('date');
 		$groupby = $request->input('groupby');
