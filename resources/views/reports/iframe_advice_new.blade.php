@@ -83,7 +83,8 @@
 			  padding: 4px;
 			}
 			html {
-			    font-family: 'Muli', sans-serif;
+
+			    //font-family: 'Muli', sans-serif;
 			    font-weight: normal;
 			    line-height: 1; 
 			    color: rgba(0, 0, 0, .87);
@@ -97,6 +98,10 @@
 				font-weight:bold;
 				font-size:14px;
 			}
+
+			.page-header-area{
+				display: none;
+			}
 			
 		}
 		@media not print {
@@ -108,7 +113,7 @@
 			}
 			.page-table-header-space {
 			  width: 100%;
-			  position: fixed;
+			 // position: fixed;
 			  top:101px;
 			  margin-bottom:20px;
 			  background: #343d9f; /* for demo */
@@ -118,10 +123,13 @@
 			}
 			.tbody-area{
 				top:140px;
-				position: absolute;
+				//position: absolute;
 			}
 			.nric_no{
 				width:150px !important;
+			}
+			.page-header-area{
+				display: none;
 			}
 		}
 		td, th {
@@ -157,7 +165,9 @@
 	<div class="page-header" style="text-align: center">
 		<table width="100%">
 			<tr>
-			@php $logo = CommonHelper::getLogo(); @endphp
+				@php $logo = CommonHelper::getLogo(); 
+
+				@endphp
 				<td width="20%"></td>
 				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
 				<td width="50%" style="text-align:center;">
@@ -166,7 +176,8 @@
 					<h6 style="text-align:center;">UNION BRANCH'S ADVICE LIST</h6>
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Advice Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="exportToExcel btn btn-sm"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm" style="display:none;" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Advice Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'New Advice Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
@@ -176,7 +187,7 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-	<table id="page-length-option" class="display" width="100%">
+	<table id="page-length-option" class="display table2excel" width="100%" data-tableName="New Advice Members Report">
 		<thead>
 			<tr style="border-bottom:none;">
 				<td style="border:none;">
@@ -184,8 +195,44 @@
 					<div class="page-header-space"></div>
 				</td>
 			</tr>
+			<tr class="" style="width: 100%;display: none;">
+				@php $logo = CommonHelper::getLogo(); @endphp
+				
+				<td colspan="4">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" />
+
+				</td>
+				<td colspan="5" align="center">
+				
+					<span class="" style="font-weight: bold;font-size:18px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					
+					<h6 style="text-align:center;">UNION BRANCH'S ADVICE LIST</h6>
+				</td>
+				<td colspan="4">	
+					
+				</td>
+			</tr>
+			<tr class="" style="width: 100%;display: none;">
+				
+				<td colspan="4">
+					To Branch Hons. Secretary
+					<br>
+					@if($data['unionbranch_id']!='')
+						Branch Name : {{ $data['unionbranch_name'] }}
+					@endif
+				</td>
+				<td colspan="5" align="center">
+					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
+				</td>
+				<td colspan="4">	
+					<br>
+					@if($data['unionbranch_id']!='')
+						Branch Code : {{ $data['unionbranch_id'] }}
+					@endif
+				</td>
+			</tr>
 			<tr class="page-table-header-space" >
-				<th style="width:51px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
+				<th align="center">SNO</th>
                 <th style="width:240px !important;">{{__('NAME')}}</th>
                 <th style="width:200px !important;">{{__('I.C.NO')}}</th>
                 <th style="width:130px !important;">{{__('BANK')}}</th>
@@ -252,30 +299,111 @@
 				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Amount Collected </td>
 				<td colspan="11">{{ $total_paid }}</td>
 			</tr> 
+			<tr>
+				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;"></td>
+				<td colspan="11"></td>
+			</tr> 
+			<tr>
+				<td colspan="13" style="text-align: right;margin-top: 100px;" align="right">
+					Your Fraternally,
+				</td>
+			</tr>
+			<tr>
+				<td colspan="13" rowspan="3" style="width:651px !important ; border : 1px solid white;font-weight:bold;"></td>
+			</tr> 
+			<tr>
+				<td colspan="13"></td>
+			</tr> 
+			<tr>
+				<td colspan="13"></td>
+			</tr> 
+			<tr>
+				<td colspan="10"></td>
+				<td colspan="3" style="text-align: right;margin-top: 100px;" align="center">
+					Hons. General Secretary
+					</br>
+					NUBE H.Q
+				</td>
+			</tr>
 		</tbody>
 		
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+<!-- <script src="{{ asset('public/excel/jquery311.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/excel/jquery.tableToExcel.js') }}" type="text/javascript"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script> 
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
-<!--<![endif]-->
+
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script>
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
-	});
+	
+	$(function() {
+
+				$(".exportToExcel").click(function(e){
+					//$('.table2excel').tblToExcel();
+					exportTableToExcel('page-length-option','New Branch Advice Report');
+
+					// var table = $('.table2excel');
+
+					// if(table && table.length){
+					// 	var preserveColors = (table.hasClass('table2excel_with_colors') ? true : false);
+					// 	$(table).table2excel({
+					// 		exclude: ".noExl",
+					// 		name: "New Advice Members Report",
+					// 		filename: "new_advice_members_report" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
+					// 		fileext: ".xls",
+					// 		exclude_img: true,
+					// 		exclude_links: true,
+					// 		exclude_inputs: true,
+					// 		preserveColors: preserveColors
+					// 	});
+					// }
+				});
+				
+			});
+
+	
+	function exportTableToExcel(tableID, filename = ''){
+	    var downloadLink;
+	    var dataType = 'application/vnd.ms-excel';
+	    var tableSelect = document.getElementById(tableID);
+	    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+	    
+	    // Specify file name
+	    filename = filename?filename+'.xls':'excel_data.xls';
+	    
+	    // Create download link element
+	    downloadLink = document.createElement("a");
+	    
+	    document.body.appendChild(downloadLink);
+	    
+	    if(navigator.msSaveOrOpenBlob){
+	    	//tableHTML = encodeURIComponent(tableHTML);
+	        var blob = new Blob(['\ufeff', tableHTML], {
+	            type: dataType
+	        });
+	        navigator.msSaveOrOpenBlob( blob, filename);
+	        //colsole.log(blob);
+	    }else{
+
+	        // Create a link to the file
+	       // tableHTML = encodeURIComponent(tableHTML);
+	       //console.log(tableHTML);
+	        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+	    
+	        // Setting the file name
+	        downloadLink.download = filename;
+	        
+	        //triggering the function
+	        downloadLink.click();
+	    }
+	}
 	
 </script>
 

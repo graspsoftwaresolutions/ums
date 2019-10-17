@@ -1901,8 +1901,9 @@ class ReportsController extends Controller
                     $members = $members->get();
        
         $data['member_view'] = $members;
-        $data['from_date'] = date('01/M/Y');
-        $data['to_date'] = date('t/M/Y');
+        $data['from_date'] = date('Y-m-01');
+        $data['to_date'] = date('Y-m-t');
+        $data['unionbranch_name'] = '';
         $data['company_id'] = '';
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
@@ -1928,6 +1929,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $data['data_limit']=$this->limit;
         $total_fee = $this->ent_amount+$this->ins_amount;
+        $unionbranch_name = '';
         
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
@@ -1954,6 +1956,7 @@ class ReportsController extends Controller
         }else{
             if($unionbranch_id!=""){
                 $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+                $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
             }
             if($company_id!=""){
                 $members = $members->where('c.company_id','=',$company_id);
@@ -1961,10 +1964,11 @@ class ReportsController extends Controller
         }
         $members = $members->get();
         $data['member_view'] = $members;
-        $data['from_date'] = date('01/M/Y');
-        $data['to_date'] = date('t/M/Y');
+        $data['from_date'] = $fromdate;
+        $data['to_date'] = $todate;
         $data['company_id'] = '';
-        $data['unionbranch_id'] = '';
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
         $data['branch_id'] = '';
         $data['member_auto_id'] = '';
         $data['date_type'] = '';
