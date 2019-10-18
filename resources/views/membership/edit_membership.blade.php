@@ -318,7 +318,7 @@
                                                     </div>
                                                     <div class="input-field col s12 m6">
                                                         <label for="email" class="force-active">Email *</label>
-                                                        <input id="email" name="email" readonly type="text" value="{{$values->email}}" data-error=".errorTxt25">
+                                                        <input id="email" name="email" type="text" value="{{$values->email}}" data-error=".errorTxt25">
                                                         <div class="errorTxt25"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
@@ -1501,6 +1501,21 @@
             mobile: {
                 required: true,
             },
+            email: {
+                //required: true,
+                email:true,
+                remote: {
+                    url: "{{ url(app()->getLocale().'/member_emailexists')}}",
+                    data: {
+                        db_autoid: function() {
+                            return $("#auto_id").val();
+                        },
+                        _token: "{{csrf_token()}}",
+                        email: $(this).data('email')
+                    },
+                    type: "post",
+                },
+            },
            /*  email: {
                 required: true,
                 email: true,
@@ -1621,10 +1636,10 @@
                 required: "Please Enter your Number",
 
             },
-            /* email: {
+            email: {
                 required: "Please enter valid email",
                 remote: '{{__("Email Already exists") }}',
-            }, */
+            }, 
             designation: {
                 required: "Please choose  your Designation",
             },
