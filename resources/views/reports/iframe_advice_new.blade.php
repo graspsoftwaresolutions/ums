@@ -177,7 +177,7 @@
 				<td width="50%" style="text-align:center;display:none;">
 					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
-					<h6 style="text-align:center;">UNION BRANCH'S ADVICE LIST</h6>
+					<h6 style="text-align:center;">NUBE BRANCH'S ADVICE LIST</h6>
 				</td>
 				<td width="20%" style="text-align:right;">	
 					<a href="#" class="exportToExcel export-button btn btn-sm"><i class="material-icons">explicit</i></a>
@@ -212,7 +212,7 @@
 				
 				<td colspan="7" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">UNION BRANCH'S ADVICE LIST</span>
+					<span style="margin-top:0;">NUBE BRANCH'S ADVICE LIST</span>
 				</td>
 				
 			</tr>
@@ -287,7 +287,7 @@
 					$total_subs += $member->subs;
 				@endphp
 			@endforeach
-			<tr>
+			<tr style="font-weight:bold;">
 				<td colspan="2" style="font-weight:bold;">Total Member's Count </td>
 				<td align="left" colspan="6"> {{ $sno-1 }}</td>
 				<td>{{ $total_ent_amount }}</td>
@@ -301,27 +301,28 @@
 			@endphp
 			<tr>
 				<td colspan="2" style="font-weight:bold;">Total Amount Collected </td>
-				<td colspan="11" align="left">{{ $total_paid }}</td>
+				<td colspan="11" style="font-weight:bold;" align="left">{{ $total_paid }}</td>
 			</tr> 
 			<tr>
 				<td colspan="13"></td>
 				
 			</tr> 
 			<tr>
-				<td colspan="13" rowspan="3" style="text-align: right;margin-top: 100px;vertical-align:top;" align="right">
+				<td colspan="9"></td>
+				<td colspan="4" style="text-align: center;margin-top: 100px;vertical-align:top;font-weight:bold;" align="center">
 					Your Fraternally,
 				</td>
 			</tr>
 		
 			<tr>
-				<td colspan="13"></td>
+				<td colspan="13" rowspan="2"></td>
 			</tr> 
 			<tr>
 				<td colspan="13"></td>
 			</tr> 
 			<tr>
-				<td colspan="10"></td>
-				<td colspan="3" style="text-align: right;margin-top: 100px;" align="center">
+				<td colspan="9"></td>
+				<td colspan="4" style="margin-top: 100px;text-align: center;font-weight:bold;" align="center">
 					Hons. General Secretary
 					</br>
 					NUBE H.Q
