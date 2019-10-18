@@ -263,7 +263,7 @@ padding-top:0px !important;
 		
 		<div class="label @php if($slno % 8 == 0){ echo 'alt'; } @endphp">
 			<div class="label-inner">
-			<span id="labelstart">{{ $member->name }}  </span>
+			<span id="labelstart">{{ $member->name }} {{$slno }} </span>
 			<span id="labelbank">{{ $member->company_name }}</span>
 			<span id="labeladdr">
 			{{ $member->address_one }} </br>
