@@ -261,12 +261,12 @@ padding-top:0px !important;
 		
 		@foreach($data['member_view'] as $member)
 		
-		<div class="label @php if($slno % 8 == 0){ echo 'alt'; } @endphp">
+		<div class="label @php if(($slno % 8 == 0) && ($slno % 9 == 0)){ echo 'alt'; } @endphp">
 			<div class="label-inner">
-			<span id="labelstart">{{ $member->name }} {{$slno }} </span>
+			<span id="labelstart">{{ $member->name }}  </span>
 			<span id="labelbank">{{ $member->company_name }}</span>
 			<span id="labeladdr">
-			{{ $member->address_one }} </br>
+			{{ $member->address_one }}, </br>
 			{{ $member->address_two }}	</br>		
 			@php
 			echo $member->city_name." ". $member->postal_code;

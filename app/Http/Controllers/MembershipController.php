@@ -1314,11 +1314,11 @@ class MembershipController extends Controller
         ,'m.doj'
         ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
-        ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','m.address_one','m.address_two','city.city_name','m.postal_code')
+        ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','c.address_one','c.address_two','city.city_name','c.postal_code')
             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
             ->leftjoin('company as com','com.id','=','c.company_id')
             ->leftjoin('status as s','s.id','=','m.status_id')
-            ->leftjoin('city as city','city.id','=','m.city_id')
+            ->leftjoin('city as city','city.id','=','c.city_id')
             ->leftjoin('designation as d','m.designation_id','=','d.id')
             ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
             if($fromdate!="" && $todate!=""){
