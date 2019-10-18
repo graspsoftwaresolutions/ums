@@ -308,8 +308,8 @@
 				
 			</tr> 
 			<tr>
-				<td colspan="9"></td>
-				<td colspan="4" style="text-align: center;margin-top: 100px;vertical-align:top;font-weight:bold;" align="center">
+				<td colspan="8"></td>
+				<td colspan="5" style="text-align: center;margin-top: 100px;vertical-align:top;font-weight:bold;" align="center">
 					Your Fraternally,
 				</td>
 			</tr>
@@ -321,8 +321,8 @@
 				<td colspan="13"></td>
 			</tr> 
 			<tr>
-				<td colspan="9"></td>
-				<td colspan="4" style="margin-top: 100px;text-align: center;font-weight:bold;" align="center">
+				<td colspan="8"></td>
+				<td colspan="5" style="margin-top: 100px;text-align: center;font-weight:bold;border-top: 1px solid black !important;" align="center">
 					Hons. General Secretary
 					</br>
 					NUBE H.Q
