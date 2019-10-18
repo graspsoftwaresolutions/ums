@@ -144,7 +144,8 @@ class MemberController extends CommonController
 				}
 
 				$member_role = Role::where('slug', 'member')->first();
-				$randompass = CommonHelper::random_password(5,true);
+				//$randompass = CommonHelper::random_password(5,true);
+				$randompass = 'nube12345';
 
 				$email_exists = DB::table('membership')->where([
 					['email','=',$member_email],
@@ -241,6 +242,29 @@ class MemberController extends CommonController
 						$edit_status_id = $request->input('status_id');
 						if(isset($edit_status_id)){
 							$member['status_id'] = $edit_status_id;
+						}
+					}
+
+					$db_member_email = DB::table('membership')->where('id', $auto_id)->pluck('email')->first();
+					if($member_email!=$db_member_email){
+						
+						$new_email_exists = DB::table('membership')->where([
+							['email','=',$member_email],
+							['status','=','1']
+							])->count();
+				
+						$new_email_one_exists = DB::table('users')->where([
+								['email','=',$member_email]])->count();
+						
+						if($new_email_exists > 0 || $new_email_one_exists > 0)
+						{
+							return redirect()->back()->withInput()->with('error','Email already Exists');
+						}else{
+							$db_user_id = DB::table('membership')->where('id', $auto_id)->pluck('user_id')->first();
+							$user_data = [
+								'email' => $member_email,
+							];
+							DB::table('users')->where('id', $db_user_id)->update($user_data);
 						}
 					}
 					
