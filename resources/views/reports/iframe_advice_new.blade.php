@@ -153,6 +153,10 @@
 		.tbody-area{
 			color:#000;
 		}
+		#page-length-option td, #page-length-option th {
+			border: 1px solid #ddd !important;
+			padding: 4px;
+		}
 		
 		
 	</style>
@@ -162,21 +166,21 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
 		<table width="100%">
 			<tr>
 				@php $logo = CommonHelper::getLogo(); 
 
 				@endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
-				<td width="50%" style="text-align:center;">
+				<td width="10%" style="display:none;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="50%" style="text-align:center;display:none;">
 					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/> 
 					<h6 style="text-align:center;">UNION BRANCH'S ADVICE LIST</h6>
 				</td>
-				<td width="20%">	
-					<a href="#" class="exportToExcel btn btn-sm"><i class="material-icons">explicit</i></a>
+				<td width="20%" style="text-align:right;">	
+					<a href="#" class="exportToExcel export-button btn btn-sm"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" style="display:none;" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Advice Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'New Advice Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
@@ -189,62 +193,63 @@
   </div>-->
 	<table id="page-length-option" class="display table2excel" width="100%" data-tableName="New Advice Members Report">
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
-				</td>
-			</tr>
-			<tr class="" style="width: 100%;display: none;">
+			
+			<tr class="" style="width: 100%;">
 				@php $logo = CommonHelper::getLogo(); @endphp
 				
-				<td colspan="4">
-					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" />
-
+				<td colspan="2" rowspan="2">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="5" align="center">
-				
-					<span class="" style="font-weight: bold;font-size:18px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
-					<h6 style="text-align:center;">UNION BRANCH'S ADVICE LIST</h6>
 				</td>
-				<td colspan="4">	
-					
+				<td colspan="4" rowspan="2">	
+					</br>
 				</td>
 			</tr>
-			<tr class="" style="width: 100%;display: none;">
+			<tr class="" style="width: 100%;">
 				
-				<td colspan="4">
+				<td colspan="7" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;">UNION BRANCH'S ADVICE LIST</span>
+				</td>
+				
+			</tr>
+			<tr class="" style="width: 100%;font-weight: bold;">
+				
+				<td colspan="2">
 					To Branch Hons. Secretary
-					<br>
 					@if($data['unionbranch_id']!='')
+						<br>
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
 				</td>
-				<td colspan="5" align="center">
+				<td colspan="7" align="center" style="text-align:center;vertical-align:top;">
 					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
 				</td>
 				<td colspan="4">	
-					<br>
+					
 					@if($data['unionbranch_id']!='')
+						<br>
 						Branch Code : {{ $data['unionbranch_id'] }}
 					@endif
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
+			<tr class="" >
 				<th align="center">SNO</th>
-                <th style="width:240px !important;">{{__('NAME')}}</th>
-                <th style="width:200px !important;">{{__('I.C.NO')}}</th>
-                <th style="width:130px !important;">{{__('BANK')}}</th>
-                <th style="width:220px !important;">{{__('BANK BRANCH')}}</th>
-                <th style="width:150px !important;">{{__('M/NO')}}</th>
-                <th style="width:150px !important;">{{__('DOJ')}}</th>
-                <th style="width:100px !important;">{{__('CLERK')}}</th>
-                <th style="width:100px !important;">{{__('ENT FEE')}}</th>
-                <th style="width:100px !important;">{{__('SUBS')}}</th>
-                <th style="width:100px !important;">{{__('B/F')}}</th>
-                <th style="width:100px !important;">{{__('HQ')}}</th>
-                <th style="width:100px !important;">{{__('RMK')}}</th>
+                <th style="">{{__('NAME')}}</th>
+                <th style="">{{__('I.C.NO')}}</th>
+                <th style="">{{__('BANK')}}</th>
+                <th style="">{{__('BANK BRANCH')}}</th>
+                <th style="">{{__('M/NO')}}</th>
+                <th style="">{{__('DOJ')}}</th>
+                <th style="">{{__('CLERK')}}</th>
+                <th style="">{{__('ENT FEE')}}</th>
+                <th style="">{{__('SUBS')}}</th>
+                <th style="">{{__('B/F')}}</th>
+                <th style="">{{__('HQ')}}</th>
+                <th style="">{{__('RMK')}}</th>
 			</tr>
 		</thead>
 		<tbody class="tbody-area" width="100%">
@@ -258,21 +263,21 @@
 			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr>
-					<td style="width:51px !important ; border : 1px solid white;">{{ $sno }}</td>
-                    <td style="width:240px !important;">{{ $member->name }}</td>
-                    <td style="width:150px !important;">{{ $member->ic }}</td>
-                    <td style="width:130px !important;">{{ $member->companycode }}</td>
-                    <td style="width:220px !important;">{{ $member->branch_name }}</td>
-                    <td style="width:150px !important;">{{ $member->member_number }}</td>
+					<td style="">{{ $sno }}</td>
+                    <td style="">{{ $member->name }}</td>
+                    <td style="">{{ $member->ic }}</td>
+                    <td style="">{{ $member->companycode }}</td>
+                    <td style="">{{ $member->branch_name }}</td>
+                    <td style="">{{ $member->member_number }}</td>
                    
-                    <td style="width:200px !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
-                    <td style="width:120px !important;">{{ $member->designation_name }}</td>
+                    <td style="">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
+                    <td style="">{{ $member->designation_name }}</td>
                     
-                    <td style="width:126px !important;">{{ $data['ent_amount'] }}</td>
-                    <td style="width:120px !important;">{{ $member->subs }}</td>
-                    <td style="width:120px !important;">{{ $data['bf_amount'] }}</td>
-                    <td style="width:120px !important;">{{ $data['hq_amount'] }}</td>
-                    <td style="width:120px !important;">{{ 'N' }}</td>
+                    <td style="">{{ $data['ent_amount'] }}</td>
+                    <td style="">{{ $member->subs }}</td>
+                    <td style="">{{ $data['bf_amount'] }}</td>
+                    <td style="">{{ $data['hq_amount'] }}</td>
+                    <td style="">{{ 'N' }}</td>
 				</tr> 
 				@php
 					$sno++;
@@ -283,9 +288,8 @@
 				@endphp
 			@endforeach
 			<tr>
-				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Member's Count </td>
-				<td> {{ $sno-1 }}</td>
-				<td colspan="5"> </td>
+				<td colspan="2" style="font-weight:bold;">Total Member's Count </td>
+				<td align="left" colspan="6"> {{ $sno-1 }}</td>
 				<td>{{ $total_ent_amount }}</td>
 				<td>{{ $total_subs }}</td>
 				<td>{{ $total_bf_amount }}</td>
@@ -296,21 +300,19 @@
 				$total_paid = round($total_ent_amount + $total_subs + $total_bf_amount + $total_hq_amount,2);
 			@endphp
 			<tr>
-				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Amount Collected </td>
-				<td colspan="11">{{ $total_paid }}</td>
+				<td colspan="2" style="font-weight:bold;">Total Amount Collected </td>
+				<td colspan="11" align="left">{{ $total_paid }}</td>
 			</tr> 
 			<tr>
-				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;"></td>
-				<td colspan="11"></td>
+				<td colspan="13"></td>
+				
 			</tr> 
 			<tr>
-				<td colspan="13" style="text-align: right;margin-top: 100px;" align="right">
+				<td colspan="13" rowspan="3" style="text-align: right;margin-top: 100px;vertical-align:top;" align="right">
 					Your Fraternally,
 				</td>
 			</tr>
-			<tr>
-				<td colspan="13" rowspan="3" style="width:651px !important ; border : 1px solid white;font-weight:bold;"></td>
-			</tr> 
+		
 			<tr>
 				<td colspan="13"></td>
 			</tr> 
@@ -330,10 +332,10 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<!-- <script src="{{ asset('public/excel/jquery311.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/excel/jquery.tableToExcel.js') }}" type="text/javascript"></script> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script> 
+<script src="{{ asset('public/excel/jquery311.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/excel/jquery.tableToExcel.js') }}" type="text/javascript"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script>  -->
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
@@ -346,8 +348,11 @@
 	$(function() {
 
 				$(".exportToExcel").click(function(e){
-					//$('.table2excel').tblToExcel();
-					exportTableToExcel('page-length-option','New Branch Advice Report');
+					$('.table2excel').tblToExcel({
+						ignoreRows:null,   
+						trimWhitespace: true,   
+					});
+					//exportTableToExcel('page-length-option','New Branch Advice Report');
 
 					// var table = $('.table2excel');
 
