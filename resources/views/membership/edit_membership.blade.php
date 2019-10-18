@@ -474,30 +474,50 @@
                                                         <div class="errorTxt13"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
+                                                    @php 
+
+                                                    $auth_user = Auth::user(); 
+                                                    $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
+                                                    $check_union = $auth_user->hasRole('union'); if($check_union){ 
+                                                        $branch_requird = 'required'; 
+                                                        $branch_disabled = ''; 
+                                                        $branch_hide = ''; 
+                                                        $branch_id = ''; 
+                                                    }
+                                                    else{ 
+                                                        $branch_requird = ''; 
+                                                        $branch_disabled = 'disabled'; 
+                                                        $branch_hide = 'hide'; 
+                                                        $branch_id = $auth_user->branch_id; 
+                                                    }
+                                                    //$branch_hide = 'hide'; 
+                                                    @endphp
                                                     <div class="col s12 m6 ">
                                                         <label>Bank Name*</label>
-                                                        </br>
-                                                        <p style="margin-top:10px;font-weight:bold;">
-                                                            @php
-                                                                $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
-                                                            @endphp
-                                                            {{ CommonHelper::getCompanyName($m_companyid) }}
-                                                        </p>
-                                                       
-                                                        <div class="input-field hide">
-                                                             <select name="company_id" id="company" class="error browser-default selectpicker hide">
-                                                            <option value="">Select</option>
-                                                            @foreach($data['company_view'] as $value)
-                                                            <option @php //if($value->id == $values->company_id) { echo "selected";} @endphp value="{{$value->id}}">{{$value->company_name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                            <div class="errorTxt14"></div>
+                                                        @if($branch_hide=='hide')
+                                                            </br>
+                                                            <p style="margin-top:10px;font-weight:bold;">
+                                                                @php
+                                                                   $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
+                                                                   
+                                                                @endphp
+                                                                {{ CommonHelper::getCompanyName($m_companyid) }}
+                                                            </p>
+                                                        @endif
+                                                        <div class="{{ $branch_hide }}">
+                                                            <select name="company_id" id="company" class="error browser-default selectpicker hide">
+                                                                <option value="">Select</option>
+                                                                @foreach($data['company_view'] as $value)
+                                                                <option @php if($value->id == $m_companyid) { echo "selected";} @endphp value="{{$value->id}}">{{$value->company_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <div class="input-field">
+                                                                 <div class="errorTxt14"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                    @php 
-
-                                                    $auth_user = Auth::user(); $check_union = $auth_user->hasRole('union'); if($check_union){ $branch_requird = 'required'; $branch_disabled = ''; $branch_hide = ''; $branch_id = ''; }else{ $branch_requird = ''; $branch_disabled = 'disabled'; $branch_hide = 'hide'; $branch_id = $auth_user->branch_id; } $branch_hide = 'hide'; @endphp
+                                                    
                                                     <div class=" col s12 m6 {{ $branch_hide }}">
                                                         <label>Branch Name*</label>
                                                         <select name="branch_id" id="branch" data-error=".errorTxt15" class="error browser-default selectpicker">
