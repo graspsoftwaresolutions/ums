@@ -4,18 +4,19 @@
 	
 	<style type="text/css" media="all">
 	
+	
 		@page {
 		  size: 21cm 29.7cm;
 		  font-size: 10px !important;
 		   margin: 0mm;
+		   xborder:1px solid blue !important;
 		}
 		
 		p{
 			padding:5px 2px;
 			margin:0;		
 		}	
-		
-		
+			
 		
 		/* Create two equal columns that floats next to each other */
 		.column-left {
@@ -54,7 +55,7 @@
 		 xborder-right: 1px dotted black;
 
 		  xmargin: 0.3cm 0cm 0cm 1cm;
-		  
+		  xmargin-top:0.6mm;
 		  /* padding: 5px; */
 		 
 		  xmargin-right: 0.3cm;
@@ -68,6 +69,7 @@
 			width:100% !important;
 			height:100% !important;
 		  xpadding: 5px;	 
+		  border-top: 1px dotted black;
 		  border-bottom: 1px dotted black;
 		 border-right: 1px dotted black;
 		
@@ -75,8 +77,7 @@
 		#page-content{
 			size: 21cm 29.7cm;
 		 	font-size: 10px !important;
-			 margin-top:1mm;
-			  
+			margin-top:1mm;			  
 			font-size: 10px !important;
 		}
 		.label-inner img{
@@ -84,14 +85,32 @@
 			height:100%;
 			xborder:1px solid red;
 		}
-		@media print{
-			
+		@media print{			
 			#page-content{
 				font-size: 10px !important;
 				margin-left:10px;
-				margin-top:1mm;
+				xmargin-top:1mm;
+				xborder:2px solid red;
+
+				margin-bottom:13px;
+
+				page-break-after: always;
 			}
+			
+			.alt { 
+				xbackground-color: red !important;
+				border-top:25px solid white !important; 
+				}
+			.label{
+				margin-top: -2px !important;
+				margin-right: -2px !important;
+			}	
+				
 		}
+		.label{
+				margin-top: -2px !important;
+				margin-right: -2px !important;
+			}	
 		#labelstart{
 			margin-top:34px;
 			margin-left:100px;
@@ -211,22 +230,40 @@
 			word-spacing: -5px;
 		}
 		body{
-			border-top: 1px dotted black;
-			border-left: 1px dotted black;
+margin-top:0px !important;
+padding-top:0px !important;
+			xborder-top: 1px dotted red;
+			xborder-left: 1px dotted black;
+			
 		}
+		.alt { 
+				xbackground-color: red;
+				xborder-bottom:1px solid green; 
+				}
+				.subpage {
+        padding: 1cm;
+        border: 5px red solid;
+        height: 257mm;
+        outline: 2cm #FFEAEA solid;
+    }
 	</style>
+	<script>
+	
+	</script>
 </head>
 
 <body>
 	
-	<div id="page-content" xstyle="border:1px solid green;">
+	<div id="page-content">
 		@php
 			$slno = 0;
 		@endphp
+		
 		@foreach($data['member_view'] as $member)
-		<div class="label" >
-			<div class="label-inner" >
-			<span id="labelstart">{{ $member->name }}</span>
+		
+		<div class="label @php if($slno % 8 == 0){ echo 'alt'; } @endphp">
+			<div class="label-inner">
+			<span id="labelstart">{{ $member->name }}  </span>
 			<span id="labelbank">{{ $member->company_name }}</span>
 			<span id="labeladdr">
 			{{ $member->address_one }} </br>
@@ -252,11 +289,12 @@
 			<p style="text-align:center;font-size:15px;float:right;">Hon. General Secretary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 			--></div>
 		</div>
+		
 		@php
-			$slno++;
+		$slno++;
 		@endphp
 		@endforeach
-
+		
 
 	</div>
 	<script type="text/javascript">

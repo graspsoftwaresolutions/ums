@@ -3,6 +3,8 @@
 	<style type="text/css" media="all">
 	body{
 		margin-left:24mm;
+		margin-top:0px !important;
+		padding-top:0px !important;
 		xborder:1px solid red;
 	}
 		@page {
@@ -72,7 +74,7 @@
 		#page-content{
 			size: 21cm 29.7cm;
 		 	font-size: 10px !important;
-			 margin-top:1mm;
+			 xmargin-top:1mm;
 			  
 			font-size: 10px !important;
 		}
@@ -88,8 +90,23 @@
 				margin-left:10px;
 				margin-top:1mm;
 			}
+			.alt { 
+				xbackground-color: red !important;
+				border-top:25px solid white !important; 
+				}
+			.label{
+				margin-top: -2px !important;
+				margin-left: -2px !important;
+			}	
 		}
-		
+		.label{
+				margin-top: -2px !important;
+				margin-left: -2px !important;
+			}	
+			.alt { 
+				xbackground-color: red !important;
+				border-top:25px solid white !important; 
+				}
 	</style>
 </head>
 
@@ -100,7 +117,7 @@
 			$slno = 0;
 		@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="label" >
+		<div class="label @php if($slno % 8 == 0){ echo 'alt'; } @endphp" >
 			<div class="label-inner" >
 			<center><img src="{{ asset('public/assets/images/logo/cardbck.png') }}" alt="Membership logo"></center>
 			
