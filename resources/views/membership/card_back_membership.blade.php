@@ -95,7 +95,7 @@
 				border-top:25px solid white !important; 
 				}
 			.label{
-				margin-top: -2px !important;
+				margin-top: -2.75 !important;
 				margin-left: -2px !important;
 			}	
 		}
