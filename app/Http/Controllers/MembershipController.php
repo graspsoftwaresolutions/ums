@@ -747,6 +747,10 @@ class MembershipController extends Controller
                 $baseurl = URL::to('/');
                
                 $member_transfer_link = $baseurl.'/'.app()->getLocale().'/member_transfer?member_id='.Crypt::encrypt($member->id).'&branch_id='.Crypt::encrypt($member->branch_id);
+
+                $doj_url = date('d/m/Y',strtotime($member->doj));
+                $member_card_link = $baseurl.'/'.app()->getLocale().'/get-new-members-print??offset=0&from_date='.$doj_url.'&to_date='.$doj_url.'&company_id=&branch_id=&member_auto_id='.$member->id.'&join_type=&unionbranch_id=&from_member_no=&to_member_no=';
+
                 $actions .="<a style='margin-left: 10px;' title='Member Transfer'  class='btn-sm waves-effect waves-light yellow darken-3' href='$member_transfer_link'><i class='material-icons' >transfer_within_a_station</i></a>";
 				if($ircstatus==1 && $irc_env){
 					$editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=1';
@@ -755,7 +759,9 @@ class MembershipController extends Controller
 				if($irc_env==false){
 					$editmemberirc_link = $baseurl.'/'.app()->getLocale().'/membership-edit/'.$enc_id.'?status=2';
 					$actions .= "<a style='margin-left: 10px;' title='Resign Now'  class='btn-sm waves-effect waves-light red' href='$editmemberirc_link'><i class='material-icons' >block</i></a>";
-				}
+                }
+                
+                $actions .= "<a style='margin-left: 10px;' title='Card print'  class='btn-sm waves-effect waves-light blue' target='_blank' href='$member_card_link'><i class='material-icons' >card_membership</i></a>";
                 
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
