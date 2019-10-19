@@ -1215,7 +1215,10 @@ class MembershipController extends Controller
 		 $doj_month = date('m', strtotime($doj[2]."-".$doj[1]."-".$doj[0]));
 		 
 		 $date1 = Carbon::createMidnightDate($resign_date[2], $resign_month, $resign_date[0]);
-		 $date2 = Carbon::createMidnightDate($doj[2], $doj_month, $doj[0]);
+         $date2 = Carbon::createMidnightDate($doj[2], $doj_month, $doj[0]);
+         
+         $rdate1 = Carbon::createMidnightDate($doj[2], $doj_month, $doj[0]);
+         $rdate2 = Carbon::createMidnightDate('2017', '05', '31');
 		 
 		 /* $resign_dates = $resign_date[2]."-".$resign_date[1]."-".$resign_date[0];
          $resign_dates = date('Y-m-d 00:00:00', strtotime($resign_dates));
@@ -1225,9 +1228,11 @@ class MembershipController extends Controller
          $dojs = date('Y-m-d 00:00:00', strtotime($dojs));
 		 // dd($dojs); */
 		 
-		 $years = $date2->diffInYears($date1);
+         $years = $date2->diffInYears($date1);
+         $byears = $rdate2->diffInYears($rdate1);
 
-         echo $years;
+         $data = ['status' => 1, 'service_year' => $years, 'benifit_year' => $byears];
+         echo json_encode($data);
     }
 
     public function getBFAmount(Request $request){

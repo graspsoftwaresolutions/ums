@@ -1203,18 +1203,30 @@
 												
 												$resignedrow = CommonHelper::getResignDataByMember($values->mid); 
 												$reasondata = CommonHelper::getResignData(); 
-												$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid); 
+												$lastmonthendrow = CommonHelper::getlastMonthEndByMember($values->mid);
+                                               // dd($values->mid); 
 												$lastpaid = ''; $totalmonthspaid = ''; $bfcontribuion = ''; $insamount = ''; $service_year = ''; $unioncontribution = ''; $accbenefit = ''; 
 												$totamount = 0; 
+                                                $monthly_bf = 0; 
+                                                $totalmonthsmay = 0;
+
+                                                $maymonthendrow = CommonHelper::getlastMonthEndByMemberMay($values->mid);
+                                                if(!empty($lastmonthendrow)){ 
+                                                    $totalmonthsmay = $lastmonthendrow->TOTALMONTHSPAID; 
+                                                }
+
+
 												if(!empty($lastmonthendrow)){ 
 													$lastpaid = date('M/Y',strtotime($lastmonthendrow->LASTPAYMENTDATE)); 
 													$totalmonthspaid = $lastmonthendrow->TOTALMONTHSPAID; 
 													$bfcontribuion = $lastmonthendrow->ACCBF; 
 													$insamount = $lastmonthendrow->ACCINSURANCE; 
-													$service_year = CommonHelper::calculate_age($values->doj); 
+													//$service_year = CommonHelper::calculate_age($values->doj); 
+                                                    $service_year = 0; 
 													$unioncontribution = $lastmonthendrow->ACCINSURANCE; 
 													$accbenefit = $lastmonthendrow->BF_AMOUNT; 
 													$totamount = $accbenefit+$bfcontribuion+$insamount;
+                                                    $monthly_bf = $lastmonthendrow->BF_AMOUNT; 
 												} 
 												$resignstatus = 0; $resign_date = ''; $relation_code = ''; $pay_mode = ''; $chequeno = ''; $voucher_date = ''; $chequedate = ''; $chequedate = ''; 
 												if(!empty($resignedrow)){ 
@@ -1301,6 +1313,8 @@
                                                     <div class="input-field col s6">
                                                         <div class="row">
                                                             <div class="input-field col s12">
+                                                                <input type="text" id="bf_monthly" class="hide" name="bf_monthly" value="{{$monthly_bf}}"/>
+                                                                 <input type="text" class="hide" id="may_contributed_months" name="may_contributed_months" value="{{$totalmonthsmay}}">
                                                                 <input type="text" id="bf_contribution" name="bf_contribution" value="{{$bfcontribuion}}">
                                                                 <label for="bf_contribution" class="force-active">BF Contribution</label>
                                                             </div>
@@ -1841,9 +1855,15 @@
 				dataType:"json",
 				url:"{{URL::to('/get-serviceyear') }}?resign_date="+resign_date+"&doj="+doj,
 				success:function(res){
+                    var servie_year = res.service_year;
+                    var benifit_year = res.benifit_year;
 					if(res){
-						$("#service_year").val(res);
-                        $("#benefit_year").val(res);
+						$("#service_year").val(servie_year);
+                        $("#benefit_year").val(benifit_year);
+                        var bf_monthly= $("#bf_monthly").val();
+                        var contributed_months= $("#may_contributed_months").val();
+                        var total_bf = (bf_monthly*contributed_months);
+                        $("#bf_contribution").val(total_bf);
 					}else{
 						$("#service_year").val(0);
                         $("#benefit_year").val(0);
