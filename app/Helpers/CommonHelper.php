@@ -952,7 +952,7 @@ class CommonHelper
     }
 	public static function getlastMonthEndByMember($memberid){
 		$lastrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
-						->OrderBy('ms.StatusMonth','desc')->limit(1)->first();
+						->OrderBy('ms.StatusMonth','desc')->first();
 		return $lastrecord;
     }
 	public static function getResignData(){
@@ -1970,6 +1970,12 @@ class CommonHelper
         $members_due = empty($members_due) ? 0 : $members_due[0]->TOTALMONTHSDUE;
       // dd($members_due);
         return $members_due;
+    }
+
+    public static function getlastMonthEndByMemberMay($memberid){
+        $mayrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+                        ->where('ms.StatusMonth','=','2017-05-01')->first();
+        return $mayrecord;
     }
 	
 }
