@@ -102,7 +102,7 @@
 				border-top:25px solid white !important; 
 				}
 			.label{
-				margin-top: -2px !important;
+				margin-top: -2.75 !important;
 				margin-right: -2px !important;
 			}	
 				
@@ -261,7 +261,7 @@ padding-top:0px !important;
 		
 		@foreach($data['member_view'] as $member)
 		
-		<div class="label @php if(($slno % 8 == 0) && ($slno % 9 == 0)){ echo 'alt'; } @endphp">
+		<div class="label @php if($slno % 8 == 0){ echo 'alt'; } @endphp">
 			<div class="label-inner">
 			<span id="labelstart">{{ $member->name }}  </span>
 			<span id="labelbank">{{ $member->company_name }}</span>
