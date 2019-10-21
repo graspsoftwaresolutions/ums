@@ -79,7 +79,7 @@
 			}
 
 			#page-length-option td, #page-length-option th {
-			  border: 1px solid #ddd !important;
+			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
 			html {
@@ -154,7 +154,7 @@
 			color:#000;
 		}
 		#page-length-option td, #page-length-option th {
-			border: 1px solid #ddd !important;
+			//border: 1px solid #ddd !important;
 			padding: 4px;
 		}
 		
@@ -181,8 +181,8 @@
 				</td>
 				<td width="20%" style="text-align:right;">	
 					<a href="#" class="exportToExcel export-button btn btn-sm"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" style="display:none;" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Advice Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'New Advice Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="export-button btn btn-sm" style="display:none;" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button exportToPdf btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -338,15 +338,31 @@
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script>  -->
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
+<!--script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script>
 	
 	$(function() {
+
+				$("body").on("click", ".exportToPdf", function () {
+					
+		            html2canvas($('#page-length-option')[0], {
+		                onrendered: function (canvas) {
+		                    var data = canvas.toDataURL();
+		                    var docDefinition = {
+		                        content: [{
+		                            image: data,
+		                            width: 500
+		                        }]
+		                    };
+		                    pdfMake.createPdf(docDefinition).download("AdviceNewReport.pdf");
+		                }
+		            });
+		        });
 
 				$(".exportToExcel").click(function(e){
 					$('.table2excel').tblToExcel({
