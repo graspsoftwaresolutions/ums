@@ -1215,7 +1215,7 @@
                                                // dd($maymonthendrow);
                                                 if(!empty($lastmonthendrow)){ 
                                                     $totalmonthsmay = $maymonthendrow->TOTALMONTHSPAID; 
-                                                    $benifit_year = round($totalmonthsmay/12);
+                                                    $benifit_year = (int) ($totalmonthsmay/12);
                                                 }
 
 
