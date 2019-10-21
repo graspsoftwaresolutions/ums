@@ -1280,6 +1280,22 @@ class MembershipController extends Controller
                             $bfamount = $maximum_refund; 
                         }
                     }
+                }else if($reasondata->reason_name=='MEDICAL GROUND'){
+                    if($service_year>=$minimum_year){
+                        if($service_year>=5){
+                            $fiveplusyears =$service_year - 5; 
+                            $paid_amount = ($fiveplusyears*$fiveplus_year_amount)+$five_year_amount;
+                        }else{
+                            $paid_amount = $service_year*$one_year_amount;
+                        }
+                        //$paid_amount = $service_year*$one_year_amount;
+                        if($paid_amount>=$maximum_refund){
+                            $bfamount = $maximum_refund;
+                        }else{
+                            $bfamount = $paid_amount;
+                        }
+                       
+                    }
                 }else{
                     if($service_year>=$minimum_year){
                         if($service_year>=5){

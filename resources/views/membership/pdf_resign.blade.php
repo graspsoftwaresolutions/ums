@@ -111,8 +111,8 @@
 				<td class="align-right">{{ $resign_data->amount }}</td>
 			</tr>
 			<tr>
-				<td class="align-right">@RM {{ 3 }} PER MONTH (RM {{ 3 }} x {{ $resign_data->months_contributed }} )</td>
-				<td class="align-right">{{ $resign_data->months_contributed*3 }}</td>
+				<td class="align-right">@RM {{ 3 }} PER MONTH (RM {{ 3 }} x {{ $resign_data->months_contributed_till_may }} )</td>
+				<td class="align-right">{{ $resign_data->months_contributed_till_may*3 }}</td>
 				<td class="align-right"></td>
 			</tr>
 			<tr>

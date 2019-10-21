@@ -1231,6 +1231,7 @@
 													$totamount = $accbenefit+$bfcontribuion+$insamount;
                                                     $monthly_bf = $lastmonthendrow->BF_AMOUNT; 
                                                     $insamount = 0; 
+                                                    $bfcontribuion = 0;
 												} 
 												$resignstatus = 0; $resign_date = ''; $relation_code = ''; $pay_mode = ''; $chequeno = ''; $voucher_date = ''; $chequedate = ''; $chequedate = ''; 
 												if(!empty($resignedrow)){ 
@@ -1328,7 +1329,7 @@
                                                     <div class="input-field col s6">
                                                         <div class="row">
                                                             <div class="input-field col s6">
-                                                                <input type="text" id="contributed_months" name="contributed_months" value="{{$totalmonthsmay}}">
+                                                                <input type="text" id="contributed_months" name="contributed_months" value="{{$totalmonthspaid}}">
                                                                 <label for="contributed_months" class="force-active">Contributed Months</label>
                                                             </div>
                                                             <div class="input-field col s6">
@@ -1887,6 +1888,7 @@
 	function getBfAmount(){
         //alert('test');
 		var service_year = $('#service_year').val();
+        var benefit_year = $('#benefit_year').val();
 		var resign_reason = $('#resign_reason').val();
 		var resign_date = $('#resign_date').val();
 		var status_id = $('#status_id').val();
@@ -1896,7 +1898,7 @@
 			$.ajax({
 				type:"GET",
 				dataType:"json",
-				url:"{{URL::to('/get-bf-amount') }}?service_year="+service_year+"&resign_reason="+resign_reason+"&doj="+doj+"&resign_date="+resign_date+"&auto_id="+auto_id,
+				url:"{{URL::to('/get-bf-amount') }}?service_year="+benefit_year+"&resign_reason="+resign_reason+"&doj="+doj+"&resign_date="+resign_date+"&auto_id="+auto_id,
 				success:function(res){
 					if(res){
 						$("#benefit_amount").val(res);

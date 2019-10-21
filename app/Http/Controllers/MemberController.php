@@ -489,6 +489,7 @@ class MemberController extends CommonController
 					$resign->accbf = $request->input('bf_contribution');
 					$resign->accbenefit = $request->input('benefit_amount');
 					$resign->benefit_year = $request->input('benefit_year');
+					$resign->months_contributed_till_may = $request->input('may_contributed_months');
 					$resign->amount = $request->input('total_amount');
 					$resign->totalarrears = $request->input('totalarrears');
 					$resign->paymode = $request->input('pay_mode');
