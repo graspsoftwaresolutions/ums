@@ -1973,7 +1973,7 @@ class CommonHelper
     }
 
     public static function getlastMonthEndByMemberMay($memberid){
-        $mayrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+        $mayrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->orderBY('StatusMonth','asc')
                         ->where('ms.StatusMonth','=','2017-05-01')->first();
         return $mayrecord;
     }

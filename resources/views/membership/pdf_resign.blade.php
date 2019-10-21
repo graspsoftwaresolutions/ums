@@ -116,7 +116,7 @@
 				<td class="align-right"></td>
 			</tr>
 			<tr>
-				<td class="align-right">BENEFIT PAYABLE FROM UNION : {{ $resign_data->service_year }} YEARS</td>
+				<td class="align-right">BENEFIT PAYABLE FROM UNION : {{ $resign_data->benefit_year }} YEARS</td>
 				<td class="align-right">{{ $resign_data->accbenefit }}</td>
 				<td class="align-right"></td>
 			</tr>

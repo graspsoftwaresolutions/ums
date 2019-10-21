@@ -1209,10 +1209,13 @@
 												$totamount = 0; 
                                                 $monthly_bf = 0; 
                                                 $totalmonthsmay = 0;
+                                                $benifit_year = 0;
 
                                                 $maymonthendrow = CommonHelper::getlastMonthEndByMemberMay($values->mid);
+                                               // dd($maymonthendrow);
                                                 if(!empty($lastmonthendrow)){ 
-                                                    $totalmonthsmay = $lastmonthendrow->TOTALMONTHSPAID; 
+                                                    $totalmonthsmay = $maymonthendrow->TOTALMONTHSPAID; 
+                                                    $benifit_year = $totalmonthsmay/12;
                                                 }
 
 
@@ -1227,6 +1230,7 @@
 													$accbenefit = $lastmonthendrow->BF_AMOUNT; 
 													$totamount = $accbenefit+$bfcontribuion+$insamount;
                                                     $monthly_bf = $lastmonthendrow->BF_AMOUNT; 
+                                                    $insamount = 0; 
 												} 
 												$resignstatus = 0; $resign_date = ''; $relation_code = ''; $pay_mode = ''; $chequeno = ''; $voucher_date = ''; $chequedate = ''; $chequedate = ''; 
 												if(!empty($resignedrow)){ 
@@ -1305,7 +1309,7 @@
                                                                 <label for="service_year" class="force-active">Service Year</label>
                                                             </div>
                                                             <div class="input-field col s6">
-                                                                <input type="text" id="benefit_year" name="benefit_year" value="{{ $service_year }}" readonly>
+                                                                <input type="text" id="benefit_year" name="benefit_year" value="{{ $benifit_year }}" readonly>
                                                                 <label for="benefit_year" class="force-active">Benefit Year</label>
                                                             </div>
                                                         </div>
@@ -1324,7 +1328,7 @@
                                                     <div class="input-field col s6">
                                                         <div class="row">
                                                             <div class="input-field col s6">
-                                                                <input type="text" id="contributed_months" name="contributed_months" value="{{$totalmonthspaid}}">
+                                                                <input type="text" id="contributed_months" name="contributed_months" value="{{$totalmonthsmay}}">
                                                                 <label for="contributed_months" class="force-active">Contributed Months</label>
                                                             </div>
                                                             <div class="input-field col s6">
@@ -1859,7 +1863,7 @@
                     var benifit_year = res.benifit_year;
 					if(res){
 						$("#service_year").val(servie_year);
-                        $("#benefit_year").val(benifit_year);
+                        //$("#benefit_year").val(benifit_year);
                         var bf_monthly= $("#bf_monthly").val();
                         var contributed_months= $("#may_contributed_months").val();
                         var total_bf = (bf_monthly*contributed_months);

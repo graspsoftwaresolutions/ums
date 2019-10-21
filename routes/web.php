@@ -359,6 +359,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-membersstatus-union-report','ReportsController@membersReportUnionMore')->name('union.moremembers');
 	Route::get('save-subscription-approve','SubscriptionAjaxController@ApproveSubscriptionAll')->name('all.subscriptionsave');
 	Route::get('membership-view/{parameter}','MembershipController@viewMember')->name('master.viewmembership');
+	Route::get('monthend-update','MonthEndController@index')->name('monthend');
+	Route::get('get-monthend-record','MonthEndController@getMonthendInfo')->name('monthend.info');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
