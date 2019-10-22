@@ -106,25 +106,29 @@
 				<td width="20%" align="center">TOTAL</td>
 			</tr>
 			<tr>
-				<td class="align-right">PAID FROM {{ date('d/M/Y',strtotime($member_data->doj)) }} TO {{ date('d/M/Y',strtotime($resign_data->resignation_date)) }}</td>
+				<td class="align-right"> @if($resign_data->months_contributed_till_may*3>0) PAID FROM {{ date('d/M/Y',strtotime($member_data->doj)) }} TO {{ date('d/M/Y',strtotime('2017-05-31')) }} @endif</td>
 				<td class="align-right"></td>
 				<td class="align-right">{{ $resign_data->amount }}</td>
 			</tr>
+			@if($resign_data->months_contributed_till_may*3>0)
 			<tr>
 				<td class="align-right">@RM {{ 3 }} PER MONTH (RM {{ 3 }} x {{ $resign_data->months_contributed_till_may }} )</td>
 				<td class="align-right">{{ $resign_data->months_contributed_till_may*3 }}</td>
 				<td class="align-right"></td>
 			</tr>
+			@endif
+			@if($resign_data->accbenefit>0)
 			<tr>
 				<td class="align-right">BENEFIT PAYABLE FROM UNION : {{ $resign_data->benefit_year }} YEARS</td>
 				<td class="align-right">{{ $resign_data->accbenefit }}</td>
 				<td class="align-right"></td>
 			</tr>
+			@endif
 			@php
 				$data = CommonHelper::getInsuranceData($member_data->id)[0];
 			@endphp
 			<tr>
-				<td class="align-right">INSURANCE AMOUNT @if($data->count!=0)(RM {{$data->TOTALINSURANCE_AMOUNT}} x  {{$data->count}} )@endif</td>
+				<td class="align-right">INSURANCE AMOUNT @if($data->count!=0)(RM {{ 3 }} x  {{$data->count}} )@endif</td>
 				<td class="align-right">{{ $resign_data->insuranceamount }}</td>
 				<td class="align-right"></td>
 			</tr>
