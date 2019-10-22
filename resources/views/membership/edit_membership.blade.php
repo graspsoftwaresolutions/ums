@@ -1409,6 +1409,11 @@
 													@php
 
 														$color = CommonHelper::getStatusColor($values->status_id);
+                                                        $resignedrow = CommonHelper::getResignDataByMember($values->mid); 
+                                                        if(!empty($resignedrow)){
+                                                             $voucher_date = $resignedrow->voucher_date != '0000-00-00 00:00:00' ? date('d/m/Y',strtotime($resignedrow->voucher_date)) : ''; 
+                                                        }
+                                                       
 													@endphp
                                                   
 													<h4 style="color:{{$color}};font-size:2rem;">
