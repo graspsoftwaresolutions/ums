@@ -585,5 +585,9 @@ $("#irc_member_no").devbridgeAutocomplete({
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#irc_member_no").val('');
 });
+$(document).on('submit','form#irc_formValidate',function(){
+    $("#save").prop('disabled',true);
+    loader.showLoader();
+});
 </script>
 @endsection

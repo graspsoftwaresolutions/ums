@@ -541,10 +541,18 @@ class IrcController extends CommonController
 			if($ircmembershipno=='' || $resigned_member==''){
 				return redirect(app()->getLocale().'/irc_list')->with('error', 'Please choose member');
 			}
+			$check_irc = DB::table('irc_confirmation as irc')
+						->where('irc.resignedmemberno','=',$resigned_member)
+						->count();
 			//echo "<pre>"; 
 			//print_r($request->all());
 			//die;
-			$saveIrc = $this->Irc->saveIrcdata($data);
+			if($check_irc==0){
+				$saveIrc = $this->Irc->saveIrcdata($data);
+			}else{
+				return redirect(app()->getLocale().'/irc_list')->with('error', 'Already data exists for this member');
+			}
+			
 		}
 		if ($saveIrc == true) {
 			if(!empty($request->id))
