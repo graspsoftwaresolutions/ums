@@ -1416,7 +1416,7 @@
                                                     @if(!empty($resignedrow))
                                                        - {{ $voucher_date }}
                                                     @endif
-                                                    @if(empty($resignedrow))
+                                                    @if($values->status_id!=4)
 													@if(!empty($lastmonthendrecord))
 														@if($lastmonthendrecord->TOTALMONTHSDUE>0)
 															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending
