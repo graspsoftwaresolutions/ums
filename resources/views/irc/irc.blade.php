@@ -335,9 +335,15 @@
 								</p>	
 							</div>
 							<div class="col s12 m3 ">				
-									<input type="text" name="nameforfilledby" id="nameforfilledby">
+								<input type="text" name="nameforfilledby" id="nameforfilledby">
 							</div>
 						</div>						
+					</div>
+					<div class="padding-left-20">
+						<div class="input-field col s12">
+							<textarea id="comments" name="comments" class="materialize-textarea"></textarea>
+							<label for="comments">Comments</label>
+						</div>
 					</div>
 					</div>
 			  </div>

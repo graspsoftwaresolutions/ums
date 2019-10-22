@@ -455,7 +455,7 @@ class IrcController extends CommonController
 		
 		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
 									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%b/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%b/%Y') as gradewef"),
-									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommitteedate"))
+									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommitteedate"),'irc.comments')
 									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
 									->leftjoin('designation as d','m.designation_id','=','d.id')
 									->leftjoin('persontitle as p','m.member_title_id','=','p.id')
@@ -504,9 +504,9 @@ class IrcController extends CommonController
 		
 		if(!empty($request->id))
 		{
-			// echo "<pre>"; 
-			// print_r($request->all());
-			// exit;
+			//  echo "<pre>"; 
+			//  print_r($request->all());
+			//  die;
 
 			if($user_role=='irc-confirmation')
 			{		
@@ -541,6 +541,9 @@ class IrcController extends CommonController
 			if($ircmembershipno=='' || $resigned_member==''){
 				return redirect(app()->getLocale().'/irc_list')->with('error', 'Please choose member');
 			}
+			//echo "<pre>"; 
+			//print_r($request->all());
+			//die;
 			$saveIrc = $this->Irc->saveIrcdata($data);
 		}
 		if ($saveIrc == true) {

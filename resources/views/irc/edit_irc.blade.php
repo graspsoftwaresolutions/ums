@@ -173,7 +173,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	  <div class="container"> 
 	 
 		 <div class="card @php if($user_role =='irc-branch-committee') echo 'branch'; @endphp">
-		 <h5 class="padding-left-10">IRC CONFORMATION OF BENEVOLENT FUND APPLICATION</h5>
+		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
@@ -353,6 +353,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<input type="text" name="nameforfilledby" id="nameforfilledby" value="{{$dataresigneddata->nameforfilledby}}">
 							</div>
 						</div>						
+					</div>
+					<div class="padding-left-20" style="pointer-events: auto;background-color: unset;">
+						<div class="input-field col s12" style="background-color: #fff !important;">
+							<textarea id="comments" name="comments" class="materialize-textarea">{{$dataresigneddata->comments}}</textarea>
+							<label for="comments">Comments</label>
+						</div>
 					</div>
 					</div>
 			  </div>

@@ -205,6 +205,12 @@
                                                                 <span>The messenger clerical position has been filled by</span>
                                                             </label>
                                                         </p>
+                                                        <div class="padding-left-20" >
+                                                            <div class="input-field col s12" >
+                                                                <textarea id="comments" name="comments" class="materialize-textarea">{{$irc_data->comments}}</textarea>
+                                                                <label for="comments">Comments</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col s12 m12">
                                                         </br>
@@ -1123,11 +1129,13 @@
 																		<div class="col s12">
 																			Subs:
 																		    <div class="input-field inline" style="margin:0;">
+
 																				<input id="email_inline" type="text" class="validate" readonly value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" style="height:2rem;">
 																		    </div>
 																		</div>
 																		<div class="col s12">
 																			BF &nbsp; &nbsp;:
+                                                                              
 																		    <div class="input-field inline" style="margin:0;">
 																				<input id="email_inline" type="text" class="validate" value="@if(!empty($lastmonthendrecord)){{$lastmonthendrecord->TOTALMONTHSPAID}}@endif" readonly style="height:2rem;">
 																		    </div>
@@ -1213,7 +1221,7 @@
 
                                                 $maymonthendrow = CommonHelper::getlastMonthEndByMemberMay($values->mid);
                                                // dd($maymonthendrow);
-                                                if(!empty($lastmonthendrow)){ 
+                                                if(!empty($maymonthendrow)){ 
                                                     $totalmonthsmay = $maymonthendrow->TOTALMONTHSPAID; 
                                                     $benifit_year = (int) ($totalmonthsmay/12);
                                                 }
