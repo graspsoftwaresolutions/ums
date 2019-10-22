@@ -1414,8 +1414,9 @@
 													<h4 style="color:{{$color}};font-size:2rem;">
                                                     {{ CommonHelper::getStatusName($values->status_id) }} 
                                                     @if(!empty($resignedrow))
-                                                       - {{ $resign_date }}
+                                                       - {{ $voucher_date }}
                                                     @endif
+                                                    @if(empty($resignedrow))
 													@if(!empty($lastmonthendrecord))
 														@if($lastmonthendrecord->TOTALMONTHSDUE>0)
 															, {{$lastmonthendrecord->TOTALMONTHSDUE}} Arrears pending
@@ -1425,6 +1426,7 @@
 													@else
 														, 0 Arrears pending
 													@endif
+                                                    @endif
 													</h4>
 											</div>
 											<div class="col s4 m4 right" style="padding-top: 15px;">
