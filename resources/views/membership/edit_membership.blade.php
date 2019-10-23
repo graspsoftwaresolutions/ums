@@ -1236,7 +1236,7 @@
                                                     $service_year = 0; 
 													$unioncontribution = $lastmonthendrow->ACCINSURANCE; 
 													$accbenefit = $lastmonthendrow->BF_AMOUNT; 
-													$totamount = $accbenefit+$bfcontribuion+$insamount;
+													$totamount = number_format($accbenefit+$bfcontribuion+$insamount,2,".",",");
                                                     $monthly_bf = $lastmonthendrow->BF_AMOUNT; 
                                                     $insamount = 0; 
                                                     $bfcontribuion = 0;
@@ -1750,11 +1750,11 @@
         var bf_contribution = $('#bf_contribution').val();
         var insurance_amount = $('#insurance_amount').val();
         var benefit_amount = $('#benefit_amount').val();
-        bf_contribution = bf_contribution != "" && typeof(bf_contribution) != "number" ? parseInt(bf_contribution) : 0;
-        insurance_amount = insurance_amount != "" && typeof(insurance_amount) != "number" ? parseInt(insurance_amount) : 0;
-        benefit_amount = benefit_amount != "" && typeof(benefit_amount) != "number" ? parseInt(benefit_amount) : 0;
-        var total_amount = parseInt(insurance_amount) + parseInt(bf_contribution) + parseInt(benefit_amount);
-        $('#total_amount').val(total_amount);
+        bf_contribution = bf_contribution != "" && typeof(bf_contribution) != "number" ? parseFloat(bf_contribution) : 0;
+        insurance_amount = insurance_amount != "" && typeof(insurance_amount) != "number" ? parseFloat(insurance_amount) : 0;
+        benefit_amount = benefit_amount != "" && typeof(benefit_amount) != "number" ? parseFloat(benefit_amount) : 0;
+        var total_amount = parseFloat(insurance_amount) + parseFloat(bf_contribution) + parseFloat(benefit_amount);
+        $('#total_amount').val(total_amount.toFixed(2));
     });
 
     $(document).ready(function() {
