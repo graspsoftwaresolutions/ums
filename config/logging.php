@@ -100,6 +100,11 @@ return [
             'path' => storage_path('logs/approvallog.log'),
             'level' => 'info',
         ],
+        'monthendlog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/monthendlog.log'),
+            'level' => 'info',
+        ],
 
     ],
 

@@ -86,25 +86,28 @@
 				
 				</h4> 
 				
-				<form method="post" id="filtersubmit" action="">
+				<form method="post" id="monthendsubmit" action="{{ url(app()->getLocale().'/monthend_save') }}">
 					@csrf  
 					<div class="row">                          
+						
+						
+						
+						<div class="col s12 m6 l4 ">
+							<label for="subscription_amount">{{__('Subscription Amount')}}</label>
+							<input id="month_auto_id" type="text" class="validate hide" name="month_auto_id" data-error=".errorTxt24">
+							<input id="subscription_amount" type="text" class="validate " name="subscription_amount" data-error=".errorTxt24">
+					
+							<div class="input-field">
+								<div class="errorTxt24"></div>
+							</div>
+						</div>
+
 						<div class="col s12 m6 l3">
 							<label for="bf_amount">{{__('BF Amount')}}</label>
 							<input id="bf_amount" type="text" class="validate " value="" name="bf_amount" data-error=".errorTxt20">
 
 							<div class="input-field">
 								<div class="errorTxt20"></div>
-							</div>
-						</div>
-						
-						
-						<div class="col s12 m6 l4 ">
-							<label for="subscription_amount">{{__('Subscription Amount')}}</label>
-							<input id="subscription_amount" type="text" class="validate " name="subscription_amount" data-error=".errorTxt24">
-					
-							<div class="input-field">
-								<div class="errorTxt24"></div>
 							</div>
 						</div>
 
@@ -189,7 +192,15 @@
 					success:function(res){
 						if(res)
 						{
-							
+							if(res.status=1 && res.data!=null){
+								var monthdata = res.data;
+								$("#month_auto_id").val(monthdata.Id);
+								$("#subscription_amount").val(monthdata.TOTALSUBCRP_AMOUNT);
+								$("#bf_amount").val(monthdata.TOTALBF_AMOUNT);
+								$("#insurance_amount").val(monthdata.TOTALINSURANCE_AMOUNT);
+							}else{
+								alert('not exists');
+							}
 						}else{
 							
 						}
@@ -205,6 +216,34 @@
 		$('#member_auto_id').val("");
 		$('#member_search').val("");
 		$(".selectpicker").val('').trigger("change"); 
+	});
+	$(document).on('submit','form#monthendsubmit',function(event){
+		event.preventDefault();
+		var month_auto_id = $("#month_auto_id").val();
+		var subscription_amount = $("#subscription_amount").val();
+		var bf_amount = $("#bf_amount").val();
+		var insurance_amount = $("#insurance_amount").val();
+		if(month_auto_id!="" && subscription_amount!='' && bf_amount!='' && insurance_amount!=''){
+			var additional_cond = 'month_auto_id='+month_auto_id+'&subscription_amount='+subscription_amount+'&bf_amount='+bf_amount+'&insurance_amount='+insurance_amount;
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/en/monthend_save') }}?reference=1&"+additional_cond,
+				success:function(res){
+					if(res)
+					{
+						alert('current month updated , other months will start updates in background');
+						location.reload();
+					}else{
+						alert('failed to update');
+					}
+				}
+			});
+			location.reload();
+		}else{
+			alert("Please Choose Month & Year");
+		}
+		
 	});
 </script>
 @endsection

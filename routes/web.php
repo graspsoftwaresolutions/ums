@@ -361,7 +361,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership-view/{parameter}','MembershipController@viewMember')->name('master.viewmembership');
 	Route::get('monthend-update','MonthEndController@index')->name('monthend');
 	Route::get('get-monthend-record','MonthEndController@getMonthendInfo')->name('monthend.info');
-	Route::post('monthend_save','MonthEndController@SaveMonthEnd')->name('monthend.save');
+	Route::get('monthend_save','MonthEndController@SaveMonthEnd')->name('monthend.save');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
