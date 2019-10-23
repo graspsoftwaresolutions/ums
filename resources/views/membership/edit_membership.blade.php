@@ -1236,7 +1236,8 @@
                                                     $service_year = 0; 
 													$unioncontribution = $lastmonthendrow->ACCINSURANCE; 
 													$accbenefit = $lastmonthendrow->BF_AMOUNT; 
-													$totamount = number_format($accbenefit+$bfcontribuion+$insamount,2,".",",");
+													//$totamount = number_format($accbenefit+$bfcontribuion+$insamount,2,".",",");
+                                                    $totamount = 0;
                                                     $monthly_bf = $lastmonthendrow->BF_AMOUNT; 
                                                     $insamount = 0; 
                                                     $bfcontribuion = 0;
