@@ -63,6 +63,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<input id="member_number" name="resignedmembernoE" readonly value="{{$dataresigneddata->member_number}}"  class="common-input autocompleteoff"
 						type="text" data-error=".errorTxt1">
 					<input type="hidden" name="resignedmemberno" id="memberid" value="{{$dataresigneddata->resignedmemberno}}">
+					<input type="hidden" name="union_branch_id" id="union_branch_id" value="{{$dataresigneddata->union_branch_id}}">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s4">
@@ -181,7 +182,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                         @php $id = $dataresigneddata->ircmembershipno;
                            $value = CommonHelper::getmembercode_byid($id);  
                          @endphp
-						<input id="irc_member_no"  value="{{$value}}" readonly name="ircmember" class="common-input"
+						<input id="irc_member_no"  value="{{$value}}" name="ircmember" class="common-input"
 						type="text" data-error=".errorTxt1">
 						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{$dataresigneddata->ircmembershipno}}">
 					<div class="errorTxt1"></div>
@@ -530,6 +531,42 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 });
 $('.datepicker').datepicker({
 	format: 'dd/mmm/yyyy'
+});
+$("#irc_member_no").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
+	type:'GET',
+	params: { 
+		union_branch_id:  function(){ return $("#union_branch_id").val();  },
+	},
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$("#irc_member_no").val(suggestion.member_number);	
+			$.ajax({
+				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
+                type: "GET",
+				dataType: "json",
+				success: function(res) {
+					$('#irc_name').val(res.membername);
+					$('#irc_bank').val(res.bankname);
+					$('#irc_member_code').val(res.mid);
+					$('#bank_address').val(res.address_one);
+					$('#irctelephoneno').val(res.phone);
+					$('#ircmobileno').val(res.mobile);
+				}
+			});
+
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#irc_member_no").val('');
+		}
+	}
+});
+$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+	$("#irc_member_no").val('');
 });
 //IRC Member Details 
 /* $("#irc_member_no").devbridgeAutocomplete({
