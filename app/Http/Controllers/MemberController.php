@@ -735,20 +735,21 @@ class MemberController extends CommonController
 				DB::table('member_payments')->insert($payment_data);
 			}
 			if($auto_id==''){
-				$mail_data = array(
-					'name' => $member_name,
-					'email' => $member_email,
-					'password' => $randompass,
-					'site_url' => URL::to("/"),
-				);
-				$cc_mail = CommonHelper::getCCTestMail();
-				$status = Mail::to($member_email)->cc([$cc_mail])->send(new SendMemberMailable($mail_data));
+				return redirect($redirect_url)->with('message','Member Account created successfully');
+				// $mail_data = array(
+				// 	'name' => $member_name,
+				// 	'email' => $member_email,
+				// 	'password' => $randompass,
+				// 	'site_url' => URL::to("/"),
+				// );
+				// $cc_mail = CommonHelper::getCCTestMail();
+				// $status = Mail::to($member_email)->cc([$cc_mail])->send(new SendMemberMailable($mail_data));
 				
-				if( count(Mail::failures()) > 0 ) {
-					return redirect($redirect_url)->with('message','Member Account created successfully, Failed to send mail');
-				}else{
-					return redirect($redirect_url)->with('message','Member Account created successfully, password sent to mail');
-				}
+				// if( count(Mail::failures()) > 0 ) {
+				// 	return redirect($redirect_url)->with('message','Member Account created successfully, Failed to send mail');
+				// }else{
+				// 	return redirect($redirect_url)->with('message','Member Account created successfully, password sent to mail');
+				// }
 			}else{
 				 return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
 			}
