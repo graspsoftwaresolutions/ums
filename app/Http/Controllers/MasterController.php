@@ -685,7 +685,8 @@ class MasterController extends CommonController {
         if($auto_id==""){
             $union_head_role = Role::where('slug', 'union')->first();
             $union_branch_role = Role::where('slug', 'union-branch')->first();
-            $randompass = CommonHelper::random_password(5,true);
+            //$randompass = CommonHelper::random_password(5,true);
+            $randompass = 'nube12345';
             $redirect_failurl = app()->getLocale().'/unionbranch';
             $redirect_url = app()->getLocale().'/unionbranch';
 			
@@ -1247,7 +1248,8 @@ public function companyDestroy($lang,$id)
         if($auto_id==""){
             $company_head_role = Role::where('slug', 'company')->first();
             $company_branch_role = Role::where('slug', 'company-branch')->first();
-            $randompass = CommonHelper::random_password(5,true);
+            //$randompass = CommonHelper::random_password(5,true);
+            $randompass = 'nube12345';
 
             $data_exists_branchemail = DB::table('company_branch')->where([
                 ['email','=',$branch['email']],
