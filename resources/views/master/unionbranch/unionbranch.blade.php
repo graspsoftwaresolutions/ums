@@ -52,7 +52,7 @@
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">
-                                            <table id="page-length-option" class="display">
+                                            <table id="page-length-option" class="display" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th>{{__('Union Branch Name') }}</th>

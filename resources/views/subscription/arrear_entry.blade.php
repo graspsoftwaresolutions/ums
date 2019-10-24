@@ -23,7 +23,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	}
 	
 	.footer {
-	   position: fixed;
+	   //position: fixed;
 	   margin-top:50px;
 	   left: 0;
 	   bottom: 0;
@@ -179,7 +179,10 @@ function ConfirmDeletion() {
 //Model
 $(document).ready(function() {
 // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-$('.modal').modal();
+  $('.modal').modal();
+  if($("#page-length-option").height()<230){
+    $(".footer").css('position','fixed');
+  }
 });
 </script>
 @endsection

@@ -1093,6 +1093,7 @@ class SubscriptionController extends CommonController
             $data['member'] = $members_data;
             $data['status_type'] = 1;
             $data['status'] = $member_status;
+            $data['pending_approval_count'] = 0;
         }
         if($approval_status!=""){
 			$cond ='';
@@ -1101,11 +1102,17 @@ class SubscriptionController extends CommonController
 			}
 			
            $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
+
+           $total_members_data = DB::select(DB::raw('SELECT member.id FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') AND ( m.approval_status = 0 OR m.approval_status  IS NULL )'));
+           
+
+           $count_members_data =count($total_members_data);
 		  
 		   
            $data['member'] = $members_data;
            $data['status_type'] = 2;
            $data['status'] = $approval_status;
+           $data['pending_approval_count'] = $count_members_data;
 		   
         }
 		if($member_status==0 && $approval_status==""){
@@ -1118,6 +1125,7 @@ class SubscriptionController extends CommonController
            $data['member'] = $members_data;
            $data['status_type'] = 3;
            $data['status'] = 0;
+           $data['pending_approval_count'] = 0;
         }
 		if($member_status=='all' || $approval_status=="all"){
 			$cond ='1=1';
@@ -1128,6 +1136,7 @@ class SubscriptionController extends CommonController
            $data['member'] = $members_data;
            $data['status_type'] = 4;
            $data['status'] = 0;
+           $data['pending_approval_count'] = 0;
         }
         
 		return view('subscription.member_status')->with('data',$data);

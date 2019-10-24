@@ -11,6 +11,7 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <style>
 	@if(count($data['member_view'])<10)
 		#main.main-full {
@@ -102,11 +103,11 @@
 						</div>
 						<div class="col s12 m6 l4">
 							<label for="from_date">{{__('From Date')}}</label>
-							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/M/Y')}}" name="from_date">
+							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/m/Y')}}" name="from_date">
 						</div>
 						<div class="col s12 m6 l4">
 							<label for="to_date">{{__('To Date')}}</label>
-							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/M/Y')}}" name="to_date">
+							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/m/Y')}}" name="to_date">
 						</div>
 						
 						<div class="clearfix"/>
@@ -237,6 +238,7 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -257,15 +259,8 @@ $("#member_status4_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		$(".datepicker-custom").datepicker({
-            changeMonth: true,
-			changeYear: true,
-			showButtonPanel: true,
-			closeText: 'Clear',
-			weekdaysAbbrev: ['sun'],
-            format: "dd/mmm/yyyy",
-			onClose: function (dateText, inst) {
-				
-			}
+            format: 'dd/mm/yyyy',
+    		autoHide: true,
         });
 		$("#member_search").devbridgeAutocomplete({
 			//lookup: countries,

@@ -8,6 +8,28 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<style>
+#main.main-full {
+        height: 750px;
+        overflow: auto;
+    }
+    
+    .footer {
+       //position: fixed;
+       margin-top:50px;
+       left: 0;
+       bottom: 0;
+       width: 100%;
+       height:auto;
+       background-color: red;
+       color: white;
+       text-align: center;
+       z-index:999;
+    } 
+    .sidenav-main{
+        z-index:9999;
+    }
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -271,7 +293,9 @@ function showeditForm(userid) {
 $(document).ready(function() {
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
-
+    if($("#page-length-option").height()<230){
+        $(".footer").css('position','fixed');
+      }
 });
 </script>
 @endsection

@@ -245,8 +245,9 @@
 			<div class="card-content">
 				@php
 					//dd($approval_status);
+					//dd($data['pending_approval_count']);
 				@endphp
-				@if($approval_status==1 || $approval_status==3 || $approval_status>=5)
+				@if(($approval_status==1 || $approval_status==3 || $approval_status>=5) && $data['pending_approval_count']==0)
 					@if($approval_status==3)
 						&nbsp;&nbsp;
 						
@@ -272,6 +273,7 @@
 				<table id="page-length-option" class="display nowrap" width="100%">
 					<thead>
 						<tr>
+							<th width="3%">{{__('S.No')}}</th>
 							<th width="10%">{{__('Member Name')}}</th>
 							<th width="9%">{{__('Member Id')}}</th>
 							<th width="10%">{{__('Bank')}}</th>
@@ -285,7 +287,7 @@
 					</thead>
 					<tbody>
 						@php
-
+							$slno=1;
 							//dd($data['member'])
 						@endphp
 						@foreach($data['member'] as  $key => $member)
@@ -296,6 +298,7 @@
 								
 							@endphp
 							<tr style="overflow-x:auto;">
+								<td>{{$slno}}</td>
 								<td>{{ $member->up_member_name }}</td>
 								<td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td>
 								<td>{{ $member->company_name }}</td>
@@ -312,9 +315,13 @@
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
 							</tr> 
+							@php
+								$slno++;
+							@endphp
 						@endforeach
 					</tbody>
 					<input type="text" name="memberoffset" id="memberoffset" class="hide" value=""></input>
+					<input type="text" name="totalhistory" id="totalhistory" class="hide" value="{{$slno}}"></input>
 				</table> 
 			</div>
 		</div>
@@ -845,6 +852,8 @@ $(document).on('submit','form#filtersubmit',function(event){
 		$("#memberoffset").val("{{$data['data_limit']}}");
 		//loader.showLoader();
 		$('#page-length-option tbody').empty();
+		$("#totalhistory").val(1);
+		var totalhistory = parseInt($("#totalhistory").val());
 		loader.showLoader();
 		$.ajax({
 			type: "GET",
@@ -857,7 +866,8 @@ $(document).on('submit','form#filtersubmit',function(event){
 					//console.log(res);
 					$.each(res,function(key,entry){
 						//console.log(entry);
-						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
+						var table_row = "<tr><td>"+totalhistory+"</td>";
+							table_row += "<td>"+entry.up_member_name+"</td>";
 							table_row += "<td id='member_code_"+entry.sub_member_id+"'>"+entry.member_number+"</td>";
 							table_row += "<td>"+entry.company_name+"</td>";
 							table_row += "<td>"+entry.up_nric+"</td>";
@@ -875,7 +885,9 @@ $(document).on('submit','form#filtersubmit',function(event){
 							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
+							totalhistory+=1;
 					});
+					$("#totalhistory").val(totalhistory);
 					
 					loader.hideLoader();
 				}else{
@@ -894,6 +906,7 @@ $(window).scroll(function() {
    var limit = "{{$data['data_limit']}}";
    var baselink = base_url +'/{{ app()->getLocale() }}/';
    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+   		var totalhistory = parseInt($("#totalhistory").val());
 		loader.showLoader();
 		var filter_date = $("#filter_date").val();
 		var member_status = $("#member_status").val();
@@ -913,7 +926,8 @@ $(window).scroll(function() {
 					res = result.member;
 					//console.log(res);
 					$.each(res,function(key,entry){
-						var table_row = "<tr><td>"+entry.up_member_name+"</td>";
+						var table_row = "<tr><td>"+totalhistory+"</td>";
+							table_row += "<td>"+entry.up_member_name+"</td>";
 							table_row += "<td id='member_code_"+entry.sub_member_id+"'>"+entry.member_number+"</td>";
 							table_row += "<td>"+entry.company_name+"</td>";
 							table_row += "<td>"+entry.up_nric+"</td>";
@@ -931,7 +945,9 @@ $(window).scroll(function() {
 							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
+							totalhistory+=1;
 					});
+					$("#totalhistory").val(totalhistory);
 					loader.hideLoader();
 				}else{
 					
@@ -974,7 +990,7 @@ function SubmitAllVerication(){
 		},
 		error: function( objRequest ){
 			alert('Server error, page will get refreshed and start it again');
-			//location.reload();
+			location.reload();
 		}
 	});
 }

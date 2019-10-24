@@ -6,6 +6,7 @@
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -103,7 +104,7 @@
 					<div class="row">
 						<div class="input-field col s12 m8">
 							<label for="dob" class="force-active">{{__('Date of Birth') }} *</label>
-							<input id="dob" readonly name="dob" data-reflectage="dob" class="datepicker"  type="text"> 
+							<input id="dob" readonly name="dob" data-reflectage="dob" class="datepicker-custom"  type="text"> 
 						</div>
 						<div class="input-field col s12 m4">
 							<label for="member_age" class="force-active">{{__('Age') }}</label>
@@ -294,7 +295,7 @@
 								
 							</div>
 							<div class="col s12 m3">
-								<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f" name="text" class="datepicker"/>
+								<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f" name="text" class="datepicker-custom"/>
 							</div>
 						</div>						
 					</div>
@@ -395,7 +396,7 @@
 							</div>
 							<div class="col s12 m3 ">
 							<!--<label>Date</label> -->
-									<input type="text" class="datepicker" palceholder="Date" name="date">
+									<input type="text" class="datepicker-custom" palceholder="Date" name="date">
 							</div>
 						</div>	
 					</div>
@@ -406,8 +407,8 @@
 						
 						<div class="input-field col s12 m4">
 						  <i class="material-icons prefix">date_range</i>
-						  <input id="submitted_at" name="submitted_at" data-reflectage="dob" class="datepicker"  type="text">
-						  <label for="icon_prefix">File Submitted</label>
+						  <input id="submitted_at" name="submitted_at" data-reflectage="dob" class="datepicker-custom"  type="text">
+						  <label for="icon_prefix" class="force-active">File Submitted</label>
 						</div> 
 					<div class="input-field col s12 m2">
 						<p>
@@ -443,6 +444,7 @@ type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 <script>
 function refreshPage(){
     window.location.reload();
@@ -546,7 +548,7 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
 $('.datepicker').datepicker({
-	format: 'dd/mmm/yyyy'
+	format: 'dd/mm/yyyy'
 });
 //IRC Member Details 
 $("#irc_member_no").devbridgeAutocomplete({
@@ -588,6 +590,10 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 $(document).on('submit','form#irc_formValidate',function(){
     $("#save").prop('disabled',true);
     loader.showLoader();
+});
+$(".datepicker-custom").datepicker({
+    format: 'dd/mm/yyyy',
+	autoHide: true,
 });
 </script>
 @endsection

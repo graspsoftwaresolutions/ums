@@ -6,6 +6,31 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<style type="text/css">
+	#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:last-child {
+	    padding-top: 8px;
+	    padding-bottom: 8px;
+	    padding-left: 26px;
+	    padding-right: 16px;
+	    font-size: 12px;
+	    white-space: nowrap;
+	    text-transform: Uppercase;
+	    border: none !important;
+	}
+	.btn-sm{
+		padding: 0px 7px;
+	    font-size: 8px;
+	    line-height: 1.5;
+	    border-radius: 3px;
+		color: #fff;
+	}
+	#page-length-option td:not(:last-child) {
+		word-break: break-word !important;
+		white-space: unset !important;
+		vertical-align: top;
+	}
+
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -52,7 +77,7 @@
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
-											<table id="page-length-option" class="display">
+											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
 														<th colspan="4">&nbsp;</th>
@@ -69,10 +94,10 @@
 													</tr>
 													<tr>
 														<th>{{__('Status') }}</th>
-														<th>{{__('memberId')}} </th>
-														<th>{{__('Full Name')}}</th>
+														<th width="5%">{{__('Mem/ID')}} </th>
+														<th width="10%">{{__('Full Name')}}</th>
 														<th>{{__('ICNO')}}</th>
-														<th>{{__('Company Name')}}</th>
+														<th width="5%">{{__('Company Name')}}</th>
 														<th>{{__('Branch')}}</th>
 														<th>{{__('Received')}}</th>
 														<th>{{__('Submitted')}}</th>

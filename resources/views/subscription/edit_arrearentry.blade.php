@@ -187,6 +187,7 @@ rules: {
   },
   arrear_amount: {
     required: true,
+      number: true,
   },
 },
 //For custom messages

@@ -14,6 +14,32 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
+<style type="text/css">
+    #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:last-child {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-left: 26px;
+        padding-right: 16px;
+        font-size: 12px;
+        white-space: nowrap;
+        text-transform: Uppercase;
+        border: none !important;
+        border-top: 1px solid lightgrey !important;
+    }
+    .btn-sm{
+        padding: 0px 7px;
+        font-size: 8px;
+        line-height: 1.5;
+        border-radius: 3px;
+        color: #fff;
+    }
+    #page-length-option td:not(:last-child) {
+        word-break: break-word !important;
+        white-space: unset !important;
+        vertical-align: top;
+    }
+
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -53,7 +79,7 @@
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">
-                                            <table id="page-length-option" class="display">
+                                            <table id="page-length-option" class="display" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th>{{__('Status Name') }}</th>

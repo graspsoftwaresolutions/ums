@@ -112,5 +112,12 @@
 	html {
 	    color: #000 !important;
 	}
+	#main .section-data-tables .dataTables_wrapper table.dataTable tbody
+	{
+	    overflow: auto; 
+
+	    max-width: 100%;
+	    height: auto;
+	}
 	  
 </style>

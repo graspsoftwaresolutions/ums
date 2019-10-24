@@ -12,6 +12,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -470,6 +471,7 @@ type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/mstepper.min.js') }}"></script>
+<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 <script>
 
 $("#irc_sidebar_a_id").addClass('active');
@@ -530,7 +532,8 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#member_number").val('');
 });
 $('.datepicker').datepicker({
-	format: 'dd/mmm/yyyy'
+	format: 'dd/mm/yyyy',
+	autoHide: true,
 });
 $("#irc_member_no").devbridgeAutocomplete({
 	//lookup: countries,

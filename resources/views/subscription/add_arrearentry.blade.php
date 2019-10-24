@@ -219,7 +219,7 @@ rules: {
   },
   arrear_amount: {
     required: true,
-    digits: true,
+    number: true,
   },
   no_of_months : {
     required: true,

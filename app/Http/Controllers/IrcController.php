@@ -433,7 +433,7 @@ class IrcController extends CommonController
                 $editurl =  route('edit.irc', [app()->getLocale(),$company_enc_id]) ;
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
 				if($irc->status_id!=4){
-					$nestedData['options'] = "<a style='float: left;' class='btn btn-small waves-effect waves-light cyan modal-trigger' href='".$editurl."'>Edit IRC</a>";
+					$nestedData['options'] = "<a style='float: left;' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$editurl."'><i class='material-icons'>edit</i></a>";
 				}else{
 					$nestedData['options'] = "";
 				}
@@ -454,8 +454,8 @@ class IrcController extends CommonController
 		$id = Crypt::decrypt($enc_id);
 		
 		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
-									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%b/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%b/%Y') as gradewef"),
-									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%b/%Y') as branchcommitteedate"),'irc.comments','cb.union_branch_id')
+									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%m/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%m/%Y') as gradewef"),
+									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%m/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%m/%Y') as branchcommitteedate"),'irc.comments','cb.union_branch_id')
 									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
 									->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 									->leftjoin('designation as d','m.designation_id','=','d.id')

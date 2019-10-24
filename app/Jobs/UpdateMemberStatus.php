@@ -96,12 +96,12 @@ class UpdateMemberStatus implements ShouldQueue
                     Log::channel('customlog')->info('member#:'.$member->id.'month diff: '.$diff_in_months);
 
                     $membercount =  DB::table('mon_sub_member as sm')->where('MonthlySubscriptionCompanyId', '=',$company_auto_id)->where('MemberCode', '=',$member->id)->count();
-                    if($diff_in_months_one>=3 && $diff_in_months>=3 && $diff_in_months<=11 && $membercount==0){
+                    if($diff_in_months_one>=4 && $diff_in_months>=4 && $diff_in_months<=12 && $membercount==0){
                         Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=2&fromstatus='.$member->status_id);
 
                         $updata = ['status_id' => 2,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
                         $savedata = Membership::where('id',$member->id)->where('status_id','!=',2)->update($updata);
-                    }else if ($diff_in_months_one>=3 && $diff_in_months>=12 && $membercount==0){
+                    }else if ($diff_in_months_one>=4 && $diff_in_months>=13 && $membercount==0){
                         Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=3&fromstatus='.$member->status_id);
                         $updata = ['status_id' => 3,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
                         $savedata = Membership::where('id',$member->id)->where('status_id','!=',3)->update($updata);
