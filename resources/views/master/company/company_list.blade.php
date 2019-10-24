@@ -200,6 +200,7 @@ rules: {
               _token: "{{csrf_token()}}",
               company_name: $(this).data('company_name')
           },
+
           type: "post",
       },
   },
@@ -275,7 +276,13 @@ $('#page-length-option').DataTable({
       "type": "POST",
       "data": {
           _token: "{{csrf_token()}}"
-      }
+      },
+      "error": function (jqXHR, textStatus, errorThrown) {
+          if(jqXHR.status==419){
+              alert('Your session has expired, please login again');
+              window.location.href = base_url;
+          }
+      },
   },
   "columns": [{
           "data": "company_name"

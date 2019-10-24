@@ -186,7 +186,13 @@ $(function() {
             "type": "POST",
             "data": {
                 _token: "{{csrf_token()}}"
-            }
+            },
+            "error": function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status==419){
+                    alert('Your session has expired, please login again');
+                    window.location.href = base_url;
+                }
+            },
         },
         "columns": [{
                 "data": "race_name"
@@ -211,6 +217,7 @@ $("#race_formValidate").validate({
             required: true,
             remote: {
                 url: "{{ url(app()->getLocale().'/race_nameexists')}}",
+                type: "post",
                 data: {
                     race_id: function() {
                         return $("#updateid").val();
@@ -218,7 +225,8 @@ $("#race_formValidate").validate({
                     _token: "{{csrf_token()}}",
                     race_name: $(this).data('race_name')
                 },
-                type: "post",
+                
+                
             },
         },
 		short_code: {

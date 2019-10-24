@@ -112,7 +112,8 @@ class MemberController extends CommonController
             'city_id.required'=>'Please choose  your city',
             'postal_code.required'=>'Please Enter postal code',
             'address_one.required'=>'Please Enter your Address',
-            'dob.required'=>'Please choose DOB',
+			'dob.required'=>'Please choose DOB',
+			'doj.required'=>'Please choose DOJ',
             'salary.required'=>'Enter your Salary',
             'new_ic.required'=>'Please Enter New Ic Number',
 

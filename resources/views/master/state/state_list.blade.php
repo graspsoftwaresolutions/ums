@@ -245,7 +245,13 @@ $(function() {
             "type": "POST",
             "data": {
                 _token: "{{csrf_token()}}"
-            }
+            },
+            "error": function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status==419){
+                    alert('Your session has expired, please login again');
+                    window.location.href = base_url;
+                }
+            },
         },
         "columns": [{
                 "data": "country_name"
@@ -279,6 +285,7 @@ $("#stateformValidate").validate({
             required: true,
             remote: {
                 url: "{{ url(app()->getLocale().'/state_nameexists')}}",
+                type: "post",
                 data: {
                     state_id: function() {
                         return $("#updateid").val();
@@ -289,7 +296,8 @@ $("#stateformValidate").validate({
                     _token: "{{csrf_token()}}",
                     state_name: $(this).data('state_name')
                 },
-                type: "post",
+                
+                
             },
         },
     },

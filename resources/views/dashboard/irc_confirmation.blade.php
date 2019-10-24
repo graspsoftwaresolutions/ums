@@ -1,9 +1,14 @@
 @section('headSecondSection')
 <style>
-@media (min-height: 100px) and (max-height: 657px) {
-	#main.main-full {
-		height: 657px;
-		//overflow: auto;
+
+@media (max-width: 992px) {
+	.dash-tab-clearfix {
+	  clear:both;
+	}
+}
+#main.main-full {
+		height: 10px;
+		overflow: auto;
 	}
 	
 	.footer {
@@ -21,12 +26,6 @@
 	.sidenav-main{
 		z-index:9999;
 	}
-}
-@media (max-width: 992px) {
-	.dash-tab-clearfix {
-	  clear:both;
-	}
-}
 
 </style>
 @endsection

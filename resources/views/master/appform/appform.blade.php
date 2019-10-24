@@ -100,7 +100,13 @@
 				"url": "{{ url(app()->getLocale().'/ajax_appform_list') }}",
 				"dataType": "json",
 				"type": "POST",
-				"data": {_token: "{{csrf_token()}}"}
+				"data": {_token: "{{csrf_token()}}"},
+				"error": function (jqXHR, textStatus, errorThrown) {
+		            if(jqXHR.status==419){
+		            	alert('Your session has expired, please login again');
+		            	window.location.href = base_url;
+		            }
+		        },
 			},
 			"columns": [
 				{"data": "formname"},

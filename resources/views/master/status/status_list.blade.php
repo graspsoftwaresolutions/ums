@@ -250,7 +250,13 @@ $(function() {
             "type": "POST",
             "data": {
                 _token: "{{csrf_token()}}"
-            }
+            },
+            "error": function (jqXHR, textStatus, errorThrown) {
+                    if(jqXHR.status==419){
+                        alert('Your session has expired, please login again');
+                        window.location.href = base_url;
+                    }
+            },
         },
         "columns": [{
                 "data": "status_name"

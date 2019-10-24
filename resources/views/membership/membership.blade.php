@@ -348,6 +348,11 @@ $("#membership_sidebar_a_id").addClass('active');
 
 
 $(function () {
+	$.ajaxSetup({
+	  headers: {
+	    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	  }
+	});
  var dataTable = $('#page-length-option').DataTable({
 	"responsive": true,
 	"order": [[ 0, "desc" ]],
@@ -385,7 +390,13 @@ $(function () {
 		  data.state_id = state_id;
 		  data.city_id = city_id;
 		  data._token = "{{csrf_token()}}";
-	   }
+	   },
+	   "error": function (jqXHR, textStatus, errorThrown) {
+            if(jqXHR.status==419){
+            	alert('Your session has expired, please login again');
+            	window.location.href = base_url;
+            }
+       },
 	},
 	"columns": [
 		{"data": "options"},
@@ -632,6 +643,10 @@ $('#state_id').change(function(){
    }
 });
 
+function handleAjaxErrorLoc(){
+	console.log('error occurs');
+	alert('error occurs');
+}
 
 
 </script>

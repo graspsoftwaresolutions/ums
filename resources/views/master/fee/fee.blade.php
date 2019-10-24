@@ -227,7 +227,13 @@ $(function() {
             "type": "POST",
             "data": {
                 _token: "{{csrf_token()}}"
-            }
+            },
+            "error": function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status==419){
+                    alert('Your session has expired, please login again');
+                    window.location.href = base_url;
+                }
+            },
         },
         "columns": [{
                 "data": "fee_name"
@@ -268,6 +274,7 @@ $("#feeformValidate").validate({
                     _token: "{{csrf_token()}}",
                     fee_name: $(this).data('fee_name')
                 },
+
                 type: "post",
             },
         },

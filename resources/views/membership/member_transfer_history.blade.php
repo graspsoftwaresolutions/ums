@@ -289,8 +289,14 @@
 				  data.datefilter = datefilter;
 				  data.memberid = member_auto_id;
 				  data._token = "{{csrf_token()}}";
-			   }
-				//"data": {_token: "{{csrf_token()}}", "datefilter" : $('#transferdate-search-input').val()},
+			   },
+			   "error": function (jqXHR, textStatus, errorThrown) {
+			            if(jqXHR.status==419){
+			            	alert('Your session has expired, please login again');
+			            	window.location.href = base_url;
+			            }
+			       },
+					//"data": {_token: "{{csrf_token()}}", "datefilter" : $('#transferdate-search-input').val()},
 			},
 			"search-transfer" : 12,
 			"columns": [
