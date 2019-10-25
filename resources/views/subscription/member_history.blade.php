@@ -256,7 +256,7 @@ $("#subcomp_sidebar_a_id").addClass('active');
 //Data table Ajax call
 $(function() {
 	$(window).scroll(function() {
-		if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+		if($(window).scrollTop() + $(window).height() <= $(document).height()) {
 			var active_tab_id = $( "ul.tabs" ).find( "a.active" ).attr('id');
 			if(active_tab_id=='history1'){
 				var lastoffset = $("#historyoffset").val();
