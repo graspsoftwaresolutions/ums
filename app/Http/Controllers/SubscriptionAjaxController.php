@@ -1089,8 +1089,9 @@ class SubscriptionAjaxController extends CommonController
                 $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
                 
                // Log::channel('approvallog')->info('approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
+               $last_paid_date = !empty($last_subscription_res) ? $last_subscription_res->LASTPAYMENTDATE : '';
 
-               if($last_subscription_res->last_paid_date!=$cur_date){
+               if($last_paid_date!=$cur_date){
                     $monthend_data = [
                         'StatusMonth' => $cur_date, 
                         'MEMBER_CODE' => $member_id,
