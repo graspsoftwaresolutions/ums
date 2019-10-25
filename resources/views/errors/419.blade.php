@@ -34,7 +34,7 @@
     <!-- 404 -->
     <div class="col s12 center-align white">
       <img src="{{ asset('/public/assets/images/gallery/error-2.png') }}" class="bg-image-404" alt="">
-      <h1 class="error-code m-0">404</h1>
+      <h1 class="error-code m-0">419</h1>
       <h6 class="mb-2">Session Expired please login again</h6>
       <a class="btn waves-effect waves-light gradient-45deg-deep-purple-blue gradient-shadow mb-4" href="{{ URL::to("/") }}">Back
         TO Home</a>

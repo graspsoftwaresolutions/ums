@@ -905,7 +905,7 @@ $(window).scroll(function() {
    var lastoffset = $("#memberoffset").val();
    var limit = "{{$data['data_limit']}}";
    var baselink = base_url +'/{{ app()->getLocale() }}/';
-   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+   if($(window).scrollTop() + $(window).height() >= $(document).height()) {
    		var totalhistory = parseInt($("#totalhistory").val());
 		loader.showLoader();
 		var filter_date = $("#filter_date").val();

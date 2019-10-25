@@ -762,7 +762,28 @@
 @endsection
 @section('footerSecondSection')
 <script>
-   
+   	var csrfToken = $('[name="csrf-token"]').attr('content');
+
+    setInterval(refreshToken, 300000); // 1 hour  120000
+
+    function refreshToken(){
+    	$.ajax({
+		    url: 'refresh-csrf',
+		    type: 'GET',
+		    success: function(data){ 
+		       csrfToken = data;
+		    },
+		    "error": function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status==419){
+                    alert('Your session has expired, please login again');
+                    window.location.href = base_url;
+                }
+            },
+		});
+        
+    }
+
+    //setInterval(refreshToken, 3600000);
 	var form = $("#wizard2").show();
 
 	form.steps({
@@ -827,6 +848,7 @@
 				email:true,
 				remote: {
 					url: "{{ url(app()->getLocale().'/member_emailexists')}}",
+					type: "post",
 					data: {
 						db_autoid: function() {
 							return $("#auto_id").val();
@@ -834,7 +856,13 @@
 						_token: "{{csrf_token()}}",
 						email: $(this).data('email')
 					},
-					type: "post",
+					"error": function (jqXHR, textStatus, errorThrown) {
+		                if(jqXHR.status==419){
+		                    alert('Your session has expired, please login again');
+		                    window.location.href = base_url;
+		                }
+		            },
+					
 				},
             },
             doe: {
@@ -888,6 +916,7 @@
 				maxlength: 20,
 				remote: {
 					url: "{{ url(app()->getLocale().'/member_newicexists')}}",
+					type: "post",
 					data: {
 						db_autoid: function() {
 							return $("#auto_id").val();
@@ -898,7 +927,13 @@
 						_token: "{{csrf_token()}}",
 						new_ic: $(this).data('new_ic')
 					},
-					type: "post",
+					"error": function (jqXHR, textStatus, errorThrown) {
+		                if(jqXHR.status==419){
+		                    alert('Your session has expired, please login again');
+		                    window.location.href = base_url;
+		                }
+		            },
+					
             	},
 				
             },

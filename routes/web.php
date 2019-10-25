@@ -362,6 +362,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('monthend-update','MonthEndController@index')->name('monthend');
 	Route::get('get-monthend-record','MonthEndController@getMonthendInfo')->name('monthend.info');
 	Route::get('monthend_save','MonthEndController@SaveMonthEnd')->name('monthend.save');
+
+	Route::get('refresh-csrf', function(){
+	    return csrf_token();
+	});
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
