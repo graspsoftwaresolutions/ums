@@ -1089,66 +1089,69 @@ class SubscriptionAjaxController extends CommonController
                 $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
                 
                // Log::channel('approvallog')->info('approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
-                
-                $monthend_data = [
-                                    'StatusMonth' => $cur_date, 
-                                    'MEMBER_CODE' => $member_id,
-                                    'SUBSCRIPTION_AMOUNT' => $m_subs_amt,
-                                    'BF_AMOUNT' => $this->bf_amount,
-                                    'LASTPAYMENTDATE' => $cur_date,
-                                    'TOTALSUBCRP_AMOUNT' => $m_subs_amt,
-                                    'TOTALBF_AMOUNT' => $this->bf_amount,
-                                    'TOTAL_MONTHS' => 1,
-                                    'BANK_CODE' => $branchdata->company_id,
-                                    'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
-                                    'BRANCH_CODE' => $memberdata->branch_id,
-                                    'MEMBERTYPE_CODE' => $memberdata->designation_id,
-                                    'ENTRYMODE' => 'S',
-                                    //'DEFAULTINGMONTHS' => 0,
-                                    'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
-                                    'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
-                                    'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
-                                    'BFDUE' => 0,
-                                    'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
-                                    'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
-                                    'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
-                                    //'ACCBENEFIT' => 0,
-                                    //'CURRENT_YDTBF' => 0,
-                                    //'CURRENT_YDTSUBSCRIPTION' => 0,
-                                    'STATUS_CODE' => $memberdata->status_id,
-                                    'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
-                                    'ENTRY_DATE' => date('Y-m-d'),
-                                    'ENTRY_TIME' => date('h:i:s'),
-                                    'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
-                                    'INSURANCE_AMOUNT' => $this->ins_amount,
-                                    'TOTALINSURANCE_AMOUNT' => $this->ins_amount,
-                                    'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
-                                    'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE : 0,
-                                    //'CURRENT_YDTINSURANCE' => 0,
-                                ];
-                
-                
-                //DB::connection()->enableQueryLog();
 
-                if($mont_count>0){
-                    Log::channel('approvallog')->info('up approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
-                    $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
-                    //$queries = DB::getQueryLog();
-                // dd($statuss);
-                }else{
-                    Log::channel('approvallog')->info('insert approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
-                    DB::table($this->membermonthendstatus_table)->insert($monthend_data);
-                }
-                $payment_data = [
-                    'last_paid_date' => $cur_date,
-                    'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
-                    'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
-                    'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
-                    'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
-                    'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
-                    'updated_by' => Auth::user()->id,
-                ];
-                DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+               if($last_subscription_res->last_paid_date!=$cur_date){
+                    $monthend_data = [
+                        'StatusMonth' => $cur_date, 
+                        'MEMBER_CODE' => $member_id,
+                        'SUBSCRIPTION_AMOUNT' => $m_subs_amt,
+                        'BF_AMOUNT' => $this->bf_amount,
+                        'LASTPAYMENTDATE' => $cur_date,
+                        'TOTALSUBCRP_AMOUNT' => $m_subs_amt,
+                        'TOTALBF_AMOUNT' => $this->bf_amount,
+                        'TOTAL_MONTHS' => 1,
+                        'BANK_CODE' => $branchdata->company_id,
+                        'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
+                        'BRANCH_CODE' => $memberdata->branch_id,
+                        'MEMBERTYPE_CODE' => $memberdata->designation_id,
+                        'ENTRYMODE' => 'S',
+                        //'DEFAULTINGMONTHS' => 0,
+                        'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
+                        'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+                        'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
+                        'BFDUE' => 0,
+                        'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
+                        'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
+                        'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+                        //'ACCBENEFIT' => 0,
+                        //'CURRENT_YDTBF' => 0,
+                        //'CURRENT_YDTSUBSCRIPTION' => 0,
+                        'STATUS_CODE' => $memberdata->status_id,
+                        'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                        'ENTRY_DATE' => date('Y-m-d'),
+                        'ENTRY_TIME' => date('h:i:s'),
+                        'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                        'INSURANCE_AMOUNT' => $this->ins_amount,
+                        'TOTALINSURANCE_AMOUNT' => $this->ins_amount,
+                        'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+                        'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE : 0,
+                        //'CURRENT_YDTINSURANCE' => 0,
+                    ];
+
+
+                    //DB::connection()->enableQueryLog();
+
+                    if($mont_count>0){
+                        Log::channel('approvallog')->info('up approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
+                        $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
+                        //$queries = DB::getQueryLog();
+                    // dd($statuss);
+                    }else{
+                        Log::channel('approvallog')->info('insert approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
+                        DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+                    }
+                    $payment_data = [
+                        'last_paid_date' => $cur_date,
+                        'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+                        'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+                        'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
+                        'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
+                        'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+                        'updated_by' => Auth::user()->id,
+                    ];
+                    DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+               }
+               
             }
         }
         return '1';
