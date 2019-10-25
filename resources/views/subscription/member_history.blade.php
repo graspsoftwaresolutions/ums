@@ -160,6 +160,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</table>
 							<input type="text" name="historyoffset" id="historyoffset" class="hide" value="{{$data['data_limit']}}"></input>
 							<input type="text" name="totalhistory" id="totalhistory" class="hide" value="{{$slno}}"></input>
+							<input type="text" name="resourcefree" id="resourcefree" class="hide" value="1"></input>
 						</div>
 					</div>
 					@if( $data['old_member_id']!='')
@@ -217,6 +218,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</table>
 							<input type="text" name="previoushistoryoffset" id="previoushistoryoffset" class="hide" value="{{$data['data_limit']}}"></input>
 							<input type="text" name="previoustotalhistory" id="previoustotalhistory" class="hide" value="{{$slno1}}"></input>
+							
 						</div>
 					</div>
 					@endif
@@ -257,8 +259,14 @@ $("#subcomp_sidebar_a_id").addClass('active');
 $(function() {
 	$(window).scroll(function() {
 		//alert($(document).height());
-		if($(window).scrollTop() == $(document).height() - $(window).height()) {
+		console.log('doc-height'+$(document).height());
+		console.log('top'+$(window).scrollTop());
+		console.log('window-height'+$(window).height());
+		if($(window).scrollTop() + $(window).height() > $(document).height() - 10 && $("#resourcefree").val()==1) {
+		//if($(window).scrollTop() + $(window).height() > $("#page-current-history").height()) {
+		//if($(window).scrollTop() == $(document).height() - $(window).height()) {
 			loader.showLoader();
+			$("#resourcefree").val(0);
 			var active_tab_id = $( "ul.tabs" ).find( "a.active" ).attr('id');
 			if(active_tab_id=='history1'){
 				var lastoffset = $("#historyoffset").val();
@@ -306,6 +314,7 @@ $(function() {
 						});
 						$("#"+reflect_serial_text).val(totalhistory);
 						loader.hideLoader();
+						$("#resourcefree").val(1);
 					}else{
 						
 					}
