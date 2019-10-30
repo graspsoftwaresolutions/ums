@@ -138,6 +138,14 @@ class CommonHelper
          return '';
      }
 
+    public static function getloginmemberStatus($user_id){
+         $status_data = DB::table('membership as m')
+         ->leftjoin('status as s','s.id','=','m.status_id')
+         ->where('m.user_id', $user_id)->pluck('s.status_name')->first();
+         
+         return $status_data;
+     }
+
     
     public static function get_branch_by_unionbranch($branch_id){
         DB::connection()->enableQueryLog();
