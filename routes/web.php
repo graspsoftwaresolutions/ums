@@ -361,7 +361,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership-view/{parameter}','MembershipController@viewMember')->name('master.viewmembership');
 	Route::get('monthend-update','MonthEndController@index')->name('monthend');
 	Route::get('get-monthend-record','MonthEndController@getMonthendInfo')->name('monthend.info');
+	
 	Route::get('monthend_save','MonthEndController@SaveMonthEnd')->name('monthend.save');
+	Route::get('insertmonth','MonthEndController@insertMonthendView')->name('subscription.monthend');
+	Route::post('insertmonth-record','MonthEndController@insertMonthend')->name('monthend.insert');
 
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();
