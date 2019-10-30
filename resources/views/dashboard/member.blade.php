@@ -4,6 +4,7 @@
         @php
         $user_id = Auth::user()->id;
         $accountstatus = CommonHelper::getapprovedStatus($user_id);
+        $statusname = CommonHelper::getloginmemberStatus($user_id);
         @endphp
         @if($accountstatus==0)
         <div class="card-alert-nonclose card red">
@@ -18,7 +19,8 @@
         @if($accountstatus==1)
         <div class="card-alert-nonclose card green">
             <div class="card-content white-text">
-                <p>SUCCESS : Your account is Verified.</p>
+                <p>STATUS : {{ $statusname }}</p>
+
             </div>
             <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span>
