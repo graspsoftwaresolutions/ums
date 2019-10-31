@@ -78,7 +78,20 @@
 							<label for="month_year">{{__('Month')}}</label>
 							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
+							<label>{{__('Union Branch Name') }}</label>
+							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+								<option value="">{{__('Select Union') }}</option>
+								@foreach($data['unionbranch_view'] as $value)
+                                <option value="{{$value->id}}">
+                                    {{$value->union_branch}}</option>
+                                @endforeach
+							</select>
+							<div class="input-field">
+								<div class="errorTxt22"></div>
+							</div>
+						</div>   
+						<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -90,7 +103,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
 							<label>{{__('Company Branch Name') }}</label>
 							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>
@@ -110,6 +123,7 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>
+						<div class="clearfix"/>
 						<div class="row">
 							<div class="input-field col s6 right">
 								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
@@ -339,10 +353,11 @@ $("#takaful_report_sidebar_a_id").addClass('active');
 		var company_id = $("#company_id").val();
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
+		var unionbranch_id = $("#unionbranch_id").val();
 		
 		$('#page-length-option tbody').empty();
 		if(month_year!=""){
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id;
+			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&unionbranch_id='+unionbranch_id;
 			//loader.showLoader();
 			//$("#memberoffset").val("{{$data['data_limit']}}");
 			$("#myframe,#myframe_premium,#myframe_summary").contents().find("html").css('opacity',0);

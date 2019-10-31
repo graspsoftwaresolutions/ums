@@ -1006,7 +1006,7 @@ class SubscriptionAjaxController extends CommonController
             $members_qry =  $members_qry->where('m.MonthlySubscriptionCompanyId','=',$companyid);
         }
         $members_qry = $members_qry->get();
-        Log::channel('approvallog')->info('data: '.json_encode($members_qry));
+       // Log::channel('approvallog')->info('data: '.json_encode($members_qry));
        // dd($members_qry);
         foreach($members_qry as $members){
             $submemberid = $members->id;
@@ -1087,11 +1087,12 @@ class SubscriptionAjaxController extends CommonController
                 $m_subs_amt = number_format($sub_amount-($this->bf_amount+$this->ins_amount),2);
             
                 $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
+                dd($mont_count);
                 
                // Log::channel('approvallog')->info('approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                $last_paid_date = !empty($last_subscription_res) ? $last_subscription_res->LASTPAYMENTDATE : '';
 
-               if($last_paid_date!=$cur_date){
+               if(strtotime($last_paid_date)<strtotime($cur_date)){
                     $monthend_data = [
                         'StatusMonth' => $cur_date, 
                         'MEMBER_CODE' => $member_id,
@@ -1131,12 +1132,15 @@ class SubscriptionAjaxController extends CommonController
 
 
                     //DB::connection()->enableQueryLog();
-
-                    if($mont_count>0){
+                    $recent_paid_date = DB::table("member_payments as ms")
+                    ->where('ms.member_id','=',$member_id)
+                    ->pluck('ms.last_paid_date')
+                    ->first();
+                    if($mont_count>0 || $recent_paid_date==$cur_date){
                         Log::channel('approvallog')->info('up approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                         $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
                         //$queries = DB::getQueryLog();
-                    // dd($statuss);
+                        // dd($statuss);
                     }else{
                         Log::channel('approvallog')->info('insert approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                         DB::table($this->membermonthendstatus_table)->insert($monthend_data);

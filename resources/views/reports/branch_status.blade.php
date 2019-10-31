@@ -14,7 +14,17 @@
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
-	
+	.btn, .btn-sm-one {
+		line-height: 36px;
+		display: inline-block;
+		height: 35px;
+		padding: 0 7px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		border: none;
+		border-radius: 4px;
+		-webkit-tap-highlight-color: transparent;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -83,7 +93,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>   
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -95,7 +105,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
 							<label>{{__('Company Branch Name') }}</label>
 							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>
@@ -115,6 +125,7 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>
+						<div class="clearfix"/>
 						<div class="row">
 							<div class="input-field col s6 right">
 								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">

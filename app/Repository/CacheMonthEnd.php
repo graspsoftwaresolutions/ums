@@ -3,9 +3,12 @@
 namespace App\Repository;
 
 use App\Model\Membership;
+use App\Model\UnionBranch;
+use App\Model\CompanyBranch;
 use Carbon\Carbon;
 use Cache;
 use DB;
+use Auth;
 
 class CacheMonthEnd
 {
@@ -32,6 +35,9 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
+			$get_roles = Auth::user()->roles;
+	        $user_role = $get_roles[0]->slug;
+			$user_id = Auth::user()->id; 
 			$company_view = DB::table("mon_sub_member as mm")->select('cb.company_id as company_id','c.company_name as company_name')
                                 ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
 								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
@@ -41,8 +47,18 @@ class CacheMonthEnd
                                 //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
                                 ->where('ms.Date', '=', $datestring)
 								->where('mm.update_status', '=', 1)
-								->where('mm.MemberCode', '!=', Null)
-								->groupBY('cb.company_id')
+								->where('mm.MemberCode', '!=', Null);
+								 if($user_role=='union-branch'){
+			                        $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+			                        $company_view = $company_view->where(DB::raw('c.`union_branch_id`'),'=',$union_branch_id);
+			                    }else if($user_role=='company'){
+			                        $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			                        $company_view = $company_view->where(DB::raw('c.`company_id`'),'=',$company_id);
+			                    }else if($user_role=='company-branch'){
+			                        $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
+			                        $company_view = $company_view->where(DB::raw('m.`branch_id`'),'=',$branch_id);
+			                    }
+								$company_view = $company_view->groupBY('cb.company_id')
 								//->limit(2000)
 								->get();
 		    	// $company_view = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
@@ -165,11 +181,11 @@ class CacheMonthEnd
 
 	}
 
-	public function getMonthEndByDateFilter($datestring,$company_id,$branchid,$memberid){
-		$key = "getMonthEndByDateFilter.{$datestring}.c.{$company_id}.b.{$branchid}.m.{$memberid}";
+	public function getMonthEndByDateFilter($datestring,$company_id,$branchid,$memberid,$unionbranch_id){
+		$key = "getMonthEndByDateFilter.{$datestring}.c.{$company_id}.b.{$branchid}.m.{$memberid}.u.{$unionbranch_id}";
 		$cacheKey = $this->getCacheKey($key);
 		
-		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$company_id,$branchid,$memberid)
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$company_id,$branchid,$memberid,$unionbranch_id)
 		{
 			$monthno = date('m',strtotime($datestring));
 			$yearno = date('Y',strtotime($datestring));
@@ -211,6 +227,9 @@ class CacheMonthEnd
 			}else{
 				if($company_id!=""){
 					$members_view = $members_view->where('sc.CompanyCode','=',$company_id);
+				}
+				if($unionbranch_id!=""){
+					$members_view = $members_view->where('c.union_branch_id','=',$unionbranch_id);
 				}
 			}
 			if($memberid!=""){

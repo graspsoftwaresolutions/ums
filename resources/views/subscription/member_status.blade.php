@@ -247,7 +247,7 @@
 					//dd($approval_status);
 					//dd($data['pending_approval_count']);
 				@endphp
-				@if(($approval_status==1 || $approval_status==3 || $approval_status>=5) && $data['pending_approval_count']==0)
+				@if(($approval_status==1 || $approval_status==3 || $approval_status>=5) && $data['pending_approval_count']!=0)
 					@if($approval_status==3)
 						&nbsp;&nbsp;
 						
