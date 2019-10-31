@@ -79,7 +79,7 @@
 			  <li id="subsarrear_sidebar_li_id" class=""><a id="subarrear_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.arrearentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Arrear Entry') }}</span></a></li>
               @endif
               @if($user_role == 'member')
-              <li id="subscriptionpayment_sidebar_li_id" class=""><a id="subscriptionpayment_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_payment',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Payment') }}</span></a></li>
+              <!--li id="subscriptionpayment_sidebar_li_id" class=""><a id="subscriptionpayment_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_payment',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Payment') }}</span></a></li-->
               <li id="subscriptionpaymenthistory_sidebar_li_id" class=""><a id="subscriptionpaymenthistory_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_paymenthistory',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription History') }}</span></a></li>
               @endif
             </ul>

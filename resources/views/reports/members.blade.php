@@ -99,7 +99,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>   
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -111,7 +111,7 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
 							<label>{{__('Company Branch Name') }}</label>
 							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>

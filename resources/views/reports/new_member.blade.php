@@ -48,6 +48,7 @@
 					$branchlist = [];
 					$companyid = '';
 					$branchid = '';
+					$unionbranchid='';
 					if($user_role =='union'){
 						$companylist = $data['company_view'];
 					}
@@ -93,7 +94,7 @@
 							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Union') }}</option>
 								@foreach($data['unionbranch_view'] as $value)
-                                <option value="{{$value->id}}">
+                                <option @if($unionbranchid==$value->id) selected @endif value="{{$value->id}}">
                                     {{$value->union_branch}}</option>
                                 @endforeach
 							</select>
@@ -102,7 +103,8 @@
 							</div>
 						</div>   
 						<div class="clearfix"/>
-						<div class="col s12 m6 l3">
+						
+						<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -115,7 +117,8 @@
 							</div>
 						</div>
 						
-						<div class="col s12 m6 l3">
+						
+						<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
 							<label>{{__('Company Branch Name') }}</label>
 							<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 								<option value="">{{__('Select Branch') }}</option>
@@ -127,6 +130,7 @@
 								<div class="errorTxt23"></div>
 							</div>
 						</div>
+						
 						<div class="col s12 m6 l4 hide">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
@@ -149,6 +153,7 @@
 								<div class="errorTxt27"></div>
 							</div>
 						</div>
+						<div class="clearfix"/>
 						<div class="row">
 							<div class="input-field col s6 right">
 								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">

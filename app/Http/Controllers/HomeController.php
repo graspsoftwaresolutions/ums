@@ -38,9 +38,13 @@ class HomeController extends Controller
     public function index()
     {
 		
-		//$user = Auth::user();
+		$user = Auth::user();
         //dd($user->hasRole('developer'));
-        $get_roles = Auth::user()->roles;
+		$get_roles = Auth::user()->roles;
+		//dd($user);
+		if(count($get_roles)==0){
+			return view('errors.data-error')->with('data','User role does not configured');
+		}	
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
         //return $get_union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');

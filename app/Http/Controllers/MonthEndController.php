@@ -74,4 +74,76 @@ class MonthEndController extends Controller
             echo 'no changes in record';
         }
     }
+    public function insertMonthend($lang,Request $request)
+    {
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', '1000');
+        $entry_date = $request->input('entry_date');
+        if($entry_date!=''){
+            $datearr = explode("/",$entry_date);  
+            $monthname = $datearr[0];
+            $year = $datearr[1];
+            $date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+            $members = DB::table('membership')->select('id')->where('status_id','<=',2)->pluck('id');
+            foreach( $members as $memberid){
+                $monthrecordcount =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+                ->where('ms.StatusMonth', '=' ,$date)
+                ->count();
+                if($monthrecordcount==0){
+                   $sql = "INSERT INTO membermonthendstatus (StatusMonth,MEMBER_CODE,MEMBERTYPE_CODE, BANK_CODE,BRANCH_CODE,NUBE_BRANCH_CODE,SUBSCRIPTION_AMOUNT,BF_AMOUNT,
+                    LASTPAYMENTDATE,TOTALSUBCRP_AMOUNT,TOTALBF_AMOUNT,TOTAL_MONTHS,TOTALMONTHSDUE,
+                    TOTALMONTHSPAID,SUBSCRIPTIONDUE,BFDUE,ACCSUBSCRIPTION,ACCBF,ACCBENEFIT,
+                    STATUS_CODE,ENTRY_DATE,ENTRY_TIME,INSURANCE_AMOUNT,TOTALINSURANCE_AMOUNT,
+                    TOTALMONTHSCONTRIBUTION,INSURANCEDUE,ACCINSURANCE) SELECT '$date', m.id 
+                    as memberid, m.designation_id, cb.company_id, m.branch_id, cb.union_branch_id,
+                    mp.sub_monthly_amount,mp.bf_monthly_amount,mp.last_paid_date,'0','0','0',
+                    (mp.totdue_months+1),mp.totpaid_months,(mp.duesub_amount+mp.sub_monthly_amount),
+                    (mp.duebf_amount+mp.bf_monthly_amount),mp.accsub_amount,mp.accbf_amount,
+                    mp.accbenefit_amount, m.status_id,'$date','00:00:00',mp.ins_monthly_amount, 
+                   0, mp.totcontribution_months, 
+                    (mp.dueins_amount+mp.ins_monthly_amount),mp.accins_amount from
+                     membership as m LEFT JOIN company_branch AS cb ON cb.id = m.branch_id 
+                     left join member_payments as mp on m.id=mp.member_id where m.status_id<=2 and m.id=$memberid";
+                    
+                    $status = DB::insert(DB::raw($sql));
+                    
+                }
+            }
+            return view('subscription.monthend_view')->with('success', 'Monthend record inserted Successfully for dues, you can upload it now');
+        }else{
+            return view('subscription.monthend_view')->with('error', 'please choose date');
+        }
+        // $date = '2019-09-01';
+        // $members = DB::table('membership')->select('id')->where('status_id','<=',2)->pluck('id');
+        // foreach( $members as $memberid){
+        //     $monthrecordcount =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+        //     ->where('ms.StatusMonth', '=' ,$date)
+        //     ->count();
+        //     if($monthrecordcount==0){
+        //        $sql = "INSERT INTO membermonthendstatus (StatusMonth,MEMBER_CODE,MEMBERTYPE_CODE, BANK_CODE,BRANCH_CODE,NUBE_BRANCH_CODE,SUBSCRIPTION_AMOUNT,BF_AMOUNT,
+        //         LASTPAYMENTDATE,TOTALSUBCRP_AMOUNT,TOTALBF_AMOUNT,TOTAL_MONTHS,TOTALMONTHSDUE,
+        //         TOTALMONTHSPAID,SUBSCRIPTIONDUE,BFDUE,ACCSUBSCRIPTION,ACCBF,ACCBENEFIT,
+        //         STATUS_CODE,ENTRY_DATE,ENTRY_TIME,INSURANCE_AMOUNT,TOTALINSURANCE_AMOUNT,
+        //         TOTALMONTHSCONTRIBUTION,INSURANCEDUE,ACCINSURANCE) SELECT '$date', m.id 
+        //         as memberid, m.designation_id, cb.company_id, m.branch_id, cb.union_branch_id,
+        //         mp.sub_monthly_amount,mp.bf_monthly_amount,mp.last_paid_date,'0','0','0',
+        //         (mp.totdue_months+1),mp.totpaid_months,(mp.duesub_amount+mp.sub_monthly_amount),
+        //         (mp.duebf_amount+mp.bf_monthly_amount),mp.accsub_amount,mp.accbf_amount,
+        //         mp.accbenefit_amount, m.status_id,'$date','00:00:00',mp.ins_monthly_amount, 
+        //        0, mp.totcontribution_months, 
+        //         (mp.dueins_amount+mp.ins_monthly_amount),mp.accins_amount from
+        //          membership as m LEFT JOIN company_branch AS cb ON cb.id = m.branch_id 
+        //          left join member_payments as mp on m.id=mp.member_id where m.status_id<=2 and m.id=$memberid";
+                
+        //         $status = DB::insert(DB::raw($sql));
+                 
+        //     }
+        // }
+        
+        //return 'ok';
+    }
+
+    public function insertMonthendView(){
+        return view('subscription.monthend_view');
+    }
 }
