@@ -84,7 +84,8 @@ class MonthEndController extends Controller
             $monthname = $datearr[0];
             $year = $datearr[1];
             $date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
-            $members = DB::table('membership')->select('id')->where('status_id','<=',2)->pluck('id');
+            $cdate = date('Y-m-t',strtotime('01-'.$monthname.'-'.$year));
+            $members = DB::table('membership')->select('id')->where('status_id','<=',2)->where('doj','<=',$cdate)->pluck('id');
             foreach( $members as $memberid){
                 $monthrecordcount =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
                 ->where('ms.StatusMonth', '=' ,$date)

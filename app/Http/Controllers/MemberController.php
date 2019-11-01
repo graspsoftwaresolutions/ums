@@ -677,6 +677,13 @@ class MemberController extends CommonController
 						'last_paid_date' => $subs_month, 
 						'member_id' => $member_id,
 						'due_amount' => 0,
+						'totpaid_months' => 1,
+						'ins_monthly_amount' => $ins_amt,
+						'sub_monthly_amount' => $subsamount,
+						'bf_monthly_amount' => $bf_amt,
+						'accbf_amount' => $bf_amt,
+						'accsub_amount' => $subsamount,
+						'accins_amount' => $ins_amt, 
 						'created_by' => Auth::user()->id,
 						'created_at' => date('Y-m-d'),
 					];
