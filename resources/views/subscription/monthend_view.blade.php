@@ -115,7 +115,7 @@
 											
 											<div class="input-field col m3 s12">
 												<label for="doe">{{__('Subscription Month') }}*</label>
-												<input type="text" name="entry_date" id="entry_date" value="" class="datepicker-custom" />
+												<input type="text" name="entry_date" id="entry_date" value="" class="datepicker-custom" autocomplete="off" />
 											</div>
 											
 											<div class="col m3 s12 " style="padding-top:5px;">
@@ -178,7 +178,7 @@ $(document).ready(function() {
 		changeYear: true,
 		MonthFormat: 'M/yy',
 		OnAfterChooseMonth: function() { 
-			getDataStatus();
+			//getDataStatus();
 		} 
 	 });
 	 $('.ui-button').removeClass("ui-state-disabled");

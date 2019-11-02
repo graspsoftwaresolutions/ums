@@ -2,10 +2,7 @@
 <html>
 
 <head>
-	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
 	<style>
@@ -82,22 +79,7 @@
 			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
-			html {
-
-			    //font-family: 'Muli', sans-serif;
-			    font-weight: normal;
-			    line-height: 1; 
-			    color: rgba(0, 0, 0, .87);
-			    font-size: 12px;
-			}
-			.nric_no{
-				width:10% !important;
-			}
 			
-			.report-address{
-				font-weight:bold;
-				font-size:14px;
-			}
 
 			.page-header-area{
 				display: none;
@@ -157,6 +139,23 @@
 			//border: 1px solid #ddd !important;
 			padding: 4px;
 		}
+		html {
+
+		    //font-family: 'Muli', sans-serif;
+		    font-weight: normal;
+		    line-height: 1; 
+		    color: rgba(0, 0, 0, .87);
+		    font-size: 12px;
+		}
+		.nric_no{
+			width:10% !important;
+		}
+		
+		.report-address{
+			font-weight:bold;
+			font-size:14px;
+		}
+
 		
 		
 	</style>
@@ -166,33 +165,7 @@
 </head>
 
 <body>
-	<div class="" style="text-align: center">
-		<table width="100%">
-			<tr>
-				@php 
-					$logo = CommonHelper::getLogo(); 
-					//dd($data);
-					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&date_type='.$data['date_type'].'&unionbranch_id='.$data['member_auto_id'];
-				@endphp
-				<td width="20%"></td>
-				<td width="10%" style="display:none;"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
-				<td width="50%" style="text-align:center;display:none;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
-					<h6 style="text-align:center;">NUBE BRANCH'S ADVICE LIST</h6>
-				</td>
-				<td width="20%" style="text-align:right;">	
-					<a href="#" class="exportToExcel export-button btn btn-sm"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" style="display:none;" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="{{ url(app()->getLocale().'/export-pdf-advice-new?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
-					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<!-- <div class="page-footer">
-    I'm The Footer
-  </div>-->
+	
 	<table id="page-length-option" class="display table2excel" width="100%" data-tableName="New Advice Members Report">
 		<thead>
 			
@@ -335,103 +308,6 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<script src="{{ asset('public/excel/jquery311.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/excel/jquery.tableToExcel.js') }}" type="text/javascript"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script>  -->
-<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<!--script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
-<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
-<script>
-	
-	$(function() {
-
-				$("body").on("click", ".exportToPdf", function () {
-					
-		            html2canvas($('#page-length-option')[0], {
-		                onrendered: function (canvas) {
-		                    var data = canvas.toDataURL();
-		                    var docDefinition = {
-		                        content: [{
-		                            image: data,
-		                            width: 500
-		                        }]
-		                    };
-		                    pdfMake.createPdf(docDefinition).download("AdviceNewReport.pdf");
-		                }
-		            });
-		        });
-
-				$(".exportToExcel").click(function(e){
-					$('.table2excel').tblToExcel({
-						// ignoreRows:null,   
-						// trimWhitespace: true, 
-						//type: 'xlsx',  
-						format: 'xlsx',  
-						fileext: ".xlsx",
-					});
-					//exportTableToExcel('page-length-option','New Branch Advice Report');
-
-					// var table = $('.table2excel');
-
-					// if(table && table.length){
-					// 	var preserveColors = (table.hasClass('table2excel_with_colors') ? true : false);
-					// 	$(table).table2excel({
-					// 		exclude: ".noExl",
-					// 		name: "New Advice Members Report",
-					// 		filename: "new_advice_members_report" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xls",
-					// 		fileext: ".xls",
-					// 		exclude_img: true,
-					// 		exclude_links: true,
-					// 		exclude_inputs: true,
-					// 		preserveColors: preserveColors
-					// 	});
-					// }
-				});
-				
-			});
-
-	
-	function exportTableToExcel(tableID, filename = ''){
-	    var downloadLink;
-	    var dataType = 'application/vnd.ms-excel';
-	    var tableSelect = document.getElementById(tableID);
-	    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-	    
-	    // Specify file name
-	    filename = filename?filename+'.xls':'excel_data.xls';
-	    
-	    // Create download link element
-	    downloadLink = document.createElement("a");
-	    
-	    document.body.appendChild(downloadLink);
-	    
-	    if(navigator.msSaveOrOpenBlob){
-	    	//tableHTML = encodeURIComponent(tableHTML);
-	        var blob = new Blob(['\ufeff', tableHTML], {
-	            type: dataType
-	        });
-	        navigator.msSaveOrOpenBlob( blob, filename);
-	        //colsole.log(blob);
-	    }else{
-
-	        // Create a link to the file
-	       // tableHTML = encodeURIComponent(tableHTML);
-	       //console.log(tableHTML);
-	        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-	    
-	        // Setting the file name
-	        downloadLink.download = filename;
-	        
-	        //triggering the function
-	        downloadLink.click();
-	    }
-	}
-	
-</script>
 
 </html>

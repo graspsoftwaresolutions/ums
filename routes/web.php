@@ -366,6 +366,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('insertmonth','MonthEndController@insertMonthendView')->name('subscription.monthend');
 	Route::post('insertmonth-record','MonthEndController@insertMonthend')->name('monthend.insert');
 
+	Route::get('export-pdf-advice-new','ReportsController@exportPdfAdvancenew')->name('advance.pdf');
+
+
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();
 	});
