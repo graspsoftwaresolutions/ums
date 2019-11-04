@@ -118,7 +118,7 @@
     };
 
     function getFileName(settings) {
-        return ( settings.filename ? settings.filename : 'download' ) + ".xls";
+        return ( settings.filename ? settings.filename : excelfilenames ) + ".xls";
     }
 
     $.fn[ pluginName ] = function ( options ) {

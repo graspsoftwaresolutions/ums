@@ -335,45 +335,34 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<script src="{{ asset('public/excel/jquery311.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/excel/jquery.tableToExcel.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/excel/jquery-ui.min.js') }}"></script>
+<script>
+	var excelfilenames="advice new report";
+</script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script>  -->
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.1/dist/jquery.table2excel.min.js"></script>>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<!--script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
-<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script-->
 <script>
 	
 	$(function() {
 
-				$("body").on("click", ".exportToPdf", function () {
-					
-		            html2canvas($('#page-length-option')[0], {
-		                onrendered: function (canvas) {
-		                    var data = canvas.toDataURL();
-		                    var docDefinition = {
-		                        content: [{
-		                            image: data,
-		                            width: 500
-		                        }]
-		                    };
-		                    pdfMake.createPdf(docDefinition).download("AdviceNewReport.pdf");
-		                }
-		            });
-		        });
-
 				$(".exportToExcel").click(function(e){
-					$('.table2excel').tblToExcel({
-						// ignoreRows:null,   
-						// trimWhitespace: true, 
-						//type: 'xlsx',  
-						format: 'xlsx',  
-						fileext: ".xlsx",
-					});
+					
+					$("#page-length-option").table2excel();
+					// $('.table2excel').tblToExcel({
+					// 	// ignoreRows:null,   
+					// 	// trimWhitespace: true, 
+					// 	//type: 'xlsx',  
+					// 	format: 'xls',  
+					// 	fileext: ".xls",
+					// });
 					//exportTableToExcel('page-length-option','New Branch Advice Report');
 
 					// var table = $('.table2excel');
@@ -396,41 +385,41 @@
 			});
 
 	
-	function exportTableToExcel(tableID, filename = ''){
-	    var downloadLink;
-	    var dataType = 'application/vnd.ms-excel';
-	    var tableSelect = document.getElementById(tableID);
-	    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+	// function exportTableToExcel(tableID, filename = ''){
+	//     var downloadLink;
+	//     var dataType = 'application/vnd.ms-excel';
+	//     var tableSelect = document.getElementById(tableID);
+	//     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
 	    
-	    // Specify file name
-	    filename = filename?filename+'.xls':'excel_data.xls';
+	//     // Specify file name
+	//     filename = filename?filename+'.xls':'excel_data.xls';
 	    
-	    // Create download link element
-	    downloadLink = document.createElement("a");
+	//     // Create download link element
+	//     downloadLink = document.createElement("a");
 	    
-	    document.body.appendChild(downloadLink);
+	//     document.body.appendChild(downloadLink);
 	    
-	    if(navigator.msSaveOrOpenBlob){
-	    	//tableHTML = encodeURIComponent(tableHTML);
-	        var blob = new Blob(['\ufeff', tableHTML], {
-	            type: dataType
-	        });
-	        navigator.msSaveOrOpenBlob( blob, filename);
-	        //colsole.log(blob);
-	    }else{
+	//     if(navigator.msSaveOrOpenBlob){
+	//     	//tableHTML = encodeURIComponent(tableHTML);
+	//         var blob = new Blob(['\ufeff', tableHTML], {
+	//             type: dataType
+	//         });
+	//         navigator.msSaveOrOpenBlob( blob, filename);
+	//         //colsole.log(blob);
+	//     }else{
 
-	        // Create a link to the file
-	       // tableHTML = encodeURIComponent(tableHTML);
-	       //console.log(tableHTML);
-	        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+	//         // Create a link to the file
+	//        // tableHTML = encodeURIComponent(tableHTML);
+	//        //console.log(tableHTML);
+	//         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
 	    
-	        // Setting the file name
-	        downloadLink.download = filename;
+	//         // Setting the file name
+	//         downloadLink.download = filename;
 	        
-	        //triggering the function
-	        downloadLink.click();
-	    }
-	}
+	//         //triggering the function
+	//         downloadLink.click();
+	//     }
+	// }
 	
 </script>
 
