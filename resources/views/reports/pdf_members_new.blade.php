@@ -2,15 +2,12 @@
 <html>
 
 <head>
-	<title>New Member Report</title>
-	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
 	<style>
 		/* Styles go here */
+		
 		tr {
 		    border-bottom: none !important; 
 		}
@@ -82,22 +79,7 @@
 			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
-			html {
-
-			    //font-family: 'Muli', sans-serif;
-			    font-weight: normal;
-			    line-height: 1; 
-			    color: rgba(0, 0, 0, .87);
-			    font-size: 12px;
-			}
-			.nric_no{
-				width:10% !important;
-			}
 			
-			.report-address{
-				font-weight:bold;
-				font-size:14px;
-			}
 
 			.page-header-area{
 				display: none;
@@ -157,58 +139,36 @@
 			//border: 1px solid #ddd !important;
 			padding: 4px;
 		}
+		html {
+
+		    //font-family: 'Muli', sans-serif;
+		    font-weight: normal;
+		    line-height: 1; 
+		    color: rgba(0, 0, 0, .87);
+		    font-size: 12px;
+		}
+		.nric_no{
+			width:10% !important;
+		}
+		
+		.report-address{
+			font-weight:bold;
+			font-size:14px;
+		}
+
+		
 		
 	</style>
 	<script type="text/javascript">
-		
+	
 	</script>
 </head>
 
 <body>
-	<div class="" style="text-align: center">
-		<table width="100%" style="border: none;">
-			<tr>
-				@php 
-					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&join_type='.$data['join_type'].'&unionbranch_id='.$data['unionbranch_id'].'&from_member_no='.$data['from_member_no'].'&to_member_no='.$data['to_member_no'];
-				@endphp
-				<td width="20%"></td>
-				<td width="10%"></td>
-				<td width="50%" style="text-align:center;">
-					
-				</td>
-				<td width="20%">	
-					<a href="#" class="exportToExcel export-button btn btn-sm" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="{{ url(app()->getLocale().'/export-pdf-members-new?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
-					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<!-- <div class="page-footer">
-    I'm The Footer
-  </div>-->
-  	@include('reports.common_members_new')
 	
-	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
+	@include('reports.common_members_new')
+	
 </body>
-<script src="{{ asset('public/excel/jquery-ui.min.js') }}"></script>
-<script>
-	var excelfilenames="New Members report";
-</script>
-<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
-<!--script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
-<script type="text/javascript" src="https://www.jqueryscript.net/demo/export-table-json-csv-txt-pdf/src/tableHTMLExport.js"></script-->
-<script>
-	$(document).ready( function() { 
-		$("html").css('opacity',1);
 
-		$(".exportToExcel").click(function(e){
-			$("#page-length-option").table2excel();
-		});
-    }); 
-	
-</script>
 
 </html>

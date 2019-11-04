@@ -3,7 +3,7 @@
 
 <head>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
@@ -170,7 +170,7 @@
 		<table width="100%">
 			<tr>
 				@php 
-					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&date_type='.$data['date_type'].'&unionbranch_id='.$data['member_auto_id'];
+					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&date_type='.$data['date_type'].'&unionbranch_id='.$data['unionbranch_id'];
 				@endphp
 				<td width="20%"></td>
 				<td width="10%" style="display:none;"></td>

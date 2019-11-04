@@ -1,7 +1,7 @@
 @php 
 	$logo = CommonHelper::getLogo(); 
 @endphp
-<table id="page-length-option" class="display table2excel" width="100%" data-tableName="New Advice Members Report">
+<table id="page-length-option" class="display table2excel" width="100%" >
 	<thead>
 
 		<tr class="" style="width: 100%;">

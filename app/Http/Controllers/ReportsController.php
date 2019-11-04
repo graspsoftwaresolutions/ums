@@ -32,8 +32,9 @@ class ReportsController extends Controller
         $this->hq_amount = $hq_amount=='' ? 2 : $hq_amount;		
         $this->ent_amount = $ent_amount=='' ? 5 : $ent_amount;		
     }
-    public function newMemberReport()
+    public function newMemberReport(Request $request)
     {
+        $request->session()->forget('members-new-result');
         $data['data_limit']=$this->limit;
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
@@ -596,11 +597,17 @@ class ReportsController extends Controller
 	   
     public function newMembersReport(Request $request){
         //return $request->all();
+        //$request->session()->put('members-new-result', []);
+        //$request->session()->forget('members-new-result');
+        //dd($request->session()->get('members-new-result', []));
         $data['data_limit']=$this->limit;
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_id'] = '';
+        $data['unionbranch_id'] = '';
+        $data['branch_id'] = '';
         // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
         // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
         // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
@@ -625,26 +632,32 @@ class ReportsController extends Controller
                     if($user_role=='union-branch'){
                         $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
                         $members = $members->where(DB::raw('c.`union_branch_id`'),'=',$union_branch_id);
+                        $data['unionbranch_id'] = $union_branch_id;
                     }else if($user_role=='company'){
                         $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
                         $members = $members->where(DB::raw('c.`company_id`'),'=',$company_id);
+                        $data['company_id'] = $company_id;
                     }else if($user_role=='company-branch'){
                         $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
                         $members = $members->where(DB::raw('m.`branch_id`'),'=',$branch_id);
+                        $data['branch_id'] = $branch_id;
                     }
                     $members = $members->orderBy('m.member_number','asc');
                     $members = $members->get();
         $data['member_view'] = $members;
-        $data['from_date']=date('01/M/Y');
-        $data['to_date']=date('t/M/Y');
-        $data['company_id']='';
-        $data['branch_id']='';
+        $data['from_date']=date('Y-m-01');
+        $data['to_date']=date('Y-m-t');
         $data['member_auto_id']='';
         $data['join_type']='';
+        $data['from_member_no']='';
+        $data['to_member_no']='';
         $data['offset']=0;
+        $request->session()->put('members-new-result', $data);
+        //dd($request->session()->get('members-new-result'));
         return view('reports.iframe_new_member')->with('data',$data);  
     }
     public function membersNewReportMore(Request $request){
+        //$request->session()->forget('members-new-result');
         $offset = $request->input('offset');
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
@@ -657,6 +670,7 @@ class ReportsController extends Controller
         $join_type = $request->input('join_type');
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+        $unionbranch_name = '';
         // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
 
         // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
@@ -684,6 +698,7 @@ class ReportsController extends Controller
               }else{
                   if($unionbranch_id!=''){
                     $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+                    $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
                   }
                   if($company_id!=""){
                       $members = $members->where('c.company_id','=',$company_id);
@@ -707,17 +722,37 @@ class ReportsController extends Controller
         $data['member_view'] = $members;
        // $data['data_limit']=$this->limit;
         $data['data_limit'] = '';
-        $data['from_date']=$from_date;
-        $data['to_date']=$to_date;
-        $data['company_id']=$company_id;
-        $data['branch_id']=$branch_id;
+        $data['from_date']=$fromdate;
+        $data['to_date']=$todate;
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['branch_id'] = $branch_id;
         $data['member_auto_id']=$member_auto_id;
         $data['join_type']=$join_type;
+        $data['from_member_no']=$from_member_no;
+        $data['to_member_no']=$to_member_no;
         $data['offset']=$offset;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+
+        $request->session()->put('members-new-result', $data);
+        //dd(count($data['member_view']));
         return view('reports.iframe_new_member')->with('data',$data);  
         
     }
+    public function exportPdfMembersnew($lang,Request $request){
+        
+       // return $request->all();
+        $data = $request->session()->get('members-new-result');
+       //dd($data);
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_members_new', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('new_members_report.pdf');
+        //return view('reports.pdf_members_new')->with('data',$data);  
+    }
+
     // public function membersNewReportloadMore(Request $request){
     //     $offset = $request->input('offset');
     //     $from_date = $request->input('from_date');
@@ -2137,7 +2172,7 @@ class ReportsController extends Controller
         $dataarr = ['data' => $data ];
 
         $pdf = PDF::loadView('reports.pdf_advice_new', $dataarr)->setPaper('a4', 'landscape'); 
-        return $pdf->download('iframe_advice_new.pdf');
+        return $pdf->download('advice_new_report.pdf');
         //return view('reports.pdf_advice_new')->with('data',$data);  
     }
 
