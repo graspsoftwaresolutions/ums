@@ -10,6 +10,7 @@
         padding: 0;
         xbackground-color: #FAFAFA;
         font: 12pt "Tahoma";
+		xborder:1px solid blue;
     }
     * {
         box-sizing: border-box;
@@ -24,14 +25,15 @@
         border-radius: 5px;
         xbackground: red;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+		xborder:2px solid red; 
     }
     .subpage {
         xpadding: 1cm;
 		margin: -8mm;
-        border: 1px white solid;
+		border: 1px white solid;
 		width: 88mm;
         height: 61mm;   
-        
+        xborder:2px solid red; 
     }
     
     @page {
@@ -40,155 +42,6 @@
         margin: 0;
     }
 	#labelstart{
-			margin-top:29px;
-			margin-left:140px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:190px;
-			xdisplay: block;
-			xoverflow: hidden;
-			xoverflow-wrap: break-word;
-			xword-wrap: break-word;
-			xhyphens: auto;
-			xwhite-space: nowrap;
-			word-spacing: -5px;
-			border:1px solid white;
-		}
-        #labelbank{
-			margin-top:67px;
-			xmargin-left:160px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:160px;
-			xdisplay: block;
-			xxoverflow: hidden;
-			xwhite-space: nowrap;
-			overflow-wrap: break-word;
-			word-wrap: break-word;
-			hyphens: auto;
-			word-spacing: -5px;
-			xborder:1px solid red;
-            margin-left: 95px;
-		}
-		#labeladdr{
-			margin-top:65px;
-			margin-left:158px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:160px;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-			word-spacing: -5px;
-		}
-		
-		#labelbankcode{
-			margin-top:138px;
-			margin-left:217px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:110px;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-			word-spacing: -5px;
-		}
-		#labelicno{
-			margin-top:155px;
-			margin-left:215px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:110px;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-			xborder:1px solid red;
-			word-spacing: -5px;
-		}
-		#labeldoj{
-			margin-top:171px;
-			margin-left:215px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:110px;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-			xborder:1px solid red;
-			word-spacing: -5px;
-		}
-		#labelmemno{
-			margin-top:190px;
-			margin-left:215px;
-			position:absolute;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			width:110px;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-			xborder:1px solid red;
-			word-spacing: normal;
-			word-spacing: -5px;
-		}
-        #labelname{
-            margin-top:23px;
-			margin-left: 90px;
-			font-size:12px;
-			font-family: "Courier New";
-			font-weight: bold;
-			text-transform:uppercase;
-			letter-spacing:0mm;
-			
-            white-space: nowrap;
-            width:170px;
-			display: block;
-			overflow: hidden;
-			white-space: nowrap;
-        }
-    @media print {
-        html, body {
-            width: 88mm;
-            height: 62mm;        
-        }
-        .page {
-            margin: 0;
-            border: initial;
-            border-radius: initial;
-            width: 88mm;
-            height: 62mm;  
-            box-shadow: initial;
-            background: initial;
-            page-break-after: always;
-        }
-		#labelstart{
 			margin-top:29px;
 			margin-left:190px;
 			position:absolute;
@@ -216,28 +69,36 @@
 			font-weight: bold;
 			text-transform:uppercase;
 			letter-spacing:0mm;
-			width:190px;
+			width:250px;
+			float:left;
 			display: block;
-			overflow: hidden;
-			white-space: nowrap;
+			xoverflow: hidden;
+			xwhite-space: nowrap;
 			
 			word-spacing: -5px;
 			xborder:1px solid red;
 		}
 		#labeladdr{
 			margin-top:18px;
-			margin-left:135px;
+			margin-left:127px;
 			position:absolute;
 			font-size:12px;
 			font-family: "Courier New";
 			font-weight: bold;
 			text-transform:uppercase;
 			letter-spacing:0mm;
-			width:160px;
-			display: block;
-			overflow: hidden;
+			width:200px;
 			white-space: nowrap;
-			word-spacing: -5px;
+			display: block;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			word-spacing: -1mm;
+			
+			xdisplay: block;
+			xoverflow: hidden;
+			white-space: nowrap;
+			xword-spacing: -5px;
 		}
 		
 		#labelbankcode{
@@ -313,9 +174,192 @@
 			text-transform:uppercase;
 			letter-spacing:0mm;
             width:190px;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			word-spacing: -1mm;
+			
+			xdisplay: block;
+			xoverflow: hidden;
+			xwhite-space: nowrap;
+			xoverflow-wrap: break-word;
+			xword-wrap: break-word;
+			xhyphens: auto;
+			xword-spacing: -5px;
+        }
+		.alt{
+			border-top:2px solid white !important;
+		}
+		.subpage {
+        padding-top: 0.6cm !important;	 
+		xborder:2px solid red; 
+    	}
+    @media print {
+        html, body {
+            width: 88mm;
+            height: 62mm;       
+			xborder:1px solid blue;
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: 88mm;
+            height: 62mm; 
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+			xborder:2px solid red; 
+        }
+		.subpage {
+        padding-top: 0.6cm !important;	 
+		xborder:2px solid red; 
+    	}
+		#labelstart{
+			margin-top:29px;
+			margin-left:190px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:190px;
+			display: block;
+			overflow: hidden;
+			xoverflow-wrap: break-word;
+			xword-wrap: break-word;
+			xhyphens: auto;
+			xwhite-space: nowrap;
+			word-spacing: -5px;
+			xborder:1px solid red;
+		}
+        #labelbank{
+			margin-top:3px;
+			margin-left: 75px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:250px;
+			float:left;
+			display: block;
+			xoverflow: hidden;
+			xwhite-space: nowrap;
+			
+			word-spacing: -5px;
+			xborder:1px solid red;
+		}
+		#labeladdr{
+			margin-top:18px;
+			margin-left:130px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:200px;
+			white-space: nowrap;
+			display: block;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			word-spacing: -1mm;
+			
+			xdisplay: block;
+			xoverflow: hidden;
+			white-space: nowrap;
+			xword-spacing: -5px;
+		}
+		
+		#labelbankcode{
+			margin-top:71px;
+			margin-left:200px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
 			display: block;
 			overflow: hidden;
 			white-space: nowrap;
+			word-spacing: -5px;
+		}
+		#labelicno{
+			margin-top:87px;
+			margin-left:200px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			xborder:1px solid red;
+			word-spacing: -5px;
+		}
+		#labeldoj{
+			margin-top:104px;
+			margin-left:200px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			xborder:1px solid red;
+			word-spacing: -5px;
+		}
+		#labelmemno{
+			margin-top:121px;
+			margin-left:200px;
+			position:absolute;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+			width:110px;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+			xborder:1px solid red;
+			word-spacing: normal;
+			word-spacing: -5px;
+		}
+        #labelname{
+            margin-top:25px;
+			margin-left: 75px;
+			font-size:12px;
+			font-family: "Courier New";
+			font-weight: bold;
+			text-transform:uppercase;
+			letter-spacing:0mm;
+            width:190px;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+			word-spacing: -1mm;
+			
+			xdisplay: block;
+			xoverflow: hidden;
+			xwhite-space: nowrap;
+			xoverflow-wrap: break-word;
+			xword-wrap: break-word;
+			xhyphens: auto;
+			xword-spacing: -5px;
         }
 		.alt{
 			border-top:2px solid white !important;
@@ -333,18 +377,40 @@
 	@endphp
 		@foreach($data['member_view'] as $member)
 		<div class="page">
-			<div class="subpage">
+		   <div class="subpage" style='margin-top:5px 1important;'>
+			<span id="labelname" class="@php if($i>0){ echo 'alt'; } @endphp">
+		   @php
+		   	$str = $member->name;
+			echo wordwrap($str,40,"<p style='display:none !important;'>\n");
+		    @endphp
+		   <label style="display:none;"> </p></label>
+		    </span>
+            <span id="labelbank">
+			@php
+		   	$strbank = $member->company_name;
+			echo wordwrap($strbank,40,"<p style='display:none !important;'>\n");
+		   	@endphp
+		  <label style="display:none;"> </p></label></span>
 			
-           <span id="labelname" class="@php if($i>0){ echo 'alt'; } @endphp">{{ $member->name }}  </span>
-            <span id="labelbank">{{ $member->company_name }}</span>
-			
-			<span id="labeladdr">
-			{{ $member->address_one }}, </br>
-			{{ $member->address_two }}	</br>		
+			<span id="labeladdr">			
+			@php
+		   	$stradd1 =  $member->address_one;
+			echo wordwrap($stradd1,40,"<p style='display:none !important;'>\n");
+		   	@endphp
+		  <label style="display:none;"> </p></label>
+			</br>
+			@php
+		   	$stradd2 =  $member->address_two;
+			echo wordwrap($stradd2,40,"<p style='display:none !important;'>\n");
+		   	@endphp
+		  <label style="display:none;"> </p></label>
+			</br>		
 			@php
 			echo $member->city_name." ". $member->postal_code;
 			@endphp
+			
 			</span>
+			</br>
 			<span id="labelbankcode">{{ $member->companycode }}</span>
 			<span id="labelicno">{{ $member->ic }}</span>
 			<span id="labeldoj">{{ date('d/M/Y',strtotime($member->doj)) }}</span>
