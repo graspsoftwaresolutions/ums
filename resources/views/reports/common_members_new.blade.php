@@ -1,5 +1,6 @@
 @php 
 	$logo = CommonHelper::getLogo(); 
+	//dd($data);
 @endphp
 <table id="page-length-option" class="display table2excel" width="100%">
 		<thead>
@@ -64,7 +65,10 @@
 			@php
 				$totalmembers = 0;
 				$sno = 1;
+				
 			@endphp
+			
+			
 			@foreach($data['member_view'] as $member)
 				<tr >
 					<td style="border: 1px solid #988989 !important; ">{{ $sno }}</td>
@@ -88,6 +92,8 @@
 					$sno++;
 				@endphp
 			@endforeach
+			<!-- //@if(!empty($data['member_view']))
+			//@endif -->
 			<tr>
 				<td colspan="12" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 			</tr> 

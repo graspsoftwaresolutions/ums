@@ -3,7 +3,7 @@
 
 <head>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
@@ -78,11 +78,12 @@
 			}
 
 			#page-length-option td, #page-length-option th {
-			  border: 1px solid #ddd !important;
+			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
 			html {
-			    font-family: 'Muli', sans-serif;
+
+			    //font-family: 'Muli', sans-serif;
 			    font-weight: normal;
 			    line-height: 1; 
 			    color: rgba(0, 0, 0, .87);
@@ -96,6 +97,10 @@
 				font-weight:bold;
 				font-size:14px;
 			}
+
+			.page-header-area{
+				display: none;
+			}
 			
 		}
 		@media not print {
@@ -107,7 +112,7 @@
 			}
 			.page-table-header-space {
 			  width: 100%;
-			  position: fixed;
+			 // position: fixed;
 			  top:101px;
 			  margin-bottom:20px;
 			  background: #343d9f; /* for demo */
@@ -116,11 +121,14 @@
 			  font-size: 14px;
 			}
 			.tbody-area{
-				top:172px;
-				position: absolute;
+				top:140px;
+				//position: absolute;
 			}
 			.nric_no{
 				width:150px !important;
+			}
+			.page-header-area{
+				display: none;
 			}
 		}
 		td, th {
@@ -144,7 +152,10 @@
 		.tbody-area{
 			color:#000;
 		}
-	
+		#page-length-option td, #page-length-option th {
+			//border: 1px solid #ddd !important;
+			padding: 4px;
+		}
 		
 		
 	</style>
@@ -154,20 +165,21 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
 		<table width="100%">
 			<tr>
-			@php $logo = CommonHelper::getLogo(); @endphp
+				@php 
+					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&join_type='.$data['join_type'].'&unionbranch_id='.$data['unionbranch_id'].'&from_member_no='.$data['from_member_no'].'&to_member_no='.$data['to_member_no'];
+				@endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
+					
 					<h6 style="text-align:center;">Union Branch Report</h6>
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'New Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'New Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="exportToExcel export-button btn btn-sm" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="{{ url(app()->getLocale().'/export-pdf-members-unionnew?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -176,79 +188,23 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-	<table id="page-length-option" class="display" width="100%">
-		<thead>
-			<tr style="border:none !important;">
-				<td style="border:none !important;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
-				</td>
-			</tr>
-			<tr class="page-table-header-space">
-				<th style="width:50px  !important ;border : 1px solid #343d9f;" align="center">S.NO</th>
-				<th style="width:100px  !important ;border : 1px solid #343d9f;"  align="center">M/NO</th>
-				<th style="width:351px  !important ;border : 1px solid #343d9f;" align="center">MEMBER NAME</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">GENDER</th>
-				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">BANK</th>
-				<th  style="width:120px  !important ;border : 1px solid #343d9f;" align="center">UNION BRANCH</th>
-				<th  style="width:200px  !important ;border : 1px solid #343d9f;" align="center">BANK </br>BRANCH</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">TYPE</th>
-				<th style="width:140px  !important ;border : 1px solid #343d9f;" align="center">DOJ</th>
-				<th  style="width:100px  !important ;border : 1px solid #343d9f;" align="center">LAST PAID </br> DATE</th>
-			</tr>
-		</thead>
-		<tbody class="tbody-area" width="100% ">
-			@php
-				$totalmembers = 0;
-				$sno = 1;
-			@endphp
-			@foreach($data['member_view'] as $member)
-				<tr>
-					<td style="width:50px !important ; border : 1px solid white;">{{ $sno }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->member_number }}</td>
-					<td style="width:351px !important ; border : 1px solid white;">{{ $member->name }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;">{{ $member->gender }}</td>
-					<td style="width:120px  !important ;border : 1px solid white;" >{{ $member->companycode }}</td>
-					<td  style="width:120px  !important ;border : 1px solid white;">{{ $member->union_branchname }}</td>
-					<td  style="width:200px  !important ;border : 1px solid white;">{{ $member->branch_name }}</td>
-					<td style="width:100px  !important ;border : 1px solid white;">{{ isset($member) ? $member->designation_name : ""}}</td>
-					<td style="width:130px  !important ;border : 1px solid white;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
-					
-					<td style="width:100px  !important ;border : 1px solid white;">{{  $member->last_paid_date!="" ? date('d/M/Y',strtotime($member->last_paid_date)) : '' }}</td>
-					
-				</tr> 
-				@php
-					$sno++;
-				@endphp
-			@endforeach
-			<tr>
-				<td colspan="10" style="width:auto !important ; border : 1px solid white;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
-				
-			</tr> 
-		</tbody>
-		
-	</table>
+    @include('reports.common_members_newunion')
+	
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
-<!--<![endif]-->
-<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery-ui.min.js') }}"></script>
 <script>
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
-	});
+	var excelfilenames="New Union Members report";
+</script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
+<script>
+	$(document).ready( function() { 
+		//$("html").css('opacity',1);
+
+		$(".exportToExcel").click(function(e){
+			$("#page-length-option").table2excel();
+		});
+    }); 
 	//  $(window).scroll(function() {  
 	//    var lastoffset = $("#memberoffset").val();
 	//    var limit = "{{$data['data_limit']}}";
