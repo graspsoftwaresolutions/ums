@@ -1042,8 +1042,8 @@ class SubscriptionAjaxController extends CommonController
                 $last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
                
                
-                $memberdata =DB::table("membership")->where('id','=',$member_id)->first();
-                $member_doj = $memberdata->doj;
+                $memberdata =DB::table("membership")->select('branch_id','designation_id','status_id')->where('id','=',$member_id)->first();
+                //$member_doj = $memberdata->doj;
                 // $total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
                 //             ->where('MemberCode', '=', $member_id)
                 //             ->first();
