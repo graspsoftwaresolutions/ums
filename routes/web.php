@@ -370,6 +370,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-members-new','ReportsController@exportPdfMembersnew')->name('members.pdf');
 	Route::get('export-pdf-members-unionnew','ReportsController@exportPdfMembersUnionnew')->name('members.pdf');
 
+	Route::get('export-pdf-members','ReportsController@exportPdfMembers')->name('members.pdf');
+
 
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();
