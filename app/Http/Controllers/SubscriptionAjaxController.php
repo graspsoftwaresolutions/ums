@@ -977,7 +977,7 @@ class SubscriptionAjaxController extends CommonController
         $company_auto_id = $request->company_auto_id;
         //Artisan::call('queue:work --tries=1 --timeout=10000');
         UpdateMemberStatus::dispatch($company_auto_id);
-        Artisan::call('queue:work --tries=1 --timeout=10000');
+        Artisan::call('queue:work --tries=1 --timeout=20000');
         echo 1;
     }
 
@@ -1043,15 +1043,16 @@ class SubscriptionAjaxController extends CommonController
                
                
                 $memberdata =DB::table("membership")->where('id','=',$member_id)->first();
-                $total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
-                            ->where('MemberCode', '=', $member_id)
-                            ->first();
                 $member_doj = $memberdata->doj;
-                $total_subs = $total_subs_obj->amount;
+                // $total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
+                //             ->where('MemberCode', '=', $member_id)
+                //             ->first();
+                // $member_doj = $memberdata->doj;
+                // $total_subs = $total_subs_obj->amount;
                 
-                $total_count = DB::table('mon_sub_member')
-                ->where('MemberCode', '=', $member_id)
-                ->count();
+                // $total_count = DB::table('mon_sub_member')
+                // ->where('MemberCode', '=', $member_id)
+                // ->count();
                 
                 // $old_subscription_count = DB::table("mon_sub_member as mm")
                 //                 ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
@@ -1064,9 +1065,9 @@ class SubscriptionAjaxController extends CommonController
                 // $paid_bf = $total_subs-($total_count*$this->bf_amount);
                 
                     
-                $to = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
-                $from = Carbon::createFromFormat('Y-m-d H:s:i', $cur_date.' 9:30:34');
-                $diff_in_months = $to->diffInMonths($from);
+                // $to = Carbon::createFromFormat('Y-m-d H:s:i', $member_doj.' 3:30:34');
+                // $from = Carbon::createFromFormat('Y-m-d H:s:i', $cur_date.' 9:30:34');
+                // $diff_in_months = $to->diffInMonths($from);
                 
                 // $bf_due = ($diff_in_months-$total_count)*$this->bf_amount;
                 // $ins_due = ($diff_in_months-$total_count)*$this->ins_amount;
