@@ -467,6 +467,7 @@ class MemberController extends CommonController
 				}
 			}
 			if($auto_id!=''){
+				$statuscode = DB::table('membership')->where('id', $member_id)->pluck('status_id')->first();
 				$resign_date = $request->input('resign_date');
 				$last_paid = $request->input('last_paid');
 				$resign_claimer = $request->input('resign_claimer');
@@ -481,7 +482,7 @@ class MemberController extends CommonController
 						$resign->member_code = $member_id;
 					}
 					$resign->resignation_date = CommonHelper::ConvertdatetoDBFormat($resign_date);
-					$resign->resignstatus_code = CommonHelper::ConvertdatetoDBFormat($resign_date);
+					$resign->resignstatus_code = $statuscode;
 					$resign->relation_code = $resign_claimer;
 					$resign->reason_code = $resign_reason;
 					$resign->claimer_name = $request->input('claimer_name');

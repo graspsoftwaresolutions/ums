@@ -105,6 +105,11 @@ return [
             'path' => storage_path('logs/monthendlog.log'),
             'level' => 'info',
         ],
+        'monthendstartlog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/monthendstartlog.log'),
+            'level' => 'info',
+        ],
 
     ],
 

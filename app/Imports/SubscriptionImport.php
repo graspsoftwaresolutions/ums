@@ -17,6 +17,8 @@ use Auth;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Helpers\CommonHelper;
+use App\Jobs\InsertMonthendMonthly;
+use Artisan;
 
 
 class SubscriptionImport implements ToCollection, WithCalculatedFormulas
@@ -83,6 +85,9 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
         $attachment->created_by = Auth::user()->id;
         $attachment->created_on = date('Y-m-d');
         $attachment->save();
+
+        //InsertMonthendMonthly::dispatch($this->company_auto_id);
+        //Artisan::call('queue:work --tries=1 --timeout=20000');
        
     }
 
