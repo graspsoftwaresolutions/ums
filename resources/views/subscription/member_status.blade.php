@@ -253,13 +253,13 @@
 						
 							<span class="bold">From Union:
 							<label>
-								<input name="bulknameverify" type="radio" checked value="1" />
+								<input name="bulknameverify" type="radio" value="1" />
 								<span>is it correct?</span>
 							</label>
 						&nbsp;&nbsp;
 						<span class="bold">From Bank:
 						<label>
-							<input name="bulknameverify" type="radio" value="2" />
+							<input name="bulknameverify" type="radio" checked value="2" />
 							<span>is it correct?</span>
 						</label>
 					
@@ -419,14 +419,14 @@
 									<p>
 										<span class="bold">From Union: <span id="registered_member_name" class="bold"></span></span> 
 										<label>
-											<input name="nameverify" type="radio" checked value="1" />
+											<input name="nameverify" type="radio" value="1" />
 											<span>is it correct?</span>
 										</label>
 									</p>
 								<p>
 									<span class="bold">From Bank: <span id="uploaded_member_name" class="bold"></span></span>
 									<label>
-										<input name="nameverify" type="radio" value="2" />
+										<input name="nameverify" type="radio" checked value="2" />
 										<span>is it correct?</span>
 									</label>
 								</p>
