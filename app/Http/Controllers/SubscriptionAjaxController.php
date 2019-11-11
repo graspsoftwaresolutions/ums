@@ -222,6 +222,7 @@ class SubscriptionAjaxController extends CommonController
                 
                 $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Subscription'  class='' onClick='return EditSubscription(".$autoid.")' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
                 $actions .="<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='$member_delete_link'><i class='material-icons' style='color:red'>delete</i></a>";
+                
                 if($memberid!=''){
                     
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";

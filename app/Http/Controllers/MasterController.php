@@ -266,6 +266,7 @@ class MasterController extends CommonController {
 	}
     //user Details Save and Update
     public function userSave(Request $request) {
+        
         $request->validate([
             'name' => 'required',
                 ], [
@@ -273,6 +274,9 @@ class MasterController extends CommonController {
         ]);
 
         $data = $request->all();
+        $roles = $data['role_id'];
+        sort($roles,SORT_NUMERIC);
+        //dd($roles);
 
         $defdaultLang = app()->getLocale();
 
@@ -286,9 +290,20 @@ class MasterController extends CommonController {
             return redirect($defdaultLang . '/users')->with('error', 'User Email Already Exists');
         } else if (empty($request->id)) {
             if (($request->password == $request->confirm_password)) {
-                $data['password'] = Crypt::encrypt($request->password);
+                $data['password'] = bcrypt($request->password);
+                $newuser['email'] = $request->email;
+                $newuser['name'] = $request->name;
+                $newuser['password'] = bcrypt($request->password);
+               // dd($request->password);
                 //return $data;
-                $saveUser = $this->User->saveUserdata($data);
+                $saveUser = $this->User->saveUserdata($newuser);
+            }
+            $userid = $saveUser->id;
+
+            foreach($roles as $role){
+                DB::table('users_roles')->insert(
+                    ['user_id' => $userid, 'role_id' => $role]
+                );
             }
 
             if ($saveUser == true) {
@@ -334,7 +349,9 @@ class MasterController extends CommonController {
 
     public function users_list()
     {
-        return view('master.users.users');
+        $data['roles'] = DB::table('roles')->get();
+        //dd($data['roles']);
+        return view('master.users.users',compact('data',$data));
     }
     
     //Relation Details 
@@ -711,6 +728,8 @@ class MasterController extends CommonController {
                 $union_type =2;
                 DB::connection()->enableQueryLog();
                 if($union['is_head']==1){
+                    $official_ids = DB::table('users_roles')->where('role_id','=','8')->pluck('user_id')->get();
+                    //dd($official_ids);
                     $rold_id_1 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
                     $rold_id_2 = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
                     //$queries = DB::getQueryLog();
@@ -760,7 +779,9 @@ class MasterController extends CommonController {
                
             }else{
                 $data = DB::table('union_branch')->where('is_head','=','1')->update(['is_head'=>'0']);
-                $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->update(['role_id'=>'2']);
+                $official_ids = DB::table('users_roles')->where('role_id','=','8')->pluck('user_id');
+                //dd($official_ids);
+                $rold_id_2 = DB::table('users_roles')->where('role_id','=','1')->whereNotIn('user_id', $official_ids)->update(['role_id'=>'2']);
                 $rold_id_2 = DB::table('users_roles')->where('user_id','=',$user_id)->update(['role_id'=>'1']);
                 $id = DB::table('union_branch')->where('id','=',$auto_id)->update($union);
             }

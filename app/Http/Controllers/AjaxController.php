@@ -1234,7 +1234,7 @@ class AjaxController extends CommonController
             if($user_role!='union'){
                 $companybranchs = $companybranchs->whereIn('b.company_id', $company_ids);
             }
-            $companybranchs = $companybranchs->get()->toArray();
+            $companybranchs = $companybranchs->orderBy($order,$dir)->get()->toArray();
 
         }
         else {
@@ -1256,7 +1256,7 @@ class AjaxController extends CommonController
                 ->orWhere('b.is_head', 'LIKE',"%{$search}%")
                 ->orWhere('b.email', 'LIKE',"%{$search}%");
             });
-            $companybranchs = $companybranchs->get()->toArray();
+            $companybranchs = $companybranchs->orderBy($order,$dir)->get()->toArray();
 
            
              $totalFiltered = DB::table('company_branch as b')

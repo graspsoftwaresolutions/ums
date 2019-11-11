@@ -49,9 +49,17 @@
             $user_id = Auth::user()->id;
             $get_roles = Auth::user()->roles;
             $user_role = $get_roles[0]->slug;
+            $checkofficial = $auth_user->hasRole('officials');
+
             @endphp
             <ul class="dropdown-content" id="profile-dropdown">
-              <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }}</a></li>
+              @if($checkofficial==true)
+                  <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($get_roles[1]->slug)) }}</a></li>
+              @else
+                  <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }}</a></li>
+              @endif
+             
+          
               <li><a class="grey-text text-darken-1" href="{{ route('changepassword',app()->getLocale()) }}"><i class="material-icons">person_outline</i> {{__('Change Password') }}</a></li>
               <!-- <li><a class="grey-text text-darken-1" href="app-chat.html"><i class="material-icons">chat_bubble_outline</i> Chat</a></li>
               <li><a class="grey-text text-darken-1" href="page-faq.html"><i class="material-icons">help_outline</i> Help</a></li>

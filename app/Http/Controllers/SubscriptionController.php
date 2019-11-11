@@ -518,6 +518,34 @@ class SubscriptionController extends CommonController
                             ->first();
 
                         $m_subs_amt = number_format($subscription->Amount-($this->bf_amount+$this->ins_amount),2);
+
+                        if(!empty($last_subscription_res)){
+                            // if($last_subscription_res->LASTPAYMENTDATE==$cur_date){
+                            //     $new_total_months_paid = $last_subscription_res->TOTALMONTHSPAID;
+                            //     $new_acc_subscription = $last_subscription_res->ACCSUBSCRIPTION;
+                            //     $new_acc_bf = $last_subscription_res->ACCBF;
+                            //     $new_acc_insurance = $last_subscription_res->ACCINSURANCE;
+                            //     $new_contribution = $last_subscription_res->TOTALMONTHSCONTRIBUTION;
+                            // }else{
+                            //     $new_total_months_paid = $last_subscription_res->TOTALMONTHSPAID+1;
+                            //     $new_acc_subscription = $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt;
+                            //     $new_acc_bf = $last_subscription_res->ACCBF+$this->bf_amount;
+                            //     $new_acc_insurance = $last_subscription_res->ACCINSURANCE+$this->ins_amount;
+                            //     $new_contribution = $last_subscription_res->TOTALMONTHSCONTRIBUTION+1;
+                            // }
+                            $new_total_months_paid = $last_subscription_res->TOTALMONTHSPAID+1;
+                            $new_acc_subscription = $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt;
+                            $new_acc_bf = $last_subscription_res->ACCBF+$this->bf_amount;
+                            $new_acc_insurance = $last_subscription_res->ACCINSURANCE+$this->ins_amount;
+                            $new_contribution = $last_subscription_res->TOTALMONTHSCONTRIBUTION+1;
+                            
+                        }else{
+                            $new_total_months_paid = 1;
+                            $new_acc_subscription = $m_subs_amt;
+                            $new_acc_bf = $this->bf_amount;
+                            $new_acc_insurance = $this->ins_amount;
+                            $new_contribution = 1;
+                        }
 						
 						$monthend_data = [
 												'StatusMonth' => $cur_date, 
@@ -535,12 +563,12 @@ class SubscriptionController extends CommonController
 												'ENTRYMODE' => 'S',
 												//'DEFAULTINGMONTHS' => 0,
 												'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
-												'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+												'TOTALMONTHSPAID' => $new_total_months_paid,
                                                 'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
 												'BFDUE' => 0,
-												'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
-												'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
-                                                'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+												'ACCSUBSCRIPTION' => $new_acc_subscription,
+												'ACCBF' => $new_acc_bf,
+                                                'ACCINSURANCE' => $new_acc_insurance,
 												//'ACCBENEFIT' => 0,
 												//'CURRENT_YDTBF' => 0,
 												//'CURRENT_YDTSUBSCRIPTION' => 0,
@@ -551,7 +579,7 @@ class SubscriptionController extends CommonController
 												'STRUCKOFF' => $memberdata[0]->status_id==3 ? 1 : 0,
 												'INSURANCE_AMOUNT' => $this->ins_amount,
 												'TOTALINSURANCE_AMOUNT' => $this->ins_amount,
-												'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+												'TOTALMONTHSCONTRIBUTION' => $new_contribution,
 												'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE : 0,
 												//'CURRENT_YDTINSURANCE' => 0,
 											];
@@ -562,11 +590,11 @@ class SubscriptionController extends CommonController
 						}
 						$payment_data = [
 							'last_paid_date' => $cur_date,
-							'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
-                            'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
-                            'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
-                            'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
-                            'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+							'totpaid_months' => $new_total_months_paid,
+                            'totcontribution_months' => $new_contribution,
+                            'accbf_amount' => $new_acc_bf,
+                            'accsub_amount' => $new_acc_subscription,
+                            'accins_amount' => $new_acc_insurance,
 							'updated_by' => Auth::user()->id,
 						];
 						DB::table('member_payments')->where('member_id', $member_code)->update($payment_data);
@@ -1524,7 +1552,7 @@ class SubscriptionController extends CommonController
                             ->delete();
         if($historydel!=0){
             $historylast = DB::table('membermonthendstatus')
-                            ->select('LASTPAYMENTDATE','SUBSCRIPTIONDUE')
+                            ->select('LASTPAYMENTDATE','SUBSCRIPTIONDUE','TOTALMONTHSPAID','TOTALMONTHSCONTRIBUTION','ACCBF','ACCSUBSCRIPTION','ACCINSURANCE')
                             ->where('MEMBER_CODE','=',$member_data->member_id)
                             ->orderBy('StatusMonth','DESC')
                             ->first();
@@ -1533,7 +1561,11 @@ class SubscriptionController extends CommonController
                $SUBSCRIPTIONDUE = $historylast->SUBSCRIPTIONDUE;
                $payment_data = [
                     'last_paid_date' => $LASTPAYMENTDATE,
-                    'due_amount' => $SUBSCRIPTIONDUE,
+                    'totpaid_months' => $historylast->TOTALMONTHSPAID,
+                    'totcontribution_months' => $historylast->TOTALMONTHSCONTRIBUTION,
+                    'accbf_amount' => $historylast->ACCBF,
+                    'accsub_amount' => $historylast->ACCSUBSCRIPTION,
+                    'accins_amount' => $historylast->ACCINSURANCE,
                     'updated_by' => Auth::user()->id,
                 ];
                 DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
@@ -1568,14 +1600,15 @@ class SubscriptionController extends CommonController
         $sub_member_name = $request->input('sub_member_name');
         $sub_member_nric = $request->input('sub_member_nric');
         $sub_member_amount = $request->input('sub_member_amount');
+        $m_subs_amt = number_format($sub_member_amount-($this->bf_amount+$this->ins_amount),2);
         if($sub_member_id!=''){
-            $active_member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id')
+            $active_member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id','mm.Amount')
                     ->where('mm.id', '=', $sub_member_id)
                     ->whereNotNull('mm.MemberCode')
                     ->where('mm.update_status', '=', 1)
                     ->get();
             if(count($active_member_data)>0){
-                $member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id','ms.Date as date','mm.MonthlySubscriptionCompanyId as MonthlySubscriptionCompanyId')
+                $member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id','ms.Date as date','mm.MonthlySubscriptionCompanyId as MonthlySubscriptionCompanyId','mm.Amount')
                     ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                     ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                     ->where('mm.id', '=', $sub_member_id)
@@ -1592,6 +1625,27 @@ class SubscriptionController extends CommonController
             $sub_data = DB::table("mon_sub_member as mm")->select('mm.MonthlySubscriptionCompanyId')
                     ->where('mm.id', '=', $sub_member_id)
                     ->first();
+
+            if(!empty($member_data)){
+                $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE')
+                            ->where('ms.member_id','=',$member_data->member_id)
+                            ->first();
+                $last_sub_amt = number_format($member_data->Amount-($this->bf_amount+$this->ins_amount),2);
+                if($last_sub_amt!=$m_subs_amt){
+                    $payment_data = [
+                        'sub_monthly_amount' => $m_subs_amt,
+                        'totpaid_months' => $last_subscription_res->TOTALMONTHSPAID-1,
+                        'totcontribution_months' => $last_subscription_res->TOTALMONTHSCONTRIBUTION-1,
+                        'accbf_amount' => $last_subscription_res->ACCBF-$this->bf_amount,
+                        'accsub_amount' => $last_subscription_res->ACCSUBSCRIPTION-$last_sub_amt,
+                        'accins_amount' => $last_subscription_res->ACCINSURANCE-$this->ins_amount,
+                        'updated_by' => Auth::user()->id,
+                    ];
+                    DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
+                }
+
+            }
+            
 
             $enc_id = Crypt::encrypt($sub_data->MonthlySubscriptionCompanyId); 
             return redirect(URL::to('/'.app()->getLocale().'/scan-subscription/'.$enc_id))->with('message', 'Subscription updated Successfully');

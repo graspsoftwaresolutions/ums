@@ -33,7 +33,7 @@
                                         </ol>
                                     </div>
                                     <div class="col s2 m6 l6 ">
-                                        <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger hide"
+                                        <a class="btn waves-effect waves-light breadcrumbs-btn right modal-trigger "
                                             onClick='showaddForm();' href="#modal_add_edit">Add</a>
                                     </div>
                                 </div>
@@ -77,7 +77,7 @@
                                         <div class="input-field col s12 m6">
                                             <label for="email"
                                                 class="common-label force-active">{{__('email') }}*</label>
-                                            <input id="email" data-autoid="" readonly class="common-input" name="email"
+                                            <input id="email" data-autoid="" class="common-input" name="email"
                                                 type="email" data-error=".errorTxt2">
                                             <div class="errorTxt2"></div>
                                         </div>
@@ -94,6 +94,22 @@
                                                 type="password" data-error=".errorTxt4">
                                             <div class="errorTxt4"></div>
                                         </div>
+                                        <div class=" col s12 m12 userroles">          
+                                            <h6>Roles</h6>
+                                        </div>
+                                        @foreach($data['roles'] as $value)
+                                            @if($value->slug=='union' || $value->slug=='officials')
+                                            <div class="input-field col s12 m6 userroles">
+                                                <p>
+                                                    <label>
+                                                        <input type="checkbox" name="role_id[]" class="common-checkbox role_id" id="role_id_{{$value->id}}" required value="{{$value->id}}" data-error=".errorTxt5" />
+                                                        <span class="common-label force-active">{{$value->name}}</span>
+                                                    </label>
+                                                    <div class="errorTxt5"></div>
+                                                </p>
+                                            </div>
+                                            @endif
+                                        @endforeach
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"

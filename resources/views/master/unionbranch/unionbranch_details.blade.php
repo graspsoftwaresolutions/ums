@@ -218,7 +218,7 @@
 																$ishead = isset($values) ? $values->is_head: '';
 															@endphp
 															@if(Auth::user()->id==$userid && $ishead == '1')
-																<span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ __('You are head union branch, you cant uncheck here.') }}</span>
+																<!--span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ __('You are head union branch, you cant uncheck here.') }}</span-->
 																<input type="checkbox" name="is_head"
 																	class="common-checkbox hide" id="is_head" value="1"
 																	@isset($values)
@@ -241,6 +241,11 @@
 															@endif
 														@endisset
                                                         </label>
+                                                        @if(isset($values))
+                                                            @if(Auth::user()->id==$userid && $ishead == '1')
+                                                                <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ __('You are head union branch, you cant uncheck here.') }}</span>
+                                                            @endif
+                                                        @endif
                                                     </p>
                                                 </div>
 												<div class="clearfix" style="clear:both"></div>
