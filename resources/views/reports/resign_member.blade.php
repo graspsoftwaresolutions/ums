@@ -13,27 +13,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <style>
-	@if(count($data['member_view'])<10)
-		#main.main-full {
-			height: 750px;
-		}
-		
-		.footer {
-		   position: fixed;
-		   margin-top:50px;
-		   left: 0;
-		   bottom: 0;
-		   width: 100%;
-		   height:auto;
-		   background-color: red;
-		   color: white;
-		   text-align: center;
-		   z-index:999;
-		} 
-		.sidenav-main{
-			z-index:9999;
-		}
-		.btn, .btn-sm-one {
+	
+	.btn, .btn-sm-one {
 		line-height: 36px;
 		display: inline-block;
 		height: 35px;
@@ -44,7 +25,6 @@
 		border-radius: 4px;
 		-webkit-tap-highlight-color: transparent;
 	}
-	@endif
 </style>
 @endsection
 @section('main-content')
@@ -110,7 +90,19 @@
 							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/m/Y')}}" name="to_date">
 						</div>
 						
-						
+						<div class="col s12 m6 l3">
+                            <label for="resign_reason force-active">Reason*</label>
+                            <select name="resign_reason" id="resign_reason" data-error=".errorTxt503" class="force-active error browser-default selectpicker">
+                                <option value="">Select reason</option>
+                                @foreach($data['reasondata'] as $reason)
+                                <option value="{{$reason->id}}">{{$reason->reason_name}}</option>
+                                @endforeach
+                                <div class="input-field">
+                                    <div class="errorTxt503"></div>
+                                </div>
+                            </select>
+                        </div>
+                        <div class="clearfix"/>
 						<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
 							<label>{{__('Union Branch Name') }}</label>
 							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
@@ -436,9 +428,10 @@ $("#member_status4_sidebar_a_id").addClass('active');
 		var date_type = $("#date_type").val();
 		var from_member_no = $("#from_member_no").val();
 		var to_member_no = $("#to_member_no").val();
+		var resign_reason = $("#resign_reason").val();
 		$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type+'&unionbranch_id='+unionbranch_id+'&from_member_no='+from_member_no+'&to_member_no='+to_member_no;
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type+'&unionbranch_id='+unionbranch_id+'&from_member_no='+from_member_no+'&to_member_no='+to_member_no+'&resign_reason='+resign_reason;
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-resignedmembers-report') }}?offset=0"+searchfilters,);
 		// 	
 		//loader.showLoader();

@@ -11,6 +11,7 @@ use Facades\App\Repository\CacheMonthEnd;
 use App\Model\Fee;
 use App\Model\UnionBranch;
 use App\Model\CompanyBranch;
+use App\Model\Reason;
 use PDF;
 use Session;
 
@@ -367,6 +368,7 @@ class ReportsController extends Controller
         $data['data_limit']=$this->limit;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['reasondata'] = Reason::where('status','=',1)->get();
        
         
         $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
@@ -393,10 +395,12 @@ class ReportsController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
-		$user_id = Auth::user()->id; 
+        $user_id = Auth::user()->id; 
+        $union_branch_id ='';
+        $unionbranch_name='';
        
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','rs.reason_code','rs.claimer_name')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -409,6 +413,7 @@ class ReportsController extends Controller
                     if($user_role=='union-branch'){
                         $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
                         $members = $members->where(DB::raw('c.`union_branch_id`'),'=',$union_branch_id);
+                        $unionbranch_name = DB::table('union_branch')->where('id','=',$union_branch_id)->pluck('union_branch')->first();
                     }else if($user_role=='company'){
                         $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
                         $members = $members->where(DB::raw('c.`company_id`'),'=',$company_id);
@@ -422,8 +427,10 @@ class ReportsController extends Controller
                     $members = $members->orderBy('m.member_number','asc');
                     $members = $members->get();
         $data['member_view'] = $members;
-        $data['from_date'] = date('01/M/Y');
-        $data['to_date'] = date('t/M/Y');
+        $data['from_date'] = date('Y-m-01');
+        $data['to_date'] = date('Y-m-t');
+        $data['unionbranch_id'] = $union_branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
         $data['company_id'] = '';
         $data['branch_id'] = '';
         $data['member_auto_id'] = '';
@@ -444,10 +451,12 @@ class ReportsController extends Controller
         $unionbranch_id = $request->input('unionbranch_id');
         $from_member_no = $request->input('from_member_no');
         $to_member_no = $request->input('to_member_no');
+        $resign_reason = $request->input('resign_reason');
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+        $unionbranch_name='';
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','rs.reason_code','rs.claimer_name')
                 ->leftjoin('membership as m','m.id','=','rs.member_code')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -469,6 +478,7 @@ class ReportsController extends Controller
               }else{
                  if($unionbranch_id!=''){
                     $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+                    $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
                 }
                   if($company_id!=""){
                       $members = $members->where('c.company_id','=',$company_id);
@@ -478,16 +488,21 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
                }
+                if($resign_reason!=""){
+                    $members = $members->where('rs.reason_code','=',$resign_reason);
+                }
            $members = $members->orderBy('m.member_number','asc');
               
           $members = $members->get();
         //echo json_encode($members);
         $data['member_view'] = $members;
-        $data['from_date'] = $from_date;
-        $data['to_date'] = $to_date;
+        $data['from_date'] = $fromdate;
+        $data['to_date'] = $todate;
         $data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
         $data['member_auto_id'] = $member_auto_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
         $data['date_type'] = $date_type;
         $data['data_limit'] = '';
         //$data['join_type'] = '';
@@ -503,6 +518,7 @@ class ReportsController extends Controller
         $branch_id = $request->input('branch_id');
         $member_auto_id = $request->input('member_auto_id');
         $date_type = $request->input('date_type');
+        $resign_reason = $request->input('resign_reason');
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         
@@ -529,6 +545,9 @@ class ReportsController extends Controller
                   if($company_id!=""){
                       $members = $members->where('c.company_id','=',$company_id);
                   }
+              }
+              if($resign_reason!=""){
+                $members = $members->where('rs.reason_code','=',$resign_reason);
               }
              
               
