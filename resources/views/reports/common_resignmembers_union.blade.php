@@ -21,7 +21,7 @@
 				
 				<td colspan="7" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">Union Branch Member Report</span>
+					<span style="margin-top:0;">UNION BRANCH MEMBER REPORT</span>
 				</td>
 				
 			</tr>
