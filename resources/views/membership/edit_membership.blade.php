@@ -1362,8 +1362,8 @@
                                                                 <label>{{__('PayMode') }}</label>
                                                                 <select name="pay_mode" id="pay_mode" class="error browser-default selectpicker">
                                                                     <option value="" selected>{{__('Choose your option') }}</option>
-                                                                    <option @if($pay_mode==1) selected @endif value="1"> CHEQUE</option>
-                                                                    <option @if($pay_mode==2) selected @endif value="2"> ONLINE PAY</option>
+                                                                    <option @if($pay_mode=='CHEQUE') selected @endif value="CHEQUE"> CHEQUE</option>
+                                                                    <option @if($pay_mode=='ONLINE PAY') selected @endif value="ONLINE PAY"> ONLINE PAY</option>
                                                                 </select>
                                                             </div>
                                                             <div class="input-field col s6">
