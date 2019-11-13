@@ -70,6 +70,7 @@
 				$tot_benifit = 0;
 				$tot_contribution = 0;
 				$tot_amt = 0;
+				$reasoncodes = [];
 			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr>
@@ -79,14 +80,14 @@
                     <td style="border: 1px solid #988989 !important;">{{ $member->new_ic }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->resignation_date)) }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->companycode }}</td>
+                    <td style="border: 1px solid #988989 !important;">{{ $member->unioncode }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->companycode }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->branch_name }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->contribution }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->benifit }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->total }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->paymode }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->voucher_date }}</td>
+                    <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->voucher_date)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->reason_code }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->claimer_name }}</td>
 				</tr> 
@@ -95,6 +96,9 @@
 					$tot_benifit += $member->benifit;
 					$tot_contribution += $member->contribution;
 					$tot_amt += $member->total;
+					if(!in_array($member->reason_code, $reasoncodes, true)){
+				        array_push($reasoncodes, $member->reason_code);
+				    }
 				@endphp
 			@endforeach
 			<tr style="font-weight: bold;">
@@ -106,6 +110,38 @@
 				<td colspan="4" align="left" style="border: 1px solid #988989 !important;"></td>
 				
 			</tr> 
+			@php
+				 sort($reasoncodes,SORT_NUMERIC);
+			@endphp
+			@if($sno>1)
+			<tr>
+				<td colspan="3" style="border: none !important;">
+					<table>
+						<tr style="font-weight: bold;">
+							<td style="border: 1px solid #988989 !important;">
+								Code
+							</td>
+							<td style="border: 1px solid #988989 !important;">
+								Reason
+							</td>
+						</tr>
+						@foreach($reasoncodes as $r)
+						<tr>
+							<td style="border: 1px solid #988989 !important;">
+								{{ $r }}
+							</td>
+							<td style="border: 1px solid #988989 !important;">
+								{{ CommonHelper::getReasonNameBYCode($r) }}
+							</td>
+						</tr>
+						@endforeach
+					</table>
+				</td>
+				
+				<td colspan="13" align="left" style="border: none !important;"></td>
+				
+			</tr> 
+			@endif
 		</tbody>
 		
 	</table>

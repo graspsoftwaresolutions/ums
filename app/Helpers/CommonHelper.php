@@ -1985,5 +1985,9 @@ class CommonHelper
                         ->where('ms.StatusMonth','=','2017-05-01')->first();
         return $mayrecord;
     }
+
+    public static function getReasonNameBYCode($shortcode){
+        return Reason::where('short_code','=',$shortcode)->pluck('reason_name')->first();
+    }
 	
 }
