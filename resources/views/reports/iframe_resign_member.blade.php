@@ -3,7 +3,7 @@
 
 <head>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
@@ -164,7 +164,7 @@
 				
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Resigned Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Resigned Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
@@ -248,14 +248,14 @@
                     <td style="border: 1px solid #988989 !important;">{{ $member->new_ic }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->resignation_date)) }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->companycode }}</td>
+                    <td style="border: 1px solid #988989 !important;">{{ $member->unioncode }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->companycode }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->branch_name }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->contribution }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->benifit }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->total }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->paymode }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->voucher_date }}</td>
+                    <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->voucher_date)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->reason_code }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->claimer_name }}</td>
 				</tr> 
@@ -272,6 +272,9 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
+<script>
+	var excelfilenames="Resign Members report";
+</script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
@@ -280,6 +283,8 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
 	// $('#tableID').tableExport({
 	// 	type:'pdf',
@@ -335,6 +340,13 @@
 				
 	//    }
 	// });
+	$(document).ready( function() { 
+		//$("html").css('opacity',1);
+
+		$(".exportToExcel").click(function(e){
+			$("#page-length-option").table2excel();
+		});
+    }); 
 </script>
 
 </html>

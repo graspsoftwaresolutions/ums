@@ -36,7 +36,7 @@
     <div id="maintenance" class="col s12 center-align white">
       <img src="{{ asset('/public/assets/images/gallery//maintenance.png') }}" class="responsive-img maintenance-img" alt="">
       <h4 class="error-code">This site is under maintenance</h4>
-      <h6 class="mb-2 mt-2">We're sorry for the inconvenience. <br> Please check back tommorrow.</h6>
+      <h6 class="mb-2 mt-2">We're sorry for the inconvenience. <br> Please check back later.</h6>
       
     </div>
   </div>

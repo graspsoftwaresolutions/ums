@@ -400,10 +400,12 @@ class ReportsController extends Controller
         $unionbranch_name='';
        
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','rs.reason_code','rs.claimer_name')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('union_branch as u','u.id','=','c.union_branch_id')
+                    ->leftjoin('reason as reason','reason.id','=','rs.reason_code')
                     ->leftjoin('status as s','s.id','=','m.status_id')
                     ->leftjoin('designation as d','m.designation_id','=','d.id')
                     ->leftjoin('state as st','st.id','=','m.state_id')
@@ -456,10 +458,12 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name='';
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','rs.reason_code','rs.claimer_name')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
                 ->leftjoin('membership as m','m.id','=','rs.member_code')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('union_branch as u','u.id','=','c.union_branch_id')
+                ->leftjoin('reason as reason','reason.id','=','rs.reason_code')
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('state as st','st.id','=','m.state_id')
