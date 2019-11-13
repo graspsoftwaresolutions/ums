@@ -366,11 +366,16 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('insertmonth','MonthEndController@insertMonthendView')->name('subscription.monthend');
 	Route::post('insertmonth-record','MonthEndController@insertMonthend')->name('monthend.insert');
 
+	Route::get('get-union-resignedmembers-report','ReportsController@unionResignReportMore')->name('get-union-resignedmembers-report');
+	Route::get('union-resignmembernew','ReportsController@resignUnionMemberReport')->name('union.resignmembernew');
+
 	Route::get('export-pdf-advice-new','ReportsController@exportPdfAdvancenew')->name('advance.pdf');
 	Route::get('export-pdf-members-new','ReportsController@exportPdfMembersnew')->name('members.pdf');
 	Route::get('export-pdf-members-unionnew','ReportsController@exportPdfMembersUnionnew')->name('members.pdf');
 
 	Route::get('export-pdf-members','ReportsController@exportPdfMembers')->name('members.pdf');
+	Route::get('export-pdf-resignmembers','ReportsController@exportPdfResignMembers')->name('resignmember.pdf');
+	Route::get('export-pdf-resignmembers-union','ReportsController@exportPdfUnionResignMembers')->name('resignmember.unionpdf');
 
 
 	Route::get('refresh-csrf', function(){

@@ -107,7 +107,7 @@
 				<td style="border: 1px solid #988989 !important;">{{ $tot_contribution }}</td>
 				<td style="border: 1px solid #988989 !important;">{{ $tot_benifit }}</td>
 				<td style="border: 1px solid #988989 !important;">{{ $tot_amt }}</td>
-				<td colspan="4" align="left" style="border: 1px solid #988989 !important;"></td>
+				<td colspan="4" style="border: 1px solid #988989 !important;"></td>
 				
 			</tr> 
 			@php
@@ -116,29 +116,31 @@
 			@if($sno>1)
 			<tr>
 				<td colspan="3" style="border: none !important;">
-					<table>
-						<tr style="font-weight: bold;">
-							<td style="border: 1px solid #988989 !important;">
-								Code
-							</td>
-							<td style="border: 1px solid #988989 !important;">
-								Reason
-							</td>
-						</tr>
-						@foreach($reasoncodes as $r)
-						<tr>
-							<td style="border: 1px solid #988989 !important;">
-								{{ $r }}
-							</td>
-							<td style="border: 1px solid #988989 !important;">
-								{{ CommonHelper::getReasonNameBYCode($r) }}
-							</td>
-						</tr>
-						@endforeach
+					<table id="reason-area" width="100%">
+						<tbody>
+							<tr style="font-weight: bold;">
+								<td style="border: 1px solid #988989 !important;">
+									Code
+								</td>
+								<td style="border: 1px solid #988989 !important;">
+									Reason
+								</td>
+							</tr>
+							@foreach($reasoncodes as $r)
+							<tr>
+								<td style="border: 1px solid #988989 !important;">
+									{{ $r }}
+								</td>
+								<td style="border: 1px solid #988989 !important;">
+									{{ CommonHelper::getReasonNameBYCode($r) }}
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
 					</table>
 				</td>
 				
-				<td colspan="13" align="left" style="border: none !important;"></td>
+				
 				
 			</tr> 
 			@endif

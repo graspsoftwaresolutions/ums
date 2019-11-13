@@ -180,50 +180,27 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-	<iframe src="{{ route('reports.resignmembernew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
-		<!--div class="card hide">
-			<div class="card-content">
-				<table id="page-length-option" class="display" width="100%">
-					<thead>
-						<tr>
-							<th width="15%">{{__('Name')}}</th>
-							<th width="10%">{{__('Number')}}</th>
-							<th width="10%">{{__('NRIC')}}</th>
-							<th width="10%">{{__('joined')}}</th>
-							<th width="10%">{{__('Resigned')}}</th>
-							<th width="10%">{{__('Bank')}}</th>
-							<th width="20%">{{__('Branch')}}</th>
-							<th width="6%">{{__('Contribution')}}</th>
-							<th width="6%">{{__('Benifit')}}</th>
-							<th width="6%">{{__('Total')}}</th>
-						</tr> 
-					</thead>
-					<tbody>
-						
-						@foreach($data['member_view'] as $member)
-							<tr>
-								<td>{{ $member->name }}</td>
-								<td>{{ $member->member_number }}</td>
-								<td>{{ $member->new_ic }}</td>
-								<td>{{ $member->doj }}</td>
-								<td>{{ $member->resignation_date }}</td>
-								<td>{{ $member->companycode }}</td>
-								<td>{{ $member->branch_name }}</td>
-								<td>{{ $member->contribution }}</td>
-								<td>{{ $member->benifit }}</td>
-								<td>{{ $member->total }}</td>
-								
-							</tr> 
-						@endforeach
-					</tbody>
-					<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
-				</table> 
+		<div class="row">
+			<div class="col s12">
+				<ul class="tabs">
+					<li class="tab col m3"><a class="active" id="report1" href="#new_member_report">Member Report</a></li>
+					<li class="tab col m3"><a href="#resign_member_report" id="report2">Union Branch Report</a></li>
+				</ul>
 			</div>
-		</div-->
+			<div id="new_member_report" class="col s12">
+				<iframe src="{{ route('reports.resignmembernew',[app()->getLocale()]) }}" id="myframe" height="400px" width="100%"></iframe>
+			</div>
+			<div id="resign_member_report" class="col s12">
+				<iframe src="{{ route('union.resignmembernew',[app()->getLocale()]) }}" id="myresignframe" height="400px" width="100%"></iframe>
+			</div>
+			
+		</div>
 		</br>
 		</br>
+		
 	</div>
 </div> 
+
 @php	
 	$ajaxcompanyid = '';
 	$ajaxbranchid = '';
@@ -433,6 +410,7 @@ $("#member_status4_sidebar_a_id").addClass('active');
 		if(from_date!="" && to_date!=""){
 			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type+'&unionbranch_id='+unionbranch_id+'&from_member_no='+from_member_no+'&to_member_no='+to_member_no+'&resign_reason='+resign_reason;
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-new-resignedmembers-report') }}?offset=0"+searchfilters,);
+			$("#myresignframe").attr("src", "{{ url(app()->getLocale().'/get-union-resignedmembers-report') }}?offset=0"+searchfilters,);
 		// 	
 		//loader.showLoader();
 		// 	$('#page-length-option tbody').empty();

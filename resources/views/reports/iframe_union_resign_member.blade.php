@@ -10,7 +10,6 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
 	<style>
 		/* Styles go here */
-		
 		tr {
 		    border-bottom: none !important; 
 		}
@@ -79,11 +78,12 @@
 			}
 
 			#page-length-option td, #page-length-option th {
-			  border: 1px solid #ddd !important;
+			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
 			html {
-			    font-family: 'Muli', sans-serif;
+
+			    //font-family: 'Muli', sans-serif;
 			    font-weight: normal;
 			    line-height: 1; 
 			    color: rgba(0, 0, 0, .87);
@@ -97,6 +97,10 @@
 				font-weight:bold;
 				font-size:14px;
 			}
+
+			.page-header-area{
+				display: none;
+			}
 			
 		}
 		@media not print {
@@ -108,7 +112,7 @@
 			}
 			.page-table-header-space {
 			  width: 100%;
-			  position: fixed;
+			 // position: fixed;
 			  top:101px;
 			  margin-bottom:20px;
 			  background: #343d9f; /* for demo */
@@ -117,11 +121,14 @@
 			  font-size: 14px;
 			}
 			.tbody-area{
-				top:137px;
-				position: absolute;
+				top:140px;
+				//position: absolute;
 			}
 			.nric_no{
 				width:150px !important;
+			}
+			.page-header-area{
+				display: none;
 			}
 		}
 		td, th {
@@ -145,30 +152,33 @@
 		.tbody-area{
 			color:#000;
 		}
+		#page-length-option td, #page-length-option th {
+			//border: 1px solid #ddd !important;
+			padding: 4px;
+		}
 		
 		
 	</style>
 	<script type="text/javascript">
-	
+		
 	</script>
 </head>
 
 <body>
 	<div class="" style="text-align: center">
-		@php 
-			$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&date_type='.$data['date_type'].'&unionbranch_id='.$data['unionbranch_id'].'&from_member_no='.$data['from_member_no'].'&to_member_no='.$data['to_member_no'].'&resign_reason='.$data['resign_reason'];
-		@endphp
 		<table width="100%">
 			<tr>
-			@php $logo = CommonHelper::getLogo(); @endphp
+				@php 
+					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&member_auto_id='.$data['member_auto_id'].'&date_type='.$data['date_type'].'&unionbranch_id='.$data['unionbranch_id'].'&from_member_no='.$data['from_member_no'].'&to_member_no='.$data['to_member_no'].'&resign_reason='.$data['resign_reason'];
+				@endphp
 				<td width="20%"></td>
 				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-				
+					
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="{{ url(app()->getLocale().'/export-pdf-resignmembers?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="exportToExcel export-button btn btn-sm" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="{{ url(app()->getLocale().'/export-pdf-resignmembers-union?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -177,78 +187,16 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-    @include('reports.common_resignmembers')
+    @include('reports.common_resignmembers_union')
 	
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
-<script>
-	var excelfilenames="Resign Members report";
-</script>
-<script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
-<!--<![endif]-->
-<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script src="{{ asset('public/excel/jquery-ui.min.js') }}"></script>
+<script>
+	var excelfilenames="Union Members report";
+</script>
 <script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
-	// $('#tableID').tableExport({
-	// 	type:'pdf',
-	// 	jspdf: {
-	// 		orientation: 'p',
-	// 		margins: {
-	// 			left:20, top:10
-	// 		},
-	// 		autotable: false
-	// 	}
-	// });
-	//   $(window).scroll(function() {   
-	//    var lastoffset = $("#memberoffset").val();
-	//    var limit = "{{$data['data_limit']}}";
-	//    if($(window).scrollTop() + $(window).height() == $(document).height()) {
-	// 	    loader.showLoader();
-	// 		console.log("event triggered");
-	// 	    var from_date = $("#from_date").val();
-	// 		var to_date = $("#to_date").val();
-	// 		var company_id = $("#company_id").val();
-	// 		var branch_id = $("#branch_id").val();
-	// 		var member_auto_id = $("#member_auto_id").val();
-	// 		var date_type = $("#date_type").val();
-	// 		var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&date_type='+date_type;
-	// 	    $("#memberoffset").val(parseInt(lastoffset)+parseInt(limit));
-	// 		$.ajax({
-	// 			type: "GET",
-	// 			dataType: "json",
-	// 			url : "{{ URL::to('/en/get-resign-members-report') }}?offset="+lastoffset+searchfilters,
-	// 			success:function(res){
-	// 				if(res)
-	// 				{
-	// 					$.each(res,function(key,entry){
-	// 						var table_row = "<tr><td>"+entry.name+"</td>";
-	// 							table_row += "<td>"+entry.member_number+"</td>";
-	// 							table_row += "<td>"+entry.new_ic+"</td>";
-	// 							table_row += "<td>"+entry.doj+"</td>";
-	// 							table_row += "<td>"+entry.resignation_date+"</td>";
-	// 							table_row += "<td>"+entry.companycode+"</td>";
-	// 							table_row += "<td>"+entry.branch_name+"</td>";
-	// 							table_row += "<td>"+entry.contribution+"</td>";
-	// 							table_row += "<td>"+entry.benifit+"</td>";
-	// 							table_row += "<td>"+entry.total+"</td></tr>";
-	// 							$('#page-length-option tbody').append(table_row);
-	// 					});
-	// 					loader.hideLoader();
-	// 				}else{
-						
-	// 				}
-	// 			}
-	// 		});
-		    
-				
-	//    }
-	// });
 	$(document).ready( function() { 
 		//$("html").css('opacity',1);
 
