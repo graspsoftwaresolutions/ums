@@ -155,19 +155,17 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
 		<table width="100%">
 			<tr>
 			@php $logo = CommonHelper::getLogo(); @endphp
 				<td width="20%"></td>
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
-					<h6 style="text-align:center;">UNION BRANCH'S ADVICE LIST</h6>
+					
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Resigned Members Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Resigned Members Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
@@ -179,29 +177,64 @@
   </div>-->
 	<table id="page-length-option" class="display" width="100%">
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
+			<tr class="">
+				
+				<td colspan="2" rowspan="2">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
+				</td>
+				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					
+				</td>
+				<td colspan="3" rowspan="2">	
+					</br>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
-				<th style="width:51px  !important ;border : 1px solid #343d9f;" align="center">SNO</th>
-                <th style="width:240px !important;">{{__('NAME')}}</th>
-                <th style="width:200px !important;">{{__('I.C.NO')}}</th>
-                <th style="width:130px !important;">{{__('BANK')}}</th>
-                <th style="width:220px !important;">{{__('BANK BRANCH')}}</th>
-                <th style="width:150px !important;">{{__('M/NO')}}</th>
-                <th style="width:150px !important;">{{__('DOJ')}}</th>
-                <th style="width:100px !important;">{{__('CLERK')}}</th>
-                <th style="width:100px !important;">{{__('ENT FEE')}}</th>
-                <th style="width:100px !important;">{{__('SUBS')}}</th>
-                <th style="width:100px !important;">{{__('B/F')}}</th>
-                <th style="width:100px !important;">{{__('HQ')}}</th>
-                <th style="width:100px !important;">{{__('RMK')}}</th>
+			<tr class="">
+				
+				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;">UNION BRANCH'S ADVICE LIST</span>
+				</td>
+				
+			</tr>
+			<tr class="" style="font-weight: bold;">
+			
+				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
+					To Branch Hons. Secretary
+					@if($data['unionbranch_id']!='')
+						<br>
+						Branch Name : {{ $data['unionbranch_name'] }}
+					@endif
+				</td>
+				<td colspan="5" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
+				</td>
+				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
+					
+					@if($data['unionbranch_id']!='')
+						<br>
+						Branch Code : {{ $data['unionbranch_id'] }}
+					@endif
+				</td>
+			</tr>
+			<tr class="" >
+				<th style="border : 1px solid #988989;" align="center">SNO</th>
+                <th style="border : 1px solid #988989;">{{__('NAME')}}</th>
+                <th style="border : 1px solid #988989;">{{__('I.C.NO')}}</th>
+                <th style="border : 1px solid #988989;">{{__('BANK')}}</th>
+                <th style="border : 1px solid #988989;">{{__('BANK BRANCH')}}</th>
+                <th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
+                <th style="border : 1px solid #988989;">{{__('DOJ')}}</th>
+                <th style="border : 1px solid #988989;">{{__('CLERK')}}</th>
+                <th style="border : 1px solid #988989;">{{__('ENT FEE')}}</th>
+                <th style="border : 1px solid #988989;">{{__('SUBS')}}</th>
+                <th style="border : 1px solid #988989;">{{__('B/F')}}</th>
+                <th style="border : 1px solid #988989;">{{__('HQ')}}</th>
+                <th style="border : 1px solid #988989;">{{__('RMK')}}</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="" width="100%">
 			@php
 				$sno = 1;
 				$total_paid = 0;
@@ -212,21 +245,21 @@
 			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr>
-					<td style="width:51px !important ; border : 1px solid white;">{{ $sno }}</td>
-                    <td style="width:240px !important;">{{ $member->name }}</td>
-                    <td style="width:150px !important;">{{ $member->ic }}</td>
-                    <td style="width:130px !important;">{{ $member->companycode }}</td>
-                    <td style="width:220px !important;">{{ $member->branch_name }}</td>
-                    <td style="width:150px !important;">{{ $member->member_number }}</td>
+					<td style="border : 1px solid #988989;">{{ $sno }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->name }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->ic }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->companycode }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
                    
-                    <td style="width:200px !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
-                    <td style="width:120px !important;">{{ $member->designation_name }}</td>
+                    <td style="border : 1px solid #988989;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->designation_name }}</td>
                     
-                    <td style="width:126px !important;">{{ $data['ent_amount'] }}</td>
-                    <td style="width:120px !important;">{{ $member->subs }}</td>
-                    <td style="width:120px !important;">{{ $data['bf_amount'] }}</td>
-                    <td style="width:120px !important;">{{ $data['hq_amount'] }}</td>
-                    <td style="width:120px !important;">{{ '' }}</td>
+                    <td style="border : 1px solid #988989;">{{ $data['ent_amount'] }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->subs }}</td>
+                    <td style="border : 1px solid #988989;">{{ $data['bf_amount'] }}</td>
+                    <td style="border : 1px solid #988989;">{{ $data['hq_amount'] }}</td>
+                    <td style="border : 1px solid #988989;">{{ '' }}</td>
 				</tr> 
 				@php
 					$sno++;
@@ -237,27 +270,31 @@
 				@endphp
 			@endforeach
 			<tr>
-				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Member's Count </td>
-				<td> {{ $sno-1 }}</td>
-				<td colspan="5"> </td>
-				<td>{{ $total_ent_amount }}</td>
-				<td>{{ $total_subs }}</td>
-				<td>{{ $total_bf_amount }}</td>
-				<td>{{ $total_hq_amount }}</td>
-				<td></td>
+				<td colspan="2" style="border : 1px solid #988989;">Total Member's Count </td>
+				<td style="border : 1px solid #988989;"> {{ $sno-1 }}</td>
+				<td colspan="5" style="border : 1px solid #988989;"> </td>
+				<td style="border : 1px solid #988989;">{{ $total_ent_amount }}</td>
+				<td style="border : 1px solid #988989;">{{ $total_subs }}</td>
+				<td style="border : 1px solid #988989;">{{ $total_bf_amount }}</td>
+				<td style="border : 1px solid #988989;">{{ $total_hq_amount }}</td>
+				<td style="border : 1px solid #988989;"></td>
 			</tr> 
 			@php
 				$total_paid = round($total_ent_amount + $total_subs + $total_bf_amount + $total_hq_amount,2);
 			@endphp
 			<tr>
-				<td colspan="2" style="width:651px !important ; border : 1px solid white;font-weight:bold;">Total Amount Collected </td>
-				<td colspan="11">{{ $total_paid }}</td>
+				<td colspan="2" style="border : 1px solid #988989;">Total Amount Collected </td>
+				<td colspan="1" style="border : 1px solid #988989;">{{ $total_paid }}</td>
+				<td colspan="10" style="border : 1px solid #988989;"></td>
 			</tr> 
 		</tbody>
 		
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
+<script>
+	var excelfilenames="Resign Members report";
+</script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
@@ -266,18 +303,12 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
+	$(".exportToExcel").click(function(e){
+		$("#page-length-option").table2excel();
 	});
-	
+
 </script>
 
 </html>

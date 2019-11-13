@@ -2455,8 +2455,8 @@ class ReportsController extends Controller
                     }
                     $members = $members->get();
         $data['member_view'] = $members;
-        $data['from_date'] = date('01/M/Y');
-        $data['to_date'] = date('t/M/Y');
+        $data['from_date'] = date('Y-m-01');
+        $data['to_date'] = date('Y-m-t');
         $data['company_id'] = '';
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
@@ -2859,8 +2859,11 @@ class ReportsController extends Controller
        
         $data['member_view'] = $members;
         $data['month_year'] = date('M/Y');
+        $data['from_date'] = date('Y-m-01');
+        $data['to_date'] = date('Y-m-t');
         $data['company_id'] = '';   
-        $data['branch_id'] = '';        
+        $data['branch_id'] = ''; 
+        $data['unionbranch_id']='';       
         $data['member_auto_id'] = '';  
         $data['member_search'] = '';
        return view('reports.iframe_union_members')->with('data',$data);
