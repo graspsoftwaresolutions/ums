@@ -8,7 +8,7 @@
 				<td colspan="4" rowspan="2">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="9" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="10" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -18,7 +18,7 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="9" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="10" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">RESIGNATION REPORT</span>
 				</td>
@@ -33,7 +33,7 @@
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
 				</td>
-				<td colspan="9" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="10" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -57,6 +57,7 @@
                 <th style="border: 1px solid #988989 !important;">{{__('BANK BRANCH')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('CONTRIBUTION')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('BENEFIT')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('INSURANCE')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('TOTAL')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('PAYMODE')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('DATE')}}</th>
@@ -69,6 +70,7 @@
 				$sno = 1;
 				$tot_benifit = 0;
 				$tot_contribution = 0;
+				$tot_ins = 0;
 				$tot_amt = 0;
 				$reasoncodes = [];
 			@endphp
@@ -85,6 +87,7 @@
                     <td style="border: 1px solid #988989 !important;">{{ $member->branch_name }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->contribution }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->benifit }}</td>
+					<td style="border: 1px solid #988989 !important;">{{ $member->insuranceamount }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->total }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->paymode }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->voucher_date)) }}</td>
@@ -95,6 +98,7 @@
 					$sno++;
 					$tot_benifit += $member->benifit;
 					$tot_contribution += $member->contribution;
+					$tot_ins += $member->insuranceamount;
 					$tot_amt += $member->total;
 					if(!in_array($member->reason_code, $reasoncodes, true)){
 				        array_push($reasoncodes, $member->reason_code);
@@ -106,6 +110,7 @@
 				<td style="border: 1px solid #988989 !important;">Total</td>
 				<td style="border: 1px solid #988989 !important;">{{ $tot_contribution }}</td>
 				<td style="border: 1px solid #988989 !important;">{{ $tot_benifit }}</td>
+				<td style="border: 1px solid #988989 !important;">{{ $tot_ins }}</td>
 				<td style="border: 1px solid #988989 !important;">{{ $tot_amt }}</td>
 				<td colspan="4" style="border: 1px solid #988989 !important;"></td>
 				
