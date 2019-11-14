@@ -6,7 +6,7 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2">
+				<td colspan="2" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
 				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">

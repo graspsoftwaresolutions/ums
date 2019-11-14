@@ -175,7 +175,7 @@
 				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
 					
-					<h6 style="text-align:center;">Union Branch Report</h6>
+					
 				</td>
 				<td width="20%">	
 					<a href="#" class="exportToExcel export-button btn btn-sm" style="background:#227849;"><i class="material-icons">explicit</i></a>
