@@ -176,7 +176,7 @@
 			<tr class="">
 				
 				
-				<td colspan="3" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="3" style="text-align:center;padding:10px;vertical-align:top;" width="100%">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" style="margin-right: 20px;" />
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
