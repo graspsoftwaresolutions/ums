@@ -1707,9 +1707,9 @@ class ReportsController extends Controller
         ->groupBy('cb.union_branch_id')
         ->get();          
          $data['half_share'] = $half_s;
-         $data['date'] = date('M/Y');
+         $data['date'] = date('Y-m-01');
 
-         $data['month_year']='';
+         $data['month_year'] = date('Y-m-01');
          $data['bf_amount']=$this->bf_amount;
          $data['ins_amount']=$this->ins_amount;
          $data['total_ins']=$this->bf_amount+$this->ins_amount;
@@ -1725,11 +1725,13 @@ class ReportsController extends Controller
 			$fmmm_date = explode("/",$month_year);
 			$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
 			$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-			$data['date'] = $month_year;
+            $data['date'] = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+            $data['month_year'] = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }else{
 			$monthno = date('m');
 			$yearno = date('Y');
-			$data['date'] = date('M/Y');
+            $data['date'] = date('Y-m-01');
+            $data['month_year'] = date('Y-m-01');
         }
         $half_s = DB::table('mon_sub_member as mm')->select(DB::raw('count(mm.id) as count'), DB::raw('sum(mm.Amount) as subamt'),'ms.Date as statusmonth','cb.union_branch_id','ub.union_branch')
             ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')

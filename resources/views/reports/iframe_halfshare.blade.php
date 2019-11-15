@@ -3,7 +3,7 @@
 
 <head>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
@@ -149,27 +149,21 @@
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
 		<table width="100%">
 			<tr>
 				<td width="20%"></td>
-				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" alt="Membership logo" height="50"></td>
+				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
-					<h6 style="text-align:center;">HALF SHARE REPORT</h6>
+					
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Half share Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Half share Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
@@ -179,26 +173,56 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
+  @php $logo = CommonHelper::getLogo(); @endphp
 	<table id="page-length-option" class="display" width="100%">
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
+			<tr class="">
+				
+				<td colspan="1" rowspan="2" style="text-align:right">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
+				</td>
+				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					
+				</td>
+				<td colspan="1" rowspan="2">	
+					</br>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
-				<th width='15%'>{{__('UNION BRANCH NAME')}}</th>
-				<th width='10%'>{{__('TOTAL')}}</th>
-				<th width='10%'>{{__('BF')}}</th>
-				<th width='10%'>{{__('INS')}}</th>
-				<th width='10%'>{{__('SUBS')}}</th>
-				<th width='10%'>{{__('1/2 SHARE')}}</th>
-				<th width='10%'>{{__('10%ED - FUND')}}</th>
-				<th width='10%'>{{__('TOTAL AMOUNT')}}</th>
+			<tr class="">
+				
+				<td colspan="6" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;">HALF SHARE REPORT</span>
+				</td>
+				
+			</tr>
+			<tr class="" style="font-weight: bold;">
+			
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">
+				
+				</td>
+				<td colspan="6" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;font-weight: bold;">
+					NATIONAL UNION BANK OF EMPLOYEES
+					</br>
+					SUMMARY REMITTANCE MONTH : {{ date('M Y',strtotime($data['month_year'])) }} 
+				</td>
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
+					
+				</td>
+			</tr>
+			<tr class="" >
+				<th style="border: 1px solid #988989 !important;">{{__('UNION BRANCH NAME')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('BF')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('INS')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('SUBS')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('1/2 SHARE')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('10%ED - FUND')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('TOTAL AMOUNT')}}</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="" width="100%">
             @php
             $total_all=0;
             $bf=0;
@@ -230,28 +254,28 @@
                 $bl_amt += $balamtgn;
                 @endphp
                     <tr>
-                        <td style="width:170px !important; border:1px ;">{{ $hlfshre->union_branch }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($totall,2,".",",") }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($bf_amount,2,".",",") }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($ins_amount,2,".",",") }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($sub_amt,2,".",",") }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($hlf_sr,2,".",",") }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($tenper,2,".",",") }}</td>
-                        <td style="width:100px !important; border:1px ;">{{ number_format($balamtgn,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ $hlfshre->union_branch }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($totall,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($bf_amount,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($ins_amount,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($sub_amt,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($hlf_sr,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($tenper,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ number_format($balamtgn,2,".",",") }}</td>
                         
                     </tr> 
                 @endforeach
                 @endif
                 <tr style="font-weight:bold;">
                 
-                        <td style="width:200px !important; border:1px  ;">Total</td>
-                        <td style="width:130px !important; border:1px ;">{{ number_format($total_all,2,".",",") }}</td>
-                        <td style="width:130px !important; border:1px ;">{{ number_format($bf,2,".",",") }}</td>
-                        <td style="width:140px !important; border:1px  ;">{{ number_format($ins,2,".",",") }}</td>
-                        <td style="width:130px !important; border:1px  ;">{{ number_format($sub,2,".",",") }}</td>
-                        <td style="width:130px !important; border:1px  ;">{{ number_format($hlf,2,".",",") }}</td>
-                        <td style="width:150px !important; border:1px  ;">{{ number_format($t_per,2,".",",") }}</td>
-                        <td style="width:140px !important; border:1px;">{{ number_format($bl_amt,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">Total</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($total_all,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($bf,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($ins,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($sub,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($hlf,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($t_per,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($bl_amt,2,".",",") }}</td>
                 </tr>
 	
 			
@@ -260,6 +284,9 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
+<script>
+	var excelfilenames="Half Share Report";
+</script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
@@ -268,20 +295,15 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
 	$(document).ready( function() { 
 		$("html").css('opacity',1);
     });
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
+	$(".exportToExcel").click(function(e){
+		$("#page-length-option").table2excel();
 	});
+
 	//  $(window).scroll(function() {   
 	//    var lastoffset = $("#memberoffset").val();
 	//    var limit = "{{$data['data_limit']}}";
