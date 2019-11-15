@@ -64,7 +64,7 @@
 									</ol>
 								</div>
 								<div class="col s2 m6 l6 ">
-									<a class="btn waves-effect waves-light cyan orange breadcrumbs-btn " href="{{ route('subscription.monthend', app()->getLocale())  }}">{{__('Insert Monthend')}}</a>
+									<a class="btn waves-effect waves-light cyan orange breadcrumbs-btn hide" href="{{ route('subscription.monthend', app()->getLocale())  }}">{{__('Insert Monthend')}}</a>
 									<a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
 								</div>                                    
 							</div>

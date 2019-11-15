@@ -1274,7 +1274,7 @@ class ReportsController extends Controller
 
         $members = CacheMonthEnd::getMonthEndCompaniesByDate(date('Y-m-01'));
        
-		$data['month_year'] = date('M/Y');
+		$data['month_year'] = date('Y-m-01');
 		$data['unionbranch_id'] = '';
 		$data['company'] = '' ;
         $data['branch_id'] = '';
@@ -1342,7 +1342,7 @@ class ReportsController extends Controller
 		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
-		$data['month_year'] = $month_year;
+		$data['month_year'] = $fulldate;
 		$data['unionbranch_id'] = $unionbranch_id;
 		$data['company'] = $company_id;
         $data['branch_id'] = $branch_id;

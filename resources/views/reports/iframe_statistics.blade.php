@@ -3,7 +3,7 @@
 <head>
 	<title>Statistics Report</title>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
@@ -149,18 +149,17 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
+		@php $logo = CommonHelper::getLogo(); @endphp
 		<table width="100%">
 			<tr>
 				<td width="20%"></td>
-				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
-					<h6 style="text-align:center;">OVER ALL BANK BRANCH REPORT</h6>
+				
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Statistics Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Statistics Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
@@ -172,43 +171,64 @@
   </div>-->
 	<table id="page-length-option" class="display" >
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
+			<tr class="">
+				
+				<td></td>
+				<td colspan="{{ (count($data['race_view'])*4)+6 }}" style="text-align:center;padding:10px;vertical-align:top;">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" style="margin-right: 20px;" />
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					
 				</td>
+				<td colspan="2"></td>
+				
 			</tr>
-			<tr class="page-table-header-space" style="border:1px solid #000;">
-				<th style="width:201px !important; border:1px ;"></th>
+			<tr class="">
+				<td></td>
+				<td colspan="{{ (count($data['race_view'])*4)+6 }}" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;">OVER ALL BANK BRANCH REPORT</span>
+				</td>
+				<td colspan="2"></td>
+				
+			</tr>
+			<tr class="" style="font-weight: bold;">
+				<td></td>
+				<td colspan="{{ (count($data['race_view'])*4)+6 }}" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
+				</td>
+				<td colspan="2"></td>
+			</tr>
+			<tr class="" style="border:1px solid #000;">
+				<th style="border:1px ;"></th>
 				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border:1px ;">BENEFIT</th>
 				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border:1px ;">NON BENEFIT</th>
 				
-				<th colspan="2" style="width:3% !important; border:1px ;"></th>
+				<th colspan="2" style="border:1px ;"></th>
 			</tr>
-			<tr class="page-table-header-space1" >
-				<th style="width:15% !important; border:1px ;">{{__('BRANCH CODE')}}</th>
+			<tr class="" >
+				<th style="border: 1px solid #988989 !important;">{{__('BRANCH CODE')}}</th>
 				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
+					<th style="border: 1px solid #988989 !important;">M{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('S.TOTAL')}}</th>
 				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
+					<th style="border: 1px solid #988989 !important;">F{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('S.TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('TOTAL')}}</th>
 				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
+					<th style="border: 1px solid #988989 !important;">M{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('S.TOTAL')}}</th>
 				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
+					<th style="border: 1px solid #988989 !important;">F{{$values->race_name[0]}}</th>
 				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('TOTAL')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('G.TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('S.TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('TOTAL')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('G.TOTAL')}}</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="" width="100%">
 		@php
 			$total_grandtotal = 0;
 			$month_year = $data['month_year'];
@@ -223,7 +243,7 @@
         		$over_all_count = CommonHelper::group_all_gender_race_count($data['member_count'],$values->branchid,$month_year);
         	@endphp
             <tr style="margin-top:50px !important;">
-				<td style='width:201px !important; border:1px ;'>
+				<td style='border: 1px solid #988989 !important;'>
 					@php 
 						if($values->branch_shortcode==''){
 							echo $branch_name = $values->companycode.'_'.substr($values->branch_name, 0, 16); 
@@ -252,18 +272,18 @@
 					$race_id = $race->id;
 					$male_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,1,'Male');
 				@endphp
-					<td style="width:41px !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
+					<td style="border: 1px solid #988989 !important; ">{{$male_count}}</td>
 				@php
 					$subtotal1 += $male_count; 
 				@endphp
 				@endforeach
-				<td style="width:60px !important; border:1px ;"> {{$subtotal1}}</td>
+				<td style="border: 1px solid #988989 !important;"> {{$subtotal1}}</td>
 				@foreach($data['race_view'] as $value)
 					@php 
 						$race_id = $value->id;
 						$female_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,1,'Female');
 					@endphp
-				<td style="width:41px !important; border:1px ;">{{$female_count}}</td>
+				<td style="border: 1px solid #988989 !important;">{{$female_count}}</td>
 					@php
 					$subtotal2 += $female_count; 
 					@endphp
@@ -271,24 +291,24 @@
 				@php 
 					$total = $subtotal1 + $subtotal2; 
 				@endphp
-				<td style="width:60px !important; border:1px ;"> {{$subtotal2}}</td>
-				<td style="width:50px !important; border:1px ;">{{$total}}</td>
+				<td style="border: 1px solid #988989 !important;"> {{$subtotal2}}</td>
+				<td style="border: 1px solid #988989 !important;">{{$total}}</td>
 				@foreach($data['race_view'] as $value)
 				@php 
 					$race_id = $value->id;
 					$maledefaulter_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,2,'Male');
 				@endphp
-					<td style="width:60px !important; border:1px ;">{{$maledefaulter_count}}</td>
+					<td style="border: 1px solid #988989 !important;">{{$maledefaulter_count}}</td>
 				@php
 					$subtotaldefaulter1 += $maledefaulter_count; 
 					@endphp
 				@endforeach
-				<td style="width:41px !important; border:1px ;"> {{$subtotaldefaulter1}}</td>
+				<td style="border: 1px solid #988989 !important;"> {{$subtotaldefaulter1}}</td>
 				@foreach($data['race_view'] as $value)
 				@php $race_id = $value->id;
 					$femaledefaulter_count = CommonHelper::get_group_gender_race_count($over_all_count,$race_id,2,'Female');
 				@endphp
-					<td style="width:41px !important; border:1px ;padding-left: 0px;">{{$femaledefaulter_count}}</td>
+					<td style="border: 1px solid #988989 !important;">{{$femaledefaulter_count}}</td>
 					@php
 						$subtotaldefaulter2 += $femaledefaulter_count; 
 						$defaultertotal = $subtotaldefaulter1 + $subtotaldefaulter2; 
@@ -298,9 +318,9 @@
 				@php
 					$total_grandtotal += $grandtotal;
 				@endphp
-				<td style="width:41px !important; border:1px ;">{{$subtotaldefaulter2}}</td>
-				<td style="width:41px !important; border:1px ;">{{$defaultertotal}}</td>
-				<td style="width:41px !important; border:1px ;">{{$grandtotal}}</td>
+				<td style="border: 1px solid #988989 !important;">{{$subtotaldefaulter2}}</td>
+				<td style="border: 1px solid #988989 !important;">{{$defaultertotal}}</td>
+				<td style="border: 1px solid #988989 !important;">{{$grandtotal}}</td>
             </tr> 
             @endforeach
 			<tr style="">
@@ -309,27 +329,27 @@
 				</td>
 			    
 				@foreach($data['race_view'] as $race)
-					<td style="width:41px !important; border:1px ; padding-left: 5px;"></td>
+					<td style="border: 1px solid #988989 !important;"></td>
 				@endforeach
-				<td style="width:60px !important; border:1px ;"> </td>
+				<td style="border: 1px solid #988989 !important;"> </td>
 				@foreach($data['race_view'] as $value)
 				
-				<td style="width:41px !important; border:1px ;"></td>
+				<td style="border: 1px solid #988989 !important;"></td>
 					
 				@endforeach
 			
-				<td style="width:60px !important; border:1px ;"> </td>
-				<td style="width:50px !important; border:1px ;"></td>
+				<td style="border: 1px solid #988989 !important;"> </td>
+				<td style="border: 1px solid #988989 !important;"></td>
 				@foreach($data['race_view'] as $value)
-					<td style="width:60px !important; border:1px ;"></td>
+					<td style="border: 1px solid #988989 !important;"></td>
 				@endforeach
-				<td style="width:41px !important; border:1px ;"></td>
+				<td style="border: 1px solid #988989 !important;"></td>
 				@foreach($data['race_view'] as $value)
-					<td style="width:41px !important; border:1px ;padding-left: 0px;"></td>
+					<td style="border: 1px solid #988989 !important;"></td>
 				@endforeach
-				<td style="width:41px !important; border:1px ;"></td>
-				<td style="width:41px !important; border:1px ;"></td>
-				<td style="width:41px !important; border:1px ;">{{$total_grandtotal}}</td>
+				<td style="border: 1px solid #988989 !important;"></td>
+				<td style="border: 1px solid #988989 !important;"></td>
+				<td style="border: 1px solid #988989 !important;">{{$total_grandtotal}}</td>
             </tr> 
 		</tbody>
 	</table>
