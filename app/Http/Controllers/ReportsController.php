@@ -2015,7 +2015,7 @@ class ReportsController extends Controller
 		// $members = $members->groupBY('ms.BANK_CODE')->get();
 		//dd($members);
         $data['member_view'] = [];
-        $data['month_year']=date('M/Y');
+        $data['month_year']=date('Y-m-01');
         $data['company_id']='';
         $data['branch_id']='';
         $data['member_auto_id']='';
@@ -2069,7 +2069,7 @@ class ReportsController extends Controller
            
         }
        
-        $data['month_year']=$month_year;
+        $data['month_year']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         $data['company_id']=$company_id;
         $data['branch_id']=$branch_id;
         $data['member_auto_id']=$member_auto_id;
