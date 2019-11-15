@@ -199,11 +199,11 @@
 				<td colspan="2"></td>
 			</tr>
 			<tr class="" style="border:1px solid #000;">
-				<th style="border:1px ;"></th>
+				<th style="border-right: 1px solid #988989 !important;"></th>
 				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border:1px ;">BENEFIT</th>
-				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border:1px ;">NON BENEFIT</th>
+				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border-left: 1px solid #988989 !important;">NON BENEFIT</th>
 				
-				<th colspan="2" style="border:1px ;"></th>
+				<th colspan="2" style="border-left: 1px solid #988989 !important;"></th>
 			</tr>
 			<tr class="" >
 				<th style="border: 1px solid #988989 !important;">{{__('BRANCH CODE')}}</th>
@@ -324,7 +324,7 @@
             </tr> 
             @endforeach
 			<tr style="">
-				<td style=''>
+				<td style='border: 1px solid #988989 !important;'>
 					Total
 				</td>
 			    
@@ -355,6 +355,9 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
+<script>
+	var excelfilenames="Statistics Report";
+</script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <!-- <script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script> -->
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
@@ -364,19 +367,13 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
 	$(document).ready( function() { 
 		$("html").css('opacity',1);
     });
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
+	$(".exportToExcel").click(function(e){
+		$("#page-length-option").table2excel();
 	});
 </script>
 
