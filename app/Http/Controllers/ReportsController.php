@@ -2452,6 +2452,8 @@ class ReportsController extends Controller
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
         $total_fee = $this->ent_amount+$this->ins_amount;
+        $unionbranch_name = '';
+        $union_branch_id = '';
         
         $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
@@ -2465,6 +2467,7 @@ class ReportsController extends Controller
                     if($user_role=='union-branch'){
                         $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
                         $members = $members->where(DB::raw('c.`union_branch_id`'),'=',$union_branch_id);
+                        $unionbranch_name = DB::table('union_branch')->where('id','=',$union_branch_id)->pluck('union_branch')->first();
                     }else if($user_role=='company'){
                         $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
                         $members = $members->where(DB::raw('c.`company_id`'),'=',$company_id);
@@ -2477,10 +2480,11 @@ class ReportsController extends Controller
         $data['from_date'] = date('Y-m-01');
         $data['to_date'] = date('Y-m-t');
         $data['company_id'] = '';
-        $data['unionbranch_id'] = '';
+        $data['unionbranch_id'] = $union_branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
         $data['branch_id'] = '';
         $data['member_auto_id'] = '';
-        $data['date_type'] = '';
+        $data['date_type'] = 2;
         $data['ent_amount'] = $this->ent_amount;
         $data['hq_amount'] = $this->hq_amount;
         $data['bf_amount'] = $this->bf_amount;
@@ -2501,6 +2505,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $data['data_limit']=$this->limit;
         $total_fee = $this->ent_amount+$this->ins_amount;
+        $unionbranch_name = '';
         
         $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
@@ -2522,6 +2527,7 @@ class ReportsController extends Controller
         }else{
             if($unionbranch_id!=""){
                 $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+                $unionbranch_name = DB::table('union_branch')->where('id','=',$union_branch_id)->pluck('union_branch')->first();
             }
             if($company_id!=""){
                 $members = $members->where('c.company_id','=',$company_id);
@@ -2529,18 +2535,87 @@ class ReportsController extends Controller
         }
         $members = $members->get();
         $data['member_view'] = $members;
-        $data['from_date'] = date('01/M/Y');
-        $data['to_date'] = date('t/M/Y');
-        $data['company_id'] = '';
-        $data['unionbranch_id'] = '';
-        $data['branch_id'] = '';
-        $data['member_auto_id'] = '';
-        $data['date_type'] = '';
+        $data['from_date'] = $fromdate;
+        $data['to_date'] = $todate;
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['branch_id'] = $branch_id;
+        $data['member_auto_id'] = $member_auto_id;
+        $data['date_type'] = $date_type;
+        $data['ent_amount'] = $this->ent_amount;
+        $data['hq_amount'] = $this->hq_amount;
+        $data['bf_amount'] = $this->bf_amount;
+        //dd( $data);
+
+        return view('reports.iframe_advice_resign')->with('data',$data);  
+    }
+
+
+    public function exportPdfAdviceResign($lang,Request $request){
+       //dd($request->all());
+        $offset = $request->input('offset');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $date_type = $request->input('date_type');
+        $fromdate = $from_date;
+        $todate = $to_date;
+        $data['data_limit']=$this->limit;
+        $total_fee = $this->ent_amount+$this->ins_amount;
+        $unionbranch_name = '';
+        
+        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
+                    ->leftjoin('membership as m','m.id','=','rs.member_code')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id');
+
+        if($fromdate!="" && $todate!="" && $date_type==1){
+            $members = $members->where(DB::raw('date(rs.`resignation_date`)'),'>=',$fromdate);
+            $members = $members->where(DB::raw('date(rs.`resignation_date`)'),'<=',$todate);
+            }
+            if($fromdate!="" && $todate!="" && $date_type==2){
+                $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'>=',$fromdate);
+                $members = $members->where(DB::raw('date(rs.`voucher_date`)'),'<=',$todate);
+            }
+        if($branch_id!=""){
+            $members = $members->where('m.branch_id','=',$branch_id);
+        }else{
+            if($unionbranch_id!=""){
+                $members = $members->where('c.union_branch_id','=',$unionbranch_id);
+                $unionbranch_name = DB::table('union_branch')->where('id','=',$union_branch_id)->pluck('union_branch')->first();
+            }
+            if($company_id!=""){
+                $members = $members->where('c.company_id','=',$company_id);
+            }
+        }
+        $members = $members->get();
+        //dd( $members);
+        $data['member_view'] = $members;
+        $data['from_date'] = $fromdate;
+        $data['to_date'] = $todate;
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['branch_id'] = $branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['member_auto_id'] = $member_auto_id;
+        $data['date_type'] = $date_type;
         $data['ent_amount'] = $this->ent_amount;
         $data['hq_amount'] = $this->hq_amount;
         $data['bf_amount'] = $this->bf_amount;
 
-        return view('reports.iframe_advice_resign')->with('data',$data);  
+        //return view('reports.iframe_advice_resign')->with('data',$data);  
+
+        $dataarr = ['data' => $data ];
+
+
+        $pdf = PDF::loadView('reports.pdf_advice_resign', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('advice_resign_report.pdf');
     }
 
     public function IframeAdviceReport($lang,Request $request)
@@ -2554,6 +2629,7 @@ class ReportsController extends Controller
         $data['company_id'] = '';
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
+        $data['unionbranch_name'] = '';
         
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
@@ -2574,6 +2650,7 @@ class ReportsController extends Controller
                         $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
                         $members = $members->where(DB::raw('c.`union_branch_id`'),'=',$union_branch_id);
                         $data['unionbranch_id'] = $union_branch_id;
+                        $data['unionbranch_name'] = $unionbranch_name;
                     }else if($user_role=='company'){
                         $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
                         $members = $members->where(DB::raw('c.`company_id`'),'=',$company_id);
@@ -2589,7 +2666,7 @@ class ReportsController extends Controller
         $data['member_view'] = $members;
         $data['from_date'] = date('Y-m-01');
         $data['to_date'] = date('Y-m-t');
-        $data['unionbranch_name'] = '';
+        
        
         $data['member_auto_id'] = '';
         $data['date_type'] = 2;
@@ -2866,6 +2943,75 @@ class ReportsController extends Controller
         return view('reports.iframe_branch_status')->with('data',$data);  
     }
 
+
+    public function exportPdfBranchStatus($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $status_id = $request->input('status_id');
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'))
+                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+                ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','cb.company_id')
+                ->leftjoin('status as s','s.id','=','mm.StatusId')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->where(function($query) use ($month_year){
+                    $query->orWhere('mm.StatusId','=',1)
+                        ->orWhere('mm.StatusId', '=',2);
+                });
+               
+                if($monthno!="" && $yearno!=""){
+                  $members = $members->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+                  $members = $members->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+                }
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }else{
+                    if($unionbranch_id!=""){
+                        $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                        $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+                    }
+                    if($company_id!=""){
+                        $members = $members->where('cb.company_id','=',$company_id);
+                    }
+                }
+                if($member_auto_id!=""){
+                    $members = $members->where('m.id','=',$member_auto_id);
+                }
+            $members = $members->get();
+       
+       
+        $data['member_view'] = $members;
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['branch_id'] = $branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['member_auto_id'] = '';
+        $data['date_type'] = '';
+        $data['month_year'] = $fulldate;
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_branch_status', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_branch_status_report.pdf');
+    }
+
     public function StatusMembersUnionReport(Request $request,$lang, $status_id)
     {
         $data['data_limit']=$this->limit;
@@ -2874,6 +3020,10 @@ class ReportsController extends Controller
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_id'] = '';
+        $union_branch_id = '';
+        $data['branch_id'] = '';
+        $unionbranch_name = '';
 
          $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
          ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name','ub.union_branch as union_branch',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
@@ -2893,6 +3043,7 @@ class ReportsController extends Controller
                 if($user_role=='union-branch'){
                     $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
                     $members = $members->where(DB::raw('cb.`union_branch_id`'),'=',$union_branch_id);
+                    $unionbranch_name = DB::table('union_branch')->where('id','=',$union_branch_id)->pluck('union_branch')->first();
                 }else if($user_role=='company'){
                     $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
                     $members = $members->where(DB::raw('mc.`CompanyCode`'),'=',$company_id);
@@ -2910,10 +3061,12 @@ class ReportsController extends Controller
         $data['month_year'] = date('Y-m-01');
         //$data['from_date'] = date('Y-m-01');
         //$data['to_date'] = date('Y-m-t');
-        $data['unionbranch_id'] = '';
-        $data['unionbranch_name'] = '';
+        $data['unionbranch_id'] = $union_branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
         $data['company_id'] = '';
         $data['branch_id'] = '';
+        $data['from_member_no']='';
+        $data['to_member_no']='';
         
         $data['member_auto_id'] = '';  
         $data['member_search'] = '';
@@ -2970,6 +3123,7 @@ class ReportsController extends Controller
                 }else{
                     if($unionbranch_id!=''){
                          $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                         $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
                     }
                     if($company_id!=""){
                         $members = $members->where('mc.CompanyCode','=',$company_id);
@@ -3001,6 +3155,91 @@ class ReportsController extends Controller
         
         return view('reports.iframe_union_members')->with('data',$data);     
        // echo json_encode($members);	 
+    }
+
+    public function exportPdfMembersUnion($lang,Request $request){
+        
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $from_member_no = $request->input('from_member_no');
+        $to_member_no = $request->input('to_member_no');
+        $status_id = $request->input('status_id');
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        $unionbranch_name='';
+        if($month_year!=""){
+          //$fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name','ub.union_branch as union_branch',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
+               ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+               ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+               ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+               ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+               ->leftjoin('company as com','com.id','=','cb.company_id')
+               //->leftjoin('status as s','s.id','=','mm.StatusId')
+               ->leftjoin('designation as d','m.designation_id','=','d.id')
+               ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+               ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
+                //->leftjoin('designation as d','m.designation_id','=','d.id')
+                //->leftjoin('state as st','st.id','=','m.state_id')
+                //->leftjoin('city as cit','cit.id','=','m.city_id')
+                //->leftjoin('race as r','r.id','=','m.race_id');
+                if($status_id!="" && $status_id!=0){
+                    $members = $members->where('mm.StatusId','=',$status_id);
+                }
+                if($monthno!="" && $yearno!=""){
+                  $members = $members->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+                  $members = $members->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+                }
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }else{
+                    if($unionbranch_id!=''){
+                         $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                         $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+                    }
+                    if($company_id!=""){
+                        $members = $members->where('mc.CompanyCode','=',$company_id);
+                    }
+                }
+                if($member_auto_id!=""){
+                    $members = $members->where('m.id','=',$member_auto_id);
+                }
+                if($from_member_no!="" && $to_member_no!=""){
+                    $members = $members->where('m.member_number','>=',$from_member_no);
+                    $members = $members->where('m.member_number','<=',$to_member_no);
+               }
+               $members = $members->orderBy('m.member_number','asc');
+            $members = $members->get();
+
+
+        $data['member_view'] = $members;
+        $data['month_year'] = $fulldate;
+        $data['company_id'] = $company_id; 
+        $data['branch_id'] = $branch_id;      
+        $data['member_auto_id'] = $member_auto_id;
+        $data['status_id']=$status_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['from_member_no']=$from_member_no;
+        $data['to_member_no']=$to_member_no;
+        $data['data_limit']='';
+ 
+         $dataarr = ['data' => $data ];
+ 
+         $pdf = PDF::loadView('reports.pdf_members_union', $dataarr)->setPaper('a4', 'landscape'); 
+         return $pdf->download('members_union_report.pdf');
+         //return view('reports.pdf_members_new')->with('data',$data);  
     }
 }
 

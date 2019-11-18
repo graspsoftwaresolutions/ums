@@ -377,6 +377,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-resignmembers','ReportsController@exportPdfResignMembers')->name('resignmember.pdf');
 	Route::get('export-pdf-resignmembers-union','ReportsController@exportPdfUnionResignMembers')->name('resignmember.unionpdf');
 
+	Route::get('export-pdf-members-union','ReportsController@exportPdfMembersUnion')->name('membersunion.pdf');
+	Route::get('export-pdf-advice-resign','ReportsController@exportPdfAdviceResign')->name('advanceresign.pdf');
+	Route::get('export-pdf-branch-status','ReportsController@exportPdfBranchStatus')->name('branchstatus.pdf');
+
 
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();

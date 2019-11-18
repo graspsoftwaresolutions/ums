@@ -151,28 +151,25 @@
 		
 	</style>
 	<script type="text/javascript">
-		function updateIframe(){
-		    	var myFrame = $("#myframe").contents().find('body');
-		        var textareaValue = $("textarea").val();
-		    	myFrame.html(textareaValue);
-		    }
+		
 	</script>
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
 		<table width="100%">
 			<tr>
+				@php 
+					$searchfilters = '&month_year='.$data['month_year'].'&company_id='.$data['company_id'];
+				@endphp
 				<td width="20%"></td>
 				@php $logo = CommonHelper::getLogo(); @endphp
-				<td width="10%"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
-					<h6 style="text-align:center;">VARIATION BANK REPORT</h6>
+					
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Variation Bank Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Variation Bank Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
@@ -184,22 +181,51 @@
   </div>-->
 	<table id="page-length-option" class="display" width="100%">
 		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
+			<tr class="">
+				
+				<td colspan="1" rowspan="2" style="text-align:right">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
+				</td>
+				<td colspan="4" style="text-align:center;padding:10px;vertical-align:top;">
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					
+				</td>
+				<td colspan="1" rowspan="2">	
+					</br>
 				</td>
 			</tr>
-			<tr class="page-table-header-space" >
-				<th style="width:300px">{{__('BANK NAME')}}</th>
-				<th style="width:20%">{{__('# CURRENT')}}</th>
-				<th style="width:20%">{{__('# PREVIOUS')}}</th>
-				<th width="10%">{{__('DIFFERENT')}}</th>
-				<th width="10%">{{__('UNPAID')}}</th>
-				<th width="10%">{{__('PAID')}}</th>
+			<tr class="">
+				
+				<td colspan="4" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;">VARIATION BANK REPORT</span>
+				</td>
+				
+			</tr>
+			<tr class="" style="font-weight: bold;">
+			
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">
+					To Branch Hons. Secretary
+					
+				</td>
+				<td colspan="4" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
+				</td>
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
+					
+					
+				</td>
+			</tr>
+			<tr class="" >
+				<th style="border : 1px solid #988989;">{{__('BANK NAME')}}</th>
+				<th style="border : 1px solid #988989;">{{__('# CURRENT')}}</th>
+				<th style="border : 1px solid #988989;">{{__('# PREVIOUS')}}</th>
+				<th style="border : 1px solid #988989;">{{__('DIFFERENT')}}</th>
+				<th style="border : 1px solid #988989;">{{__('UNPAID')}}</th>
+				<th style="border : 1px solid #988989;">{{__('PAID')}}</th>
 			</tr>
 		</thead>
-		<tbody class="tbody-area" width="100%">
+		<tbody class="" width="100%">
 		
             @foreach($data['company_view'] as $company)
                     @php
@@ -210,12 +236,12 @@
 						$current_unpaid_count = CommonHelper::getcurrentMonthlyPaidCount($company->cid,$data['month_year']);
                     @endphp
                     <tr class="monthly-sub-status" data-href="{{ $member_sub_link }}">
-                        <td style="width:300px">{{ $company->company_name }}</td>
-                        <td style="width:20%">{{ $current_count }}</td>
-                        <td style="width:20%">{{ $last_month_count }}</td>
-                        <td width="10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
-                        <td width="10%">{{ $current_unpaid_count }}</td>
-                        <td width="10%">{{ $last_paid_count }}</td>
+                        <td style="border : 1px solid #988989;">{{ $company->company_name }}</td>
+                        <td style="border : 1px solid #988989;">{{ $current_count }}</td>
+                        <td style="border : 1px solid #988989;">{{ $last_month_count }}</td>
+                        <td style="border : 1px solid #988989;"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
+                        <td style="border : 1px solid #988989;">{{ $current_unpaid_count }}</td>
+                        <td style="border : 1px solid #988989;">{{ $last_paid_count }}</td>
                     </tr> 
             @endforeach
 		</tbody>
@@ -223,6 +249,9 @@
 	</table>
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
+<script>
+	var excelfilenames="Variation Bank Report";
+</script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <!-- <script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script> -->
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
@@ -232,16 +261,10 @@
 <script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
+	$(".exportToExcel").click(function(e){
+		$("#page-length-option").table2excel();
 	});
    /*  $(window).scroll(function() {   
 	   var lastoffset = $("#memberoffset").val();

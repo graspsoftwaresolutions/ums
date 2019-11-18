@@ -30,7 +30,7 @@
 			
 				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
 					To Branch Hons. Secretary
-					@if($data['unionbranch_id']!='')
+					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
 						<br>
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
@@ -40,7 +40,7 @@
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
 					
-					@if($data['unionbranch_id']!='')
+					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
 						<br>
 						Branch Code : {{ $data['unionbranch_id'] }}
 					@endif
