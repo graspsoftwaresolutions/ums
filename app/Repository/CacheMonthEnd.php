@@ -38,12 +38,12 @@ class CacheMonthEnd
 			$get_roles = Auth::user()->roles;
 	        $user_role = $get_roles[0]->slug;
 			$user_id = Auth::user()->id; 
-			$company_view = DB::table("mon_sub_member as mm")->select('cb.company_id as company_id','c.company_name as company_name')
+			$company_view = DB::table("mon_sub_member as mm")->select('mc.CompanyCode as company_id','c.company_name as company_name')
                                 ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
 								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
 								->leftjoin('membership as m','m.id','=','mm.MemberCode')
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-								->leftjoin('company as c','cb.company_id','=','c.id')
+								->leftjoin('company as c','mc.CompanyCode','=','c.id')
                                 //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
                                 ->where('ms.Date', '=', $datestring)
 								->where('mm.update_status', '=', 1)
@@ -53,12 +53,12 @@ class CacheMonthEnd
 			                        $company_view = $company_view->where(DB::raw('c.`union_branch_id`'),'=',$union_branch_id);
 			                    }else if($user_role=='company'){
 			                        $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
-			                        $company_view = $company_view->where(DB::raw('c.`company_id`'),'=',$company_id);
+			                        $company_view = $company_view->where(DB::raw('mc.`CompanyCode`'),'=',$company_id);
 			                    }else if($user_role=='company-branch'){
 			                        $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
 			                        $company_view = $company_view->where(DB::raw('m.`branch_id`'),'=',$branch_id);
 			                    }
-								$company_view = $company_view->groupBY('cb.company_id')
+								$company_view = $company_view->groupBY('mc.CompanyCode')
 								//->limit(2000)
 								->get();
 		    	// $company_view = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')

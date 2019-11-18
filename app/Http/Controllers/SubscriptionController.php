@@ -1375,9 +1375,10 @@ class SubscriptionController extends CommonController
 		$data['month_year_full'] = date('Y-m-01');
 		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
 		
-		$data['groupby'] = 1;
+        $data['groupby'] = 1;
+        $data['variationtype']='';
 		$data['DisplaySubscription'] = false;
-		$data['sixmonthvariation'] = false;
+		//$data['sixmonthvariation'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
         //                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
@@ -1408,8 +1409,9 @@ class SubscriptionController extends CommonController
 		//return $request->all();
 		$entry_date = $request->input('entry_date');
 		$groupby = $request->input('groupby');
-		$display_subs = $request->input('display_subs');
-		$sixmonthvariation = $request->input('sixmonth-variation');
+        $display_subs = $request->input('display_subs');
+        $variationtype = $request->input('variationtype');
+		//$sixmonthvariation = $request->input('sixmonth-variation');
 		$fm_date = explode("/",$entry_date);
         $fm_date[1].'-'.$fm_date[0].'-'.'01';
         $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
@@ -1419,7 +1421,8 @@ class SubscriptionController extends CommonController
 		
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
-		$data['sixmonthvariation'] = $sixmonthvariation;
+       // $data['sixmonthvariation'] = $sixmonthvariation;
+        $data['variationtype']=$variationtype;
 		if($groupby==1){
 			// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
             //                     ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
@@ -1439,7 +1442,7 @@ class SubscriptionController extends CommonController
 			$data['head_company_view']=[];
 		}
 		elseif($groupby==2){
-			$head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
+			$head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')->where('status','=','1')
 			->where(function ($query) {
 				$query->where('head_of_company', '=', '')
 					->orWhere('head_of_company', '=', 0)
@@ -1449,7 +1452,7 @@ class SubscriptionController extends CommonController
 			foreach($head_company_view as $mkey => $company){
 				$companyid = $company->id;
 				//$company_str_List ="'".$companyid."'";
-				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->pluck('id')->toArray();
+				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
 				$res_company = array_merge($company_ids, [$companyid]); 
 
 
@@ -1483,7 +1486,7 @@ class SubscriptionController extends CommonController
 	
 	public function variationAll($lang, Request $request){
         ini_set('memory_limit', -1);
-		ini_set('max_execution_time', 0);
+		ini_set('max_execution_time', 10000);
 		//return strtotime('now');
 		$datestring = $request->input('date');
 		$groupby = $request->input('groupby');
@@ -1496,7 +1499,9 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = $groupby;
 		$data['DisplaySubscription'] = $display_subs;
 		$data['print'] = $request->input('print');
-		$data['variation'] = $request->input('variation');
+        $data['variation'] = $request->input('variation');
+       // $last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
+        $data['last_month_year']= date("Y-m-01", strtotime($data['month_year_full']." -1 Month"));
 		if($groupby==1){
 			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 			$data['company_view']=[];
@@ -1505,7 +1510,28 @@ class SubscriptionController extends CommonController
 		elseif($groupby==2){
 			$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
 			$data['union_branch_view']=[];
-			$data['branch_view']=[];
+            $data['branch_view']=[];
+            $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')->where('status','=','1')
+			->where(function ($query) {
+				$query->where('head_of_company', '=', '')
+					->orWhere('head_of_company', '=', 0)
+						->orWhereNull('head_of_company');
+			})->get();
+				//dd($head_company_view);
+			foreach($head_company_view as $mkey => $company){
+				$companyid = $company->id;
+				//$company_str_List ="'".$companyid."'";
+				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
+				$res_company = array_merge($company_ids, [$companyid]); 
+
+
+				foreach($company as $newkey => $newvalue){
+					$data['head_company_view'][$mkey][$newkey] = $newvalue;
+				}
+				$data['head_company_view'][$mkey]['company_list'] = $res_company;
+				//$company_str_List ='';
+
+			}
 		}
 		else{
 			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
@@ -1522,7 +1548,12 @@ class SubscriptionController extends CommonController
 								->groupBY('mm.BANK_CODE')
 								->get(); */
 		if($data['print']==1){
-			return view('subscription.variation_all')->with('data', $data);
+            if($data['variation']!=''){
+                return view('subscription.variation_all')->with('data', $data);
+            }else{
+                return view('subscription.variation_difference')->with('data', $data);
+            }
+			
 		}else{
 			$new['data'] = $data;
 			$new['data']['print'] = '0';

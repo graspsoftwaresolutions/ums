@@ -107,7 +107,7 @@
 										@csrf
 										<div class="row">
 											
-											<div class="col m3 s12">
+											<div class="col m2 s12">
 												<label for="doe">{{__('Group By') }}*</label>
 												<p>
 													<label>
@@ -128,7 +128,7 @@
 													</label>
 												</p>
 											</div>
-											<div class="input-field col m3 s12">
+											<div class="input-field col m2 s12">
 												<label for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
 											</div>
@@ -140,17 +140,28 @@
 														<span>{{__('Display Subscription') }} </span>
 													</label>
 												</p>
-												<p style="padding-top:10px;">
+											</div>
+											<div class="col m3 s12">
+												
+												<label for="doe">{{__('Variation') }}</label>
+												<p>
 													<label>
-														<input name="sixmonth-variation" type="checkbox" value="1" {{ $data['sixmonthvariation']==true ? 'checked' : ''}} />
-														<span>{{__('Last 6 Months Variation') }} </span>
+														<input name="variationtype" type="radio" value="4" {{ $data['variationtype']==4 ? 'checked' : ''}} />
+														<span>{{__('Last 4 Months') }} </span>
 													</label>
 												</p>
+												<p>
+													<label>
+														<input name="variationtype" type="radio" value="6"  {{ $data['variationtype']==6 ? 'checked' : ''}} />
+														<span>{{__('Last 6 Months') }} </span>
+													</label>
+												</p>
+												
 											</div>
 											
 											
 											
-											<div class="col m3 s12 " style="padding-top:5px;">
+											<div class="col m2 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
@@ -176,7 +187,7 @@
 					<div class="card-content">
 						<h4 class="card-title">Subscription variation
 						<div class="right">
-							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['sixmonthvariation']) }}" >{{__('Print')}}</a>
+							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>
