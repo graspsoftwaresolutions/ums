@@ -383,6 +383,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-takaful','ReportsController@exportPdfTakaful')->name('takaful.pdf');
 	Route::get('export-pdf-takaful-premium','ReportsController@exportPdfTakafulPremium')->name('takaful.pdf');
 	Route::get('export-pdf-takaful-summary','ReportsController@exportPdfTakafulSummary')->name('takafulsum.pdf');
+	Route::get('export-pdf-statistics','ReportsController@exportPdfStatistics')->name('statistics.pdf');
+	Route::get('export-pdf-statistics-union','ReportsController@exportPdfStatisticsUnion')->name('statisticsunion.pdf');
 
 
 	Route::get('refresh-csrf', function(){
