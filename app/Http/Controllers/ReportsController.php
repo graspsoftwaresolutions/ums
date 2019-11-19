@@ -1872,6 +1872,60 @@ class ReportsController extends Controller
 		//dd($members);
         return view('reports.iframe_takaful')->with('data',$data);  
     }
+
+    public function exportPdfTakaful($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+       
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        $members =[];
+
+        if($unionbranch_id!=''){
+            $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+        }
+        
+        if($branch_id!="" || $company_id!="" || $member_auto_id!="" || $unionbranch_id!=""){
+
+            $members = CacheMonthEnd::getMonthEndByDateFilter($fulldate,$company_id,$branch_id,$member_auto_id,$unionbranch_id);
+           
+        }else{
+            $members = CacheMonthEnd::getMonthEndByDate($fulldate);
+        }
+		$data['member_view'] = $members;
+       
+        $data['month_year']=$fulldate;
+        $data['company_id']=$company_id;
+        $data['branch_id']=$branch_id;
+        $data['member_auto_id']=$member_auto_id;
+        $data['unionbranch_name'] = $unionbranch_name; 
+        $data['unionbranch_id'] = $unionbranch_id;
+        //$data['data_limit']=$this->limit;
+        $data['data_limit']='';
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
+        $data['offset']='';
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_takaful', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_takaful_report.pdf');
+    }
+
     public function PremiumTakaulReport($lang,Request $request){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
@@ -1978,6 +2032,92 @@ class ReportsController extends Controller
         return view('reports.iframe_takaful_premium')->with('data',$data);  
     }
 
+    public function exportPdfTakafulPremium($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+       
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        if($branch_id!="" || $company_id!="" || $member_auto_id!=""){
+            $last_month_no = date('m',strtotime($month_year.' -1 Month'));
+			$last_month_year = date('Y',strtotime($month_year.' -1 Month'));
+
+			$members = DB::table('mon_sub_member as mm')
+					->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','mm.NRIC as new_ic','c.branch_name as branch_name','com.short_code as companycode')
+					->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+					->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+					->leftjoin('membership as m','m.id','=','mm.MemberCode')
+					->leftjoin('company_branch as c','c.id','=','m.branch_id')
+					->leftjoin('company as com','com.id','=','sc.CompanyCode')
+					->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(DB::raw('DATE_FORMAT(m.doj, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+					->where(function ($query) {
+						$query->where('mm.StatusId', '=', 1)
+							  ->orWhere('mm.StatusId', '=', 2);
+					})
+					//->where('mm.approval_status', '=', 1)
+					->where('mm.update_status', '=', 1);
+					
+			/* 		
+			$members = DB::table($this->membermonthendstatus_table.' as ms')
+                ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+                ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','c.company_id');
+              if($monthno!="" && $yearno!=""){
+                $members = $members->where(DB::raw('DATE_FORMAT(ms.StatusMonth, "%m-%Y")'), '=', $monthno.'-'.$yearno);
+                $members = $members->where(DB::raw('month(m.`doj`)'),'=',$monthno);
+                $members = $members->where(DB::raw('year(m.`doj`)'),'=',$yearno);
+              } */
+              if($branch_id!=""){
+                  $members = $members->where('m.branch_id','=',$branch_id);
+              }else{
+                  if($company_id!=""){
+                      $members = $members->where('sc.CompanyCode','=',$company_id);
+                  }
+              }
+              if($member_auto_id!=""){
+                  $members = $members->where('m.id','=',$member_auto_id);
+              }
+              
+          $members = $members->get();
+        }else{
+            $members = CacheMonthEnd::getPremiumMonthEndByDate($month_year);
+        }
+		$data['member_view'] = $members;
+       
+        $data['month_year']=$fulldate;
+        $data['company_id']=$company_id;
+        $data['branch_id']=$branch_id;
+        $data['member_auto_id']=$member_auto_id;
+        $data['total_ins']=$this->bf_amount+$this->ins_amount;
+        $data['unionbranch_name'] = ''; 
+        $data['unionbranch_id'] = '';
+        //$data['data_limit']=$this->limit;
+        $data['data_limit']='';
+        $data['offset']='';
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_takaful_premium', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_takaful_premium_report.pdf');
+    }
+
     public function SummaryTakaulReport($lang,Request $request){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
@@ -2082,6 +2222,71 @@ class ReportsController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
 		//dd($members);
         return view('reports.iframe_takaful_summary')->with('data',$data);  
+    }
+
+    public function exportPdfTakafulSummary($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+       
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        $month_year_read = '';
+        
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+          $month_year_read =  date('M Y',strtotime($month_year));
+        }
+
+        $data['member_view'] = [];
+        
+        $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
+                                            ->where(function ($query) {
+                                                $query->where('head_of_company', '=', '')
+                                                         ->orWhere('head_of_company', '=', 0)
+                                                        ->orWhereNull('head_of_company');
+                                            })->get();
+
+        foreach($head_company_view as $mkey => $company){
+            $companyid = $company->id;
+            //$company_str_List ="'".$companyid."'";
+            $company_ids = DB::table('company')->where('head_of_company','=',$companyid)->pluck('id')->toArray();
+            $res_company = array_merge($company_ids, [$companyid]); 
+           
+            foreach($company as $newkey => $newvalue){
+                $data['head_company_view'][$mkey][$newkey] = $newvalue;
+            }
+            $data['head_company_view'][$mkey]['company_list'] = $res_company;
+            //$company_str_List ='';
+           
+        }
+
+
+        $data['month_year']=$fulldate;
+        $data['company_id']=$company_id;
+        $data['branch_id']=$branch_id;
+        $data['member_auto_id']=$member_auto_id;
+        //$data['data_limit']=$this->limit;
+        $data['data_limit']='';
+        $data['offset']='';
+        $data['month_year_read']=$month_year_read;
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
+        $data['month_year_full']=$fulldate;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_takaful_summary', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_takaful_summary_report.pdf');
     }
 	
 	public function UnionStatisticReport($lang,Request $request)

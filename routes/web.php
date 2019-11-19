@@ -380,6 +380,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-members-union','ReportsController@exportPdfMembersUnion')->name('membersunion.pdf');
 	Route::get('export-pdf-advice-resign','ReportsController@exportPdfAdviceResign')->name('advanceresign.pdf');
 	Route::get('export-pdf-branch-status','ReportsController@exportPdfBranchStatus')->name('branchstatus.pdf');
+	Route::get('export-pdf-takaful','ReportsController@exportPdfTakaful')->name('takaful.pdf');
+	Route::get('export-pdf-takaful-premium','ReportsController@exportPdfTakafulPremium')->name('takaful.pdf');
+	Route::get('export-pdf-takaful-summary','ReportsController@exportPdfTakafulSummary')->name('takafulsum.pdf');
 
 
 	Route::get('refresh-csrf', function(){

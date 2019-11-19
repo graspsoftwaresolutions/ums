@@ -115,7 +115,7 @@
 								<div class="errorTxt23"></div>
 							</div>
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 hide">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
