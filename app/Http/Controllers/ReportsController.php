@@ -1276,7 +1276,7 @@ class ReportsController extends Controller
        
 		$data['month_year'] = date('Y-m-01');
 		$data['unionbranch_id'] = '';
-		$data['company'] = '' ;
+		$data['company_id'] = '' ;
         $data['branch_id'] = '';
         $data['data_limit'] = '';
         $data['member_count'] =  $members; 
@@ -1344,7 +1344,7 @@ class ReportsController extends Controller
         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
 		$data['month_year'] = $fulldate;
 		$data['unionbranch_id'] = $unionbranch_id;
-		$data['company'] = $company_id;
+		$data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
         $data['data_limit']='';
         $data['offset']=0;
@@ -1352,6 +1352,61 @@ class ReportsController extends Controller
         //return view('Reports.statistics')->with('data',$data); 
         return view('reports.iframe_statistics')->with('data',$data);   
     }
+
+    public function exportPdfStatistics($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $monthno = '';
+        $yearno = '';
+        
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+          
+        }
+
+        if($branch_id!="" || $company_id!= '' || $unionbranch_id!= ''){
+            
+            if($branch_id!=""){
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($month_year,'','',$branch_id);
+                
+            }elseif($company_id!= ''){
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($month_year,'',$company_id,'');
+                //$members = $members->where('ms.BANK_CODE','=',$company_id);
+            }
+            elseif($unionbranch_id!= ''){
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($month_year,$unionbranch_id,'','');
+                //$members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
+            }
+        }else{
+           
+            $members = CacheMonthEnd::getMonthEndCompaniesByDate($month_year);
+        }
+       
+        $data['member_count'] =   $members;
+        
+		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
+        //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
+		$data['month_year'] = $fulldate;
+		$data['unionbranch_id'] = $unionbranch_id;
+		$data['company_id'] = $company_id;
+        $data['branch_id'] = $branch_id;
+        $data['data_limit']='';
+        $data['offset']=0;
+        //return view('reports.iframe_statistics')->with('data',$data); 
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_statistics', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_statistics_report.pdf');
+    }
+
 	public function takafulnewReport()
 	{
         //dd('hi');
@@ -2303,9 +2358,9 @@ class ReportsController extends Controller
 		
 		//dd($members);
        
-		$data['month_year'] = date('M/Y');
+		$data['month_year'] = date('Y-m-01');
 		$data['unionbranch_id'] = '';
-		$data['company'] = '' ;
+		$data['company_id'] = '' ;
         $data['branch_id'] = '';
         $data['data_limit'] = '';
         $data['member_count'] =  $members; 
@@ -2348,15 +2403,58 @@ class ReportsController extends Controller
 		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
-		$data['month_year'] = $month_year;
+		$data['month_year'] = $fulldate;
 		$data['unionbranch_id'] = $unionbranch_id;
-		$data['company'] = $company_id;
+		$data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
         $data['data_limit']='';
         $data['offset']=0;
         //dd($data);
         //return view('Reports.statistics')->with('data',$data); 
         return view('reports.iframe_union_statistics')->with('data',$data);   
+    }
+
+    public function exportPdfStatisticsUnion($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $monthno = '';
+        $yearno = '';
+        
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+          
+        }
+
+        if($unionbranch_id!= ''){
+            
+            $members = CacheMonthEnd::getMonthEndUnionStatisticsFilter($fulldate,$unionbranch_id);
+         }else{
+             $members = CacheMonthEnd::getMonthEndUnionByDate($fulldate);
+         }
+        
+         $data['member_count'] =   $members;
+         
+         //$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
+         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
+         $data['month_year'] = $fulldate;
+         $data['unionbranch_id'] = $unionbranch_id;
+         $data['company_id'] = $company_id;
+         $data['branch_id'] = $branch_id;
+         $data['data_limit']='';
+         $data['offset']=0;
+        //return view('reports.iframe_statistics')->with('data',$data); 
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_statistics_union', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_statistics_union_report.pdf');
     }
 
     public function DueReport()
@@ -2381,6 +2479,7 @@ class ReportsController extends Controller
         $members = CacheMonthEnd::getMonthEndDue(date('Y-m-01'));
 
         $data['member_view'] = $members;
+        $data['month_year'] = date('Y-m-01');
         return view('reports.iframe_due')->with('data',$data);
     }
 
@@ -2419,6 +2518,7 @@ class ReportsController extends Controller
         // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',$monthno);
         // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',$yearno);
         // $members = $members->get();
+        $data['month_year'] = $full_year;
         $data['member_view'] = $members;
         return view('reports.iframe_due')->with('data',$data);
     }

@@ -2,7 +2,7 @@
 <html>
 <head>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
@@ -152,19 +152,20 @@
 </head>
 
 <body>
-	<div class="page-header" style="text-align: center">
+	<div class="" style="text-align: center">
 		<table width="100%">
+			@php 
+				$searchfilters = '&month_year='.$data['month_year'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&unionbranch_id='.$data['unionbranch_id'];
+			@endphp
 			<tr>
 				<td width="20%"></td>
-				<td width="10%"><img src="http://membership.graspsoftwaresolutions.com/public/assets/images/logo/logo.png" style="vertical-align: middle;float: right;" alt="Membership logo" height="50"></td>
+				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
-					<span class="report-address" style="font-weight: bold;font-size:14px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<br/> 
-					<h6 style="text-align:center;">OVER ALL UNION BRANCH REPORT</h6>
+					
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'excel',escape:'false',filename: 'Union Statistics Report'});" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="#" class="export-button btn btn-sm" onClick="$('#page-length-option').tableExport({type:'pdf',escape:'false',filename: 'Union Statistics Report'});" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="{{ url(app()->getLocale().'/export-pdf-statistics-union?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -173,199 +174,24 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-	<table id="page-length-option" class="display" >
-		<thead>
-			<tr style="border-bottom:none;">
-				<td style="border:none;">
-					<!--place holder for the fixed-position header-->
-					<div class="page-header-space"></div>
-				</td>
-			</tr>
-			<tr class="page-table-header-space" style="border:1px solid #000;">
-				<th style="width:201px !important; border:1px ;"></th>
-				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border:1px ;">BENEFIT</th>
-				<th colspan="{{ (count($data['race_view'])*2)+3 }}" style="width:487px !important;border:1px ;">NON BENEFIT</th>
-				
-				<th style="width:3% !important; border:1px ;"></th>
-			</tr>
-			<tr class="page-table-header-space1" >
-				<th style="width:15% !important; border:1px ;">{{__('BRANCH CODE')}}</th>
-				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
-				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
-				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
-				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('TOTAL')}}</th>
-				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">M{{$values->race_name[0]}}</th>
-				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
-				@foreach($data['race_view'] as $values)
-					<th style="width:3% !important; border:1px ;">F{{$values->race_name[0]}}</th>
-				@endforeach
-				<th style="width:3% !important; border:1px ;">{{__('S.TOTAL')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('TOTAL')}}</th>
-				<th style="width:3% !important; border:1px ;">{{__('G.TOTAL')}}</th>
-			</tr>
-		</thead>
-		<tbody class="tbody-area" width="100%">
-		@php
-			$total_male_count = 0;
-			$total_female_count = 0; 
-			$total_grandtotal = 0;
-			$month_year = $data['month_year'];
-			$uniques = array();
-			foreach ($data['member_count'] as $obj) {
-			    $uniques[$obj->branchid] = $obj;
-			}
-
-		@endphp
-        @foreach($uniques as $values)
-        	@php
-				$over_all_count = CommonHelper::group_all_union_gender_race_count($data['member_count'],$values->branchid,$month_year);
-			@endphp
-            <tr style="margin-top:50px !important;">
-				<td style='width:211px !important; border:1px ;'>
-					@php 
-						echo $branch_name = substr($values->branch_name, 0, 16); 
-					@endphp
-				</td>
-			    @php
-					$month_year = $data['month_year'];
-					$subtotal1 = 0;
-					$subtotal2 = 0;
-					$subtotaldefaulter2 = 0;
-					$defaultertotal = 0;
-					$total = 0;
-					$subtotaldefaulter1 = 0;
-					
-					$grandtotal = 0;
-					$male_count = 0;
-				@endphp
-				@foreach($data['race_view'] as $race)
-				@php 
-					$race_id = $race->id;
-					
-					$male_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,1,'Male');
-					
-				@endphp
-					<td style="width:41px !important; border:1px ; padding-left: 5px;">{{$male_count}}</td>
-				@php
-					$subtotal1 += $male_count; 
-					$total_male_count += $male_count; 
-				@endphp
-				@endforeach
-				<td style="width:60px !important; border:1px ;"> {{$subtotal1}}</td>
-				@foreach($data['race_view'] as $value)
-					@php 
-					$race_id = $value->id;
-					//dd($male_count);
-						$female_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,1,'Female');
-						
-					@endphp
-				<td style="width:41px !important; border:1px ;">{{$female_count}}</td>
-					@php
-						$subtotal2 += $female_count; 
-						$total_female_count += $female_count; 
-					@endphp
-				@endforeach
-				@php 
-					$total = $subtotal1 + $subtotal2; 
-				@endphp
-				<td style="width:60px !important; border:1px ;"> {{$subtotal2}}</td>
-				<td style="width:50px !important; border:1px ;">{{$total}}</td>
-				@foreach($data['race_view'] as $value)
-				@php $race_id = $value->id;
-					$maledefaulter_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,2,'Male');
-					
-				@endphp
-					<td style="width:60px !important; border:1px ;">{{$maledefaulter_count}}</td>
-				@php
-					$subtotaldefaulter1 += $maledefaulter_count; 
-					@endphp
-				@endforeach
-				<td style="width:41px !important; border:1px ;"> {{$subtotaldefaulter1}}</td>
-				@foreach($data['race_view'] as $value)
-				@php $race_id = $value->id;
-					$femaledefaulter_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,2,'Female');
-					
-				@endphp
-					<td style="width:41px !important; border:1px ;padding-left: 0px;">{{$femaledefaulter_count}}</td>
-					@php
-						$subtotaldefaulter2 += $femaledefaulter_count; 
-						$defaultertotal = $subtotaldefaulter1 + $subtotaldefaulter2; 
-						$grandtotal = $defaultertotal + $total;
-					@endphp
-				@endforeach
-				@php
-					$total_grandtotal += $grandtotal;
-				@endphp
-				<td style="width:41px !important; border:1px ;">{{$subtotaldefaulter2}}</td>
-				<td style="width:41px !important; border:1px ;">{{$defaultertotal}}</td>
-				<td style="width:41px !important; border:1px ;">{{$grandtotal}}</td>
-            </tr> 
-            @endforeach
-			<tr style="">
-				<td style=''>
-					Total
-				</td>
-			   
-				@foreach($data['race_view'] as $race)
-				
-					<td style="width:41px !important; border:1px ; padding-left: 5px;"></td>
-			
-				@endforeach
-				<td style="width:60px !important; border:1px ;"> </td>
-				@foreach($data['race_view'] as $value)
-				
-				<td style="width:41px !important; border:1px ;"></td>
-					
-				@endforeach
-				
-				<td style="width:60px !important; border:1px ;"></td>
-				<td style="width:50px !important; border:1px ;"></td>
-				@foreach($data['race_view'] as $value)
-				
-					<td style="width:60px !important; border:1px ;"></td>
-			
-				@endforeach
-				<td style="width:41px !important; border:1px ;"> </td>
-				@foreach($data['race_view'] as $value)
-					<td style="width:41px !important; border:1px ;padding-left: 0px;"></td>
-				@endforeach
-				<td style="width:41px !important; border:1px ;"></td>
-				<td style="width:41px !important; border:1px ;"></td>
-				<td style="width:41px !important; border:1px ;">{{$total_grandtotal}}</td>
-            </tr> 
-		</tbody>
-	</table>
+    @include('reports.common_statistics_union')
+  	
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
+<script>
+	var excelfilenames="Union Statistics Report";
+</script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <!-- <script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script> -->
-<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
+
 <!--<![endif]-->
-<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
+<script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
 	$(document).ready( function() { 
 		$("html").css('opacity',1);
     });
-	$('#tableID').tableExport({
-		type:'pdf',
-		jspdf: {
-			orientation: 'p',
-			margins: {
-				left:20, top:10
-			},
-			autotable: false
-		}
+	$(".exportToExcel").click(function(e){
+		$("#page-length-option").table2excel();
 	});
 </script>
 
