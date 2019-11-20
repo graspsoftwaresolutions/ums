@@ -944,7 +944,50 @@ class ReportsController extends Controller
         $data['offset']='';
         //dd($data);
         return view('reports.iframe_variationbank')->with('data',$data);
-	}
+    }
+    
+    public function exportPdfVariationBank($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+       
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        $data['data_limit']=$this->limit;
+		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+		if($monthno!="" && $yearno!=""){
+			$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+			$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+		}
+		if($company_id!=""){
+			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+		}
+        $company_list =  $company_view->get();
+       
+        $data['company_view'] =  $company_list;
+        $data['month_year'] = $fulldate;
+        $data['last_month_year']= date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno.' -1 Month'));
+        $data['company_id']= $company_id;
+        $data['offset']='';
+
+        //return view('reports.pdf_variation_bank')->with('data',$data);
+       
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_variation_bank', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_variation_bank_report.pdf');
+    }
 	
 
 	   
@@ -1640,22 +1683,23 @@ class ReportsController extends Controller
         //echo json_encode($data);
         return view('reports.iframe_subscriptionbank')->with('data',$data);
     }
-    public function subscriptionReportloadMore($lang,Request $request)
-    {
-        $get_roles = Auth::user()->roles;
-        $user_role = $get_roles[0]->slug;
-        $user_id = Auth::user()->id;
-		
-		$month_year = $request->input('month_year');
-		$company_id = $request->input('company_id');
-		$monthno = '';
+
+    public function exportPdfSubscriptionBank($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+       
+        $monthno = '';
         $yearno = '';
+        $fulldate = date('Y-m-01');
         if($month_year!=""){
-          $fmmm_date = explode("/",$month_year);
-          $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
         }
-		$data['data_limit']=$this->limit;
+
+        $data['data_limit']='';
 		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id');
@@ -1667,31 +1711,74 @@ class ReportsController extends Controller
 			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
 		}
 		$company_list =  $company_view->get();
-		$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
-		foreach($company_list as $ckey => $company){
-            foreach($company as $newkey => $newvalue){
-                $data['company_view'][$ckey][$newkey] = $newvalue;
-            }
-			
-			$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
-			$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
-			$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
-			$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
-			$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
-			$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
-			
-            $data['company_view'][$ckey]['total_members'] = $total_members;
-            $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
-            $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
-            $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
-            $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
-            $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
-            $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
-			$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
-        }
-    
-        echo json_encode($data);
+		
+		
+        $data['company_view'] = $company_list;
+        //$data['data_limit']=$this->limit;
+        $data['month_year']=$month_year;
+        $data['company_id']=$company_id;
+
+        //return view('reports.pdf_variation_bank')->with('data',$data);
+       
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_subscription_bank', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_subscription_bank_report.pdf');
     }
+
+    // public function subscriptionReportloadMore($lang,Request $request)
+    // {
+    //     $get_roles = Auth::user()->roles;
+    //     $user_role = $get_roles[0]->slug;
+    //     $user_id = Auth::user()->id;
+		
+	// 	$month_year = $request->input('month_year');
+	// 	$company_id = $request->input('company_id');
+	// 	$monthno = '';
+    //     $yearno = '';
+    //     if($month_year!=""){
+    //       $fmmm_date = explode("/",$month_year);
+    //       $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+    //       $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+    //     }
+	// 	$data['data_limit']=$this->limit;
+	// 	$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
+    //                             ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+    //                             ->leftjoin('company as c','mc.CompanyCode','=','c.id');
+	// 	if($monthno!="" && $yearno!=""){
+	// 		$company_view = $company_view->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+	// 		$company_view = $company_view->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+	// 	}
+	// 	if($company_id!=""){
+	// 		$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
+	// 	}
+	// 	$company_list =  $company_view->get();
+	// 	$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
+	// 	foreach($company_list as $ckey => $company){
+    //         foreach($company as $newkey => $newvalue){
+    //             $data['company_view'][$ckey][$newkey] = $newvalue;
+    //         }
+			
+	// 		$active_amt = CommonHelper::statusMembersCompanyAmount(1, $user_role, $user_id,$company->id, $dateformat);
+	// 		$default_amt = CommonHelper::statusMembersCompanyAmount(2, $user_role, $user_id,$company->id, $dateformat);
+	// 		$struckoff_amt = CommonHelper::statusMembersCompanyAmount(3, $user_role, $user_id,$company->id, $dateformat);
+	// 		$resign_amt = CommonHelper::statusMembersCompanyAmount(4, $user_role, $user_id,$company->id, $dateformat);
+	// 		$sundry_amt = CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company->id, $dateformat);
+	// 		$total_members = CommonHelper::statusSubsMembersCompanyTotalCount($user_role, $user_id,$company->id,$dateformat);
+			
+    //         $data['company_view'][$ckey]['total_members'] = $total_members;
+    //         $data['company_view'][$ckey]['active_amt'] =  number_format($active_amt,2, '.', ',');
+    //         $data['company_view'][$ckey]['default_amt'] =  number_format($default_amt,2, '.', ',');
+    //         $data['company_view'][$ckey]['struckoff_amt'] =  number_format($struckoff_amt,2, '.', ',');
+    //         $data['company_view'][$ckey]['resign_amt'] =  number_format($resign_amt,2, '.', ',');
+    //         $data['company_view'][$ckey]['sundry_amt'] =  number_format($sundry_amt,2, '.', ',');
+    //         $data['company_view'][$ckey]['total_amount'] =  number_format(($active_amt+$default_amt+$struckoff_amt+$resign_amt+$sundry_amt), 2, '.', ',');
+	// 		$data['company_view'][$ckey]['enc_id'] = Crypt::encrypt($company->id);
+    //     }
+    
+    //     echo json_encode($data);
+    // }
     //Subscription Report Ends
 
     //halfhsare starts
@@ -1820,35 +1907,79 @@ class ReportsController extends Controller
         return view('reports.iframe_halfshare')->with('data',$data); 
 
     }
-    public function halfshareFiltereportLoadmore($lang,Request $request)
-    {
+
+    public function exportPdfHalfShare($lang,Request $request){
+        $offset = $request->input('offset');
         $month_year = $request->input('month_year');
-		$monthno = '';
+       
+        $monthno = '';
         $yearno = '';
+        $fulldate = date('Y-m-01');
         if($month_year!=""){
-			$fmmm_date = explode("/",$month_year);
-			$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-			$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-			$data['date'] = $month_year;
-        }else{
-			$monthno = date('m');
-			$yearno = date('Y');
-			$data['date'] = date('M/Y');
-		}
-		$half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
-		DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
-       'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
-                ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
-                ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
-                ->where(DB::raw('month(mend.statusmonth)'),'=',$monthno)  
-                ->where(DB::raw('year(mend.statusmonth)'),'=',$yearno)
-                ->groupBy('cb.union_branch_id')
-                ->get();              
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        $half_s = DB::table('mon_sub_member as mm')->select(DB::raw('count(mm.id) as count'), DB::raw('sum(mm.Amount) as subamt'),'ms.Date as statusmonth','cb.union_branch_id','ub.union_branch')
+        ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+        ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+        ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
+        ->where(DB::raw('year(ms.Date)'),'=',$yearno)
+        ->where(function ($query) {
+            $query->where('mm.StatusId', '=', 1)
+                ->orWhere('mm.StatusId', '=', 2);
+        })
+        ->groupBy('cb.union_branch_id')
+        ->get();  
+       
+       
         $data['half_share'] = $half_s;
         $data['offset']=0;
         $data['data_limit']= '';
-        echo json_encode($data);
+        $data['bf_amount']=$this->bf_amount;
+        $data['ins_amount']=$this->ins_amount;
+        $data['total_ins']=$this->bf_amount+$this->ins_amount;
+        $data['month_year'] = $fulldate;
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_half_share', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_half_share_report.pdf');
     }
+    // public function halfshareFiltereportLoadmore($lang,Request $request)
+    // {
+    //     $month_year = $request->input('month_year');
+	// 	$monthno = '';
+    //     $yearno = '';
+    //     if($month_year!=""){
+	// 		$fmmm_date = explode("/",$month_year);
+	// 		$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+	// 		$yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+	// 		$data['date'] = $month_year;
+    //     }else{
+	// 		$monthno = date('m');
+	// 		$yearno = date('Y');
+	// 		$data['date'] = date('M/Y');
+	// 	}
+	// 	$half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
+	// 	DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),
+    //    'mend.branch_code','mend.statusmonth','cb.union_branch_id','ub.union_branch')
+    //             ->leftjoin('company_branch as cb','cb.id','=','mend.branch_code') 
+    //             ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+    //             ->where(DB::raw('month(mend.statusmonth)'),'=',$monthno)  
+    //             ->where(DB::raw('year(mend.statusmonth)'),'=',$yearno)
+    //             ->groupBy('cb.union_branch_id')
+    //             ->get();              
+    //     $data['half_share'] = $half_s;
+    //     $data['offset']=0;
+    //     $data['data_limit']= '';
+    //     echo json_encode($data);
+    // }
     //halfshare Ends
 
     public function newTakaulReport()
@@ -2480,6 +2611,8 @@ class ReportsController extends Controller
 
         $data['member_view'] = $members;
         $data['month_year'] = date('Y-m-01');
+        $data['unionbranch_id'] = '';
+        $data['company_id'] = '';
         return view('reports.iframe_due')->with('data',$data);
     }
 
@@ -2520,7 +2653,45 @@ class ReportsController extends Controller
         // $members = $members->get();
         $data['month_year'] = $full_year;
         $data['member_view'] = $members;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['company_id'] = $company_id;
         return view('reports.iframe_due')->with('data',$data);
+    }
+
+    public function exportPdfDue($lang,Request $request){
+        $offset = $request->input('offset');
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+       
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        if($company_id=="" && $unionbranch_id==""){
+            $members = CacheMonthEnd::getMonthEndDue($month_year);
+        }else{
+            $members = CacheMonthEnd::getMonthEndDueFilter($month_year,$company_id,$unionbranch_id);
+        }
+
+        //return view('reports.pdf_variation_bank')->with('data',$data);
+       
+
+        //$dataarr = ['data' => $data ];
+        $data['month_year'] = $month_year;
+        $data['member_view'] = $members;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['company_id'] = $company_id;
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_due_report', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_due_report.pdf');
     }
 
     public function AdviceReport(Request $request, $lang){

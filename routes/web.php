@@ -385,6 +385,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-takaful-summary','ReportsController@exportPdfTakafulSummary')->name('takafulsum.pdf');
 	Route::get('export-pdf-statistics','ReportsController@exportPdfStatistics')->name('statistics.pdf');
 	Route::get('export-pdf-statistics-union','ReportsController@exportPdfStatisticsUnion')->name('statisticsunion.pdf');
+	Route::get('export-pdf-half-share','ReportsController@exportPdfHalfShare')->name('halfshare.pdf');
+	Route::get('export-pdf-variation-bank','ReportsController@exportPdfVariationBank')->name('variationbank.pdf');
+	Route::get('export-pdf-subscription-bank','ReportsController@exportPdfSubscriptionBank')->name('variationbank.pdf');
+	Route::get('export-pdf-due','ReportsController@exportPdfDue')->name('due.pdf');
 
 
 	Route::get('refresh-csrf', function(){
