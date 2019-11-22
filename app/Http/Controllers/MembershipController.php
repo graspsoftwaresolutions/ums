@@ -1335,7 +1335,7 @@ class MembershipController extends Controller
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
 
-        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        $members = DB::table('membership as m')->select('c.id as cid','c.union_branch_id as unbid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
         ,'m.doj'
@@ -1379,7 +1379,7 @@ class MembershipController extends Controller
         $members = $members->get();
         $data['member_view'] = $members;
 
-       
+      // dd($data);
         return view('membership.card_membership')->with('data',$data);  
     }
 

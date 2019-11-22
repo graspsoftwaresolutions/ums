@@ -215,6 +215,9 @@
         padding-top: 0.6cm !important;	 
 		xborder:2px solid red; 
     	}
+		.un_kel{			
+			margin-top:0.03mm !important;
+		}
 		#labelstart{
 			margin-top:29px;
 			margin-left:190px;
@@ -233,6 +236,54 @@
 			xwhite-space: nowrap;
 			word-spacing: -5px;
 			xborder:1px solid red;
+		}
+		.un_kelname{
+			margin-top:50px !important;
+			margin-left:115px !important;
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+		}
+		.un_kelbank{
+			margin-left:115px !important;
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+		}
+		.un_keladdr{
+			margin-left:205px !important;
+			margin-top:30px !important;
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+		}
+		.un_kelbot{
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:300px !important;
+			margin-top:100px !important;
+		}
+		.un_kelbot1{
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:300px !important;
+			margin-top:125px !important;
+		}
+		.un_kelbot2{
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:300px !important;
+			margin-top:150px !important;
+		}
+		.un_kelbot3{
+			font-size:15px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:300px !important;
+			margin-top:182px !important;
 		}
         #labelbank{
 			margin-top:3px;
@@ -364,6 +415,7 @@
 		.alt{
 			border-top:2px solid white !important;
 		}
+		
     }
   </style>
   <script>
@@ -377,22 +429,22 @@
 	@endphp
 		@foreach($data['member_view'] as $member)
 		<div class="page">
-		   <div class="subpage" style='margin-top:5px 1important;'>
-			<span id="labelname" class="@php if($i>0){ echo 'alt'; } @endphp">
+		   <div class="subpage @php if($member->unbid=='5'){ echo 'un_kel'; } @endphp" style='margin-top:5px 1important;'>
+			<span class="@php if($i>0){ echo 'alt'; } @endphp  @php if($member->unbid=='5'){ echo 'un_kelname'; } @endphp" id="labelname">
 		   @php
 		   	$str = $member->name;
 			echo wordwrap($str,40,"<p style='display:none !important;'>\n");
 		    @endphp
 		   <label style="display:none;"> </p></label>
 		    </span>
-            <span id="labelbank">
+            <span class="@php if($member->unbid=='5'){ echo 'un_kelbank'; } @endphp" id="labelbank">
 			@php
 		   	$strbank = $member->company_name;
 			echo wordwrap($strbank,40,"<p style='display:none !important;'>\n");
 		   	@endphp
 		  <label style="display:none;"> </p></label></span>
 			
-			<span id="labeladdr">			
+			<span  class="@php if($member->unbid=='5'){ echo 'un_keladdr'; } @endphp" id="labeladdr">			
 			@php
 		   	$stradd1 =  $member->address_one;
 			echo wordwrap($stradd1,40,"<p style='display:none !important;'>\n");
@@ -411,10 +463,10 @@
 			
 			</span>
 			</br>
-			<span id="labelbankcode">{{ $member->companycode }}</span>
-			<span id="labelicno">{{ $member->ic }}</span>
-			<span id="labeldoj">{{ date('d/M/Y',strtotime($member->doj)) }}</span>
-			<span id="labelmemno">{{ $member->member_number }}</span><br>
+			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot'; } @endphp" id="labelbankcode">{{ $member->companycode }}</span>
+			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot1'; } @endphp" id="labelicno">{{ $member->ic }}</span>
+			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot2'; } @endphp" id="labeldoj">{{ date('d/M/Y',strtotime($member->doj)) }}</span>
+			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot3'; } @endphp" id="labelmemno">{{ $member->member_number }}</span><br>
 			</div>    
 		</div>
 		@php
