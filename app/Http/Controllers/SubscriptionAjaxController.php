@@ -726,7 +726,11 @@ class SubscriptionAjaxController extends CommonController
                 $delete =  route('subscription.arrearentrydelete', [app()->getLocale(),$enc_id]) ;
                                
                 $edit = route('subscription.editarreatentry', [app()->getLocale(),$enc_id]);
-                $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                
+                $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+
+                $actions .="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                
                 $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
                 $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
                 $nestedData['options'] = $actions;

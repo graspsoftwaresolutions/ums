@@ -944,7 +944,7 @@ class SubscriptionController extends CommonController
     {
         $searchkey = $request->input('searchkey');
         $search = $request->input('query');
-        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number, "-" , m.new_ic) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number')
+        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number, "-" , m.new_ic) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number',DB::raw("if(m.new_ic > 0  ,m.new_ic,m.old_ic) as nric"))
 
                             ->where(function($query) use ($search){
                                 $query->orWhere('m.id','LIKE',"%{$search}%")
@@ -966,10 +966,34 @@ class SubscriptionController extends CommonController
 							->leftjoin('company as c','c.id','=','cb.company_id')
                             ->leftjoin('status as s','s.id','=','m.status_id')
 							->where('m.member_number','=',$member_id)
-							->first();
-			// $queries = DB::getQueryLog();
-			// dd($queries);
-			return response()->json($res);
+                            ->first();
+        $autoid = $res->memberid;
+
+        $resmonthend = DB::table('membermonthendstatus')->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE')
+                    ->where('MEMBER_CODE','=',$autoid)
+                    ->OrderBy('StatusMonth','desc')
+                    ->limit(1)->first();
+                    //->limit(1)->dump()->get();
+        if(!empty($resmonthend)){
+            $duemonths = $resmonthend->TOTALMONTHSDUE;
+            $subsdue = $resmonthend->SUBSCRIPTIONDUE;
+            $subsbf = $resmonthend->BFDUE;
+            $subsins = $resmonthend->INSURANCEDUE;
+        }else{
+            $duemonths = 0;
+            $subsdue = 0;
+            $subsbf = 0;
+            $subsins = 0;
+        }
+       // dd($resmonthend);
+        $res->duemonths = $duemonths;
+        $res->subscriptiondue = $subsdue;
+        $res->bfdue = $subsbf;
+        $res->insurancedue = $subsins;
+        $res->totaldues = $subsins+$subsdue+$subsbf;
+        // $queries = DB::getQueryLog();
+        // dd($queries);
+		return response()->json($res);
     }
     public function arrearentrySave(Request $request)
     {
@@ -996,14 +1020,16 @@ class SubscriptionController extends CommonController
         {
             if(!empty($request->id))
             {
-                return  redirect($defdaultLang.'/subscription.arrearentry')->with('message','Entry Updated Succesfully');
+                return redirect($defdaultLang.'/sub-arrearentry')->with('message','Entry Updated Succesfully');
             }
             else
             {
-                return  redirect($defdaultLang.'/subscription.arrearentry')->with('message','Entry Added Succesfully');
+                $arrearid = $saveArrearEntry->id;
+                $enc_arrearid = Crypt::encrypt($arrearid);
+                return redirect($defdaultLang.'/sub-arrearupdate/'.$enc_arrearid)->with('message','Entry Added Succesfully');
             }
         }
-        }
+    }
     public function arrearentryEdit($lang,$id)
     {
         $id = Crypt::decrypt($id);
@@ -1017,12 +1043,154 @@ class SubscriptionController extends CommonController
 
         return view('subscription.edit_arrearentry')->with('data',$data);
     }
+
+    public function UpdateArrear($lang,$id)
+    {
+        $id = Crypt::decrypt($id);
+       
+         $data =  DB::table('arrear_entry as ar')->select('ar.no_of_months','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+        ->leftjoin('membership as m','ar.membercode','=','m.id')
+        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        ->leftjoin('company as c','cb.company_id','=','c.id')
+        ->leftjoin('status as s','m.status_id','=','s.id')
+        ->where('ar.id','=',$id)->first();
+
+        return view('subscription.view_arrearentry')->with('data',$data);
+    }
+
+    public function saveArrearRows($lang,Request $request)
+    {
+        //return $request->all();
+        $arrear_id = $request->input('arrear_id');
+        $member_id = $request->input('member_id');
+        $subscription_amount = $request->input('subscription_amount');
+        $arrear_date = $request->input('arrear_date');
+        $db_arrear_date = date('Y-m-d',strtotime($arrear_date));
+        $arrearcount = count($subscription_amount);
+        $total_subscription_amount = $request->input('total_subscription_amount');
+        $total_bf_amount = $request->input('total_bf_amount');
+        $total_insurance_amount = $request->input('total_insurance_amount');
+        $paycount = 0;
+        for ($i=0; $i < $arrearcount; $i++) { 
+            $subs_amount = $request->input('subscription_amount')[$i];
+            $bf_amount = $request->input('bf_amount')[$i];
+            $insurance_amount = $request->input('insurance_amount')[$i];
+            $entry_date = $request->input('entry_date')[$i];
+            $entry_status_month = date('Y-m-d',strtotime($entry_date));
+            if((($subs_amount!='' && $subs_amount!=0) || ($bf_amount!='' && $bf_amount!=0) || ($insurance_amount!='' && $insurance_amount!=0)) && $entry_status_month!=''){
+                $entry_status_month;
+                $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $entry_status_month)->update(['arrear_status' => 1, 'arrear_date' => $db_arrear_date]);
+                //return $db_arrear_date;
+                $paycount++;
+
+            }
+        }
+        $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $db_arrear_date)->where('MEMBER_CODE', '=', $member_id)->count();
+        //DB::enableQuerylog();
+        if($mont_count==1){
+           // DB::enableQuerylog();
+            $monthend_data = [
+                'TOTALMONTHSDUE' => DB::raw('TOTALMONTHSDUE-'.$paycount),
+                'TOTALMONTHSPAID' => DB::raw('TOTALMONTHSPAID+'.$paycount),
+                'SUBSCRIPTIONDUE' => DB::raw('SUBSCRIPTIONDUE-'.$total_subscription_amount),
+                'BFDUE' => DB::raw('BFDUE-'.$total_bf_amount),
+                'INSURANCEDUE' => DB::raw('INSURANCEDUE-'.$total_insurance_amount),
+                'ACCSUBSCRIPTION' => DB::raw('ACCSUBSCRIPTION+'.$total_subscription_amount),
+                'ACCBF' => DB::raw('ACCBF+'.$total_bf_amount),
+                'ACCINSURANCE' => DB::raw('ACCINSURANCE+'.$total_insurance_amount),
+                'ENTRYMODE' => 'A',
+            ];
+            // return $monthend_data;
+            $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $db_arrear_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
+
+            $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE','ms.duebf_amount as BFDUE')
+            ->where('ms.member_id','=',$member_id)
+            ->first();
+            //print_r($last_subscription_res);
+            //die;
+            //dd(DB::getQuerylog());
+        }else{
+            $memberdata =DB::table("membership")->select('branch_id','designation_id','status_id')->where('id','=',$member_id)->first();
+            $branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
+            $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE','ms.duebf_amount as BFDUE')
+                ->where('ms.member_id','=',$member_id)
+                ->first();
+                //print_r($last_subscription_res);
+                //die;
+            $monthend_data = [
+                'StatusMonth' => $db_arrear_date, 
+                'MEMBER_CODE' => $member_id,
+                'SUBSCRIPTION_AMOUNT' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTION_AMOUNT : 0,
+                'BF_AMOUNT' => $this->bf_amount,
+                'LASTPAYMENTDATE' => $db_arrear_date,
+                'TOTALSUBCRP_AMOUNT' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTION_AMOUNT : 0,
+                'TOTALBF_AMOUNT' => $this->bf_amount,
+                'TOTAL_MONTHS' => 0,
+                'BANK_CODE' => $branchdata->company_id,
+                'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
+                'BRANCH_CODE' => $memberdata->branch_id,
+                'MEMBERTYPE_CODE' => $memberdata->designation_id,
+                'ENTRYMODE' => 'A',
+                //'DEFAULTINGMONTHS' => 0,
+                'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE-$paycount : 0,
+                'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+$paycount : 1,
+                'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE-$total_subscription_amount : 0,
+                'BFDUE' => !empty($last_subscription_res) ? $last_subscription_res->BFDUE-$total_bf_amount : 0,
+                'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$total_subscription_amount : $total_subscription_amount,
+                'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$total_bf_amount : $total_bf_amount,
+                'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$total_insurance_amount : $total_insurance_amount,
+                //'ACCBENEFIT' => 0,
+                //'CURRENT_YDTBF' => 0,
+                //'CURRENT_YDTSUBSCRIPTION' => 0,
+                'STATUS_CODE' => $memberdata->status_id,
+                'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                'ENTRY_DATE' => date('Y-m-d'),
+                'ENTRY_TIME' => date('h:i:s'),
+                'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                'INSURANCE_AMOUNT' => $this->ins_amount,
+                'TOTALINSURANCE_AMOUNT' => $this->ins_amount,
+                'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+                'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE-$total_insurance_amount : 0,
+                // 'TOTALMONTHSDUE' => DB::raw('TOTALMONTHSDUE-'.$paycount),
+                //'TOTALMONTHSPAID' => DB::raw('TOTALMONTHSPAID+'.$paycount),
+                //'SUBSCRIPTIONDUE' => DB::raw('SUBSCRIPTIONDUE-'.$total_subscription_amount),
+                //'BFDUE' => DB::raw('BFDUE-'.$total_bf_amount),
+                //'INSURANCEDUE' => DB::raw('INSURANCEDUE-'.$total_insurance_amount),
+                //'ACCSUBSCRIPTION' => DB::raw('ACCSUBSCRIPTION+'.$total_subscription_amount),
+                //'ACCBF' => DB::raw('ACCBF+'.$total_bf_amount),
+                //'ACCINSURANCE' => DB::raw('ACCINSURANCE+'.$total_insurance_amount),
+                //'ENTRYMODE' => 'A',
+            ];
+            DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+        }
+        
+        $payment_data = [
+            //'last_paid_date' => $db_arrear_date,
+            'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+$paycount : $paycount,
+            'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+$paycount : $paycount,
+            'totdue_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE-$paycount : $paycount,
+            'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$total_bf_amount : $total_bf_amount,
+            'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$total_subscription_amount : $total_subscription_amount,
+            'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$total_insurance_amount : $total_insurance_amount,
+            'duebf_amount' =>  DB::raw('duebf_amount-'.$total_bf_amount),
+            'dueins_amount' =>  DB::raw('dueins_amount-'.$total_insurance_amount),
+            'duesub_amount' =>  DB::raw('duesub_amount-'.$total_subscription_amount),
+            'updated_by' => Auth::user()->id,
+        ];
+        DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+        //dd(DB::getQuerylog());
+        //return $paycount;
+
+        return redirect($lang.'/sub-arrearentry')->with('message','Arrear Entry Updated Successfully!!');
+
+       
+    }
     public function arrearentrydestroy($lang,$id)
     {
         $id = Crypt::decrypt($id);
         $ArrearEntry = ArrearEntry::find($id);
         $ArrearEntry->delete();
-        return redirect($lang.'/subscription.arrearentry')->with('message','Arrear Entry Details Deleted Successfully!!');
+        return redirect($lang.'/sub-arrearentry')->with('message','Arrear Entry Details Deleted Successfully!!');
     }
 	
 	public function statusCountView($lang, Request $request){

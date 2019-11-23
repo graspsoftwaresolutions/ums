@@ -223,14 +223,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_arrear_list','SubscriptionAjaxController@ajax_arrear_list');
 	
 	//Arrear Entry 
-	Route::get('subscription.arrearentry','SubscriptionController@arrearentryIndex')->name('subscription.arrearentry');
-	Route::get('subscription.addarrearentry','SubscriptionController@arrearentryAdd')->name('subscription.addarrearentry');
+	Route::get('sub-arrearentry','SubscriptionController@arrearentryIndex')->name('subscription.arrearentry');
+	Route::get('sub-addarrearentry','SubscriptionController@arrearentryAdd')->name('subscription.addarrearentry');
 	
 	Route::get('editarreatentry/{parameter}','SubscriptionController@arrearentryEdit')->name('subscription.editarreatentry');
 	
 	Route::delete('arrearentrydelete/{id}','SubscriptionController@arrearentrydestroy')->name('subscription.arrearentrydelete');
 
-	Route::post('subscription.saveArrear','SubscriptionController@arrearentrySave')->name('subscription.saveArrear');
+	Route::post('subscription-saveArrear','SubscriptionController@arrearentrySave')->name('subscription.saveArrear');
 	
 	Route::get('transfer_history','MembershipController@memberTransferHistory')->name('transfer.history');
 	Route::post('change-branch','MembershipController@ChangeMemberBranch')->name('master.changebranch');
@@ -389,6 +389,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-variation-bank','ReportsController@exportPdfVariationBank')->name('variationbank.pdf');
 	Route::get('export-pdf-subscription-bank','ReportsController@exportPdfSubscriptionBank')->name('variationbank.pdf');
 	Route::get('export-pdf-due','ReportsController@exportPdfDue')->name('due.pdf');
+
+	Route::get('sub-arrearupdate/{parameter}','SubscriptionController@UpdateArrear')->name('subs.arrearview');
+	Route::post('update_subscription_rows','SubscriptionController@saveArrearRows')->name('subscription.udatearrearrows');
 
 
 	Route::get('refresh-csrf', function(){
