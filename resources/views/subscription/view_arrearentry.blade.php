@@ -205,6 +205,7 @@
                    <tr>
                         <th>
                             Total (<span id="total-payable">0</span>)
+                            <input type="text" style="background: none !important;" readonly="true" name="total-payamt" id="total-payamt" value="0" class="hide" />
                         </th>
                         <th>
                             <input type="text" style="background: none !important;" readonly="true" name="total_subscription_amount" id="total_subscription_amount" value="0" class="" />
@@ -339,10 +340,31 @@ $(".allow_decimal").on("input", function(evt) {
 
 function CalculateTotal(){
   var total_pay = 0;
+  var arrearamt = parseFloat('{{$edit_data->arrear_amount}}');
+ 
   total_pay += parseFloat($('#total_subscription_amount').val());
   total_pay += parseFloat($('#total_bf_amount').val());
   total_pay += parseFloat($('#total_insurance_amount').val());
+  if(total_pay>arrearamt){
+    alert("Total Amount is higher than Entered arear amount, Please enter correct amount");
+  }
   $('#total-payable').text(total_pay);
+  $('#total-payamt').val(total_pay);
 }
+$("#addarrear_formValidate").on("submit", function(evt) {
+  var arrearamt = parseFloat('{{$edit_data->arrear_amount}}');
+  var total_payamt = parseFloat($('#total-payamt').val());
+  if(total_payamt!=arrearamt){
+    alert("Total Amount is not same, Please enter correct amount");
+    evt.preventDefault();
+  }else{
+    if (confirm('Are you sure you want to update?')) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+    
+});
 </script>
 @endsection

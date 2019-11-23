@@ -320,6 +320,19 @@ $('.datepicker').datepicker({
     format: 'dd/mm/yyyy',
     autoHide: true,
 });
-
+$("#addarrear_formValidate").on("submit", function(evt) {
+   var arrear_date = $("#arrear_date").val();
+   var datestatus = ValidateDate(arrear_date);
+   if(datestatus){
+      return true;
+   }else{
+      alert("Please choose correct date");
+      return false;
+   }
+});
+function ValidateDate(dtValue){
+    var dtRegex = new RegExp(/\b\d{1,2}[\/-]\d{1,2}[\/-]\d{4}\b/);
+    return dtRegex.test(dtValue);
+}
 </script>
 @endsection
