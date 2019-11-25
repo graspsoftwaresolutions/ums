@@ -181,7 +181,17 @@
 					}else{
 						
 					}
-				}
+				},
+				"error": function (jqXHR, textStatus, errorThrown) {
+					if(jqXHR.status==419){
+						alert('Your session has expired, please login again');
+						window.location.href = base_url;
+					}
+					if(jqXHR.status==524){
+						alert('Server does not respond, page will get reloaded');
+						location.reload();
+					}
+				},
 			});
 		}else{
 			//$("#type option[value='2']").remove();
