@@ -1970,5 +1970,19 @@ class SubscriptionController extends CommonController
             return redirect(URL::to('/'.app()->getLocale().'/scan-subscription/'.$enc_id))->with('message', 'Subscription updated Successfully');
         }
     }
+
+    public function arrearRecordEdit($lang,$id)
+    {
+        $id = Crypt::decrypt($id);
+       
+         $data =  DB::table('arrear_entry as ar')->select('ar.no_of_months','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+        ->leftjoin('membership as m','ar.membercode','=','m.id')
+        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        ->leftjoin('company as c','cb.company_id','=','c.id')
+        ->leftjoin('status as s','m.status_id','=','s.id')
+        ->where('ar.id','=',$id)->first();
+
+        return view('subscription.edit_arrear_rows')->with('data',$data);
+    }
     
 }

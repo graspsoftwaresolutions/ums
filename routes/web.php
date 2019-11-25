@@ -392,6 +392,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('sub-arrearupdate/{parameter}','SubscriptionController@UpdateArrear')->name('subs.arrearview');
 	Route::post('update_subscription_rows','SubscriptionController@saveArrearRows')->name('subscription.udatearrearrows');
+	Route::get('editarrearrecords/{parameter}','SubscriptionController@arrearRecordEdit')->name('subscription.editarrearrecords');
 
 
 	Route::get('refresh-csrf', function(){

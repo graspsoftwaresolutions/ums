@@ -725,7 +725,7 @@ class SubscriptionAjaxController extends CommonController
                 $enc_id = Crypt::encrypt($arrear->arrearid);
                 $delete =  route('subscription.arrearentrydelete', [app()->getLocale(),$enc_id]) ;
                                
-                $edit = route('subscription.editarreatentry', [app()->getLocale(),$enc_id]);
+                $edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
                 
                 $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 

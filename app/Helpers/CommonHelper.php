@@ -2349,5 +2349,18 @@ class CommonHelper
                         ->get();
         return $records;
     }
+
+    public static function getDueMonthendsByDate($memberid,$months,$date){
+        $records =  DB::table('membermonthendstatus')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT')
+                        ->where('MEMBER_CODE', '=' ,$memberid)
+                        ->where('TOTAL_MONTHS', '=' ,1)
+                        ->where('arrear_status', '=' ,1)
+                        ->where('arrear_date', '=' ,$date)
+                        ->OrderBy('StatusMonth','asc')
+                        ->limit($months)
+                        ->get();
+        return $records;
+    }
 	
 }
