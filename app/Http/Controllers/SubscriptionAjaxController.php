@@ -1018,15 +1018,17 @@ class SubscriptionAjaxController extends CommonController
             $memberid = $members->MemberCode;
             $uploaded_member_name = $members->Name;
             if($approval_status==3){
-               
-				if($approval_status==1){
+                //DB::enableQueryLog();
+				//if($approval_status==1){
 					if($bulknameverify==1){
 						DB::table('mon_sub_member')->where('id', '=', $sub_member_id)->update(['Name' =>  CommonHelper::getmemberName($memberid)]);
 					}else{
 						
 						DB::table('membership')->where('id', '=', $memberid)->update(['name' => $uploaded_member_name]);
 					}
-				}
+                //}
+                //$queries = DB::getQueryLog();
+                //dd($queries);
 				DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $submemberid)->where('match_id','=' ,3)->update(['approval_status' => 1, 'description' => 'Mismatched Member Name', 'updated_by' => Auth::user()->id]);
             }else{
                 DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $submemberid)->where('match_id','=' ,$approval_status)->update(['approval_status' => 1, 'updated_by' => Auth::user()->id]);
