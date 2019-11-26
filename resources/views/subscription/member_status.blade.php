@@ -294,7 +294,8 @@
 							@php
 								//dd($member);
 								$approval_status = CommonHelper::get_overall_approval_status($member->sub_member_id);
-								$duemonths = CommonHelper::get_duemonths_monthend($member->memberid, $data['filter_date']);
+								$duemonths = $member->memberid!="" ? CommonHelper::get_duemonths_monthend($member->memberid, $data['filter_date']) : '';
+								//dd($duemonths );
 								
 							@endphp
 							<tr style="overflow-x:auto;">
