@@ -390,7 +390,7 @@
 								</br>
 								<div class="row">
 									<div class="col s12">
-										Search Member Name/Code
+										Search Name/Code/NRIC
 									    <div class="input-field inline">
 											<input id="member_search_match" name="member_search_match" type="text" class="validate" style="width:250px;">
 											<input id="member_search_auto_id" name="member_search_auto_id" type="text" class="validate hide">

@@ -1453,12 +1453,22 @@ class SubscriptionController extends CommonController
 				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Matched', 'updated_by' => Auth::user()->id]);
 			}
 			if($match_id==2){
+                $ic_match_count = 0 ;
 				$member_match = $match_id;
 				$nric_not_approve = $request->input('nric_not_approve');
-				$member_auto_id = $request->input('member_search_auto_id');
-				$approval_status= isset($nric_not_approve) ? 1 : 0;
+                $member_auto_id = $request->input('member_search_auto_id');
+                $sub_member_res =DB::table("mon_sub_member")->where('id','=',$sub_member_id)->first();
+                $approval_status= isset($nric_not_approve) ? 1 : 0;
+                $member_id = $member_auto_id;
 				if($approval_status==1){
 					if($member_auto_id!=""){
+                        $nric_no = $sub_member_res->NRIC;
+                        $ic_match_count = DB::table('membership as m')->where('id','=',$member_auto_id)                  ->where(function($query) use ($nric_no){
+                                            $query->orWhere('m.new_ic', 'LIKE',"%{$nric_no}%")
+                                                ->orWhere('m.old_ic', 'LIKE',"%{$nric_no}%")
+                                                ->orWhere('m.employee_id', 'LIKE',"%{$nric_no}%");
+                                        })->count();     
+                       // return $ic_match_count;
 						$memberdata = DB::table("membership")->where('id','=',$member_auto_id)->first();
 						$sub_member =DB::table("mon_sub_member")->where('id','=',$sub_member_id)->update(['MemberCode' => $member_auto_id, 'StatusId' => $memberdata->status_id]);
 						$member_code = $memberdata->member_number;
@@ -1470,9 +1480,18 @@ class SubscriptionController extends CommonController
 				}else{
 					$approval_status= 0;
 					//$approval_masg= 'Update';
-				}
+                }
+              //  return $ic_match_count;
+                //DB::connection()->enableQueryLog();
+				if($ic_match_count==1){
+                    //DB::table('mon_sub_member_match')->where('id', '=', $match->id)->delete();
+                    DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => 1, 'description' => 'NRIC Matched', 'updated_by' => Auth::user()->id, 'match_id' => 1]);
+                }else{
+                    DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Not Matched', 'updated_by' => Auth::user()->id]);
+                }
+               // $queries = DB::getQueryLog();
+                //dd($queries);
 				
-				DB::table('mon_sub_member_match')->where('id', '=', $match->id)->where('match_id','=' ,$match_id)->update(['approval_status' => $approval_status, 'description' => 'NRIC Not Matched', 'updated_by' => Auth::user()->id]);
 			}
 			if($match_id==3){
 				$member_approve = $request->input('member_approve');

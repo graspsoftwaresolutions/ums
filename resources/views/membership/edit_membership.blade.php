@@ -416,7 +416,7 @@
                                                         <select name="city_id" id="city_id" data-error=".errorTxt6" class="error browser-default selectpicker">
                                                             <option value="">Select</option>
                                                             @foreach($data['city_view'] as $key=>$value)
-                                                            <option value="{{$value->id}}" @php if($value->id == $values->city_id) { echo "selected";} @endphp>{{$values->city_name}}</option>
+                                                            <option value="{{$value->id}}" @php if($value->id == $values->city_id) { echo "selected";} @endphp>{{$value->city_name}}</option>
                                                             @endforeach
                                                         </select>
                                                         <div class="input-field">
