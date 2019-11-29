@@ -75,6 +75,9 @@ class MemberController extends CommonController
 			$get_roles = User::find($user_id)->roles;
 			$user_role = $get_roles[0]->slug;
 		}
+		if($user_role=='data-entry'){
+			$user_role='union';
+		}
         
         //return $request->all();
         $request->validate([
