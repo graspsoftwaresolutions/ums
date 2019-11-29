@@ -71,7 +71,7 @@
 														
 														$companylist = [];
 														
-														if($user_role =='union'){
+														if($user_role =='union' || $user_role=='data-entry'){
 															$member_number_readonly = '';
 															$member_number_hide = '';
 															$member_status = 2;

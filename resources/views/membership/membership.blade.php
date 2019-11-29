@@ -98,7 +98,7 @@ span.dtr-title::after {
 								
 								$companylist = [];
 								
-								if($user_role =='union'){
+								if($user_role =='union' || $user_role =='data-entry'){
 									$member_number_readonly = '';
 									$member_number_hide = '';
 									$companylist = $data['company_view'];

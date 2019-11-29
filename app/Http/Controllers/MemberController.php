@@ -171,7 +171,7 @@ class MemberController extends CommonController
 					$member['user_id'] = $member_user->id;
 					$member['old_member_number'] = $request->input('old_member_id');
 					
-					if($user_role == 'union'){
+					if($user_role == 'union' || $user_role == 'data-entry'){
 						$member['is_request_approved'] = 1;
 						$member['status_id'] = 1;
 					}else{
@@ -208,7 +208,7 @@ class MemberController extends CommonController
 						$redirect_failurl = app()->getLocale().'/edit-membership-profile';
 						$redirect_url = app()->getLocale().'/edit-membership-profile';
 					}
-					if($user_role=='union'){
+					if($user_role=='union' || $user_role=='data-entry'){
 						$activate_account = $request->input('activate_account');
 						$activate_account = isset($activate_account) ? 1 : 0;
 						if($activate_account==1){

@@ -484,7 +484,9 @@
 
                                                     $auth_user = Auth::user(); 
                                                     $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
-                                                    $check_union = $auth_user->hasRole('union'); if($check_union){ 
+                                                    $check_union = $auth_user->hasRole('union'); 
+                                                    $check_entry = $auth_user->hasRole('data-entry'); 
+                                                    if($check_union || $check_entry){ 
                                                         $branch_requird = 'required'; 
                                                         $branch_disabled = ''; 
                                                         $branch_hide = ''; 
