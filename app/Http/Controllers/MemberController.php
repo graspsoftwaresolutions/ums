@@ -716,6 +716,7 @@ class MemberController extends CommonController
 			}else{
 				$memberdata = Membership::find($member_id);
 				$doj = $memberdata->doj;
+				$subs_month = date('Y-m-01',strtotime($doj));
 				$feecount = DB::table('member_fee as mf')
 				->select('f.fee_shortcode','mf.fee_amount as fee_amount')
 				->leftjoin('fee as f','f.id','=','mf.fee_id')
