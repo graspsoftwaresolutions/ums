@@ -394,6 +394,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update_subscription_rows','SubscriptionController@saveArrearRows')->name('subscription.udatearrearrows');
 	Route::get('editarrearrecords/{parameter}','SubscriptionController@arrearRecordEdit')->name('subscription.editarrearrecords');
 
+	Route::get('history-list','MonthEndController@ListMonthend')->name('history.list');
+	Route::get('history-update','MonthEndController@ListMonthend')->name('history.update');
+
+	Route::post('ajax_history_list','MonthEndController@ajax_history_list');
+
+	Route::get('monthend-history/{parameter}','MonthEndController@ViewMemberHistory')->name('monthend.viewlists');
+	Route::post('update_unpaid_rows','SubscriptionController@saveMonthendRows')->name('subscription.updatehistoryrows');
+	Route::post('history-list','MonthEndController@ListMonthendFilter')->name('monthend.list');
+
 
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();

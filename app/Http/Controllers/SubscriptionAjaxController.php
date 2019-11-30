@@ -629,7 +629,7 @@ class SubscriptionAjaxController extends CommonController
         );
         
        // DB::enableQueryLog();
-		$commonqry = DB::table('arrear_entry as ar')->select('ar.no_of_months','ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color')
+		$commonqry = DB::table('arrear_entry as ar')->select('ar.no_of_months','ar.id as arrearid','ar.nric','ar.arrear_date','ar.arrear_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color','ar.membercode')
                     ->leftjoin('membership as m','ar.membercode','=','m.id')
                     ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                     ->leftjoin('company as c','cb.company_id','=','c.id')
@@ -724,12 +724,16 @@ class SubscriptionAjaxController extends CommonController
 
                 $enc_id = Crypt::encrypt($arrear->arrearid);
                 $delete =  route('subscription.arrearentrydelete', [app()->getLocale(),$enc_id]) ;
+
+                $histry = route('member.history', [app()->getLocale(),Crypt::encrypt($arrear->membercode)]) ;
                                
                 $edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
                 
                 $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
                 $actions .="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+
+                $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
                 
                 $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
                 $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";

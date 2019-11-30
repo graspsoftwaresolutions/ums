@@ -2362,5 +2362,29 @@ class CommonHelper
                         ->get();
         return $records;
     }
+
+    public static function getMonthendCountByDoj($memberid,$date){
+        return DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.StatusMonth','=',$date)->where('ms.TOTAL_MONTHS','=',1)->count();
+    }
+
+     public static function getMonthendsByJoinDate($memberid,$months,$date){
+        $records =  DB::table('membermonthendstatus')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT')
+                        ->where('MEMBER_CODE', '=' ,$memberid)
+                        ->where('StatusMonth', '>' ,$date)
+                        ->OrderBy('StatusMonth','asc')
+                        ->limit($months)
+                        ->get();
+        return $records;
+    }
 	
+     public static function getMonthendsOnJoinDate($memberid,$months,$date){
+        $records =  DB::table('membermonthendstatus')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT')
+                        ->where('MEMBER_CODE', '=' ,$memberid)
+                        ->where('StatusMonth', '=' ,$date)
+                        ->OrderBy('StatusMonth','asc')
+                        ->first();
+        return $records;
+    }
 }
