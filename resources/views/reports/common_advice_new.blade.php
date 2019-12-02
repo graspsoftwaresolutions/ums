@@ -86,7 +86,7 @@
                 <td style="border: 1px solid #988989 !important;">{{ $member->subs }}</td>
                 <td style="border: 1px solid #988989 !important;">{{ $data['bf_amount'] }}</td>
                 <td style="border: 1px solid #988989 !important;">{{ $data['hq_amount'] }}</td>
-                <td style="border: 1px solid #988989 !important;text-align: center;" align="center">{{ 'N' }}</td>
+                <td style="border: 1px solid #988989 !important;text-align: center;" align="center">{{ $member->old_member_number!='' ? 'R' : 'N' }}</td>
 			</tr> 
 			@php
 				$sno++;
