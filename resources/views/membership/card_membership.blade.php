@@ -191,7 +191,7 @@
 			border-top:2px solid white !important;
 		}
 		.subpage {
-        padding-top: 0.6cm !important;	 
+        padding-top: 0.1cm !important;	 
 		xborder:2px solid red; 
     	}
     @media print {
@@ -212,11 +212,11 @@
 			xborder:2px solid red; 
         }
 		.subpage {
-        padding-top: 0.6cm !important;	 
+        padding-top: 0.15cm !important;	 
 		xborder:2px solid red; 
     	}
 		.un_kel{			
-			margin-top:0.03mm !important;
+			margin-top:0.01mm !important;
 		}
 		#labelstart{
 			margin-top:29px;
@@ -240,50 +240,69 @@
 		.un_kelname{
 			margin-top:50px !important;
 			margin-left:115px !important;
-			font-size:15px !important;
+			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
+			letter-spacing:0mm !important;
+            width:250px !important;
+			xborder:5px solid red;
+			white-space: nowrap !important; 
+			overflow-wrap: break-word !important;
+			word-wrap: break-word !important;
+			hyphens: auto !important;
+			word-spacing: -1mm !important;
+			
 		}
 		.un_kelbank{
 			margin-left:115px !important;
-			font-size:15px !important;
+			font-size:17px !important;
+			width:300px !important;
+			xborder:1px solid red;
+			overflow-wrap: break-word !important;
+			word-wrap: break-word !important;
+			hyphens: auto !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 		}
 		.un_keladdr{
 			margin-left:205px !important;
 			margin-top:30px !important;
-			font-size:15px !important;
+			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
+			white-space: nowrap !important; 
+			overflow-wrap: break-word !important;
+			word-wrap: break-word !important;
+			hyphens: auto !important;
+			word-spacing: -1mm !important;
 		}
 		.un_kelbot{
-			font-size:15px !important;
+			font-size:16px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 			margin-left:300px !important;
 			margin-top:100px !important;
 		}
 		.un_kelbot1{
-			font-size:15px !important;
+			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 			margin-left:300px !important;
 			margin-top:125px !important;
 		}
 		.un_kelbot2{
-			font-size:15px !important;
+			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 			margin-left:300px !important;
 			margin-top:150px !important;
 		}
 		.un_kelbot3{
-			font-size:15px !important;
+			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 			margin-left:300px !important;
-			margin-top:182px !important;
+			margin-top:178px !important;
 		}
         #labelbank{
 			margin-top:3px;
@@ -398,7 +417,7 @@
 			font-weight: bold;
 			text-transform:uppercase;
 			letter-spacing:0mm;
-            width:190px;
+            width:250px !important;
 			overflow-wrap: break-word;
 			word-wrap: break-word;
 			hyphens: auto;
@@ -433,7 +452,7 @@
 			<span class="@php if($i>0){ echo 'alt'; } @endphp  @php if($member->unbid=='5'){ echo 'un_kelname'; } @endphp" id="labelname">
 		   @php
 		   	$str = $member->name;
-			echo wordwrap($str,40,"<p style='display:none !important;'>\n");
+			echo wordwrap($str,50,"<p style='display:none !important;'>\n");
 		    @endphp
 		   <label style="display:none;"> </p></label>
 		    </span>
@@ -447,7 +466,7 @@
 			<span  class="@php if($member->unbid=='5'){ echo 'un_keladdr'; } @endphp" id="labeladdr">			
 			@php
 		   	$stradd1 =  $member->address_one;
-			echo wordwrap($stradd1,40,"<p style='display:none !important;'>\n");
+			echo wordwrap($stradd1,30,"<p style='display:none !important;'>\n");
 		   	@endphp
 		  <label style="display:none;"> </p></label>
 			</br>
