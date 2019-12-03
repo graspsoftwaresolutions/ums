@@ -2369,7 +2369,7 @@ class CommonHelper
 
      public static function getMonthendsByJoinDate($memberid,$months,$date){
         $records =  DB::table('membermonthendstatus')
-                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','Id as autoid')
                         ->where('MEMBER_CODE', '=' ,$memberid)
                         ->where('StatusMonth', '>' ,$date)
                         ->OrderBy('StatusMonth','asc')

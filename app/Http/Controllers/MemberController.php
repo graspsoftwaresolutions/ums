@@ -527,7 +527,27 @@ class MemberController extends CommonController
 			}else{
 				$created_by = $member_user->id;
 			}
+			$hq_amt=0;
+			$ent_amt=0;
+			$hqfeecount = DB::table('member_fee as mf')
+			->select('f.fee_shortcode','mf.fee_amount as fee_amount')
+			->leftjoin('fee as f','f.id','=','mf.fee_id')
+			->where('mf.member_id','=',$member_id)
+			->where('f.fee_shortcode','=','BUF');
+			if($hqfeecount->count()==1){
+				$hq_amt = $hqfeecount->pluck('mf.fee_amount')->first();
+			}
+			$entfeecount = DB::table('member_fee as mf')
+			->select('f.fee_shortcode','mf.fee_amount as fee_amount')
+			->leftjoin('fee as f','f.id','=','mf.fee_id')
+			->where('mf.member_id','=',$member_id)
+			->where('f.fee_shortcode','=','EF');
+			if($entfeecount->count()==1){
+				$ent_amt = $entfeecount->pluck('mf.fee_amount')->first();
+			}
 			$payment_data = [
+				'entrance_fee' => $ent_amt,
+				'hq_fee' => $hq_amt,
 				'member_id' => $member_id,
 				'due_amount' => 0,
 				'created_by' => $created_by,
@@ -546,6 +566,8 @@ class MemberController extends CommonController
 								})       
 							->get();
 				if(count($feedata)==2 && $memberdata->is_request_approved==1){
+					
+					//return 1;
 					if($memberdata->salary>0){
 						$subsamount = CommonHelper::getsubscription_bysalary($memberdata->salary);
 						$bf_amt = 0;
@@ -678,6 +700,8 @@ class MemberController extends CommonController
 
 					}
 					$payment_data = [
+						'entrance_fee' => $ent_amt,
+						'hq_fee' => $hq_amt,
 						'last_paid_date' => $subs_month, 
 						'member_id' => $member_id,
 						'due_amount' => 0,
@@ -691,6 +715,7 @@ class MemberController extends CommonController
 						'created_by' => Auth::user()->id,
 						'created_at' => date('Y-m-d'),
 					];
+					// /return $payment_data;
 				}else{
 					$subs_month = date('Y-m-01',strtotime($doj));
 					$member_subs_id = DB::table("mon_sub_member as mm")->select('mm.id as msid')
@@ -707,6 +732,8 @@ class MemberController extends CommonController
 
 					$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_id)->delete();
 					$payment_data = [
+						'entrance_fee' => $ent_amt,
+						'hq_fee' => $hq_amt,
 						'member_id' => $member_id,
 						'due_amount' => 0,
 						'created_by' => Auth::user()->id,
@@ -747,6 +774,112 @@ class MemberController extends CommonController
 			if($member_pay_count==0){
 				DB::table('member_payments')->insert($payment_data);
 			}
+
+			//update below history
+			$last_mont_record = DB::table($this->membermonthendstatus_table." as ms")
+			->select('ms.StatusMonth','ms.LASTPAYMENTDATE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.SUBSCRIPTIONDUE','ms.TOTALMONTHSCONTRIBUTION','ms.INSURANCEDUE','ms.BFDUE','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
+			->where('StatusMonth', '<', $subs_month)->where('MEMBER_CODE', '=', $member_id)
+			->orderBY('StatusMonth','desc')
+			->limit(1)
+			->first();
+
+			$below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
+			->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
+			->where('StatusMonth', '>=', $subs_month)->where('MEMBER_CODE', '=', $member_id)
+			->orderBY('StatusMonth','asc')
+			->get();
+
+			$last_ACCINSURANCE = !empty($last_mont_record) ? $last_mont_record->ACCINSURANCE : 0;
+			$last_ACCSUBSCRIPTION = !empty($last_mont_record) ? $last_mont_record->ACCSUBSCRIPTION : 0;
+			$last_ACCBF = !empty($last_mont_record) ? $last_mont_record->ACCBF : 0;
+			$last_SUBSCRIPTIONDUE = !empty($last_mont_record) ? $last_mont_record->SUBSCRIPTIONDUE : 0;
+			$last_BFDUE = !empty($last_mont_record) ? $last_mont_record->BFDUE : 0;
+			$last_INSURANCEDUE = !empty($last_mont_record) ? $last_mont_record->INSURANCEDUE : 0;
+			$last_TOTALMONTHSDUE = !empty($last_mont_record) ? $last_mont_record->TOTALMONTHSDUE : 0;
+			$last_TOTALMONTHSPAID = !empty($last_mont_record) ? $last_mont_record->TOTALMONTHSPAID : 0;
+			$last_TOTALMONTHSCONTRIBUTION = !empty($last_mont_record) ? $last_mont_record->TOTALMONTHSCONTRIBUTION : 0;
+			$last_paid_date = !empty($last_mont_record) ? $last_mont_record->LASTPAYMENTDATE : $subs_month;
+			
+			foreach($below_mont_records as $monthend){
+				$m_subs_amt = $monthend->SUBSCRIPTION_AMOUNT;
+				$m_bf_amt = $monthend->BF_AMOUNT;
+				$m_ins_amt = $monthend->INSURANCE_AMOUNT;
+				$m_total_months = $monthend->TOTAL_MONTHS;
+
+				if($m_total_months==1){
+					$new_ACCINSURANCE = $last_ACCINSURANCE+$m_ins_amt;
+					$new_ACCSUBSCRIPTION = $last_ACCSUBSCRIPTION+$m_subs_amt;
+					$new_ACCBF = $last_ACCBF+$m_bf_amt;
+					$new_SUBSCRIPTIONDUE = $last_SUBSCRIPTIONDUE;
+					$new_BFDUE = $last_BFDUE;
+					$new_INSURANCEDUE = $last_INSURANCEDUE;
+					$new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE;
+					$new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID+1;
+					$new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION+1;
+					$last_paid_date = $monthend->StatusMonth;
+				}else{
+					$new_ACCINSURANCE = $last_ACCINSURANCE;
+					$new_ACCSUBSCRIPTION = $last_ACCSUBSCRIPTION;
+					$new_ACCBF = $last_ACCBF;
+					$new_SUBSCRIPTIONDUE = $last_SUBSCRIPTIONDUE+$m_subs_amt;
+					$new_BFDUE = $last_BFDUE+$m_bf_amt;
+					$new_INSURANCEDUE = $last_INSURANCEDUE+$m_ins_amt;
+					$new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE+1;
+					$new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID;
+					$new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION;
+				}
+			
+				
+				$monthend_datas = [
+							'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
+							'TOTALMONTHSPAID' => $new_TOTALMONTHSPAID,
+							'SUBSCRIPTIONDUE' => $new_SUBSCRIPTIONDUE,
+							'BFDUE' => $new_BFDUE,
+							'INSURANCEDUE' => $new_INSURANCEDUE,
+							'ACCSUBSCRIPTION' => $new_ACCSUBSCRIPTION,
+							'ACCBF' => $new_ACCBF,
+							'ACCINSURANCE' => $new_ACCINSURANCE,
+							'TOTALMONTHSCONTRIBUTION' => $new_TOTALMONTHSCONTRIBUTION,
+							'LASTPAYMENTDATE' => $last_paid_date,
+						];
+				$m_upstatus = DB::table('membermonthendstatus')->where('Id', '=', $monthend->Id)->update($monthend_datas);
+
+				$last_ACCINSURANCE = $new_ACCINSURANCE;
+				$last_ACCSUBSCRIPTION = $new_ACCSUBSCRIPTION;
+				$last_ACCBF = $new_ACCBF;
+				$last_SUBSCRIPTIONDUE = $new_SUBSCRIPTIONDUE;
+				$last_BFDUE = $new_BFDUE;
+				$last_INSURANCEDUE = $new_INSURANCEDUE;
+				$last_TOTALMONTHSDUE = $new_TOTALMONTHSDUE;
+				$last_TOTALMONTHSPAID = $new_TOTALMONTHSPAID;
+				$last_TOTALMONTHSCONTRIBUTION = $new_TOTALMONTHSCONTRIBUTION;
+			}
+
+			$payment_data = [
+					'entrance_fee' => $ent_amt,
+					'hq_fee' => $hq_amt,
+					'last_paid_date' => $last_paid_date,
+					'totpaid_months' => $last_TOTALMONTHSPAID,
+					'totcontribution_months' => $last_TOTALMONTHSCONTRIBUTION,
+					'totdue_months' => $last_TOTALMONTHSDUE,
+					'accbf_amount' => $last_ACCBF,
+					'accsub_amount' => $last_ACCSUBSCRIPTION,
+					'accins_amount' => $last_ACCINSURANCE,
+					'duebf_amount' =>  $last_BFDUE,
+					'dueins_amount' => $last_INSURANCEDUE,
+					'duesub_amount' =>  $last_SUBSCRIPTIONDUE,
+					'updated_by' => Auth::user()->id,
+				];
+				DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+			if($last_TOTALMONTHSDUE<=3){
+				$m_status = 1;
+				DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
+			}else if($last_TOTALMONTHSDUE<=13){
+				$m_status = 2;
+				DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
+			}
+			
+
 			if($auto_id==''){
 				return redirect($redirect_url)->with('message','Member Account created successfully');
 				// $mail_data = array(

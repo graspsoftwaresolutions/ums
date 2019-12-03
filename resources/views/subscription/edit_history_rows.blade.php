@@ -1,7 +1,9 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/materialize.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/themes/vertical-modern-menu-template/style.css') }}">
+
 @endsection
 @section('headSecondSection')
 @php 
@@ -11,6 +13,8 @@
   $dojrecord = CommonHelper::getMonthendsOnJoinDate($edit_data->memberid,100,date('Y-m-01',strtotime($edit_data->doj)));
  // dd($dojrecord);
 @endphp
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
 <style type="text/css">
@@ -86,7 +90,10 @@
 		<div class="container">
       <div class="card">
           <div class="card-title">
-			<h5 class="padding-left-10">Arrear Entry Details <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Back') }}</a></h5>
+			<h5 class="padding-left-10">Monthend History Details 
+        <a style="margin-left: 10px;" onclick="AddNewHistory()" class="btn waves-effect waves-light blue right hide">{{__('Add Additional History') }}</a> &nbsp; &nbsp; 
+        <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Back') }}</a>&nbsp; 
+      </h5>
       </div>
 			<div class="row">
            
@@ -135,7 +142,7 @@
                            {{$edit_data->status_name}}
                         </td>
                         <td>
-                         {{$edit_data->doj}}
+                         {{ date('d-m-Y',strtotime($edit_data->doj)) }}
                         </td>
                          <th>
                           {{$edit_data->salary}}
@@ -165,17 +172,25 @@
                            <label for="doj_date">{{__('First Month')}}</label>
                            <input id="doj_date" type="text" class="validate " readonly="" value="{{ date('01-m-Y',strtotime($edit_data->doj)) }}" name="doj_date">
                         </div>
-                        <div class="col s12 m6 l3">
+                        <div class="col s12 m6 l2">
                            <label for="doj_subs">{{__('Subscription Amount')}}</label>
                            <input id="doj_subs" type="text" class="validate subscription_amount allow_decimal" value="{{ !empty($dojrecord) ? $dojrecord->TOTALSUBCRP_AMOUNT : 0 }}" name="doj_subs">
                         </div>
-                         <div class="col s12 m6 l3">
+                         <div class="col s12 m6 l2">
                            <label for="doj_bf">{{__('BF Amount')}}</label>
                            <input id="doj_bf" type="text" class="bf_amount allow_decimal " value="{{ !empty($dojrecord) ? $dojrecord->TOTALBF_AMOUNT : 0 }}" name="doj_bf">
                         </div>
-                        <div class="col s12 m6 l3">
+                        <div class="col s12 m6 l2">
                            <label for="doj_ins">{{__('Insurance Amount')}}</label>
                            <input id="doj_ins" type="text" class="insurance_amount allow_decimal" value="{{ !empty($dojrecord) ? $dojrecord->TOTALINSURANCE_AMOUNT : 0 }}" name="doj_ins">
+                        </div>
+                         <div class="col s12 m6 l2">
+                           <label for="entrance_fee">{{__('Entrance Fee')}}</label>
+                           <input id="entrance_fee" type="text" class="allow_decimal" value="" name="entrance_fee">
+                        </div>
+                        <div class="col s12 m6 l2">
+                           <label for="hq_fee">{{__('Building Fund(HQ)')}}</label>
+                           <input id="hq_fee" type="text" class="allow_decimal" value="" name="hq_fee">
                         </div>
                         
                      </div>
@@ -197,7 +212,7 @@
         
          <input type="hidden" name="member_id" id="member_id" value="{{$edit_data->memberid}}">
         <div class="card">
-            <table class="bordered">
+            <table id="member_history" class="bordered">
                 <thead style="background: -webkit-linear-gradient(45deg, #5e68a7, #9458ad);color:#fff;">
                     <tr>
                         <th>
@@ -225,7 +240,8 @@
                     @foreach($monthsrecords as $rows)
                      <tr>
                         <td>
-                            <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="{{ date('d-m-Y',strtotime($rows->StatusMonth)) }}" class="datepicker-custom entry_date" readonly="true" />
+                            <input type="text" name="month_auto_id[]" id="month_auto_id_{{ $slno }}" class="hide" value="{{ $rows->autoid }}"/>
+                            <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="{{ date('d-m-Y',strtotime($rows->StatusMonth)) }}" class=" entry_date" readonly="true" />
                         </td>
                         <td>
                             <input type="text" name="subscription_amount[]" id="subscription_amount_{{ $slno }}" value="{{ $rows->TOTALSUBCRP_AMOUNT }}" class="subscription_amount allow_decimal" />
@@ -269,7 +285,7 @@
             </table>
             <div class="row">
               <div class="col m6">
-               
+                  <input type="text" name="totalno" id="totalno" class="hide" value="{{ $slno }}">
                </div>
                <div class="col m6">
                 <p>
@@ -294,7 +310,8 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 @endsection
 @section('footerSecondSection')
 <script>
@@ -343,11 +360,11 @@ errorPlacement: function(error, element) {
   }
 }
 });
-$('.datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    autoHide: true,
-});
-$(".subscription_amount").keyup(function(){
+// $('.datepicker').datepicker({
+//     format: 'dd/mm/yyyy',
+//     autoHide: true,
+// });
+$(document).on('keyup', '.subscription_amount', function(){
   var total_subs = 0;
   $(".subscription_amount").each(function() {
       var subs_value = $(this).val()=='' ? 0 : $(this).val();
@@ -357,7 +374,7 @@ $(".subscription_amount").keyup(function(){
   $("#total_subscription_amount").val(total_subs);
   CalculateTotal();
 });
-$(".bf_amount").keyup(function(){
+$(document).on('keyup', '.bf_amount', function(){
   var total_bf = 0;
   $(".bf_amount").each(function() {
       var bf_value = $(this).val()=='' ? 0 : $(this).val();
@@ -367,7 +384,7 @@ $(".bf_amount").keyup(function(){
   $("#total_bf_amount").val(total_bf);
   CalculateTotal();
 });
-$(".insurance_amount").keyup(function(){
+$(document).on('keyup', '.insurance_amount', function(){
   var total_ins = 0;
   $(".insurance_amount").each(function() {
       var ins_value = $(this).val()=='' ? 0 : $(this).val();
@@ -378,7 +395,7 @@ $(".insurance_amount").keyup(function(){
   CalculateTotal();
 });
 
-$(".allow_decimal").on("input", function(evt) {
+$(document).on('input', '.allow_decimal', function(){
    var self = $(this);
    self.val(self.val().replace(/[^0-9\.]/g, ''));
    if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
@@ -415,5 +432,29 @@ $("#addarrear_formValidate").on("submit", function(evt) {
   }
     
 });
+function AddNewHistory(){
+  var totalno = parseInt($("#totalno").val());
+  var history = '<tr><td> <input type="text" name="month_auto_id[]" id="month_auto_id_'+totalno+'" class="hide" value=""/><input type="text" name="entry_date[]" id="entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"></td>';
+  history += '<td><input type="text" name="subscription_amount[]" id="subscription_amount_'+totalno+'" value="" class="subscription_amount allow_decimal"></td>';
+  history += '<td><input type="text" name="bf_amount[]" id="bf_amount_6" value="" class="bf_amount allow_decimal valid" aria-invalid="false"></td>';
+  history += '<td><input type="text" name="insurance_amount[]" id="insurance_amount_'+totalno+'" value="" class="insurance_amount allow_decimal"></td></tr>'
+  $("#member_history").append(history);
+  var newtotalno = totalno+1;
+  $("#totalno").val(newtotalno);
+  $('.datepicker-custom').MonthPicker({ 
+    Button: false, 
+    MonthFormat: '01-mm-yy',
+    OnAfterChooseMonth: function() { 
+      //getDataStatus();
+    } 
+   });
+}
+$('.datepicker-custom').MonthPicker({ 
+    Button: false, 
+    MonthFormat: '01-mm-yy',
+    OnAfterChooseMonth: function() { 
+      //getDataStatus();
+    } 
+   });
 </script>
 @endsection

@@ -333,7 +333,7 @@
                                                         <label for="doe" class="force-active">Date of Emp</label>
                                                         <div class="errorTxt26"></div>
                                                     </div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $values->status_id>2 ? 'hide' : '' }}">
                                                         @php
                                                             $old_membercode = '';
                                                             if($values->old_member_number!="" && $values->old_member_number!=Null){
@@ -972,7 +972,7 @@
                                                                     <select name="new_fee_id" id="new_fee_id" class="error browser-default selectpicker">
                                                                         <option value="">Select</option>
                                                                         @foreach($data['fee_list'] as $key=>$value)
-                                                                        <option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}}</option>
+                                                                        <option data-feename="{{$value->fee_name}}" data-feeamount="{{$value->fee_amount}}" value="{{$value->id}}">{{$value->fee_name}} ({{$value->fee_shortcode}})</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <div class="input-field">
