@@ -156,6 +156,7 @@
               <li id="variation_bank_sidebar_li_id" class=""><a id="variation_bank_sidebar_a_id" class="collapsible-body" href="{{ route('reports.variation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variation By Bank') }}</span></a></li>
               <li id="subscription_bank_sidebar_li_id" class=""><a id="subscription_bank_sidebar_a_id" class="collapsible-body" href="{{ route('reports.subscription',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription By Bank') }}</span></a></li>
                <li id="member_due_sidebar_li_id" class=""><a id="member_due_sidebar_a_id" class="collapsible-body" href="{{ route('reports.due',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Due Report') }}</span></a></li>
+                <li id="member_statement_sidebar_li_id" class=""><a id="member_statement_sidebar_a_id" class="collapsible-body" href="{{ route('reports.statement',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Member Statement') }}</span></a></li>
             </ul>
           </div>
         </li>

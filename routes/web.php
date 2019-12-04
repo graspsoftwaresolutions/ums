@@ -403,6 +403,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update_unpaid_rows','SubscriptionController@saveMonthendRows')->name('subscription.updatehistoryrows');
 	Route::post('history-list','MonthEndController@ListMonthendFilter')->name('monthend.list');
 
+	Route::get('statement-report','ReportsController@StatementReport')->name('reports.statement');
+	Route::get('member_statement','ReportsController@MemberStatementReport')->name('statement.member');
+
 
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();
@@ -469,5 +472,6 @@ Route::get('/clear-cache', function() {
 });
 
 Route::get('addpayments','MemberController@AddPaymentEntry');
+
 
 Route::get('get-ircbranch-member-list','IrcController@getUnionAutomemberslist');
