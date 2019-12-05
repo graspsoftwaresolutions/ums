@@ -448,7 +448,14 @@
 	@endphp
 		@foreach($data['member_view'] as $member)
 		<div class="page">
-		   <div class="subpage @php if($member->unbid=='5'){ echo 'un_kel'; } @endphp" style='margin-top:5px 1important;'>
+			@php 
+			if($member->unbid=='6'){ 
+			@endphp
+				<p style="xborder:1px solid red; margin-top:-10px !important;"></p>
+			@php
+			} 
+			@endphp
+		   <div class="subpage @php if($member->unbid=='5'){ echo 'un_kel'; } @endphp" style="margin-top:5px 1important;">
 			<span class="@php if($i>0){ echo 'alt'; } @endphp  @php if($member->unbid=='5'){ echo 'un_kelname'; } @endphp" id="labelname">
 		   @php
 		   	$str = $member->name;

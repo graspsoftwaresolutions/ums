@@ -86,7 +86,7 @@
 
 			    //font-family: 'Muli', sans-serif;
 			    font-weight: normal;
-			    line-height: 1; 
+			    line-height: 1.4; 
 			    color: rgba(0, 0, 0, .87);
 			    font-size: 12px;
 			}
