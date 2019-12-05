@@ -3754,17 +3754,21 @@ class ReportsController extends Controller
                     //  /->where(DB::raw('date(`StatusMonth`)'),'>=',$fromdate)
                     ->where(DB::raw('date(`StatusMonth`)'),'<',$todate)
                     ->orderBy('StatusMonth','desc')->first();
-           
+            $inscount = DB::table('membermonthendstatus as ms')->select('StatusMonth') 
+                        ->where('MEMBER_CODE','=',$member_id)
+                        ->where('TOTALINSURANCE_AMOUNT','!=',0)
+                        ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
+                        ->count();
             $data['history_view'] = $tohistory;
             $data['last_history_view'] = $lasthistory;
-            $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','city.city_name','m.postal_code','m.id')
+            $data['insurance_count'] = $inscount;
+            $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','m.postal_code','m.id')
                             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
-                            ->leftjoin('company as c','c.id','=','cb.company_id') 
-                            ->leftjoin('city as city','city.id','=','m.city_id')->where('m.id','=',$member_id)->first();
+                            ->leftjoin('company as c','c.id','=','cb.company_id')->where('m.id','=',$member_id)->first();
             //dd($members);
             //$data['from_date']=$fromdate;
             $data['to_date']= $todate;
-            $data['member_auto_id']='';
+            $data['member_auto_id']=$member_id;
             $data['offset']=0;
     
             return view('reports.iframe_member_statement')->with('data',$data);  

@@ -161,6 +161,9 @@
 			padding: 2px;
 			margin: 6px;
 		}
+		.bold{
+			font-weight: bold;
+		}
 		
 	</style>
 	<script type="text/javascript">

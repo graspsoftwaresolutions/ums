@@ -10,7 +10,7 @@
 		<tr>
 			<td width="100%" colspan="3">
 				<table width="100%">
-					<td width="1%" style="padding: 2px;">
+					<td width="1%" style="padding: 2px;padding-right: 8px;">
 						<img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;" alt="Membership logo" height="90">
 					</td>
 					<td width="79%" style="padding: 2px;">
@@ -21,8 +21,8 @@
 					<td width="20%" style="padding: 2px;">
 						<br>
 						<br>
-						<p style="margin-bottom: 10px;margin-top: 0;">DATE JOINED: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
-						DT PAID TILL: {{  date('d/M/Y',strtotime($data['to_date'])) }}
+						<p style="margin-bottom: 10px;margin-top: 0;"><span class="bold">DATE JOINED</span>: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
+						<span class="bold">DT PAID TILL</span>: {{  date('d/M/Y',strtotime($data['to_date'])) }}
 					</td>
 				</table>
 				
@@ -32,20 +32,14 @@
 		</tr>
 		<tr class="statement-address">
 			<td width="40%" style="padding-top: 0px;">
-				<p>BRANCH: {{ $member->branch_name }}</p>
-				<p>BANK: {{ $member->company_name }}</p>
-				<p>ADDRESS: {{ $member->address_one!="" ? $member->address_one.', ' : '' }}
-					{{ $member->address_two!="" ? $member->address_two.', ' : '' }}
-					{{ $member->city_name!="" ? $member->city_name.' - ' : '' }}
-					{{ $member->postal_code }}
-				</p>
-				<p>BENEFICIARY'S NAME: Self</p>
+				<p><span class="bold">BRANCH</span>: {{ $member->branch_name }}</p>
+				<p><span class="bold">BANK</span>: {{ $member->company_name }}</p>
+				
 			</td>
 			<td width="40%" style="padding-top: 0px;">
-				<p>BRANCH CODE: {{ $member->branch_shortcode }}</p>
-				<p>BANK CODE: {{ $member->short_code }}</p>
-				<p> </p>
-				<p>BEN I/C NO: </p>
+				<p><span class="bold">BRANCH CODE</span>: {{ $member->branch_shortcode }}</p>
+				<p><span class="bold">BANK CODE</span>: {{ $member->short_code }}</p>
+				
 			</td>
 			<td width="10%" style="text-align:center;padding-top: 0px;">
 				
@@ -56,7 +50,7 @@
 <table id="page-length-option" class="display table2excel" style="margin: 10px;width: 99% !important;">
 		<thead>
 				
-			<tr class="" style="">
+			<tr class="bold" style="">
 				<!--th style="border: 1px solid #988989 !important;">S.NO</th-->
 				<th style="border-bottom: 1px solid #988989 !important;">M/NO</th>
 				<th width="15%" style="border-bottom: 1px solid #988989 !important;">NAME</th>
@@ -65,7 +59,7 @@
 				<th  style="border-bottom: 1px solid #988989 !important;">CURRENT<br>PAYMENT</th>
 				<th  style="border-bottom: 1px solid #988989 !important;">BALANCE<br>TO-DATE</th>
 				<th  style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>BENEFIT</th>
-				<th style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>INSURANCE</th>
+				<th style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>INSURANCE(Months)</th>
 				<th  style="border-bottom: 1px solid #988989 !important;">ARREARS<br>MONTH</th>
 				<th style="border-bottom: 1px solid #988989 !important;">AMT.DUE<br>TO. UNION </th>
 			</tr>
@@ -112,7 +106,7 @@
 				<td style="border: 1px solid #988989 !important;" >{{ !empty($history) ? $history->TOTALSUBCRP_AMOUNT : 0 }}</td>
 				<td  style="border: 1px solid #988989 !important;">{{ $lastallsubs+$currentsubs }}</td>
 				<td style="border: 1px solid #988989 !important;">{{  $acc_bf }}</td>
-				<td style="border: 1px solid #988989 !important;">{{  $acc_ins }}</td>
+				<td style="border: 1px solid #988989 !important;">{{  $data['insurance_count'] }}</td>
 				<td style="border: 1px solid #988989 !important;">{{  $total_dues }}</td>
 				<td style="border: 1px solid #988989 !important;">{{  $subsdues }}</td>
 				
