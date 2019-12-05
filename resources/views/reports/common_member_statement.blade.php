@@ -122,8 +122,8 @@
 			<td>
 				<p style="padding-top: 0px;margin-top: 0px;">1) Any queries on this statement should be communicated to the Hon. Gen Secretary within 14 days upon receipt of this statement, otherwise it would be treated os correct </p>
 				<p>2) If you wish to change the nominee, kindly request for the nominee form from you Branch Secretary.</p>
-				<p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p>
-				<p>4) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>
+				<!--p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p-->
+				<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>
 				<br>
 				<p align="center">National Union of Bonk Employees, 12 NUBS House, 3rd Floor Jalan Tun Sambanthan 3, BrIckfields 50470 Kuala Lumpur.</p>
 				<p align="center">
