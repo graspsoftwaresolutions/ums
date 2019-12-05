@@ -2387,4 +2387,55 @@ class CommonHelper
                         ->first();
         return $records;
     }
+
+    public static function getBFAmountByDate($memberid,$doj,$todate){
+        $resign_month = date('m', strtotime($todate));
+        $resign_day = date('d', strtotime($todate));
+        $resign_year = date('Y', strtotime($todate));
+        $doj_month = date('m', strtotime($doj));
+        $doj_day = date('d', strtotime($doj));
+        $doj_year = date('Y', strtotime($doj));
+
+        $date1 = Carbon::createMidnightDate($resign_year, $resign_month, $resign_day);
+        $date2 = Carbon::createMidnightDate($doj_year, $doj_month, $doj_day);
+
+        $rdate1 = Carbon::createMidnightDate($doj_year, $doj_month, $doj_day);
+        $rdate2 = Carbon::createMidnightDate('2017', '05', '31');
+        $service_year = $date2->diffInYears($date1);
+
+        $dojtime = strtotime($doj);
+        $bftime = strtotime('2017-05-31');
+        $bfamount = 0; 
+        if($dojtime<=$bftime){
+             $memberstatus =  DB::table('membermonthendstatus as ms')->where('StatusMonth', '=',$todate)->where('MEMBER_CODE', '=',$memberid)->pluck('STATUS_CODE')->first();
+
+             if($memberstatus==""){
+                 $memberstatus =  DB::table('membership as m')->where('id', '=',$memberid)->pluck('status_id')->first();
+             }
+
+             if($memberstatus==1){
+                $reasondata =  Reason::where('reason_name','LIKE',"%DECEASED%")->first();
+                $five_year_amount = $reasondata->five_year_amount;
+                $fiveplus_year_amount = $reasondata->fiveplus_year_amount;
+                $one_year_amount = $reasondata->one_year_amount;
+                $minimum_year = $reasondata->minimum_year;
+                $minimum_refund = $reasondata->minimum_refund;
+                $maximum_refund = $reasondata->maximum_refund;
+                 if($service_year>=$minimum_year){
+                    $fiveplusyears =$service_year - $minimum_year; 
+                    $paid_amount = ($fiveplusyears*$fiveplus_year_amount)+$five_year_amount;
+                    if($paid_amount<=$minimum_refund){
+                        $bfamount = $minimum_refund; 
+                    }else if($paid_amount>$minimum_refund && $paid_amount<$maximum_refund){
+                        $bfamount = $paid_amount; 
+                    }else{
+                        $bfamount = $maximum_refund; 
+                    }
+                }
+             }
+            
+        }
+        return $bfamount;
+        //return $doj.'//'.$todate;
+    }
 }

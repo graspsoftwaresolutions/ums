@@ -173,7 +173,7 @@
 		<table width="100%" style="border: none;">
 			<tr>
 				@php 
-					$searchfilters = '&from_date='.$data['from_date'].'&to_date='.$data['to_date'].'&member_auto_id='.$data['member_auto_id'];
+					$searchfilters = '&to_date='.$data['to_date'].'&member_auto_id='.$data['member_auto_id'];
 				@endphp
 				<td width="20%"></td>
 				<td width="10%"></td>
@@ -183,7 +183,7 @@
 				<td width="20%">	
 					<a href="#" class="exportToExcel export-button btn btn-sm" style="background:#227849;display: none;"><i class="material-icons">explicit</i></a>
 					<a href="{{ url(app()->getLocale().'/export-pdf-members-new?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;display: none;"><i class="material-icons">picture_as_pdf</i></a>
-					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()">Print</a>
+					<a href="#" class="export-button btn btn-sm" style="background:#ccc;color:#000;" onClick="window.print()">Print</a>
 				</td>
 			</tr>
 		</table>

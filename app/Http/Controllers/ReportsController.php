@@ -3728,33 +3728,42 @@ class ReportsController extends Controller
         //return $request->all();
 
         $member_id = $request->input('member_auto_id');
-        $from_date = $request->input('from_date');
+      
         $to_date = $request->input('to_date');
 
-        $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+        
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         
 
-        if($member_id!="" && $from_date!="" && $to_date!=""){
+        if($member_id!="" && $to_date!=""){
             $data['data_limit']=$this->limit;
             $get_roles = Auth::user()->roles;
             $user_role = $get_roles[0]->slug;
             $user_id = Auth::user()->id; 
                     
-            $history = DB::table('membermonthendstatus as ms')->select('StatusMonth','ACCSUBSCRIPTION','ACCBF','ACCINSURANCE','TOTALMONTHSDUE','SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT') 
+            $tohistory = DB::table('membermonthendstatus as ms')->select('StatusMonth','ACCSUBSCRIPTION','ACCBF','ACCINSURANCE','TOTALMONTHSDUE','SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT') 
                             ->where('MEMBER_CODE','=',$member_id)
-                         ->where(DB::raw('date(`StatusMonth`)'),'>=',$fromdate)
-                        ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
-                        ->orderBy('StatusMonth','asc')->get();
+                            // /->where('TOTAL_MONTHS','=',1)
+                        //  /->where(DB::raw('date(`StatusMonth`)'),'>=',$fromdate)
+                        ->where(DB::raw('date(`StatusMonth`)'),'=',$todate)
+                        ->orderBy('StatusMonth','desc')->first();
+
+            $lasthistory = DB::table('membermonthendstatus as ms')->select('StatusMonth','ACCSUBSCRIPTION','ACCBF','ACCINSURANCE','TOTALMONTHSDUE','SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT') 
+                        ->where('MEMBER_CODE','=',$member_id)
+                        // /->where('TOTAL_MONTHS','=',1)
+                    //  /->where(DB::raw('date(`StatusMonth`)'),'>=',$fromdate)
+                    ->where(DB::raw('date(`StatusMonth`)'),'<',$todate)
+                    ->orderBy('StatusMonth','desc')->first();
            
-            $data['history_view'] = $history;
-            $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','city.city_name','m.postal_code')
+            $data['history_view'] = $tohistory;
+            $data['last_history_view'] = $lasthistory;
+            $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','city.city_name','m.postal_code','m.id')
                             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
                             ->leftjoin('company as c','c.id','=','cb.company_id') 
                             ->leftjoin('city as city','city.id','=','m.city_id')->where('m.id','=',$member_id)->first();
             //dd($members);
-            $data['from_date']=date('Y-m-01');
-            $data['to_date']=date('Y-m-t');
+            //$data['from_date']=$fromdate;
+            $data['to_date']= $todate;
             $data['member_auto_id']='';
             $data['offset']=0;
     

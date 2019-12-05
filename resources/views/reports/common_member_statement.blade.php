@@ -1,7 +1,9 @@
 @php 
 	$logo = CommonHelper::getLogo(); 
 	$member = $data['member_data'];
-	//dd($data);
+	$history = $data['history_view'];
+	$last_history = $data['last_history_view'];
+	//dd($history);
 @endphp
 <div class="" style="text-align: center">
 	<table width="100%">
@@ -19,8 +21,8 @@
 					<td width="20%" style="padding: 2px;">
 						<br>
 						<br>
-						<p style="margin-bottom: 10px;margin-top: 0;">Date Joined: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
-						DT Paid Till: {{  date('d/M/Y',strtotime($data['history_view'][count($data['history_view'])-1]->StatusMonth)) }}
+						<p style="margin-bottom: 10px;margin-top: 0;">DATE JOINED: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
+						DT PAID TILL: {{  date('d/M/Y',strtotime($data['to_date'])) }}
 					</td>
 				</table>
 				
@@ -30,20 +32,20 @@
 		</tr>
 		<tr class="statement-address">
 			<td width="40%" style="padding-top: 0px;">
-				<p>Branch: {{ $member->branch_name }}</p>
-				<p>Bank: {{ $member->company_name }}</p>
-				<p>Address: {{ $member->address_one!="" ? $member->address_one.', ' : '' }}
+				<p>BRANCH: {{ $member->branch_name }}</p>
+				<p>BANK: {{ $member->company_name }}</p>
+				<p>ADDRESS: {{ $member->address_one!="" ? $member->address_one.', ' : '' }}
 					{{ $member->address_two!="" ? $member->address_two.', ' : '' }}
 					{{ $member->city_name!="" ? $member->city_name.' - ' : '' }}
 					{{ $member->postal_code }}
 				</p>
-				<p>Beneficiary's Name: Self</p>
+				<p>BENEFICIARY'S NAME: Self</p>
 			</td>
 			<td width="40%" style="padding-top: 0px;">
-				<p>Branch Code: {{ $member->branch_shortcode }}</p>
-				<p>Bank Code: {{ $member->short_code }}</p>
+				<p>BRANCH CODE: {{ $member->branch_shortcode }}</p>
+				<p>BANK CODE: {{ $member->short_code }}</p>
 				<p> </p>
-				<p>Ben I/C No: </p>
+				<p>BEN I/C NO: </p>
 			</td>
 			<td width="10%" style="text-align:center;padding-top: 0px;">
 				
@@ -51,55 +53,89 @@
 		</tr>
 	</table>
 </div>
-<table id="page-length-option" class="display table2excel" width="100%">
+<table id="page-length-option" class="display table2excel" style="margin: 10px;width: 99% !important;">
 		<thead>
 				
-			<tr class="" style="" width="100%">
+			<tr class="" style="">
 				<!--th style="border: 1px solid #988989 !important;">S.NO</th-->
 				<th style="border-bottom: 1px solid #988989 !important;">M/NO</th>
-				<th style="border-bottom: 1px solid #988989 !important;">NAME</th>
+				<th width="15%" style="border-bottom: 1px solid #988989 !important;">NAME</th>
 				<th style="border-bottom: 1px solid #988989 !important;" class="nric_no">I/C NO:</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">PREVIOUS BALANCE</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">CURRENT PAYMENT</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">BALANCE <br> TO-DATE</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">ACCRUED BENEFIT</th>
-				<th style="border-bottom: 1px solid #988989 !important;">ACCRUED INSURANCE</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">ARREARS MONTH</th>
-				<th style="border-bottom: 1px solid #988989 !important;">AMT.DUE TO. UNION </th>
+				<th  style="border-bottom: 1px solid #988989 !important;">PREVIOUS<br>BALANCE</th>
+				<th  style="border-bottom: 1px solid #988989 !important;">CURRENT<br>PAYMENT</th>
+				<th  style="border-bottom: 1px solid #988989 !important;">BALANCE<br>TO-DATE</th>
+				<th  style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>BENEFIT</th>
+				<th style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>INSURANCE</th>
+				<th  style="border-bottom: 1px solid #988989 !important;">ARREARS<br>MONTH</th>
+				<th style="border-bottom: 1px solid #988989 !important;">AMT.DUE<br>TO. UNION </th>
 			</tr>
 		</thead>
-		<tbody class="" width="100%">
+		<tbody class="">
 			@php
 				$totalmembers = 0;
 				$sno = 1;
-				
+				$lastallsubs = !empty($last_history) ? $last_history->ACCSUBSCRIPTION : 0;
+				$currentsubs = !empty($history) ? $history->TOTALSUBCRP_AMOUNT : 0;
+				$acc_bf = CommonHelper::getBFAmountByDate($member->id,$member->doj,$data['to_date']);
+				$ic='';
+				if($member->new_ic!=""){
+					$ic=$member->new_ic;
+				}elseif($member->old_ic!=""){
+					$ic=$member->old_ic;
+				}else{
+					$ic=$member->employee_id;	
+				}
+
+				$acc_ins = 0;
+				$total_dues = 0;
+				$subsdues = 0;
+
+				if(!empty($history)){
+					$acc_ins = $history->ACCINSURANCE;
+					$total_dues = $history->TOTALMONTHSDUE;
+					$subsdues = $history->SUBSCRIPTIONDUE;
+				}else if(!empty($last_history)){
+					$acc_ins = $last_history->ACCINSURANCE;
+					$total_dues = $last_history->TOTALMONTHSDUE+1;
+					$subsdues = $last_history->SUBSCRIPTIONDUE+$last_history->TOTALSUBCRP_AMOUNT;
+				}
+
 			@endphp
-			
-			
-			@foreach($data['history_view'] as $history)
-				<tr >
-					<!--td style="border: 1px solid #988989 !important; ">{{ $sno }}</td-->
-					<td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>
-					<td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
-					<td class="nric_no" style="border: 1px solid #988989 !important;">{{ $member->new_ic }}</td>
-					<td style="border: 1px solid #988989 !important;">{{ $history->ACCSUBSCRIPTION }}</td>
-					<td style="border: 1px solid #988989 !important;" >{{ $history->TOTALSUBCRP_AMOUNT }}</td>
-					<td  style="border: 1px solid #988989 !important;">{{ $history->ACCSUBSCRIPTION+($history->TOTALSUBCRP_AMOUNT) }}</td>
-					<td style="border: 1px solid #988989 !important;">{{  $history->ACCBF }}</td>
-					<td style="border: 1px solid #988989 !important;">{{  $history->ACCINSURANCE }}</td>
-					<td style="border: 1px solid #988989 !important;">{{  $history->TOTALMONTHSDUE }}</td>
-					<td style="border: 1px solid #988989 !important;">{{  $history->SUBSCRIPTIONDUE }}</td>
-					
-				</tr> 
+		
+		
+			<tr >
+				<!--td style="border: 1px solid #988989 !important; ">{{ $sno }}</td-->
+				<td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>
+				<td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
+				<td class="nric_no" style="border: 1px solid #988989 !important;">{{ $ic }}</td>
+				<td style="border: 1px solid #988989 !important;">{{ !empty($last_history) ? $last_history->ACCSUBSCRIPTION : 0 }}</td>
+				<td style="border: 1px solid #988989 !important;" >{{ !empty($history) ? $history->TOTALSUBCRP_AMOUNT : 0 }}</td>
+				<td  style="border: 1px solid #988989 !important;">{{ $lastallsubs+$currentsubs }}</td>
+				<td style="border: 1px solid #988989 !important;">{{  $acc_bf }}</td>
+				<td style="border: 1px solid #988989 !important;">{{  $acc_ins }}</td>
+				<td style="border: 1px solid #988989 !important;">{{  $total_dues }}</td>
+				<td style="border: 1px solid #988989 !important;">{{  $subsdues }}</td>
 				
-				@php
-					$sno++;
-				@endphp
-			@endforeach
-			<!-- //@if(!empty($data['member_view']))
-			//@endif -->
+			</tr> 
+				
 			
 		</tbody>
 		
+	</table>
+	<table width="100%">
+		<tr>
+			<td width="5%" style="vertical-align: top;">NOTE: </td>
+			<td>
+				<p style="padding-top: 0px;margin-top: 0px;">1) Any queries on this statement should be communicated to the Hon. Gen Secretary within 14 days upon receipt of this statement, otherwise it would be treated os correct </p>
+				<p>2) If you wish to change the nominee, kindly request for the nominee form from you Branch Secretary.</p>
+				<p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p>
+				<p>4) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>
+				<br>
+				<p align="center">National Union of Bonk Employees, 12 NUBS House, 3rd Floor Jalan Tun Sambanthan 3, BrIckfields 50470 Kuala Lumpur.</p>
+				<p align="center">
+					Tel: (603) 2274 9800 &nbsp;&nbsp; Fox: (603) 2260 1800 &nbsp;&nbsp; Email: nube_hq@nube.org.my &nbsp;&nbsp; Website: www.nube.org.my
+				</p>
+			</td>
+		</tr>
 	</table>
 	<br>

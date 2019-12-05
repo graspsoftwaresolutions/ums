@@ -10,7 +10,8 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
 	.btn, .btn-sm-one {
 		line-height: 36px;
@@ -53,7 +54,7 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>                          
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l3 hide">
 							<label for="from_date">{{__('From Date')}}</label>
 							<input id="from_date" type="text" class="validate datepicker-custom" value="" name="from_date">
 						</div>
@@ -105,7 +106,8 @@
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -159,9 +161,9 @@ $("#member_statement_sidebar_a_id").addClass('active');
 	});
 	 $("#filtersubmit").validate({
 		rules: {
-			from_date: {
-				required: true,
-			},
+			// from_date: {
+			// 	required: true,
+			// },
 			to_date: {
 				required: true,
 			},
@@ -171,9 +173,9 @@ $("#member_statement_sidebar_a_id").addClass('active');
 		},
 		  //For custom messages
 		  messages: {
-				from_date:{
-					required: "Enter From Date"
-				},
+				// from_date:{
+				// 	required: "Enter From Date"
+				// },
 				to_date:{
 					required: "Enter To Date"
 				},
@@ -202,8 +204,8 @@ $("#member_statement_sidebar_a_id").addClass('active');
 		var member_auto_id = $("#member_auto_id").val();
 		
 		//$('#page-length-option tbody').empty();
-		if(from_date!="" && to_date!=""){
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&member_auto_id='+member_auto_id;
+		if(member_auto_id!="" && to_date!=""){
+			var searchfilters = '&to_date='+to_date+'&member_auto_id='+member_auto_id;
 			$("#myframe").contents().find("html").css('opacity',0);
 		//	
 			//loader.showLoader();
@@ -226,10 +228,13 @@ $('#clear').click(function(){
 	$(".selectpicker").val('').trigger("change"); 
 });
 
-$('.datepicker,.datepicker-custom').datepicker({
-    format: 'dd/mm/yyyy',
-    autoHide: true,
-});
+ $('.datepicker-custom').MonthPicker({ 
+	Button: false, 
+	MonthFormat: '01/mm/yy',
+	OnAfterChooseMonth: function() { 
+		//getDataStatus();
+	}
+ });
 </script>
 
 @endsection
