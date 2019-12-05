@@ -84,8 +84,8 @@
 			}
 			html {
 
-			    //font-family: 'Muli', sans-serif;
-			    font-weight: normal;
+			     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+			   // font-weight: normal;
 			    line-height: 1.4; 
 			    color: rgba(0, 0, 0, .87);
 			    font-size: 12px;
@@ -101,6 +101,9 @@
 
 			.page-header-area{
 				display: none;
+			}
+			.bold{
+				font-weight: bold !important;
 			}
 			
 		}
@@ -162,7 +165,7 @@
 			margin: 6px;
 		}
 		.bold{
-			font-weight: bold;
+			font-weight: bold !important;
 		}
 		
 	</style>

@@ -32,13 +32,13 @@
 		</tr>
 		<tr class="statement-address">
 			<td width="40%" style="padding-top: 0px;">
-				<p><span class="bold">BRANCH</span>: {{ $member->branch_name }}</p>
-				<p><span class="bold">BANK</span>: {{ $member->company_name }}</p>
+				<p><b>BRANCH</b>: {{ $member->branch_name }}</p>
+				<p><b>BANK</b>: {{ $member->company_name }}</p>
 				
 			</td>
 			<td width="40%" style="padding-top: 0px;">
-				<p><span class="bold">BRANCH CODE</span>: {{ $member->branch_shortcode }}</p>
-				<p><span class="bold">BANK CODE</span>: {{ $member->short_code }}</p>
+				<p><b class="bold">BRANCH CODE</b>: {{ $member->branch_shortcode }}</p>
+				<p><b class="bold">BANK CODE</b>: {{ $member->short_code }}</p>
 				
 			</td>
 			<td width="10%" style="text-align:center;padding-top: 0px;">
@@ -50,18 +50,18 @@
 <table id="page-length-option" class="display table2excel" style="margin: 10px;width: 99% !important;">
 		<thead>
 				
-			<tr class="bold" style="">
+			<tr class="bold" style="text-align:center;">
 				<!--th style="border: 1px solid #988989 !important;">S.NO</th-->
-				<th style="border-bottom: 1px solid #988989 !important;">M/NO</th>
-				<th width="15%" style="border-bottom: 1px solid #988989 !important;">NAME</th>
-				<th style="border-bottom: 1px solid #988989 !important;" class="nric_no">I/C NO:</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">PREVIOUS<br>BALANCE</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">CURRENT<br>PAYMENT</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">BALANCE<br>TO-DATE</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>BENEFIT</th>
-				<th style="border-bottom: 1px solid #988989 !important;">ACCRUED<br>INSURANCE(Months)</th>
-				<th  style="border-bottom: 1px solid #988989 !important;">ARREARS<br>MONTH</th>
-				<th style="border-bottom: 1px solid #988989 !important;">AMT.DUE<br>TO. UNION </th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">M/NO</th>
+				<th width="15%" style="border-bottom: 1px solid #988989 !important;text-align: center;">NAME</th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;" >I/C NO:</th>
+				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">PREVIOUS<br>BALANCE</th>
+				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">CURRENT<br>PAYMENT</th>
+				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">BALANCE<br>TO-DATE</th>
+				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>BENEFIT</th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>INSURANCE(Months)</th>
+				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">ARREARS<br>MONTH</th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">AMT.DUE<br>TO. UNION </th>
 			</tr>
 		</thead>
 		<tbody class="">
