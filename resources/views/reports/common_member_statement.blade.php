@@ -61,7 +61,7 @@
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>BENEFIT</th>
 				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>INSURANCE(Months)</th>
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">ARREARS<br>MONTH</th>
-				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">AMT.DUE<br>TO. UNION </th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">AMT.DUE <br>TO. UNION </th>
 			</tr>
 		</thead>
 		<tbody class="">
@@ -108,7 +108,7 @@
 				<td style="border: 1px solid #988989 !important;text-align: center;">{{  $acc_bf }}</td>
 				<td style="border: 1px solid #988989 !important;text-align: center;">{{  $data['insurance_count'] }}</td>
 				<td style="border: 1px solid #988989 !important;text-align: center;">{{  $total_dues }}</td>
-				<td style="border: 1px solid #988989 !important;text-align: center;">{{  $subsdues }}</td>
+				<td style="border: 1px solid #988989 !important;text-align: center;">{{  $subsdues }} *</td>
 				
 			</tr> 
 				
@@ -123,9 +123,10 @@
 				<p style="padding-top: 0px;margin-top: 0px;">1) Any queries on this statement should be communicated to the Hon. Gen Secretary within 14 days upon receipt of this statement, otherwise it would be treated as correct. </p>
 				<p>2) If you wish to change the nominee, kindly request for the nominee form from you Branch Secretary.</p>
 				<!--p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p-->
-				<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>
+				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
+				<p>* Payment due for <b><!--Dec/2015--></b></p>
 				<br>
-				<p align="center">National Union of Bonk Employees, 12 NUBE House, 3rd Floor Jalan Tun Sambanthan 3, BrIckfields 50470 Kuala Lumpur.</p>
+				<p align="center">National Union of Bank Employees, 12 NUBE House, 3rd Floor Jalan Tun Sambanthan 3, Brickfields 50470 Kuala Lumpur.</p>
 				<p align="center">
 					Tel: (603) 2274 9800 &nbsp;&nbsp; Fox: (603) 2260 1800 &nbsp;&nbsp; Email: nube_hq@nube.org.my &nbsp;&nbsp; Website: www.nube.org.my
 				</p>
