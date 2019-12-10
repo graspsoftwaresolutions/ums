@@ -127,7 +127,7 @@
 				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
 				<p>* Payment due for <b><!--Dec/2015--></b></p>
 				@if($total_dues!=0)
-				<table id="reason-area" width="100%">
+				<table id="reason-area" style="width:auto">
 					<tbody>
 						<tr style="font-weight: bold;">
 							<td style="border: 1px solid #988989 !important;">
