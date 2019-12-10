@@ -3759,9 +3759,96 @@ class ReportsController extends Controller
                         ->where('TOTALINSURANCE_AMOUNT','!=',0)
                         ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
                         ->count();
+
+            $duehistory = DB::table('membermonthendstatus as ms')->select('StatusMonth') 
+                        ->where('MEMBER_CODE','=',$member_id)
+                        ->where('TOTAL_MONTHS','=',0)
+                    ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
+                    ->orderBy('StatusMonth','asc')->get();
+            //dd($duehistory);
+            $duemonth='';
+            $slno = 0;
+            $last_month ='';
+            $duecount = count($duehistory);
+            $temp_month = '';
+            $dueslno = 0;
+            foreach($duehistory as $history){
+                $cur_month = $history->StatusMonth;
+                $lastplus_month = date("Y-m-01", strtotime("+1 month", strtotime($last_month)));
+               
+                if($lastplus_month == $cur_month){
+                    //$duemonth .= '';
+                   
+                    //$duemonth .= $cur_month;
+                    $dueslno++;
+                }else{
+                    if($dueslno>0){
+                        if($temp_month!=$last_month ){
+                           $duemonth .= ' to '.date("M-Y", strtotime($last_month));
+                           $duemonth .= ', '.date("M-Y", strtotime($cur_month));
+                           $temp_month = $cur_month;
+                          
+                           //dd($cur_month);
+                        }else{
+                            $newstring = substr($duemonth, -2);
+                            if($newstring !=', '){
+                                $duemonth .= ', '.date("M-Y", strtotime($cur_month));
+                            }else{
+                                $duemonth .= date("M-Y", strtotime($cur_month));
+                            }
+                            $temp_month = $cur_month;
+                            
+                        }
+                        
+                    }else{
+                        $newstring = substr($duemonth, -2);
+                        if($newstring !=', ' && $slno!=0){
+                            $duemonth .= ', '.date("M-Y", strtotime($cur_month));
+                        }else{
+                            $duemonth .= date("M-Y", strtotime($cur_month));
+                        }
+                        //$duemonth .= $cur_month;
+                    }
+                }
+                // $newstring = substr($duemonth, -2);
+                // if($newstring !=', '){
+                //    // $duemonth .= ', ';
+                //     //dd($duemonth);
+                // }
+                if($slno==$duecount-1){
+                    if($dueslno>0){
+                        $newstring = substr($duemonth, -2);
+                        if($newstring ==', '){
+                            $duemonth = substr($duemonth, 0, -2);
+                            //dd($duemonth);
+                        }
+                        $duemonth .= ' to '.date("M-Y", strtotime($cur_month));
+                        $dueslno == 0;
+                        // /dd($duemonth);
+                    }
+                }
+
+                // if($slno==0){
+                //     //$duemonth .= $cur_month;
+                // }
+               
+                // if($slno==0){
+                //     $duemonth .= ', ';
+                    
+                // }
+                
+                // //dd($newstring);
+                
+                
+                $last_month = $cur_month;
+                $slno++;
+            }
+            
             $data['history_view'] = $tohistory;
             $data['last_history_view'] = $lasthistory;
             $data['insurance_count'] = $inscount;
+            $data['duehistory'] = $duehistory;
+            $data['due_months'] = $duemonth;
             $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','m.postal_code','m.id')
                             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
                             ->leftjoin('company as c','c.id','=','cb.company_id')->where('m.id','=',$member_id)->first();

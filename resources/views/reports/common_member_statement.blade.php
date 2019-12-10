@@ -116,6 +116,7 @@
 		</tbody>
 		
 	</table>
+	
 	<table width="100%">
 		<tr>
 			<td width="5%" style="vertical-align: top;">NOTE: </td>
@@ -125,6 +126,22 @@
 				<!--p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p-->
 				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
 				<p>* Payment due for <b><!--Dec/2015--></b></p>
+				@if($total_dues!=0)
+				<table id="reason-area" width="100%">
+					<tbody>
+						<tr style="font-weight: bold;">
+							<td style="border: 1px solid #988989 !important;">
+								Months
+							</td>
+						</tr>
+						<tr>
+							<td style="border: 1px solid #988989 !important;">
+								{{ $data['due_months'] }}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				@endif
 				<br>
 				<p align="center">National Union of Bank Employees, 12 NUBE House, 3rd Floor Jalan Tun Sambanthan 3, Brickfields 50470 Kuala Lumpur.</p>
 				<p align="center">
