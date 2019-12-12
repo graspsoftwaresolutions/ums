@@ -230,4 +230,5 @@ $(document).ready(function() {
         //loader.showLoader();
     }
 });
+$(".datepicker-normal,.datepicker,.datepicker-custom").attr("readonly",true);
 </script>
