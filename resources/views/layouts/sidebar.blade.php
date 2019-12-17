@@ -81,7 +81,7 @@
 			  <li id="subvariation_sidebar_li_id" class=""><a id="subvariation_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.month',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Variation') }}</span></a></li>
 			  <li id="subsarrear_sidebar_li_id" class=""><a id="subarrear_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.arrearentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Arrear Entry') }}</span></a></li>
 
-         <li id="update_history_sidebar_li_id" class=""><a id="update_history_sidebar_a_id" class="collapsible-body " href="{{ route('history.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update History') }}</span></a></li>
+        
               @endif
               @if($user_role == 'member')
               <!--li id="subscriptionpayment_sidebar_li_id" class=""><a id="subscriptionpayment_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_payment',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Payment') }}</span></a></li-->
@@ -133,6 +133,14 @@
 		  @if($user_role=='irc-branch-committee' )
 		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
 		  @endif
+       <li id="data_cleaning_sidebars_id" class="bold"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">clear</i><span class="menu-title" data-i18n="Dashboard">Data Cleaning</span></a>
+          <div class="collapsible-body">
+            <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+               <li id="update_history_sidebar_li_id" class=""><a id="update_history_sidebar_a_id" class="collapsible-body " href="{{ route('history.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update Unpaid History') }}</span></a></li>
+              
+            </ul>
+          </div>
+        </li>
 		   @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
 	  <li id="reports_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">receipt	</i><span class="menu-title" data-i18n="">{{ __('Reports') }}</span></a>
           <div class="collapsible-body">

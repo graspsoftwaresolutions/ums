@@ -2006,6 +2006,9 @@ class SubscriptionController extends CommonController
 
     public function saveMonthendRows($lang,Request $request)
     {
+        $entered_name = $request->input('entered_name');
+        $ip_address = $request->ip();
+       
         //return $request->all();
         $member_id = $request->input('member_id');
         $doj_date = $request->input('doj_date');
@@ -2281,7 +2284,9 @@ class SubscriptionController extends CommonController
         }
         
         
-
+        Log::channel('historychangelog')->info('Updated member id: '.$member_id);
+        Log::channel('historychangelog')->info('Updated by: '.$entered_name.'&auth id='.Auth::user()->id);
+        Log::channel('historychangelog')->info('Updated ip: '.$ip_address);
         
 
         return redirect($lang.'/history-list')->with('message','History Updated Successfully!!');

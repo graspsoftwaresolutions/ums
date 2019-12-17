@@ -284,13 +284,19 @@
                 </tfoot>
             </table>
             <div class="row">
-              <div class="col m6">
+              <div class="col m4">
                   <input type="text" name="totalno" id="totalno" class="hide" value="{{ $slno }}">
+                  <label for="entrance_fee" style="margin-top: 10px;font-weight: bold;font-size: 16px;" class="right">{{__('Enter Your Name')}}</label>
                </div>
-               <div class="col m6">
-                <p>
+                <div class="col m3">
+                
+                  <input type="text" name="entered_name" id="entered_name" value="" class="" />
+                
+               </div>
+               <div class="col m3">
+                
                   <input type="submit" class="btn center" id="save" name="save" value="Submit" >
-                </P>
+               
                </div>
             </div>
         </div>
@@ -315,9 +321,9 @@
 @endsection
 @section('footerSecondSection')
 <script>
-$("#subscriptions_sidebars_id").addClass('active');
-$("#subsarrear_sidebar_li_id").addClass('active');
-$("#subarrear_sidebar_a_id").addClass('active');
+$("#data_cleaning_sidebars_id").addClass('active');
+$("#update_history_sidebar_li_id").addClass('active');
+$("#update_history_sidebar_a_id").addClass('active');
 
 	$('#addarrear_formValidate').validate({
 rules: {
@@ -420,9 +426,10 @@ function CalculateTotal(){
 $("#addarrear_formValidate").on("submit", function(evt) {
   var arrearamt = parseFloat('0');
   var total_payamt = parseFloat($('#total-payamt').val());
-  if(total_payamt!=arrearamt){
-    //alert("Total Amount is not same, Please enter correct amount");
-   // evt.preventDefault();
+   var entered_name = $('#entered_name').val();
+  if(entered_name==''){
+    alert("Please enter your name");
+    evt.preventDefault();
   }else{
     if (confirm('Are you sure you want to update?')) {
       return true;

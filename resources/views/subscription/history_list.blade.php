@@ -168,7 +168,7 @@
                                     <tr>
                                         <th width="25%">{{__('Member Name') }}</th>
                                         <th width="25%">{{__('Member Number') }}</th>
-                                        <th width="25%">{{__('Doj') }}</th>
+                                        <th width="25%">{{__('DOJ') }}</th>
 
                                         <th> {{__('Action') }}</th>
                                     </tr>
@@ -346,7 +346,7 @@ $('.datepicker,.datepicker-custom').datepicker({
 		$("#submit-download").prop('disabled',true);
 	});
 	
-	$("#subscriptions_sidebars_id").addClass('active');
+	$("#data_cleaning_sidebars_id").addClass('active');
 	$("#update_history_sidebar_li_id").addClass('active');
 	$("#update_history_sidebar_a_id").addClass('active');
 </script>
