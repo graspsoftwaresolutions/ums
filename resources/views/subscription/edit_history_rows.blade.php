@@ -161,7 +161,7 @@
           
 		</div>
 		</div>
-    <form class="formValidate" id="addarrear_formValidate" method="post" action="{{ route('subscription.updatehistoryrows',app()->getLocale()) }}">
+    <form class="formValidate" id="addarrear_formValidate" method="post" action="{{ route('subscription.updatehistoryrows',[app()->getLocale(),1]) }}">
          @csrf
     <div class="container">
       <div class="card">

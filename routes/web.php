@@ -400,7 +400,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_history_list','MonthEndController@ajax_history_list');
 
 	Route::get('monthend-history/{parameter}','MonthEndController@ViewMemberHistory')->name('monthend.viewlists');
-	Route::post('update_unpaid_rows','SubscriptionController@saveMonthendRows')->name('subscription.updatehistoryrows');
+	Route::post('update_unpaid_rows/{parameter}','SubscriptionController@saveMonthendRows')->name('subscription.updatehistoryrows');
 	Route::post('history-list','MonthEndController@ListMonthendFilter')->name('monthend.list');
 
 	Route::get('statement-report','ReportsController@StatementReport')->name('reports.statement');

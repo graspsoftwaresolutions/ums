@@ -2004,8 +2004,9 @@ class SubscriptionController extends CommonController
         return view('subscription.edit_arrear_rows')->with('data',$data);
     }
 
-    public function saveMonthendRows($lang,Request $request)
+    public function saveMonthendRows($lang,$ref,Request $request)
     {
+        
         $entered_name = $request->input('entered_name');
         $ip_address = $request->ip();
        
@@ -2289,8 +2290,12 @@ class SubscriptionController extends CommonController
         Log::channel('historychangelog')->info('-----------------------------');
         //Log::channel('historychangelog')->info('Updated ip: '.$ip_address);
         
-
-        return redirect($lang.'/history-list')->with('message','History Updated Successfully!!');
+        if($ref==1){
+            return redirect($lang.'/history-list')->with('message','History Updated Successfully!!');
+        }else{
+            return redirect($lang.'/clean-membership')->with('message','History Updated Successfully!!');
+        }
+        
 
        
     }

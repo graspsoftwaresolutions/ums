@@ -220,7 +220,7 @@
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
                                 			<td>{{ $due_count }}</td>
                                 			<td>
-                                				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
+                                				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlistsall", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
                                 			</td>
                                 		</tr>
@@ -381,7 +381,7 @@ $('.datepicker,.datepicker-custom').datepicker({
 	});
 	
 	$("#data_cleaning_sidebars_id").addClass('active');
-	$("#update_history_sidebar_li_id").addClass('active');
-	$("#update_history_sidebar_a_id").addClass('active');
+	$("#due_sidebar_li_id").addClass('active');
+	$("#due_sidebar_a_id").addClass('active');
 </script>
 @endsection
