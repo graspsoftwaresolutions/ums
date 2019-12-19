@@ -2020,7 +2020,7 @@ class SubscriptionController extends CommonController
         $entrance_fee = $request->input('entrance_fee');
         $hq_fee = $request->input('hq_fee');
         $last_paid_date = Null;
-        $memberdata =DB::table("membership")->select('branch_id','designation_id','status_id')->where('id','=',$member_id)->first();
+        $memberdata =DB::table("membership")->select('branch_id','designation_id','status_id','name','member_number')->where('id','=',$member_id)->first();
         $branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
         if($doj_subs>0 || $doj_bf>0 || $doj_ins>0){
             $last_paid_date = $from_date;
@@ -2283,10 +2283,11 @@ class SubscriptionController extends CommonController
             }
         }
         
-        
-        Log::channel('historychangelog')->info('Updated member id: '.$member_id);
-        Log::channel('historychangelog')->info('Updated by: '.$entered_name.'&auth id='.Auth::user()->id);
-        Log::channel('historychangelog')->info('Updated ip: '.$ip_address);
+        Log::channel('historychangelog')->info('-----------------------------');
+        Log::channel('historychangelog')->info('member id= '.$member_id.'&member_number='.$memberdata->member_number.'&name='.$memberdata->name);
+        Log::channel('historychangelog')->info('Updated by= '.$entered_name.'&auth id='.Auth::user()->id.'&ip='.$ip_address);
+        Log::channel('historychangelog')->info('-----------------------------');
+        //Log::channel('historychangelog')->info('Updated ip: '.$ip_address);
         
 
         return redirect($lang.'/history-list')->with('message','History Updated Successfully!!');

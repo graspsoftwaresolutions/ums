@@ -410,6 +410,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();
 	});
+
+	Route::get('clean-membership','MonthEndController@ListMembers')->name('cleaning.membership');
+	Route::post('clean-membership','MonthEndController@ListMemberFilter')->name('membership.cleaning');
+	Route::post('ajax_member_list','MonthEndController@ajax_member_list')->name('ajax.listmembership');
+	Route::get('monthend-historyall/{parameter}','MonthEndController@ViewAllMemberHistory')->name('monthend.viewlistsall');
+	Route::get('due-list','MonthEndController@ListMonthendDue')->name('due.list');
+	Route::post('due-list','MonthEndController@ListMonthendDueFilter')->name('monthend.duelist');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

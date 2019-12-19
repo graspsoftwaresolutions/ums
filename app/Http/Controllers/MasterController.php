@@ -1077,8 +1077,17 @@ class MasterController extends CommonController {
     public function deleteUnionBranch($lang,$id)
 	{
         //return $id = Crypt::decrypt($id);
-		$data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
-		return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
+        $company_branch_count =  DB::table('company_branch')->where('union_branch_id','=',$id)->count();
+        $mon_status_count =  DB::table('membermonthendstatus')->where('NUBE_BRANCH_CODE','=',$id)->count();
+        if($company_branch_count > 0 || $mon_status_count > 0 )
+        {
+            $defdaultLang = app()->getLocale();
+            return redirect($defdaultLang.'/unionbranch')->with('error','You cannot delete Union Branch!');
+        }
+        else{
+            $data = DB::table('union_branch')->where('id','=',$id)->update(['status'=>'0']);
+            return redirect($lang.'/unionbranch')->with('message','Union Branch Deleted Succesfully');
+        }
     }
      //FormType Details Start 
      public function formTypeList()
@@ -1193,9 +1202,19 @@ public function companyDestroy($lang,$id)
 {
     $Company = new Company();
     $Company = Company::find($id);
-    $Company->where('id','=',$id)->update(['status'=>'0']);
-    $defdaultLang = app()->getLocale();
-    return redirect($defdaultLang.'/company')->with('message','Bank Deleted Successfully!!');
+    $company_branch_count =  DB::table('company_branch')->where('company_id','=',$id)->count();
+    $mon_sub_company_count =  DB::table('mon_sub_company')->where('CompanyCode','=',$id)->count();
+    $mon_status_count =  DB::table('membermonthendstatus')->where('BANK_CODE','=',$id)->count();
+    if($company_branch_count > 0 || $mon_sub_company_count > 0 || $mon_status_count > 0 )
+    {
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/company')->with('error','You cannot delete Bank!');
+    }
+    else{
+        $Company->where('id','=',$id)->update(['status'=>'0']);
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/company')->with('message','Bank Deleted Successfully!!');
+    }
 }
      
     public function CompanyBranchList(){
@@ -1338,9 +1357,19 @@ public function companyDestroy($lang,$id)
     public function deleteCompanyBranch($lang,$id)
 	{
         //$id = Crypt::decrypt($id);
-        $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
-        $defdaultLang = app()->getLocale();
-		return redirect($defdaultLang.'/branch')->with('message','Bank Branch Deleted Succesfully');
+        $member_count =  DB::table('membership')->where('branch_id','=',$id)->count();
+        $mon_status_count =  DB::table('membermonthendstatus')->where('BRANCH_CODE','=',$id)->count();
+        $transfer_count =  DB::table('member_transfer_history')->where('old_branch_id','=',$id)->orWhere('new_branch_id','=',$id)->count();
+        if($member_count > 0 || $mon_status_count > 0  || $transfer_count > 0)
+        {
+            $defdaultLang = app()->getLocale();
+            return redirect($defdaultLang.'/branch')->with('error','You cannot delete Bank Branch!');
+        }
+        else{
+            $data = DB::table('company_branch')->where('id','=',$id)->update(['status'=>'0']);
+            $defdaultLang = app()->getLocale();
+            return redirect($defdaultLang.'/branch')->with('message','Bank Branch Deleted Succesfully');
+        }
 	} 
 
     public function EditCompanyBranch($lang,$id){

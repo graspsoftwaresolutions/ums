@@ -2373,7 +2373,7 @@ class CommonHelper
                         ->where('MEMBER_CODE', '=' ,$memberid)
                         ->where('StatusMonth', '>' ,$date)
                         ->OrderBy('StatusMonth','asc')
-                        ->limit($months)
+                        //->limit($months)
                         ->get();
         return $records;
     }
@@ -2437,5 +2437,9 @@ class CommonHelper
         }
         return $bfamount;
         //return $doj.'//'.$todate;
+    }
+
+    public static function getMonthendDueCount($memberid){
+        return DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','!=',1)->count();
     }
 }

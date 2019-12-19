@@ -60,13 +60,13 @@
 						<div class="container">
 							<div class="row">
 								<div class="col s10 m6 l6">
-									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Unpaid List') }}</h5>
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Due Members List') }}</h5>
 									<ol class="breadcrumbs mb-0">
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a
 													href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('History') }}
+											<li class="breadcrumb-item active">{{__('Due Members') }}
 											</li>
 									</ol>
 								</div>
@@ -115,18 +115,48 @@
 						<div class="row">
 							<div class="col s12 m12">
 								<div class="row">
-									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/history-list') }}" enctype="multipart/form-data">
+									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/due-list') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
 											
-											<div class="col s12 m6 l3">
+											<div class="col s12 m6 l2">
 												<label for="from_date">{{__('From Date')}}</label>
 												<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['from_date']))}}" name="from_date">
 											</div>
 
-											<div class="col s12 m6 l3">
+											<div class="col s12 m6 l2">
 												<label for="to_date">{{__('To Date')}}</label>
 												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
+											</div>
+
+											<div class="col s12 m6 l2">
+												<label>{{__('Status') }}</label>
+												<select name="status_id" id="status_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+													<option value="">{{__('Select Status') }}</option>
+													 @foreach($data['status_view'] as $value)
+	                                                <option @if($data['status_id']==$value->id) selected @endif value="{{$value->id}}" >
+	                                                    {{$value->status_name}}</option>
+	                                                @endforeach
+													
+												</select>
+												<div class="input-field">
+													<div class="errorTxt23"></div>
+												</div>
+											</div>
+
+											<div class="col s12 m6 l3">
+												<label>{{__('Due Months') }}</label>
+												<select name="due_months" id="due_months" class="error browser-default selectpicker" data-error=".errorTxt24" >
+													<option value="">{{__('Select Month') }}</option>
+													@for($i=1;$i<=15;$i++)
+													<option @if($data['due_months']==$i) selected @endif value="{{$i}}">More than {{$i}} months</option>
+													@endfor
+													
+													
+												</select>
+												<div class="input-field">
+													<div class="errorTxt24"></div>
+												</div>
 											</div>
 											
 											<div class="col m3 s12 " style="padding-top:5px;">
@@ -170,6 +200,7 @@
                                         <th width="15%">{{__('Member Number') }}</th>
                                         <th width="15%">{{__('DOJ') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
+                                        <th width="10%">{{__('Dues') }}</th>
 
                                         <th> {{__('Action') }}</th>
                                     </tr>
@@ -177,16 +208,17 @@
                                 <tbody>
                                 	@foreach($data['members_list'] as $members)
                                 		@php
-                                			
-                                			$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($members->doj)));
+                                			$due_count = CommonHelper::getMonthendDueCount($members->id);
+                                			$due_def = $data['due_months'] =='' ? 0 : $data['due_months'];
                                 		@endphp
-                                		@if($monthend_count==0)
+                                		@if($due_count>$due_def)
                                 		<tr>
                                 			
                                 			<td>{{ $members->name }}</td>
                                 			<td>{{ $members->member_number }}</td>
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
+                                			<td>{{ $due_count }}</td>
                                 			<td>
                                 				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>

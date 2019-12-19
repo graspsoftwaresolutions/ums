@@ -81,12 +81,12 @@
 </style>
 @endsection
 @section('main-content')
-@php
+ @php
     $total_subs = !empty($dojrecord) ? $dojrecord->TOTALSUBCRP_AMOUNT : 0;
     $total_bf = !empty($dojrecord) ? $dojrecord->TOTALBF_AMOUNT : 0;
     $total_ins = !empty($dojrecord) ? $dojrecord->TOTALINSURANCE_AMOUNT : 0;
     $total_pay=0;
-@endphp
+  @endphp
 <div class="row">
 <div class="content-wrapper-before"></div>
 	
@@ -171,27 +171,27 @@
                <div class="row">
                   
                      <div class="row">
-                        <div class="col s12 m6 l2">
+                        <div class="col s12 m6 l3">
                            <label for="doj_date">{{__('First Month')}}</label>
                            <input id="doj_date" type="text" class="validate " readonly="" value="{{ date('01-m-Y',strtotime($edit_data->doj)) }}" name="doj_date">
                         </div>
-                        <div class="col s12 m6 l2">
+                        <div class="col s12 m6 l3">
                            <label for="doj_subs">{{__('Subscription Amount')}}</label>
                            <input id="doj_subs" type="text" class="validate subscription_amount allow_decimal" value="{{ !empty($dojrecord) ? $dojrecord->TOTALSUBCRP_AMOUNT : 0 }}" name="doj_subs">
                         </div>
-                         <div class="col s12 m6 l2">
+                         <div class="col s12 m6 l3">
                            <label for="doj_bf">{{__('BF Amount')}}</label>
                            <input id="doj_bf" type="text" class="bf_amount allow_decimal " value="{{ !empty($dojrecord) ? $dojrecord->TOTALBF_AMOUNT : 0 }}" name="doj_bf">
                         </div>
-                        <div class="col s12 m6 l2">
+                        <div class="col s12 m6 l3">
                            <label for="doj_ins">{{__('Insurance Amount')}}</label>
                            <input id="doj_ins" type="text" class="insurance_amount allow_decimal" value="{{ !empty($dojrecord) ? $dojrecord->TOTALINSURANCE_AMOUNT : 0 }}" name="doj_ins">
                         </div>
-                         <div class="col s12 m6 l2">
+                         <div class="col s12 m6 l2 hide">
                            <label for="entrance_fee">{{__('Entrance Fee')}}</label>
                            <input id="entrance_fee" type="text" class="allow_decimal" value="" name="entrance_fee">
                         </div>
-                        <div class="col s12 m6 l2">
+                        <div class="col s12 m6 l2 hide">
                            <label for="hq_fee">{{__('Building Fund(HQ)')}}</label>
                            <input id="hq_fee" type="text" class="allow_decimal" value="" name="hq_fee">
                         </div>
@@ -235,7 +235,7 @@
                 <tbody>
                     @php
                       $slno=0;
-                     /* $total_subs=0;
+                      /* $total_subs=0;
                       $total_bf=0;
                       $total_ins=0;
                       $total_pay=0; */
@@ -325,8 +325,8 @@
 @section('footerSecondSection')
 <script>
 $("#data_cleaning_sidebars_id").addClass('active');
-$("#update_history_sidebar_li_id").addClass('active');
-$("#update_history_sidebar_a_id").addClass('active');
+$("#members_list_sidebar_li_id").addClass('active');
+$("#members_list_sidebar_a_id").addClass('active');
 
 	$('#addarrear_formValidate').validate({
 rules: {

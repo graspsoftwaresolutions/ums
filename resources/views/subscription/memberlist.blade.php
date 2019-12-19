@@ -60,13 +60,13 @@
 						<div class="container">
 							<div class="row">
 								<div class="col s10 m6 l6">
-									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Unpaid List') }}</h5>
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Members List') }}</h5>
 									<ol class="breadcrumbs mb-0">
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a
 													href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('History') }}
+											<li class="breadcrumb-item active">{{__('Members') }}
 											</li>
 									</ol>
 								</div>
@@ -115,7 +115,7 @@
 						<div class="row">
 							<div class="col s12 m12">
 								<div class="row">
-									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/history-list') }}" enctype="multipart/form-data">
+									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/clean-membership') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
 											
@@ -128,7 +128,20 @@
 												<label for="to_date">{{__('To Date')}}</label>
 												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
 											</div>
-											
+											<div class="col s12 m6 l3">
+												<label>{{__('Status') }}</label>
+												<select name="status_id" id="status_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+													<option value="">{{__('Select Status') }}</option>
+													 @foreach($data['status_view'] as $value)
+	                                                <option @if($data['status_id']==$value->id) selected @endif value="{{$value->id}}" >
+	                                                    {{$value->status_name}}</option>
+	                                                @endforeach
+													
+												</select>
+												<div class="input-field">
+													<div class="errorTxt23"></div>
+												</div>
+											</div>
 											<div class="col m3 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
@@ -142,7 +155,7 @@
 											</div>
 											<div class="col s4 ">
 												
-												<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
+												
 												
 											</div>
 										</div>
@@ -166,7 +179,7 @@
                             <table id="page-length-option" class="display" width="100%">
                                 <thead>
                                     <tr>
-                                        <th width="25%">{{__('Member Name') }}</th>
+                                        <th width="30%">{{__('Member Name') }}</th>
                                         <th width="15%">{{__('Member Number') }}</th>
                                         <th width="15%">{{__('DOJ') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
@@ -175,25 +188,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                	@foreach($data['members_list'] as $members)
-                                		@php
-                                			
-                                			$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($members->doj)));
-                                		@endphp
-                                		@if($monthend_count==0)
-                                		<tr>
-                                			
-                                			<td>{{ $members->name }}</td>
-                                			<td>{{ $members->member_number }}</td>
-                                			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
-                                			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
-                                			<td>
-                                				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
-                                				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
-                                			</td>
-                                		</tr>
-                                		@endif
-                                	@endforeach
+                                	
                                 </tbody>
                             </table>
                         </div>
@@ -235,74 +230,78 @@
 
 <script>
 $(document).ready(function() {
-	$('#page-length-option').DataTable({"order": [[ 1, "asc" ]]});
+	//$('#page-length-option').DataTable({"order": [[ 1, "asc" ]]});
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-  //    $('#page-length-option').DataTable({
-  //    	"order": [[ 2, "asc" ]],
-  //       "responsive": true,
-  // //       dom: 'lBfrtip', 
-  // //       buttons: [
-		// //    {
-		// // 	   extend: 'pdf',
-  // //              text:      '<i class="fa fa-file-pdf-o"></i>',
-		// // 	   footer: true,
-		// // 	   exportOptions: {
-		// // 			columns: [0]
-  // //               },
-  // //               titleAttr: 'pdf',
-		// // 		title : 'Countries List'
-		// //    },
-		// //    {
-  // //              extend: 'excel',
-  // //              text:      '<i class="fa fa-file-excel-o"></i>',
-		// // 	   footer: false,
-		// // 	   exportOptions: {
-		// // 			columns: [0]
-		// // 		},
-  // //               title : 'Countries List',
-  // //               titleAttr: 'excel',
-		// //    },
-		// // 	{
-  // //              extend: 'print',
-  // //              text:      '<i class="fa fa-files-o"></i>',
-		// // 	   footer: false,
-		// // 	   exportOptions: {
-		// // 			columns: [0]
-		// // 		},
-  // //               title : 'Countries List',
-  // //               titleAttr: 'print',
-		// //    }  
-		// // ],
-  //       "processing": true,
-  //       "serverSide": true,
-  //       "ajax": {
-  //           "url": "{{ url(app()->getLocale().'/ajax_history_list') }}",
-  //           "dataType": "json",
-  //           "type": "POST",
-  //           "data": {
-  //               _token: "{{csrf_token()}}"
-  //           },
-  //           "error": function (jqXHR, textStatus, errorThrown) {
-  //               if(jqXHR.status==419){
-  //                   alert('Your session has expired, please login again');
-  //                   window.location.href = base_url;
-  //               }
-  //           },
-  //       },
-  //       "columns": [{
-  //               "data": "name"
-  //           },
-  //           {
-  //               "data": "member_number"
-  //           },
-  //           {
-  //               "data": "doj"
-  //           },
-  //           {
-  //               "data": "options"
-  //           }
-  //       ]
-  //   });
+     $('#page-length-option').DataTable({
+     	"order": [[ 2, "asc" ]],
+        "responsive": true,
+  //       dom: 'lBfrtip', 
+  //       buttons: [
+		//    {
+		// 	   extend: 'pdf',
+  //              text:      '<i class="fa fa-file-pdf-o"></i>',
+		// 	   footer: true,
+		// 	   exportOptions: {
+		// 			columns: [0]
+  //               },
+  //               titleAttr: 'pdf',
+		// 		title : 'Countries List'
+		//    },
+		//    {
+  //              extend: 'excel',
+  //              text:      '<i class="fa fa-file-excel-o"></i>',
+		// 	   footer: false,
+		// 	   exportOptions: {
+		// 			columns: [0]
+		// 		},
+  //               title : 'Countries List',
+  //               titleAttr: 'excel',
+		//    },
+		// 	{
+  //              extend: 'print',
+  //              text:      '<i class="fa fa-files-o"></i>',
+		// 	   footer: false,
+		// 	   exportOptions: {
+		// 			columns: [0]
+		// 		},
+  //               title : 'Countries List',
+  //               titleAttr: 'print',
+		//    }  
+		// ],
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ url(app()->getLocale().'/ajax_member_list') }}?from_date={{$data['from_date']}}&to_date={{$data['to_date']}}&status_id={{$data['status_id']}}",
+            "dataType": "json",
+            "type": "POST",
+            "data": {
+                _token: "{{csrf_token()}}"
+            },
+            "error": function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status==419){
+                    alert('Your session has expired, please login again');
+                    window.location.href = base_url;
+                }
+            },
+        },
+        "columns": [{
+                "data": "name"
+            },
+            {
+                "data": "member_number"
+            },
+            {
+                "data": "doj"
+            },
+
+            {
+                "data": "status"
+            },
+            {
+                "data": "options"
+            }
+        ]
+    });
 });
 $('.datepicker,.datepicker-custom').datepicker({
     format: 'dd-mm-yyyy',
@@ -349,7 +348,7 @@ $('.datepicker,.datepicker-custom').datepicker({
 	});
 	
 	$("#data_cleaning_sidebars_id").addClass('active');
-	$("#update_history_sidebar_li_id").addClass('active');
-	$("#update_history_sidebar_a_id").addClass('active');
+	$("#members_list_sidebar_li_id").addClass('active');
+	$("#members_list_sidebar_a_id").addClass('active');
 </script>
 @endsection
