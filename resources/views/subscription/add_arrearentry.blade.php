@@ -128,14 +128,14 @@
       </div>
       <div class="col s12 m6">
         <div class="row">
-          <div class="col s12 m6">
+          <div class="col s12 m6 hide">
             <label
               class="common-label  force-active">{{__(' Total Due Amount') }}*</label>
             <input id="total_due_amount" class="common-input"
               name="total_due_amount" readonly="true" type="text" >
             
           </div>
-          <div class="col s12 m6">
+          <div class="col s12 m12">
             <label
               class="common-label  force-active">{{__('Arrear Amount') }}*</label>
             <input id="arrear_amount" class="common-input"

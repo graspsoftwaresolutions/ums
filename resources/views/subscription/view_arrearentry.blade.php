@@ -1,12 +1,13 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('headSecondSection')
 @php 
   $edit_data = $data; 
-  $duerecords = CommonHelper::getDueMonthends($edit_data->memberid,$edit_data->no_of_months);
+  //$duerecords = CommonHelper::getDueMonthends($edit_data->memberid,$edit_data->no_of_months);
 @endphp
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
@@ -180,10 +181,10 @@
                     @php
                       $slno=0;
                     @endphp
-                    @foreach($duerecords as $rows)
+                    @for($rowi=0;$rowi<$edit_data->no_of_months; $rowi++)
                      <tr>
                         <td>
-                            <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="{{ date('d-m-Y',strtotime($rows->StatusMonth)) }}" class="datepicker-custom entry_date" readonly="true" />
+                            <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="" class="datepicker-custom entry_date" readonly="true" />
                         </td>
                         <td>
                             <input type="text" name="subscription_amount[]" id="subscription_amount_{{ $slno }}" value="" class="subscription_amount allow_decimal" />
@@ -198,7 +199,7 @@
                     @php
                       $slno++;
                     @endphp
-                    @endforeach
+                    @endfor
                     
                 </tbody>
                 <tfoot style="background: #dbdbf7;font-weight:bold;">
@@ -245,7 +246,8 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 @endsection
 @section('footerSecondSection')
 <script>
@@ -294,10 +296,13 @@ errorPlacement: function(error, element) {
   }
 }
 });
-$('.datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    autoHide: true,
-});
+$('.datepicker,.datepicker-custom').MonthPicker({ 
+    Button: false, 
+    MonthFormat: '01-mm-yy',
+    OnAfterChooseMonth: function() { 
+      //getDataStatus();
+    } 
+   });
 $(".subscription_amount").keyup(function(){
   var total_subs = 0;
   $(".subscription_amount").each(function() {
