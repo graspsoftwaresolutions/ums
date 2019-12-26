@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('headSecondSection')
 @php 
@@ -207,7 +208,29 @@
                       $total_ins += $rows->TOTALINSURANCE_AMOUNT;
                     @endphp
                     @endforeach
-                    
+                    @php
+                      $due_count = count($duerecords);
+                      //dd($due_count);
+                    @endphp
+                     @for($rowi=0;$rowi<($edit_data->no_of_months-$due_count); $rowi++)
+                     <tr>
+                        <td>
+                            <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="" class="datepicker-custom entry_date" readonly="true" />
+                        </td>
+                        <td>
+                            <input type="text" name="subscription_amount[]" id="subscription_amount_{{ $slno }}" value="" class="subscription_amount allow_decimal" />
+                        </td>
+                        <td>
+                          <input type="text" name="bf_amount[]" id="bf_amount_{{ $slno }}" value="" class="bf_amount allow_decimal" />
+                        </td>
+                         <td>
+                          <input type="text" name="insurance_amount[]" id="insurance_amount_{{ $slno }}" value="" class="insurance_amount allow_decimal" />
+                        </td>
+                    </tr>
+                    @php
+                      $slno++;
+                    @endphp
+                    @endfor
                 </tbody>
                   @php
                       $total_pay = $total_subs+$total_bf+$total_ins;
@@ -256,7 +279,8 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 @endsection
 @section('footerSecondSection')
 <script>
@@ -305,10 +329,13 @@ errorPlacement: function(error, element) {
   }
 }
 });
-$('.datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    autoHide: true,
-});
+$('.datepicker,.datepicker-custom').MonthPicker({ 
+    Button: false, 
+    MonthFormat: '01-mm-yy',
+    OnAfterChooseMonth: function() { 
+      //getDataStatus();
+    } 
+   });
 $(".subscription_amount").keyup(function(){
   var total_subs = 0;
   $(".subscription_amount").each(function() {

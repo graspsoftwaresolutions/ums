@@ -145,7 +145,7 @@
         </div>
         <div class="clearfix" style="clear:both"></div>
       </div>
-      <div class="col s12 m6">
+      <div class="col s12 m6 hide">
         <label
           class="common-label  force-active">{{__('No of Due Months') }}*</label>
         <input id="no_of_due_months" class="common-input"

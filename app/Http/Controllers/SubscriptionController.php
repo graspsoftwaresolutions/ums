@@ -1007,6 +1007,8 @@ class SubscriptionController extends CommonController
             'arrear_date.required'=>'please choose date',
             'arrear_amount.required'=>'please enter Amount',
         ]);
+        $request->request->add(['created_by' => Auth::user()->id]);
+        $request->request->add(['updated_by' => Auth::user()->id]);
         $data = $request->all();  
         // echo "<pre>";
         // print_r($data); die;
@@ -1070,6 +1072,7 @@ class SubscriptionController extends CommonController
         $total_subscription_amount = $request->input('total_subscription_amount');
         $total_bf_amount = $request->input('total_bf_amount');
         $total_insurance_amount = $request->input('total_insurance_amount');
+        $arrear_status_date = date('Y-m-01',strtotime($arrear_date));
         $paycount = 0;
         $history_update_from = '';
         $memberdata =DB::table("membership")->select('branch_id','designation_id','status_id')->where('id','=',$member_id)->first();
@@ -1100,7 +1103,7 @@ class SubscriptionController extends CommonController
                                 'TOTALINSURANCE_AMOUNT' => $insurance_amount,
                                 'TOTAL_MONTHS' => 1,
                              ];
-                $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $db_arrear_date)->where('MEMBER_CODE', '=', $member_id)->count();
+                $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $entry_status_month)->where('MEMBER_CODE', '=', $member_id)->count();
                 if($mont_count==1){
                     $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $entry_status_month)->update($monthend_data);
                 }else{
@@ -1112,14 +1115,14 @@ class SubscriptionController extends CommonController
                             //print_r($last_subscription_res);
                             //die;
                         $monthend_data = [
-                            'StatusMonth' => $db_arrear_date, 
+                            'StatusMonth' => $entry_status_month, 
                             'MEMBER_CODE' => $member_id,
                             'SUBSCRIPTION_AMOUNT' => $subs_amount,
                             'BF_AMOUNT' => $bf_amount,
-                            'LASTPAYMENTDATE' => $db_arrear_date,
+                            'LASTPAYMENTDATE' => $entry_status_month,
                             'TOTALSUBCRP_AMOUNT' => $subs_amount,
                             'TOTALBF_AMOUNT' => $bf_amount,
-                            'TOTAL_MONTHS' => 0,
+                            'TOTAL_MONTHS' => 1,
                             'BANK_CODE' => $branchdata->company_id,
                             'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
                             'BRANCH_CODE' => $memberdata->branch_id,
@@ -1145,6 +1148,8 @@ class SubscriptionController extends CommonController
                             'TOTALINSURANCE_AMOUNT' => $insurance_amount,
                             'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
                             'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE-$insurance_amount : 0,
+                            'arrear_status' => 1,
+                            'arrear_date' => $db_arrear_date,
                             // 'TOTALMONTHSDUE' => DB::raw('TOTALMONTHSDUE-'.$paycount),
                             //'TOTALMONTHSPAID' => DB::raw('TOTALMONTHSPAID+'.$paycount),
                             //'SUBSCRIPTIONDUE' => DB::raw('SUBSCRIPTIONDUE-'.$total_subscription_amount),
@@ -1156,6 +1161,7 @@ class SubscriptionController extends CommonController
                             //'ENTRYMODE' => 'A',
                         ];
                         DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+                        //Log::debug(json_encode($monthend_data));
                 }
                 //return $db_arrear_date;
                 $paycount++;
@@ -1260,6 +1266,14 @@ class SubscriptionController extends CommonController
                 $m_status = 2;
                 DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
             }
+            if($arrear_id!=''){
+                $arrear_data = [
+                    'updated_at' => date('Y-m-d h:i:s'),
+                    'updated_by' => Auth::user()->id,
+                ];
+                $arrear_upstatus = DB::table('arrear_entry')->where('id', '=', $arrear_id)->update($arrear_data);
+            }
+           
             
         }
 
