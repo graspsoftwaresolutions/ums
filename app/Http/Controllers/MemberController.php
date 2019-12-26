@@ -565,7 +565,7 @@ class MemberController extends CommonController
 										->orWhere('f.fee_shortcode','=','BF');
 								})       
 							->get();
-				if(count($feedata)==2 && $memberdata->is_request_approved==1){
+				if(count($feedata)==2 && $memberdata->is_request_approved==1 && $memberdata->status_id<=2){
 					
 					//return 1;
 					if($memberdata->salary>0){
