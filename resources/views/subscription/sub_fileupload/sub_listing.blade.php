@@ -225,8 +225,8 @@
 								@foreach($data['member_stat'] as  $key => $stat)
 								@php
 									$member_sub_link = URL::to(app()->getLocale().'/subscription-status?member_status='.$stat->id.'&date='.strtotime('now'));
-									$member_status_count = CommonHelper::statusSubsMembersCount($stat->id, $user_role, $user_id);
-									$member_status_amount = CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id);
+									$member_status_count = CommonHelper::statusSubsMembersNotDojCount($stat->id, $user_role, $user_id);
+									$member_status_amount = CommonHelper::statusMembersNotDojAmount($stat->id, $user_role, $user_id);
 									//$member_status_amount = round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0);
 								@endphp
 								

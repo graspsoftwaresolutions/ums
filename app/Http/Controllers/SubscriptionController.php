@@ -223,8 +223,8 @@ class SubscriptionController extends CommonController
 			$total_match_approval_members_count = 0;
 			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
-				$members_count = CommonHelper::statusSubsMembersCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
-				$members_amount = CommonHelper::statusMembersCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+				$members_count = CommonHelper::statusSubsMembersNotDOJCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+				$members_amount = CommonHelper::statusMembersNotDojCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
                 $status_data['count'][$value->id] = $members_count;
                 $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
 				$total_members_count += $members_count;
