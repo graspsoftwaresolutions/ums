@@ -224,7 +224,8 @@
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				$payable_subs = $total_subs;
+				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
 
 				if($data['variation']==6){
 					$fifth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')));
