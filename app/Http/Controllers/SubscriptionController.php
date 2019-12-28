@@ -2372,6 +2372,19 @@ class SubscriptionController extends CommonController
        
     }
 
+    public function subMemberStatement()
+    {
+        $user_id = Auth::user()->id;
+        $member_id = Membership::where('user_id','=',$user_id)->first();
+        $id = $member_id->id;
+
+                                            
+        $data['to_date'] = date('Y-m-01');
+        $data['member_id'] = $id;
+        return view('subscription.statement')->with('data',$data);
+      
+    }
+
     
     
 }

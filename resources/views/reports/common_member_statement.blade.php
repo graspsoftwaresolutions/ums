@@ -126,7 +126,7 @@
 				<!--p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p-->
 				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
 				<p>* Payment due for <b><!--Dec/2015--></b></p>
-				@if($total_dues!=0)
+				@if($total_dues!=0 && $data['due_months']!='')
 				<table id="reason-area" style="width:auto">
 					<tbody>
 						<tr style="font-weight: bold;">

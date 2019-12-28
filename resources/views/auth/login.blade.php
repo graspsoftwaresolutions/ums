@@ -21,7 +21,7 @@
 							</div>
 						</div>
 						<div class="row margin">
-							<div class="input-field col s12">
+							<div class="input-field col s12" style="margin-top: 0.5rem;">
 								<i class="material-icons prefix pt-2">person_outline</i>
 								<input id="email" name="email" type="email" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required >
 								<label for="email" class="center-align hide">{{ __('E-Mail Address') }}</label>
@@ -33,7 +33,7 @@
 							</div>
 						</div>
 						<div class="row margin">
-							<div class="input-field col s12">
+							<div class="input-field col s12" style="margin-top: 0.5rem;">
 								<i class="material-icons prefix pt-2">lock_outline</i>
 								<input id="password-field" name="password" type="password" class="@error('password') is-invalid @enderror" required onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false">
 								<label for="password" class="hide">{{ __('Password') }}</label>
@@ -54,7 +54,7 @@
 							<div class="input-field col s3 ">
 								&nbsp;
 							</div>
-							<div class="input-field col s6">
+							<div class="input-field col s6" style="margin-top: 0.5rem;margin-bottom: 0.5rem;">
 								<button type="submit" class="btn waves-effect waves-light border-round center-align gradient-45deg-purple-deep-orange-login col s12">
                                     {{ __('Login') }}
                                 </button>
@@ -63,13 +63,13 @@
 								&nbsp;
 							</div>
 						</div>
-						<div class="row hide">
-							<div class="input-field col s6 m6 l6">
+						<div class="row ">
+							<div class="input-field col s6 m6 l6" style="margin-top: 0.5rem;">
 								<p class="margin medium-small">
 									 <a href="{{ route('register', app()->getLocale()) }}">{{ __('Register Now!') }}</a>
 								</p>
 							</div>
-							<div class="input-field col s6 m6 l6">
+							<div class="input-field col s6 m6 l6" style="margin-top: 0.5rem;">
 								<p class="margin right-align medium-small">
 									<a href="{{ route('password.request', app()->getLocale()) }}">
 										{{ __('Forgot Your Password?') }}
