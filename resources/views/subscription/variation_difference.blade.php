@@ -234,7 +234,8 @@
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				$payable_subs = $total_subs;
+				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
 			@endphp
 		
 			
@@ -293,7 +294,7 @@
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				$payable_subs = $total_subs;
 			@endphp
 			<tr style="font-weight:bold;">
 				<td>{{$count}}</td>
@@ -349,7 +350,7 @@
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				$payable_subs = $total_subs;
 			@endphp
 		
 			
@@ -410,7 +411,7 @@
 				//$total_subs_old = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				$payable_subs = $total_subs;
 				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
 
 			@endphp
@@ -475,7 +476,7 @@
 				//$total_subs_old = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				$payable_subs = $total_subs;
 				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
 
 			@endphp
