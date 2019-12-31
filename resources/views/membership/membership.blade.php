@@ -6,7 +6,13 @@
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
-
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <style>
 @media (min-width: 1025px) {
 	ul.dtr-details li {
@@ -330,6 +336,13 @@ span.dtr-title::after {
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript"></script>
 
 @endsection
@@ -361,6 +374,39 @@ $(function () {
 		[10, 25, 50, 100],
 		[10, 25, 50, 100]
 	],
+	dom: 'lBfrtip', 
+        buttons: [
+		   {
+			   extend: 'pdf',
+			   footer: true,
+			   exportOptions: {
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+				},
+                title : 'Members List', 
+                text: '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'pdf'
+		   },
+		   {
+			   extend: 'excel',
+			   footer: false,
+			   exportOptions: {
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+				},
+				title : 'Members List',
+                text:    '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'excel'
+		   },
+			{
+			   extend: 'print',
+			   footer: false,
+			   exportOptions: {
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+				},
+				title : 'Members List',
+                text:   '<i class="fa fa-files-o"></i>',
+                titleAttr: 'print'
+		   }  
+		],
 	"processing": true,
 	"serverSide": true,
 	"ajax": {
