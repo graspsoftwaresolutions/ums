@@ -418,6 +418,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('monthend-historyall/{parameter}','MonthEndController@ViewAllMemberHistory')->name('monthend.viewlistsall');
 	Route::get('due-list','MonthEndController@ListMonthendDue')->name('due.list');
 	Route::post('due-list','MonthEndController@ListMonthendDueFilter')->name('monthend.duelist');
+
+	Route::get('sub-addbulkarrearentry','SubscriptionController@arrearBulkEntryAdd')->name('subs.addbulkarrearentry');
+	Route::post('subscription-saveBulkArrear','SubscriptionController@arrearBulkEntrySave')->name('subscription.saveBulkArrear');
+
+	Route::get('sub-bulkarrearupdate/{parameter}','SubscriptionController@ViewBulkArrear')->name('subs.arrearbulkview');
+
+	Route::post('update_subs_bulk_rows','SubscriptionController@saveArrearBulkRows')->name('subscription.upbulkarrearrows');
+
+	Route::get('editbulkarrearrecords/{parameter}','SubscriptionController@arrearRecordBulkEdit')->name('subscription.editbulkarrearrecords');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

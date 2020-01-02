@@ -133,7 +133,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									@foreach($data['current_member_history'] as $history)
 									<tr style="color:{{$history->font_color}}">
 										<td>{{$slno}}</td>
-										<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }}</td>
+										<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }} @if($history->arrear_status==1) <span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>@endif</td>
 										<td>{{ $history->SUBSCRIPTION_AMOUNT }}</td>
 										<td>{{ $history->BF_AMOUNT }}</td>
 										<td>{{ $history->INSURANCE_AMOUNT }}</td>

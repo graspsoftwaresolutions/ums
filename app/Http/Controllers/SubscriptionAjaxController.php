@@ -727,7 +727,8 @@ class SubscriptionAjaxController extends CommonController
 
                 $histry = route('member.history', [app()->getLocale(),Crypt::encrypt($arrear->membercode)]) ;
                                
-                $edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
+                $edit = route('subscription.editbulkarrearrecords', [app()->getLocale(),$enc_id]);
+                //$edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
                 
                 $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
