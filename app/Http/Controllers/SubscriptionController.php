@@ -2486,9 +2486,7 @@ class SubscriptionController extends CommonController
 
                 
 
-                DB::table('arrear_entry_records')->insert(
-                    ['arrear_id' => $arrear_id, 'from_date' => $from_entry_month, 'to_date' => $to_entry_month, 'subscription_amount' => $subs_amount, 'bf_amount' => $bf_amount, 'insurance_amount' => $insurance_amount]
-                );
+                
 
                 $start = new DateTime($from_entry_month);
                 $end   = new DateTime($to_entry_month);
@@ -2502,6 +2500,10 @@ class SubscriptionController extends CommonController
                 $tot_subs+=$subs_amount;
                 $tot_bf+=$bf_amount;
                 $tot_ins+=$insurance_amount;
+
+                DB::table('arrear_entry_records')->insert(
+                    ['arrear_id' => $arrear_id, 'from_date' => $from_entry_month, 'to_date' => $to_entry_month, 'subscription_amount' => $subs_amount, 'bf_amount' => $bf_amount, 'insurance_amount' => $insurance_amount]
+                );
                
                 //return $db_arrear_date;
                 $paycount++;
