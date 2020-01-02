@@ -2524,14 +2524,19 @@ class SubscriptionController extends CommonController
          ];
          //return $monthend_data;
         $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $arrear_status_date)->where('MEMBER_CODE', '=', $member_id)->where('arrear_status', '=', 1)->count();
+        
         if($mont_count==1){
           $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $arrear_status_date)->where('arrear_status', '=', 1)->update($monthend_data);
         }else{
             $memberdata =DB::table("membership")->select('branch_id','designation_id','status_id')->where('id','=',$member_id)->first();
+            $mont_status = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $arrear_status_date)->where('MEMBER_CODE', '=', $member_id)->where('arrear_status', '!=', 1)->pluck('STATUS_CODE')->first();
+            //return $mont_status;
             $branchdata = DB::table("company_branch")->where('id','=',$memberdata->branch_id)->first();
             $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE','ms.duebf_amount as BFDUE')
                 ->where('ms.member_id','=',$member_id)
                 ->first();
+            
+            $paymember_status = $mont_status=='' ? $memberdata->status_id : $mont_status;
                 //print_r($last_subscription_res);
                 //die;
             $monthend_data = [
@@ -2557,11 +2562,11 @@ class SubscriptionController extends CommonController
                 'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$tot_bf : $tot_bf,
                 'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$tot_ins : $tot_ins,
               
-                'STATUS_CODE' => $memberdata->status_id,
-                'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                'STATUS_CODE' => $paymember_status,
+                'RESIGNED' => $paymember_status==4 ? 1 : 0,
                 'ENTRY_DATE' => date('Y-m-d'),
                 'ENTRY_TIME' => date('h:i:s'),
-                'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                'STRUCKOFF' => $paymember_status==3 ? 1 : 0,
                 'INSURANCE_AMOUNT' => $tot_ins,
                 'TOTALINSURANCE_AMOUNT' => $tot_ins,
                 'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
