@@ -295,9 +295,14 @@ $(function() {
 					if(result)
 					{
 						res = result.member_history;
+						
 						$.each(res,function(key,entry){
+							var arrear_lbl = '';
+							if(entry.arrear_status==1) {
+								arrear_lbl = '<span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>';
+							}
 							var table_row = "<tr style='color:"+entry.font_color+";'><td>"+totalhistory+"</td>";
-								table_row += "<td>"+entry.StatusMonth+"</td>";
+								table_row += "<td>"+entry.StatusMonth+" "+arrear_lbl+"</td>";
 								table_row += "<td>"+entry.SUBSCRIPTION_AMOUNT+"</td>";
 								table_row += "<td>"+entry.BF_AMOUNT+"</td>";
 								table_row += "<td>"+entry.INSURANCE_AMOUNT+"</td>";
