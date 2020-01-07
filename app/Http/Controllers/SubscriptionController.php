@@ -2172,8 +2172,9 @@ class SubscriptionController extends CommonController
                 ];
                 DB::table($this->membermonthendstatus_table)->insert($monthend_data);
             }
+        }
         
-
+         
 
             $subscription_amount = $request->input('subscription_amount');
             
@@ -2181,8 +2182,10 @@ class SubscriptionController extends CommonController
             $total_bf_amount = $request->input('total_bf_amount');
             $total_insurance_amount = $request->input('total_insurance_amount');
             $paycount = 0;
+           
             if(isset($subscription_amount)){
                 $historycount = count($subscription_amount);
+               
                 for ($i=0; $i < $historycount; $i++) { 
                     $month_auto_id = $request->input('month_auto_id')[$i];
                     $subs_amount = $request->input('subscription_amount')[$i];
@@ -2194,7 +2197,10 @@ class SubscriptionController extends CommonController
                         $subs_amount = $subs_amount=='' ? 0 : $subs_amount;
                         $bf_amount = $bf_amount=='' ? 0 : $bf_amount;
                         $insurance_amount = $insurance_amount=='' ? 0 : $insurance_amount;
-                        $entry_status_month;
+                        // if($entry_status_month=='2015-12-01'){
+                        //     die($insurance_amount);
+                        // }
+                        //$entry_status_month;
                         // if($paycount==0){
                         //     $history_update_from = $entry_status_month;
                         // }
@@ -2359,7 +2365,7 @@ class SubscriptionController extends CommonController
                 }
                 
             }
-        }
+       
         
         Log::channel('historychangelog')->info('-----------------------------');
         Log::channel('historychangelog')->info('member id= '.$member_id.'&member_number='.$memberdata->member_number.'&name='.$memberdata->name);
