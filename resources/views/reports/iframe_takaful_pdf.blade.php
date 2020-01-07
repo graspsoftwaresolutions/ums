@@ -181,12 +181,21 @@
 			
 				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
 					To Branch Hons. Secretary
+					@if($data['unionbranch_id']!='')
+						<p>
+							Branch Name : {{ $data['unionbranch_name'] }}
+						</p>
+					@endif
 									</td>
 				<td colspan="3" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
-					01 Jan 2020 - 31 Jan 2020
+					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
 				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
-					
+					@if($data['unionbranch_id']!='')
+						<p>
+						Branch Code : {{ $data['unionbranch_id'] }}
+						</p>
+					@endif
 									</td>
 			</tr>
 			<tr class="">
@@ -221,11 +230,11 @@
 			@endforeach
 									<tr style="font-weight:bold;">
 				<td style="border : 1px solid #988989;" colspan="6"> Total Amount</td>
-				<td style="border : 1px solid #988989;">0.00</td>
+				<td style="border : 1px solid #988989;">{{ number_format($totalamt,2,".",",") }}</td>
 			</tr> 
 			<tr style="font-weight:bold;">
 				<td style="border : 1px solid #988989;" colspan="6"> Total Members</td>
-				<td style="border : 1px solid #988989;">0</td>
+				<td style="border : 1px solid #988989;">{{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		

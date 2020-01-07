@@ -427,6 +427,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update_subs_bulk_rows','SubscriptionController@saveArrearBulkRows')->name('subscription.upbulkarrearrows');
 
 	Route::get('editbulkarrearrecords/{parameter}','SubscriptionController@arrearRecordBulkEdit')->name('subscription.editbulkarrearrecords');
+
+	Route::get('export-excel-takaful','ReportsController@exportExcelTakaful')->name('takaful.excel');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

@@ -2115,6 +2115,65 @@ class ReportsController extends Controller
         return $pdf->download('pdf_takaful_report.pdf');
     }
 
+    public function exportExcelTakaful($lang,Request $request){
+        $s = new takafulMemberExport($request->all());
+       
+        $file_name = 'takaful_members';
+        return Excel::download($s, $file_name.'.xlsx');
+        // $offset = $request->input('offset');
+        // $month_year = $request->input('month_year');
+        // $company_id = $request->input('company_id');
+        // $branch_id = $request->input('branch_id');
+        // $member_auto_id = $request->input('member_auto_id');
+        // $unionbranch_id = $request->input('unionbranch_id');
+       
+        // $unionbranch_name = '';
+        // $monthno = '';
+        // $yearno = '';
+        // $fulldate = date('Y-m-01');
+        // if($month_year!=""){
+        //  // $fmmm_date = explode("/",$month_year);
+        //   $monthno = date('m',strtotime($month_year));
+        //   $yearno = date('Y',strtotime($month_year));
+        //   $fulldate = date('Y-m-01',strtotime($month_year));
+        // }
+
+        // $members =[];
+
+        // if($unionbranch_id!=''){
+        //     $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+        // }
+        
+        // if($branch_id!="" || $company_id!="" || $member_auto_id!="" || $unionbranch_id!=""){
+
+        //     $members = CacheMonthEnd::getMonthEndByDateFilter($fulldate,$company_id,$branch_id,$member_auto_id,$unionbranch_id);
+           
+        // }else{
+        //     $members = CacheMonthEnd::getMonthEndByDate($fulldate);
+        // }
+		// $data['member_view'] = $members;
+       
+        // $data['month_year']=$fulldate;
+        // $data['company_id']=$company_id;
+        // $data['branch_id']=$branch_id;
+        // $data['member_auto_id']=$member_auto_id;
+        // $data['unionbranch_name'] = $unionbranch_name; 
+        // $data['unionbranch_id'] = $unionbranch_id;
+        // //$data['data_limit']=$this->limit;
+        // $data['data_limit']='';
+		// $data['total_ins']=$this->bf_amount+$this->ins_amount;
+        // $data['offset']='';
+        // $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+       
+
+        // $dataarr = ['data' => $data ];
+
+       
+
+        // $pdf = PDF::loadView('reports.pdf_takaful', $dataarr)->setPaper('a4', 'landscape'); 
+        // return $pdf->download('pdf_takaful_report.pdf');
+    }
+
     public function PremiumTakaulReport($lang,Request $request){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        

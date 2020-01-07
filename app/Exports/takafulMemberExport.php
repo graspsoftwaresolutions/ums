@@ -18,43 +18,77 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use DB;
 use Facades\App\Repository\CacheMonthEnd;
+use App\Model\Fee;
 
 class takafulMemberExport implements FromView
 {
+    protected $request_data;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct()
+    public function __construct($requestinfo)
     {
+        $bf_amount = Fee::where('fee_shortcode','=','BF')->pluck('fee_amount')->first();
+        $ins_amount = Fee::where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
+        $ent_amount = Fee::where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
+        $hq_amount = Fee::where('fee_shortcode','=','HQ')->pluck('fee_amount')->first();
+        $this->bf_amount = $bf_amount=='' ? 3 : $bf_amount;
+        $this->ins_amount = $ins_amount=='' ? 7 : $ins_amount;		
+        $this->hq_amount = $hq_amount=='' ? 2 : $hq_amount;		
+        $this->ent_amount = $ent_amount=='' ? 5 : $ent_amount;	
+        $this->request_data = $requestinfo;
         //$objPHPExcel = new PHPExcel();
     }
     public function view(): View
     {
-        $data['data_limit']=100;
+        $request_data = $this->request_data;
+        $offset = $request_data['offset'];
+        $month_year = $request_data['month_year'];
+        $company_id = $request_data['company_id'];
+        $branch_id = $request_data['branch_id'];
+        $member_auto_id = $request_data['member_auto_id'];
+        $unionbranch_id = $request_data['unionbranch_id'];
+       
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+         // $fmmm_date = explode("/",$month_year);
+          $monthno = date('m',strtotime($month_year));
+          $yearno = date('Y',strtotime($month_year));
+          $fulldate = date('Y-m-01',strtotime($month_year));
+        }
+
+        $members =[];
+
+        if($unionbranch_id!=''){
+            $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+        }
+        
+        if($branch_id!="" || $company_id!="" || $member_auto_id!="" || $unionbranch_id!=""){
+
+            $members = CacheMonthEnd::getMonthEndByDateFilter($fulldate,$company_id,$branch_id,$member_auto_id,$unionbranch_id);
+           
+        }else{
+            $members = CacheMonthEnd::getMonthEndByDate($fulldate);
+        }
+		$data['member_view'] = $members;
+       
+        $data['month_year']=$fulldate;
+        $data['company_id']=$company_id;
+        $data['branch_id']=$branch_id;
+        $data['member_auto_id']=$member_auto_id;
+        $data['unionbranch_name'] = $unionbranch_name; 
+        $data['unionbranch_id'] = $unionbranch_id;
+        //$data['data_limit']=$this->limit;
+        $data['data_limit']='';
+		$data['total_ins']=$this->bf_amount+$this->ins_amount;
+        $data['offset']='';
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
-        $members = CacheMonthEnd::getMonthEndByDate('2019-06-01');
-        // $members = DB::table($this->membermonthendstatus_table.' as ms')
-		// 			->select('c.id as cid','m.name','m.id as id','ms.BRANCH_CODE as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-		// 			->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-        //             ->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
-        //             ->leftjoin('company as com','com.id','=','ms.BANK_CODE');
-                   
-      
-        // $members = $members->where(DB::raw('month(ms.`StatusMonth`)'),'=',date('m'));
-        // $members = $members->where(DB::raw('year(ms.`StatusMonth`)'),'=',date('Y'));
-                  
-		// $members = $members->get();
-		//dd($members);
-        $data['member_view'] = $members;
-        $data['month_year'] = '2019-06-01';
-        $data['unionbranch_name'] = ''; 
-        $data['unionbranch_id'] = '';
-        $data['company_id']='';
-        $data['branch_id']='';
-        $data['member_auto_id']='';
-        $data['total_ins']=10;
-        $data['offset']=0;
+
+        $dataarr = ['data' => $data ];
        return view('reports.iframe_takaful_pdf')->with('data',$data);  
         // return view('exports.invoices', [
         //     'invoices' => MonthlySubscription::all()
