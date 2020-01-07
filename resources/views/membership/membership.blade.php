@@ -371,8 +371,8 @@ $(function () {
 	"order": [[ 0, "desc" ]],
 	//"searching": false,
 	"lengthMenu": [
-		[10, 25, 50, 100],
-		[10, 25, 50, 100]
+		[10, 25, 50, 100, 3000],
+		[10, 25, 50, 100, 'All']
 	],
 	dom: 'lBfrtip', 
         buttons: [
