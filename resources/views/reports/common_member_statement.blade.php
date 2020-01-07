@@ -54,12 +54,12 @@
 				<!--th style="border: 1px solid #988989 !important;">S.NO</th-->
 				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">M/NO</th>
 				<th width="15%" style="border-bottom: 1px solid #988989 !important;text-align: center;">NAME</th>
-				<th style="border-bottom: 1px solid #988989 !important;text-align: center;" >I/C NO:</th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;" >I/C NO</th>
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">PREVIOUS<br>BALANCE</th>
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">CURRENT<br>PAYMENT</th>
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">BALANCE<br>TO-DATE</th>
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>BENEFIT</th>
-				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>INSURANCE(Months)</th>
+				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">ACCRUED<br>INSURANCE(MONTHS)</th>
 				<th  style="border-bottom: 1px solid #988989 !important;text-align: center;">ARREARS<br>MONTH</th>
 				<th style="border-bottom: 1px solid #988989 !important;text-align: center;">AMT.DUE <br>TO. UNION </th>
 			</tr>
@@ -127,7 +127,7 @@
 				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
 				<p>* Payment due for 
 
-				<b>
+				<b style="font-size: 16px;font-weight:bold;">
 					@if($total_dues!=0 && $data['due_months']!='')
 						{{ $data['due_months'] }}
 					@endif
@@ -135,7 +135,7 @@
 
 				</p>
 				@if($total_dues!=0 && $data['due_months']!='')
-				<table id="reason-area" style="width:auto">
+				<!--table id="reason-area" style="width:auto">
 					<tbody>
 						<tr style="font-weight: bold;">
 							<td style="border: 1px solid #988989 !important;">
@@ -148,7 +148,7 @@
 							</td>
 						</tr>
 					</tbody>
-				</table>
+				</table-->
 				@endif
 				<br>
 				<p align="center">National Union of Bank Employees, 12 NUBE House, 3rd Floor Jalan Tun Sambanthan 3, Brickfields 50470 Kuala Lumpur.</p>
