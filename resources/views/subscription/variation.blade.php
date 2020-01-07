@@ -220,7 +220,7 @@
 											$last_paid_count = CommonHelper::getUnionLastMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 											$current_unpaid_count = CommonHelper::getUnioncurrentMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 										@endphp
-										<tr class="monthly-sub-status">
+										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif">
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
 											<td style="width:10%">{{ $last_month_count }}</td>
@@ -229,10 +229,12 @@
 											<td style="width:10%">{{ $last_paid_count }}</td>
 										</tr> 
 										@php
-											$totalno21 += $current_count;
-											$totalno22 += $last_month_count;
-											$totalno24 += $current_unpaid_count;
-											$totalno25 += $last_paid_count;
+											if($current_count-$last_month_count!=0){
+												$totalno21 += $current_count;
+												$totalno22 += $last_month_count;
+												$totalno24 += $current_unpaid_count;
+												$totalno25 += $last_paid_count;
+											}
 										@endphp
 										
 								@endforeach
@@ -279,7 +281,7 @@
 										$current_unpaid_count = CommonHelper::getGroupcurrentMonthlyPaidCount($company['company_list'],$data['month_year_full']);
 									@endphp
 									@if($company_data->total_members>0)
-									<tr class="monthly-sub-status">
+									<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif">
 										<td style="width:50%">{{ $company['company_name'] }}</td>
 										<td style="width:10%">{{ $current_count }}</td>
 										<td style="width:10%">{{ $last_month_count }}</td>
@@ -288,11 +290,14 @@
 										<td style="width:10%">{{ $last_paid_count }}</td>
 									</tr> 
 									@php
-										$totalno11 += $current_count;
-										$totalno12 += $last_month_count;
-										$totalno13 += $current_count-$last_month_count;
-										$totalno14 += $current_unpaid_count;
-										$totalno15 += $last_paid_count;
+										if($current_count-$last_month_count!=0){
+											$totalno11 += $current_count;
+											$totalno12 += $last_month_count;
+											$totalno13 += $current_count-$last_month_count;
+											$totalno14 += $current_unpaid_count;
+											$totalno15 += $last_paid_count;
+										}
+										
 									@endphp
 									@endif	
 								@endforeach
@@ -336,7 +341,7 @@
 											$last_paid_count = CommonHelper::getBranchLastMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 											$current_unpaid_count = CommonHelper::getBranchcurrentMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 										@endphp
-										<tr class="monthly-sub-status">
+										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif">
 											<td style="width:20%">{{ $branch->company_name }}</td>
 											<td style="width:30%">{{ $branch->branch_name }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
@@ -346,11 +351,14 @@
 											<td style="width:10%">{{ $last_paid_count }}</td>
 										</tr> 
 										@php
-											$totalno1 += $current_count;
-											$totalno2 += $last_month_count;
-											$totalno3 += 0;
-											$totalno4 += $current_unpaid_count;
-											$totalno5 += $last_paid_count;
+											if($current_count-$last_month_count!=0){
+												$totalno1 += $current_count;
+												$totalno2 += $last_month_count;
+												$totalno3 += 0;
+												$totalno4 += $current_unpaid_count;
+												$totalno5 += $last_paid_count;
+											}
+											
 										@endphp
 								@endforeach
 								<tr class="bold table-footer">
