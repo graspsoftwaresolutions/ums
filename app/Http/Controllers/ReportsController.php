@@ -14,6 +14,9 @@ use App\Model\CompanyBranch;
 use App\Model\Reason;
 use PDF;
 use Session;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\ToArray;
+use App\Exports\takafulMemberExport;
 
 class ReportsController extends Controller
 {
@@ -3861,6 +3864,23 @@ class ReportsController extends Controller
             return view('reports.iframe_member_statement')->with('data',$data);  
         }
        
+    }
+
+    public function exportTakafulExcel(Request $request){
+        // Excel::create('Filename', function($excel) {
+
+        //     $excel->sheet('Sheetname', function($sheet) {
+        
+        //         // Sheet manipulation
+        
+        //     });
+        
+        // })->export('xls');
+      //  return Excel::download(new takafulMemberExport, 'users.xlsx');
+        $s = new takafulMemberExport($request->all());
+       
+        $file_name = 'takaful_members';
+        return Excel::download($s, $file_name.'.xlsx');
     }
 }
 

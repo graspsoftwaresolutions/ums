@@ -494,3 +494,5 @@ Route::get('addpayments','MemberController@AddPaymentEntry');
 Route::get('get-ircbranch-member-list','IrcController@getUnionAutomemberslist');
 
 Route::get('register-one','MemberController@NewRegisterDesign');
+
+Route::get('takaful-excel-export','ReportsController@exportTakafulExcel')->name('takaful.excelexport');
