@@ -125,7 +125,15 @@
 				<p>2) If you wish to change the nominee, kindly request for the nominee form from you Branch Secretary.</p>
 				<!--p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p-->
 				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
-				<p>* Payment due for <b><!--Dec/2015--></b></p>
+				<p>* Payment due for 
+
+				<b>
+					@if($total_dues!=0 && $data['due_months']!='')
+						{{ $data['due_months'] }}
+					@endif
+				</b>
+
+				</p>
 				@if($total_dues!=0 && $data['due_months']!='')
 				<table id="reason-area" style="width:auto">
 					<tbody>
