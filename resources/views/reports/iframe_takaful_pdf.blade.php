@@ -151,13 +151,15 @@
 
 <body>
 	
-	
+	@php 
+	$logo = CommonHelper::getLogo(); 
+@endphp
   	<table id="page-length-option" class="display" width="100%">
 		<thead>
 			<tr class="">
 				
 				<td colspan="2" rowspan="2" style="text-align:right">
-				
+				<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
 				<td colspan="3" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
