@@ -59,8 +59,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
       </ol>
   </div>
   <div class="col s2 m6 l6">
-      <a class="btn waves-effect waves-light breadcrumbs-btn right"
+      <div class="right">
+        <a class="btn waves-effect waves-light breadcrumbs-btn hide"
          href="{{ route('subscription.addarrearentry', app()->getLocale())  }}">{{__('Add') }}</a>
+
+        <a class="btn waves-effect waves-light blue breadcrumbs-btn"
+         href="{{ route('subs.addbulkarrearentry', app()->getLocale())  }}">{{__('Add Bulk') }}</a>
+      </div>
+      
 </div>
 </div>
 </div>

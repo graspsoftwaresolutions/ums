@@ -727,7 +727,8 @@ class SubscriptionAjaxController extends CommonController
 
                 $histry = route('member.history', [app()->getLocale(),Crypt::encrypt($arrear->membercode)]) ;
                                
-                $edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
+                $edit = route('subscription.editbulkarrearrecords', [app()->getLocale(),$enc_id]);
+                //$edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
                 
                 $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
@@ -954,7 +955,7 @@ class SubscriptionAjaxController extends CommonController
         $data['data_limit']=$this->limit;
 
         $data['member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid',DB::raw("DATE_FORMAT(`ms`.`StatusMonth`, '%b /%Y') as StatusMonth"),
-											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS',DB::raw("DATE_FORMAT(`ms`.`LASTPAYMENTDATE`, '%b /%Y') as LASTPAYMENTDATE"),'ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number',DB::raw("ifnull(round(ms.TOTALMONTHSDUE+ms.TOTALMONTHSPAID),0) as total"))
+											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS',DB::raw("DATE_FORMAT(`ms`.`LASTPAYMENTDATE`, '%b /%Y') as LASTPAYMENTDATE"),'ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number',DB::raw("ifnull(round(ms.TOTALMONTHSDUE+ms.TOTALMONTHSPAID),0) as total"),'ms.arrear_status')
 											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$memberid)

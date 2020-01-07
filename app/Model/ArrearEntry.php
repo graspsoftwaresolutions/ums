@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ArrearEntry extends Model
 {
     protected $table= "arrear_entry";
-    protected $fillable = ['id','membercode','company_id','branch_id','nric','arrear_date','arrear_amount','no_of_months','created_by','updated_by','updated_at','created_at'];
+    protected $fillable = ['id','membercode','company_id','branch_id','nric','arrear_date','arrear_amount','no_of_months','created_by','updated_by','updated_at','created_at','no_of_rows','type'];
 
     public function saveArreardata($data=array())
     {
