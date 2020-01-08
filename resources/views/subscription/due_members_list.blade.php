@@ -39,11 +39,11 @@
         border-radius: 3px;
         color: #fff;
     }*/
-    #page-length-option td:not(:last-child) {
+   /* #page-length-option td:not(:last-child) {
         word-break: break-word !important;
         white-space: unset !important;
         vertical-align: top;
-    }
+    }*/
 
 </style>
 @endsection
@@ -149,9 +149,9 @@
 												<select name="due_months" id="due_months" class="error browser-default selectpicker" data-error=".errorTxt24" >
 													<option value="">{{__('Select Month') }}</option>
 													@for($i=1;$i<=15;$i++)
-													<option @if($data['due_months']==$i) selected @endif value="{{$i}}">More than {{$i}} months</option>
+													<option @if($data['due_months']==$i) selected @endif value="{{$i}}">{{$i}} months</option>
 													@endfor
-													
+													<option @if($data['due_months']==16) selected @endif value="16">More than 15 months</option>
 													
 												</select>
 												<div class="input-field">
@@ -211,7 +211,7 @@
                                 			$due_count = CommonHelper::getMonthendDueCount($members->id);
                                 			$due_def = $data['due_months'] =='' ? 0 : $data['due_months'];
                                 		@endphp
-                                		@if($due_count>$due_def)
+                                		@if(($data['due_months'] =='' && $due_count>0) || ($data['due_months']<16 && $data['due_months']>0 && $due_count==$due_def) || ($data['due_months']==16 && $due_count>15) )
                                 		<tr>
                                 			
                                 			<td>{{ $members->name }}</td>
@@ -267,7 +267,47 @@
 
 <script>
 $(document).ready(function() {
-	$('#page-length-option').DataTable({"order": [[ 1, "asc" ]]});
+	$('#page-length-option').DataTable({
+			"order": [[ 1, "asc" ]],
+			"lengthMenu": [
+				[10, 25, 50, 100, 3000],
+				[10, 25, 50, 100, 'All']
+			],
+			"responsive": true,
+  				 dom: 'lBfrtip',
+  				   buttons: [
+					   {
+						   extend: 'pdf',
+			               text:      '<i class="fa fa-file-pdf-o"></i>',
+						   footer: true,
+						   exportOptions: {
+								columns: [0,1,2,3,4]
+			                },
+			                titleAttr: 'pdf',
+							title : 'Dues List'
+					   },
+					   {
+			               extend: 'excel',
+			               text:      '<i class="fa fa-file-excel-o"></i>',
+						   footer: false,
+						   exportOptions: {
+								columns: [0,1,2,3,4]
+							},
+			                title : 'Dues List',
+			                titleAttr: 'excel',
+					   },
+						{
+			               extend: 'print',
+			               text:      '<i class="fa fa-files-o"></i>',
+						   footer: false,
+						   exportOptions: {
+								columns: [0,1,2,3,4]
+							},
+			                title : 'Dues List',
+			                titleAttr: 'print',
+					   }  
+					],
+		});
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
   //    $('#page-length-option').DataTable({
   //    	"order": [[ 2, "asc" ]],
