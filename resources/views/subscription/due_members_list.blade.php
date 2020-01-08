@@ -196,9 +196,10 @@
                             <table id="page-length-option" class="display" width="100%">
                                 <thead>
                                     <tr>
+										<th width="5%">{{__('S.No') }}</th>
                                         <th width="25%">{{__('Member Name') }}</th>
                                         <th width="15%">{{__('Member Number') }}</th>
-                                        <th width="15%">{{__('DOJ') }}</th>
+                                        <th width="10%">{{__('DOJ') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
                                         <th width="10%">{{__('Dues') }}</th>
 
@@ -206,6 +207,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+									@php
+										$slno = 1;
+									@endphp
                                 	@foreach($data['members_list'] as $members)
                                 		@php
                                 			$due_count = CommonHelper::getMonthendDueCount($members->id);
@@ -213,7 +217,7 @@
                                 		@endphp
                                 		@if(($data['due_months'] =='' && $due_count>0) || ($data['due_months']<16 && $data['due_months']>0 && $due_count==$due_def) || ($data['due_months']==16 && $due_count>15) )
                                 		<tr>
-                                			
+                                			<td>{{ $slno }}</td>
                                 			<td>{{ $members->name }}</td>
                                 			<td>{{ $members->member_number }}</td>
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
@@ -224,7 +228,11 @@
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
                                 			</td>
                                 		</tr>
+										@php
+											$slno++;
+										@endphp
                                 		@endif
+										
                                 	@endforeach
                                 </tbody>
                             </table>
@@ -268,7 +276,7 @@
 <script>
 $(document).ready(function() {
 	$('#page-length-option').DataTable({
-			"order": [[ 1, "asc" ]],
+			"order": [[ 0, "asc" ]],
 			"lengthMenu": [
 				[10, 25, 50, 100, 3000],
 				[10, 25, 50, 100, 'All']
@@ -281,7 +289,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-pdf-o"></i>',
 						   footer: true,
 						   exportOptions: {
-								columns: [0,1,2,3,4]
+								columns: [0,1,2,3,4,5]
 			                },
 			                titleAttr: 'pdf',
 							title : 'Dues List'
@@ -291,7 +299,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-excel-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4]
+								columns: [0,1,2,3,4,5]
 							},
 			                title : 'Dues List',
 			                titleAttr: 'excel',
@@ -301,7 +309,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-files-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4]
+								columns: [0,1,2,3,4,5]
 							},
 			                title : 'Dues List',
 			                titleAttr: 'print',
