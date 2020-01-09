@@ -430,6 +430,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('export-excel-takaful','ReportsController@exportExcelTakaful')->name('takaful.excel');
 	Route::get('export-excel-members','ReportsController@exportExcelMembers')->name('members.excel');
+
+	Route::get('variancemembers-list','SubscriptionController@VarianceMembersList')->name('variation.list');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

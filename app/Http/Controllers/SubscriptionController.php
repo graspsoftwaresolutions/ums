@@ -2719,6 +2719,18 @@ class SubscriptionController extends CommonController
         return view('subscription.edit_bulk_arrear_rows')->with('data',$data);
     }
 
+    public function VarianceMembersList($lang, Request $request){
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $data['type'] = $request->input('type');
+        $data['date'] = date('Y-m-d',$request->input('date'));
+        $data['union_branchid'] = $request->input('union_branchid');
+        $data['company_id'] = $request->input('company_id');
+        $data['branch_id'] = $request->input('branch_id');
+        return view('subscription.variance_members')->with('data',$data);
+    }
+
     
     
 }

@@ -111,73 +111,30 @@
 							 </div>
 						@endif
 					</div>
+					@php
+						$ref_id = '';
+						if($data['type']==1){
+							$labelname='Union Branch';
+							$typename = CommonHelper::getUnionBranchName($data['union_branchid']);
+							$ref_id = $data['union_branchid'];
+						}elseif($data['type']==2){
+							$labelname='Bank';
+							$typename = CommonHelper::getCompanyName($data['company_id']);
+							$ref_id = $data['company_id'];
+						}else{
+							$labelname='Bank Branch';
+							$typename = CommonHelper::getBranchName($data['branch_id']);
+							$ref_id = $data['branch_id'];
+						}
+						//dd($data);
+					@endphp
 					<div class="card-content">
 						<div class="row">
 							<div class="col s12 m12">
 								<div class="row">
-									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/due-list') }}" enctype="multipart/form-data">
-										@csrf
-										<div class="row">
-											
-											<div class="col s12 m6 l2">
-												<label for="from_date">{{__('From Date')}}</label>
-												<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['from_date']))}}" name="from_date">
-											</div>
+									<h4 class="card-title">{{ $labelname }}: {{ $typename }}</h4>
+									<h4 class="card-title">Date: {{ date('M Y',strtotime($data['date'])) }}</h4>
 
-											<div class="col s12 m6 l2">
-												<label for="to_date">{{__('To Date')}}</label>
-												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
-											</div>
-
-											<div class="col s12 m6 l2">
-												<label>{{__('Status') }}</label>
-												<select name="status_id" id="status_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
-													<option value="">{{__('Select Status') }}</option>
-													 @foreach($data['status_view'] as $value)
-	                                                <option @if($data['status_id']==$value->id) selected @endif value="{{$value->id}}" >
-	                                                    {{$value->status_name}}</option>
-	                                                @endforeach
-													
-												</select>
-												<div class="input-field">
-													<div class="errorTxt23"></div>
-												</div>
-											</div>
-
-											<div class="col s12 m6 l3">
-												<label>{{__('Due Months') }}</label>
-												<select name="due_months" id="due_months" class="error browser-default selectpicker" data-error=".errorTxt24" >
-													<option value="">{{__('Select Month') }}</option>
-													@for($i=1;$i<=15;$i++)
-													<option @if($data['due_months']==$i) selected @endif value="{{$i}}">{{$i}} @if($i==1) month @else months @endif </option>
-													@endfor
-													<option @if($data['due_months']==16) selected @endif value="16">More than 15 months</option>
-													
-												</select>
-												<div class="input-field">
-													<div class="errorTxt24"></div>
-												</div>
-											</div>
-											
-											<div class="col m3 s12 " style="padding-top:5px;">
-												</br>
-												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
-												
-											</div>
-											
-										</div>
-										<div class="row hide">
-											<div class="col s7">
-												
-											</div>
-											<div class="col s4 ">
-												
-												<button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
-												
-											</div>
-										</div>
-									</form>
-									
 								</div>
 							</div>
 							
@@ -189,7 +146,7 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Unpaid List') }}</h4>
+                    <h4 class="card-title">{{__('Difference members List') }}</h4>
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
@@ -197,43 +154,49 @@
                                 <thead>
                                     <tr>
 										<th width="5%">{{__('S.No') }}</th>
-                                        <th width="25%">{{__('Member Name') }}</th>
+                                        <th width="35%">{{__('Member Name') }}</th>
                                         <th width="15%">{{__('Member Number') }}</th>
-                                        <th width="10%">{{__('DOJ') }}</th>
-                                        <th width="10%">{{__('Status') }}</th>
-                                        <th width="10%">{{__('Dues') }}</th>
-
-                                        <th> {{__('Action') }}</th>
+                                        <th width="10%">{{__('Joining') }}</th>
+                                        <th>{{ date('M Y',strtotime($data['date'])) }}</th>
+										<th>{{ date('M Y',strtotime($data['date'].' -1 Month')) }}</th>
+                                        <th class="hide"> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 									@php
 										$slno = 1;
+										//dd($data['type']); 
+										$pre_company_members = CommonHelper::getLastMonthlyPaidMembersAll($ref_id,$data['date'],$data['type']);
+										$current_company_members = CommonHelper::getcurrentMonthlyPaidMembersAll($ref_id,$data['date'],$data['type']);
 									@endphp
-                                	@foreach($data['members_list'] as $members)
-                                		@php
-                                			$due_count = CommonHelper::getMonthendDueCount($members->id);
-                                			$due_def = $data['due_months'] =='' ? 0 : $data['due_months'];
-                                		@endphp
-                                		@if(($data['due_months'] =='' && $due_count>0) || ($data['due_months']<16 && $data['due_months']>0 && $due_count==$due_def) || ($data['due_months']==16 && $due_count>15) )
-                                		<tr>
-                                			<td>{{ $slno }}</td>
-                                			<td>{{ $members->name }}</td>
-                                			<td>{{ $members->member_number }}</td>
-                                			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
-                                			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
-                                			<td>{{ $due_count }}</td>
-                                			<td>
-                                				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlistsall", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
-                                				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
-                                			</td>
-                                		</tr>
+									@foreach($pre_company_members as $company)
+										<tr>
+											<td>{{$slno}}</td>
+											<td>{{ $company->name }}</td>
+											<td>{{ $company->member_number }}</td>
+											<td>{{ $company->doj }}</td>
+											<td>0</td>
+											<td>{{ $company->SUBSCRIPTION_AMOUNT }}</td>
+											<td class="hide"></td>
+										</tr>
 										@php
 											$slno++;
 										@endphp
-                                		@endif
-										
-                                	@endforeach
+									@endforeach
+									@foreach($current_company_members as $company)
+										<tr>
+											<td>{{$slno}}</td>
+											<td>{{ $company->name }}</td>
+											<td>{{ $company->member_number }}</td>
+											<td>{{ $company->doj }}</td>
+											<td>{{ $company->SUBSCRIPTION_AMOUNT }}</td>
+											<td>0</td>
+											<td></td>
+										</tr>
+										@php
+											$slno++;
+										@endphp
+									@endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -384,40 +347,10 @@ $(document).ready(function() {
   //       ]
   //   });
 });
-$('.datepicker,.datepicker-custom').datepicker({
-    format: 'dd-mm-yyyy',
-    autoHide: true,
-});
+
 
 	
-	$("#subscribe_formValidate").validate({
-       rules: {
-			from_date: {
-				required: true,
-			},
-			to_date: {
-				required: true,
-			},
-		},
-		  //For custom messages
-		  messages: {
-				from_date:{
-					required: "Enter From Date"
-				},
-				to_date:{
-					required: "Enter To Date"
-				},
-		  },
-		  errorElement : 'div',
-		  errorPlacement: function(error, element) {
-				var placement = $(element).data('error');
-				if (placement) {
-				  $(placement).append(error)
-				} else {
-			  error.insertAfter(element);
-			  }
-			}
-    });
+	
 	
 	
 	$(document).on('submit','form#subscribe_formValidate',function(){

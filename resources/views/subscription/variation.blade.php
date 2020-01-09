@@ -146,14 +146,21 @@
 												<label for="doe">{{__('Variation') }}</label>
 												<p>
 													<label>
-														<input name="variationtype" type="radio" value="4" {{ $data['variationtype']==4 ? 'checked' : ''}} />
+														<input name="variationtype" class="variationtype" type="radio" value="4" {{ $data['variationtype']==4 ? 'checked' : ''}} />
 														<span>{{__('Last 4 Months') }} </span>
 													</label>
 												</p>
 												<p>
 													<label>
-														<input name="variationtype" type="radio" value="6"  {{ $data['variationtype']==6 ? 'checked' : ''}} />
+														<input name="variationtype" class="variationtype" type="radio" value="6"  {{ $data['variationtype']==6 ? 'checked' : ''}} />
 														<span>{{__('Last 6 Months') }} </span>
+													</label>
+												</p>
+
+												<p style="margin-top: 10px;">
+													<label>
+														<a style="font-size: 12px !important;line-height: 36px;padding: 0 10px;" class=" btn small amber darken-4" onclick="return UncheckVariation()" >{{__('Uncheck Variation') }}</a>
+														
 													</label>
 												</p>
 												
@@ -198,8 +205,8 @@
 							<thead>
 								<tr class="" >
 									<th>{{__('Union Branch Name')}}</th>
-									<th>{{__('#Current')}}</th>
-									<th>{{__('#Previous')}}</th>
+									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
+									<th>{{ date('M Y',strtotime($data['last_month_year'])) }} {{__('Members')}}</th>
 									<th>{{__('Different')}}</th>
 									<th>{{__('Unpaid')}}</th>
 									<th>{{__('Paid')}}</th>
@@ -220,7 +227,7 @@
 											$last_paid_count = CommonHelper::getUnionLastMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 											$current_unpaid_count = CommonHelper::getUnioncurrentMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 										@endphp
-										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif">
+										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid='.$union->union_branchid.'&company_id=&branch_id=') }}" onClick="return ViewVarianceList(this)">
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
 											<td style="width:10%">{{ $last_month_count }}</td>
@@ -254,8 +261,8 @@
 							<thead>
 								<tr class="" >
 									<th>{{__('Bank Name')}}</th>
-									<th>{{__('#Current')}}</th>
-									<th>{{__('#Previous')}}</th>
+									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
+									<th>{{ date('M Y',strtotime($data['last_month_year'])) }} {{__('Members')}}</th>
 									<th>{{__('Different')}}</th>
 									<th>{{__('Unpaid')}}</th>
 									<th>{{__('Paid')}}</th>
@@ -272,7 +279,7 @@
 								@endphp
 								@foreach($data['head_company_view'] as $company)
 									@php
-									
+										$company_id = $company["id"];
 										$company_data = CommonHelper::getMontendcompanyVariation($company['company_list'],$data['month_year_full']);
 										$last_company_data = CommonHelper::getMontendcompanyVariation($company['company_list'],$data['last_month_year']);
 										$current_count = $company_data->total_members;
@@ -281,7 +288,7 @@
 										$current_unpaid_count = CommonHelper::getGroupcurrentMonthlyPaidCount($company['company_list'],$data['month_year_full']);
 									@endphp
 									@if($company_data->total_members>0)
-									<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif">
+									<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id='.$company_id.'&branch_id=') }}" onClick="return ViewVarianceList(this)">
 										<td style="width:50%">{{ $company['company_name'] }}</td>
 										<td style="width:10%">{{ $current_count }}</td>
 										<td style="width:10%">{{ $last_month_count }}</td>
@@ -318,8 +325,8 @@
 								<tr class="" >
 									<th>{{__('Bank Name')}}</th>
 									<th>{{__('Branch Name')}}</th>
-									<th>{{__('#Current')}}</th>
-									<th>{{__('#Previous')}}</th>
+									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
+									<th>{{ date('M Y',strtotime($data['last_month_year'])) }} {{__('Members')}}</th>
 									<th>{{__('Different')}}</th>
 									<th>{{__('Unpaid')}}</th>
 									<th>{{__('Paid')}}</th>
@@ -341,7 +348,7 @@
 											$last_paid_count = CommonHelper::getBranchLastMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 											$current_unpaid_count = CommonHelper::getBranchcurrentMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 										@endphp
-										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif">
+										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id=&branch_id='.$branch->branch_id) }}" onClick="return ViewVarianceList(this)">
 											<td style="width:20%">{{ $branch->company_name }}</td>
 											<td style="width:30%">{{ $branch->branch_name }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
@@ -458,7 +465,17 @@ $(document).ready(function() {
 		
 		//$("#submit-download").prop('disabled',true);
 	});
+	// $(document).on('click','.variationtype',function(){
+	// 	$('#variation_uncheck').prop('checked', true); 
+	// });
 	
+	function UncheckVariation(){
+		$('.variationtype').prop('checked', false); 
+	}
+
+	function ViewVarianceList(thisdata){
+		window.open($(thisdata).attr("data-href"), '_blank');
+	}
 	
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subvariation_sidebar_li_id").addClass('active');
