@@ -120,7 +120,7 @@ class StatusMemberExport implements FromView
         $data['data_limit']='';
  
          $dataarr = ['data' => $data ];
-       return view('reports.pdf_members')->with('data',$data);  
+       return view('reports.excel_members')->with('data',$data);  
         // return view('exports.invoices', [
         //     'invoices' => MonthlySubscription::all()
         // ]);
