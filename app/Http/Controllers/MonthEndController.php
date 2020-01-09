@@ -520,6 +520,8 @@ class MonthEndController extends Controller
 
     public function ListMonthendDueFilter($lang,Request $request)
     {
+        ini_set('memory_limit', '-1');
+		ini_set('max_execution_time', 10000); 
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
         $status_id = $request->input('status_id');

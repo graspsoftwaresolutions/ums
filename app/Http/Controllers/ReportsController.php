@@ -17,6 +17,7 @@ use Session;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\ToArray;
 use App\Exports\takafulMemberExport;
+use App\Exports\StatusMemberExport;
 
 class ReportsController extends Controller
 {
@@ -3940,6 +3941,26 @@ class ReportsController extends Controller
        
         $file_name = 'takaful_members';
         return Excel::download($s, $file_name.'.xlsx');
+    }
+
+    public function exportExcelMembers($lang,Request $request){
+        $status_id = $request->input('status_id');
+        $statusname = 'status';
+        if($status_id==1){
+            $statusname = 'active';
+        }
+        else if($status_id==2){
+            $statusname = 'defaulter';
+        }
+        else if($status_id==3){
+            $statusname = 'struckoff';
+        }
+        //return $request->all();
+        $s = new StatusMemberExport($request->all());
+       
+        $file_name = $statusname.'_members';
+        return Excel::download($s, $file_name.'.xlsx');
+        
     }
 }
 
