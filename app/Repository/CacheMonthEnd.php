@@ -714,7 +714,7 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
 		{
-			 $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+			 $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.employee_id',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
 			     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 			     ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
 			     ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')
@@ -734,7 +734,7 @@ class CacheMonthEnd
 		
 		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$company_id,$unionbranch_id)
 		{
-			$members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
+			$members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number','m.employee_id',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
 			     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 			     ->leftjoin('company as c','c.id','=','ms.BANK_CODE')
 			     ->leftjoin('company_branch as cb','cb.id','=','ms.BRANCH_CODE')

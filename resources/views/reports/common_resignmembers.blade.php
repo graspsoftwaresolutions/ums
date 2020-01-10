@@ -75,11 +75,20 @@
 				$reasoncodes = [];
 			@endphp
 			@foreach($data['member_view'] as $member)
+				@php
+					if($member->new_ic!=""){
+						$ic = $member->new_ic;
+					}else if($member->old_ic!=""){
+						$ic = $member->old_ic;
+					}else{
+						$ic = $member->employee_id;
+					}
+				@endphp
 				<tr>
 					<td style="border: 1px solid #988989 !important;">{{ $sno }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->new_ic }}</td>
+                    <td style="border: 1px solid #988989 !important;">{{ $ic }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->doj)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ date("d/M/Y",strtotime($member->resignation_date)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->unioncode }}</td>

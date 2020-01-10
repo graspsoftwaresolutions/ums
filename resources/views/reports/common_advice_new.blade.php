@@ -74,7 +74,7 @@
 			<tr>
 				<td style="border: 1px solid #988989 !important;">{{ $sno }}</td>
                 <td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
-                <td style="border: 1px solid #988989 !important;">{{ $member->ic }}</td>
+                <td style="border: 1px solid #988989 !important;">{{ $member->ic=='' ? $member->employee_id : $member->ic }}</td>
                 <td style="border: 1px solid #988989 !important;">{{ $member->companycode }}</td>
                 <td style="border: 1px solid #988989 !important;">{{ $member->branch_name }}</td>
                 <td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>

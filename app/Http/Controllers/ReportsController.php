@@ -108,7 +108,7 @@ class ReportsController extends Controller
         $data['branch_id'] = '';
         $unionbranch_name = '';
 
-         $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+         $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
          ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
                 ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                 ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
@@ -192,7 +192,7 @@ class ReportsController extends Controller
           $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
         }
 
-        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
@@ -276,7 +276,7 @@ class ReportsController extends Controller
           $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
         }
 
-        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
@@ -375,7 +375,7 @@ class ReportsController extends Controller
         $data['reasondata'] = Reason::where('status','=',1)->get();
        
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -404,7 +404,7 @@ class ReportsController extends Controller
         $unionbranch_name='';
        
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -465,7 +465,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name='';
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
                 ->leftjoin('membership as m','m.id','=','rs.member_code')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -541,7 +541,7 @@ class ReportsController extends Controller
         $todate = $to_date;
         $unionbranch_name='';
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
                 ->leftjoin('membership as m','m.id','=','rs.member_code')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -613,7 +613,7 @@ class ReportsController extends Controller
         $unionbranch_name='';
        
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -677,7 +677,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name='';
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
                 ->leftjoin('membership as m','m.id','=','rs.member_code')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -752,7 +752,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name='';
         
-        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
+        $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
                 ->leftjoin('membership as m','m.id','=','rs.member_code')
                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -879,7 +879,7 @@ class ReportsController extends Controller
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
        
         $members = DB::table($this->membermonthendstatus_table.' as ms')
-					->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
+					->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
 					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -1020,7 +1020,7 @@ class ReportsController extends Controller
         ,'m.gender'
         ,'com.company_name'
         ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'m.employee_id'
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -1092,7 +1092,7 @@ class ReportsController extends Controller
           ,'m.gender'
           ,'com.company_name'
           ,'m.doj'
-          ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+          ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'m.employee_id'
           ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
           ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date')
               ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -1178,8 +1178,8 @@ class ReportsController extends Controller
           $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
           ,'m.gender'
           ,'com.company_name'
-          ,'m.doj'
-          ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+          ,'m.doj','m.employee_id'
+          ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
           ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
           ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date')
               ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -2779,8 +2779,8 @@ class ReportsController extends Controller
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
-        ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,'m.doj','m.employee_id'
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','u.union_branch as union_branchname')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -2838,8 +2838,8 @@ class ReportsController extends Controller
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
-        ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,'m.doj','m.employee_id'
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','u.union_branch as union_branchname')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -2916,8 +2916,8 @@ class ReportsController extends Controller
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
-        ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,'m.doj','m.employee_id'
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','u.union_branch as union_branchname')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -2994,7 +2994,7 @@ class ReportsController extends Controller
         $unionbranch_name = '';
         $union_branch_id = '';
         
-        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
+        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -3046,7 +3046,7 @@ class ReportsController extends Controller
         $total_fee = $this->ent_amount+$this->ins_amount;
         $unionbranch_name = '';
         
-        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
+        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -3107,7 +3107,7 @@ class ReportsController extends Controller
         $total_fee = $this->ent_amount+$this->ins_amount;
         $unionbranch_name = '';
         
-        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
+        $members = DB::table('resignation as rs')->select('m.name', 'm.member_number','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'com.short_code as companycode','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'))
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     ->leftjoin('company as com','com.id','=','c.company_id')
@@ -3173,8 +3173,8 @@ class ReportsController extends Controller
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
-        ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,'m.doj','m.employee_id'
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'),'m.old_member_number')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -3235,8 +3235,8 @@ class ReportsController extends Controller
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
-        ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,'m.doj','m.employee_id'
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'),'m.old_member_number')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -3302,8 +3302,8 @@ class ReportsController extends Controller
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
         ,'m.gender'
         ,'com.company_name'
-        ,'m.doj'
-        ,DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,'m.doj','m.employee_id'
+        ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
         ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name',DB::raw("ifnull(round(((m.salary*1)/100)-{$total_fee}),0) as subs"),DB::raw('IF(`d`.`designation_name`="CLERICAL","Y","N") as designation_name'),'m.old_member_number')
                     ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -3371,7 +3371,7 @@ class ReportsController extends Controller
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
         $unionbranch_name = '';
-         $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
+         $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
                 ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                 ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
                 ->leftjoin('membership as m','mm.MemberCode','=','m.id')
@@ -3435,7 +3435,7 @@ class ReportsController extends Controller
           $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
         }
 
-        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
+        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
                 ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                 ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
                 ->leftjoin('membership as m','mm.MemberCode','=','m.id')
@@ -3502,7 +3502,7 @@ class ReportsController extends Controller
           $fulldate = date('Y-m-01',strtotime($month_year));
         }
 
-        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
+        $members = DB::table('mon_sub_member as mm')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','mm.StatusId as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
                 ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                 ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
                 ->leftjoin('membership as m','mm.MemberCode','=','m.id')
@@ -3564,7 +3564,7 @@ class ReportsController extends Controller
         $data['branch_id'] = '';
         $unionbranch_name = '';
 
-         $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+         $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
          ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name','ub.union_branch as union_branch',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
                 ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                 ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
@@ -3635,7 +3635,7 @@ class ReportsController extends Controller
           $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
         }
 
-        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name','ub.union_branch as union_branch',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
@@ -3718,7 +3718,7 @@ class ReportsController extends Controller
           $fulldate = date('Y-m-01',strtotime($month_year));
         }
 
-        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj',DB::raw('IF(`m`.`new_ic`=Null,`m`.`old_ic`,`m`.`new_ic`) as ic')
+        $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
         ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name','ub.union_branch as union_branch',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date')
                ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')

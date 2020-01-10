@@ -67,6 +67,15 @@
 				$status_arr = ['ACTIVE' => 0, 'DEFAULTER' => 0];
 			@endphp
             @foreach($data['member_view'] as $member)
+            	@php
+					if($member->new_ic!=""){
+						$ic = $member->new_ic;
+					}else if($member->old_ic!=""){
+						$ic = $member->old_ic;
+					}else{
+						$ic = $member->employee_id;
+					}
+				@endphp
                 <tr>
 					<td style="border : 1px solid #988989;">{{ $sno }}</td>
 					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
@@ -74,7 +83,7 @@
                     <td style="border : 1px solid #988989;"> {{ $member->companycode }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
                     
-                    <td style="border : 1px solid #988989;">{{ $member->new_ic }}</td>
+                    <td style="border : 1px solid #988989;">{{ $ic }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->designation_name }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->gender[0] }}</td>
                     

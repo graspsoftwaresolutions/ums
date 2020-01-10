@@ -62,7 +62,7 @@
 							<td style="border : 1px solid #988989;">{{ $slno }}</td>
 							<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
 							<td style="border : 1px solid #988989;">{{ $member->name }}</td>
-							<td style="border : 1px solid #988989;">{{ $member->ic }}</td>
+							<td style="border : 1px solid #988989;">{{ $member->ic=='' ? $member->employee_id : $member->ic }}</td>
 							<td style="border : 1px solid #988989;">{{ $member->company_name }}</td>
 							<td style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
 							<td style="border : 1px solid #988989;">{{ $member->unionbranch }}</td>
