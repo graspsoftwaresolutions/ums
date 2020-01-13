@@ -12,6 +12,10 @@ use App\Helpers\CommonHelper;
 
 class MonthEndController extends Controller
 {
+    public function __construct() {
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', 0);
+    }
     public function index(){
         $data = [];
     	return view('monthend_update')->with('data',$data); 
@@ -543,10 +547,10 @@ class MonthEndController extends Controller
        
       
         if($branch_id!=''){
-            $member_qry = DB::table('membership as m');
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id');
             $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
         }else{
-            $member_qry = DB::table('membership as m')->select('m.*')
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id')
             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
             $member_qry = $member_qry->where('cb.company_id','=',$company_id);
             

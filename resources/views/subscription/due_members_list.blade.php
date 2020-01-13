@@ -239,7 +239,7 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Unpaid List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id'])[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>
+                    <h4 class="card-title">{{__('Due List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id'])[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">

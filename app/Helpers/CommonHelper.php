@@ -2563,7 +2563,7 @@ class CommonHelper
     }
 
     public static function getMonthendDueCount($memberid){
-        $duecount = DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->OrderBy('ms.StatusMonth','desc')->pluck('ms.TOTALMONTHSDUE')->first();
+        $duecount = DB::table('membermonthendstatus as ms')->select('ms.TOTALMONTHSDUE')->where('ms.MEMBER_CODE', '=' ,$memberid)->OrderBy('ms.StatusMonth','desc')->limit(1)->pluck('ms.TOTALMONTHSDUE')->first();
         $duecount = $duecount=='' ? 0 : $duecount;
         return $duecount;
     }
