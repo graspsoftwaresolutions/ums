@@ -509,12 +509,15 @@ class MonthEndController extends Controller
     }
 
     public function ListMonthendDue(Request $request){
-        $data['from_date'] = date('2019-01-01');
-        $data['to_date'] = date('Y-m-d');
+        // $data['from_date'] = date('2019-01-01');
+        // $data['to_date'] = date('Y-m-d');
         $data['status_id'] = '';
         $data['due_months'] = '';
+        $data['company_id'] = '';
+        $data['branch_id'] = '';
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['members_list'] = DB::table('membership as m')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['members_list'] = [];
         return view('subscription.due_members_list')->with('data',$data);  
     }
 
@@ -522,21 +525,37 @@ class MonthEndController extends Controller
     {
         ini_set('memory_limit', '-1');
 		ini_set('max_execution_time', 10000); 
-        $from_date = $request->input('from_date');
-        $to_date = $request->input('to_date');
+        // $from_date = $request->input('from_date');
+        // $to_date = $request->input('to_date');
         $status_id = $request->input('status_id');
         $due_months = $request->input('due_months');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
        // date('Y-m-d',strtotime($to_date));
-        $data['from_date'] = date('Y-m-d',strtotime($from_date));
-        $data['to_date'] = date('Y-m-d',strtotime($to_date)); 
+        //$data['from_date'] = date('Y-m-d',strtotime($from_date));
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        //$data['to_date'] = date('Y-m-d',strtotime($to_date)); 
         $data['status_id'] = $status_id;
+        $data['company_id'] = $company_id;
+        $data['branch_id'] = $branch_id;
         $data['due_months'] = $due_months;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
        
-        $member_qry = DB::table('membership as m')->where('m.doj','>=',$data['from_date'])->where('m.doj','<=',$data['to_date']);
+      
+        if($branch_id!=''){
+            $member_qry = DB::table('membership as m');
+            $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+        }else{
+            $member_qry = DB::table('membership as m')->select('m.*')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
+            $member_qry = $member_qry->where('cb.company_id','=',$company_id);
+            
+        }
+        
         if($status_id!=''){
             $member_qry = $member_qry->where('m.status_id','=',$status_id);
         }
+        //dd($member_qry->count());
         $member_qry = $member_qry->orderBY('m.doj','asc')->get();
         $data['members_list'] = $member_qry;
         return view('subscription.due_members_list')->with('data',$data);  

@@ -2563,7 +2563,9 @@ class CommonHelper
     }
 
     public static function getMonthendDueCount($memberid){
-        return DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','!=',1)->count();
+        $duecount = DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->OrderBy('ms.StatusMonth','desc')->pluck('ms.TOTALMONTHSDUE')->first();
+        $duecount = $duecount=='' ? 0 : $duecount;
+        return $duecount;
     }
 
      public static function getUnionBranchName($unionbranchid){

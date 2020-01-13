@@ -286,7 +286,11 @@ class CommonController extends Controller
                         $autoid = $newvalue;
                         
                     }else{
-                        $memberscount = CommonHelper::mastersMembersCount($table,$autoid, $user_role, $user_id);
+                        $memberscount = 0;
+                        if($table!='reason'){
+                            $memberscount = CommonHelper::mastersMembersCount($table,$autoid, $user_role, $user_id);
+                        }
+                      
                         
                         if($table=='state' || $table=='company_branch')
                         {
@@ -303,7 +307,11 @@ class CommonController extends Controller
 
                             if($serial == 0)
                             {
-                                $nestedData[$newkey] = $newvalue."&nbsp;&nbsp;&nbsp;".'<span class="badge badge pill light-blue mr-10">'.$memberscount.'</span>';
+                                if($table!='reason'){
+                                    $nestedData[$newkey] = $newvalue."&nbsp;&nbsp;&nbsp;".'<span class="badge badge pill light-blue mr-10">'.$memberscount.'</span>';
+                                }else{
+                                    $nestedData[$newkey] = $newvalue;
+                                }
                             }
                             else{
                                 $nestedData[$newkey] = $newvalue;

@@ -111,6 +111,37 @@
 							 </div>
 						@endif
 					</div>
+					@php
+					
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+					$companylist = [];
+					$branchlist = [];
+					$companyid = '';
+					$branchid = '';
+					$unionbranchid='';
+					if($user_role =='union'){
+						$companylist = $data['company_view'];
+					}
+					else if($user_role =='union-branch'){
+						$unionbranchid = CommonHelper::getUnionBranchID($userid);
+						$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+					} 
+					else if($user_role =='company'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid);
+					}
+					else if($user_role =='company-branch'){
+						$branchid = CommonHelper::getCompanyBranchID($userid);
+						$companyid = CommonHelper::getCompanyID($userid);
+						$companylist = CommonHelper::getCompanyList($companyid);
+						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+					} 
+					
+				@endphp
 					<div class="card-content">
 						<div class="row">
 							<div class="col s12 m12">
@@ -118,16 +149,35 @@
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/due-list') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
-											
-											<div class="col s12 m6 l2">
-												<label for="from_date">{{__('From Date')}}</label>
-												<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['from_date']))}}" name="from_date">
-											</div>
 
-											<div class="col s12 m6 l2">
-												<label for="to_date">{{__('To Date')}}</label>
-												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
+											<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
+												<label>{{__('Company Name') }}</label>
+												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+													<option value="">{{__('Select Company') }}</option>
+													@foreach($companylist as $value)
+													<option value="{{$value->id}}">{{$value->company_name}}</option>
+													@endforeach
+												</select>
+												<div class="input-field">
+													<div class="errorTxt22"></div>
+												</div>
 											</div>
+											
+											
+											<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+												<label>{{__('Company Branch Name') }}</label>
+												<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+													<option value="">{{__('Select Branch') }}</option>
+													@foreach($branchlist as $branch)
+													<option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+													@endforeach
+												</select>
+												<div class="input-field">
+													<div class="errorTxt23"></div>
+												</div>
+											</div>
+						
+											
 
 											<div class="col s12 m6 l2">
 												<label>{{__('Status') }}</label>
@@ -144,7 +194,7 @@
 												</div>
 											</div>
 
-											<div class="col s12 m6 l3">
+											<div class="col s12 m6 l2">
 												<label>{{__('Due Months') }}</label>
 												<select name="due_months" id="due_months" class="error browser-default selectpicker" data-error=".errorTxt24" >
 													<option value="">{{__('Select Month') }}</option>
@@ -159,7 +209,7 @@
 												</div>
 											</div>
 											
-											<div class="col m3 s12 " style="padding-top:5px;">
+											<div class="col m2 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
@@ -189,7 +239,7 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Unpaid List') }}</h4>
+                    <h4 class="card-title">{{__('Unpaid List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id'])[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
@@ -244,7 +294,26 @@
 	</div>
 	
 </div>
+@php	
+	$ajaxcompanyid = '';
+	$ajaxbranchid = '';
+	$ajaxunionbranchid = '';
+	if(!empty(Auth::user())){
+		$userid = Auth::user()->id;
+		
+		if($user_role =='union'){
 
+		}else if($user_role =='union-branch'){
+			$ajaxunionbranchid = CommonHelper::getUnionBranchID($userid);
+		}else if($user_role =='company'){
+			$ajaxcompanyid = CommonHelper::getCompanyID($userid);
+		}else if($user_role =='company-branch'){
+			$ajaxbranchid = CommonHelper::getCompanyBranchID($userid);
+		}else{
+
+		}
+	}
+@endphp
 @endsection
 @section('footerSection')
 <!--script src="{{ asset('public/assets/js/jquery.min.js') }}"></script-->
@@ -315,6 +384,37 @@ $(document).ready(function() {
 			                titleAttr: 'print',
 					   }  
 					],
+		});
+		$('#company_id').change(function(){
+		   var CompanyID = $(this).val();
+		   var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
+		   var ajaxbranchid = '{{ $ajaxbranchid }}';
+		   var additional_cond;
+		   if(CompanyID!='' && CompanyID!='undefined')
+		   {
+			 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+			 $.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
+				success:function(res){
+					if(res)
+					{
+						$('#branch_id').empty();
+						$("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+						$.each(res,function(key,entry){
+							$('#branch_id').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+						});
+					}else{
+						$('#branch_id').empty();
+					}
+				}
+			 });
+		   }else{
+			   $('#branch_id').empty();
+			   $("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+		   }
+		  
 		});
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
   //    $('#page-length-option').DataTable({
@@ -392,20 +492,14 @@ $('.datepicker,.datepicker-custom').datepicker({
 	
 	$("#subscribe_formValidate").validate({
        rules: {
-			from_date: {
-				required: true,
-			},
-			to_date: {
+			company_id: {
 				required: true,
 			},
 		},
 		  //For custom messages
 		  messages: {
-				from_date:{
-					required: "Enter From Date"
-				},
-				to_date:{
-					required: "Enter To Date"
+				company_id:{
+					required: "Please pick bank"
 				},
 		  },
 		  errorElement : 'div',
