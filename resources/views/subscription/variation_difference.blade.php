@@ -226,15 +226,17 @@
 		<tbody class="tbody-area">
 			@foreach($newjoin_company_members as $member)
 			@php
+
 				$mdoj= $member->doj;
 				//$dojmonth = date('Y-m',strtotime($mdoj));
 				//$paymonth = date('Y-m',strtotime($data['month_year_full']));
 				
 				$salary = $member->salary==Null ? 0 : $member->salary;
+				$subsamt = $member->SUBSCRIPTION_AMOUNT;
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs;
+				$payable_subs = $subsamt;
 				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
 			@endphp
 		
@@ -290,8 +292,10 @@
 			
 			@foreach($pre_company_members as $member)
 			@php
-				$salary = $member->salary==Null ? 0 : $member->salary;
-				$total_subs = ($salary*1)/100;
+
+				//$salary = $member->salary==Null ? 0 : $member->salary;
+				//$total_subs = ($salary*1)/100;
+				$total_subs = $member->SUBSCRIPTION_AMOUNT;
 				$bf_amt = 3;
 				$ins_amt = 7;
 				$payable_subs = $total_subs;
@@ -326,7 +330,9 @@
 		
 		</table>
 		@endif
-
+		@php
+			
+		@endphp
 		@if(count($current_company_members)>0)
 		<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Previous Subscription Unpaid - Current Subscription Paid</p>
 		<table id="page-lengthone" class="display  page-length-option" width="100%">
@@ -346,8 +352,10 @@
 		<tbody class="tbody-area">
 			@foreach($current_company_members as $member)
 			@php
-				$salary = $member->salary==Null ? 0 : $member->salary;
-				$total_subs = ($salary*1)/100;
+
+				//$salary = $member->salary==Null ? 0 : $member->salary;
+				//$total_subs = ($salary*1)/100;
+				$total_subs = $member->SUBSCRIPTION_AMOUNT;
 				$bf_amt = 3;
 				$ins_amt = 7;
 				$payable_subs = $total_subs;
@@ -405,9 +413,11 @@
 		<tbody class="tbody-area">
 			@foreach($inc_company_members as $member)
 			@php
+				//dd($member);
 			//dd($inc_company_members);
-				$salary = $member->salary==Null ? 0 : $member->salary;
-				$total_subs = ($salary*1)/100;
+				//$salary = $member->salary==Null ? 0 : $member->salary;
+				//$total_subs = ($salary*1)/100;
+				$total_subs = $member->SUBSCRIPTION_AMOUNT;
 				//$total_subs_old = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
@@ -471,8 +481,9 @@
 			@foreach($dec_company_members as $member)
 			@php
 			
-				$salary = $member->salary==Null ? 0 : $member->salary;
-				$total_subs = ($salary*1)/100;
+				//$salary = $member->salary==Null ? 0 : $member->salary;
+				//$total_subs = ($salary*1)/100;
+				$total_subs = $member->SUBSCRIPTION_AMOUNT;
 				//$total_subs_old = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;

@@ -2681,9 +2681,23 @@ class SubscriptionController extends CommonController
             if($last_TOTALMONTHSDUE<=3){
                 $m_status = 1;
                 DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
+                
+                $monthend_datasone = [
+                    'STATUS_CODE' => $m_status,
+                    'RESIGNED' => $m_status==4 ? 1 : 0,
+                    'STRUCKOFF' => $m_status==3 ? 1 : 0,
+                ];
+                $m_upstatusone = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '>=', $arrear_status_date)->update($monthend_datasone);
             }else if($last_TOTALMONTHSDUE<=13){
                 $m_status = 2;
                 DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
+
+                $monthend_datasone = [
+                    'STATUS_CODE' => $m_status,
+                    'RESIGNED' => $m_status==4 ? 1 : 0,
+                    'STRUCKOFF' => $m_status==3 ? 1 : 0,
+                ];
+                $m_upstatusone = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '>=', $arrear_status_date)->update($monthend_datasone);
             }
             if($arrear_id!=''){
                 $arrear_data = [

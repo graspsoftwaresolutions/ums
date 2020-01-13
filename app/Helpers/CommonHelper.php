@@ -2427,7 +2427,7 @@ class CommonHelper
         }
 
         foreach ($members as $member) {
-           $subscription_data = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as Amount','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic',DB::raw($member->Amount.' as last_amount'))
+           $subscription_data = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as Amount','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic',DB::raw($member->Amount.' as last_amount'))
                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                         ->leftjoin('membership as m','m.id','=','mm.MemberCode')
