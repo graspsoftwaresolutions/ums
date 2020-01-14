@@ -128,6 +128,17 @@
 												<label for="to_date">{{__('To Date')}}</label>
 												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
 											</div>
+
+											<div class="col s12 m6 l3">
+												<label>{{__('Due Month') }}</label>
+												<select name="due_month" id="due_month" class="error browser-default selectpicker" data-error=".errorTxt24" >
+													<option value="">{{__('Select Month') }}</option>
+													
+													<option @if($data['due_month']==0) selected @endif value="0">This month</option>
+													<option @if($data['due_month']==1) selected @endif value="1">Next month</option>
+													
+												</select>
+											</div>
 											
 											<div class="col m3 s12 " style="padding-top:5px;">
 												</br>
@@ -166,6 +177,7 @@
                             <table id="page-length-option" class="display" width="100%">
                                 <thead>
                                     <tr>
+                                    	<th width="5%">{{__('S.No') }}</th>
                                         <th width="25%">{{__('Member Name') }}</th>
                                         <th width="15%">{{__('Member Number') }}</th>
                                         <th width="15%">{{__('DOJ') }}</th>
@@ -175,14 +187,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                	@php
+										$slno = 1;
+									@endphp
                                 	@foreach($data['members_list'] as $members)
                                 		@php
+                                			if($data['due_month']==0){
+                                				$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($members->doj)));
+	                                		}else{
+	                                			$next_month = date('Y-m-01',strtotime($members->doj.' +1 Month'));
+	                                			$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($next_month)));
+	                                		}
                                 			
-                                			$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($members->doj)));
                                 		@endphp
                                 		@if($monthend_count==0)
                                 		<tr>
-                                			
+                                			<td>{{ $slno }}</td>
                                 			<td>{{ $members->name }}</td>
                                 			<td>{{ $members->member_number }}</td>
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
@@ -192,6 +212,9 @@
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
                                 			</td>
                                 		</tr>
+                                		@php
+											$slno++;
+										@endphp
                                 		@endif
                                 	@endforeach
                                 </tbody>
@@ -235,7 +258,48 @@
 
 <script>
 $(document).ready(function() {
-	$('#page-length-option').DataTable({"order": [[ 1, "asc" ]]});
+	//$('#page-length-option').DataTable({"order": [[ 1, "asc" ]]});
+	$('#page-length-option').DataTable({
+			"order": [[ 0, "asc" ]],
+			"lengthMenu": [
+				[10, 25, 50, 100, 3000],
+				[10, 25, 50, 100, 'All']
+			],
+			"responsive": true,
+  				 dom: 'lBfrtip',
+  				   buttons: [
+					   {
+						   extend: 'pdf',
+			               text:      '<i class="fa fa-file-pdf-o"></i>',
+						   footer: true,
+						   exportOptions: {
+								columns: [0,1,2,3,4]
+			                },
+			                titleAttr: 'pdf',
+							title : 'Unpaid List'
+					   },
+					   {
+			               extend: 'excel',
+			               text:      '<i class="fa fa-file-excel-o"></i>',
+						   footer: false,
+						   exportOptions: {
+								columns: [0,1,2,3,4]
+							},
+			                title : 'Unpaid List',
+			                titleAttr: 'excel',
+					   },
+						{
+			               extend: 'print',
+			               text:      '<i class="fa fa-files-o"></i>',
+						   footer: false,
+						   exportOptions: {
+								columns: [0,1,2,3,4]
+							},
+			                title : 'Unpaid List',
+			                titleAttr: 'print',
+					   }  
+					],
+		});
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
   //    $('#page-length-option').DataTable({
   //    	"order": [[ 2, "asc" ]],

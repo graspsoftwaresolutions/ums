@@ -2390,6 +2390,8 @@ class CommonHelper
     }
 
     public static function getSubscriptionIncDecMembers($type_id, $date, $type, $vtype){
+        //0 dec
+        //1 inc
         if($date==""){
             $date = date('Y-m-01');
         }
@@ -2427,6 +2429,7 @@ class CommonHelper
         }
 
         foreach ($members as $member) {
+
            $subscription_data = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as Amount','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic',DB::raw($member->Amount.' as last_amount'))
                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
@@ -2439,11 +2442,13 @@ class CommonHelper
                         ->where(DB::raw('month(ms.Date)'),'=',$month)
                         ->where(DB::raw('year(ms.Date)'),'=',$year)->first();
             if($subscription_data!=null){
+             //   print_r($member);
+                 //dd($subscription_data); 
                 $subdata[] = $subscription_data;
             }     
             
         }
-            
+          
         // $count = 0;                     
         // foreach($members as $member){
         //     $memebr_id = $member->MemberCode;

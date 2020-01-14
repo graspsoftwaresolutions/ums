@@ -158,6 +158,7 @@ class MonthEndController extends Controller
     public function ListMonthend(Request $request){
         $data['from_date'] = date('2019-01-01');
         $data['to_date'] = date('Y-m-d');
+        $data['due_month'] = 0;
         $data['members_list'] = DB::table('membership as m')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
         return view('subscription.history_list')->with('data',$data);  
     }
@@ -306,9 +307,11 @@ class MonthEndController extends Controller
     {
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
+        $due_month = $request->input('due_month');
        // date('Y-m-d',strtotime($to_date));
         $data['from_date'] = date('Y-m-d',strtotime($from_date));
         $data['to_date'] = date('Y-m-d',strtotime($to_date));
+        $data['due_month'] = $due_month;
         $data['members_list'] = DB::table('membership as m')->where('m.doj','>=',$data['from_date'])->where('m.doj','<=',$data['to_date'])->orderBY('m.doj','asc')->get();
         return view('subscription.history_list')->with('data',$data);  
         //return $request->all();
