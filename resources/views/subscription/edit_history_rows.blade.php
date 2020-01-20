@@ -168,7 +168,17 @@
       <div class="card-content">
          <div class="row">
             <div class="col s12 m12">
-               <div class="row">
+              @php
+                $hide_doj_row = '';
+                if(count($monthsrecords)>0){
+                  $below_first = $monthsrecords[0];
+                  if(($below_first->TOTALMONTHSDUE>1 || $below_first->TOTALMONTHSPAID>1) && empty($dojrecord)){
+                    $hide_doj_row = 'hide';
+                  }
+                }
+              @endphp
+              
+               <div class="row {{ $hide_doj_row }}">
                   
                      <div class="row">
                         <div class="col s12 m6 l2">
@@ -242,7 +252,7 @@
                       $total_pay=0; */
                     @endphp
                     @foreach($monthsrecords as $rows)
-                     <tr>
+                     <tr @if(($rows->TOTALMONTHSDUE>1 || $rows->TOTALMONTHSPAID>1) && $slno==0 && empty($dojrecord)) style="pointer-events: none;background-color: #f4f8fb !important;" @endif>
                         <td>
                             <input type="text" name="month_auto_id[]" id="month_auto_id_{{ $slno }}" class="hide" value="{{ $rows->autoid }}"/>
                             <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="{{ date('d-m-Y',strtotime($rows->StatusMonth)) }}" class=" entry_date" readonly="true" />

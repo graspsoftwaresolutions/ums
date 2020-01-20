@@ -2264,19 +2264,39 @@ class SubscriptionController extends CommonController
             
 
             if($history_update_from!=""){
-                $last_mont_record = DB::table($this->membermonthendstatus_table." as ms")
+                $is_old_record = DB::table($this->membermonthendstatus_table." as ms")
                 ->select('ms.StatusMonth','ms.LASTPAYMENTDATE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.SUBSCRIPTIONDUE','ms.TOTALMONTHSCONTRIBUTION','ms.INSURANCEDUE','ms.BFDUE','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
-                ->where('StatusMonth', '<', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
-                ->orderBY('StatusMonth','desc')
+                ->where('MEMBER_CODE', '=', $member_id)
+                ->orderBY('StatusMonth','asc')
                 ->limit(1)
                 ->first();
 
-                $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
-                ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.arrear_status')
-                ->where('StatusMonth', '>=', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
-                ->orderBY('StatusMonth','asc')
-                ->orderBY('arrear_status','asc')
-                ->get();
+                if($is_old_record->TOTALMONTHSDUE>1 || $is_old_record->TOTALMONTHSPAID>1){
+                    $last_mont_record = $is_old_record;
+
+                    $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
+                    ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.arrear_status')
+                    ->where('StatusMonth', '>', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
+                    ->orderBY('StatusMonth','asc')
+                    ->orderBY('arrear_status','asc')
+                    ->get();
+                }else{
+                    $last_mont_record = DB::table($this->membermonthendstatus_table." as ms")
+                    ->select('ms.StatusMonth','ms.LASTPAYMENTDATE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.SUBSCRIPTIONDUE','ms.TOTALMONTHSCONTRIBUTION','ms.INSURANCEDUE','ms.BFDUE','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
+                    ->where('StatusMonth', '<', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
+                    ->orderBY('StatusMonth','desc')
+                    ->limit(1)
+                    ->first();
+
+                    $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
+                    ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.arrear_status')
+                    ->where('StatusMonth', '>=', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
+                    ->orderBY('StatusMonth','asc')
+                    ->orderBY('arrear_status','asc')
+                    ->get();
+                }
+
+                
 
                 $last_ACCINSURANCE = !empty($last_mont_record) ? $last_mont_record->ACCINSURANCE : 0;
                 $last_ACCSUBSCRIPTION = !empty($last_mont_record) ? $last_mont_record->ACCSUBSCRIPTION : 0;

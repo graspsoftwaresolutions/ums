@@ -2497,7 +2497,7 @@ class CommonHelper
 
      public static function getMonthendsByJoinDate($memberid,$months,$date){
         $records =  DB::table('membermonthendstatus')
-                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','Id as autoid','TOTAL_MONTHS')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','Id as autoid','TOTAL_MONTHS','TOTALMONTHSPAID')
                         ->where('MEMBER_CODE', '=' ,$memberid)
                         ->where('StatusMonth', '>' ,$date)
                         ->OrderBy('StatusMonth','asc')
@@ -2508,7 +2508,7 @@ class CommonHelper
 	
      public static function getMonthendsOnJoinDate($memberid,$months,$date){
         $records =  DB::table('membermonthendstatus')
-                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','TOTAL_MONTHS')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','TOTAL_MONTHS','TOTALMONTHSPAID')
                         ->where('MEMBER_CODE', '=' ,$memberid)
                         ->where('StatusMonth', '=' ,$date)
                         ->OrderBy('StatusMonth','asc')
