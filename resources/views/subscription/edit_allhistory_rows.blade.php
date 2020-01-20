@@ -245,6 +245,7 @@
                         <td>
                             <input type="text" name="month_auto_id[]" id="month_auto_id_{{ $slno }}" class="hide" value="{{ $rows->autoid }}"/>
                             <input type="text" name="entry_date[]" id="entry_date_{{ $slno }}" value="{{ date('d-m-Y',strtotime($rows->StatusMonth)) }}" class=" entry_date" readonly="true" />
+                            <input id="total_months" type="text" class="validate " readonly="" value="{{ $rows->TOTAL_MONTHS }}" name="total_months[]"/>
                         </td>
                         <td>
                             <input type="text" name="subscription_amount[]" id="subscription_amount_{{ $slno }}" value="{{ $rows->TOTALSUBCRP_AMOUNT }}" class="subscription_amount allow_decimal" />
@@ -444,7 +445,7 @@ $("#addarrear_formValidate").on("submit", function(evt) {
 });
 function AddNewHistory(){
   var totalno = parseInt($("#totalno").val());
-  var history = '<tr><td> <input type="text" name="month_auto_id[]" id="month_auto_id_'+totalno+'" class="hide" value=""/><input type="text" name="entry_date[]" id="entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"></td>';
+  var history = '<tr><td> <input type="text" name="month_auto_id[]" id="month_auto_id_'+totalno+'" class="hide" value=""/><input type="text" name="entry_date[]" id="entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"><input id="total_months" type="text" class="validate " readonly="" value="0" name="total_months[]"/></td>';
   history += '<td><input type="text" name="subscription_amount[]" id="subscription_amount_'+totalno+'" value="" class="subscription_amount allow_decimal"></td>';
   history += '<td><input type="text" name="bf_amount[]" id="bf_amount_6" value="" class="bf_amount allow_decimal valid" aria-invalid="false"></td>';
   history += '<td><input type="text" name="insurance_amount[]" id="insurance_amount_'+totalno+'" value="" class="insurance_amount allow_decimal"></td></tr>'
