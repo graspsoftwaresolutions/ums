@@ -2260,7 +2260,7 @@ class SubscriptionController extends CommonController
                     }
                 }
             }
-        
+            //dd('hi');
             
 
             if($history_update_from!=""){
@@ -2276,7 +2276,7 @@ class SubscriptionController extends CommonController
 
                     $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
                     ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.arrear_status')
-                    ->where('StatusMonth', '>', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
+                    ->where('StatusMonth', '>', $is_old_record->StatusMonth)->where('MEMBER_CODE', '=', $member_id)
                     ->orderBY('StatusMonth','asc')
                     ->orderBY('arrear_status','asc')
                     ->get();
