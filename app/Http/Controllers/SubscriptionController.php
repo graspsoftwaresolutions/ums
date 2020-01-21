@@ -2148,9 +2148,7 @@ class SubscriptionController extends CommonController
                     'ACCSUBSCRIPTION' => $doj_subs,
                     'ACCBF' => $doj_bf,
                     'ACCINSURANCE' => $doj_ins,
-                    //'ACCBENEFIT' => 0,
-                    //'CURRENT_YDTBF' => 0,
-                    //'CURRENT_YDTSUBSCRIPTION' => 0,
+                   
                     'STATUS_CODE' => $memberdata->status_id,
                     'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
                     'ENTRY_DATE' => date('Y-m-d'),
@@ -2160,15 +2158,7 @@ class SubscriptionController extends CommonController
                     'TOTALINSURANCE_AMOUNT' => $doj_ins,
                     'TOTALMONTHSCONTRIBUTION' => 1,
                     'INSURANCEDUE' => 0,
-                    // 'TOTALMONTHSDUE' => DB::raw('TOTALMONTHSDUE-'.$paycount),
-                    //'TOTALMONTHSPAID' => DB::raw('TOTALMONTHSPAID+'.$paycount),
-                    //'SUBSCRIPTIONDUE' => DB::raw('SUBSCRIPTIONDUE-'.$total_subscription_amount),
-                    //'BFDUE' => DB::raw('BFDUE-'.$total_bf_amount),
-                    //'INSURANCEDUE' => DB::raw('INSURANCEDUE-'.$total_insurance_amount),
-                    //'ACCSUBSCRIPTION' => DB::raw('ACCSUBSCRIPTION+'.$total_subscription_amount),
-                    //'ACCBF' => DB::raw('ACCBF+'.$total_bf_amount),
-                    //'ACCINSURANCE' => DB::raw('ACCINSURANCE+'.$total_insurance_amount),
-                    //'ENTRYMODE' => 'A',
+                   
                 ];
                 DB::table($this->membermonthendstatus_table)->insert($monthend_data);
             }
@@ -2322,11 +2312,12 @@ class SubscriptionController extends CommonController
                         $new_SUBSCRIPTIONDUE = $last_SUBSCRIPTIONDUE;
                         $new_BFDUE = $last_BFDUE;
                         $new_INSURANCEDUE = $last_INSURANCEDUE;
-                        if($m_total_months>1){
+                        if($m_total_months>=1){
                             if($arrear_status==1){
                                 $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE-$m_total_months;
                             }else{
-                                $new_TOTALMONTHSDUE = $m_total_months>1 ? ($last_TOTALMONTHSDUE+1)-$m_total_months : $last_TOTALMONTHSDUE-$m_total_months;
+                                $new_TOTALMONTHSDUE = $m_total_months==1 ? $last_TOTALMONTHSDUE : $last_TOTALMONTHSDUE-$m_total_months;
+                                //$new_TOTALMONTHSDUE = $m_total_months>1 ? ($last_TOTALMONTHSDUE+1)-$m_total_months : $last_TOTALMONTHSDUE-$m_total_months;
                             }
                         }else{
                             $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE;
@@ -2346,6 +2337,13 @@ class SubscriptionController extends CommonController
                         $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE+1;
                         $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID;
                         $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION;
+                        $last_paid_date = DB::table($this->membermonthendstatus_table." as ms")
+                        ->select('ms.LASTPAYMENTDATE')
+                        ->where('StatusMonth', '<', $monthend->StatusMonth)->where('MEMBER_CODE', '=', $member_id)
+                        ->orderBY('StatusMonth','desc')
+                        ->limit(1)
+                        ->pluck('ms.LASTPAYMENTDATE')
+                        ->first();
                     }
                 
                     
@@ -2623,7 +2621,8 @@ class SubscriptionController extends CommonController
         if($arrear_status_date!=""){
             $last_mont_record = DB::table($this->membermonthendstatus_table." as ms")
             ->select('ms.StatusMonth','ms.LASTPAYMENTDATE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.SUBSCRIPTIONDUE','ms.TOTALMONTHSCONTRIBUTION','ms.INSURANCEDUE','ms.BFDUE','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
-            ->where('StatusMonth', '<', $arrear_status_date)->where('MEMBER_CODE', '=', $member_id)
+            ->where('StatusMonth', '<=', $arrear_status_date)->where('MEMBER_CODE', '=', $member_id)
+            ->where('arrear_status','!=',1)
             ->orderBY('StatusMonth','desc')
             ->limit(1)
             ->first();
@@ -2631,8 +2630,9 @@ class SubscriptionController extends CommonController
             $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
             ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.arrear_status')
             ->where('StatusMonth', '>=', $arrear_status_date)->where('MEMBER_CODE', '=', $member_id)
+            //->where('arrear_status','=',1)
             ->orderBY('StatusMonth','asc')
-            //->orderBY('arrear_status','asc')
+            ->orderBY('arrear_status','asc')
             ->get();
 
             $last_ACCINSURANCE = !empty($last_mont_record) ? $last_mont_record->ACCINSURANCE : 0;
@@ -2651,14 +2651,16 @@ class SubscriptionController extends CommonController
                 $m_ins_amt = $monthend->INSURANCE_AMOUNT;
                 $m_total_months = $monthend->TOTAL_MONTHS;
 
+                if($monthend->StatusMonth==$arrear_status_date && $monthend->arrear_status!=1){
+                }else{
                 if($m_total_months>0){
                     $newdues=$last_TOTALMONTHSDUE-$m_total_months;
                     if($last_TOTALMONTHSDUE-$m_total_months<0){
                         $newdues=0;
                     }
-                    if($monthend->StatusMonth==$arrear_status_date && $monthend->arrear_status!=1){
-                        $newdues=$last_TOTALMONTHSDUE;
-                    }
+                    // if($monthend->StatusMonth==$arrear_status_date && $monthend->arrear_status!=1){
+                    //     $newdues=$last_TOTALMONTHSDUE;
+                    // }
                     $new_ACCINSURANCE = $last_ACCINSURANCE+$m_ins_amt;
                     $new_ACCSUBSCRIPTION = $last_ACCSUBSCRIPTION+$m_subs_amt;
                     $new_ACCBF = $last_ACCBF+$m_bf_amt;
@@ -2669,6 +2671,7 @@ class SubscriptionController extends CommonController
                     $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID+$m_total_months;
                     $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION+$m_total_months;
                 }else{
+                    
                     $new_ACCINSURANCE = $last_ACCINSURANCE;
                     $new_ACCSUBSCRIPTION = $last_ACCSUBSCRIPTION;
                     $new_ACCBF = $last_ACCBF;
@@ -2703,6 +2706,8 @@ class SubscriptionController extends CommonController
                 $last_TOTALMONTHSDUE = $new_TOTALMONTHSDUE;
                 $last_TOTALMONTHSPAID = $new_TOTALMONTHSPAID;
                 $last_TOTALMONTHSCONTRIBUTION = $new_TOTALMONTHSCONTRIBUTION;
+                }
+
             }
 
             $payment_data = [

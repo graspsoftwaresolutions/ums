@@ -831,6 +831,14 @@ class MemberController extends CommonController
 						$new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE+1;
 						$new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID;
 						$new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION;
+						
+						$last_paid_date = DB::table($this->membermonthendstatus_table." as ms")
+                        ->select('ms.LASTPAYMENTDATE')
+                        ->where('StatusMonth', '<', $monthend->StatusMonth)->where('MEMBER_CODE', '=', $member_id)
+                        ->orderBY('StatusMonth','desc')
+                        ->limit(1)
+                        ->pluck('ms.LASTPAYMENTDATE')
+                        ->first();
 					}
 				
 					

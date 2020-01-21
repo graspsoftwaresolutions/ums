@@ -432,6 +432,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-excel-members','ReportsController@exportExcelMembers')->name('members.excel');
 
 	Route::get('variancemembers-list','SubscriptionController@VarianceMembersList')->name('variation.list');
+
+	Route::get('new-member-history/{parameter}','MonthEndController@memberallHistory')->name('monthend.addhistory');
+	Route::post('add_new_rows/{parameter}','MonthEndController@saveMonthendRows')->name('monthend.updatehistoryrows');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

@@ -180,8 +180,8 @@
                                 <thead>
                                     <tr>
                                         <th width="30%">{{__('Member Name') }}</th>
-                                        <th width="15%">{{__('Member Number') }}</th>
-                                        <th width="15%">{{__('DOJ') }}</th>
+                                        <th width="10%">{{__('Member Number') }}</th>
+                                        <th width="10%">{{__('DOJ') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
 
                                         <th> {{__('Action') }}</th>
