@@ -752,7 +752,7 @@ class MonthEndController extends Controller
                             if($arrear_status==1){
                                 $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE-$m_total_months;
                             }else{
-                                $new_TOTALMONTHSDUE = $m_total_months==1 ? $last_TOTALMONTHSDUE : $last_TOTALMONTHSDUE-$m_total_months;
+                                $new_TOTALMONTHSDUE = $m_total_months==1 ? $last_TOTALMONTHSDUE : ($last_TOTALMONTHSDUE+1)-$m_total_months;
                                 //$new_TOTALMONTHSDUE = $m_total_months>1 ? ($last_TOTALMONTHSDUE+1)-$m_total_months : $last_TOTALMONTHSDUE-$m_total_months;
                             }
                         }else{
