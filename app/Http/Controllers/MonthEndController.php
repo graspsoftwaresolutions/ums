@@ -649,7 +649,7 @@ class MonthEndController extends Controller
                             // ];
                             // $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $entry_status_month)->where('Id', '=', $month_auto_id)->update($monthend_data);
                         }else{
-                            $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $entry_status_month)->where('MEMBER_CODE', '=', $member_id)->count();
+                            $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $entry_status_month)->where('arrear_status', '=', 0)->where('MEMBER_CODE', '=', $member_id)->count();
 
                             if($mont_count==0){
                                
