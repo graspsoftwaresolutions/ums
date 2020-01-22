@@ -612,20 +612,21 @@ class MonthEndController extends Controller
          
 
             $subscription_amount = $request->input('subscription_amount');
+            $all_entry_date = $request->input('entry_date');
             
             $total_subscription_amount = $request->input('total_subscription_amount');
             $total_bf_amount = $request->input('total_bf_amount');
             $total_insurance_amount = $request->input('total_insurance_amount');
             $paycount = 0;
            
-            if(isset($subscription_amount)){
-                $historycount = count($subscription_amount);
+            if(isset($all_entry_date)){
+                $historycount = count($all_entry_date);
                
                 for ($i=0; $i < $historycount; $i++) { 
                     $month_auto_id = $request->input('month_auto_id')[$i];
-                    $subs_amount = $request->input('subscription_amount')[$i];
-                    $bf_amount = $request->input('bf_amount')[$i];
-                    $insurance_amount = $request->input('insurance_amount')[$i];
+                    $subs_amount = 0;
+                    $bf_amount = 0;
+                    $insurance_amount = 0;
                     $entry_date = $request->input('entry_date')[$i];
                     $entry_status_month = date('Y-m-d',strtotime($entry_date));
                     $total_months = $request->input('total_months')[$i];
@@ -636,17 +637,17 @@ class MonthEndController extends Controller
                         
                         $total_months = $total_months=='' ? 0 : $total_months;
                         if($month_auto_id!=''){
-                            $monthend_data = [
-                                'ENTRYMODE' => 'S',
-                                'SUBSCRIPTION_AMOUNT' => $subs_amount,
-                                'TOTALSUBCRP_AMOUNT' => $subs_amount,
-                                'BF_AMOUNT' => $bf_amount,
-                                'TOTALBF_AMOUNT' => $bf_amount,
-                                'INSURANCE_AMOUNT' => $insurance_amount,
-                                'TOTALINSURANCE_AMOUNT' => $insurance_amount,
-                                'TOTAL_MONTHS' => $total_months,
-                            ];
-                            $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $entry_status_month)->where('Id', '=', $month_auto_id)->update($monthend_data);
+                            // $monthend_data = [
+                            //     'ENTRYMODE' => 'S',
+                            //     'SUBSCRIPTION_AMOUNT' => $subs_amount,
+                            //     'TOTALSUBCRP_AMOUNT' => $subs_amount,
+                            //     'BF_AMOUNT' => $bf_amount,
+                            //     'TOTALBF_AMOUNT' => $bf_amount,
+                            //     'INSURANCE_AMOUNT' => $insurance_amount,
+                            //     'TOTALINSURANCE_AMOUNT' => $insurance_amount,
+                            //     'TOTAL_MONTHS' => $total_months,
+                            // ];
+                            // $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $entry_status_month)->where('Id', '=', $month_auto_id)->update($monthend_data);
                         }else{
                             $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $entry_status_month)->where('MEMBER_CODE', '=', $member_id)->count();
 
