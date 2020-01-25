@@ -449,8 +449,14 @@
 								{{ CommonHelper::get_member_match_name(4) }}
 								</br>
 								&nbsp;&nbsp;<span class="bold">From Union: <span id="registered_bank_name" class="bold"></span></span>
+								<label>
+									&nbsp;&nbsp;
+									<input name="bankverify" id="bankverify" onClick="return checkBankVerify()" type="checkbox" value="1" />
+									<span>is it correct?</span>
+								</label>
 								</br>
 								&nbsp;&nbsp;<span class="bold">From Bank: <span id="uploaded_bank_name" class="bold"></span></span>
+								
 								<input type="text" name="registered_bank_id" class="hide" id="registered_bank_id" value="" />
 								<input type="text" name="uploaded_bank_id" class="hide" id="uploaded_bank_id" value="" />
 								<a title='Member Transfer' id="memebr_tansfer_link" class='btn-sm-popup waves-effect waves-light yellow darken-3' href=''>Member Transfer</a>
@@ -995,6 +1001,14 @@ function SubmitAllVerication(){
 			location.reload();
 		}
 	});
+}
+
+function checkBankVerify(){
+	if($("#bankverify").prop("checked") == true){
+		$("#bank_approve").prop("checked",true);
+	}else{
+		$("#bank_approve").prop("checked",false);
+	}
 }
 
 </script>

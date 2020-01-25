@@ -1460,7 +1460,7 @@ class SubscriptionController extends CommonController
 			if(isset($company_id) && $company_id!=''){
 				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
 			}
-			$members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="'.$member_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
+			$members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="'.$member_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
             $data['member'] = $members_data;
             $data['status_type'] = 1;
             $data['status'] = $member_status;
@@ -1594,8 +1594,44 @@ class SubscriptionController extends CommonController
 					if($registered_bank_id==$uploaded_bank_id){
 						$approval_status= 1;
 					}else{
-						$approval_masg= "Bank can't verify, both banks are differenet";
-						$approval_status= 0;
+                        $bankverify = $request->input('bankverify');
+                        $bankverify= isset($bankverify) ? 1 : 0;
+                        $approval_masg= "Bank can't verify, both banks are differenet";
+                        $approval_status= 0;
+
+                        $subs_data = DB::table("mon_sub_member as mm")->select('ms.Date','ms.id as month_auto_id')
+							->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+							->where('mm.id','=',$sub_member_id)
+                            ->first();
+                        $subs_date = $subs_data->Date;
+                        $month_auto_id = $subs_data->month_auto_id;
+                        if($bankverify==1){
+                            $sub_bank_id = DB::table("mon_sub_company as mc")->select('mc.id')
+							->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                            ->where('ms.Date','=',$subs_date)
+                            ->where('mc.CompanyCode','=',$registered_bank_id)
+                            ->pluck('mc.id')->first();
+
+                            if($sub_bank_id==''){
+                                $subscription_company = new MonthlySubscriptionCompany();
+                                $subscription_company->MonthlySubscriptionId = $month_auto_id;
+                                $subscription_company->CompanyCode = $registered_bank_id;
+                                $subscription_company->created_by = Auth::user()->id;
+                                $subscription_company->created_on = date('Y-m-d');
+                                $subscription_company->save();
+                                $sub_bank_id = $subscription_company->id;
+                            }
+
+                            DB::table('mon_sub_member')->where('id', '=', $sub_member_id)->update(['MonthlySubscriptionCompanyId' => $sub_bank_id, 'updated_by' => Auth::user()->id]);
+
+                            $approval_masg= "Bank Changed Succesfully";
+                            $approval_status= 1;
+                        }else{
+                            $approval_masg= "Bank can't verify, both banks are differenet";
+                            $approval_status= 0;
+                        }
+						
 					}
 				}else{
 					//$approval_masg= 'Please check anything to update';
