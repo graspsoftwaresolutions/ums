@@ -397,7 +397,7 @@ class SubscriptionController extends CommonController
                         //DB::enableQueryLog();
                         $savedata = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId',$company_auto_id)
                         ->where('NRIC',$nric)->update($updata);
-                        $upstatus=0;
+                        //$upstatus=0;
                     }
 					
 					$company_code = CacheMembers::getcompanyidOfsubscribeCompanyid($subscription->MonthlySubscriptionCompanyId);
@@ -563,7 +563,7 @@ class SubscriptionController extends CommonController
 												'MEMBERTYPE_CODE' => $memberdata[0]->designation_id,
 												'ENTRYMODE' => 'S',
 												//'DEFAULTINGMONTHS' => 0,
-												'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
+												'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE-1 : 0,
 												'TOTALMONTHSPAID' => $new_total_months_paid,
                                                 'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
 												'BFDUE' => 0,
@@ -589,16 +589,16 @@ class SubscriptionController extends CommonController
 						}else{
 							DB::table($this->membermonthendstatus_table)->insert($monthend_data);
 						}
-						$payment_data = [
-							'last_paid_date' => $cur_date,
-							'totpaid_months' => $new_total_months_paid,
-                            'totcontribution_months' => $new_contribution,
-                            'accbf_amount' => $new_acc_bf,
-                            'accsub_amount' => $new_acc_subscription,
-                            'accins_amount' => $new_acc_insurance,
-							'updated_by' => Auth::user()->id,
-						];
-						DB::table('member_payments')->where('member_id', $member_code)->update($payment_data);
+						// $payment_data = [
+						// 	'last_paid_date' => $cur_date,
+						// 	'totpaid_months' => $new_total_months_paid,
+                        //     'totcontribution_months' => $new_contribution,
+                        //     'accbf_amount' => $new_acc_bf,
+                        //     'accsub_amount' => $new_acc_subscription,
+                        //     'accins_amount' => $new_acc_insurance,
+						// 	'updated_by' => Auth::user()->id,
+						// ];
+						// DB::table('member_payments')->where('member_id', $member_code)->update($payment_data);
 						
 					}
                 }
@@ -1472,7 +1472,7 @@ class SubscriptionController extends CommonController
 				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
 			}
 			
-           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status as approval_status FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
 
            $total_members_data = DB::select(DB::raw('SELECT member.id FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') AND ( m.approval_status = 0 OR m.approval_status  IS NULL )'));
            
@@ -1491,7 +1491,7 @@ class SubscriptionController extends CommonController
 			if(isset($company_id) && $company_id!=''){
 				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
 			}
-           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="2" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
+           $members_data = DB::select(DB::raw('SELECT member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, mm.mon_sub_member_id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status as approval_status FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="2" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
 		   
            $data['member'] = $members_data;
            $data['status_type'] = 3;
@@ -1503,7 +1503,7 @@ class SubscriptionController extends CommonController
 			if(isset($company_id) && $company_id!=''){
 				$cond =" m.MonthlySubscriptionCompanyId = '$company_id'";
 			}
-			$members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
+			$members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status as approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
            $data['member'] = $members_data;
            $data['status_type'] = 4;
            $data['status'] = 0;
@@ -1704,7 +1704,7 @@ class SubscriptionController extends CommonController
                                 'MEMBERTYPE_CODE' => $memberdata->designation_id,
                                 'ENTRYMODE' => 'S',
                                 //'DEFAULTINGMONTHS' => 0,
-                                'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
+                                'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE-1 : 0,
                                 'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
                                 'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
                                 'BFDUE' => 0,
@@ -1738,16 +1738,16 @@ class SubscriptionController extends CommonController
 			}else{
 				DB::table($this->membermonthendstatus_table)->insert($monthend_data);
 			}
-			$payment_data = [
-				'last_paid_date' => $cur_date,
-                'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
-                'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
-                'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
-                'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
-                'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
-				'updated_by' => Auth::user()->id,
-			];
-			DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+			// $payment_data = [
+			// 	'last_paid_date' => $cur_date,
+            //     'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+            //     'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+            //     'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
+            //     'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
+            //     'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+			// 	'updated_by' => Auth::user()->id,
+			// ];
+			// DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
 		}
         Artisan::call('cache:clear');
 		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_id, 'member_status' => $member_status, 'approval_status' => $total_approval_status, 'member_match' => $member_match];

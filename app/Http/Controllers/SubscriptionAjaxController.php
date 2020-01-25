@@ -736,8 +736,8 @@ class SubscriptionAjaxController extends CommonController
 
                 $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
                 
-                $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
-                $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
+                // $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                // $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
                 $nestedData['options'] = $actions;
                 $data[] = $nestedData;
 			}
@@ -848,7 +848,7 @@ class SubscriptionAjaxController extends CommonController
 		$members_data = [];
 		if($filter_date!=""){
 			
-			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric'))
+			$members_qry =  DB::table('mon_sub_member as m')->select(DB::raw('member.name as member_name, ifnull(member.member_number,"") as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,ifnull(s.status_name,"") as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status as approval_status'))
 							->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
 							->leftjoin('mon_sub_member_match as mm','mm.mon_sub_member_id','=','m.id')
 							->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
@@ -900,7 +900,8 @@ class SubscriptionAjaxController extends CommonController
             }
             $enc_member = Crypt::encrypt($member->memberid);
             $data['member'][$mkey]['enc_member'] = $enc_member;
-            $data['member'][$mkey]['approval_status'] = CommonHelper::get_overall_approval_status($member->sub_member_id);
+            $data['member'][$mkey]['approval_status'] = $member->approval_status;
+           // $data['member'][$mkey]['approval_status'] = CommonHelper::get_overall_approval_status($member->sub_member_id);
             $data['member'][$mkey]['due_months'] = CommonHelper::get_duemonths_monthend($member->memberid,$filter_date);
         }
         
@@ -1026,7 +1027,7 @@ class SubscriptionAjaxController extends CommonController
                 //DB::enableQueryLog();
 				//if($approval_status==1){
 					if($bulknameverify==1){
-						DB::table('mon_sub_member')->where('id', '=', $sub_member_id)->update(['Name' =>  CommonHelper::getmemberName($memberid)]);
+						DB::table('mon_sub_member')->where('id', '=', $submemberid)->update(['Name' =>  CommonHelper::getmemberName($memberid)]);
 					}else{
 						
 						DB::table('membership')->where('id', '=', $memberid)->update(['name' => $uploaded_member_name]);
@@ -1093,7 +1094,7 @@ class SubscriptionAjaxController extends CommonController
                 // ->orderBY('ms.StatusMonth','desc')
                 // ->first();
 
-                $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE')
+                $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE','ms.duebf_amount as BFDUE')
                 ->where('ms.member_id','=',$member_id)
                 ->first();
 
@@ -1121,10 +1122,10 @@ class SubscriptionAjaxController extends CommonController
                         'MEMBERTYPE_CODE' => $memberdata->designation_id,
                         'ENTRYMODE' => 'S',
                         //'DEFAULTINGMONTHS' => 0,
-                        'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
+                        'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE-1 : 0,
                         'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
-                        'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE : 0,
-                        'BFDUE' => 0,
+                        'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE-$m_subs_amt : 0,
+                        'BFDUE' => !empty($last_subscription_res) ? $last_subscription_res->BFDUE-$this->bf_amount : 0,
                         'ACCSUBSCRIPTION' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
                         'ACCBF' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
                         'ACCINSURANCE' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
@@ -1139,7 +1140,7 @@ class SubscriptionAjaxController extends CommonController
                         'INSURANCE_AMOUNT' => $this->ins_amount,
                         'TOTALINSURANCE_AMOUNT' => $this->ins_amount,
                         'TOTALMONTHSCONTRIBUTION' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
-                        'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE : 0,
+                        'INSURANCEDUE' => !empty($last_subscription_res) ? $last_subscription_res->INSURANCEDUE-$this->ins_amount : 0,
                         //'CURRENT_YDTINSURANCE' => 0,
                     ];
 
@@ -1158,16 +1159,16 @@ class SubscriptionAjaxController extends CommonController
                         Log::channel('approvallog')->info('insert approval log: '.$member_id.'&date:'.$cur_date.'&count:'.$mont_count);
                         DB::table($this->membermonthendstatus_table)->insert($monthend_data);
                     }
-                    $payment_data = [
-                        'last_paid_date' => $cur_date,
-                        'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
-                        'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
-                        'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
-                        'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
-                        'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
-                        'updated_by' => Auth::user()->id,
-                    ];
-                    DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
+                    // $payment_data = [
+                    //     'last_paid_date' => $cur_date,
+                    //     'totpaid_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
+                    //     'totcontribution_months' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSCONTRIBUTION+1 : 1,
+                    //     'accbf_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCBF+$this->bf_amount : $this->bf_amount,
+                    //     'accsub_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCSUBSCRIPTION+$m_subs_amt : $m_subs_amt,
+                    //     'accins_amount' => !empty($last_subscription_res) ? $last_subscription_res->ACCINSURANCE+$this->ins_amount : $this->ins_amount,
+                    //     'updated_by' => Auth::user()->id,
+                    // ];
+                    // DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
                }
                
             }

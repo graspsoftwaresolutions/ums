@@ -293,7 +293,8 @@
 						@foreach($data['member'] as  $key => $member)
 							@php
 								//dd($member);
-								$approval_status = CommonHelper::get_overall_approval_status($member->sub_member_id);
+								$approval_status = $member->approval_status;
+								//$approval_status = CommonHelper::get_overall_approval_status($member->sub_member_id);
 								$duemonths = $member->memberid!="" ? CommonHelper::get_duemonths_monthend($member->memberid, $data['filter_date']) : '';
 								//dd($duemonths );
 								
