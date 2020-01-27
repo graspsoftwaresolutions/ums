@@ -44,7 +44,9 @@
         white-space: unset !important;
         vertical-align: top;
     }
-
+    .btn, .btn-large, .btn-small {
+	    margin: 2px !important;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -182,6 +184,8 @@
                                         <th width="30%">{{__('Member Name') }}</th>
                                         <th width="10%">{{__('Member Number') }}</th>
                                         <th width="10%">{{__('DOJ') }}</th>
+                                        <th width="20%">{{__('Bank') }}</th>
+                                    	<th width="20%">{{__('Bank Branch') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
 
                                         <th> {{__('Action') }}</th>
@@ -293,7 +297,12 @@ $(document).ready(function() {
             {
                 "data": "doj"
             },
-
+            {
+                "data": "company"
+            },
+            {
+                "data": "branch"
+            },
             {
                 "data": "status"
             },

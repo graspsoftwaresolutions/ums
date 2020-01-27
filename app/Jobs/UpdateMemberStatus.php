@@ -23,6 +23,7 @@ class UpdateMemberStatus implements ShouldQueue
     protected $sub_id;
     protected $company_id;
     protected $subs_date;
+   
     /**
      * Create a new job instance.
      *
@@ -100,11 +101,18 @@ class UpdateMemberStatus implements ShouldQueue
                         Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=2&fromstatus='.$member->status_id);
 
                         $updata = ['status_id' => 2,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
+                        $last_month = date('Y-m-01',strtotime($upload_date.' -1 Month'));
+                        $statuss = DB::table('membermonthendstatus')->where('StatusMonth', '>=', $last_month)->where('MEMBER_CODE', $member->id)->update(['STATUS_CODE'=>2]);
+
                         $savedata = Membership::where('id',$member->id)->where('status_id','!=',2)->update($updata);
                     }else if ($diff_in_months_one>=4 && $diff_in_months>=13 && $membercount==0){
                         Log::channel('customlog')->info('status changed for memberid: '.$member->id.'&status=3&fromstatus='.$member->status_id);
                         $updata = ['status_id' => 3,'updated_at' => date('Y-m-d h:i:s'), 'updated_by' => 11];
                         $savedata = Membership::where('id',$member->id)->where('status_id','!=',3)->update($updata);
+
+                        $last_month = date('Y-m-01',strtotime($upload_date.' -1 Month'));
+                        $statuss = DB::table('membermonthendstatus')->where('StatusMonth', '>=', $last_month)->where('MEMBER_CODE', $member->id)->update(['STATUS_CODE'=>3]);
+
                     }
                 }
             }

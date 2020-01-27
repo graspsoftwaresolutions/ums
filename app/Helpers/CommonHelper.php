@@ -2712,4 +2712,11 @@ class CommonHelper
         // }   
         return $subscriptions;
     }
+
+    public static function getBranchCompany($branchid){
+        $company_data = DB::table("company_branch as cb")->select('cb.branch_name as branch_name','c.company_name as company_name')
+                        ->leftjoin('company as c','cb.company_id','=','c.id')->where('cb.id','=',$branchid)->first();
+        
+        return $company_data;
+    }
 }

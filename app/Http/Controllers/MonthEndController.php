@@ -164,7 +164,11 @@ class MonthEndController extends Controller
         $data['from_date'] = date('2019-01-01');
         $data['to_date'] = date('Y-m-d');
         $data['due_month'] = 0;
-        $data['members_list'] = DB::table('membership as m')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
+        $data['company_id'] = '';
+        $data['branch_id'] = '';
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        
+        $data['members_list'] = DB::table('membership as m')->select('id','name','doj','status_id','branch_id','member_number')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
         return view('subscription.history_list')->with('data',$data);  
     }
 
@@ -313,11 +317,28 @@ class MonthEndController extends Controller
         $from_date = $request->input('from_date');
         $to_date = $request->input('to_date');
         $due_month = $request->input('due_month');
+
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
        // date('Y-m-d',strtotime($to_date));
         $data['from_date'] = date('Y-m-d',strtotime($from_date));
         $data['to_date'] = date('Y-m-d',strtotime($to_date));
         $data['due_month'] = $due_month;
-        $data['members_list'] = DB::table('membership as m')->where('m.doj','>=',$data['from_date'])->where('m.doj','<=',$data['to_date'])->orderBY('m.doj','asc')->get();
+        $data['company_id'] = $company_id;
+        $data['branch_id'] = $branch_id;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+
+        if($branch_id!=''){
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id');
+            $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+        }else{
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
+            $member_qry = $member_qry->where('cb.company_id','=',$company_id);
+            
+        }
+
+        $data['members_list'] = $member_qry->where('m.doj','>=',$data['from_date'])->where('m.doj','<=',$data['to_date'])->orderBY('m.doj','asc')->get();
         return view('subscription.history_list')->with('data',$data);  
         //return $request->all();
     //     $autoid = Crypt::decrypt($encid);
@@ -366,8 +387,10 @@ class MonthEndController extends Controller
             0 => 'name', 
             1 => 'member_number', 
             2 => 'doj',
-            3 => 'status_id',
-            4 => 'id',
+            3 => 'branch_id',
+            4 => 'branch_id',
+            5 => 'status_id',
+            6 => 'id',
         );
 
         $totalDataqry = DB::table('membership as m')
@@ -393,7 +416,7 @@ class MonthEndController extends Controller
         {            
             if( $limit == -1){
                 
-                $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj')
+                $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
                 ->where('m.doj','>=',$from_date)
                 ->where('m.doj','<=',$to_date);
                 if($status_id!=''){
@@ -404,7 +427,7 @@ class MonthEndController extends Controller
                 ->where('m.status','=','1')
                 ->get()->toArray();
             }else{
-                $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj')
+                $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
                 ->where('m.doj','>=',$from_date)
                 ->where('m.doj','<=',$to_date);
                 if($status_id!=''){
@@ -421,7 +444,7 @@ class MonthEndController extends Controller
         else {
         $search = $request->input('search.value'); 
         if( $limit == -1){
-            $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj')
+            $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
                     ->orWhere('m.name', 'LIKE',"%{$search}%")
                     ->orWhere('m.member_number', 'LIKE',"%{$search}%")
                     ->where('m.doj','>=',$from_date)
@@ -433,7 +456,7 @@ class MonthEndController extends Controller
                     ->orderBy($order,$dir)
                     ->get()->toArray();
         }else{
-            $membersqry    =  DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj')
+            $membersqry    =  DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
                         ->orWhere('m.name', 'LIKE',"%{$search}%")
                         ->orWhere('m.member_number', 'LIKE',"%{$search}%")
                         ->where('m.doj','>=',$from_date)
@@ -468,11 +491,15 @@ class MonthEndController extends Controller
             foreach ($members as $member)
             {
                 $statusdate = date('Y-m-01',strtotime($member->doj));
+
+                $branch_data = CommonHelper::getBranchCompany($member->branch_id);
                 
                 
                 $nestedData['id'] = $member->id;
                 $nestedData['name'] = $member->name;
                 $nestedData['member_number'] = $member->member_number;
+                $nestedData['company'] = $branch_data->company_name;
+                $nestedData['branch'] = $branch_data->branch_name;
                 $enc_id = Crypt::encrypt($member->id);
                 $nestedData['doj'] = date('d/M/Y',strtotime($member->doj));
                 $nestedData['status'] = CommonHelper::get_member_status_name($member->status_id);
@@ -558,10 +585,10 @@ class MonthEndController extends Controller
        
       
         if($branch_id!=''){
-            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id');
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id');
             $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
         }else{
-            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id')
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id')
             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
             $member_qry = $member_qry->where('cb.company_id','=',$company_id);
             

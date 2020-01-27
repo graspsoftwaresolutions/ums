@@ -44,6 +44,9 @@
         white-space: unset !important;
         vertical-align: top;
     }
+    .btn, .btn-large, .btn-small {
+	    margin: 2px !important;
+	}
 
 </style>
 @endsection
@@ -82,6 +85,38 @@
 			</div>   
 		</div>
 	</div>
+	@php
+		
+		$userid = Auth::user()->id;
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+		$companylist = [];
+		$branchlist = [];
+		$companyid = '';
+		$branchid = '';
+		$unionbranchid='';
+		if($user_role =='union'){
+			$companylist = $data['company_view'];
+		}
+		else if($user_role =='union-branch'){
+			$unionbranchid = CommonHelper::getUnionBranchID($userid);
+			$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+		} 
+		else if($user_role =='company'){
+			$branchid = CommonHelper::getCompanyBranchID($userid);
+			$companyid = CommonHelper::getCompanyID($userid);
+			$companylist = CommonHelper::getCompanyList($companyid);
+			$branchlist = CommonHelper::getCompanyBranchList($companyid);
+		}
+		else if($user_role =='company-branch'){
+			$branchid = CommonHelper::getCompanyBranchID($userid);
+			$companyid = CommonHelper::getCompanyID($userid);
+			$companylist = CommonHelper::getCompanyList($companyid);
+			$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+		} 
+		//dd($branch_data);
+
+	@endphp
 	<div class="row">
 		<div class="col s12">
 			<div class="container">
@@ -118,18 +153,44 @@
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/history-list') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
+											<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
+												<label>{{__('Company Name') }}</label>
+												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+													<option value="">{{__('Select Company') }}</option>
+													@foreach($companylist as $value)
+													<option value="{{$value->id}}">{{$value->company_name}}</option>
+													@endforeach
+												</select>
+												<div class="input-field">
+													<div class="errorTxt22"></div>
+												</div>
+											</div>
 											
-											<div class="col s12 m6 l3">
+											
+											<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+												<label>{{__('Company Branch Name') }}</label>
+												<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+													<option value="">{{__('Select Branch') }}</option>
+													@foreach($branchlist as $branch)
+													<option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+													@endforeach
+												</select>
+												<div class="input-field">
+													<div class="errorTxt23"></div>
+												</div>
+											</div>
+
+											<div class="col s12 m6 l2">
 												<label for="from_date">{{__('From Date')}}</label>
 												<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['from_date']))}}" name="from_date">
 											</div>
 
-											<div class="col s12 m6 l3">
+											<div class="col s12 m6 l2">
 												<label for="to_date">{{__('To Date')}}</label>
 												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
 											</div>
 
-											<div class="col s12 m6 l3">
+											<div class="col s12 m6 l2">
 												<label>{{__('Due Month') }}</label>
 												<select name="due_month" id="due_month" class="error browser-default selectpicker" data-error=".errorTxt24" >
 													<option value="">{{__('Select Month') }}</option>
@@ -140,9 +201,9 @@
 												</select>
 											</div>
 											
-											<div class="col m3 s12 " style="padding-top:5px;">
+											<div class="col m12 s12 " style="padding-top:5px;">
 												</br>
-												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
+												<button id="submit-upload" class="mb-6 btn waves-effect pull-right waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
 											</div>
 											
@@ -170,18 +231,22 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Unpaid List') }}</h4>
+
+                    <h4 class="card-title">{{__('Unpaid List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id']!='')[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
                             <table id="page-length-option" class="display" width="100%">
                                 <thead>
                                     <tr>
-                                    	<th width="5%">{{__('S.No') }}</th>
-                                        <th width="25%">{{__('Member Name') }}</th>
-                                        <th width="15%">{{__('Member Number') }}</th>
-                                        <th width="15%">{{__('DOJ') }}</th>
-                                        <th width="10%">{{__('Status') }}</th>
+                                    	<th width="3%">{{__('S.No') }}</th>
+                                    	
+                                        <th width="15%">{{__('Member Name') }}</th>
+                                        <th width="10%">{{__('Member Number') }}</th>
+                                        <th width="20%">{{__('Bank') }}</th>
+                                    	<th width="20%">{{__('Bank Branch') }}</th>
+                                        <th width="10%">{{__('DOJ') }}</th>
+                                        <th width="5%">{{__('Status') }}</th>
 
                                         <th> {{__('Action') }}</th>
                                     </tr>
@@ -189,22 +254,30 @@
                                 <tbody>
                                 	@php
 										$slno = 1;
+
 									@endphp
                                 	@foreach($data['members_list'] as $members)
                                 		@php
+                                			//dd('hi');
+                                			//dd($members);
                                 			if($data['due_month']==0){
                                 				$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($members->doj)));
 	                                		}else{
 	                                			$next_month = date('Y-m-01',strtotime($members->doj.' +1 Month'));
 	                                			$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($next_month)));
 	                                		}
-                                			
+
+	                                		$branch_data = CommonHelper::getBranchCompany($members->branch_id);
+
                                 		@endphp
                                 		@if($monthend_count==0)
                                 		<tr>
                                 			<td>{{ $slno }}</td>
+                                			
                                 			<td>{{ $members->name }}</td>
                                 			<td>{{ $members->member_number }}</td>
+                                			<td>{{ $branch_data->company_name }}</td>
+                                			<td>{{ $branch_data->branch_name }}</td>
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
                                 			<td>
@@ -227,7 +300,26 @@
 	</div>
 	
 </div>
+@php	
+	$ajaxcompanyid = '';
+	$ajaxbranchid = '';
+	$ajaxunionbranchid = '';
+	if(!empty(Auth::user())){
+		$userid = Auth::user()->id;
+		
+		if($user_role =='union'){
 
+		}else if($user_role =='union-branch'){
+			$ajaxunionbranchid = CommonHelper::getUnionBranchID($userid);
+		}else if($user_role =='company'){
+			$ajaxcompanyid = CommonHelper::getCompanyID($userid);
+		}else if($user_role =='company-branch'){
+			$ajaxbranchid = CommonHelper::getCompanyBranchID($userid);
+		}else{
+
+		}
+	}
+@endphp
 @endsection
 @section('footerSection')
 <!--script src="{{ asset('public/assets/js/jquery.min.js') }}"></script-->
@@ -273,7 +365,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-pdf-o"></i>',
 						   footer: true,
 						   exportOptions: {
-								columns: [0,1,2,3,4]
+								columns: [0,1,2,3,4,5,6]
 			                },
 			                titleAttr: 'pdf',
 							title : 'Unpaid List'
@@ -283,7 +375,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-excel-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4]
+								columns: [0,1,2,3,4,5,6]
 							},
 			                title : 'Unpaid List',
 			                titleAttr: 'excel',
@@ -293,12 +385,43 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-files-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4]
+								columns: [0,1,2,3,4,5,6]
 							},
 			                title : 'Unpaid List',
 			                titleAttr: 'print',
 					   }  
 					],
+		});
+	$('#company_id').change(function(){
+		   var CompanyID = $(this).val();
+		   var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
+		   var ajaxbranchid = '{{ $ajaxbranchid }}';
+		   var additional_cond;
+		   if(CompanyID!='' && CompanyID!='undefined')
+		   {
+			 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+			 $.ajax({
+				type: "GET",
+				dataType: "json",
+				url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
+				success:function(res){
+					if(res)
+					{
+						$('#branch_id').empty();
+						$("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+						$.each(res,function(key,entry){
+							$('#branch_id').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+						});
+					}else{
+						$('#branch_id').empty();
+					}
+				}
+			 });
+		   }else{
+			   $('#branch_id').empty();
+			   $("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+		   }
+		  
 		});
     // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
   //    $('#page-length-option').DataTable({

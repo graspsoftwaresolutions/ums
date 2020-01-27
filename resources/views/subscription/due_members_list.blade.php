@@ -32,6 +32,9 @@
         border: none !important;
         border-top: 1px solid lightgrey !important;
     }
+    .btn, .btn-large, .btn-small {
+	    margin: 2px !important;
+	}
    /* .btn-sm{
         padding: 0px 7px;
         font-size: 8px;
@@ -247,8 +250,10 @@
                                 <thead>
                                     <tr>
 										<th width="5%">{{__('S.No') }}</th>
-                                        <th width="25%">{{__('Member Name') }}</th>
+                                        <th width="10%">{{__('Member Name') }}</th>
                                         <th width="15%">{{__('Member Number') }}</th>
+                                        <th width="15%">{{__('Bank') }}</th>
+                                    	<th width="15%">{{__('Bank Branch') }}</th>
                                         <th width="10%">{{__('DOJ') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
                                         <th width="10%">{{__('Dues') }}</th>
@@ -264,12 +269,15 @@
                                 		@php
                                 			$due_count = CommonHelper::getMonthendDueCount($members->id);
                                 			$due_def = $data['due_months'] =='' ? 0 : $data['due_months'];
+                                			$branch_data = CommonHelper::getBranchCompany($members->branch_id);
                                 		@endphp
                                 		@if(($data['due_months'] =='' && $due_count>0) || ($data['due_months']<16 && $data['due_months']>0 && $due_count==$due_def) || ($data['due_months']==16 && $due_count>15) )
                                 		<tr>
                                 			<td>{{ $slno }}</td>
                                 			<td>{{ $members->name }}</td>
                                 			<td>{{ $members->member_number }}</td>
+                                			<td>{{ $branch_data->company_name }}</td>
+                                			<td>{{ $branch_data->branch_name }}</td>
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
                                 			<td>{{ $due_count }}</td>
