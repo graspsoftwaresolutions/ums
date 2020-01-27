@@ -1122,7 +1122,7 @@ class SubscriptionAjaxController extends CommonController
                         'MEMBERTYPE_CODE' => $memberdata->designation_id,
                         'ENTRYMODE' => 'S',
                         //'DEFAULTINGMONTHS' => 0,
-                        'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE-1 : 0,
+                        'TOTALMONTHSDUE' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSDUE : 0,
                         'TOTALMONTHSPAID' => !empty($last_subscription_res) ? $last_subscription_res->TOTALMONTHSPAID+1 : 1,
                         'SUBSCRIPTIONDUE' => !empty($last_subscription_res) ? $last_subscription_res->SUBSCRIPTIONDUE-$m_subs_amt : 0,
                         'BFDUE' => !empty($last_subscription_res) ? $last_subscription_res->BFDUE-$this->bf_amount : 0,
