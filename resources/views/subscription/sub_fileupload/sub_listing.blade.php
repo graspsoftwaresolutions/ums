@@ -292,9 +292,9 @@
 								@endphp 
 								@foreach($data['approval_status'] as  $key => $stat)
 								@php
-									$match_members_count = CommonHelper::statusSubsMatchCount($stat->id, $user_role, $user_id);
-									$match_approval_members_count = CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,1);
-									$match_pending_members_count = CommonHelper::statusSubsMatchApprovalCount($stat->id, $user_role, $user_id,0);
+									$match_members_count = CommonHelper::statusSubsMatchNotDojCount($stat->id, $user_role, $user_id);
+									$match_approval_members_count = CommonHelper::statusSubsMatchNotApprovalCount($stat->id, $user_role, $user_id,1);
+									$match_pending_members_count = CommonHelper::statusSubsMatchNotApprovalCount($stat->id, $user_role, $user_id,0);
 								@endphp
 								<tr class="monthly-approval-status" id="monthly_approval_status_{{ $stat->id }}" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
 									<td>{{ $key+1 }} </td>

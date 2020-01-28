@@ -270,7 +270,7 @@
 						}
 						elseif($last_str==$doj_str)
 						{
-							if($fifth_paid_status==$fourth_paid_status)
+							if($last_paid_status==$this_paid)
 							{
 								$variedamt = 0;
 							}else{
@@ -278,7 +278,7 @@
 							}
 							
 						}elseif($second_str==$doj_str){
-							if($fifth_paid_status==$fourth_paid_status)
+							if($second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
 							{
 								$variedamt = 0;
 							}else{
@@ -286,21 +286,21 @@
 							}
 							
 						}elseif($third_str==$doj_str){
-							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status)
+							if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
 							{
 								$variedamt = 0;
 							}else{
 								$variedamt = 1;
 							}
 						}elseif($fourth_str==$doj_str){
-							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status)
+							if($fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
 							{
 								$variedamt = 0;
 							}else{
 								$variedamt = 1;
 							}
 						}elseif($fifth_str==$doj_str){
-							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status)
+							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
 							{
 								$variedamt = 0;
 							}else{
@@ -313,23 +313,34 @@
 					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){	
 						$variedamt = 1;
 
-						if($last_str==$doj_str)
+						if($this_str==$doj_str)
 						{
-							if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-						}elseif($second_str==$doj_str){
-							if($third_paid_status==$second_paid_status)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-						}elseif($third_str==$doj_str){
 							$variedamt = 0;
+						}
+						elseif($last_str==$doj_str)
+						{
+							if($last_paid_status==$this_paid)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+							
+						}elseif($second_str==$doj_str){
+							if($second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+							
+						}elseif($third_str==$doj_str){
+							if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
 						}
 					}
 				}

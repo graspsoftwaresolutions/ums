@@ -494,9 +494,9 @@ class SubscriptionAjaxController extends CommonController
 				$total_members_amount += $members_amount;
             }
             foreach($approval_status as $key => $value){
-				$match_members_count = CommonHelper::statusSubsMatchCount($value->id, $user_role, $user_id, $dateformat);
-				$match_approval_members_count = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
-				$match_pending_members_count = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
+				$match_members_count = CommonHelper::statusSubsMatchNotDojCount($value->id, $user_role, $user_id, $dateformat);
+				$match_approval_members_count = CommonHelper::statusSubsMatchNotApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
+				$match_pending_members_count = CommonHelper::statusSubsMatchNotApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
                 $approval_data['count'][$value->id] = $match_members_count;
                 $approval_data['approved'][$value->id] = $match_approval_members_count;
                 $approval_data['pending'][$value->id] = $match_pending_members_count;
