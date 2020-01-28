@@ -197,6 +197,7 @@
 													
 													<option @if($data['due_month']==0) selected @endif value="0">This month</option>
 													<option @if($data['due_month']==1) selected @endif value="1">Next month</option>
+													<option @if($data['due_month']==2) selected @endif value="2">Next month to till date</option>
 													
 												</select>
 											</div>
@@ -262,9 +263,12 @@
                                 			//dd($members);
                                 			if($data['due_month']==0){
                                 				$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($members->doj)));
-	                                		}else{
+	                                		}else if($data['due_month']==1){
 	                                			$next_month = date('Y-m-01',strtotime($members->doj.' +1 Month'));
 	                                			$monthend_count = CommonHelper::getMonthendCountByDoj($members->id,date('Y-m-01',strtotime($next_month)));
+	                                		}else{
+	                                			$next_month = date('Y-m-01',strtotime($members->doj.' +1 Month'));
+	                                			$monthend_count = CommonHelper::getMonthendCountNextDoj($members->id,date('Y-m-01',strtotime($next_month)));
 	                                		}
 
 	                                		$branch_data = CommonHelper::getBranchCompany($members->branch_id);
