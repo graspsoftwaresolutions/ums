@@ -220,12 +220,21 @@
 			@endphp
 			@foreach($company_members as $member)
 			@php
+				//dd($member);
 				$salary = $member->salary==Null ? 0 : $member->salary;
 				$total_subs = ($salary*1)/100;
 				$bf_amt = 3;
 				$ins_amt = 7;
 				$payable_subs = $total_subs;
 				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
+
+				$doj_str = date('Y-m-01',strtotime($member->doj));
+				$fifth_str = date('Y-m-01',strtotime($data['month_year_full'].' -5 Month'));
+				$fourth_str = date('Y-m-01',strtotime($data['month_year_full'].' -4 Month'));
+				$third_str = date('Y-m-01',strtotime($data['month_year_full'].' -3 Month'));
+				$second_str = date('Y-m-01',strtotime($data['month_year_full'].' -2 Month'));
+				$last_str = date('Y-m-01',strtotime($data['month_year_full'].' -1 Month'));
+				$this_str = date('Y-m-01',strtotime($data['month_year_full']));
 
 				if($data['variation']==6){
 					$fifth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')));
@@ -253,10 +262,61 @@
 				if($data['variation']==6){
 					if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){
 						$variedamt = 1;
+						if($last_str==$doj_str)
+						{
+							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+						}elseif($second_str==$doj_str){
+							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+						}elseif($third_str==$doj_str){
+							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+						}elseif($fourth_str==$doj_str){
+							if($fifth_paid_status==$fourth_paid_status)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+						}elseif($fifth_str==$doj_str){
+							$variedamt = 1;
+						}
 					}
 				}else{
 					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){	
 						$variedamt = 1;
+
+						if($last_str==$doj_str)
+						{
+							if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+						}elseif($second_str==$doj_str){
+							if($third_paid_status==$second_paid_status)
+							{
+								$variedamt = 0;
+							}else{
+								$variedamt = 1;
+							}
+						}elseif($third_str==$doj_str){
+							$variedamt = 1;
+						}
 					}
 				}
 
