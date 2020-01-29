@@ -55,6 +55,7 @@
 				<th  style="border : 1px solid #988989;" align="center">BANK </br>BRANCH</th>
 				<th  style="border : 1px solid #988989;" align="center">TYPE</th>
 				<th style="border : 1px solid #988989;" align="center">DOJ</th>
+				<th style="border: 1px solid #988989 !important;">AMOUNT</th>
 				<th  style="border : 1px solid #988989;" align="center">LAST PAID </br> DATE</th>
 			</tr>
 		</thead>
@@ -64,6 +65,9 @@
 				$sno = 1;
 			@endphp
 			@foreach($data['member_view'] as $member)
+				@php
+					$total_subs = $member->salary=='' ? 0 : ($member->salary*1)/100;
+				@endphp
 				<tr >
 					<td style=" border : 1px solid #988989;">{{ $sno }}</td>
 					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
@@ -74,6 +78,7 @@
 					<td  style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
 					<td style="border : 1px solid #988989;">{{ isset($member) ? $member->designation_name : ""}}</td>
 					<td style="border : 1px solid #988989;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
+					<td style="border: 1px solid #988989 !important;">{{  $total_subs }}</td>
 					
 					<td style="border : 1px solid #988989;">{{  $member->last_paid_date!="" ? date('d/M/Y',strtotime($member->last_paid_date)) : '' }}</td>
 					

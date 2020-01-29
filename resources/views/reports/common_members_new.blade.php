@@ -9,7 +9,7 @@
 				<td colspan="2" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="8" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -19,7 +19,7 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="7" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">NEW MEMBERS REPORT</span>
 				</td>
@@ -34,7 +34,7 @@
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
 				</td>
-				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="8" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -58,6 +58,7 @@
 				<th style="border: 1px solid #988989 !important;">DOJ</th>
 				<th  style="border: 1px solid #988989 !important;">LEVY</th>
 				<th style="border: 1px solid #988989 !important;">TDF</th>
+				<th style="border: 1px solid #988989 !important;">AMOUNT</th>
 				<th  style="border: 1px solid #988989 !important;">LAST PAID DATE</th>
 			</tr>
 		</thead>
@@ -70,6 +71,9 @@
 			
 			
 			@foreach($data['member_view'] as $member)
+				@php
+					$total_subs = $member->salary=='' ? 0 : ($member->salary*1)/100;
+				@endphp
 				<tr >
 					<td style="border: 1px solid #988989 !important; ">{{ $sno }}</td>
 					<td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
@@ -83,6 +87,7 @@
 					
 					<td style="border: 1px solid #988989 !important;">{{  $member->levy }}</td>
 					<td style="border: 1px solid #988989 !important;">{{  $member->tdf }}</td>
+					<td style="border: 1px solid #988989 !important;">{{  $total_subs }}</td>
 				
 					<td style="border: 1px solid #988989 !important;">{{  $member->last_paid_date!="" ? date('d/M/Y',strtotime($member->last_paid_date)) : '' }}</td>
 					
@@ -95,7 +100,7 @@
 			<!-- //@if(!empty($data['member_view']))
 			//@endif -->
 			<tr>
-				<td colspan="12" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td colspan="13" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		

@@ -178,7 +178,7 @@
 				<td colspan="2" rowspan="2" style="text-align:right">
 					<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="8" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -188,7 +188,7 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="7" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">{{$status_name}} MEMBERS REPORT</span>
 				</td>
@@ -204,7 +204,7 @@
 						</p>
 					@endif
 				</td>
-				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="8" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -231,6 +231,7 @@
                 <th style="border: 1px solid #988989 !important; ">{{__('DOJ')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('LEVY')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('TDF')}}</th>
+                 <th style="border: 1px solid #988989 !important;">AMOUNT</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('LAST PAID DATE')}}</th>
 			</tr>
 		</thead>
@@ -255,6 +256,7 @@
                     <td style="border: 1px solid #988989 !important;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->levy }}</td>	
                     <td style="border: 1px solid #988989 !important;">{{ $member->tdf }}</td>	
+                    <td style="border: 1px solid #988989 !important;">{{ $member->Amount }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->last_paid_date }}</td>
 					
 					
@@ -267,7 +269,7 @@
 			<!-- //@if(!empty($data['member_view']))
 			//@endif -->
 			<tr>
-				<td colspan="12" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td colspan="13" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		
