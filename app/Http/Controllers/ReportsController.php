@@ -3962,5 +3962,67 @@ class ReportsController extends Controller
         return Excel::download($s, $file_name.'.xlsx');
         
     }
+
+    public function MemberTransferReport(Request $request, $lang){
+        //return 1;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+
+        return view('reports.member_transfers')->with('data',$data);  
+
+    }
+
+    public function TransferReport(Request $request,$lang){
+        $data['data_limit']=$this->limit;
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id; 
+      
+        $unionbranch_name = '';
+        $fromdate = date('Y-m-01');
+        $todate = date('Y-m-t');
+       
+        $members = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number','m.new_ic')
+        ->leftjoin('membership as m','m.id','=','h.MemberCode')
+        ->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+		->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
+        ->where('h.transfer_date', '>=',"{$fromdate}")->where('h.transfer_date', '<=',"{$todate}")
+        ->get();
+       
+       
+        $data['member_view'] = $members;
+        $data['from_date']=$fromdate;
+        $data['to_date']=$todate;
+      
+        $data['member_auto_id'] = '';  
+        $data['from_member_no']='';
+        $data['to_member_no']='';
+        $data['member_search'] = '';
+       return view('reports.iframe_transfers_report')->with('data',$data);
+     
+    }
+
+    public function TransferFilterReport($lang,Request $request){
+       // $offset = $request->input('offset');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+
+        $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+        $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+
+        $members = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number','m.new_ic')
+        ->leftjoin('membership as m','m.id','=','h.MemberCode')
+        ->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+		->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
+        ->where('h.transfer_date', '>=',"{$fromdate}")->where('h.transfer_date', '<=',"{$todate}")
+        ->get();
+       
+       
+        $data['member_view'] = $members;
+        $data['from_date']=$fromdate;
+        $data['to_date']=$todate;
+        return view('reports.iframe_transfers_report')->with('data',$data);
+
+    }
 }
 

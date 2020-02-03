@@ -435,6 +435,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('new-member-history/{parameter}','MonthEndController@memberallHistory')->name('monthend.addhistory');
 	Route::post('add_new_rows/{parameter}','MonthEndController@saveMonthendRows')->name('monthend.updatehistoryrows');
+
+
+	Route::get('transfers_report','ReportsController@MemberTransferReport')->name('reports.transfers');
+	Route::get('iframe_transfers_report','ReportsController@TransferReport')->name('iframe.transfers');
+	Route::get('get-transfers-filter-report','ReportsController@TransferFilterReport')->name('more.transfers');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

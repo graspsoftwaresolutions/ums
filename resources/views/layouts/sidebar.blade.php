@@ -161,6 +161,7 @@
               @endif
               @endforeach
               <li id="member_status4_sidebar_li_id" class=""><a id="member_status4_sidebar_a_id" class="collapsible-body" href="{{ route('reports.resignmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Resigned Members</span></a></li>
+              <li id="member_transfers_sidebar_li_id" class=""><a id="member_transfers_sidebar_a_id" class="collapsible-body" href="{{ route('reports.transfers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Member Transfers</span></a></li>
               <li id="branch_advice_sidebar_li_id" class=""><a id="branch_advice_sidebar_a_id" class="collapsible-body" href="{{ route('reports.advice',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Advice</span></a></li>
               <li id="branch_status_sidebar_li_id" class=""><a id="branch_status_sidebar_a_id" class="collapsible-body" href="{{ route('reports.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Status</span></a></li>
               

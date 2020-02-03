@@ -2807,4 +2807,9 @@ class CommonHelper
     public static function getMonthendCountNextDoj($memberid,$date){
         return DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.StatusMonth','>=',$date)->where('ms.TOTAL_MONTHS','=',1)->count();
     }
+
+    public static function getBankCodeByBranch($branchid){
+        $bankcode = DB::table('company_branch as c')->select('com.short_code as companycode')->leftjoin('company as com','com.id','=','c.company_id')->where('c.id',$branchid)->pluck('companycode')->first();
+        return $bankcode;
+    }
 }
