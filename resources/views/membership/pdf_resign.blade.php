@@ -98,6 +98,14 @@
 				<td colspan="3">{{ CommonHelper::getircreason_byid($resign_data->reason_code) }}</td>
 			</tr>
 		</table>
+		<?php
+			$resdatetime = strtotime($resign_data->resignation_date);
+			$maydate = strtotime('2017-05-31');
+			$tilldate = date('d/M/Y',strtotime('2017-05-31'));
+			if($resdatetime<=$maydate){
+				$tilldate = date('d/M/Y',strtotime($resign_data->resignation_date));
+			}
+		?>
 		</br>
 		<table width="100%" class="payment-info" style="border: 2px dotted grey;border-left:none; dotted;border-right:none;">
 			<tr>
@@ -106,7 +114,7 @@
 				<td width="20%" align="center">TOTAL</td>
 			</tr>
 			<tr>
-				<td class="align-right"> @if($resign_data->months_contributed_till_may*3>0) PAID FROM {{ date('d/M/Y',strtotime($member_data->doj)) }} TO {{ date('d/M/Y',strtotime('2017-05-31')) }} @endif</td>
+				<td class="align-right"> @if($resign_data->months_contributed_till_may*3>0) PAID FROM {{ date('d/M/Y',strtotime($member_data->doj)) }} TO {{ $tilldate }} @endif</td>
 				<td class="align-right"></td>
 				<td class="align-right">{{ number_format($resign_data->amount,2,".",",") }}</td>
 			</tr>

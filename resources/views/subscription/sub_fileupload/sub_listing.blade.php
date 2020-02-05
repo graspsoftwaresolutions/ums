@@ -430,12 +430,12 @@
 								@endforeach
 							</tbody>
 							<tfoot>
-								<tr class="monthly-company-approval-status" id="monthly_company_approval_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+								<!-- <tr class="monthly-company-approval-status" id="monthly_company_approval_status_all" data-href="" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
 									<td id="company_approval_status_count_total">0</td>
 									<td id="company_approval_approved_count_total">0</td>
 									<td id="company_approval_pending_count_total">0</td>
-								</tr>
+								</tr> -->
 							</tfoot>
 						 </table>
 					</div>

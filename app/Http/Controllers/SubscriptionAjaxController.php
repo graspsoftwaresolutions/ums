@@ -69,6 +69,9 @@ class SubscriptionAjaxController extends CommonController
 		$companyid = $request->company_id;
         $status = $request->status;
         $month = $request->month;
+
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
         
         $sl=0;
 		$columns[$sl++] = 'mon_sub_member.Name';
@@ -226,7 +229,10 @@ class SubscriptionAjaxController extends CommonController
                 if($memberid!=''){
                     
                     $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
-                    $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+
+                    if($user_role=='union'){
+                        $actions .="<a style='float: left; margin-left: 10px;' title='Member Transfer'  class='' href='$member_transfer_link'><i class='material-icons' style='color:#FFC107'>transfer_within_a_station</i></a>";
+                    }
                     
                 }  
                 $nestedData['options'] = $actions;
@@ -339,6 +345,7 @@ class SubscriptionAjaxController extends CommonController
             0 => 's.Date', 
             1 => 'c.company_name',
             2 => 'sc.id',
+            3 => 'sc.id',
         );
 		
 		
@@ -346,6 +353,11 @@ class SubscriptionAjaxController extends CommonController
             $common_qry = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
                             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
                             ->leftjoin('company as c','c.id','=','sc.CompanyCode');
+
+            $common_qry_count = DB::table('mon_sub_company as sc')->select(DB::raw('count(*) as count'))
+                            ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+                            ->leftjoin('company as c','c.id','=','sc.CompanyCode');
+
         }else if($user_role =='union-branch'){
             $unionbranchid = CommonHelper::getUnionBranchID($userid);
             $common_qry = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
@@ -353,7 +365,13 @@ class SubscriptionAjaxController extends CommonController
                             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
                             ->leftjoin('company as c','c.id','=','sc.CompanyCode')
 							->where('cb.union_branch_id', '=' ,$unionbranchid)
-							->GroupBY('sc.id');
+                            ->GroupBY('sc.id');
+            $common_qry_count = DB::table('mon_sub_company as sc')->select(DB::raw('count(*) as count'))
+                    ->leftjoin('company_branch as cb', 'sc.CompanyCode' ,'=','cb.company_id')
+                    ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+                    ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+                    ->where('cb.union_branch_id', '=' ,$unionbranchid)
+                    ->GroupBY('sc.id');
         } 
         else if($user_role =='company'){
             $companyid = CommonHelper::getCompanyID($userid);
@@ -362,7 +380,10 @@ class SubscriptionAjaxController extends CommonController
                             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
                             ->leftjoin('company as c','c.id','=','sc.CompanyCode')
 							->where('cb.company_id', '=' ,$companyid)
-							->GroupBY('sc.id');
+                            ->GroupBY('sc.id');
+            $common_qry_count = DB::table('mon_sub_company as sc')->select(DB::raw('count(*) as count'))
+                            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+                            ->where('sc.CompanyCode', '=' ,$companyid);
         }
         else if($user_role =='company-branch'){
 			$common_qry = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
@@ -370,9 +391,15 @@ class SubscriptionAjaxController extends CommonController
                             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
                             ->leftjoin('company as c','c.id','=','sc.CompanyCode')
 							->where('cb.user_id', '=' ,$userid)
-							->GroupBY('sc.id');
+                            ->GroupBY('sc.id');
+             $common_qry_count = DB::table('mon_sub_company as sc')->select(DB::raw('count(*) as count'))
+                        ->leftjoin('company_branch as cb', 'sc.CompanyCode' ,'=','cb.company_id')
+                        ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+                        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+                        ->where('cb.user_id', '=' ,$userid)
+                        ->GroupBY('sc.id');
         } 
-        $totalData = $common_qry->count();
+        $totalData = $common_qry_count->count();
 
         $totalFiltered = $totalData; 
 
@@ -448,7 +475,9 @@ class SubscriptionAjaxController extends CommonController
                 $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
 				
                 $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
-                $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
+                $nestedData['company_name'] = $company->company_name;  
+               // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
+                $nestedData['count'] = '<a href="'.$editurl.'" class="new badge" title="View Members"><span class=" badge light-blue">'.$members_count.'</span></a>';
 				$data[] = $nestedData;
 			}
         }
@@ -486,8 +515,14 @@ class SubscriptionAjaxController extends CommonController
 			$total_match_approval_members_count = 0;
 			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
-				$members_count = CommonHelper::statusSubsMembersNotDojCount($value->id, $user_role, $user_id, $dateformat);
-				$members_amount = CommonHelper::statusMembersNotDojAmount($value->id, $user_role, $user_id, $dateformat);
+                if($user_role=='union' && $value->id>=3){
+                    $members_count = CommonHelper::statusSubsMembersNotDojActCount($value->id, $user_role, $user_id, $dateformat);
+				    $members_amount = CommonHelper::statusMembersNotDojActAmount($value->id, $user_role, $user_id, $dateformat);
+                }else{
+                    $members_count = CommonHelper::statusSubsMembersNotDojCount($value->id, $user_role, $user_id, $dateformat);
+				    $members_amount = CommonHelper::statusMembersNotDojAmount($value->id, $user_role, $user_id, $dateformat);
+                }
+				
                 $status_data['count'][$value->id] = $members_count;
                 $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
 				$total_members_count += $members_count;
@@ -500,9 +535,17 @@ class SubscriptionAjaxController extends CommonController
                     $match_approval_members_count = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
 			    	$match_pending_members_count = CommonHelper::statusSubsMatchApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
                 }else{
-                    $match_members_count = CommonHelper::statusSubsMatchNotDojCount($value->id, $user_role, $user_id, $dateformat);
-                    $match_approval_members_count = CommonHelper::statusSubsMatchNotApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
-			    	$match_pending_members_count = CommonHelper::statusSubsMatchNotApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
+                    if($user_role=='union'  && ($value->id == 6 || $value->id == 7)){
+                        $match_members_count = CommonHelper::statusSubsMatchNotDojActCount($value->id, $user_role, $user_id, $dateformat);
+                        $match_approval_members_count = CommonHelper::statusSubsMatchNotApprovalActCount($value->id, $user_role, $user_id,1, $dateformat);
+                        $match_pending_members_count = CommonHelper::statusSubsMatchNotApprovalActCount($value->id, $user_role, $user_id,0, $dateformat);
+                    }
+                    else{
+                        $match_members_count = CommonHelper::statusSubsMatchNotDojCount($value->id, $user_role, $user_id, $dateformat);
+                        $match_approval_members_count = CommonHelper::statusSubsMatchNotApprovalCount($value->id, $user_role, $user_id,1, $dateformat);
+                        $match_pending_members_count = CommonHelper::statusSubsMatchNotApprovalCount($value->id, $user_role, $user_id,0, $dateformat);
+                    }
+                    
                 }
 				
                 $approval_data['count'][$value->id] = $match_members_count;

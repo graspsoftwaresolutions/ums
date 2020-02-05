@@ -217,6 +217,12 @@ class SubscriptionController extends CommonController
             $approval_status = DB::table('mon_sub_match_table as mt')
                                     ->select('mt.id as id','mt.match_name as match_name')
                                     ->get();
+
+            $banktype = DB::table('mon_sub_company as mc')
+                                    ->select('mc.banktype')
+                                    ->where('id','=',$company_auto_id)
+                                    ->pluck('mc.banktype')
+                                    ->first();
             $approval_data = [];
             $total_members_count = 0;
             $total_members_amount = 0;
@@ -251,8 +257,16 @@ class SubscriptionController extends CommonController
 			$sundry_count = CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_auto_id,$full_date);
 			$sundry_amount = round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_auto_id,$full_date), 0);
 			$total_members_count += $sundry_count;
-			$total_members_amount += $sundry_amount;
-            $data =['status' =>1, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => number_format($sundry_amount,2,".",","), 'sundry_count' => $sundry_count, 'total_members_amount' => number_format($total_members_amount,2,".",","), 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => 'Data already uploaded for this company'];
+            $total_members_amount += $sundry_amount;
+
+            if($banktype==1){
+                $resstatus=2;
+                $message = 'Data already uploaded for this bank by bank';
+            }else{
+                $resstatus=1;
+                $message = 'Data already uploaded for this bank';
+            }
+            $data =['status' => $resstatus, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => number_format($sundry_amount,2,".",","), 'sundry_count' => $sundry_count, 'total_members_amount' => number_format($total_members_amount,2,".",","), 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => $message];
         }else{
             $data =['status' =>0, 'status_data' => [], 'approval_data' => [] ,'message'  => 'No data found'];
         }

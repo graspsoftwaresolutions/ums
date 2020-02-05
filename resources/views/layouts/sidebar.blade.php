@@ -78,9 +78,10 @@
               @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
               <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Entry') }}</span></a></li>
               <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank') }}</span></a></li>
-			  <li id="subvariation_sidebar_li_id" class=""><a id="subvariation_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.month',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Variation') }}</span></a></li>
-			  <li id="subsarrear_sidebar_li_id" class=""><a id="subarrear_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.arrearentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Arrear Entry') }}</span></a></li>
-
+          @if($user_role=='union' || $user_role=='union-branch')
+			     <li id="subvariation_sidebar_li_id" class=""><a id="subvariation_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.month',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Variation') }}</span></a></li>
+			     <li id="subsarrear_sidebar_li_id" class=""><a id="subarrear_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.arrearentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Arrear Entry') }}</span></a></li>
+          @endif
         
               @endif
               @if($user_role == 'member')
@@ -119,7 +120,7 @@
     @endif
 		@endforeach
    -->
-      @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
+      @if($user_role=='union' || $user_role=='union-branch')
         <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
       @endif
       @if($user_role=='union')
@@ -161,6 +162,7 @@
               @endif
               @endforeach
               <li id="member_status4_sidebar_li_id" class=""><a id="member_status4_sidebar_a_id" class="collapsible-body" href="{{ route('reports.resignmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Resigned Members</span></a></li>
+               @if($user_role=='union' || $user_role=='union-branch')
               <li id="member_transfers_sidebar_li_id" class=""><a id="member_transfers_sidebar_a_id" class="collapsible-body" href="{{ route('reports.transfers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Member Transfers</span></a></li>
               <li id="branch_advice_sidebar_li_id" class=""><a id="branch_advice_sidebar_a_id" class="collapsible-body" href="{{ route('reports.advice',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Advice</span></a></li>
               <li id="branch_status_sidebar_li_id" class=""><a id="branch_status_sidebar_a_id" class="collapsible-body" href="{{ route('reports.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Status</span></a></li>
@@ -172,6 +174,7 @@
               <li id="subscription_bank_sidebar_li_id" class=""><a id="subscription_bank_sidebar_a_id" class="collapsible-body" href="{{ route('reports.subscription',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription By Bank') }}</span></a></li>
                <li id="member_due_sidebar_li_id" class=""><a id="member_due_sidebar_a_id" class="collapsible-body" href="{{ route('reports.due',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Due Report') }}</span></a></li>
                 <li id="member_statement_sidebar_li_id" class=""><a id="member_statement_sidebar_a_id" class="collapsible-body" href="{{ route('reports.statement',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Member Statement') }}</span></a></li>
+                @endif
             </ul>
           </div>
         </li>

@@ -68,6 +68,9 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
             $subscription_company = new MonthlySubscriptionCompany();
             $subscription_company->MonthlySubscriptionId = $this->month_auto_id;
             $subscription_company->CompanyCode = $sub_company;
+            if (Auth::user()->hasRole('company')) {
+                 $subscription_company->banktype = 1;
+            }
             $subscription_company->created_by = Auth::user()->id;
             $subscription_company->created_on = date('Y-m-d');
             $subscription_company->save();
