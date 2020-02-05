@@ -1702,6 +1702,37 @@ class CommonHelper
 						   ->count();
 		return $members_count;
 	}
+
+    public static function subCompanyMembersAmount($company_enc_id, $user_role, $user_id,$date)
+    {
+        // return $date;
+        if($date!=''){
+          $fmmm_date = explode("/",$date);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+        else{
+            $date=date('Y-m-01');
+        }
+        $members_amt=0;
+        //dd($country_id);
+        $company_auto_id = Crypt::decrypt($company_enc_id);
+      
+        $members_amt  =DB::table('mon_sub as ms')->select(DB::raw('sum(mm.Amount) as amount'))
+                            ->join('mon_sub_company as mc', 'ms.id' ,'=','mc.MonthlySubscriptionId')
+                            //->join('company','company.id','=','mon_sub_company.CompanyCode')
+                            ->join('mon_sub_member as mm','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                            //->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+                            //->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+                            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                            //->leftjoin('race as r','r.id','=','m.race_id')
+                            //->leftjoin('designation as d','d.id','=','m.designation_id')
+                           ->where('mc.id','=',$company_auto_id)
+                            ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
+                            ->where(DB::raw('year(ms.Date)'),'=',$yearno)  
+                           ->first();
+        return $members_amt->amount;
+    }
 	
 	public static function get_overall_approval_status($submemberid){
 		$total_member_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$submemberid)->count();

@@ -56,6 +56,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th>{{__('MonthYear') }}</th>
                                                       <th>{{__('Company Name') }}</th>
                                                       <th>{{__('Count') }}</th>
+                                                      <th>{{__('Amount') }}</th>
                                                      
                                                   </tr>
                                               </thead>
@@ -137,6 +138,9 @@ $(function() {
             },
             {
                 "data": "count"
+            },
+            {
+                "data": "amount"
             }
         ]
     });

@@ -346,6 +346,7 @@ class SubscriptionAjaxController extends CommonController
             1 => 'c.company_name',
             2 => 'sc.id',
             3 => 'sc.id',
+            4 => 'sc.id',
         );
 		
 		
@@ -475,9 +476,12 @@ class SubscriptionAjaxController extends CommonController
                 $editurl =  route('subscription.members', [app()->getLocale(),$company_enc_id]) ;
 				
                 $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
+                $members_amt = CommonHelper::subCompanyMembersAmount($company_enc_id, $user_role, $userid,$date);
                 $nestedData['company_name'] = $company->company_name;  
                // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
                 $nestedData['count'] = '<a href="'.$editurl.'" class="new badge" title="View Members"><span class=" badge light-blue">'.$members_count.'</span></a>';
+
+                $nestedData['amount'] = '<a href="'.$editurl.'" class="new badge" title="View Members"><span class=" badge pink">'.$members_amt.'</span></a>';
 				$data[] = $nestedData;
 			}
         }
