@@ -311,12 +311,12 @@
 								@endforeach
 							</tbody>
 							<tfoot>
-								<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+							<!--	<tr class="monthly-approval-status" id="monthly_approval_status_all" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status=all&date='.strtotime('now')) }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
 									<td colspan="2">Total</td>
 									<td id="approval_status_count_total">{{ $total_match_members_count }}</td>
 									<td id="approval_approved_count_total">{{ $total_match_approval_members_count }}</td>
 									<td id="approval_pending_count_total">{{ $total_match_pending_members_count }}</td>
-								</tr>
+								</tr>-->
 							</tfoot>
 						 </table>
 					</div>
@@ -484,7 +484,7 @@ $(document).ready(function() {
 						
 					},
 					sub_company: {
-						required: "Please choose company",
+						required: "Please choose Bank",
 						
 					},
 					/* file:{
