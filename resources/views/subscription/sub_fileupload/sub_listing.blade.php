@@ -194,7 +194,7 @@
 			<ul class="tabs">  
 				<li class="tab col s3"><a class="active " href="#monthly_status" id="all">Monthly Status</a></li>  
 				@if($user_role!='company' && $user_role!='company-branch')
-				<li class="tab col s3"><a class="" href="#company_status" id="all">Companywise Monthly Status</a></li>  
+				<li class="tab col s3"><a class="" href="#company_status" id="all">Bankwise Monthly Status</a></li>  
 				@endif
 			</ul>  
 		</div> 
