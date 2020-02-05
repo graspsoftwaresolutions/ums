@@ -193,7 +193,9 @@
 		<div class="col s12">  
 			<ul class="tabs">  
 				<li class="tab col s3"><a class="active " href="#monthly_status" id="all">Monthly Status</a></li>  
+				@if($user_role!='company' && $user_role!='company-branch')
 				<li class="tab col s3"><a class="" href="#company_status" id="all">Companywise Monthly Status</a></li>  
+				@endif
 			</ul>  
 		</div> 
 		<div id="monthly_status" class="col s12">
@@ -221,6 +223,7 @@
 									$user_id = Auth::user()->id;
 									$total_members_count = 0;
 									$total_members_amount = 0;
+									$slno =1;
 								@endphp 
 								@foreach($data['member_stat'] as  $key => $stat)
 								@php
@@ -228,17 +231,25 @@
 									$member_status_count = CommonHelper::statusSubsMembersNotDojCount($stat->id, $user_role, $user_id);
 									$member_status_amount = CommonHelper::statusMembersNotDojAmount($stat->id, $user_role, $user_id);
 									//$member_status_amount = round(CommonHelper::statusMembersAmount($stat->id, $user_role, $user_id), 0);
+									$hidestruckoff = '';
+									if(($user_role=='company' || $user_role=='company-branch') && $stat->id >= 3){
+										$hidestruckoff = 'hide';
+									}
 								@endphp
 								
-								<tr class="monthly-sub-status" id="monthly_member_status_{{ $stat->id }}" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $stat->font_color }};">
-									<td>{{ $key+1 }} </td>
+								<tr class="monthly-sub-status {{$hidestruckoff}}" id="monthly_member_status_{{ $stat->id }}" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $stat->font_color }};">
+									<td>{{ $slno }} </td>
 									<td>{{ $stat->status_name }}</td>
 									<td id="member_status_count_{{ $stat->id }}"> {{ $member_status_count }}</td>
 									<td id="member_status_amount_{{ $stat->id }}">{{ number_format($member_status_amount,2,".",",") }} </td>
 								</tr>
 								@php
-									$total_members_count += $member_status_count;
-									$total_members_amount += $member_status_amount;
+									if($hidestruckoff==''){
+										$total_members_count += $member_status_count;
+										$total_members_amount += $member_status_amount;
+										$slno++;
+									}
+									
 								@endphp
 								@endforeach
 								@php
@@ -246,7 +257,7 @@
 									$total_sundry_amount = CommonHelper::statusSubsMatchAmount(2, $user_role, $user_id);
 								@endphp
 								<tr class="monthly-sub-status" id="monthly_member_status_0" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=0&date='.strtotime('now')) }}" style="cursor:pointer;">
-									<td>{{ count($data['member_stat'])+1 }} </td>
+									<td>{{ $slno }} </td>
 									<td>SUNDRY CREDITORS</td>
 									<td id="member_status_count_sundry">{{ $total_sundry_count }}</td>
 									<td id="member_status_amount_sundry">{{ number_format($total_sundry_amount,2,".",",") }} </td>
@@ -289,24 +300,33 @@
 									$total_match_members_count = 0;
 									$total_match_approval_members_count = 0;
 									$total_match_pending_members_count = 0;
+									$slno1 = 1;
 								@endphp 
 								@foreach($data['approval_status'] as  $key => $stat)
 								@php
 									$match_members_count = CommonHelper::statusSubsMatchNotDojCount($stat->id, $user_role, $user_id);
 									$match_approval_members_count = CommonHelper::statusSubsMatchNotApprovalCount($stat->id, $user_role, $user_id,1);
 									$match_pending_members_count = CommonHelper::statusSubsMatchNotApprovalCount($stat->id, $user_role, $user_id,0);
+									$hidestruckoffone = '';
+									if(($user_role=='company' || $user_role=='company-branch') && ($stat->id == 6 || $stat->id == 7)){
+										$hidestruckoffone = 'hide';
+									}
 								@endphp
-								<tr class="monthly-approval-status" id="monthly_approval_status_{{ $stat->id }}" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
-									<td>{{ $key+1 }} </td>
+								<tr class="monthly-approval-status {{ $hidestruckoffone }}" id="monthly_approval_status_{{ $stat->id }}" data-href="{{ URL::to(app()->getLocale().'/subscription-status?approval_status='.$stat->id.'&date='.strtotime('now')) }}" style="cursor:pointer;">
+									<td>{{ $slno1 }} </td>
 									<td>{{ $stat->match_name }}</td>
 									<td id="approval_status_count_{{ $stat->id }}">{{ $match_members_count }}</td>
 									<td id="approval_approved_count_{{ $stat->id }}">{{ $match_approval_members_count }}</td>
 									<td id="approval_pending_count_{{ $stat->id }}">{{ $match_pending_members_count }}</td>
 								</tr>
 								@php
-									$total_match_members_count += $match_members_count;
-									$total_match_approval_members_count += $match_approval_members_count;
-									$total_match_pending_members_count += $match_pending_members_count;
+									if($hidestruckoffone==''){
+										$total_match_members_count += $match_members_count;
+										$total_match_approval_members_count += $match_approval_members_count;
+										$total_match_pending_members_count += $match_pending_members_count;	
+										$slno1++;			
+									}
+									
 								@endphp
 								@endforeach
 							</tbody>
@@ -324,7 +344,7 @@
 				
 			</div>
 		</div>  
-		<div id="company_status" class="col s12">
+		<div id="company_status" class="col s12 @if($user_role=='company' || $user_role=='company-branch') hide @endif">
 			<div class="col s12 m12">
 				<h5 id="bankname-listing" class="center hide"><span class="badge green" style="float:none;padding: 5px;">Bank Name : <span class="subscription-bankname">---</span></span></h5>
 			</div>
@@ -526,23 +546,33 @@ $(document).ready(function() {
 				type: "GET",
 				success: function(result) {
 					loader.hideLoader();
-					if(result.status==1){
-						swal({
-						title: "Data Already Exists!",
-						text: "Are you sure you want to download existance data?",
-						icon: 'success',
-						dangerMode: true,
-						buttons: {
-						  cancel: 'No, Please!',
-						  delete: 'Yes, Download It'
-						}
-					  }).then(function (willDelete) {
-						if (willDelete) {
-						  DownloadExistance(1);
-						} else {
-						  DownloadExistance(0);
-						}
-					  });
+					if(result.status==1 || result.status==2){
+						if(result.status==1){
+							swal({
+								title: "Data Already Exists!",
+								text: "Are you sure you want to download existance data?",
+								icon: 'success',
+								dangerMode: true,
+								buttons: {
+								  cancel: 'No, Please!',
+								  delete: 'Yes, Download It'
+								}
+							  }).then(function (willDelete) {
+								if (willDelete) {
+								  DownloadExistance(1);
+								} else {
+								  DownloadExistance(0);
+								}
+							  });
+							}else{
+								//alert('test');
+								$("#sub_company").val('').trigger('change');
+								swal({
+								    title: 'Subscription for this bank already uploaded by bank',
+								    icon: 'error'
+								  });
+							}
+						
 						$.each(result.status_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
 							$("#monthly_company_sub_status_"+key).attr('data-href',baselink+"subscription-status?member_status="+key+"&date="+result.month_year_number+"&company_id="+result.company_auto_id);
@@ -601,7 +631,7 @@ $(document).ready(function() {
 				type: "GET",
 				dataType: "json",
 				success: function(result) {
-					console.log(result);
+					//console.log(result);
 					if(result.status==1){
 						$.each(result.status_data.count, function(key, entry) {
 							var baselink = base_url +'/{{ app()->getLocale() }}/';
@@ -624,8 +654,8 @@ $(document).ready(function() {
 							$("#monthly_approval_status_"+key).attr('data-href',baselink+"subscription-status?approval_status="+key+"&date="+result.month_year_number);
                         });
 						$.each(result.approval_data.approved, function(key, entry) {
-							console.log("#approval_approved_count_"+key);
-							console.log("#approval_approved_count_"+entry);
+							//console.log("#approval_approved_count_"+key);
+							//console.log("#approval_approved_count_"+entry);
 							$("#approval_approved_count_"+key).html(entry);
                         });
 						$("#monthly_approval_status_all").attr('data-href',baselink+"subscription-status?approval_status=all&date="+result.month_year_number);
