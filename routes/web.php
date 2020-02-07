@@ -440,6 +440,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('transfers_report','ReportsController@MemberTransferReport')->name('reports.transfers');
 	Route::get('iframe_transfers_report','ReportsController@TransferReport')->name('iframe.transfers');
 	Route::get('get-transfers-filter-report','ReportsController@TransferFilterReport')->name('more.transfers');
+
+	Route::get('export-pdf-member-transfers','ReportsController@exportPdfTransfers')->name('transfers.pdf');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

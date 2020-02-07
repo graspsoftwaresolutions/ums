@@ -4024,5 +4024,31 @@ class ReportsController extends Controller
         return view('reports.iframe_transfers_report')->with('data',$data);
 
     }
+
+    public function exportPdfTransfers($lang,Request $request){
+       // $offset = $request->input('offset');
+       $from_date = $request->input('from_date');
+       $to_date = $request->input('to_date');
+
+       $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+       $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+
+       $members = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number','m.new_ic')
+       ->leftjoin('membership as m','m.id','=','h.MemberCode')
+       ->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
+       ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
+       ->where('h.transfer_date', '>=',"{$fromdate}")->where('h.transfer_date', '<=',"{$todate}")
+       ->get();
+      
+      
+       $data['member_view'] = $members;
+       $data['from_date']=$fromdate;
+       $data['to_date']=$todate;
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_member_transfers', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_member_transfers_report.pdf');
+    }
 }
 

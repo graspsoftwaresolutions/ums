@@ -32,6 +32,8 @@
 				</td> -->
 				<td colspan="4" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['from_date'])) }} - {{ date('t M Y',strtotime($data['to_date'])) }}
+					<br>
+					<br>
 				</td>
 				<!-- <td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
 					
@@ -40,6 +42,7 @@
 						
 					
 				</td> -->
+
 			</tr>
 			
 			<tr class="">
