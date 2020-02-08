@@ -879,4 +879,65 @@ class MonthEndController extends Controller
 
        
     }
+
+    public function ListMonthendFollowUp(Request $request){
+        // $data['from_date'] = date('2019-01-01');
+        // $data['to_date'] = date('Y-m-d');
+        $data['type'] = '';
+        $data['company_id'] = '';
+        $data['branch_id'] = '';
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['members_list'] = [];
+        $data['followup_type'] = '';
+        return view('subscription.followup_members_list')->with('data',$data);  
+    }
+
+    public function ListMonthendFollowUpFilter($lang,Request $request)
+    {
+        ini_set('memory_limit', '-1');
+		ini_set('max_execution_time', 10000); 
+        // $from_date = $request->input('from_date');
+        // $to_date = $request->input('to_date');
+       // $status_id = $request->input('status_id');
+        $followup_type = $request->input('followup_type');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+       // date('Y-m-d',strtotime($to_date));
+        //$data['from_date'] = date('Y-m-d',strtotime($from_date));
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        //$data['to_date'] = date('Y-m-d',strtotime($to_date)); 
+        //$data['status_id'] = $status_id;
+        $data['company_id'] = $company_id;
+        $data['branch_id'] = $branch_id;
+        $data['followup_type'] = $followup_type;
+        //$data['status_view'] = DB::table('status')->where('status','=','1')->get();
+       
+      
+        if($branch_id!=''){
+            $member_qry = DB::table('membership as m')
+            ->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id','mp.last_paid_date')
+            ->leftjoin('member_payments as mp','mp.member_id','=','m.id');
+            $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+        }else{
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id','mp.last_paid_date')
+            ->leftjoin('member_payments as mp','mp.member_id','=','m.id')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
+            $member_qry = $member_qry->where('cb.company_id','=',$company_id);
+            
+        }
+        
+        if($followup_type==1 || $followup_type==2){
+            $member_qry = $member_qry->where('m.status_id','=',1);
+        }
+        if($followup_type==3 || $followup_type==4){
+            $member_qry = $member_qry->where('m.status_id','=',2);
+        }
+        //dd($member_qry->count());
+        $member_qry = $member_qry->orderBY('m.doj','asc')->get();
+        $data['members_list'] = $member_qry;
+        return view('subscription.followup_members_list')->with('data',$data);  
+     
+    }
+
 }

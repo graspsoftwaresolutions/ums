@@ -442,6 +442,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-transfers-filter-report','ReportsController@TransferFilterReport')->name('more.transfers');
 
 	Route::get('export-pdf-member-transfers','ReportsController@exportPdfTransfers')->name('transfers.pdf');
+	Route::get('invalidsubs','SubscriptionController@InvalidSubscription')->name('subscription.invalidsubs');
+	Route::post('invalidsubs','SubscriptionController@ViewStruckoff')->name('subscription.view_struckoff');
+	Route::get('followup-list','MonthEndController@ListMonthendFollowUp')->name('followup.list');
+	Route::post('followup-list','MonthEndController@ListMonthendFollowUpFilter')->name('monthendfollowup.list');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

@@ -680,7 +680,7 @@ class CommonHelper
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company'){
             $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
-            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.StatusId="'.$status_id.'" AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'"'));
+            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.StatusId="'.$status_id.'" AND sc.banktype<>1 AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'"'));
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company-branch'){
             $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
@@ -920,7 +920,7 @@ class CommonHelper
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company'){
             $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
-            $members_qry = DB::select(DB::raw('SELECT count(*) as count FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` WHERE mm.match_id="'.$status_id.'" AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND mc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'"'));
+            $members_qry = DB::select(DB::raw('SELECT count(*) as count FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` WHERE mm.match_id="'.$status_id.'" AND mc.banktype<>1 AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND mc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'"'));
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company-branch'){
             $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
@@ -978,7 +978,7 @@ class CommonHelper
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company'){
             $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
-            $members_qry = DB::select(DB::raw('SELECT count(*) as count FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` WHERE mm.match_id="'.$status_id.'" AND '.$statuscond.' AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND mc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'"'));
+            $members_qry = DB::select(DB::raw('SELECT count(*) as count FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as mc on mc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `mc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` WHERE mm.match_id="'.$status_id.'" AND mc.banktype<>1 AND '.$statuscond.' AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND mc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date`="'.$monthyear.'"'));
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company-branch'){
             $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
@@ -1703,6 +1703,38 @@ class CommonHelper
 		return $members_count;
 	}
 
+    public static function subCompanyMembersActCount($company_enc_id, $user_role, $user_id,$date)
+    {
+        // return $date;
+        if($date!=''){
+          $fmmm_date = explode("/",$date);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+        else{
+            $date=date('Y-m-01');
+        }
+        $members_count=0;
+        //dd($country_id);
+        $company_auto_id = Crypt::decrypt($company_enc_id);
+     
+        $members_count  =DB::table('mon_sub')->select('mon_sub.id')
+                            ->join('mon_sub_company', 'mon_sub.id' ,'=','mon_sub_company.MonthlySubscriptionId')
+                           // ->join('company','company.id','=','mon_sub_company.CompanyCode')
+                            ->join('mon_sub_member','mon_sub_company.id','=','mon_sub_member.MonthlySubscriptionCompanyId')
+                            //->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+                            //->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+                            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                            //->leftjoin('race as r','r.id','=','m.race_id')
+                            //->leftjoin('designation as d','d.id','=','m.designation_id')
+                           ->where('mon_sub_company.id','=',$company_auto_id)
+                           ->where('mon_sub_member.StatusId','<=',2)
+                            ->where(DB::raw('month(mon_sub.Date)'),'=',$monthno)  
+                            ->where(DB::raw('year(mon_sub.Date)'),'=',$yearno)  
+                           ->count();
+        return $members_count;
+    }
+
     public static function subCompanyMembersAmount($company_enc_id, $user_role, $user_id,$date)
     {
         // return $date;
@@ -1728,6 +1760,39 @@ class CommonHelper
                             //->leftjoin('race as r','r.id','=','m.race_id')
                             //->leftjoin('designation as d','d.id','=','m.designation_id')
                            ->where('mc.id','=',$company_auto_id)
+                            ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
+                            ->where(DB::raw('year(ms.Date)'),'=',$yearno)  
+                           ->first();
+        return $members_amt->amount;
+    }
+
+    public static function subCompanyMembersActAmount($company_enc_id, $user_role, $user_id,$date)
+    {
+        // return $date;
+        if($date!=''){
+          $fmmm_date = explode("/",$date);
+          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+        else{
+            $date=date('Y-m-01');
+        }
+        $members_amt=0;
+        //dd($country_id);
+        $company_auto_id = Crypt::decrypt($company_enc_id);
+      
+        $members_amt  =DB::table('mon_sub as ms')->select(DB::raw('sum(mm.Amount) as amount'))
+                            ->join('mon_sub_company as mc', 'ms.id' ,'=','mc.MonthlySubscriptionId')
+                            //->join('company','company.id','=','mon_sub_company.CompanyCode')
+                            ->join('mon_sub_member as mm','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                            //->leftjoin('status','mon_sub_member.StatusId','=','status.id')
+                            //->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+                            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                            //->leftjoin('race as r','r.id','=','m.race_id')
+                            //->leftjoin('designation as d','d.id','=','m.designation_id')
+                            ->where('mc.id','=',$company_auto_id)
+                             ->where('mm.StatusId','<=',2)
+                            //->where('mc.banktype','<>',1)
                             ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
                             ->where(DB::raw('year(ms.Date)'),'=',$yearno)  
                            ->first();

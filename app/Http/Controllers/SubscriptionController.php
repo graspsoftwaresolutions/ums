@@ -230,8 +230,15 @@ class SubscriptionController extends CommonController
 			$total_match_approval_members_count = 0;
 			$total_match_pending_members_count = 0;
             foreach($status_all as $key => $value){
-				$members_count = CommonHelper::statusSubsMembersNotDOJCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
-				$members_amount = CommonHelper::statusMembersNotDojCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+                if($banktype==1 && $value->id>=3){
+                    $members_count = 0;
+                    $members_amount = 0;
+                }else{
+                    $members_count = CommonHelper::statusSubsMembersNotDOJCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+                    $members_amount = CommonHelper::statusMembersNotDojCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+                }
+				
+                
                 $status_data['count'][$value->id] = $members_count;
                 $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
 				$total_members_count += $members_count;
@@ -243,9 +250,15 @@ class SubscriptionController extends CommonController
                     $match_approval_members_count = CommonHelper::statusSubsCompanyMatchApprovalCount($value->id, $user_role, $user_id,$company_auto_id,1,$full_date);
                     $match_pending_members_count = CommonHelper::statusSubsCompanyMatchApprovalCount($value->id, $user_role, $user_id,$company_auto_id,0,$full_date);
                 }else{
-                    $match_members_count = CommonHelper::statusSubsCompanyMatchNotDojCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
-                    $match_approval_members_count = CommonHelper::statusSubsCompanyMatchApprovalNotCount($value->id, $user_role, $user_id,$company_auto_id,1,$full_date);
-                    $match_pending_members_count = CommonHelper::statusSubsCompanyMatchApprovalNotCount($value->id, $user_role, $user_id,$company_auto_id,0,$full_date);
+                    if($banktype==1 && ($value->id==6 || $value->id==7)){
+                        $match_members_count = 0;
+                        $match_approval_members_count = 0;
+                        $match_pending_members_count = 0;
+                    }else{
+                        $match_members_count = CommonHelper::statusSubsCompanyMatchNotDojCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+                        $match_approval_members_count = CommonHelper::statusSubsCompanyMatchApprovalNotCount($value->id, $user_role, $user_id,$company_auto_id,1,$full_date);
+                        $match_pending_members_count = CommonHelper::statusSubsCompanyMatchApprovalNotCount($value->id, $user_role, $user_id,$company_auto_id,0,$full_date);
+                    }
                 }
                 $approval_data['count'][$value->id] = $match_members_count;
                 $approval_data['approved'][$value->id] = $match_approval_members_count;
@@ -404,8 +417,14 @@ class SubscriptionController extends CommonController
 						}
 					}
 				}
-              
-                $subMemberMatch->save();
+                if(count($memberdata)>0){
+                    if($memberdata[0]->status_id<=2){
+                        $subMemberMatch->save();
+                    }
+                }else{
+                    $subMemberMatch->save();
+                }
+               
               
                 $upstatus=1;
                 if($up_sub_member ==1){
@@ -437,8 +456,17 @@ class SubscriptionController extends CommonController
                         $subMemberMatch_one->match_id = 4;
 						$subMemberMatch_one->mon_sub_member_id = $subscription->id;
 						$subMemberMatch_one->created_by = Auth::user()->id;
-						$subMemberMatch_one->created_on = date('Y-m-d');
-						$subMemberMatch_one->save();
+                        $subMemberMatch_one->created_on = date('Y-m-d');
+                        
+                        if(count($memberdata)>0){
+                            if($memberdata[0]->status_id<=2){
+                                $subMemberMatch_one->save();
+                            }
+                        }else{
+                            $subMemberMatch_one->save();
+                        }
+
+						//$subMemberMatch_one->save();
 						$insert_month_end = 0;
                     }
 					
@@ -451,8 +479,17 @@ class SubscriptionController extends CommonController
                         $subMemberMatch_two->match_id = 3;
 						$subMemberMatch_two->mon_sub_member_id = $subscription->id;
 						$subMemberMatch_two->created_by = Auth::user()->id;
-						$subMemberMatch_two->created_on = date('Y-m-d');
-						$subMemberMatch_two->save();
+                        $subMemberMatch_two->created_on = date('Y-m-d');
+                        
+                        if(count($memberdata)>0){
+                            if($memberdata[0]->status_id<=2){
+                                $subMemberMatch_two->save();
+                            }
+                        }else{
+                            $subMemberMatch_two->save();
+                        }
+
+						//$subMemberMatch_two->save();
 						$insert_month_end = 0;
                     }
 					
@@ -485,8 +522,17 @@ class SubscriptionController extends CommonController
 								$subMemberMatch_three->match_id = 5;
 								$subMemberMatch_three->mon_sub_member_id = $subscription->id;
 								$subMemberMatch_three->created_by = Auth::user()->id;
-								$subMemberMatch_three->created_on = date('Y-m-d');
-								$subMemberMatch_three->save();
+                                $subMemberMatch_three->created_on = date('Y-m-d');
+                                
+                                if(count($memberdata)>0){
+                                    if($memberdata[0]->status_id<=2){
+                                        $subMemberMatch_three->save();
+                                    }
+                                }else{
+                                    $subMemberMatch_three->save();
+                                }
+
+								//$subMemberMatch_three->save();
 								$insert_month_end = 0;
 							}
 						}else{
@@ -498,8 +544,17 @@ class SubscriptionController extends CommonController
 							$subMemberMatch_four->match_id = 10;
 							$subMemberMatch_four->mon_sub_member_id = $subscription->id;
 							$subMemberMatch_four->created_by = Auth::user()->id;
-							$subMemberMatch_four->created_on = date('Y-m-d');
-							$subMemberMatch_four->save();
+                            $subMemberMatch_four->created_on = date('Y-m-d');
+                            
+                            if(count($memberdata)>0){
+                                if($memberdata[0]->status_id<=2){
+                                    $subMemberMatch_four->save();
+                                }
+                            }else{
+                                $subMemberMatch_four->save();
+                            }
+
+							//$subMemberMatch_four->save();
 							$insert_month_end = 0;
 						}
 					}
@@ -1479,7 +1534,10 @@ class SubscriptionController extends CommonController
 			$cond ='';
 			if(isset($company_id) && $company_id!=''){
 				$cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
-			}
+            }
+            if($member_status==3 ||$member_status==4){
+                $cond .=" AND sc.banktype <> 1";
+            }
 			$members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="'.$member_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') LIMIT '.$data['data_limit']));
             $data['member'] = $members_data;
             $data['status_type'] = 1;
@@ -2845,6 +2903,105 @@ class SubscriptionController extends CommonController
         $data['company_id'] = $request->input('company_id');
         $data['branch_id'] = $request->input('branch_id');
         return view('subscription.variance_members')->with('data',$data);
+    }
+
+    public function InvalidSubscription() {
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        //$status_all = Status::where('status',1)->get();
+      
+        
+        $data['date'] = date('Y-m-01');
+        $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+        $company_name = CommonHelper::getCompanyName($company_id);
+
+        $company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$company_id)
+							->groupBY('c.id')
+                            ->pluck('c.id');
+                            
+        $company_str_List ='';
+        $slno=0;
+        foreach($company_ids as $cids){
+            if($slno!=0){
+                $company_str_List .=',';
+            }
+            $company_str_List .="'".$cids."'";
+            $slno++;
+        }
+
+        $cond ='';
+        if(isset($company_id) && $company_id!=''){
+            $cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
+        }
+        $struckoff_members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="3" '.$cond.' AND `sm`.`Date`="'.$data['date'].'" AND `c`.`id` IN ('.$company_str_List.') '));
+        $data['struckoff_members'] = $struckoff_members_data;
+
+        $resigned_members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="3" '.$cond.' AND `sm`.`Date`="'.$data['date'].'" AND `c`.`id` IN ('.$company_str_List.') '));
+        $data['resigned_members'] = $resigned_members_data;
+
+        $data['company_name'] = $company_name; 
+        $data['company_id'] = $company_id; 
+
+        
+        return view('subscription.invalid_subscription')->with('data', $data);
+    } 
+    
+    public function ViewStruckoff($lang, Request $request){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+
+        $entry_date = $request->input('entry_date');  
+        $datearr = explode("/",$entry_date);  
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $full_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $data['date'] = date('Y-m-01',strtotime($full_date));
+        $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+        $company_name = CommonHelper::getCompanyName($company_id);
+
+
+        $company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$company_id)
+							->groupBY('c.id')
+                            ->pluck('c.id');
+                            
+        $company_str_List ='';
+        $slno=0;
+        foreach($company_ids as $cids){
+            if($slno!=0){
+                $company_str_List .=',';
+            }
+            $company_str_List .="'".$cids."'";
+            $slno++;
+        }
+
+        $cond ='';
+        // if(isset($company_id) && $company_id!=''){
+        //     $cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
+        // }
+        $struckoff_members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="3" '.$cond.' AND `sm`.`Date`="'.$data['date'].'" AND `c`.`id` IN ('.$company_str_List.') '));
+        $data['struckoff_members'] = $struckoff_members_data;
+
+        $resigned_members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, c.company_name as company_name, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  where m.StatusId="4" '.$cond.' AND `sm`.`Date`="'.$data['date'].'" AND `c`.`id` IN ('.$company_str_List.') '));
+        $data['resigned_members'] = $resigned_members_data;
+
+        $data['company_name'] = $company_name; 
+        $data['company_id'] = $company_id; 
+
+        //return $data['struckoff_members'] ;
+       
+        return view('subscription.invalid_subscription')->with('data', $data);
+    }
+
+    public function ViewFollowup($lang, Request $request){
+
     }
 
     

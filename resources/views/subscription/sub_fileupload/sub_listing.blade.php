@@ -538,6 +538,7 @@ $(document).ready(function() {
 			var company_name = selected.data('companyname'); 
 			$("#bankname-listing").removeClass('hide');
 			$(".subscription-bankname").text(company_name);
+			//alert(company_name);
 			loader.showLoader();
 			$("#type option[value='2']").remove();
 			var url = "{{ url(app()->getLocale().'/check-subscription-exists') }}" + '?entry_date=' + entry_date + "&sub_company=" + sub_company;
@@ -607,20 +608,21 @@ $(document).ready(function() {
 						$("#approvalstatustable").css('opacity',1);
 						$("#type").append('<option value="2">Download Existance data</option>');
 					}else{
-						$(".subscription-bankname").text('');
+						//$(".subscription-bankname").text('');
 						$(".clear-approval").html(0);
 						$(".monthly-company-approval-status").attr('data-href','');
 						$(".monthly-company-sub-status").attr('data-href','');
-						$("#bankname-listing").addClass('hide');
+						
+						//$("#bankname-listing").addClass('hide');
 					}
 				}
 			});
 		}else{
-			$(".subscription-bankname").text('');
+			//$(".subscription-bankname").text('');
 			$(".clear-approval").html(0);
 			$(".monthly-company-approval-status").attr('data-href','');
 			$(".monthly-company-sub-status").attr('data-href','');
-			$("#bankname-listing").addClass('hide');
+			//$("#bankname-listing").addClass('hide');
 		}
 		if(entry_date!=""){
 			$("#memberstatustable").css('opacity',0.5);

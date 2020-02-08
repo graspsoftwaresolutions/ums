@@ -78,6 +78,9 @@
               @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
               <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Entry') }}</span></a></li>
               <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank') }}</span></a></li>
+              @if($user_role=='company')
+                <li id="invalidsubs_sidebar_li_id" class=""><a id="invalidsubs_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.invalidsubs',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Struckoff/Resigned') }}</span></a></li>
+              @endif
           @if($user_role=='union' || $user_role=='union-branch')
 			     <li id="subvariation_sidebar_li_id" class=""><a id="subvariation_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.month',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Variation') }}</span></a></li>
 			     <li id="subsarrear_sidebar_li_id" class=""><a id="subarrear_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.arrearentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Arrear Entry') }}</span></a></li>
@@ -141,6 +144,7 @@
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
                <li id="update_history_sidebar_li_id" class=""><a id="update_history_sidebar_a_id" class="collapsible-body " href="{{ route('history.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update Unpaid History') }}</span></a></li>
                 <li id="due_sidebar_li_id" class=""><a id="due_sidebar_a_id" class="collapsible-body " href="{{ route('due.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Due Members') }}</span></a></li>
+                <li id="followup_sidebar_li_id" class=""><a id="followup_sidebar_a_id" class="collapsible-body " href="{{ route('followup.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Followup Members') }}</span></a></li>
               <li id="members_list_sidebar_li_id" class=""><a id="members_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.membership',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members List') }}</span></a></li>
               
             </ul>
