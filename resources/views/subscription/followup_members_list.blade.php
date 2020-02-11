@@ -251,6 +251,7 @@
 									@php
 										$slno = 1;
 										$file_upload_date = strtotime(date('Y-m-01'));
+										$upload_date = date('Y-m-01');
 									@endphp
                                 	@foreach($data['members_list'] as $members)
                                 		@php
@@ -260,15 +261,32 @@
                                 			$last_pay_date = $members->last_paid_date;
                                 			//dd($data['followup_type']);
                                 			if($last_pay_date!='' && $last_pay_date!='0000-00-00'){
-							                    $to = Carbon::createFromFormat('Y-m-d H:s:i', $last_pay_date.' 3:30:34');
-							                    $from = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
+							                    
 							                    $strlastpaid = strtotime($last_pay_date);
 							                    $diff_in_months = 0;
 							                    if($strlastpaid<$file_upload_date){
-							                        $diff_in_months = $to->diffInMonths($from);
+							                    	$diff_in_months = CommonHelper::getDifferenceMonths($upload_date,$last_pay_date);
+								                    //$to = Carbon::createFromFormat('Y-m-d H:s:i', $last_pay_date.' 3:30:34');
+								                    //$from = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
+													//$diff_in_months = $to->diffInMonths($from);
 							                    }
+							                    //&& ($data['followup_type']==2 && $due_count>=3)
+							                    $duedisplay = 0;
+							                    if(($data['followup_type']==1 && $due_count>=4) && $diff_in_months>=4 && $diff_in_months<=12 && $members->status_id==1){
+							                    	$duedisplay = 1;
+							                	}
+							                	if(($data['followup_type']==2 && $due_count==3) && $diff_in_months>=3 && $diff_in_months<=12 && $members->status_id==1){
+							                    	$duedisplay = 1;
+							                	}
+							                	if(($data['followup_type']==3 && $due_count>=13) && $diff_in_months>=13 && $members->status_id==2){
+							                    	$duedisplay = 1;
+							                	}
+							                	if(($data['followup_type']==4 && $due_count==12) && $diff_in_months>=12 && $members->status_id==2){
+							                    	$duedisplay = 1;
+							                	}
+
                                 		@endphp
-                                		@if(($data['followup_type']==1 && $due_count>=4) && ($data['followup_type']==2 && $due_count>=3) && $diff_in_months>=4 && $diff_in_months<=12)
+                                		@if($duedisplay==1)
                                 		<tr>
                                 			<td>{{ $slno }}</td>
                                 			<td>{{ $members->name }}</td>

@@ -276,7 +276,33 @@
 							</tfoot>
 						 </table>
 					</div>
+					<br>
+					@if($user_role=='company')
+					<div class="row">
+						<form class="formValidate" id="struckoffform" method="post" action="{{ url(app()->getLocale().'/invalidsubs') }}" target="_blank"  enctype="multipart/form-data">
+							@csrf
+							<div class="">
+								
+								<div class="input-field col m6 s12 hide">
+									<!--label for="doe">{{__('Subscription Month') }}*</label-->
+									<input type="text" name="entry_date_one" id="entry_date_one" value="{{ date('M/Y') }}" class="datepicker-custom" />
+								</div>
+								
+								
+								<div class="col m12 s12 " style="padding-top:5px;">
+									<button id="viewstruckoff" class=" btn waves-effect waves-light deep-purple " type="submit">{{__('View Struckoff/Resigned Members') }}</button>
+									
+								</div>
+								
+							</div>
+							
+						</form>
+						
+					</div>
+				
+					@endif
 				</div>
+
 				<!--Approval Status-->
 				<div class="col s12 m6">
 					<div class="card subscriber-list-card animate fadeRight">
@@ -533,6 +559,7 @@ $(document).ready(function() {
 		var entry_date = $("#entry_date").val();
 		var sub_company = $("#sub_company").val();
 		$(".datamonth").text('['+entry_date+']');
+		$("#entry_date_one").val(entry_date);
 		if(entry_date!="" && sub_company!=""){
 			var selected = $("#sub_company").find('option:selected');
 			var company_name = selected.data('companyname'); 

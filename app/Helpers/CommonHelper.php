@@ -3006,4 +3006,13 @@ class CommonHelper
         $bankcode = DB::table('company_branch as c')->select('com.short_code as companycode')->leftjoin('company as com','com.id','=','c.company_id')->where('c.id',$branchid)->pluck('companycode')->first();
         return $bankcode;
     }
+
+     public static function getDifferenceMonths($fromdate, $todate){
+        //DB::connection()->enableQueryLog();
+        $to = Carbon::createFromFormat('Y-m-d H:s:i', $todate.' 3:30:34');
+        $from = Carbon::createFromFormat('Y-m-d H:s:i', $fromdate.' 3:30:34');
+        $diff_in_months = $to->diffInMonths($from);
+        
+        return $diff_in_months;
+    }
 }

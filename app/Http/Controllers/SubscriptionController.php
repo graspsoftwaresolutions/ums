@@ -2955,7 +2955,7 @@ class SubscriptionController extends CommonController
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
 
-        $entry_date = $request->input('entry_date');  
+        $entry_date = $request->input('entry_date_one');  
         $datearr = explode("/",$entry_date);  
         $monthname = $datearr[0];
         $year = $datearr[1];

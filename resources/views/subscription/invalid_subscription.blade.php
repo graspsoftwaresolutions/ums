@@ -149,7 +149,7 @@
 											@endphp
 											<div class="input-field col m3 s12">
 												<label for="doe">{{__('Subscription Month') }}*</label>
-												<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y',strtotime($data['date'])) }}" class="datepicker-custom" />
+												<input type="text" name="entry_date_one" id="entry_date_one" value="{{ date('M/Y',strtotime($data['date'])) }}" class="datepicker-custom" />
 											</div>
 											<div class="col m4 s12 hide">
 												<label for="sub_company">{{__('Company') }}*</label>
