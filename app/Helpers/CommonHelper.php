@@ -3017,8 +3017,8 @@ class CommonHelper
     }
 	
 	public static function getMonthendNewDueCount($memberid){
-       // $duecount = DB::table('member_payments_reports as ms')->select('ms.totdue_months')->where('ms.member_id', '=' ,$memberid)->pluck('ms.totdue_months')->first();
-        $duedata = DB::table('membermonthendstatus as ms')->select('ms.TOTALMONTHSDUE','ms.LASTPAYMENTDATE')->where('ms.MEMBER_CODE', '=' ,$memberid)->OrderBy('ms.StatusMonth','desc')->limit(1)->first();
+        $duedata = DB::table('member_payments_reports as ms')->select(DB::raw('ms.totdue_months as TOTALMONTHSDUE'),DB::raw('ms.last_paid_date as LASTPAYMENTDATE'))->where('ms.member_id', '=' ,$memberid)->first();
+        //$duedata = DB::table('membermonthendstatus as ms')->select('ms.TOTALMONTHSDUE','ms.LASTPAYMENTDATE')->where('ms.MEMBER_CODE', '=' ,$memberid)->OrderBy('ms.StatusMonth','desc')->limit(1)->first();
         // dd($duecount);
         // $duecount = $duecount=='' ? 0 : $duecount;
         return $duedata;
