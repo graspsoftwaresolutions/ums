@@ -292,9 +292,9 @@ class CommonController extends Controller
                         }
                       
                         
-                        if($table=='state' || $table=='company_branch')
+                        if($table=='state' || $table=='company_branch' || $table=='city')
                         {
-                            if($serial == 1)
+                            if($serial == 1 && $table=='company_branch')
                             {
                                 $nestedData[$newkey] = $newvalue."&nbsp;&nbsp;&nbsp;".'<span class="badge badge pill light-blue mr-10">'.$memberscount.'</span>';
                             }
