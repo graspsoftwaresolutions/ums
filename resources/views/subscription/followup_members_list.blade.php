@@ -153,7 +153,7 @@
 										@csrf
 										<div class="row">
 
-											<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
+											<div class="col s12 m6 l3 ">
 												<label>{{__('Company Name') }}</label>
 												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 													<option value="">{{__('Select Company') }}</option>
@@ -549,8 +549,8 @@ $('.datepicker,.datepicker-custom').datepicker({
 		$("#submit-download").prop('disabled',true);
 	});
 	
-	$("#data_cleaning_sidebars_id").addClass('active');
-	$("#due_sidebar_li_id").addClass('active');
-	$("#due_sidebar_a_id").addClass('active');
+	$("#subscriptions_sidebars_id").addClass('active');
+	$("#followup_sidebar_li_id").addClass('active');
+	$("#followup_sidebar_a_id").addClass('active');
 </script>
 @endsection
