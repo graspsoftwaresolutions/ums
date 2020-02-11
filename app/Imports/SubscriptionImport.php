@@ -64,6 +64,12 @@ class SubscriptionImport implements ToCollection, WithCalculatedFormulas
         if($subscription_company_count>0){
             $subscription_company =$subscription_company_qry->get();
             $this->company_auto_id = $subscription_company[0]->id;
+			
+			if (Auth::user()->hasRole('company')) {
+				$upsubscription_company = MonthlySubscriptionCompany::find($this->company_auto_id);
+				$upsubscription_company->banktype = 1;
+				$upsubscription_company->save();
+			}
         }else{
             $subscription_company = new MonthlySubscriptionCompany();
             $subscription_company->MonthlySubscriptionId = $this->month_auto_id;
