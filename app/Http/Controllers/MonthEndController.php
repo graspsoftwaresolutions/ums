@@ -917,11 +917,11 @@ class MonthEndController extends Controller
         if($branch_id!=''){
             $member_qry = DB::table('membership as m')
             ->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id','mp.last_paid_date')
-            ->leftjoin('member_payments as mp','mp.member_id','=','m.id');
+            ->leftjoin('member_payments_reports as mp','mp.member_id','=','m.id');
             $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
         }else{
             $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id','mp.last_paid_date')
-            ->leftjoin('member_payments as mp','mp.member_id','=','m.id')
+            ->leftjoin('member_payments_reports as mp','mp.member_id','=','m.id')
             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
             $member_qry = $member_qry->where('cb.company_id','=',$company_id);
             

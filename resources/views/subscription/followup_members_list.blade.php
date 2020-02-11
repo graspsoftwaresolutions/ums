@@ -243,7 +243,7 @@
                                         <th width="10%">{{__('DOJ') }}</th>
                                         <th width="10%">{{__('Status') }}</th>
                                         <th width="10%">{{__('Dues') }}</th>
-
+										<th width="10%">{{__('Last paid date') }}</th>
                                         <th> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
@@ -255,7 +255,7 @@
 									@endphp
                                 	@foreach($data['members_list'] as $members)
                                 		@php
-                                			$due_count = CommonHelper::getMonthendDueCount($members->id);
+                                			$due_count = CommonHelper::getMonthendNewDueCount($members->id);
                                 			//$due_def = $data['due_months'] =='' ? 0 : $data['due_months'];
                                 			$branch_data = CommonHelper::getBranchCompany($members->branch_id);
                                 			$last_pay_date = $members->last_paid_date;
@@ -296,6 +296,7 @@
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
                                 			<td>{{ $due_count }}</td>
+											<td>{{ $last_pay_date }}</td>
                                 			<td>
                                 				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlistsall", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
