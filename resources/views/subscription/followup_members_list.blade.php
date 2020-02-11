@@ -18,8 +18,10 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
+<!--link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}"-->
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <style type="text/css">
     #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:last-child {
         padding-top: 8px;
@@ -143,6 +145,8 @@
 						$companylist = CommonHelper::getCompanyList($companyid);
 						$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
 					} 
+
+					//$lastsubsmonth = CommonHelper::getLastSubsMonth($companyid);
 					
 				@endphp
 					<div class="card-content">
@@ -152,6 +156,10 @@
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/followup-list') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
+											<div class="input-field col m3 s12">
+												<label for="doe">{{__('Last subscription month') }}*</label>
+												<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y',strtotime($data['subs_month'])) }}" class="datepicker-custom" />
+											</div>
 
 											<div class="col s12 m6 l3 ">
 												<label>{{__('Company Name') }}</label>
@@ -182,14 +190,14 @@
 						
 											
 
-											<div class="col s12 m6 l4">
+											<div class="col s12 m6 l3">
 												<label>{{__('Type') }}</label>
 												<select name="followup_type" id="followup_type" class="error browser-default selectpicker" required="" data-error=".errorTxt24" >
 													<option value="">{{__('Select Type') }}</option>
 													
-													<option @if($data['followup_type']==1) selected @endif value="1">This Month Defaulter</option>
+													<!--option @if($data['followup_type']==1) selected @endif value="1">This Month Defaulter</option-->
 													<option @if($data['followup_type']==2) selected @endif value="2">Next Month Defaulter</option>
-													<option @if($data['followup_type']==3) selected @endif value="3">This Month Struckoff</option>
+													<!--option @if($data['followup_type']==3) selected @endif value="3">This Month Struckoff</option-->
 													<option @if($data['followup_type']==4) selected @endif value="4">Next Month Struckoff</option>
 													
 												</select>
@@ -198,7 +206,7 @@
 												</div>
 											</div>
 											
-											<div class="col m2 s12 " style="padding-top:5px;">
+											<div class="col m2 s12 right" style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
@@ -250,15 +258,18 @@
                                 <tbody>
 									@php
 										$slno = 1;
-										$file_upload_date = strtotime(date('Y-m-01'));
-										$upload_date = date('Y-m-01');
+										$update = date("Y-m-01", strtotime("+1 month", strtotime($data['subs_month'])));
+										$file_upload_date = strtotime($update);
+										$upload_date = $update;
 									@endphp
                                 	@foreach($data['members_list'] as $members)
                                 		@php
-                                			$due_count = CommonHelper::getMonthendNewDueCount($members->id);
+                                			$due_record = CommonHelper::getMonthendNewDueCount($members->id);
+                                			if(!empty($due_record)){
                                 			//$due_def = $data['due_months'] =='' ? 0 : $data['due_months'];
                                 			$branch_data = CommonHelper::getBranchCompany($members->branch_id);
-                                			$last_pay_date = $members->last_paid_date;
+                                			$last_pay_date = $due_record->LASTPAYMENTDATE;
+                                			$due_count = $due_record->TOTALMONTHSDUE;
                                 			//dd($data['followup_type']);
                                 			if($last_pay_date!='' && $last_pay_date!='0000-00-00'){
 							                    
@@ -304,10 +315,11 @@
                                 		</tr>
 										@php
 											$slno++;
-										
+											
 										@endphp
                                 		@endif
                                 		@php
+                                			}
                                 			}
                                 		@endphp
 										
@@ -363,8 +375,10 @@
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
+ <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+ <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
 
-<script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
+<!--script src="{{ asset('public/assets/js/datepicker.js') }}"></script-->
 
 @endsection
 @section('footerSecondSection')
@@ -512,10 +526,11 @@ $(document).ready(function() {
   //       ]
   //   });
 });
-$('.datepicker,.datepicker-custom').datepicker({
-    format: 'dd-mm-yyyy',
-    autoHide: true,
-});
+// $('.datepicker,.datepicker-custom').datepicker({
+//     format: 'dd-mm-yyyy',
+//     autoHide: true,
+// });
+ $('.datepicker-custom').MonthPicker({ Button: false, MonthFormat: 'M/yy', });
 
 	
 	$("#subscribe_formValidate").validate({

@@ -885,6 +885,7 @@ class MonthEndController extends Controller
         // $data['to_date'] = date('Y-m-d');
         $data['type'] = '';
         $data['company_id'] = '';
+        $data['subs_month'] = date('Y-m-01');
         $data['branch_id'] = '';
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
@@ -897,7 +898,12 @@ class MonthEndController extends Controller
     {
         ini_set('memory_limit', '-1');
 		ini_set('max_execution_time', 10000); 
-        // $from_date = $request->input('from_date');
+        $entry_date = $request->input('entry_date');
+        $datearr = explode("/",$entry_date);  
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $full_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $data['subs_month'] = date('Y-m-01',strtotime($full_date));
         // $to_date = $request->input('to_date');
        // $status_id = $request->input('status_id');
         $followup_type = $request->input('followup_type');
@@ -911,17 +917,18 @@ class MonthEndController extends Controller
         $data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
         $data['followup_type'] = $followup_type;
+        //$data['subs_month'] = date('Y-m-01');
         //$data['status_view'] = DB::table('status')->where('status','=','1')->get();
        
       
         if($branch_id!=''){
             $member_qry = DB::table('membership as m')
-            ->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id','mp.last_paid_date')
-            ->leftjoin('member_payments_reports as mp','mp.member_id','=','m.id');
+            ->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id');
+            //->leftjoin('member_payments as mp','mp.member_id','=','m.id');
             $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
         }else{
-            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id','mp.last_paid_date')
-            ->leftjoin('member_payments_reports as mp','mp.member_id','=','m.id')
+            $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id')
+            //->leftjoin('member_payments as mp','mp.member_id','=','m.id')
             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id');
             $member_qry = $member_qry->where('cb.company_id','=',$company_id);
             
