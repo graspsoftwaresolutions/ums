@@ -1846,6 +1846,7 @@ class ReportsController extends Controller
             ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
             ->where(DB::raw('month(ms.Date)'),'=',date('m'))  
             ->where(DB::raw('year(ms.Date)'),'=',date('Y'))
+            ->where(DB::raw('ms.Date'),'<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
             ->where(function ($query) {
                 $query->where('mm.StatusId', '=', 1)
                     ->orWhere('mm.StatusId', '=', 2);
@@ -1887,6 +1888,7 @@ class ReportsController extends Controller
             ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
             ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
             ->where(DB::raw('year(ms.Date)'),'=',$yearno)
+            ->where(DB::raw('ms.Date'),'<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
             ->where(function ($query) {
                 $query->where('mm.StatusId', '=', 1)
                     ->orWhere('mm.StatusId', '=', 2);
@@ -1934,6 +1936,7 @@ class ReportsController extends Controller
         ->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
         ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
         ->where(DB::raw('year(ms.Date)'),'=',$yearno)
+        ->where(DB::raw('ms.Date'),'<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
         ->where(function ($query) {
             $query->where('mm.StatusId', '=', 1)
                 ->orWhere('mm.StatusId', '=', 2);
