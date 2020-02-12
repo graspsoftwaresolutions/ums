@@ -307,9 +307,11 @@
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
                                 			<td>{{ $due_count }}</td>
-											<td>{{ $last_pay_date }}</td>
+											<td>{{ date('M/ Y',strtotime($last_pay_date)) }}</td>
                                 			<td>
+                                				@if($user_role =='company')
                                 				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlistsall", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
+                                				@endif
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
                                 			</td>
                                 		</tr>
