@@ -437,7 +437,8 @@ class SubscriptionAjaxController extends CommonController
 			if(preg_match("^[0-9]{4}^", $search)==true){
 				$fm_date = explode("/",$search);
 				$yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
-			}			
+            }	
+            //return $dateformat;		
 			
 			$company_qry = $common_qry;
 			if( $limit != -1){
@@ -447,16 +448,18 @@ class SubscriptionAjaxController extends CommonController
 			$company_qry =  $company_qry->where(function($query) use ($search,$dateformat,$monthformat,$yearformat){
                                 $query->orWhere('sc.id','LIKE',"%{$search}%")
                                 ->orWhere('c.company_name', 'LIKE',"%{$search}%");
-								if($monthformat!=''){
-									$query->orWhere(DB::raw('month(s.`Date`)'), '=',"{$monthformat}");
-								}
-								if($yearformat!=''){
-									$query->orWhere(DB::raw('year(s.`Date`)'), '=',"{$yearformat}");
-								}
+							
                                 //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
 								if($dateformat!=''){
-									$query->orWhere('s.Date', 'LIKE',"%{$dateformat}%");
-								}
+									$query->orWhere('s.Date', '=',"{$dateformat}");
+								}else{
+                                    if($monthformat!=''){
+                                        $query->orWhere(DB::raw('month(s.`Date`)'), '=',"{$monthformat}");
+                                    }
+                                    if($yearformat!=''){
+                                        $query->orWhere(DB::raw('year(s.`Date`)'), '=',"{$yearformat}");
+                                    }
+                                }
                             });
 							 //$queries = DB::getQueryLog();
 							//dd($queries);
@@ -483,6 +486,7 @@ class SubscriptionAjaxController extends CommonController
                     $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersAmount($company_enc_id, $user_role, $userid,$date);
                 }
+                $members_amt = round($members_amt,2);
                 
                 $nestedData['company_name'] = $company->company_name;  
                // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
