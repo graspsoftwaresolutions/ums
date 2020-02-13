@@ -286,13 +286,13 @@
 							                    if(($data['followup_type']==1 && $due_count>=4) && $diff_in_months>=4 && $diff_in_months<=12 && $members->status_id==1){
 							                    	$duedisplay = 1;
 							                	}
-							                	if(($data['followup_type']==2 && $due_count==3) && $diff_in_months>=3 && $diff_in_months<=12 && $members->status_id==1){
+							                	if(($data['followup_type']==2 && $due_count>=3) && $diff_in_months>=3 && $diff_in_months<=12 && $members->status_id==1){
 							                    	$duedisplay = 1;
 							                	}
 							                	if(($data['followup_type']==3 && $due_count>=13) && $diff_in_months>=13 && $members->status_id==2){
 							                    	$duedisplay = 1;
 							                	}
-							                	if(($data['followup_type']==4 && $due_count==12) && $diff_in_months>=12 && $members->status_id==2){
+							                	if(($data['followup_type']==4 && $due_count>=12) && $diff_in_months>=12 && $members->status_id==2){
 							                    	$duedisplay = 1;
 							                	}
 
