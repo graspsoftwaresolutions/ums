@@ -69,24 +69,24 @@
 				$sub_amt = $payamount-$total_ins;
                 $sub += $sub_amt;
                 $tot = $payamount;
-                $totall = round($tot,2);
+                $totall = bcdiv($tot,1,2);
                 $total_all += $totall;
-                $hlf_sr = round($sub_amt / 2,2);
+                $hlf_sr = bcdiv($sub_amt / 2,1,2);
                 $hlf += $hlf_sr;
-                $tenper = round($hlf_sr * 10/100,2);
+                $tenper = bcdiv($hlf_sr * 10/100,1,2);
                 $t_per +=$tenper;
-                $balamtgn = round($hlf_sr - $tenper,2);
+                $balamtgn = bcdiv($hlf_sr - $tenper,1,2);
                 $bl_amt += $balamtgn;
                 @endphp
                     <tr>
                         <td style="border: 1px solid #988989 !important;">{{ $hlfshre->union_branch }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($totall,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($bf_amount,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($ins_amount,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($sub_amt,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($hlf_sr,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($tenper,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($balamtgn,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($totall,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($bf_amount,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($ins_amount,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($sub_amt,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($hlf_sr,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($tenper,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ bcdiv($balamtgn,1,2) }}</td>
                         
                     </tr> 
                 @endforeach
@@ -94,13 +94,13 @@
                 <tr style="font-weight:bold;">
                 
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">Total</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($total_all,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($bf,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($ins,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($sub,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($hlf,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($t_per,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($bl_amt,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($total_all,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($bf,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($ins,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($sub,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($hlf,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($t_per,1,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ bcdiv($bl_amt,1,2) }}</td>
                 </tr>
 	
 			
