@@ -185,6 +185,10 @@ $(function() {
     "order": [
       [0, 'asc']
     ],
+    "lengthMenu": [
+        [10, 25, 50, 100, 3000],
+        [10, 25, 50, 100, 'All']
+    ],
 	 dom: 'lBfrtip', 
         buttons: [
 		   {
