@@ -127,7 +127,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<th>{{__('AccSubs')}}</th>
 										<th>{{__('AccBF')}}</th>
 										<th>{{__('AccIns')}}</th>
-										<!--th>{{__('DueSubs')}}</th-->
+										<th>{{__('DueSubs')}}</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -141,12 +141,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->TOTAL_MONTHS }}</td>
 										<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
 										<td>{{ $history->TOTALMONTHSPAID }}</td>
-										<td>{{ $history->SUBSCRIPTIONDUE }}</td>
-										<td>{{ $history->SUBSCRIPTIONDUE+$history->TOTALMONTHSPAID }}</td>
+										<td>{{ $history->TOTALMONTHSDUE }}</td>
+										<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
 										<td>{{ $history->ACCSUBSCRIPTION }}</td>
 										<td>{{ $history->ACCBF }}</td>
 										<td>{{ $history->ACCINSURANCE }}</td>
-										<!--td>{{ $history->SUBSCRIPTIONDUE }}</td-->
+										<td style="background: #f2f2f2;">{{ $history->SUBSCRIPTIONDUE }}</td>
 										
 									</tr> 
 									@php
@@ -200,8 +200,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->TOTAL_MONTHS }}</td>
 										<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
 										<td>{{ $history->TOTALMONTHSPAID }}</td>
-										<td>{{ $history->SUBSCRIPTIONDUE }}</td>
-										<td>{{ $history->SUBSCRIPTIONDUE+$history->TOTALMONTHSPAID }}</td>
+										<td>{{ $history->TOTALMONTHSDUE }}</td>
+										<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
 										<td>{{ $history->ACCSUBSCRIPTION }}</td>
 										<td>{{ $history->ACCBF }}</td>
 										<td>{{ $history->ACCINSURANCE }}</td>
@@ -311,11 +311,12 @@ $(function() {
 								table_row += "<td>"+entry.TOTAL_MONTHS+"</td>";
 								table_row += "<td>"+entry.LASTPAYMENTDATE+"</td>";
 								table_row += "<td>"+entry.TOTALMONTHSPAID+"</td>";
-								table_row += "<td>"+entry.SUBSCRIPTIONDUE+"</td>";
+								table_row += "<td>"+entry.TOTALMONTHSDUE+"</td>";
 								table_row += "<td>"+entry.total+"</td>";
 								table_row += "<td>"+entry.ACCSUBSCRIPTION+"</td>";
 								table_row += "<td>"+entry.ACCBF+"</td>";
-								table_row += "<td>"+entry.ACCINSURANCE+"</td></tr>";
+								table_row += "<td>"+entry.ACCINSURANCE+"</td>";
+								table_row += "<td style='background: #f2f2f2;'>"+entry.SUBSCRIPTIONDUE+"</td></tr>";
 								$('#'+reflect_table+' tbody').append(table_row);
 							totalhistory+=1;
 						});

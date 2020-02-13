@@ -900,7 +900,7 @@ class SubscriptionController extends CommonController
 		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
 		
 		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as SUBSCRIPTIONDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status')
+											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE')
 											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$id)
@@ -912,7 +912,7 @@ class SubscriptionController extends CommonController
 		//dd($data['current_member_history']);
 		if($old_member_id!=""){
 			$data['previous_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-			'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status')
+			'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as TOTALMONTHSDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE')
 											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$old_member_id)
@@ -979,7 +979,7 @@ class SubscriptionController extends CommonController
 		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
 		
 		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as SUBSCRIPTIONDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status')
+											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE')
 											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$id)
@@ -991,7 +991,7 @@ class SubscriptionController extends CommonController
 		
 		if($old_member_id!=""){
 			$data['previous_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-			'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as SUBSCRIPTIONDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status')
+			'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID','ms.TOTALMONTHSDUE as TOTALMONTHSDUE','ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE')
 											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
 											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
 											->where('ms.MEMBER_CODE','=',$old_member_id)
