@@ -127,6 +127,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<th>{{__('AccSubs')}}</th>
 										<th>{{__('AccBF')}}</th>
 										<th>{{__('AccIns')}}</th>
+										<!--th>{{__('DueSubs')}}</th-->
 									</tr>
 								</thead>
 								<tbody>
@@ -145,6 +146,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->ACCSUBSCRIPTION }}</td>
 										<td>{{ $history->ACCBF }}</td>
 										<td>{{ $history->ACCINSURANCE }}</td>
+										<!--td>{{ $history->SUBSCRIPTIONDUE }}</td-->
 										
 									</tr> 
 									@php
