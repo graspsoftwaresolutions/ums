@@ -82,16 +82,16 @@
 
 				$acc_ins = 0;
 				$total_dues = 0;
-				$subsdues = 0;
+				$subsdues = $data['due_subs'];
 
 				if(!empty($history)){
 					$acc_ins = $history->ACCINSURANCE;
 					$total_dues = $history->TOTALMONTHSDUE;
-					$subsdues = $history->SUBSCRIPTIONDUE;
+					//$subsdues = $history->SUBSCRIPTIONDUE;
 				}else if(!empty($last_history)){
 					$acc_ins = $last_history->ACCINSURANCE;
 					$total_dues = $last_history->TOTALMONTHSDUE+1;
-					$subsdues = $last_history->SUBSCRIPTIONDUE+$last_history->TOTALSUBCRP_AMOUNT;
+					//$subsdues = $last_history->SUBSCRIPTIONDUE+$last_history->TOTALSUBCRP_AMOUNT;
 				}
 
 			@endphp

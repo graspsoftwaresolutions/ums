@@ -3826,20 +3826,34 @@ class ReportsController extends Controller
                         ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
                         ->count();
 
-            $duehistory = DB::table('membermonthendstatus as ms')->select('StatusMonth') 
-                        ->where('MEMBER_CODE','=',$member_id)
-                        ->where('TOTAL_MONTHS','=',0)
-                    ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
-                    ->orderBy('StatusMonth','asc')->get();
-            //dd($duehistory);
+            $lastdues = !empty($tohistory) ? $tohistory->TOTALMONTHSDUE : 0;
+            $lastdues = $lastdues<0 ? 0 : $lastdues;
+
+            if($lastdues==0){
+                $duehistory = [];
+            }else{
+                $duehistory = DB::table('membermonthendstatus as ms')->select('StatusMonth','SUBSCRIPTION_AMOUNT') 
+                ->where('MEMBER_CODE','=',$member_id)
+                ->where('TOTAL_MONTHS','=',0)
+                ->where(DB::raw('date(`StatusMonth`)'),'<=',$todate)
+                ->orderBy('StatusMonth','desc')
+                ->limit($lastdues)
+                //->dump()
+                ->get()->toArray();
+                $duehistory = array_reverse($duehistory);
+            }
+           
+           // dd($duehistory);
             $duemonth='';
             $slno = 0;
             $last_month ='';
             $duecount = count($duehistory);
             $temp_month = '';
             $dueslno = 0;
+            $duesubs = 0;
             foreach($duehistory as $history){
                 $cur_month = $history->StatusMonth;
+                $duesubs += $history->SUBSCRIPTION_AMOUNT;
                 $lastplus_month = date("Y-m-01", strtotime("+1 month", strtotime($last_month)));
                
                 if($lastplus_month == $cur_month){
@@ -3915,6 +3929,7 @@ class ReportsController extends Controller
             $data['insurance_count'] = $inscount;
             $data['duehistory'] = $duehistory;
             $data['due_months'] = $duemonth;
+            $data['due_subs'] = $duesubs;
             $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','m.postal_code','m.id')
                             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
                             ->leftjoin('company as c','c.id','=','cb.company_id')->where('m.id','=',$member_id)->first();

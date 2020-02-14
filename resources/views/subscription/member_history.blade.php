@@ -127,7 +127,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<th>{{__('AccSubs')}}</th>
 										<th>{{__('AccBF')}}</th>
 										<th>{{__('AccIns')}}</th>
-										<th>{{__('DueSubs')}}</th>
+										<!-- <th>{{__('DueSubs')}}</th> -->
 									</tr>
 								</thead>
 								<tbody>
@@ -146,7 +146,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->ACCSUBSCRIPTION }}</td>
 										<td>{{ $history->ACCBF }}</td>
 										<td>{{ $history->ACCINSURANCE }}</td>
-										<td style="background: #f2f2f2;">{{ $history->SUBSCRIPTIONDUE }}</td>
+										<!-- <td style="background: #f2f2f2;">{{ $history->SUBSCRIPTIONDUE }}</td> -->
 										
 									</tr> 
 									@php
@@ -315,8 +315,8 @@ $(function() {
 								table_row += "<td>"+entry.total+"</td>";
 								table_row += "<td>"+entry.ACCSUBSCRIPTION+"</td>";
 								table_row += "<td>"+entry.ACCBF+"</td>";
-								table_row += "<td>"+entry.ACCINSURANCE+"</td>";
-								table_row += "<td style='background: #f2f2f2;'>"+entry.SUBSCRIPTIONDUE+"</td></tr>";
+								table_row += "<td>"+entry.ACCINSURANCE+"</td></tr>";
+								//table_row += "<td style='background: #f2f2f2;'>"+entry.SUBSCRIPTIONDUE+"</td></tr>";
 								$('#'+reflect_table+' tbody').append(table_row);
 							totalhistory+=1;
 						});
