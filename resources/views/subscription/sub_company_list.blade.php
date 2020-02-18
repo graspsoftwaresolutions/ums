@@ -12,6 +12,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css"
     href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 @endsection
 @section('main-content')
 <div id="">
@@ -95,6 +99,14 @@ type="text/javascript"></script>
 @endsection
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
+
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subcomp_sidebar_li_id").addClass('active');
@@ -106,9 +118,9 @@ $(function() {
     $('#page-length-option').DataTable({
         "responsive": true,
 		"order": [[ 0, "desc" ]],
-        "lengthMenu": [
-            [10, 25, 50, 100],
-            [10, 25, 50, 100]
+         "lengthMenu": [
+            [10, 25, 50, 100, 3000],
+            [10, 25, 50, 100, 'All']
         ],
         /* "lengthMenu": [
             [10, 25, 50, -1],
@@ -116,6 +128,39 @@ $(function() {
         ], */
         "processing": true,
         "serverSide": true,
+         dom: 'lBfrtip', 
+          buttons: [
+         {
+           extend: 'pdf',
+           footer: true,
+           exportOptions: {
+            columns: [0,1]
+          },
+                  title : 'Company List',
+                  text: '<i class="fa fa-file-pdf-o"></i>',
+                  titleAttr: 'pdf'
+         },
+         {
+                 extend: 'excel',
+           footer: false,
+           exportOptions: {
+            columns: [0,1]
+          },
+                  title : 'Company List',
+                  text:    '<i class="fa fa-file-excel-o"></i>',
+                  titleAttr: 'excel'
+         },
+        {
+                 extend: 'print', 
+           footer: false,
+           exportOptions: {
+            columns: [0,1]
+          },
+                  title : 'Company List',
+                  text:   '<i class="fa fa-files-o"></i>',
+                  titleAttr: 'print'
+         }  
+      ],
         "ajax": {
             "url": "{{ url(app()->getLocale().'/ajax_subcompany_list') }}",
             "dataType": "json",
