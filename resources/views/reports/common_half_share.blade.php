@@ -80,13 +80,13 @@
                 @endphp
                     <tr>
                         <td style="border: 1px solid #988989 !important;">{{ $hlfshre->union_branch }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($totall,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($bf_amount,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($ins_amount,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($sub_amt,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($hlf_sr,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($tenper,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;">{{ number_format($balamtgn,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round($totall,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round($bf_amount,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round($ins_amount,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round($sub_amt,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round(($sub_amt/2),2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round((($sub_amt/2)*10/100),2) }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ round(($sub_amt/2)-(($sub_amt/2)*10/100),2) }}</td>
                         
                     </tr> 
                 @endforeach
@@ -94,13 +94,13 @@
                 <tr style="font-weight:bold;">
                 
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">Total</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($total_all,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($bf,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($ins,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($sub,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($hlf,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($t_per,2,".",",") }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ number_format($bl_amt,2,".",",") }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($total_all,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($bf,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($ins,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($sub,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round(($sub/2),2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round((($sub/2)*10/100),2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round(($sub/2)-(($sub/2)*10/100),2) }}</td>
                 </tr>
 	
 			
