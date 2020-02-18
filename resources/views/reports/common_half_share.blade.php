@@ -92,15 +92,19 @@
                 @endforeach
                 @endif
                 <tr style="font-weight:bold;">
-                
+					@php
+						$halfsub = ($total_all-($bf+$ins))/2;
+						$halfsubper = (($total_all-($bf+$ins))/2)*(10/100);
+						$toh_hs = round($halfsub,2) - round($halfsubper,2);
+					@endphp
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">Total</td>
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($total_all,2) }}</td>
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($bf,2) }}</td>
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($ins,2) }}</td>
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($sub,2) }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round(($sub/2),2) }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round((($sub/2)*10/100),2) }}</td>
-                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round(($sub/2)-(($sub/2)*10/100),2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($halfsub,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($halfsubper,2) }}</td>
+                        <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($toh_hs,2) }}</td>
                 </tr>
 	
 			
