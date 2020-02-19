@@ -43,7 +43,7 @@
 					@include('dashboard.irc_confirmation')
 				@endrole
 				@role('irc-branch-committee')
-					@include('dashboard.irc_confirmation')
+					@include('dashboard.irc_branch_commitee')
 				@endrole
 				@include('layouts.right-sidebar')
 			 <!-- END: Page Main-->

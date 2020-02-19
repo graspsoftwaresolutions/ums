@@ -221,7 +221,8 @@ class IrcController extends CommonController
 	
 	public function ajax_irc_list(Request $request){
 		$get_roles = Auth::user()->roles;
-        $user_role = $get_roles[0]->slug;
+		$user_role = $get_roles[0]->slug;
+		$user_id = Auth::user()->id;
 		$searchfilter = $request->input('searchfilter');
 		$statusfilter = $request->input('statusfilter');
 		$columns = array(
@@ -237,8 +238,18 @@ class IrcController extends CommonController
         );
 
 		$totalqry = DB::table('irc_confirmation as i')
-					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
+					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+					 ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  ;
 		if($user_role=='irc-branch-committee'){
+			$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
+			->pluck('union_branch_id')->first();  
+			$c_head = DB::table('union_branch as ub')->select('ub.id')
+						->where('ub.id','=',$unionbranchid)
+						->where('ub.is_head','=',1)
+						//->dump()
+						->count();
+						//dd($c_head);
+			
 			if($statusfilter!=''){
 				if($statusfilter==0){
 					  $totalqry = $totalqry->where('i.nameofperson','=','1')
@@ -259,7 +270,21 @@ class IrcController extends CommonController
 					  ->where('i.herebyconfirm','=','1')
 					  ->where('i.filledby','=','1');
 			}
+			if($c_head!=1){
+				$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+			}
 		}else{
+			$memberid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
+			->pluck('MemberCode')->first();  
+			$unionbranchid = DB::table('membership as m')
+				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();
+
+			$c_head = DB::table('union_branch as ub')->select('ub.id')
+						->where('ub.id','=',$unionbranchid)
+						->where('ub.is_head','=',1)
+						//->dump()
+						->count();
 			if($statusfilter!=''){
 				if($statusfilter==0){
 					   $totalqry = $totalqry->where('i.status','=',0)
@@ -277,16 +302,25 @@ class IrcController extends CommonController
 								  ->orWhereNull('i.filledby')
 								  ->orWhereNull('i.nameofperson');
 								});
+						if($c_head!=1){
+							$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+						}
 				}else{
-					 $totalqry = $totalqry->where('i.nameofperson','=','1')
+					$totalqry = $totalqry->where('i.nameofperson','=','1')
 					  ->where('i.waspromoted','=','1')
 					  ->where('i.beforepromotion','=','1')
 					  ->where('i.attached','=','1')
 					  ->where('i.herebyconfirm','=','1')
 					  ->where('i.filledby','=','1');
 					  //->where('i.status','=','0');
+					if($c_head!=1){
+						$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+					}
 				}
 			}else{
+				if($c_head!=1){
+					$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+				}
 				 //$totalqry = $totalqry->where('i.status','=','0');
 			}
 		}
@@ -294,7 +328,8 @@ class IrcController extends CommonController
 		
 		$commonselect = DB::table('irc_confirmation as i')
 						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id')
-						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id');
+						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
+						->leftjoin('company_branch as cb','m.branch_id','=','cb.id');
 		if($user_role=='irc-branch-committee'){
 			if($statusfilter!=''){
 				if($statusfilter==0){
@@ -315,6 +350,9 @@ class IrcController extends CommonController
 					  ->where('i.attached','=','1')
 					  ->where('i.herebyconfirm','=','1')
 					  ->where('i.filledby','=','1');
+			}
+			if($c_head!=1){
+				$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
 			}
 		}else{
 			if($statusfilter!=''){
@@ -346,6 +384,9 @@ class IrcController extends CommonController
 				}
 			}else{
 				 //$commonselect = $commonselect->where('i.status','=','0');
+			}
+			if($c_head!=1){
+				$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
 			}
 		}
 		
@@ -569,17 +610,41 @@ class IrcController extends CommonController
 	//getMembersList
 	public function getMembersList(Request $request)
 	{
+		$userid = Auth::user()->id;
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+		if($user_role == 'irc-confirmation'){
+			$memberid = DB::table('irc_account as irc')->where('user_id','=',$userid)
+			->pluck('MemberCode')->first();  
+			$unionbranchid = DB::table('membership as m')
+				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();  
+		}else{
+			$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$userid)
+			->pluck('union_branch_id')->first();  
+		}
+
+		$c_head = DB::table('union_branch as ub')->select('ub.id')
+							->where('ub.id','=',$unionbranchid)
+							->where('ub.is_head','=',1)
+							//->dump()
+							->count();
+		
+
 	    $searchkey = $request->input('searchkey');
         $search = $request->input('query');
-        $res['suggestions'] = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','m.gender')      
+        $ircsuggestions = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','m.gender') ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
                             ->where(function($query) use ($search){
                                 $query->orWhere('m.member_number', 'LIKE',"{$search}%")
                                     ->orWhere('m.name', 'LIKE',"{$search}%")
 									->orWhere('m.old_ic', 'LIKE',"{$search}%")
 									->orWhere('m.new_ic', 'LIKE',"{$search}%");
                             })->limit(25)
-                            ->where('status_id','!=',4)  
-                            ->get();   
+                            ->where('status_id','!=',4);   
+		if($c_head!=1){
+			$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
+		}
+		$res['suggestions'] = $ircsuggestions->get();
          return response()->json($res);
 	}
 
