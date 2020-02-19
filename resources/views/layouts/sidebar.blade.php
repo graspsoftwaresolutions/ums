@@ -134,11 +134,11 @@
         @endif
       @endif
       
-      @if($user_role=='irc-confirmation' )
+      @if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee' )
 		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
-		  @endif
-		  @if($user_role=='irc-branch-committee' )
-		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
+		
+		  <li class="bold"><a id="pendirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=0"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Pending List') }}</span></a>
+         <li class="bold"><a id="conirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=1"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Confirm List') }}</span></a>
 		  @endif
 		@if($user_role=='union')
        <li id="data_cleaning_sidebars_id" class="bold"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">clear</i><span class="menu-title" data-i18n="Dashboard">Data Cleaning</span></a>

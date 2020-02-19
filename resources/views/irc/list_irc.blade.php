@@ -129,8 +129,13 @@
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
 <script>
-
+@if($data['irc_status']=="")
 $("#irc_sidebar_a_id").addClass('active');
+@elseif($data['irc_status']==0)
+$("#pendirc_sidebar_a_id").addClass('active');
+@elseif($data['irc_status']==1)
+$("#conirc_sidebar_a_id").addClass('active');
+@endif
 $(function () {
 	  $(".datepicker-cutom").datepicker({
 		 autoclose: true,
