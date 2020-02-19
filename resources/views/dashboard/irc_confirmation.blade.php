@@ -51,7 +51,7 @@
 				   <h4 class="card-stats-number white-text">{{ $data['total_ircapproval_count'] }}</h4>
 				</div>
 				<div class="card-action cyan darken-1">
-				   <div id="clients-bar" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/irc_list?status=1')}}">{{__('Confirm IRC List') }} ({{ $data['total_ircapproval_count']+$data['total_ircconfirm_count'] }})</a> </div>
+				   <div id="clients-bar" class="center-align"><a style="color:white" href="#">&nbsp; </a> </div>
 				</div>
 			</div>
 		</div>
@@ -63,7 +63,7 @@
 				   <h4 class="card-stats-number white-text">{{ $data['total_ircconfirm_count'] }}</h4>
 				</div>
 				<div class="card-action green">
-				   <div id="profit-tristate" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/irc_list?status=1')}}">{{__('Confirm IRC List') }} ({{ $data['total_ircapproval_count']+$data['total_ircconfirm_count'] }}) </a></div>
+				   <div id="profit-tristate" class="center-align"><a style="color:white" href=#">&nbsp; </a></div>
 				</div>
 			</div>
 		</div>
