@@ -38,12 +38,58 @@
 		float: left;
 		height: 2.4rem;
 	}
+	.btn-sm {
+			line-height: 36px;
+			display: inline-block;
+			height: 35px;
+			padding: 0 7px;
+			vertical-align: middle;
+			text-transform: uppercase;
+			border: none;
+			border-radius: 4px;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+	@media print {
+		#printbutton{
+			display: none !important;
+		}
+		.sidenav-main,.nav-wrapper {
+		 	display:none !important;
+		}
+
+		.gradient-45deg-indigo-purple{
+			display:none !important;
+		}
+		#filterarea{
+			display:none !important;
+		}
+
+		#subsfilter{
+			display:none !important;
+		}
+
+		#tabdiv{
+			display:none !important;
+		}
+
+		#printableArea {
+		 	display:block !important;
+		}
+		td, th {
+		    display: table-cell;
+		    padding: 10px 5px;
+		    text-align: left;
+		    vertical-align: middle;
+		    border-radius: 2px;
+		}
+	}
 </style>
 @endsection
 @section('main-content')
 <div class="row">
 	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
-	<div class="col s12">
+	<div id="filterarea" class="col s12">
 		<div class="container">
 			<div class="section section-data-tables">
 				<!-- BEGIN: Page Main-->
@@ -76,7 +122,7 @@
 			</div>   
 		</div>
 	</div>
-	<div class="row">
+	<div id="subsfilter" class="row">
 		<div class="col s12">
 			<div class="container">
 				<div class="card">
@@ -190,7 +236,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col s12">  
+		<div id="tabdiv" class="col s12">  
 			<ul class="tabs">  
 				<li class="tab col s3"><a class="active " href="#monthly_status" id="all">Monthly Status</a></li>  
 				@if($user_role!='company' && $user_role!='company-branch')
@@ -198,12 +244,16 @@
 				@endif
 			</ul>  
 		</div> 
-		<div id="monthly_status" class="col s12">
+		<div id="printableArea" id="monthly_status" class="col s12">
 			 <div class="">
+			 	<br>
+			 	<a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm right" style="background:#ccc;" onClick="window.print()"> Print</a>
+			 	<div class="clearfix"></div>
 				<div class="col s12 m6">
-					<div class="card subscriber-list-card animate fadeRight">
+					<div id="DivIdToPrint" class="card subscriber-list-card animate fadeRight">
 						 <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
 							<h4 class="card-title mb-0">{{__('Member Status') }} 
+								<!-- <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm" style="background:#ccc;" onClick="return printDiv()"> <i class="material-icons">print</i></a> -->
 								<span class="right datamonth">[{{ date('M/Y') }}]</span>
 							</h4>
 						 </div>
@@ -738,26 +788,47 @@ $(document).ready(function() {
 	$(".monthly-sub-status").click(function() {
 		//console.log($(this).data("href"));
 		if($(this).attr("data-href")!=""){
-			win = window.location.replace($(this).attr("data-href"));
+			window.open($(this).attr("data-href"), '_blank');
+			//win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$(".monthly-approval-status").click(function() {
 		if($(this).attr("data-href")!=""){
-			win = window.location.replace($(this).attr("data-href"));
+			window.open($(this).attr("data-href"), '_blank');
+			//win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$(".monthly-company-sub-status").click(function() {
 		if($(this).attr("data-href")!=""){
-			win = window.location.replace($(this).attr("data-href"));
+			window.open($(this).attr("data-href"), '_blank');
+			//win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$(".monthly-company-approval-status").click(function() {
 		if($(this).attr("data-href")!=""){
-			win = window.location.replace($(this).attr("data-href"));
+			window.open($(this).attr("data-href"), '_blank');
+			//win = window.location.replace($(this).attr("data-href"));
 		}
     });
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subscription_sidebar_li_id").addClass('active');
 	$("#subscription_sidebar_a_id").addClass('active');
+	function printDiv() 
+	{
+
+	  var divToPrint=document.getElementById('DivIdToPrint');
+	  console.log(divToPrint.innerHTML);
+
+	  var newWin=window.open('','Print-Window');
+
+	  newWin.document.open();
+
+	  newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+
+	  newWin.document.close();
+
+	  setTimeout(function(){newWin.close();},10);
+
+	}
 </script>
 @endsection

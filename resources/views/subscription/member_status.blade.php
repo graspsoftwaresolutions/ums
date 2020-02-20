@@ -23,6 +23,47 @@
 	#transfer_member{
 		color:#fff;
 	}
+	@media print {
+		#printbutton{
+			display: none !important;
+		}
+		.sidenav-main,.nav-wrapper {
+		 	display:none !important;
+		}
+
+		.gradient-45deg-indigo-purple{
+			display:none !important;
+		}
+		#filterarea{
+			display:none !important;
+		}
+
+		#subsfilter{
+			display:none !important;
+		}
+
+		#tabdiv{
+			display:none !important;
+		}
+		#advancedsearchs{
+			display:none !important;
+		}
+		.btn{
+			display:none !important;
+		}
+
+		#printableArea {
+		 	display:block !important;
+		}
+		td, th {
+		    display: table-cell;
+		    padding: 10px 4px;
+		    text-align: left;
+		    vertical-align: middle;
+		    border-radius: 2px;
+		}
+	}
+
 </style>
 @php
 	$member_status = '';
@@ -270,6 +311,9 @@
 
 				@endif
 				<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
+			
+			 	<a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a>
+			 	<br>
 				<table id="page-length-option" class="display nowrap" width="100%">
 					<thead>
 						<tr>
