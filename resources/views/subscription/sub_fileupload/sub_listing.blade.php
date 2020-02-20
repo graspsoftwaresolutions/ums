@@ -73,7 +73,7 @@
 			display:none !important;
 		}
 
-		#printableArea {
+		#monthly_status {
 		 	display:block !important;
 		}
 		td, th {
@@ -244,7 +244,7 @@
 				@endif
 			</ul>  
 		</div> 
-		<div id="printableArea" id="monthly_status" class="col s12">
+		<div id="monthly_status" class="col s12">
 			 <div class="">
 			 	<br>
 			 	<a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm right" style="background:#ccc;" onClick="window.print()"> Print</a>
