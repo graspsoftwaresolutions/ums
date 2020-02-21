@@ -94,7 +94,7 @@
 													</tr>
 													<tr>
 														<th>{{__('Status') }}</th>
-														<th width="5%">{{__('Mem/ID')}} </th>
+														<th width="5%">{{__('M/ID')}} </th>
 														<th width="10%">{{__('Full Name')}}</th>
 														<th>{{__('ICNO')}}</th>
 														<th width="5%">{{__('Company Name')}}</th>

@@ -327,7 +327,7 @@ class IrcController extends CommonController
 		
 		
 		$commonselect = DB::table('irc_confirmation as i')
-						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id')
+						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id','m.new_ic','m.old_ic','m.employee_id')
 						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
 						->leftjoin('company_branch as cb','m.branch_id','=','cb.id');
 		if($user_role=='irc-branch-committee'){
@@ -464,12 +464,21 @@ class IrcController extends CommonController
 				}else{
 					$nestedData['status'] = $irc->status_name;
 				}
+
+				if($irc->new_ic!=''){
+					$icno = $irc->new_ic;
+				}else if($irc->old_ic!=''){
+					$icno = $irc->old_ic;
+				}else{
+					$icno = $irc->employee_id;
+				}
+				
                 $nestedData['resignedmemberno'] = $irc->resignedmemberno;
                 $nestedData['resignedmembername'] = $irc->resignedmembername;
-                $nestedData['resignedmembericno'] = $irc->resignedmembericno;
+                $nestedData['resignedmembericno'] = $icno;
                 $nestedData['resignedmemberbankname'] = $irc->resignedmemberbankname;
                 $nestedData['resignedmemberbranchname'] = $irc->resignedmemberbranchname;
-                $nestedData['received'] = $irc->received;
+                $nestedData['received'] = $irc->received=='0000-00-00' ? '' : $irc->received;
                 $company_enc_id = Crypt::encrypt($irc->id);
                 $editurl =  route('edit.irc', [app()->getLocale(),$company_enc_id]) ;
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
