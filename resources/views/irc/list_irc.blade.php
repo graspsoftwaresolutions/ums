@@ -24,7 +24,7 @@
 	    border-radius: 3px;
 		color: #fff;
 	}
-	#page-length-option td:not(:last-child) {
+	#page-length-option td:not(:last-child) td:nth-child(3) {
 		word-break: break-word !important;
 		white-space: unset !important;
 		vertical-align: top;
@@ -96,7 +96,7 @@
 														<th>{{__('Status') }}</th>
 														<th width="5%">{{__('M/ID')}} </th>
 														<th width="10%">{{__('Full Name')}}</th>
-														<th>{{__('ICNO')}}</th>
+														<th style="">{{__('ICNO')}}</th>
 														<th width="5%">{{__('Company Name')}}</th>
 														<th>{{__('Branch')}}</th>
 														<th>{{__('Received')}}</th>
