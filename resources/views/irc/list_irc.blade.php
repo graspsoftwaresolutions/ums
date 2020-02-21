@@ -24,10 +24,14 @@
 	    border-radius: 3px;
 		color: #fff;
 	}
-	#page-length-option td:not(:last-child) td:nth-child(3) {
+	#page-length-option td:not(:last-child) {
 		word-break: break-word !important;
 		white-space: unset !important;
 		vertical-align: top;
+	}
+	#page-length-option td:nth-child(4) {
+		word-break: normal !important;
+		
 	}
 
 </style>
