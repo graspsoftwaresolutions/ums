@@ -60,7 +60,7 @@
             $user_role = $get_roles[0]->slug;
           @endphp
           <?php //print_r($user_role);die; ?>
-          @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
+          @if($user_role=='union' || $user_role=='union-branch')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
           @endif
            @if($user_role=='data-entry')
@@ -153,7 +153,7 @@
           </div>
         </li>
 		@endif
-		   @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
+		   @if($user_role=='union' || $user_role=='union-branch')
 	  <li id="reports_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">receipt	</i><span class="menu-title" data-i18n="">{{ __('Reports') }}</span></a>
           <div class="collapsible-body">
             @php

@@ -1,5 +1,30 @@
 @extends('layouts.admin')
 @section('headSection')
+<style type="text/css">
+	.progress {
+	    position: relative;
+	    display: block;
+	    overflow: hidden;
+	    width: 100%;
+	    height: 25px !important;
+	    margin: .5rem 0 1rem 0;
+	    border-radius: 2px;
+	    background-color: white;
+	    border: 1px solid #ff4081;
+	}
+	.notification-badge {
+	    font-family: Muli,sans-serif;
+	    position: relative;
+	    //top: -20px;
+	    //right: 5px;
+	    //margin: 0 -.8em;
+	    padding: 2px 5px;
+	    color: #fff;
+	    border-radius: 20%;
+	    background-color: #ff4081;
+	    box-shadow: 0 0 10px 0 #ff4081;
+	}
+</style>
 @endsection
 
 @section('main-content')
@@ -50,11 +75,26 @@
 									<p class="card-title">Month :  {{ $data['month_year'] }}</p>
 									<p class="card-title">Bank :  {{ $data['company_name'] }} </p>
 									</br>
-									<div id="scanning-details" class="hide gradient-45deg-amber-amber padding-1 medium-small" style="color:#fff">
-									{{__('Updating Member details, please dont refresh page....') }}
-									</div>
+									
 									<div class="row">
-										<div class="col s6">
+										<div class="col offset-s2 s8">
+											<h5 class="">{{__('Updating Member details, please dont refresh the page....') }}</h5>
+											
+											<!-- <div id="scanning-details" class="hide center-align gradient-45deg-amber-amber padding-1 medium-small" style="color:#fff">
+											{{__('Updating Member details, please dont refresh page....') }}
+											</div> -->
+											<br>
+											<br>
+											<input type="text" class="hide" name="progress_percentage" id="progress_percentage" value="0">
+											<span id="progress_percent" class="notification-badge right">0%</span>
+											<div class="progress">
+										      <div class="determinate" style="width: 0%"></div>
+										      
+										    </div>
+										</div>
+										<div class="col s6 hide">
+											
+  
 											<table width="100%">	
 												<thead>
 													<tr>
@@ -88,7 +128,7 @@
 												
 											</table>
 										</div>
-										<div class="col s6">
+										<div class="col s6 hide">
 											@if($data['row_count']>0)
 											<table width="100%">	
 												<thead>
@@ -112,6 +152,8 @@
 												</tbody>
 											</table>
 											@endif
+											<input type="text" name="number_of_calls" id="number_of_calls" value="{{ $count }}">
+											<input type="text" name="percent_per_call" id="percent_per_call" value="{{ round(100/$count) }}">
 										</div>
 									</div>
 									
@@ -151,6 +193,7 @@
 	
 	function ScanMembership(company_id,start){
 		var lastrow ={{$lastrow}};
+		
 		if(company_id!=""){
 		var url = "{{ url(app()->getLocale().'/process-scanning') }}" + '?company_auto_id=' + company_id+ '&start='+start;
 			$.ajax({
@@ -164,8 +207,17 @@
 						
 						if(start!=lastrow){
 							var limit = {{ $limit }};
+							var progress_count = $("#progress_percentage").val();
+							var percent_per_call = $("#percent_per_call").val();
+							progress_count = parseInt(progress_count)+parseInt(percent_per_call);
+							progress_count = progress_count>100 ? 100 : progress_count;
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
 							ScanMembership(company_id,parseInt(start+limit));
+							$(".determinate").css('width',progress_count+'%');
+							$("#progress_percent").text(progress_count+'%');
+							console.log(progress_count);
+							
+							$("#progress_percentage").val(progress_count);
 						}else{
 							$('#scanning-details').html(result.message);
 							$('#scanning-details').removeClass('gradient-45deg-amber-amber');

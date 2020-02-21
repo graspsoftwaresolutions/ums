@@ -446,6 +446,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('invalidsubs','SubscriptionController@ViewStruckoff')->name('subscription.view_struckoff');
 	Route::get('followup-list','MonthEndController@ListMonthendFollowUp')->name('followup.list');
 	Route::post('followup-list','MonthEndController@ListMonthendFollowUpFilter')->name('monthendfollowup.list');
+
+	Route::get('sub-company-summary/{parameter}','SubscriptionController@companyMembersSummary')->name('subscription.summary');
+	Route::get('summary-status','SubscriptionController@SummarystatusCountView')->name('summary.status');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

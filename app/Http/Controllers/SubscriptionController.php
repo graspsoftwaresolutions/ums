@@ -333,7 +333,12 @@ class SubscriptionController extends CommonController
 		} */
 
         if($company_auto_id!=""){
-           
+            $banktype = DB::table('mon_sub_company as mc')
+            ->select('mc.banktype')
+            ->where('id','=',$company_auto_id)
+            ->pluck('mc.banktype')
+            ->first();
+
             $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount','MonthlySubscriptionCompanyId')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
                                                             ->where('update_status','!=',1)
@@ -689,7 +694,12 @@ class SubscriptionController extends CommonController
             //Log::info($start.'count-'.$count);
             //Log::Error($start.'rowcount-'.$row_count);
             $enc_id = Crypt::encrypt($company_auto_id);
-            $return_data = ['status' => 1 ,'message' => 'status and member code updated successfully, Redirecting to subscription details...','redirect_url' =>  URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id)];
+            if($banktype==1){
+                $return_data = ['status' => 1 ,'message' => 'status and member code updated successfully, Redirecting to subscription details...','redirect_url' =>  URL::to('/'.app()->getLocale().'/sub-company-summary/'.$enc_id)];
+            }else{
+                $return_data = ['status' => 1 ,'message' => 'status and member code updated successfully, Redirecting to subscription details...','redirect_url' =>  URL::to('/'.app()->getLocale().'/sub-company-members/'.$enc_id)];
+            }
+          
         }else{
             $return_data = ['status' => 0 ,'message' => 'Invalid company id'];
 		}
@@ -3001,6 +3011,144 @@ class SubscriptionController extends CommonController
     }
 
     public function ViewFollowup($lang, Request $request){
+
+    }
+
+    public function companyMembersSummary($lang,$id)
+    {
+        $company_auto_id = Crypt::decrypt($id);
+        $data['company_auto_id'] = $company_auto_id;
+        $status_all = Status::where('status','=',1)->get();  
+
+       
+
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+
+        if($user_role=='company'){
+
+            $data['subsdata'] = DB::table('mon_sub_company as sc')->select('s.Date','c.short_code','c.company_name')
+            ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+            ->where('sc.id','=',$company_auto_id)
+           // ->where('mon_sub_company.id','=',$company_auto_id)
+            //->pluck('s.Date')
+            ->first();
+
+            $data['matched_count'] = DB::table('mon_sub_member as mm')->select('*')
+            ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+            //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+            ->where('sc.id','=',$company_auto_id)
+            ->where('mm.StatusId','<=',2)
+            ->count();
+
+            $data['doj_count'] = DB::table('mon_sub_member as mm')->select('*')
+            ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+            ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+            ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+            ->where('sc.id','=',$company_auto_id)
+            ->where('s.Date','=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+            ->count();
+
+            $data['matched_amount'] = DB::table('mon_sub_member as mm')->select(DB::raw('sum(Amount) as Amount'))
+            ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+            ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+            ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+            ->where('sc.id','=',$company_auto_id)
+            ->where('mm.StatusId','<=',2)
+            ->where('s.Date','<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+            ->pluck('Amount')
+            ->first();
+            //return $data['matched_amount'] ;
+
+            $data['company_subscription_list'] = DB::table('mon_sub_member as mm')->select('*')
+            ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+            //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+            ->where('sc.id','=',$company_auto_id)
+            //->where('mm.STatusId','<=',2)
+            ->count();
+
+            $company_id = DB::table('company_branch as cb')->select('cb.company_id')
+            ->leftjoin('company as c', 'c.id' ,'=','cb.company_id')
+            ->where('cb.user_id','=',$user_id)
+            ->pluck('cb.company_id')
+            ->first();
+
+            $data['members_count'] = DB::table('membership as m')
+            ->leftjoin('company_branch as cb', 'cb.id' ,'=','m.branch_id')
+            ->leftjoin('company as c', 'c.id' ,'=','cb.company_id')
+            ->where('status_id','<=',2)->where('c.id','=',$company_id)->count();
+            return view('subscription.company_members_summary')->with('data', $data);
+        }else{
+            return 'Invalid access';
+        }
+
+       
+    }
+
+    public function SummarystatusCountView($lang, Request $request){
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+		
+        $status = $request->input('status');
+        $date = $request->input('date');
+        $company_id = $request->input('company_id');
+       
+		$defaultdate = date('Y-m-01',$date);
+		$data['company_id'] = $company_id;
+        $filter_date = date('Y-m-01',$date);
+        $data['status'] = $status;
+        $data['filter_date'] = strtotime(date('Y-m-01',strtotime($defaultdate)));
+
+        if($user_role=='company'){
+            $user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			$company_ids = DB::table('company_branch as cb')
+							->leftjoin('company as c','cb.company_id','=','c.id')
+							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+							->where('cb.company_id', '=',$user_company_id)
+							->groupBY('c.id')
+                            ->pluck('c.id');
+
+            $company_str_List ='';
+            $slno=0;
+            foreach($company_ids as $cids){
+                if($slno!=0){
+                    $company_str_List .=',';
+                }
+                $company_str_List .="'".$cids."'";
+                $slno++;
+            }
+
+            if($status==1){
+                $cond ='';
+                if(isset($company_id) && $company_id!=''){
+                    $cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
+                }
+               
+                $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId<="2" '.$cond));
+                $data['member'] = $members_data;
+              //  dd($members_data);
+                
+            }else{
+                $cond ='';
+                if(isset($company_id) && $company_id!=''){
+                    $cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
+                }
+               
+                $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>"2" OR m.MemberCode is Null)'));
+                dd('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>"2" OR m.MemberCode is Null)');
+                $data['member'] = $members_data;
+            }
+
+            return view('subscription.summary_status')->with('data',$data);
+        }
+
 
     }
 
