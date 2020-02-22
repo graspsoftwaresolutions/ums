@@ -407,7 +407,7 @@
 						
 						<div class="input-field col s12 m4">
 						  <i class="material-icons prefix">date_range</i>
-						  <input id="submitted_at" name="submitted_at" data-reflectage="dob" class="datepicker-custom"  type="text">
+						  <input id="submitted_at" name="submitted_at" data-reflectage="dob" required="" class="datepicker-custom"  type="text">
 						  <label for="icon_prefix" class="force-active">File Submitted</label>
 						</div> 
 					<div class="input-field col s12 m2">

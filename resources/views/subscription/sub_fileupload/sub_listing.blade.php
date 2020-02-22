@@ -265,7 +265,7 @@
                                                 </div>
                                                 <div class="col m4 s12">
                                                     <label for="sub_company">{{__('Company') }}*</label>
-                                                    <select name="sub_company" id="sub_company" class="error browser-default " data-error=".errorTxt6">
+                                                    <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
                                                         <option value="" selected>{{__('Choose Company') }}</option>
                                                         @foreach($companylist as $value)
                                                         <option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>

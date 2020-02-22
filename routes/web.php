@@ -449,6 +449,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('sub-company-summary/{parameter}','SubscriptionController@companyMembersSummary')->name('subscription.summary');
 	Route::get('summary-status','SubscriptionController@SummarystatusCountView')->name('summary.status');
+	Route::post('ajax_save_summary','SubscriptionController@saveMismatched')->name('mismatched.save');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

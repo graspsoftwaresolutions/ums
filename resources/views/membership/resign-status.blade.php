@@ -33,7 +33,7 @@
 								 </div>
 								<div class="row">
 									<div class="col s12">
-										@include('membership.pdf_resign');
+										@include('membership.pdf_resign')
 									</div>
 								</div>
 							</div>

@@ -8,6 +8,16 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-theme.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <link class="rtl_switch_page_css" href="{{ asset('public/css/steps.css') }}" rel="stylesheet" type="text/css">
+<style type="text/css">
+	#designation .select2-selection{
+		line-height: 0.8 !important;
+	}
+	.select2 .selection .select2-selection--single, .select2-container--default .select2-search--dropdown .select2-search__field {
+	    border-width: 0 0 1px 0 !important;
+	    border-radius: 0 !important;
+	    height: 2.30rem !important;
+	}
+</style>
 @endsection
 @section('main-content')
 <div id="">
@@ -177,26 +187,8 @@
 																	<div class="errorTxt7"></div>
 																</div>
 																<div class="col s12 m6">
-																	<div class="input-field col s12 m3">
-																		<p>
-																			<label>
-																			<input type="checkbox" id="rejoined"/>
-																			<span>{{__('Rejoined') }}</span>
-																			</label>
-																		</p>
-																	</div> 
-																	<div class="input-field col s12 m9" style="display:none;" id="member_old_div">
-																		<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
-																		<input type="text" name="old_member_id" value="" id="old_member_id" class="autocomplete hide">
-																		<label for="old_mumber_number">{{__('Old Number') }}</label>
-																		<span> 
-																		</span>
-																	</div>
-																</div>
-																<div class="clearfix" style="clear:both"></div>
-																<div class="col s12 m6">
 																	<label>{{__('Designation') }}*</label>
-																	<select name="designation" id="designation" class="error browser-default selectpicker" data-error=".errorTxt8">
+																	<select name="designation" id="designation" class="error browser-default selectpicker" onchange="return ChangeRejoinLabel(this.value)" data-error=".errorTxt8" style="line-height: 0.8;">
 																		<option value="" >{{__('Select') }}</option>
 																		@foreach($data['designation_view'] as $key=>$value)
 																		<option value="{{$value->id}}">{{$value->designation_name}}</option>
@@ -204,6 +196,24 @@
 																	</select>
 																	<div class="input-field">
 																		<div class="errorTxt8"></div>
+																	</div>
+																</div>
+																<div class="clearfix" ></div>
+																<div class="col s12 m6">
+																	<div class="input-field col s12 m3">
+																		<p>
+																			<label>
+																			<input type="checkbox" id="rejoined"/>
+																			<span id="rejoined_label">{{__('Rejoined') }}</span>
+																			</label>
+																		</p>
+																	</div> 
+																	<div class="input-field col s12 m8" style="display:none;margin-left: 10px;" id="member_old_div">
+																		<input type="text" name="old_mumber_number" value="{{ old('old_mumber_number') }}" id="old_mumber_number" class="autocomplete">
+																		<input type="text" name="old_member_id" value="" id="old_member_id" class="autocomplete hide">
+																		<label for="old_mumber_number">{{__('Old Number') }}</label>
+																		<span> 
+																		</span>
 																	</div>
 																</div>
 																<div class="col s12 m6">
@@ -218,6 +228,8 @@
 																		<div class="errorTxt9"></div>
 																	</div>
 																</div>
+																
+																
 																<div class="clearfix" ></div>
 																<div class="col s12 m6">
 																	<label>{{__('Country Name') }}*</label>
@@ -1128,6 +1140,15 @@
         format: 'dd/mm/yyyy',
         autoHide: true,
     });
+    function ChangeRejoinLabel(data){
+    	var designation = $( "#designation option:selected" ).text();
+    	if(designation=="SPECIAL GRADE"){
+    		$("#rejoined_label").text('Redesignated');
+    	}else{
+			$("#rejoined_label").text('Rejoined');
+    	}
+    	
+    }
 </script>
 @include('membership.member_common_script')
 @endsection

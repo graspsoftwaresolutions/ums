@@ -26,6 +26,11 @@
     }
     $(".readonlyarea :input").attr("readonly", true);
 
+    .select2 .selection .select2-selection--single, .select2-container--default .select2-search--dropdown .select2-search__field {
+        border-width: 0 0 1px 0 !important;
+        border-radius: 0 !important;
+        height: 2.30rem !important;
+    }
     
     $("#irc_confirmation_area :input").attr("readonly", true);
 </style>
@@ -333,6 +338,21 @@
                                                         <label for="doe" class="force-active">Date of Emp</label>
                                                         <div class="errorTxt26"></div>
                                                     </div>
+                                                      <div class="col s12 m6">
+                                                        @php
+                                                            $designname = '';
+                                                        @endphp
+                                                        <label>Designation* </label>
+                                                        <select name="designation" id="designation" data-error=".errorTxt2" class="error browser-default selectpicker"  onchange="return ChangeRejoinLabel(this.value)">
+                                                            <option value="">Select</option>
+                                                            @foreach($data['designation_view'] as $key=>$value)
+                                                            <option value="{{$value->id}}" @php if($value->id == $values->designation_id) { $designname = $value->designation_name;  echo "selected";} @endphp>{{$value->designation_name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="input-field">
+                                                            <div class="errorTxt2"></div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col s12 m6 {{ $values->status_id>2 ? 'hide' : '' }}">
                                                         @php
                                                             $old_membercode = '';
@@ -346,7 +366,7 @@
                                                             <p>
                                                                 <label>
                                                                     <input type="checkbox" id="rejoined" @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'checked' : ''; @endphp/>
-                                                                    <span>Rejoined</span>
+                                                                    <span id="rejoined_label">@if($designname=='SPECIAL GRADE') Redesignated @else Rejoined @endif</span>
                                                                 </label>
                                                             </p>
                                                         </div>
@@ -361,20 +381,7 @@
                                                         @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'Old Number: '.$old_membercode : ''; @endphp @endif
                                                         <input type="text" name="old_member_id" value="{{$values->old_member_number}}" id="old_member_id" class=" hide">
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
-                                                    <div class="col s12 m6">
-                                                        <label>Designation*</label>
-                                                        <select name="designation" id="designation" data-error=".errorTxt2" class="error browser-default selectpicker">
-                                                            <option value="">Select</option>
-                                                            @foreach($data['designation_view'] as $key=>$value)
-                                                            <option value="{{$value->id}}" @php if($value->id == $values->designation_id) { echo "selected";} @endphp>{{$value->designation_name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <div class="input-field">
-                                                            <div class="errorTxt2"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col s12 m6">
+                                                     <div class="col s12 m6">
                                                         <label>Race*</label>
                                                         <select name="race" id="race" data-error=".errorTxt3" class="error browser-default selectpicker">
                                                             <option value="">Select</option>
@@ -386,6 +393,9 @@
                                                             <div class="errorTxt3"></div>
                                                         </div>
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
+                                                  
+                                                   
                                                     <div class="col s12 m6">
                                                         <label>Country Name*</label>
                                                         <select name="country_id" id="country_id" data-error=".errorTxt4" class="error browser-default selectpicker">
@@ -1950,6 +1960,15 @@
             }
         }
     });
+    function ChangeRejoinLabel(data){
+        var designation = $( "#designation option:selected" ).text();
+        if(designation=="SPECIAL GRADE"){
+            $("#rejoined_label").text('Redesignated');
+        }else{
+            $("#rejoined_label").text('Rejoined');
+        }
+        
+    }
 </script>
 @include('membership.member_common_script') 
 @endsection

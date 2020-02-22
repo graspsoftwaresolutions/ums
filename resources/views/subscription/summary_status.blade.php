@@ -63,6 +63,9 @@
 		    border-radius: 2px;
 		}
 	}
+	#description{
+		height: 58px !important;
+	}
 
 </style>
 @php
@@ -136,8 +139,11 @@
 		<div class="card">
 			<div class="card-content">
 				<h4 class="card-title">
-				
-				Members List
+				@if($data['status']==1)
+					Uploaded Matched Members List
+				@else
+					Uploaded Not Matched Members List
+				@endif
 				@php
 					$companyid = $data['company_id'];
 				@endphp
@@ -166,13 +172,15 @@
 						<tr>
 							<th width="3%">{{__('S.No')}}</th>
 							<th width="10%">{{__('Member Name')}}</th>
-							<th width="9%">{{__('Member Id')}}</th>
 							
 							<th width="10%">{{__('NRIC')}}</th>
 							<th width="7%">{{__('Amount')}}</th>
+							@if($data['status']!=1)
+							<th width="10%">{{__('Update Status')}}</th>
 							
 							
 							<th width="15%">{{__('Action')}}</th>
+							@endif
 						</tr> 
 					</thead>
 					<tbody>
@@ -192,19 +200,18 @@
 							<tr style="overflow-x:auto;">
 								<td>{{$slno}}</td>
 								<td>{{ $member->up_member_name }}</td>
-								<td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td>
+								<!--td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td-->
 								
 								<td>{{ $member->up_nric }}</td>
 								<td>{{ $member->Amount }}</td>
+								@if($data['status']!=1)
+								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
 								
 								
 								<td>
-								@if($member->member_number!='')
-								<a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
-								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
-								@endif
-								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
+								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td>
+								@endif
 							</tr> 
 							@php
 								$slno++;
@@ -225,7 +232,7 @@
         @csrf
 		<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
 		<div class="modal-content">
-		  <h4>Monthly subscription member approval</h4>
+		  <h4>Monthly subscription member details</h4>
 			<div class="row">
 				<div class="col s12 m6">
 					 <p>
@@ -246,191 +253,32 @@
 				<table>
 					<thead>
 						<tr>
-							<th></th>
-							<th>Description</th>
+							<th>Reason* </th>
+							<th class="descriptiontd hide">Description</th>
 							<th>Approval By</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="match_row_1 match_case_row hide" >
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="nric_approve" id="nric_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>
-							{{ CommonHelper::get_member_match_name(1) }}
-							</td>
-							<td><span id="nric_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_2 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="nric_not_approve" id="nric_not_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>
-								{{ CommonHelper::get_member_match_name(2) }}
-								</br>
-								<div class="row">
-									<div class="col s12">
-										Search Name/Code/NRIC
-									    <div class="input-field inline">
-											<input id="member_search_match" name="member_search_match" type="text" class="validate" style="width:250px;">
-											<input id="member_search_auto_id" name="member_search_auto_id" type="text" class="validate hide">
-										</div>
-									</div>
-									<div id="not-registered-area" class="col s12">
-										If the member is not registered
-										<a class="btn-sm-popup waves-light yellow darken-3 right" href="{{ route('master.addmembership', app()->getLocale())  }}">{{__('New Registration') }}</a>
-									</div>
-							    </div>
-							
-							</td>
-							<td><span id="nric_not_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_3 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="member_approve" id="member_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>
-								{{ CommonHelper::get_member_match_name(3) }}
-									&nbsp;&nbsp;
-									<p>
-										<span class="bold">From Union: <span id="registered_member_name" class="bold"></span></span> 
-										<label>
-											<input name="nameverify" type="radio" value="1" />
-											<span>is it correct?</span>
-										</label>
-									</p>
-								<p>
-									<span class="bold">From Bank: <span id="uploaded_member_name" class="bold"></span></span>
-									<label>
-										<input name="nameverify" type="radio" checked value="2" />
-										<span>is it correct?</span>
-									</label>
-								</p>
-								&nbsp;&nbsp;
-							</td>
-							<td><span id="name_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_4 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="bank_approve" id="bank_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>
-								{{ CommonHelper::get_member_match_name(4) }}
-								</br>
-								&nbsp;&nbsp;<span class="bold">From Union: <span id="registered_bank_name" class="bold"></span></span>
-								<label>
-									&nbsp;&nbsp;
-									<input name="bankverify" id="bankverify" onClick="return checkBankVerify()" type="checkbox" value="1" />
-									<span>is it correct?</span>
-								</label>
-								</br>
-								&nbsp;&nbsp;<span class="bold">From Bank: <span id="uploaded_bank_name" class="bold"></span></span>
+						<tr class="" >
+							<td width="30%">
 								
-								<input type="text" name="registered_bank_id" class="hide" id="registered_bank_id" value="" />
-								<input type="text" name="uploaded_bank_id" class="hide" id="uploaded_bank_id" value="" />
-								<a title='Member Transfer' id="memebr_tansfer_link" class='btn-sm-popup waves-effect waves-light yellow darken-3' href=''>Member Transfer</a>
+								<select name="edit_fee_name" id="edit_fee_name" onclick="return EnableDescription(this.value)" class="browser-default valid" aria-invalid="false">
+									<option value="">Select</option>
+									<option value="1">Resigned</option>
+									<option value="2">Retired</option>
+									<option value="3">Promoted</option>
+									<option value="4">Demised</option>
+									<option value="5">Others</option>
+								</select>
+								
 							</td>
-							<td><span id="bank_approved_by" class="bold"></span></td>
+							<td class="descriptiontd hide">
+								<textarea id="description" name="description" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
+								
+							</td>
+							<td><span id="reason_approved_by" class="bold"></span></td>
 						</tr>
 						
-						<tr class="match_row_5 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="previous_approve" id="previous_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>
-								{{ CommonHelper::get_member_match_name(5) }}
-								</br>
-								&nbsp;&nbsp;<span class="bold">Current Month: <span id="current_month_amount" class="bold"></span></span>
-								</br>
-								&nbsp;&nbsp;<span class="bold">Last Month: <span id="last_month_amount" class="bold"></span></span>
-							</td>
-							<td><span id="previous_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_6 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="struckoff_approve" id="struckoff_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>{{ CommonHelper::get_member_match_name(6) }}</td>
-							<td><span id="struckoff_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_7 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="resign_approve" id="resign_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>{{ CommonHelper::get_member_match_name(7) }}</td>
-							<td><span id="resign_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_8 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="nric_old_approve" id="nric_old_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>{{ CommonHelper::get_member_match_name(8) }}</td>
-							<td><span id="nric_old_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_9 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="nric_bank_approve" id="nric_bank_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>{{ CommonHelper::get_member_match_name(9) }}</td>
-							<td><span id="nric_bank_approved_by" class="bold"></span></td>
-						</tr>
-						<tr class="match_row_10 match_case_row hide">
-							<td>
-								<p class="verify-approval">
-									<label>
-										<input type="checkbox" name="previous_unpaid_approve" id="previous_unpaid_approve" value="1" />
-										<span></span>
-									</label>
-								</p>
-							</td>
-							<td>{{ CommonHelper::get_member_match_name(10) }}</td>
-							<td><span id="previous_unpaid_approved_by" class="bold"></span></td>
-						</tr>
 					</tbody>
 				</table>
 		</div>
@@ -703,7 +551,7 @@ $(document).ready(function(){
 $(document).on('submit','#approvalformValidate',function(event){
 	event.preventDefault();
 	$(".submitApproval").attr('disabled', true);
-	var url = "{{ url(app()->getLocale().'/ajax_save_approval') }}" ;
+	var url = "{{ url(app()->getLocale().'/ajax_save_summary') }}" ;
 	$.ajax({
 		url: url,
 		type: "POST",
@@ -715,7 +563,7 @@ $(document).on('submit','#approvalformValidate',function(event){
 		success: function(result) {
 			if(result.status==1){
 				var badge_color = result.approval_status == 1 ? 'green' : 'red';
-				var badge_label = result.approval_status == 1 ? 'Approved' : 'Pending';
+				var badge_label = result.approval_status == 1 ? 'Updated' : 'Pending';
 				$("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
 				if(result.member_match==2){
 					$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
@@ -897,6 +745,14 @@ function checkBankVerify(){
 		$("#bank_approve").prop("checked",true);
 	}else{
 		$("#bank_approve").prop("checked",false);
+	}
+}
+
+function EnableDescription(reasonval){
+	if(reasonval==5){
+		$(".descriptiontd").removeClass('hide');
+	}else{
+		$(".descriptiontd").addClass('hide');
 	}
 }
 
