@@ -116,27 +116,9 @@ class SubscriptionController extends CommonController
         $userid = Auth::user()->id;
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
-        $common_qry = DB::table('mon_sub_company as sc')->select('s.Date as date','c.company_name as company_name','sc.id as id')
-        ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
-        ->leftjoin('company as c','c.id','=','sc.CompanyCode');
-        if($user_role == 'union'){
-            $company_list = $common_qry->get();
-        }else if($user_role =='union-branch'){
-            $unionbranchid = CommonHelper::getUnionBranchID($userid);
-            $rawQuery = "SELECT s.Date as date,c.company_name as company_name,sc.id as id FROM `mon_sub_company` AS sc JOIN company_branch AS cb ON sc.CompanyCode = cb.company_id LEFT JOIN mon_sub AS s ON s.id = sc.MonthlySubscriptionId LEFT JOIN company AS c on c.id = sc.CompanyCode WHERE cb.union_branch_id = $unionbranchid GROUP BY sc.id";
-            $company_list = DB::select( DB::raw($rawQuery));
-        } 
-        else if($user_role =='company'){
-            $companyid = CommonHelper::getCompanyID($userid);
-            $rawQuery = "SELECT s.Date as date,c.company_name as company_name,sc.id as id FROM `mon_sub_company` AS sc JOIN company_branch AS cb ON sc.CompanyCode = cb.company_id LEFT JOIN mon_sub AS s ON s.id = sc.MonthlySubscriptionId LEFT JOIN company AS c on c.id = sc.CompanyCode WHERE cb.company_id = $companyid GROUP BY sc.id";
-            $company_list = DB::select( DB::raw($rawQuery));
-        }
-        else if($user_role =='company-branch'){
-            $rawQuery = "SELECT s.Date as date,c.company_name as company_name,sc.id as id FROM `mon_sub_company` AS sc JOIN company_branch AS cb ON sc.CompanyCode = cb.company_id LEFT JOIN mon_sub AS s ON s.id = sc.MonthlySubscriptionId LEFT JOIN company AS c on c.id = sc.CompanyCode WHERE cb.user_id = $userid GROUP BY sc.id";
-            $company_list = DB::select( DB::raw($rawQuery));
-        } 
-         
-        $data['company_list'] = $company_list;
+       
+        $data = [];
+        //$data['company_list'] = $company_list;
        
         
         return view('subscription.sub_company_list')->with('data', $data);
@@ -3026,9 +3008,9 @@ class SubscriptionController extends CommonController
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
 
-        if($user_role=='company'){
+        //if($user_role=='company'){
 
-            $data['subsdata'] = DB::table('mon_sub_company as sc')->select('s.Date','c.short_code','c.company_name')
+            $data['subsdata'] = DB::table('mon_sub_company as sc')->select('s.Date','c.short_code','c.company_name','c.id as company_id')
             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
             ->leftjoin('company as c','c.id','=','sc.CompanyCode')
             ->where('sc.id','=',$company_auto_id)
@@ -3073,20 +3055,25 @@ class SubscriptionController extends CommonController
             //->where('mm.STatusId','<=',2)
             ->count();
 
-            $company_id = DB::table('company_branch as cb')->select('cb.company_id')
-            ->leftjoin('company as c', 'c.id' ,'=','cb.company_id')
-            ->where('cb.user_id','=',$user_id)
-            ->pluck('cb.company_id')
-            ->first();
+            if($user_role=='company'){
+                $company_id = DB::table('company_branch as cb')->select('cb.company_id')
+                ->leftjoin('company as c', 'c.id' ,'=','cb.company_id')
+                ->where('cb.user_id','=',$user_id)
+                ->pluck('cb.company_id')
+                ->first();
+            }else{
+                $company_id = $data['subsdata']->company_id;
+            }
+           
 
             $data['members_count'] = DB::table('membership as m')
             ->leftjoin('company_branch as cb', 'cb.id' ,'=','m.branch_id')
             ->leftjoin('company as c', 'c.id' ,'=','cb.company_id')
             ->where('status_id','<=',2)->where('c.id','=',$company_id)->count();
             return view('subscription.company_members_summary')->with('data', $data);
-        }else{
-            return 'Invalid access';
-        }
+        // }else{
+        //     return 'Invalid access';
+        // }
 
        
     }
@@ -3106,24 +3093,24 @@ class SubscriptionController extends CommonController
         $data['status'] = $status;
         $data['filter_date'] = strtotime(date('Y-m-01',strtotime($defaultdate)));
 
-        if($user_role=='company'){
-            $user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
-			$company_ids = DB::table('company_branch as cb')
-							->leftjoin('company as c','cb.company_id','=','c.id')
-							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-							->where('cb.company_id', '=',$user_company_id)
-							->groupBY('c.id')
-                            ->pluck('c.id');
+        //if($user_role=='company'){
+            // $user_company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+			// $company_ids = DB::table('company_branch as cb')
+			// 				->leftjoin('company as c','cb.company_id','=','c.id')
+			// 				->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+			// 				->where('cb.company_id', '=',$user_company_id)
+			// 				->groupBY('c.id')
+            //                 ->pluck('c.id');
 
-            $company_str_List ='';
-            $slno=0;
-            foreach($company_ids as $cids){
-                if($slno!=0){
-                    $company_str_List .=',';
-                }
-                $company_str_List .="'".$cids."'";
-                $slno++;
-            }
+            // $company_str_List ='';
+            // $slno=0;
+            // foreach($company_ids as $cids){
+            //     if($slno!=0){
+            //         $company_str_List .=',';
+            //     }
+            //     $company_str_List .="'".$cids."'";
+            //     $slno++;
+            // }
 
             if($status==1){
                 $cond ='';
@@ -3145,9 +3132,15 @@ class SubscriptionController extends CommonController
                 // dd('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>2 OR m.MemberCode is Null)');
                 $data['member'] = $members_data;
             }
+           
+            $total_amt = 0;
+            foreach($members_data as $member){
+                $total_amt += $member->Amount;
+            }
+            $data['total_amt'] = $total_amt;
 
             return view('subscription.summary_status')->with('data',$data);
-        }
+       // }
 
 
     }
@@ -3166,7 +3159,43 @@ class SubscriptionController extends CommonController
         Artisan::call('cache:clear');
 		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_id, 'member_status' => $member_status, 'approval_status' => 1, 'member_match' => $member_match];
 		echo json_encode($return_data);
-	}
+    }
+    
+    public function sub_company_list() {
+        $userid = Auth::user()->id;
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+      
+        $data = [];
+     
+         
+        //$data['company_list'] = $company_list;
+       
+        
+        return view('subscription.subscription_company_list')->with('data', $data);
+    }
+
+    public function varianceList(){
+		$data['month_year'] = date('M/Y');
+		$data['month_year_full'] = date('Y-m-01');
+		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
+		
+		$data['company_view']=[];
+		$data['branch_view']=[];
+	
+		return view('subscription.variation_bank_members')->with('data', $data);
+    }
+    
+    public function varianceFilter(){
+        $data['month_year'] = date('M/Y');
+		$data['month_year_full'] = date('Y-m-01');
+		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
+		
+		$data['company_view']=[];
+		$data['branch_view']=[];
+	
+		return view('subscription.variation_bank_members')->with('data', $data);
+    }
 
     
     

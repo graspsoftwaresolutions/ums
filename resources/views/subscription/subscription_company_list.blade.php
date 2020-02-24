@@ -50,7 +50,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       <div class="col s12">
                           <div class="card">
                               <div class="card-content">
-                                  <h4 class="card-title">{{__('Company List') }}[Union]</h4>
+                                  <h4 class="card-title">{{__('Company List') }}[Bank]</h4>
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">
@@ -109,8 +109,8 @@ type="text/javascript"></script>
 
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
-$("#subcomp_sidebar_li_id").addClass('active');
-$("#subcomp_sidebar_a_id").addClass('active');
+$("#subscompbank_sidebar_li_id").addClass('active');
+$("#subscompbank_sidebar_a_id").addClass('active');
 
 //Data table Ajax call
 //Data table Ajax call
@@ -162,7 +162,7 @@ $(function() {
          }  
       ],
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_subcompany_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_subscriptioncompany_list') }}",
             "dataType": "json",
             "type": "POST",
             "data": {

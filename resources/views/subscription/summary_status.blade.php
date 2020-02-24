@@ -140,10 +140,11 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				@if($data['status']==1)
-					Uploaded Matched Members List
+					Uploaded Matched Members List 
 				@else
-					Uploaded Not Matched Members List
+					Uploaded Not Matched Members List 
 				@endif
+				<b>[Total Amount : {{ $data['total_amt']}}]</b>
 				@php
 					$companyid = $data['company_id'];
 				@endphp
@@ -161,7 +162,11 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-			
+				@php
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+				@endphp
 				
 				<input type="text" name="memberoffset" id="memberoffset" class="hide" value=""></input>
 			
@@ -177,16 +182,21 @@
 							<th width="7%">{{__('Amount')}}</th>
 							@if($data['status']!=1)
 							<th width="10%">{{__('Update Status')}}</th>
+
 							
-							
+							@if($user_role=='company')
 							<th width="15%">{{__('Action')}}</th>
+							@endif
+							@endif
+							@if($data['status']!=1 && $user_role=='union')
+								<th width="10%">{{__('Reason')}}</th>
 							@endif
 						</tr> 
 					</thead>
 					<tbody>
 						@php
 							$slno=1;
-							
+							//dd($user_role);
 						@endphp
 						@foreach($data['member'] as  $key => $member)
 							@php
@@ -205,12 +215,17 @@
 								<td>{{ $member->up_nric }}</td>
 								<td>{{ $member->Amount }}</td>
 								@if($data['status']!=1)
+
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
 								
-								
+								@if($user_role=='company')
 								<td>
 								
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td>
+								@endif
+								@endif
+								@if($data['status']!=1 && $user_role=='union')
+									<th width="10%">Resigned</th>
 								@endif
 							</tr> 
 							@php
@@ -310,8 +325,8 @@
 @section('footerSecondSection')
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
-$("#subscription_sidebar_li_id").addClass('active');
-$("#subscription_sidebar_a_id").addClass('active');
+$("#subscompbank_sidebar_li_id").addClass('active');
+$("#subscompbank_sidebar_a_id").addClass('active');
 $(document).on('click','#clear',function(event){
 	$('#member_search').val("");
 	$('#member_auto_id').val("");

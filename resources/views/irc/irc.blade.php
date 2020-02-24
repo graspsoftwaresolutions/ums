@@ -256,116 +256,893 @@
 				</div>
 					<div class="col s12 m12">
 						<div class="row padding-left-20">
-							<div class="col s12 m4 ">
-								<p>
-									<label>
-									<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-									<span>Name of the Person appliying for BF is</span>
-									</label> 
-								</p>	
+							<div class="col s12 m1">
+								<p style="font-size: 16px;">
+									Reason
+								</p>
 							</div>
-							<div class="col s12 m3 ">								
-									<input type="text" id="person_name" readonly>
+							<div class="col s12 m3">
+								<select name="resignedreason" id="reason" onchange="return ChangeFields()" class="error browser-default selectpicker">
+									<option value="">Select reason</option>
+									@foreach($data['reason_view'] as $values)
+										<option value="{{$values->id}}">{{$values->reason_name}}</option>
+									@endforeach
+								</select>
 							</div>
-						</div>						
+						</div>
+											
 					</div>
 					<div class="col s12 m12">
-						<div class="row padding-left-20">
-							<div class="col s12 m3 ">
-								<p>
-									<label>
-									<input type="checkbox" name="waspromoted" id="waspromoted" class="common-checkbox"  value="1"/>
-									
-									
-									<span id="gen"></span>
-									</label> 
-								</p>	
-							</div>
-							<div class="col s12 m3">
-									<select name="resignedreason" id="reason" class="error browser-default selectpicker">
-									<option value="">Select reason</option>
-										@foreach($data['reason_view'] as $values)
-											<option value="{{$values->id}}">{{$values->reason_name}}</option>
-										@endforeach
-									</select>
-							</div>
-							<div class="col s12 m3">
+						<div id="retired_section" class="reasonsections hide"> 
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>BF Applicant’s Name is:</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" id="person_name" readonly>
+								</div>
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+								</div>
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
+										</label> 
+									</p>	
+								</div>
 							
-								<input type="text" id="type" readonly name="type" placeholder="">	
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m6">
+									 <div id="">
+                                        <div class=" ">
+                                         	<br>
+                                            <input type="file" name="file" class="" accept="">
+                                        </div>
+                                        <div class="file-path-wrapper hide">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s job functions have been taken over by</span>
+										</label> 
+									</p>	
+
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m3 ">								
+										<p>and</p>
+								</div>
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m2 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Applicant Contact</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Office</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m1 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>H/P</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Fax</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m1 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Email</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
+								</div>
+							</div>	
+						</div>
+						<div id="deceased_section" class="reasonsections hide"> 
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="memberdemisedon" id="memberdemisedon"  value="1"/>
+										<span>Member DEMISED on</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" id="memberdemised" name="memberdemised" >
+								</div>
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofmemberbox" id="nameofmemberbox"  value="1"/>
+										<span>Name of Member’s next of kin is</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="nameofmember" id="nameofmember" placeholder=""  class=""/>
+								</div>
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="relationshipbox" id="relationshipbox"  value="1"/>
+										<span>Relationship is</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="relationship" id="relationship" placeholder=""  class=""/>
+								</div>
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m2 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Applicant</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										<input type="radio" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Has</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="radio" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Does Not have Legal Authority (LA) to claim.  </span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+							
+							<div class="row padding-left-20">
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s job functions have been taken over by</span>
+										</label> 
+									</p>	
+
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m3 ">								
+										<p>and</p>
+								</div>
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m3 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Next of Kin’s Contact:</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Office</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m2 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Mobile</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Fax</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m2 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Email</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
+								</div>
+							</div>	
+						</div>
+						<div id="promoted_section" class="reasonsections hide"> 
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>BF Applicant’s Name is:</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" id="person_name" readonly>
+								</div>
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> w.e.f.</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+								</div>
+							</div>	
+
+						
+							<div class="row padding-left-20">
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m6">
+									 <div id="">
+                                        <div class=" ">
+                                         	<br>
+                                            <input type="file" name="file" class="" accept="">
+                                        </div>
+                                        <div class="file-path-wrapper hide">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="toplacebox" id="toplacebox"  value="1"/>
+										<span>He promoted and transfer to new place</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" id="toplace" >
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member is still in the same Branch / Department performing the same job functions. </span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s job functions have been taken over by</span>
+										</label> 
+									</p>	
+
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m3 ">								
+										<p>and</p>
+								</div>
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m2 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Applicant Contact</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Office</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m1 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>H/P</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Fax</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m1 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Email</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
+								</div>
+							</div>	
+						</div>
+						<div id="resign_section" class="reasonsections hide"> 
+
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>BF Applicant’s Name is:</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" id="person_name" readonly>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m4 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+								</div>
+							</div>
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+								
+
+						
+							<div class="row padding-left-20">
+								<div class="col s12 m8 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Attached is <span class="genderone"></span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m4">
+									 <div id="">
+                                        <div class=" ">
+                                         	<br>
+                                            <input type="file" name="file" class="" accept="">
+                                        </div>
+                                        <div class="file-path-wrapper hide">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+								</div>
+							</div>	
+								
+							<div class="row padding-left-20">
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s job functions have been taken over by</span>
+										</label> 
+									</p>	
+
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m3 ">								
+										<p>and</p>
+								</div>
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m9 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m2 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Applicant Contact</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Office</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m1 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>H/P</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Fax</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col s12 m1 ">
+									<p>
+										&nbsp;
+									</p>	
+								</div>
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										
+										<span>Email</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
+								</div>
+							</div>	
+						</div>
+						<div id="expelled_section" class="reasonsections hide"> 
+
+							<div class="row padding-left-20">
+								<div class="col s12 m6 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m3 ">								
+										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+								</div>
+							</div>
+
+								
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member’s is still performing the same job functions.</span>
+										</label> 
+									</p>	
+
+								</div>
 								
 							</div>
-							<div class="col s12 m3">
-								<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f" name="text" class="datepicker-custom"/>
-							</div>
-						</div>						
-					</div>
-					<div class="col s12 m12">
-						<div class="padding-left-24">
-							<p>
-								<label>
-									<input type="checkbox" name="beforepromotion"  id="beforepromotion" class="common-checkbox"  value="1"/>
-									<span id="gend"> </span>
-								</label> 
-							</p>
-						</div>		
-					</div>
-					<div class="col s12 m12">
-						<p class=" padding-left-24">
-							<label>
-							<input type="checkbox" name="attached" id="attached" class="common-checkbox" value="1" />
-							<span>Attached Job function/Description (compulsory). </span>
-							</label> 
-						</p>		
-					</div>
-					<div class="col s12 m12">
-						<p class="padding-left-24">
-							<label>
-							<input type="checkbox" name="herebyconfirm" id="herebyconfirm" class="common-checkbox" value="1" />
-							<span>I hereby confirm that he/she got promoted he/she no longer doing any clerical job function. </span>
-							</label> 
-						</p>		
-					</div>
-					<div class="col s12 m12">
-						<div class="row padding-left-20">
-							<div class="col s12 m4 ">
-								<p>
-									<label>
-									<input type="checkbox" name="filledby" id="filledby"  class="common-checkbox" value="1" />
-									<span>The messenger clerical position has been filled by</span>
-									</label> 
-								</p>	
-							</div>
-							<div class="col s12 m3 ">				
-								<input type="text" name="nameforfilledby" id="nameforfilledby">
-							</div>
-						</div>						
-					</div>
-					<div class="padding-left-20">
-						<div class="input-field col s12">
-							<textarea id="comments" name="comments" class="materialize-textarea"></textarea>
-							<label for="comments">Comments</label>
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member is still in the same Branch / Department.</span>
+										</label> 
+									</p>	
+								</div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<span>Member HAS STOPPED / HAS NOT STOPPED the Check-Off [Delete whichever is applicable] </span>
+										</label> 
+									</p>	
+								</div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m12 " style="font-size: 18px;">
+									<p>
+										VOLUNTARY SEPARATION SCHEME (VSS/MSS), RESIGNED FOR MEDICAL GROUNDS OR PERSONAL REASONS OR RESIGNED FROM NUBE OR EXPELLED OR STRUCK OFF – processing same as Code 04.
+									</p>
+										
+									<p>
+										REJOIN and /or DUPLICATE MEMBERSHIP or JOIN SBEU will either be processed as per RETIRE, PROMOTION, DEMISED, RESIGNATION or EXPELLED. 
+									</p>
+								</div>
+								
+							</div>	
 						</div>
 					</div>
+
+					
+					
+				
 					</div>
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
 				<div class="row">
 					<div class="col s12 m12">
-						<p class="padding-left-24">
-							<label>
-							<input type="checkbox" class="common-checkbox" />
-							<span>I have verified the above and confirm that the declaration by the IRC is correct.The messenger/clerical And; </span>
-							</label> 
-						</p>	
+						<div class="row padding-left-20">
+							<div class="col s12 m1 ">
+								<p>
+									<label>
+									
+										<input type="checkbox"  name="waspromoted" id="waspromoted" class="common-checkbox"  value="1"/>
+										<span>I</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3">
+								<input type="text" id="type" readonly name="type" placeholder="" value="">	
+							</div>
+							<div class="col s12 m3">
+								<p>Branch Committee of NUBE </p>
+								
+								
+							</div>
+							<div class="col s12 m3">
+								<input type="text" 	name="gradewef" id="gradewef" value="" placeholder="" name="text" class=""/>
+							</div>
+							
+							<div class="col s12 m12">
+								<p>&nbsp;&nbsp;&nbsp;&nbsp; Branch have verified the above and confirm that the declaration by the IRC is correct.  </p>
+							</div>
+						</div>	
 					</div>
 					<div class="col s12 m12">
 						<p class="padding-left-24">
 							<label>
 							<input type="checkbox" class="common-checkbox"  />
-							<span>I have promoted member is no longer doing Messenger/Clerical job functions. </span>
+							<span>Staff who has taken over the job functions under CODE 01 / 02 / 03 / 04 is a NUBE Member. </span>
 							</label> 
 						</p>
+					</div>
+					<div class="col s12 m12">
+						<p class="padding-left-24">
+							<label>
+							<input type="checkbox" class="common-checkbox"  />
+							<span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+							</label> 
+						</p>
+					</div>
+					<div class="col s12 m12">
+						<div class="row">
+							<div class="col s12 m4 ">
+								<p >
+									<label>
+									
+									<span>Remark</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3 ">
+									<input type="text" name="person_name">
+							</div>
+						</div>	
 					</div>
 					<div class="col s12 m12">
 						<div class="row">
@@ -512,10 +1289,16 @@ $("#member_number").devbridgeAutocomplete({
 					$('#member_age').val(res.age);
 					if(res.gender == 'Male')
 					{
+						$(".gender").text('He');
+						$(".genderone").text('His');
+						//alert('male');
 						$("#malegender").attr("checked",true);
 					}
 					else if(res.gender == 'Female')
 					{
+						//alert('Female');
+						$(".gender").text('She');
+						$(".genderone").text('Her');
 						$("#femalegender").attr("checked",true);
 					}
 					$('#doj').val(res.doj);
@@ -525,12 +1308,12 @@ $("#member_number").devbridgeAutocomplete({
 
 					if(res.gender == 'Male')
 					{
-						$('#gen').html("He was");
-						$('#gend').html("I hearby confirm that He got He is no longer doing any clerical job function.");
+						//$('#gen').html("He was");
+						//$('#gend').html("I hearby confirm that He got He is no longer doing any clerical job function.");
 					}
 					else{
-						$('#gen').html("She was");
-						$('#gend').html("I hearby confirm that She got She is no longer doing any clerical job function.");
+						//$('#gen').html("She was");
+						//$('#gend').html("I hearby confirm that She got She is no longer doing any clerical job function.");
 					}
 				}
 			});
@@ -595,5 +1378,24 @@ $(".datepicker-custom").datepicker({
     format: 'dd/mm/yyyy',
 	autoHide: true,
 });
+function ChangeFields(){
+	var reason = $("#reason option:selected").text();
+	//alert(reason);
+	$(".reasonsections").addClass('hide');
+	if(reason=='RETIRED'){
+		$("#retired_section").removeClass('hide');
+	}else if(reason=='DECEASED'){
+		$("#deceased_section").removeClass('hide');
+	}else if(reason=='PROMOTED'){
+		$("#promoted_section").removeClass('hide');
+	}
+	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
+		$("#resign_section").removeClass('hide');
+	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACK LIST'){
+		$("#expelled_section").removeClass('hide');
+	}else{
+
+	}
+}
 </script>
 @endsection

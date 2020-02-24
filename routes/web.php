@@ -451,6 +451,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('summary-status','SubscriptionController@SummarystatusCountView')->name('summary.status');
 	Route::post('ajax_save_summary','SubscriptionController@saveMismatched')->name('mismatched.save');
 
+	Route::get('subscription_variance','SubscriptionController@varianceList')->name('subscription.variance');
+	Route::post('subscription_variance','SubscriptionController@varianceFilter')->name('variance.filter');
+
+	Route::get('list_sub_company','SubscriptionController@sub_company_list')->name('company.sub_company');
+	Route::post('ajax_subscriptioncompany_list','SubscriptionAjaxController@ajax_subscription_company_list');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

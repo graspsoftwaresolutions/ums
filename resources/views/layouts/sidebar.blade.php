@@ -77,10 +77,12 @@
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
               @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
               <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Entry') }}</span></a></li>
-              <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank') }}</span></a></li>
+              <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank[Union]') }}</span></a></li>
+                <li id="subscompbank_sidebar_li_id" class=""><a id="subscompbank_sidebar_a_id" class="collapsible-body " href="{{ route('company.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank[Bank]') }}</span></a></li>
 
               @if($user_role=='company')
                 <li id="invalidsubs_sidebar_li_id" class=""><a id="invalidsubs_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.invalidsubs',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Struckoff/Resigned') }}</span></a></li>
+                  <li id="subvariance_sidebar_li_id" class=""><a id="subvariance_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.variance',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variance list') }}</span></a></li>
               @endif
                <li id="followup_sidebar_li_id" class=""><a id="followup_sidebar_a_id" class="collapsible-body " href="{{ route('followup.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Followup Members') }}</span></a></li>
           @if($user_role=='union' || $user_role=='union-branch')
