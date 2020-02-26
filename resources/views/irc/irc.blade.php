@@ -279,7 +279,7 @@
 											
 					</div>
 					<div class="col s12 m12">
-						<input type="text" name="section_type" id="section_type" value="">
+						<input type="text" class="hide" name="section_type" id="section_type" value="">
 						<div id="retired_section" class="reasonsections hide"> 
 
 							<div class="row padding-left-20">

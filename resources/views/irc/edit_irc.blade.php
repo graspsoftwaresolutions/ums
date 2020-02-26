@@ -313,7 +313,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						}
 					@endphp
 					<div class="col s12 m12">
-						<input type="text" name="section_type" id="section_type" value="{{ $section_type_val }}">
+						<input type="text" class="hide" name="section_type" id="section_type" value="{{ $section_type_val }}">
 						<div id="retired_section" class="reasonsections @if($section_type_val != 1) hide @endif "> 
 
 							<div class="row padding-left-20">
