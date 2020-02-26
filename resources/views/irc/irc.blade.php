@@ -34,6 +34,12 @@
     	pointer-events: none;
 		background-color: #f4f8fb !important;
 	}
+	.reasonsections .input-field {
+    	position: relative;
+    	margin: 0 !important;
+    	padding-left: 5px;
+    	padding-right: 5px;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -262,7 +268,7 @@
 								</p>
 							</div>
 							<div class="col s12 m3">
-								<select name="resignedreason" id="reason" onchange="return ChangeFields()" class="error browser-default selectpicker">
+								<select name="resignedreason" id="reason" required="" onchange="return ChangeFields()" class="error browser-default selectpicker">
 									<option value="">Select reason</option>
 									@foreach($data['reason_view'] as $values)
 										<option value="{{$values->id}}">{{$values->reason_name}}</option>
@@ -273,41 +279,39 @@
 											
 					</div>
 					<div class="col s12 m12">
+						<input type="text" name="section_type" id="section_type" value="">
 						<div id="retired_section" class="reasonsections hide"> 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>BF Applicant’s Name is:</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" id="person_name" readonly>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1"/>
+						          		<span>BF Applicant’s Name is:</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="person_nameone" name="person_nameone" readonly>
+										
+									</div>
+						        </div>
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="retiredboxone" id="retiredboxone"  value="1"/>
+						          		<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 
-							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
-								</div>
-							</div>	
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="messengerboxone" id="messengerboxone"  value="1"/>
 										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
 										</label> 
 									</p>	
@@ -315,196 +319,155 @@
 							
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m5 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m6">
-									 <div id="">
-                                        <div class=" ">
-                                         	<br>
-                                            <input type="file" name="file" class="" accept="">
-                                        </div>
-                                        <div class="file-path-wrapper hide">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="attachedboxone" id="attachedboxone"  value="1"/>
+						          		<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="attachedone" name="attachedone" >
+										
+									</div>
+						        </div>
+								
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m5 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s job functions have been taken over by</span>
-										</label> 
-									</p>	
-
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m3 ">								
-										<p>and</p>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="jobtakenboxone" id="jobtakenboxone"  value="1"/>
+						          		<span>Member’s job functions have been taken over by</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="jobtakenbyone" id="jobtakenbyone" placeholder=""  class=""/>
+										
+									</div>
+									 and
+						        </div>
+							
 							</div>
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
+						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
+						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="replacestaffone" id="replacestaffone" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m2 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Applicant Contact</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxone" id="appcontactboxone"  value="1"/>
+						          		<span>Applicant Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontactone" id="appcontactone" placeholder=""  class=""/>
 										
-										<span>Office</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
-								</div>
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficeone" id="appofficeone" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
 								<div class="clearfix"></div>
-								<div class="col s12 m1 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>H/P</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="apphpone" id="apphpone" placeholder=""  class=""/>
 										
-										<span>H/P</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxone" id="appfaxone" placeholder=""  class=""/>
 										
-										<span>Fax</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col s12 m1 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailone" id="appemailone" placeholder=""  class=""/>
 										
-										<span>Email</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
-								</div>
+									</div>
+						        </div>
+								
 							</div>	
 						</div>
 						<div id="deceased_section" class="reasonsections hide"> 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="memberdemisedon" id="memberdemisedon"  value="1"/>
-										<span>Member DEMISED on</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" id="memberdemised" name="memberdemised" >
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="memberdemisedboxtwo" id="memberdemisedboxtwo"  value="1"/>
+						          		<span>Member DEMISED on</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="memberdemisedtwo" name="memberdemisedtwo" >
+										
+									</div>
+						        </div>
+
 							</div>	
 
 							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofmemberbox" id="nameofmemberbox"  value="1"/>
-										<span>Name of Member’s next of kin is</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="nameofmember" id="nameofmember" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="nameofpersonboxtwo" id="nameofpersonboxtwo"  value="1"/>
+						          		<span>Name of Member’s next of kin is</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="nameofpersontwo" id="nameofpersontwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="relationshipboxtwo" id="relationshipboxtwo"  value="1"/>
+						          		<span>Relationship is</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="relationshiptwo" id="relationshiptwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+							
 							</div>	
 
-							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="relationshipbox" id="relationshipbox"  value="1"/>
-										<span>Relationship is</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="relationship" id="relationship" placeholder=""  class=""/>
-								</div>
-							</div>	
 
 							<div class="row padding-left-20">
-								<div class="col s12 m2 ">
+								<div class="col s12 m1 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="applicantboxtwo" id="applicantboxtwo"  value="1"/>
 										<span>Applicant</span>
 										</label> 
 									</p>	
 								</div>
-								<div class="col s12 m1 ">
+								<div class="col s12 m1 " style="margin-left: 20px;">
 									<p>
 										<label>
-										<input type="radio" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="radio" class="common-checkbox" name="applicanttwo" id="applicanttwo"  value="1"/>
 										<span>Has</span>
 										</label> 
 									</p>	
@@ -512,148 +475,120 @@
 								<div class="col s12 m5 ">
 									<p>
 										<label>
-										<input type="radio" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="radio" class="common-checkbox" name="applicanttwo" id="applicanttwo"  value="2"/>
 										<span>Does Not have Legal Authority (LA) to claim.  </span>
 										</label> 
 									</p>	
 								</div>
 							
 							</div>	
-							
-							<div class="row padding-left-20">
-								<div class="col s12 m5 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s job functions have been taken over by</span>
-										</label> 
-									</p>	
 
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m3 ">								
-										<p>and</p>
-								</div>
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="jobtakenboxtwo" id="jobtakenboxtwo"  value="1"/>
+						          		<span>Member’s job functions have been taken over by</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="jobtakenbytwo" id="jobtakenbytwo" placeholder=""  class=""/>
+										
+									</div>
+									 and
+						        </div>
+							
 							</div>
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
+						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbytwo" id="posfilledbytwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
+						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="replacestafftwo" id="replacestafftwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
 							</div>	
+
 							<div class="row padding-left-20">
-								<div class="col s12 m3 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Next of Kin’s Contact:</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" id="appcontactboxtwo"  value="1"/>
+						          		<span>Next of Kin’s Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontacttwo" id="appcontacttwo" placeholder=""  class=""/>
 										
-										<span>Office</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
-								</div>
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficetwo" id="appofficetwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
 								<div class="clearfix"></div>
-								<div class="col s12 m2 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>Mobile</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="appmobiletwo" id="appmobiletwo" placeholder=""  class=""/>
 										
-										<span>Mobile</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxtwo" id="appfaxtwo" placeholder=""  class=""/>
 										
-										<span>Fax</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col s12 m2 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailtwo" id="appemailtwo" placeholder=""  class=""/>
 										
-										<span>Email</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
-								</div>
+									</div>
+						        </div>
+								
 							</div>	
+						
+							
 						</div>
 						<div id="promoted_section" class="reasonsections hide"> 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>BF Applicant’s Name is:</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" id="person_name" readonly>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
+						          		<span>BF Applicant’s Name is:</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="person_namethree" name="person_namethree" readonly>
+										
+									</div>
+						        </div>
+								
 							</div>	
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="messengerboxthree" id="messengerboxthree"  value="1"/>
 										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
 										</label> 
 									</p>	
@@ -661,59 +596,54 @@
 							
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> w.e.f.</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="promotedboxthree" id="promotedboxthree"  value="1"/>
+						          		<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="promotedthree" name="promotedthree" required="">
+										
+									</div>
+									grade w.e.f.
+									<div class="input-field inline">
+										<input type="text" 	name="gradewefthree" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 
 						
 							<div class="row padding-left-20">
-								<div class="col s12 m5 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m6">
-									 <div id="">
-                                        <div class=" ">
-                                         	<br>
-                                            <input type="file" name="file" class="" accept="">
-                                        </div>
-                                        <div class="file-path-wrapper hide">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="attachedboxthree" id="attachedboxthree"  value="1"/>
+						          		<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" name="attachedthree" id="attachedthree" class="">
+										
+									</div>
+						        </div>
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
+						          		<span>He promoted and transfer to new place</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" name="transfertoplacethree" id="transfertoplacethree" >
+										
+									</div>
+						        </div>
+								
 							</div>	
-							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="toplacebox" id="toplacebox"  value="1"/>
-										<span>He promoted and transfer to new place</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" id="toplace" >
-								</div>
-							</div>	
+							
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
 										<span>Member is still in the same Branch / Department performing the same job functions. </span>
 										</label> 
 									</p>	
@@ -721,152 +651,121 @@
 							
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m5 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s job functions have been taken over by</span>
-										</label> 
-									</p>	
-
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m3 ">								
-										<p>and</p>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="jobtakenboxthree" id="jobtakenboxthree"  value="1"/>
+						          		<span>Member’s job functions have been taken over by</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="jobtakenbythree" id="jobtakenbythree" placeholder=""  class=""/>
+										
+									</div>
+									 and
+						        </div>
+							
 							</div>
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
+						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
+						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="replacestaffthree" id="replacestaffthree" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m2 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Applicant Contact</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxthree" id="appcontactboxthree"  value="1"/>
+						          		<span>Applicant Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontactthree" id="appcontactthree" placeholder=""  class=""/>
 										
-										<span>Office</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
-								</div>
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficethree" id="appofficethree" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
 								<div class="clearfix"></div>
-								<div class="col s12 m1 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>H/P</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="apphpthree" id="apphpthree" placeholder=""  class=""/>
 										
-										<span>H/P</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxthree" id="appfaxthree" placeholder=""  class=""/>
 										
-										<span>Fax</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col s12 m1 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailthree" id="appemailthree" placeholder=""  class=""/>
 										
-										<span>Email</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
-								</div>
-							</div>	
+									</div>
+						        </div>
+								
+							</div>
+
+								
 						</div>
 						<div id="resign_section" class="reasonsections hide"> 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>BF Applicant’s Name is:</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" id="person_name" readonly>
-								</div>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="personnameboxfour" id="personnameboxfour"  value="1"/>
+						          		<span>BF Applicant’s Name is:</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="person_namefour" name="person_namefour" readonly>
+										
+									</div>
+						        </div>
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
+						          		<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										
+									</div>
+						        </div>
+								
 							</div>	
-							<div class="row padding-left-20">
-								<div class="col s12 m4 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
-								</div>
-							</div>
+							
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="messengerboxfour" id="messengerboxfour"  value="1"/>
 										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
 										</label> 
 									</p>	
@@ -877,153 +776,117 @@
 
 						
 							<div class="row padding-left-20">
-								<div class="col s12 m8 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Attached is <span class="genderone"></span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
-										</label> 
-									</p>	
+								<div class="col s12 m12 ">
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" name="attachedboxfour" id="attachedboxfour"  value="1"/>
+									<span>Attached is <span class="genderone"></span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+									</label> 
+										
+									<div class="input-field inline">
+										 <input type="text" id="attachedfour" name="attachedfour" class="">
+									</div>
 								</div>
-								<div class="col s12 m4">
-									 <div id="">
-                                        <div class=" ">
-                                         	<br>
-                                            <input type="file" name="file" class="" accept="">
-                                        </div>
-                                        <div class="file-path-wrapper hide">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-								</div>
+								
 							</div>	
 								
 							<div class="row padding-left-20">
-								<div class="col s12 m5 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s job functions have been taken over by</span>
-										</label> 
-									</p>	
-
+								<div class="col s12 m12 ">
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" name="jobtakenboxfour" id="jobtakenboxfour"  value="1"/>
+									<span>Member’s job functions have been taken over by</span>
+									</label> 
+									
+									<div class="input-field inline">
+										 <input type="text" name="jobtakenbyfour" id="jobtakenbyfour" placeholder=""  class=""/>
+									</div>
+									and
 								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="jobtakenby" id="jobtakenby" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m3 ">								
-										<p>and</p>
-								</div>
+								
 							</div>
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
-										</label> 
-									</p>	
+								<div class="col s12 m12 ">
+								
+									<label>
+									<input type="checkbox" class="common-checkbox" name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
+									<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+									</label> 
+
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder=""  class=""/>
+									</div>	
 								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="positionfilledby" id="positionfilledby" placeholder=""  class=""/>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
+									<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+									</label> 
+										
+									<div class="input-field inline">						
+										<input type="text" 	name="replacestafffour" id="replacestafffour" placeholder=""  class=""/>
+									</div>
 								</div>
 							</div>	
 							<div class="row padding-left-20">
-								<div class="col s12 m9 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="replacestaff" id="replacestaff" placeholder=""  class=""/>
-								</div>
-							</div>	
-							<div class="row padding-left-20">
-								<div class="col s12 m2 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Applicant Contact</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appcontact" id="appcontact" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxfour" id="appcontactboxfour"  value="1"/>
+						          		<span>Applicant Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontactfour" id="appcontactfour" placeholder=""  class=""/>
 										
-										<span>Office</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appoffice" id="appoffice" placeholder=""  class=""/>
-								</div>
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficefour" id="appofficefour" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
 								<div class="clearfix"></div>
-								<div class="col s12 m1 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>H/P</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="apphpfour" id="apphpfour" placeholder=""  class=""/>
 										
-										<span>H/P</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="apphp" id="apphp" placeholder=""  class=""/>
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxfour" id="appfaxfour" placeholder=""  class=""/>
 										
-										<span>Fax</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appfax" id="appfax" placeholder=""  class=""/>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col s12 m1 ">
-									<p>
-										&nbsp;
-									</p>	
-								</div>
-								<div class="col s12 m1 ">
-									<p>
-										<label>
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailfour" id="appemailfour" placeholder=""  class=""/>
 										
-										<span>Email</span>
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-									<input type="text" 	name="appemail" id="appemail" placeholder=""  class=""/>
-								</div>
+									</div>
+						        </div>
+								
 							</div>	
 						</div>
 						<div id="expelled_section" class="reasonsections hide"> 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m6 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
-										<span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
-										</label> 
-									</p>	
-								</div>
-								<div class="col s12 m3 ">								
-										<input type="text" 	name="gradewef" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+								<div class="col s12 m12">
+								
+									<label>
+									<input type="checkbox" class="common-checkbox" name="expelledboxfive" id="expelledboxfive"  value="1"/>
+									<span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
+									</label> 
+
+									<div class="input-field inline">						
+										<input type="text" 	name="gradeweffive" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+									</div>
 								</div>
 							</div>
 
@@ -1032,7 +895,7 @@
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="samejobboxfive" id="samejobboxfive"  value="1"/>
 										<span>Member’s is still performing the same job functions.</span>
 										</label> 
 									</p>	
@@ -1044,7 +907,7 @@
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
 										<span>Member is still in the same Branch / Department.</span>
 										</label> 
 									</p>	
@@ -1055,25 +918,14 @@
 								<div class="col s12 m12 ">
 									<p>
 										<label>
-										<input type="checkbox" class="common-checkbox" name="nameofperson" id="nameofperson"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
 										<span>Member HAS STOPPED / HAS NOT STOPPED the Check-Off [Delete whichever is applicable] </span>
 										</label> 
 									</p>	
 								</div>
 								
 							</div>	
-							<div class="row padding-left-20">
-								<div class="col s12 m12 " style="font-size: 18px;">
-									<p>
-										VOLUNTARY SEPARATION SCHEME (VSS/MSS), RESIGNED FOR MEDICAL GROUNDS OR PERSONAL REASONS OR RESIGNED FROM NUBE OR EXPELLED OR STRUCK OFF – processing same as Code 04.
-									</p>
-										
-									<p>
-										REJOIN and /or DUPLICATE MEMBERSHIP or JOIN SBEU will either be processed as per RETIRE, PROMOTION, DEMISED, RESIGNATION or EXPELLED. 
-									</p>
-								</div>
-								
-							</div>	
+							
 						</div>
 					</div>
 
@@ -1084,69 +936,56 @@
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
-				<div class="row">
+			  <div class="row padding-left-20">
 					<div class="col s12 m12">
-						<div class="row padding-left-20">
-							<div class="col s12 m1 ">
-								<p>
-									<label>
-									
-										<input type="checkbox"  name="waspromoted" id="waspromoted" class="common-checkbox"  value="1"/>
-										<span>I</span>
-									</label> 
-								</p>	
-							</div>
-							<div class="col s12 m3">
-								<input type="text" id="type" readonly name="type" placeholder="" value="">	
-							</div>
-							<div class="col s12 m3">
-								<p>Branch Committee of NUBE </p>
-								
-								
-							</div>
-							<div class="col s12 m3">
-								<input type="text" 	name="gradewef" id="gradewef" value="" placeholder="" name="text" class=""/>
-							</div>
-							
-							<div class="col s12 m12">
-								<p>&nbsp;&nbsp;&nbsp;&nbsp; Branch have verified the above and confirm that the declaration by the IRC is correct.  </p>
-							</div>
-						</div>	
+						<label>
+						
+							<input type="checkbox"  name="committieverificationboxone" id="committieverificationboxone" class="common-checkbox"  value="1"/>
+							<span>I</span>
+						</label> 
+						<div class="input-field inline">	
+							<input type="text" id="committiename" name="committiename" placeholder="" value="">	
+						</div>
+						Branch Committee of NUBE
+						<div class="input-field inline">	
+							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="">	
+						</div>
+						Branch have verified the above and confirm that the declaration 
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by the IRC is correct.
 					</div>
-					<div class="col s12 m12">
-						<p class="padding-left-24">
+					<div class="col s12 m12 ">
+						<p>
 							<label>
-							<input type="checkbox" class="common-checkbox"  />
+							<input type="checkbox" class="common-checkbox" name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
 							<span>Staff who has taken over the job functions under CODE 01 / 02 / 03 / 04 is a NUBE Member. </span>
 							</label> 
-						</p>
+						</p>	
 					</div>
-					<div class="col s12 m12">
-						<p class="padding-left-24">
+					<div class="col s12 m12 ">
+							
 							<label>
-							<input type="checkbox" class="common-checkbox"  />
-							<span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+								<input type="checkbox" class="common-checkbox" name="committieverificationboxthree" id="committieverificationboxthree"  value="1" />
+								<span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+								
 							</label> 
-						</p>
+							<br>
+							<div class="input-field inline" style="margin: 0 0 0 27px !important;">	
+								<input type="text" name="committieremark" id="committieremark">
+							</div>
+							<span>(Remark)</span>
+							
+						
 					</div>
+			   </div>
+				<div class="row">
+					
+					<div class="padding-left-20 ">
+						<br>
+					</div>
+				
 					<div class="col s12 m12">
 						<div class="row">
-							<div class="col s12 m4 ">
-								<p >
-									<label>
-									
-									<span>Remark</span>
-									</label> 
-								</p>	
-							</div>
 							<div class="col s12 m3 ">
-									<input type="text" name="person_name">
-							</div>
-						</div>	
-					</div>
-					<div class="col s12 m12">
-						<div class="row">
-							<div class="col s12 m4 ">
 								<p >
 									<label>
 									
@@ -1161,7 +1000,7 @@
 					</div>
 					<div class="col s12 m12">
 						<div class="row">
-							<div class="col s12 m4 ">
+							<div class="col s12 m3 ">
 								<p >
 									<label>
 									<span>Zone</span>
@@ -1279,7 +1118,7 @@ $("#member_number").devbridgeAutocomplete({
 					$('#type').val(res.membertype);
 					$('#member_title').val(res.persontitle);
 					$('#member_name').val(res.membername);
-					$('#person_name').val(res.membername);
+					$('#person_nameone,#person_namethree,#person_namefour').val(res.membername);
 					$('#memberid').val(res.memberid);
 					$('#member_id').val(res.memberid);
 					$('#union_branch_id').val(res.union_branch_id);
@@ -1384,17 +1223,23 @@ function ChangeFields(){
 	$(".reasonsections").addClass('hide');
 	if(reason=='RETIRED'){
 		$("#retired_section").removeClass('hide');
+		$("#section_type").val(1);
 	}else if(reason=='DECEASED'){
 		$("#deceased_section").removeClass('hide');
+		$("#section_type").val(2);
 	}else if(reason=='PROMOTED'){
 		$("#promoted_section").removeClass('hide');
+		$("#section_type").val(3);
 	}
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
+		$("#section_type").val(4);
 	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
+		$("#section_type").val(5);
 	}else{
-
+		$("#resign_section").removeClass('hide');
+		$("#section_type").val(4);
 	}
 }
 </script>

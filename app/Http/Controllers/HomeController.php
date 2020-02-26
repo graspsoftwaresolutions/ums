@@ -150,20 +150,21 @@ class HomeController extends Controller
 								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
 								->where('i.status','=',0)
-								->where(function($query) use ($user_id){
-									$query->orWhere('i.waspromoted','!=','1')
-									  ->orWhere('i.beforepromotion','!=','1')
-									  ->orWhere('i.attached','!=','1')
-									  ->orWhere('i.herebyconfirm','!=','1')
-									  ->orWhere('i.filledby','!=','1')
-									  ->orWhere('i.nameofperson','!=','1')
-									  ->orWhereNull('i.waspromoted')
-									  ->orWhereNull('i.beforepromotion')
-									  ->orWhereNull('i.attached')
-									  ->orWhereNull('i.herebyconfirm')
-									  ->orWhereNull('i.filledby')
-									  ->orWhereNull('i.nameofperson');
-									});
+								->where('i.irc_status','=',0);
+								// ->where(function($query) use ($user_id){
+								// 	$query->orWhere('i.waspromoted','!=','1')
+								// 	  ->orWhere('i.beforepromotion','!=','1')
+								// 	  ->orWhere('i.attached','!=','1')
+								// 	  ->orWhere('i.herebyconfirm','!=','1')
+								// 	  ->orWhere('i.filledby','!=','1')
+								// 	  ->orWhere('i.nameofperson','!=','1')
+								// 	  ->orWhereNull('i.waspromoted')
+								// 	  ->orWhereNull('i.beforepromotion')
+								// 	  ->orWhereNull('i.attached')
+								// 	  ->orWhereNull('i.herebyconfirm')
+								// 	  ->orWhereNull('i.filledby')
+								// 	  ->orWhereNull('i.nameofperson');
+								// 	});
 			if($c_head!=1){
 				$total_ircpending_qry = $total_ircpending_qry->where('cb.union_branch_id','=',$unionbranchid);
 			}
@@ -182,13 +183,14 @@ class HomeController extends Controller
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 									->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  
-									->where('i.nameofperson','=','1')
-									->where('i.waspromoted','=','1')
-									->where('i.beforepromotion','=','1')
-									->where('i.attached','=','1')
-									->where('i.herebyconfirm','=','1')
-									->where('i.filledby','=','1')
-									->where('i.status','=',0);
+									// ->where('i.nameofperson','=','1')
+									// ->where('i.waspromoted','=','1')
+									// ->where('i.beforepromotion','=','1')
+									// ->where('i.attached','=','1')
+									// ->where('i.herebyconfirm','=','1')
+									// ->where('i.filledby','=','1')
+									->where('i.status','=',0)
+									->where('i.irc_status','=',1);
 			if($c_head!=1){
 				$total_ircapp_qry = $total_ircapp_qry->where('cb.union_branch_id','=',$unionbranchid);
 			}
@@ -215,20 +217,21 @@ class HomeController extends Controller
 								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
 								->where('i.status','=',0)
-								->where(function($query) use ($user_id){
-									$query->orWhere('i.waspromoted','!=','1')
-									  ->orWhere('i.beforepromotion','!=','1')
-									  ->orWhere('i.attached','!=','1')
-									  ->orWhere('i.herebyconfirm','!=','1')
-									  ->orWhere('i.filledby','!=','1')
-									  ->orWhere('i.nameofperson','!=','1')
-									  ->orWhereNull('i.waspromoted')
-									  ->orWhereNull('i.beforepromotion')
-									  ->orWhereNull('i.attached')
-									  ->orWhereNull('i.herebyconfirm')
-									  ->orWhereNull('i.filledby')
-									  ->orWhereNull('i.nameofperson');
-									});
+								->where('i.irc_status','=',0);
+								// ->where(function($query) use ($user_id){
+								// 	$query->orWhere('i.waspromoted','!=','1')
+								// 	  ->orWhere('i.beforepromotion','!=','1')
+								// 	  ->orWhere('i.attached','!=','1')
+								// 	  ->orWhere('i.herebyconfirm','!=','1')
+								// 	  ->orWhere('i.filledby','!=','1')
+								// 	  ->orWhere('i.nameofperson','!=','1')
+								// 	  ->orWhereNull('i.waspromoted')
+								// 	  ->orWhereNull('i.beforepromotion')
+								// 	  ->orWhereNull('i.attached')
+								// 	  ->orWhereNull('i.herebyconfirm')
+								// 	  ->orWhereNull('i.filledby')
+								// 	  ->orWhereNull('i.nameofperson');
+								// 	});
 			if($c_head!=1){
 				$total_ircpending_qry = $total_ircpending_qry->where('cb.union_branch_id','=',$unionbranchid);
 			}
@@ -247,13 +250,14 @@ class HomeController extends Controller
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 									->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  
-									->where('i.nameofperson','=','1')
-									->where('i.waspromoted','=','1')
-									->where('i.beforepromotion','=','1')
-									->where('i.attached','=','1')
-									->where('i.herebyconfirm','=','1')
-									->where('i.filledby','=','1')
-									->where('i.status','=',0);
+									// ->where('i.nameofperson','=','1')
+									// ->where('i.waspromoted','=','1')
+									// ->where('i.beforepromotion','=','1')
+									// ->where('i.attached','=','1')
+									// ->where('i.herebyconfirm','=','1')
+									// ->where('i.filledby','=','1')
+									->where('i.status','=',0)
+									->where('i.irc_status','=',1);
 			if($c_head!=1){
 				$total_ircapp_qry = $total_ircapp_qry->where('cb.union_branch_id','=',$unionbranchid);
 			}

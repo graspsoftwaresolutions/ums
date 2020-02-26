@@ -137,7 +137,11 @@
       @endif
       
       @if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee' )
+      @if($user_role=='irc-confirmation')
 		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
+      @else
+       <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
+      @endif
 		
 		  <li class="bold"><a id="pendirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=0"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Pending List') }}</span></a>
          <li class="bold"><a id="conirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=1"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Confirm List') }}</span></a>

@@ -30,6 +30,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     	pointer-events: none;
 		background-color: #f4f8fb !important;
 	}
+	.reasonsections .input-field {
+    	position: relative;
+    	margin: 0 !important;
+    	padding-left: 5px;
+    	padding-right: 5px;
+	}
 </style>
 @endsection
 @section('main-content')
@@ -57,7 +63,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 			<a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a>
 		</h5>
 			<div class="row" id="resignation_area"> 
-            <input type="hidden" name="id" id="ircid" value="{{$dataresigneddata->ircid}}">
+            <input type="hidden" name="ircid" id="ircid" value="{{$dataresigneddata->ircid}}">
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number') }}*</label>
@@ -269,6 +275,697 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				</div>
 					<div class="col s12 m12">
 						<div class="row padding-left-20">
+							<div class="col s12 m1">
+								<p style="font-size: 16px;">
+									Reason
+								</p>
+							</div>
+							<div class="col s12 m3">
+								@php
+									$reasonlabel = '';
+								@endphp
+								<select name="resignedreason" id="reason" required="" onchange="return ChangeFields()" class="error browser-default selectpicker">
+									<option value="">Select reason</option>
+									@foreach($data['reason_view'] as $values)
+										<option value="{{$values->id}}" @php if($values->id == $dataresigneddata->reasonid) { $reasonlabel = $values->reason_name; echo "selected";} @endphp >{{$values->reason_name}}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+											
+					</div>
+					@php
+						$irc_details = $data['irc_details'];
+						$section_type_val = '';
+						if($reasonlabel=='RETIRED'){
+							$section_type_val = 1;
+						}else if($reasonlabel=='DECEASED'){
+							$section_type_val = 2;
+						}else if($reasonlabel=='PROMOTED'){
+							$section_type_val = 3;
+						}
+						else if($reasonlabel=='RESIGN FROM BANK' || $reasonlabel=='RESIGN FROM UNION' || $reasonlabel=='TERMINATED BY BANK'){
+							$section_type_val = 4;
+						}else if($reasonlabel=='EXPELLED' || $reasonlabel=='STRUCK OFF' || $reasonlabel=='BLACK LIST'){
+							$section_type_val = 5;
+						}else{
+							$section_type_val = 4;
+						}
+					@endphp
+					<div class="col s12 m12">
+						<input type="text" name="section_type" id="section_type" value="{{ $section_type_val }}">
+						<div id="retired_section" class="reasonsections @if($section_type_val != 1) hide @endif "> 
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1" @if($irc_details->nameofperson ==1) checked @endif />
+						          		<span>BF Applicant’s Name is:</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="person_nameone" name="person_nameone" readonly value="{{$dataresigneddata->resignedmembername}}">
+										
+									</div>
+						        </div>
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="retiredboxone" id="retiredboxone"  @if($irc_details->retiredbox ==1) checked @endif value="1"/>
+						          		<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom" value="{{$dataresigneddata->gradewef}}" />
+										
+									</div>
+						        </div>
+								
+							</div>	
+
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" name="messengerboxone" @if($irc_details->messengerbox ==1) checked @endif id="messengerboxone"  value="1"/>
+										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="attachedboxone" @if($irc_details->attachedbox ==1) checked @endif id="attachedboxone"  value="1"/>
+						          		<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="attachedone" name="attachedone" value="{{$irc_details->attached_desc}}" >
+										
+									</div>
+						        </div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->jobtakenbox ==1) checked @endif name="jobtakenboxone" id="jobtakenboxone"  value="1"/>
+						          		<span>Member’s job functions have been taken over by</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="jobtakenbyone" id="jobtakenbyone" placeholder="" value="{{$irc_details->jobtakenby}}" class=""/>
+										
+									</div>
+									 and
+						        </div>
+							
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
+						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif  name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
+						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="replacestaffone" id="replacestaffone" value="{{$irc_details->replacestaff}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxone"  value="1"/>
+						          		<span>Applicant Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontactone" id="appcontactone" value="{{$irc_details->appcontact}}" placeholder=""  class=""/>
+										
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficeone" id="appofficeone" value="{{$irc_details->appoffice}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
+								<div class="clearfix"></div>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>H/P</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="apphpone" id="apphpone" placeholder="" value="{{$irc_details->appmobile}}" class=""/>
+										
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxone" id="appfaxone" placeholder="" value="{{$irc_details->appfax}}" class=""/>
+										
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailone" id="appemailone" placeholder="" value="{{$irc_details->appemail}}" class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+						</div>
+						<div id="deceased_section" class="reasonsections  @if($section_type_val != 2) hide @endif "> 
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="memberdemisedboxtwo" id="memberdemisedboxtwo" @if($irc_details->demised_onboxtwo ==1) checked @endif value="1"/>
+						          		<span>Member DEMISED on</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="memberdemisedtwo" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
+										
+									</div>
+						        </div>
+
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->member_nameboxtwo ==1) checked @endif name="nameofpersonboxtwo" id="nameofpersonboxtwo"  value="1"/>
+						          		<span>Name of Member’s next of kin is</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="nameofpersontwo" id="nameofpersontwo" placeholder="" value="{{$irc_details->member_nametwo}}" class=""/>
+										
+									</div>
+						        </div>
+
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->relationshipboxtwo ==1) checked @endif name="relationshipboxtwo" id="relationshipboxtwo"  value="1"/>
+						          		<span>Relationship is</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="relationshiptwo" value="{{$irc_details->relationshiptwo}}" id="relationshiptwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+							
+							</div>	
+
+
+							<div class="row padding-left-20">
+								<div class="col s12 m1 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->applicantboxtwo ==1) checked @endif name="applicantboxtwo" id="applicantboxtwo"  value="1"/>
+										<span>Applicant</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m1 " style="margin-left: 20px;">
+									<p>
+										<label>
+										<input type="radio" class="common-checkbox" @if($irc_details->applicanttwo ==1) checked @endif name="applicanttwo" id="applicanttwo"  value="1"/>
+										<span>Has</span>
+										</label> 
+									</p>	
+								</div>
+								<div class="col s12 m5 ">
+									<p>
+										<label>
+										<input type="radio" class="common-checkbox" name="applicanttwo" @if($irc_details->applicanttwo ==2) checked @endif id="applicanttwo"  value="2"/>
+										<span>Does Not have Legal Authority (LA) to claim.  </span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="jobtakenboxtwo" @if($irc_details->jobtakenbox ==1) checked @endif id="jobtakenboxtwo"  value="1"/>
+						          		<span>Member’s job functions have been taken over by</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="jobtakenbytwo" id="jobtakenbytwo" value="{{$irc_details->jobtakenby}}" placeholder=""  class=""/>
+										
+									</div>
+									 and
+						        </div>
+							
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
+						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
+						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="replacestafftwo" value="{{$irc_details->replacestaff}}" id="replacestafftwo" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxtwo"  value="1"/>
+						          		<span>Next of Kin’s Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontacttwo" value="{{$irc_details->appcontact}}" id="appcontacttwo" placeholder=""  class=""/>
+										
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficetwo" id="appofficetwo" placeholder="" value="{{$irc_details->appoffice}}" class=""/>
+										
+									</div>
+						        </div>
+
+								<div class="clearfix"></div>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>Mobile</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="appmobiletwo" id="appmobiletwo" placeholder="" value="{{$irc_details->appmobile}}" class=""/>
+										
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxtwo" id="appfaxtwo" placeholder="" value="{{$irc_details->appfax}}" class=""/>
+										
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailtwo" id="appemailtwo" placeholder="" value="{{$irc_details->appemail}}" class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+						
+							
+						</div>
+						<div id="promoted_section" class="reasonsections  @if($section_type_val != 3) hide @endif "> 
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
+						          		<span>BF Applicant’s Name is:</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="person_namethree" name="person_namethree" readonly value="{{$dataresigneddata->resignedmembername}}">
+										
+									</div>
+						        </div>
+								
+							</div>	
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxthree" id="messengerboxthree"  value="1"/>
+										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="promotedboxthree" @if($irc_details->promotedboxthree ==1) checked @endif id="promotedboxthree"  value="1"/>
+						          		<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) required @endif >
+										
+									</div>
+									grade w.e.f.
+									<div class="input-field inline">
+										<input type="text" 	name="gradewefthree" value="{{$dataresigneddata->gradewef}}" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+
+						
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxthree" id="attachedboxthree"  value="1"/>
+						          		<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="">
+										
+									</div>
+						        </div>
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->transfertoplaceboxthree ==1) checked @endif name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
+						          		<span>He promoted and transfer to new place</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" name="transfertoplacethree" value="{{$irc_details->transfertoplacethree}}" id="transfertoplacethree" >
+										
+									</div>
+						        </div>
+								
+							</div>	
+							
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
+										<span>Member is still in the same Branch / Department performing the same job functions. </span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" name="jobtakenboxthree" @if($irc_details->jobtakenbox ==1) checked @endif id="jobtakenboxthree"  value="1"/>
+						          		<span>Member’s job functions have been taken over by</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="jobtakenbythree" value="{{$irc_details->jobtakenby}}" id="jobtakenbythree" placeholder=""  class=""/>
+										
+									</div>
+									 and
+						        </div>
+							
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
+						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
+						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="replacestaffthree" id="replacestaffthree" value="{{$irc_details->replacestaff}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxthree" id="appcontactboxthree"  value="1"/>
+						          		<span>Applicant Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontactthree" value="{{$irc_details->appcontact}}" id="appcontactthree" placeholder=""  class=""/>
+										
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficethree" id="appofficethree" value="{{$irc_details->appoffice}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
+								<div class="clearfix"></div>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>H/P</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="apphpthree" id="apphpthree" value="{{$irc_details->appmobile}}" placeholder=""  class=""/>
+										
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxthree" id="appfaxthree" value="{{$irc_details->appfax}}" placeholder=""  class=""/>
+										
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailthree" id="appemailthree" value="{{$irc_details->appemail}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>
+
+								
+						</div>
+						<div id="resign_section" class="reasonsections  @if($section_type_val != 4) hide @endif "> 
+
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="personnameboxfour" id="personnameboxfour"  value="1"/>
+						          		<span>BF Applicant’s Name is:</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" id="person_namefour" name="person_namefour" readonly value="{{$dataresigneddata->resignedmembername}}">
+										
+									</div>
+						        </div>
+						        <div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->resignedonboxfour ==1) checked @endif name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
+						          		<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f" value="{{$dataresigneddata->gradewef}}" class="datepicker-custom"/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+							
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxfour" id="messengerboxfour"  value="1"/>
+										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
+										</label> 
+									</p>	
+								</div>
+							
+							</div>	
+								
+
+						
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxfour" id="attachedboxfour"  value="1"/>
+									<span>Attached is <span class="genderone"></span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+									</label> 
+										
+									<div class="input-field inline">
+										 <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="">
+									</div>
+								</div>
+								
+							</div>	
+								
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->jobtakenbox ==1) checked @endif name="jobtakenboxfour" id="jobtakenboxfour"  value="1"/>
+									<span>Member’s job functions have been taken over by</span>
+									</label> 
+									
+									<div class="input-field inline">
+										 <input type="text" name="jobtakenbyfour" value="{{$irc_details->jobtakenby}}" id="jobtakenbyfour" placeholder=""  class=""/>
+									</div>
+									and
+								</div>
+								
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+								
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
+									<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+									</label> 
+
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" value="{{$irc_details->posfilledby}}" placeholder=""  class=""/>
+									</div>	
+								</div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
+									<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+									</label> 
+										
+									<div class="input-field inline">						
+										<input type="text" 	name="replacestafffour" value="{{$irc_details->replacestaff}}" id="replacestafffour" placeholder=""  class=""/>
+									</div>
+								</div>
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12">
+									<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxfour" id="appcontactboxfour"  value="1"/>
+						          		<span>Applicant Contact</span>
+						            </label> 
+									<div class="input-field inline">
+										<input type="text" 	name="appcontactfour" value="{{$irc_details->appcontact}}" id="appcontactfour" placeholder=""  class=""/>
+										
+									</div>
+									 <span>Office</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appofficefour" value="{{$irc_details->appoffice}}" id="appofficefour" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+
+								<div class="clearfix"></div>
+								<div class="col s12">
+									
+									<span>
+										&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span>H/P</span>
+									</span>	
+									
+									<div class="input-field inline">
+										<input type="text" 	name="apphpfour" id="apphpfour" value="{{$irc_details->appmobile}}" placeholder=""  class=""/>
+										
+									</div>
+									 <span>Fax</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appfaxfour" id="appfaxfour" value="{{$irc_details->appfax}}" placeholder=""  class=""/>
+										
+									</div>
+									<span>Email</span>
+									 <div class="input-field inline">
+										<input type="text" 	name="appemailfour" id="appemailfour" value="{{$irc_details->appemail}}" placeholder=""  class=""/>
+										
+									</div>
+						        </div>
+								
+							</div>	
+						</div>
+						<div id="expelled_section" class="reasonsections  @if($section_type_val != 5) hide @endif "> 
+
+							<div class="row padding-left-20">
+								<div class="col s12 m12">
+								
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->expelledboxfive ==1) checked @endif name="expelledboxfive" id="expelledboxfive"  value="1"/>
+									<span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
+									</label> 
+
+									<div class="input-field inline">						
+										<input type="text" 	name="gradeweffive" id="gradewef" value="{{$dataresigneddata->gradewef}}" placeholder="grade w.e.f"  class="datepicker-custom"/>
+									</div>
+								</div>
+							</div>
+
+								
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->samejobboxfive ==1) checked @endif name="samejobboxfive" id="samejobboxfive"  value="1"/>
+										<span>Member’s is still performing the same job functions.</span>
+										</label> 
+									</p>	
+
+								</div>
+								
+							</div>
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
+										<span>Member is still in the same Branch / Department.</span>
+										</label> 
+									</p>	
+								</div>
+								
+							</div>	
+							<div class="row padding-left-20">
+								<div class="col s12 m12 ">
+									<p>
+										<label>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->memberstoppedboxfive ==1) checked @endif name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
+										<span>Member HAS STOPPED / HAS NOT STOPPED the Check-Off [Delete whichever is applicable] </span>
+										</label> 
+									</p>	
+								</div>
+								
+							</div>	
+							
+						</div>
+					</div>
+
+
+					<!-- <div class="col s12 m12">
+						<div class="row padding-left-20">
 							<div class="col s12 m4 ">
 								<p>
 									<label>
@@ -283,8 +980,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<input type="text" id="person_name" readonly value="{{$dataresigneddata->resignedmembername}}">
 							</div>
 						</div>						
-					</div>
-					<div class="col s12 m12">
+					</div> -->
+					<!-- <div class="col s12 m12">
 						<div class="row padding-left-20">
 							<div class="col s12 m3 ">
 								<p>
@@ -301,7 +998,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										@foreach($data['reason_view'] as $values)
                                         <option value="{{$values->id}}" @php if($values->id == $dataresigneddata->reasonid) { echo "selected";} @endphp>{{$values->reason_name}}</option>
 										@endforeach
-									</select>
+									</select> 
 							</div>
 							<div class="col s12 m3">
 							
@@ -321,8 +1018,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<span>I hearby confirm that She/He got She/He is no longer doing any clerical job function. </span>
 							</label> 
 						</p>		
-					</div>
-					<div class="col s12 m12 padding-left-20">
+					</div> -->
+					<!-- <div class="col s12 m12 padding-left-20">
 						<p class=" padding-left-24">
 							<label>
 							<input type="hidden" name="attached" value="0">
@@ -361,12 +1058,93 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<textarea id="comments" name="comments" class="materialize-textarea">{{$dataresigneddata->comments}}</textarea>
 							<label for="comments">Comments</label>
 						</div>
-					</div>
+					</div> -->
 					</div>
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
-				<div class="row">
+			   <div class="row padding-left-20">
+					<div class="col s12 m12">
+						<label>
+						
+							<input type="checkbox"  @if($irc_details->committieverificationboxone ==1) checked @endif name="committieverificationboxone" id="committieverificationboxone" class="common-checkbox"  value="1"/>
+							<span>I</span>
+						</label> 
+						<div class="input-field inline">	
+							<input type="text" id="committiename" name="committiename" value="{{$irc_details->committiename}}" placeholder="" >	
+						</div>
+						Branch Committee of NUBE
+						<div class="input-field inline">	
+							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="{{$irc_details->committieverifyname}}">	
+						</div>
+						Branch have verified the above and confirm that the declaration 
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by the IRC is correct.
+					</div>
+					<div class="col s12 m12 ">
+						<p>
+							<label>
+							<input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxtwo ==1) checked @endif name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
+							<span>Staff who has taken over the job functions under CODE 01 / 02 / 03 / 04 is a NUBE Member. </span>
+							</label> 
+						</p>	
+					</div>
+					<div class="col s12 m12 ">
+							
+							<label>
+								<input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxthree ==1) checked @endif name="committieverificationboxthree" id="committieverificationboxthree"  value="1" />
+								<span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+								
+							</label> 
+							<br>
+							<div class="input-field inline" style="margin: 0 0 0 27px !important;">	
+								<input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}">
+							</div>
+							<span>(Remark)</span>
+							
+						
+					</div>
+			   </div>
+			   <div class="row">
+					
+					<div class="padding-left-20 ">
+						<br>
+					</div>
+				
+					<div class="col s12 m12">
+						<div class="row">
+							<div class="col s12 m3 ">
+								<p >
+									<label>
+									
+									<span>Branch Commitee [Name in full]</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3 ">
+									<input type="text" name="branchcommitteeName" id="branchcommitteeName" placeholder="Name" value="{{$dataresigneddata->branchcommitteeName}}">
+							</div>
+						</div>	
+					</div>
+					<div class="col s12 m12">
+						<div class="row">
+							<div class="col s12 m3 ">
+								<p >
+									<label>
+									<span>Zone</span>
+									</label> 
+								</p>	
+							</div>
+							<div class="col s12 m3 ">
+									<input type="text"  name="branchcommitteeZone" id="branchcommitteeZone" value="{{$dataresigneddata->branchcommitteeZone}}">
+							</div>
+							<div class="col s12 m3 ">
+							<!--<label>Date</label> -->
+									<input type="text" class="datepicker-custom" name="branchcommitteedate" id="branchcommitteedate" value="@isset($dataresigneddata->branchcommitteedate){{$dataresigneddata->branchcommitteedate}}@endisset" palceholder="Date" name="date">
+							</div>
+						</div>	
+					</div>
+				</div>
+				<!-- <div class="row">
 					<div class="col s12 m12">
 					
 						<p class="padding-left-24">
@@ -421,7 +1199,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</div>
 						</div>	
 					</div>
-				</div>
+				</div> -->
 			  </div>
 			  <div class="col s12 m12">
 						<div class="row">
@@ -602,6 +1380,35 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 }); */
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#irc_member_no").val('');
+});
+function ChangeFields(){
+	var reason = $("#reason option:selected").text();
+	//alert(reason);
+	$(".reasonsections").addClass('hide');
+	if(reason=='RETIRED'){
+		$("#retired_section").removeClass('hide');
+		$("#section_type").val(1);
+	}else if(reason=='DECEASED'){
+		$("#deceased_section").removeClass('hide');
+		$("#section_type").val(2);
+	}else if(reason=='PROMOTED'){
+		$("#promoted_section").removeClass('hide');
+		$("#section_type").val(3);
+	}
+	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
+		$("#resign_section").removeClass('hide');
+		$("#section_type").val(4);
+	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACK LIST'){
+		$("#expelled_section").removeClass('hide');
+		$("#section_type").val(5);
+	}else{
+		$("#resign_section").removeClass('hide');
+		$("#section_type").val(4);
+	}
+}
+$(".datepicker-custom").datepicker({
+    format: 'dd/mm/yyyy',
+	autoHide: true,
 });
 
 </script>

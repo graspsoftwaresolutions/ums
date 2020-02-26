@@ -252,23 +252,13 @@ class IrcController extends CommonController
 			
 			if($statusfilter!=''){
 				if($statusfilter==0){
-					  $totalqry = $totalqry->where('i.nameofperson','=','1')
-					  ->where('i.waspromoted','=','1')
-					  ->where('i.beforepromotion','=','1')
-					  ->where('i.attached','=','1')
-					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1')
+					  $totalqry = $totalqry->where('i.irc_status','=',1)
 					  ->where('i.status','=',$statusfilter);
 				}else{
-					$totalqry = $totalqry->where('i.status','=',$statusfilter);
+					$totalqry = $totalqry->where('i.status','=',$statusfilter)->where('i.irc_status','=',1);
 				}
 			}else{
-				 $totalqry = $totalqry->where('i.nameofperson','=','1')
-					  ->where('i.waspromoted','=','1')
-					  ->where('i.beforepromotion','=','1')
-					  ->where('i.attached','=','1')
-					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1');
+				 $totalqry = $totalqry->where('i.irc_status','=',1);
 			}
 			if($c_head!=1){
 				$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
@@ -288,30 +278,26 @@ class IrcController extends CommonController
 			if($statusfilter!=''){
 				if($statusfilter==0){
 					   $totalqry = $totalqry->where('i.status','=',0)
-							->where(function($query) use ($statusfilter){
-								$query->orWhere('i.waspromoted','!=','1')
-								  ->orWhere('i.beforepromotion','!=','1')
-								  ->orWhere('i.attached','!=','1')
-								  ->orWhere('i.herebyconfirm','!=','1')
-								  ->orWhere('i.filledby','!=','1')
-								  ->orWhere('i.nameofperson','!=','1')
-								  ->orWhereNull('i.waspromoted')
-								  ->orWhereNull('i.beforepromotion')
-								  ->orWhereNull('i.attached')
-								  ->orWhereNull('i.herebyconfirm')
-								  ->orWhereNull('i.filledby')
-								  ->orWhereNull('i.nameofperson');
-								});
+							->where('i.irc_status','=',0);
+							// ->where(function($query) use ($statusfilter){
+							// 	$query->orWhere('i.waspromoted','!=','1')
+							// 	  ->orWhere('i.beforepromotion','!=','1')
+							// 	  ->orWhere('i.attached','!=','1')
+							// 	  ->orWhere('i.herebyconfirm','!=','1')
+							// 	  ->orWhere('i.filledby','!=','1')
+							// 	  ->orWhere('i.nameofperson','!=','1')
+							// 	  ->orWhereNull('i.waspromoted')
+							// 	  ->orWhereNull('i.beforepromotion')
+							// 	  ->orWhereNull('i.attached')
+							// 	  ->orWhereNull('i.herebyconfirm')
+							// 	  ->orWhereNull('i.filledby')
+							// 	  ->orWhereNull('i.nameofperson');
+							// 	});
 						if($c_head!=1){
 							$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
 						}
 				}else{
-					$totalqry = $totalqry->where('i.nameofperson','=','1')
-					  ->where('i.waspromoted','=','1')
-					  ->where('i.beforepromotion','=','1')
-					  ->where('i.attached','=','1')
-					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1');
+					$totalqry = $totalqry->where('i.irc_status','=',1);
 					  //->where('i.status','=','0');
 					if($c_head!=1){
 						$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
@@ -333,23 +319,13 @@ class IrcController extends CommonController
 		if($user_role=='irc-branch-committee'){
 			if($statusfilter!=''){
 				if($statusfilter==0){
-					  $commonselect = $commonselect->where('i.nameofperson','=','1')
-					  ->where('i.waspromoted','=','1')
-					  ->where('i.beforepromotion','=','1')
-					  ->where('i.attached','=','1')
-					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1')
+					  $commonselect = $commonselect->where('i.irc_status','=',1)
 					  ->where('i.status','=',$statusfilter);
 				}else{
-					$commonselect = $commonselect->where('i.status','=',$statusfilter);
+					$commonselect = $commonselect->where('i.status','=',$statusfilter)->where('i.irc_status','=',1);
 				}
 			}else{
-				 $commonselect = $commonselect->where('i.nameofperson','=','1')
-					  ->where('i.waspromoted','=','1')
-					  ->where('i.beforepromotion','=','1')
-					  ->where('i.attached','=','1')
-					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1');
+				 $commonselect = $commonselect->where('i.irc_status','=',1);
 			}
 			if($c_head!=1){
 				$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
@@ -358,28 +334,24 @@ class IrcController extends CommonController
 			if($statusfilter!=''){
 				if($statusfilter==0){
 					  $commonselect = $commonselect->where('i.status','=',0)
-								->where(function($query) use ($statusfilter){
-									$query->orWhere('i.waspromoted','!=','1')
-									  ->orWhere('i.beforepromotion','!=','1')
-									  ->orWhere('i.attached','!=','1')
-									  ->orWhere('i.herebyconfirm','!=','1')
-									  ->orWhere('i.filledby','!=','1')
-									  ->orWhere('i.nameofperson','!=','1')
-									  ->orWhereNull('i.waspromoted')
-									  ->orWhereNull('i.beforepromotion')
-									  ->orWhereNull('i.attached')
-									  ->orWhereNull('i.herebyconfirm')
-									  ->orWhereNull('i.filledby')
-									  ->orWhereNull('i.nameofperson');
-									});
+								  ->where('i.irc_status','=',0);
+								// ->where(function($query) use ($statusfilter){
+								// 	$query->orWhere('i.waspromoted','!=','1')
+								// 	  ->orWhere('i.beforepromotion','!=','1')
+								// 	  ->orWhere('i.attached','!=','1')
+								// 	  ->orWhere('i.herebyconfirm','!=','1')
+								// 	  ->orWhere('i.filledby','!=','1')
+								// 	  ->orWhere('i.nameofperson','!=','1')
+								// 	  ->orWhereNull('i.waspromoted')
+								// 	  ->orWhereNull('i.beforepromotion')
+								// 	  ->orWhereNull('i.attached')
+								// 	  ->orWhereNull('i.herebyconfirm')
+								// 	  ->orWhereNull('i.filledby')
+								// 	  ->orWhereNull('i.nameofperson');
+								// 	});
 					
 				}else{
-					 $commonselect = $commonselect->where('i.nameofperson','=','1')
-					  ->where('i.waspromoted','=','1')
-					  ->where('i.beforepromotion','=','1')
-					  ->where('i.attached','=','1')
-					  ->where('i.herebyconfirm','=','1')
-					  ->where('i.filledby','=','1');
+					 $commonselect = $commonselect->where('i.irc_status','=',1);
 					  //->where('i.status','=','0');
 				}
 			}else{
@@ -446,12 +418,7 @@ class IrcController extends CommonController
             {
 				if($user_role!='irc-branch-committee'){
 					$check_count = DB::table('irc_confirmation as irc')
-							  ->where('irc.nameofperson','=','1')
-							  ->where('irc.waspromoted','=','1')
-							  ->where('irc.beforepromotion','=','1')
-							  ->where('irc.attached','=','1')
-							  ->where('irc.herebyconfirm','=','1')
-							  ->where('irc.filledby','=','1')
+								->where('irc.irc_status','=',1)
 							  //->where('irc.status','=','0')
 							  ->where('irc.id','=',$irc->id)
 							  ->count();
@@ -515,6 +482,10 @@ class IrcController extends CommonController
 									->where('irc.id','=',$id)
 									->first();
 		
+		$data['irc_details'] = DB::table('irc_confirmation as irc')->select('*')
+									->where('irc.id','=',$id)
+									->first();
+		
 		$data['reason_view'] = Reason::where('status','=','1')->get();
 
 
@@ -523,27 +494,309 @@ class IrcController extends CommonController
 
 	public function saveIrc(Request $request)
 	{
+		//return $request->all();
 		$data = $request->all();
 		$resigned_member = $request->input('resignedmemberno');
 		$ircmembershipno = $request->input('ircmembershipno');
+		$section_type = $request->input('section_type');
+
+		$gradewef = '';
+		$messengerbox = 0;
+		$jobtakenbox = 0;
+		$jobtakenby = '';
+		$posfilledbybox = 0;
+		$posfilledby = '';
+		$replacestaffbox = 0;
+		$replacestaff = '';
+		$appcontactbox = 0;
+		$appcontact = '';
+		$appoffice = '';
+		$appmobile = '';
+		$appfax = '';
+		$appemail = '';
+		$samebranchbox = 0;
+
+		$attachedbox = 0;
+		$attached = '';
+
+		$insertdata = ['resignedmemberno' => $data['resignedmemberno'],'resignedmembername' => $data['resignedmembername'],'resignedmembericno' => $data['resignedmembericno'],'resignedmemberbankname' => $data['resignedmemberbankname'],'resignedmemberbranchname' => $data['resignedmemberbranchname'],'resignedreason' => $data['resignedreason'],'ircmembershipno' => $data['ircmembershipno'],'ircname' => $data['ircname'],'ircposition' => $data['ircposition'],
+		'ircbank' => $data['ircbank'],'ircbankaddress' => $data['ircbankaddress'],'irctelephoneno' => $data['irctelephoneno'],'ircmobileno' => $data['ircmobileno'],'ircfaxno' => $data['ircfaxno']];
+		$ircstatus = 0;
+
+		if($section_type==1){
+			$personnameboxone = $request->input('personnameboxone');
+			$retiredboxone = $request->input('retiredboxone');
+			$messengerboxone = $request->input('messengerboxone');
+			$attachedboxone = $request->input('attachedboxone');
+			$jobtakenboxone = $request->input('jobtakenboxone');
+			$posfilledbyboxone = $request->input('posfilledbyboxone');
+			$replacestaffboxone = $request->input('replacestaffboxone');
+			$appcontactboxone = $request->input('appcontactboxone');
+
+			if(isset($messengerboxone)){
+				$messengerbox = 1;
+			}
+			if(isset($jobtakenboxone)){
+				$jobtakenbox = 1;
+			}
+			if(isset($posfilledbyboxone)){
+				$posfilledbybox = 1;
+			}
+			if(isset($replacestaffboxone)){
+				$replacestaffbox = 1;
+			}
+			if(isset($appcontactboxone)){
+				$appcontactbox = 1;
+			}
+			if(isset($attachedboxone)){
+				$attachedbox = 1;
+			}
+
+			$person_nameone = $request->input('person_nameone');
+			$gradewef = $request->input('gradewefone');
+			$attached = $request->input('attachedone');
+			$jobtakenby = $request->input('jobtakenbyone');
+			$posfilledby = $request->input('posfilledbyone');
+			$replacestaff = $request->input('replacestaffone');
+			$appcontact = $request->input('appcontactone');
+			$appoffice = $request->input('appofficeone');
+			$appmobile = $request->input('apphpone');
+			$appfax = $request->input('appfaxone');
+			$appemail = $request->input('appemailone');
+
+			$insertdata['nameofperson'] = isset($personnameboxone) ? 1 : 0;
+			$insertdata['retiredbox'] = isset($retiredboxone) ? 1 : 0;
+
+			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['nameofperson'] == 1 && $insertdata['retiredbox'] == 1){
+				$ircstatus = 1;
+			}
+			
+		}else if($section_type==2){
+			$memberdemisedboxtwo = $request->input('memberdemisedboxtwo');
+			$nameofpersonboxtwo = $request->input('nameofpersonboxtwo');
+			$relationshipboxtwo = $request->input('relationshipboxtwo');
+			$applicantboxtwo = $request->input('applicantboxtwo');
+			$jobtakenboxtwo = $request->input('jobtakenboxtwo');
+			$posfilledbyboxtwo = $request->input('posfilledbyboxtwo');
+			$replacestaffboxtwo = $request->input('replacestaffboxtwo');
+			$appcontactboxtwo = $request->input('appcontactboxtwo');
+
+			if(isset($jobtakenboxtwo)){
+				$jobtakenbox = 1;
+			}
+			if(isset($posfilledbyboxtwo)){
+				$posfilledbybox = 1;
+			}
+			if(isset($replacestaffboxtwo)){
+				$replacestaffbox = 1;
+			}
+			if(isset($appcontactboxtwo)){
+				$appcontactbox = 1;
+			}
+
+			$memberdemisedtwo = $request->input('memberdemisedtwo');
+			$nameofpersontwo = $request->input('nameofpersontwo');
+			$relationshiptwo = $request->input('relationshiptwo');
+			$jobtakenby = $request->input('jobtakenbytwo');
+			$posfilledby = $request->input('posfilledbytwo');
+			$replacestaff = $request->input('replacestafftwo');
+			$appcontact = $request->input('appcontacttwo');
+			$appoffice = $request->input('appofficetwo');
+			$appmobile = $request->input('appmobiletwo');
+			$appfax = $request->input('appfaxtwo');
+			$appemail = $request->input('appemailtwo');
+			$applicanttwo = $request->input('applicanttwo');
+
+			$insertdata['demised_onboxtwo'] = isset($memberdemisedboxtwo) ? 1 : 0;
+			$insertdata['demised_ontwo'] = $memberdemisedtwo;
+			$insertdata['member_nameboxtwo'] = isset($memberdemisedboxtwo) ? 1 : 0;
+			$insertdata['member_nametwo'] = $nameofpersontwo;
+			$insertdata['relationshipboxtwo'] = isset($relationshipboxtwo) ? 1 : 0;
+			$insertdata['relationshiptwo'] = $relationshiptwo;
+			$insertdata['applicantboxtwo'] = isset($applicantboxtwo) ? 1 : 0;
+			$insertdata['applicanttwo'] = $applicanttwo;
+
+			if($jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $insertdata['demised_onboxtwo'] == 1 && $insertdata['member_nameboxtwo'] == 1 && $insertdata['relationshipboxtwo'] == 1 && $insertdata['applicantboxtwo'] == 1){
+				$ircstatus = 1;
+			}
+
+		}else if($section_type==3){
+			$nameofpersonboxthree = $request->input('nameofpersonboxthree');
+			$messengerboxthree = $request->input('messengerboxthree');
+			$promotedboxthree = $request->input('promotedboxthree');
+			$attachedboxthree = $request->input('attachedboxthree');
+			$transfertoplaceboxthree = $request->input('transfertoplaceboxthree');
+			$samebranchboxthree = $request->input('samebranchboxthree');
+			$jobtakenboxthree = $request->input('jobtakenboxthree');
+			$posfilledbyboxthree = $request->input('posfilledbyboxthree');
+			$replacestaffboxthree = $request->input('replacestaffboxthree');
+			$appcontactboxthree = $request->input('appcontactboxthree');
+
+			if(isset($messengerboxthree)){
+				$messengerbox = 1;
+			}
+			if(isset($jobtakenboxthree)){
+				$jobtakenbox = 1;
+			}
+			if(isset($posfilledbyboxthree)){
+				$posfilledbybox = 1;
+			}
+			if(isset($replacestaffboxthree)){
+				$replacestaffbox = 1;
+			}
+			if(isset($appcontactboxthree)){
+				$appcontactbox = 1;
+			}
+			if(isset($samebranchboxthree)){
+				$samebranchbox = 1;
+			}
+			if(isset($attachedboxthree)){
+				$attachedbox = 1;
+			}
+
+			$person_namethree = $request->input('person_namethree');
+			$promotedthree = $request->input('promotedthree');
+			$gradewef = $request->input('gradewefthree');
+			$attached = $request->input('attachedthree');
+			$transfertoplacethree = $request->input('transfertoplacethree');
+			$jobtakenby = $request->input('jobtakenbythree');
+			$posfilledby = $request->input('posfilledbythree');
+			$replacestaff = $request->input('replacestaffthree');
+			$appcontact = $request->input('appcontactthree');
+			$appoffice = $request->input('appofficethree');
+			$appmobile = $request->input('apphpthree');
+			$appfax = $request->input('appfaxthree');
+			$appemail = $request->input('appemailthree');
+
+			$insertdata['promotedboxthree'] = isset($promotedboxthree) ? 1 : 0;
+			$insertdata['promotedto'] = $promotedthree;
+			$insertdata['transfertoplaceboxthree'] = isset($transfertoplaceboxthree) ? 1 : 0;
+			$insertdata['transfertoplacethree'] = $transfertoplacethree;
+
+			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $samebranchbox == 1 && $attachedbox == 1 && $insertdata['promotedboxthree'] == 1 && $insertdata['transfertoplaceboxthree'] == 1){
+				$ircstatus = 1;
+			}
+
+		}else if($section_type==4){
+			$personnameboxfour = $request->input('personnameboxfour');
+			$resignedonboxfour = $request->input('resignedonboxfour');
+			$messengerboxfour = $request->input('messengerboxfour');
+			$attachedboxfour = $request->input('attachedboxfour');
+			$jobtakenboxfour = $request->input('jobtakenboxfour');
+			$posfilledbyboxfour = $request->input('posfilledbyboxfour');
+			$replacestaffboxfour = $request->input('replacestaffboxfour');
+			$appcontactboxfour = $request->input('appcontactboxfour');
+
+			if(isset($messengerboxfour)){
+				$messengerbox = 1;
+			}
+			if(isset($jobtakenboxfour)){
+				$jobtakenbox = 1;
+			}
+			if(isset($posfilledbyboxfour)){
+				$posfilledbybox = 1;
+			}
+			if(isset($replacestaffboxfour)){
+				$replacestaffbox = 1;
+			}
+			if(isset($appcontactboxfour)){
+				$appcontactbox = 1;
+			}
+			if(isset($attachedboxfour)){
+				$attachedbox = 1;
+			}
+
+
+			$person_namefour = $request->input('person_namefour');
+			$gradewef = $request->input('gradeweffour');
+			$attached = $request->input('attachedfour');
+			$jobtakenby = $request->input('jobtakenbyfour');
+			$posfilledby = $request->input('posfilledbyfour');
+			$replacestaff = $request->input('replacestafffour');
+			$appcontact = $request->input('appcontactfour');
+			$appoffice = $request->input('appofficefour');
+			$appmobile = $request->input('apphpfour');
+			$appfax = $request->input('appfaxfour');
+			$appemail = $request->input('appemailfour');
+
+			$insertdata['resignedonboxfour'] = isset($resignedonboxfour) ? 1 : 0;
+
+			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['resignedonboxfour'] == 1 ){
+				$ircstatus = 1;
+			}
 		
-		if($data['gradewef'])
+		}else if($section_type==5){
+			$expelledboxfive = $request->input('expelledboxfive');
+			$samejobboxfive = $request->input('samejobboxfive');
+			$samebranchbox = $request->input('samebranchboxfive');
+			$memberstoppedboxfive = $request->input('memberstoppedboxfive');
+			if(isset($samebranchbox)){
+				$samebranchbox = 1;
+			}
+
+			$gradewef = $request->input('gradeweffive');
+			//$committiename = $request->input('committiename');
+			//$attachedfour = $request->input('committieverifyname');
+			$insertdata['expelledboxfive'] = isset($expelledboxfive) ? 1 : 0;
+			$insertdata['samejobboxfive'] = isset($samejobboxfive) ? 1 : 0;
+			$insertdata['memberstoppedboxfive'] = isset($memberstoppedboxfive) ? 1 : 0;
+
+			if($samebranchbox == 1 && $insertdata['expelledboxfive'] == 1 && $insertdata['samejobboxfive'] == 1 && $insertdata['memberstoppedboxfive'] == 1 ){
+				$ircstatus = 1;
+			}
+		}else{
+
+		}
+		$dobgradewef =  '';
+		if($gradewef!='')
 		{
-			$fmmm_date = explode("/",$data['gradewef']);           							
+			$fmmm_date = explode("/",$gradewef);           							
 			$gradewef = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
 			$grade = date('Y-m-d', strtotime($gradewef));
-			$data['gradewef'] =  $grade;
+			$dobgradewef =  $grade;
 		}
+		$insertdata['attachedbox'] = $attachedbox;
+		$insertdata['gradewef'] = $dobgradewef;
+		$insertdata['messengerbox'] = $messengerbox;
+		$insertdata['jobtakenbox'] = $jobtakenbox;
+		$insertdata['jobtakenby'] = $jobtakenby;
+		$insertdata['posfilledbybox'] = $posfilledbybox;
+		$insertdata['posfilledby'] = $posfilledby;
+		$insertdata['replacestaffbox'] = $replacestaffbox;
+		$insertdata['replacestaff'] = $replacestaff;
+		$insertdata['appcontactbox'] = $appcontactbox;
+		$insertdata['appcontact'] = $appcontact;
+		$insertdata['appoffice'] = $appoffice;
+		$insertdata['appmobile'] = $appmobile;
+		$insertdata['appfax'] = $appfax;
+		$insertdata['appemail'] = $appemail;
+		$insertdata['samebranchbox'] = $samebranchbox;
 
-		if($data['submitted_at'])
+		$insertdata['attachedbox'] = $attachedbox;
+		$insertdata['attached_desc'] = $attached;
+		$insertdata['irc_status'] = $ircstatus;
+		//return $insertdata;
+		
+		// if($data['gradewef'])
+		// {
+		// 	$fmmm_date = explode("/",$data['gradewef']);           							
+		// 	$gradewef = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+		// 	$grade = date('Y-m-d', strtotime($gradewef));
+		// 	$data['gradewef'] =  $grade;
+		// }
+		$submitted_at = $request->input('submitted_at');
+		$created_at = date('Y-m-d h:i:s');
+		$insertdata['created_at'] = $created_at;
+		if($submitted_at!='')
 		{
-			$fmmm_date = explode("/",$data['submitted_at']);           							
+			$fmmm_date = explode("/",$submitted_at);           							
 			$submittedat = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
 			$submit = date('Y-m-d', strtotime($submittedat));
-			$data['submitted_at'] =  $submit;
+			//$data['submitted_at'] =  $submit;
+			$insertdata['submitted_at'] = $submit;
 		}
 		
-		$data['status'] = 0;
+		$insertdata['status'] = 0;
 		if(!empty(Auth::user())){
 		
 			$userid = Auth::user()->id;
@@ -553,7 +806,7 @@ class IrcController extends CommonController
 
 		$defdaultLang = app()->getLocale();
 		
-		if(!empty($request->id))
+		if(!empty($request->input('ircid')))
 		{
 			//  echo "<pre>"; 
 			//  print_r($request->all());
@@ -561,19 +814,51 @@ class IrcController extends CommonController
 
 			if($user_role=='irc-confirmation')
 			{		
-				$saveIrc = $this->Irc->saveIrcdata($data);
+				$saveIrc = DB::table('irc_confirmation')
+                ->where('id', $request->input('ircid'))
+				->update($insertdata);
+				
+				//return $saveIrc;
+				//$saveIrc = $this->Irc->saveIrcdata($data);
 				
 			}
 			else if($user_role=='irc-branch-committee')
 			{
-				if($data['branchcommitteedate'])
+				$updatedata = [];
+				$committieverificationboxone = $request->input('committieverificationboxone');
+				$committieverificationboxtwo = $request->input('committieverificationboxtwo');
+				$committieverificationboxthree = $request->input('committieverificationboxthree');
+
+				$committieremark = $request->input('committieremark');
+				$branchcommitteeName = $request->input('branchcommitteeName');
+				$branchcommitteeZone = $request->input('branchcommitteeZone');
+				$branchcommitteedate = $request->input('branchcommitteedate');
+
+				$updatedata['committieverificationboxone'] = isset($committieverificationboxone) ? 1 : 0;
+				$updatedata['committieverificationboxtwo'] = isset($committieverificationboxtwo) ? 1 : 0;
+				$updatedata['committieverificationboxthree'] = isset($committieverificationboxthree) ? 1 : 0;
+				$updatedata['committieremark'] = $committieremark;
+				$updatedata['committiename'] = $request->input('committiename');
+				$updatedata['committieverifyname'] = $request->input('committieverifyname');
+				$updatedata['branchcommitteeName'] = $branchcommitteeName;
+				$updatedata['branchcommitteeZone'] = $branchcommitteeZone;
+				
+				if($branchcommitteedate!='')
 				{
-					$fmmm_date = explode("/",$data['branchcommitteedate']);           							
+					$fmmm_date = explode("/",$branchcommitteedate);           							
 					$branch = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
 					$branchdate = date('Y-m-d', strtotime($branch));
-					$data['branchcommitteedate'] =  $branchdate;
+					$updatedata['branchcommitteedate'] =  $branchdate;
 				}
-				$saveIrc = $this->Irc->saveIrcdata($data);
+				if($updatedata['committieverificationboxone']==1 && $updatedata['committieverificationboxtwo']==1 && $updatedata['committieverificationboxthree']==1){
+					$updatedata['status'] = 1;
+				}
+				
+				$saveIrc = DB::table('irc_confirmation')
+                ->where('id', $request->input('ircid'))
+				->update($updatedata);
+				//return $request->input('ircid');
+				//$saveIrc = $this->Irc->saveIrcdata($data);
 
 			}
 			$check_edit = DB::table('irc_confirmation as irc')
@@ -599,14 +884,15 @@ class IrcController extends CommonController
 			//print_r($request->all());
 			//die;
 			if($check_irc==0){
-				$saveIrc = $this->Irc->saveIrcdata($data);
+				$saveIrc = DB::table('irc_confirmation')->insert($insertdata);
+				//$saveIrc = $this->Irc->saveIrcdata($data);
 			}else{
 				return redirect(app()->getLocale().'/irc_list')->with('error', 'Already data exists for this member');
 			}
 			
 		}
 		if ($saveIrc == true) {
-			if(!empty($request->id))
+			if(!empty($request->ircid))
 			{
 				return redirect(app()->getLocale().'/irc_list')->with('message', 'Irc Updated Succesfully');
 			}
@@ -614,6 +900,8 @@ class IrcController extends CommonController
 			{
 				return redirect(app()->getLocale().'/irc_list')->with('message', 'IRC Name Added Succesfully');
 			}
+		}else{
+			return redirect(app()->getLocale().'/irc_list')->with('message', 'Irc Updated Succesfully');
 		}
 	}
 	//getMembersList
