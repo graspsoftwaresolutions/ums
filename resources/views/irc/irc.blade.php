@@ -1234,7 +1234,7 @@ function ChangeFields(){
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
-	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACK LIST'){
+	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACKLISTED FROM UNION' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
 		$("#section_type").val(5);
 	}else{

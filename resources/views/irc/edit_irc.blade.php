@@ -306,7 +306,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						}
 						else if($reasonlabel=='RESIGN FROM BANK' || $reasonlabel=='RESIGN FROM UNION' || $reasonlabel=='TERMINATED BY BANK'){
 							$section_type_val = 4;
-						}else if($reasonlabel=='EXPELLED' || $reasonlabel=='STRUCK OFF' || $reasonlabel=='BLACK LIST'){
+						}else if($reasonlabel=='EXPELLED' || $reasonlabel=='STRUCK OFF' || $reasonlabel=='BLACK LIST' || $reasonlabel=='BLACKLISTED FROM UNION'){
 							$section_type_val = 5;
 						}else{
 							$section_type_val = 4;
@@ -1398,7 +1398,7 @@ function ChangeFields(){
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
-	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACK LIST'){
+	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACKLISTED FROM UNION' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
 		$("#section_type").val(5);
 	}else{
