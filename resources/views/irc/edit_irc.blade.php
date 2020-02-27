@@ -25,7 +25,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		pointer-events: none;
 		background-color: #f4f8fb !important;
 	}
-	.branch 
+	.branch
 	{
     	pointer-events: none;
 		background-color: #f4f8fb !important;
@@ -36,6 +36,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     	padding-left: 5px;
     	padding-right: 5px;
 	}
+	.branchconfirmarea .input-field {
+    	position: relative;
+    	margin: 0 !important;
+    }
 </style>
 @endsection
 @section('main-content')
@@ -280,7 +284,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									Reason
 								</p>
 							</div>
-							<div class="col s12 m3">
+							<div class="col s12 m5">
 								@php
 									$reasonlabel = '';
 								@endphp
@@ -320,7 +324,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1" @if($irc_details->nameofperson ==1) checked @endif />
-						          		<span>BF Applicant’s Name is:</span>
+						          		<span>BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_nameone" name="person_nameone" readonly value="{{$dataresigneddata->resignedmembername}}">
@@ -510,7 +514,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<p>
 										<label>
 										<input type="radio" class="common-checkbox" name="applicanttwo" @if($irc_details->applicanttwo ==2) checked @endif id="applicanttwo"  value="2"/>
-										<span>Does Not have Legal Authority (LA) to claim.  </span>
+										<span>Does Not have Legal Authority (LA) to claim  </span>
 										</label> 
 									</p>	
 								</div>
@@ -608,7 +612,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
-						          		<span>BF Applicant’s Name is:</span>
+						          		<span>BF Applicant’s Name:</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namethree" name="person_namethree" readonly value="{{$dataresigneddata->resignedmembername}}">
@@ -663,7 +667,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->transfertoplaceboxthree ==1) checked @endif name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
-						          		<span>He promoted and transfer to new place</span>
+						          		<span><span class="gender"></span> promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="transfertoplacethree" value="{{$irc_details->transfertoplacethree}}" id="transfertoplacethree" >
@@ -678,7 +682,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-										<span>Member is still in the same Branch / Department performing the same job functions. </span>
+										<span>Member is still in the same Branch / Department performing the same job functions </span>
 										</label> 
 									</p>	
 								</div>
@@ -774,7 +778,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="personnameboxfour" id="personnameboxfour"  value="1"/>
-						          		<span>BF Applicant’s Name is:</span>
+						          		<span>BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namefour" name="person_namefour" readonly value="{{$dataresigneddata->resignedmembername}}">
@@ -1061,26 +1065,52 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div> -->
 					</div>
 			  </div>
-			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
+			  <div class="card branchconfirmarea @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
+
+				@php
+					$userid = Auth::user()->id;
+					$get_roles = Auth::user()->roles;
+					$user_role = $get_roles[0]->slug;
+					$branchcommitteeName = $dataresigneddata->branchcommitteeName;
+					$branchcommitteeZone = $dataresigneddata->branchcommitteeZone;
+					$committieverifyname = $irc_details->committieverifyname;
+					$committiename = $irc_details->committiename;
+					if($user_role=='irc-branch-committee' && $branchcommitteeName==''){
+						$commitiiedata = CommonHelper::getCommittieinfo($userid);  
+						$branchcommitteeName = $commitiiedata->name;
+					}
+					if($user_role=='irc-branch-committee' && $branchcommitteeZone==''){
+						$commitiiedata = CommonHelper::getCommittieinfo($userid);  
+						$branchcommitteeZone = $commitiiedata->union_branch;
+						$committieverifyname = $branchcommitteeZone;
+
+					}
+
+					if($user_role=='irc-branch-committee' && $committiename==''){
+						$commitiiedata = CommonHelper::getCommittieinfo($userid);  
+						$committiename = $commitiiedata->name;
+					}
+
+				@endphp
 			   <div class="row padding-left-20">
-					<div class="col s12 m12">
+					<div class="col s12 m12" style="line-height: 5px;">
 						<label>
 						
 							<input type="checkbox"  @if($irc_details->committieverificationboxone ==1) checked @endif name="committieverificationboxone" id="committieverificationboxone" class="common-checkbox"  value="1"/>
 							<span>I</span>
 						</label> 
 						<div class="input-field inline">	
-							<input type="text" id="committiename" name="committiename" value="{{$irc_details->committiename}}" placeholder="" >	
+							<input type="text" id="committiename" name="committiename" value="{{$committiename}}" placeholder="" >	
 						</div>
 						Branch Committee of NUBE
 						<div class="input-field inline">	
-							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="{{$irc_details->committieverifyname}}">	
+							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="{{$committieverifyname}}">	
 						</div>
-						Branch have verified the above and confirm that the declaration 
-						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by the IRC is correct.
+						Branch have verified the above and <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; confirm that the declaration 
+						by the IRC is correct.
 					</div>
-					<div class="col s12 m12 ">
+					<div class="col s12 m12 " style="margin-top: 10px;">
 						<p>
 							<label>
 							<input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxtwo ==1) checked @endif name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
@@ -1097,7 +1127,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</label> 
 							<br>
 							<div class="input-field inline" style="margin: 0 0 0 27px !important;">	
-								<input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}">
+								<input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}" style="width: 450px;">
 							</div>
 							<span>(Remark)</span>
 							
@@ -1110,23 +1140,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<br>
 					</div>
 
-					@php
-						$userid = Auth::user()->id;
-						$get_roles = Auth::user()->roles;
-						$user_role = $get_roles[0]->slug;
-						$branchcommitteeName = $dataresigneddata->branchcommitteeName;
-						$branchcommitteeZone = $dataresigneddata->branchcommitteeZone;
-						if($user_role=='irc-branch-committee' && $branchcommitteeName==''){
-							$commitiiedata = CommonHelper::getCommittieinfo($userid);  
-							$branchcommitteeName = $commitiiedata->name;
-						}
-						if($user_role=='irc-branch-committee' && $branchcommitteeZone==''){
-							$commitiiedata = CommonHelper::getCommittieinfo($userid);  
-							$branchcommitteeZone = $commitiiedata->union_branch;
-
-						}
-
-					@endphp
 				
 					<div class="col s12 m12">
 						<div class="row">
@@ -1153,11 +1166,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								</p>	
 							</div>
 							<div class="col s12 m3 ">
-									<input type="text"  name="branchcommitteeZone" id="branchcommitteeZone" value="{{$branchcommitteeZone}}">
+									<input type="text"  name="branchcommitteeZone" id="branchcommitteeZone" value="{{$dataresigneddata->branchcommitteeZone}}">
 							</div>
 							<div class="col s12 m3 ">
 							<!--<label>Date</label> -->
-									<input type="text" class="datepicker-custom" name="branchcommitteedate" id="branchcommitteedate" value="@isset($dataresigneddata->branchcommitteedate){{$dataresigneddata->branchcommitteedate}}@endisset" palceholder="Date" name="date">
+									<input type="text" class="datepicker-custom" name="branchcommitteedate" id="branchcommitteedate" value="@isset($dataresigneddata->branchcommitteedate){{$dataresigneddata->branchcommitteedate}}@endisset" placeholder="DD/MM/YYYY" name="date">
 							</div>
 						</div>	
 					</div>

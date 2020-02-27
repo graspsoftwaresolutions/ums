@@ -40,6 +40,10 @@
     	padding-left: 5px;
     	padding-right: 5px;
 	}
+	.branch .input-field {
+    	position: relative;
+    	margin: 0 !important;
+    }
 </style>
 @endsection
 @section('main-content')
@@ -272,7 +276,7 @@
 									Reason
 								</p>
 							</div>
-							<div class="col s12 m3">
+							<div class="col s12 m5">
 								<select name="resignedreason" id="reason" required="" onchange="return ChangeFields()" class="error browser-default selectpicker">
 									<option value="">Select reason</option>
 									@foreach($data['reason_view'] as $values)
@@ -291,7 +295,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1"/>
-						          		<span>BF Applicant’s Name is:</span>
+						          		<span>BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_nameone" name="person_nameone" readonly>
@@ -481,7 +485,7 @@
 									<p>
 										<label>
 										<input type="radio" class="common-checkbox" name="applicanttwo" id="applicanttwo"  value="2"/>
-										<span>Does Not have Legal Authority (LA) to claim.  </span>
+										<span>Does Not have Legal Authority (LA) to claim  </span>
 										</label> 
 									</p>	
 								</div>
@@ -579,7 +583,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
-						          		<span>BF Applicant’s Name is:</span>
+						          		<span>BF Applicant’s Name:</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namethree" name="person_namethree" readonly>
@@ -634,7 +638,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
-						          		<span>He promoted and transfer to new place</span>
+						          		<span><span class="gender"></span> promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="transfertoplacethree" id="transfertoplacethree" >
@@ -649,7 +653,7 @@
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-										<span>Member is still in the same Branch / Department performing the same job functions. </span>
+										<span>Member is still in the same Branch / Department performing the same job functions </span>
 										</label> 
 									</p>	
 								</div>
@@ -745,7 +749,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="personnameboxfour" id="personnameboxfour"  value="1"/>
-						          		<span>BF Applicant’s Name is:</span>
+						          		<span>BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namefour" name="person_namefour" readonly>
@@ -901,7 +905,7 @@
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" name="samejobboxfive" id="samejobboxfive"  value="1"/>
-										<span>Member’s is still performing the same job functions.</span>
+										<span>Member’s is still performing the same job functions</span>
 										</label> 
 									</p>	
 
@@ -913,7 +917,7 @@
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-										<span>Member is still in the same Branch / Department.</span>
+										<span>Member is still in the same Branch / Department</span>
 										</label> 
 									</p>	
 								</div>
@@ -942,7 +946,7 @@
 			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
 			  <div class="row padding-left-20">
-					<div class="col s12 m12">
+					<div class="col s12 m12" style="line-height: 5px;">
 						<label>
 						
 							<input type="checkbox"  name="committieverificationboxone" id="committieverificationboxone" class="common-checkbox"  value="1"/>
@@ -955,10 +959,10 @@
 						<div class="input-field inline">	
 							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="">	
 						</div>
-						Branch have verified the above and confirm that the declaration 
-						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by the IRC is correct.
+						Branch have verified the above and <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; confirm that the declaration 
+						 by the IRC is correct.
 					</div>
-					<div class="col s12 m12 ">
+					<div class="col s12 m12 " style="margin-top: 10px;">
 						<p>
 							<label>
 							<input type="checkbox" class="common-checkbox" name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
@@ -975,7 +979,7 @@
 							</label> 
 							<br>
 							<div class="input-field inline" style="margin: 0 0 0 27px !important;">	
-								<input type="text" name="committieremark" id="committieremark">
+								<input type="text" name="committieremark" id="committieremark" style="width: 450px;">
 							</div>
 							<span>(Remark)</span>
 							
@@ -1017,7 +1021,7 @@
 							</div>
 							<div class="col s12 m3 ">
 							<!--<label>Date</label> -->
-									<input type="text" class="datepicker-custom" palceholder="Date" name="date">
+									<input type="text" class="datepicker-custom" placeholder="DD/MM/YYYY" name="date">
 							</div>
 						</div>	
 					</div>

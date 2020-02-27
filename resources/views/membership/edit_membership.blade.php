@@ -39,6 +39,18 @@
         padding-left: 5px;
         padding-right: 5px;
     }
+   .reasonsections .input-field {
+        position: relative;
+        margin: 0 !important;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .branchconfirmarea .input-field {
+        position: relative;
+        margin: 0 !important;
+        margin-bottom: 5px;
+    }
+
 </style>
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-app.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-theme.css') }}">
@@ -192,7 +204,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1" @if($irc_details->nameofperson ==1) checked @endif />
-                                                                        <span>BF Applicant’s Name is:</span>
+                                                                        <span>BF Applicant’s Name is</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text" id="person_nameone" name="person_nameone" readonly value="{{$irc_details->resignedmembername}}">
@@ -382,7 +394,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="radio" class="common-checkbox" name="applicanttwo" @if($irc_details->applicanttwo ==2) checked @endif id="applicanttwo"  value="2"/>
-                                                                        <span>Does Not have Legal Authority (LA) to claim.  </span>
+                                                                        <span>Does Not have Legal Authority (LA) to claim  </span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -480,7 +492,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
-                                                                        <span>BF Applicant’s Name is:</span>
+                                                                        <span>BF Applicant’s Name:</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text" id="person_namethree" name="person_namethree" readonly value="{{$irc_details->resignedmembername}}">
@@ -550,7 +562,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-                                                                        <span>Member is still in the same Branch / Department performing the same job functions. </span>
+                                                                        <span>Member is still in the same Branch / Department performing the same job functions </span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -646,7 +658,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="personnameboxfour" id="personnameboxfour"  value="1"/>
-                                                                        <span>BF Applicant’s Name is:</span>
+                                                                        <span>BF Applicant’s Name is</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text" id="person_namefour" name="person_namefour" readonly value="{{$irc_details->resignedmembername}}">
@@ -802,7 +814,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->samejobboxfive ==1) checked @endif name="samejobboxfive" id="samejobboxfive"  value="1"/>
-                                                                        <span>Member’s is still performing the same job functions.</span>
+                                                                        <span>Member’s is still performing the same job functions</span>
                                                                         </label> 
                                                                     </p>    
 
@@ -814,7 +826,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-                                                                        <span>Member is still in the same Branch / Department.</span>
+                                                                        <span>Member is still in the same Branch / Department</span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -835,11 +847,11 @@
                                                         </div>
                                                     </div>
                                                   
-                                                    <div class="col s12 m12">
+                                                    <div class="col s12 m12 branchconfirmarea">
                                                         </br>
                                                         <h6>BRANCH COMMITEE VERIFICATION</h6>
                                                          <div class="row padding-left-20">
-                                                            <div class="col s12 m12">
+                                                            <div class="col s12 m12" style="line-height: 5px;">
                                                                 <label>
                                                                 
                                                                     <input type="checkbox"  @if($irc_details->committieverificationboxone ==1) checked @endif name="committieverificationboxone" id="committieverificationboxone" class="common-checkbox"  value="1"/>
@@ -852,10 +864,10 @@
                                                                 <div class="input-field inline">    
                                                                     <input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="{{$irc_details->committieverifyname}}">    
                                                                 </div>
-                                                                Branch have verified the above and confirm that the declaration 
-                                                                <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by the IRC is correct.
+                                                                Branch have verified the above and <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; confirm that the declaration 
+                        by the IRC is correct.
                                                             </div>
-                                                            <div class="col s12 m12 ">
+                                                            <div class="col s12 m12 " style="margin-top: 20px;">
                                                                 <p>
                                                                     <label>
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxtwo ==1) checked @endif name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
@@ -882,28 +894,40 @@
                                                         <div class="row">
                                                            
                                                             <div class="col s12 m12">
-                                                                
-                                                                    Branch Commitee [Name in full]
-                                                                    <div class="input-field inline" style="margin : 0 !important;">
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col s12 m3 ">
+                                                                        <br>
+                                                                        <p >
+                                                                        
+                                                                        <span>   Branch Commitee [Name in full]</span>
+                                                                          
+                                                                        </p >
+                                                                     </div>
+                                                                     <div class="col s12 m3 ">
                                                                         <input id="irc_branch_committie_name" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeName : '' }}" class="validate">
                                                                     </div>
-                                                                  
+                                                                </div>
                                                             </div>
-                                                            <div class="col s12 m8">
-                                                                
-                                                                    Zone
-                                                                    <div class="input-field inline" style="margin : 0 !important;">
-                                                                        <input id="irc_branch_committie_zone" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeZone : '' }}" style="width:200%" class="validate">
+                                                            <div class="col s12 m12">
+                                                                <div class="row">
+                                                                    <div class="col s12 m3 ">
+                                                                        <p >
+                                                                           <br>
+                                                                            <span>Zone</span>
+                                                                           
+                                                                        </p>    
                                                                     </div>
-                                                               
+                                                                    <div class="col s12 m3 ">
+                                                                           <input id="irc_branch_committie_zone" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeZone : '' }}"  class="validate">
+                                                                    </div>
+                                                                    <div class="col s12 m3 ">
+                                                                    <!--<label>Date</label> -->
+                                                                          <input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=" "  ? date('d/m/Y',strtotime($irc_data->branchcommitteedate)) : '' }}">
+                                                                    </div>
+                                                                </div>  
                                                             </div>
-                                                            <div class="col s12 m2">
-                                                                &nbsp;
-                                                            </div>
-                                                            <div class="col s12 m2 input-field inline">
-                                                                <!--<label>Date</label> -->
-                                                                <input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=" "  ? date('d/m/Y',strtotime($irc_data->branchcommitteedate)) : '' }}">
-                                                            </div>
+                                                          
                                                         </div>
                                                     </div>
                                                 </div>

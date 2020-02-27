@@ -27,8 +27,16 @@ class IrcController extends CommonController
 	
 	public function ircIndex()
     {
-		$data['reason_view'] = Reason::where('status','=','1')->get();
-		return view('irc.irc')->with('data',$data);
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+
+		if($user_role=='irc-confirmation'){
+			$data['reason_view'] = Reason::where('status','=','1')->get();
+			return view('irc.irc')->with('data',$data);
+		}else{
+			return redirect('/');
+		}
+		
 	}
 	
 	public function ListIrcAccount() {
