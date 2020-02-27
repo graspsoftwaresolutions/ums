@@ -176,20 +176,25 @@
 	 
 		 <div class="card">
 		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
+		 	@php
+		 		$userid = Auth::user()->id;
+		 		$confirmdata = CommonHelper::getconfirmtionmember($userid);  
+		 		//dd($confirmdata);
+		 	@endphp
 			  <div class="row">
 				<div class="input-field col s6">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
 					<input id="irc_member_no" name="ircmember" class="common-input"
-						type="text" required data-error=".errorTxt8">
-						<input type="hidden" name="ircmembershipno" id="irc_member_code">
+						type="text" required data-error=".errorTxt8"  value="{{ $confirmdata->member_number }}">
+						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{ $confirmdata->mid }}">
 					<div class="errorTxt8"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
 					<input id="irc_name"  readonly name="ircname" class="common-input"
-						type="text" data-error=".errorTxt9">
+						type="text" value="{{ $confirmdata->membername }}" data-error=".errorTxt9">
 					<div class="errorTxt9"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
@@ -227,26 +232,26 @@
 					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
 					<input id="irc_bank" readonly  name="ircbank" class="common-input"
-						type="text" data-error=".errorTxt1">
+						type="text" value="{{ $confirmdata->bankname }}" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="bank_address"
 						class="common-label force-active">{{__('Bank Branch Address') }}</label>
-					<input id="bank_address" readonly  name="ircbankaddress" class="common-input"
+					<input id="bank_address" readonly  value="{{ $confirmdata->address_one }}" name="ircbankaddress" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="input-field col s6">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
-					<input id="irctelephoneno" readonly name="irctelephoneno" class="common-input"
+					<input id="irctelephoneno" readonly name="irctelephoneno" value="{{ $confirmdata->phone }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="ircmobileno"
 						class="common-label force-active">{{__('Mobile') }}</label>
-					<input id="ircmobileno" readonly  name="ircmobileno" class="common-input"
+					<input id="ircmobileno" readonly  name="ircmobileno" value="{{ $confirmdata->mobile }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="input-field col s6">

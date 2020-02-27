@@ -3023,4 +3023,28 @@ class CommonHelper
         // $duecount = $duecount=='' ? 0 : $duecount;
         return $duedata;
     }
+
+    public static function getconfirmtionmember($userid){
+        $res = DB::table('irc_account as irc')->select('m.id as mid','m.name as membername','c.company_name as bankname','cb.address_one','cb.phone','cb.mobile','m.member_number as member_number')
+                ->leftjoin('membership as m','irc.MemberCode','=','m.id')
+                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                ->leftjoin('company as c','cb.company_id','=','c.id')
+                ->where('irc.account_type','=','irc-confirmation')
+                ->where('irc.user_id','=',$userid)
+                ->first();
+       // $membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
+        return $res;
+    }
+
+    public static function getCommittieinfo($userid){
+        $res = DB::table('irc_account as irc')->select('ub.id as unionid','ub.union_branch as union_branch','u.name as name')
+                ->leftjoin('union_branch as ub','ub.id','=','irc.union_branch_id')
+                ->leftjoin('users as u','u.id','=','irc.user_id')
+                //->leftjoin('company as c','cb.company_id','=','c.id')
+                //->where('irc.account_type','=','irc-confirmation')
+                ->where('irc.user_id','=',$userid)
+                ->first();
+       // $membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
+        return $res;
+    }
 }

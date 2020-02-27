@@ -1109,6 +1109,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="padding-left-20 ">
 						<br>
 					</div>
+
+					@php
+						$userid = Auth::user()->id;
+						$get_roles = Auth::user()->roles;
+						$user_role = $get_roles[0]->slug;
+						$branchcommitteeName = $dataresigneddata->branchcommitteeName;
+						$branchcommitteeZone = $dataresigneddata->branchcommitteeZone;
+						if($user_role=='irc-branch-committee' && $branchcommitteeName==''){
+							$commitiiedata = CommonHelper::getCommittieinfo($userid);  
+							$branchcommitteeName = $commitiiedata->name;
+						}
+						if($user_role=='irc-branch-committee' && $branchcommitteeZone==''){
+							$commitiiedata = CommonHelper::getCommittieinfo($userid);  
+							$branchcommitteeZone = $commitiiedata->union_branch;
+
+						}
+
+					@endphp
 				
 					<div class="col s12 m12">
 						<div class="row">
@@ -1121,7 +1139,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								</p>	
 							</div>
 							<div class="col s12 m3 ">
-									<input type="text" name="branchcommitteeName" id="branchcommitteeName" placeholder="Name" value="{{$dataresigneddata->branchcommitteeName}}">
+									<input type="text" name="branchcommitteeName" id="branchcommitteeName" placeholder="Name" value="{{$branchcommitteeName}}">
 							</div>
 						</div>	
 					</div>
@@ -1135,7 +1153,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								</p>	
 							</div>
 							<div class="col s12 m3 ">
-									<input type="text"  name="branchcommitteeZone" id="branchcommitteeZone" value="{{$dataresigneddata->branchcommitteeZone}}">
+									<input type="text"  name="branchcommitteeZone" id="branchcommitteeZone" value="{{$branchcommitteeZone}}">
 							</div>
 							<div class="col s12 m3 ">
 							<!--<label>Date</label> -->
