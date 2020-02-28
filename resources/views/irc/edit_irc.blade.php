@@ -315,6 +315,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						}else{
 							$section_type_val = 4;
 						}
+
+						if($dataresigneddata->gender == 'Female'){
+							$genderlable = 'She';
+							$genderlableone = 'Her';
+						}else{
+							$genderlable = 'He';
+							$genderlableone = 'His';
+						}
 					@endphp
 					<div class="col s12 m12">
 						<input type="text" class="hide" name="section_type" id="section_type" value="{{ $section_type_val }}">
@@ -334,7 +342,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="retiredboxone" id="retiredboxone"  @if($irc_details->retiredbox ==1) checked @endif value="1"/>
-						          		<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+						          		<span><span class="gender">{{ $genderlable }}</span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom" value="{{$dataresigneddata->gradewef}}" />
@@ -350,7 +358,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" name="messengerboxone" @if($irc_details->messengerbox ==1) checked @endif id="messengerboxone"  value="1"/>
-										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
+										<span><span class="gender">{{ $genderlable }}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
 										</label> 
 									</p>	
 								</div>
@@ -360,7 +368,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="attachedboxone" @if($irc_details->attachedbox ==1) checked @endif id="attachedboxone"  value="1"/>
-						          		<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
+						          		<span>Attached is <span class="genderone">{{ $genderlableone }}</span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="attachedone" name="attachedone" value="{{$irc_details->attached_desc}}" >
@@ -627,7 +635,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxthree" id="messengerboxthree"  value="1"/>
-										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
+										<span><span class="gender">{{ $genderlable }}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
 										</label> 
 									</p>	
 								</div>
@@ -637,7 +645,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="promotedboxthree" @if($irc_details->promotedboxthree ==1) checked @endif id="promotedboxthree"  value="1"/>
-						          		<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
+						          		<span><span class="gender">{{ $genderlable }}</span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) required @endif >
@@ -657,7 +665,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxthree" id="attachedboxthree"  value="1"/>
-						          		<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
+						          		<span>Attached is <span class="genderone">{{ $genderlableone }}</span> Job Description (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="">
@@ -667,7 +675,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->transfertoplaceboxthree ==1) checked @endif name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
-						          		<span><span class="gender"></span> promoted and transfer to new place</span>
+						          		<span><span class="gender">{{ $genderlable }}</span> promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="transfertoplacethree" value="{{$irc_details->transfertoplacethree}}" id="transfertoplacethree" >
@@ -788,7 +796,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->resignedonboxfour ==1) checked @endif name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-						          		<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
+						          		<span><span class="gender">{{ $genderlable }}</span> RESIGNED / TERMINATED on </span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f" value="{{$dataresigneddata->gradewef}}" class="datepicker-custom"/>
@@ -804,7 +812,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxfour" id="messengerboxfour"  value="1"/>
-										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
+										<span><span class="gender">{{ $genderlable }}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
 										</label> 
 									</p>	
 								</div>
@@ -818,7 +826,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxfour" id="attachedboxfour"  value="1"/>
-									<span>Attached is <span class="genderone"></span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+									<span>Attached is <span class="genderone">{{ $genderlableone }}</span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
 									</label> 
 										
 									<div class="input-field inline">
