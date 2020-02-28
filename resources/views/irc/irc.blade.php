@@ -44,6 +44,10 @@
     	position: relative;
     	margin: 0 !important;
     }
+    .inline-box{
+    	height: 2rem !important;
+    	margin-top: 10px !important;
+    }
 </style>
 @endsection
 @section('main-content')
@@ -298,7 +302,7 @@
 						          		<span>BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="person_nameone" name="person_nameone" readonly>
+										<input type="text" id="person_nameone" style="width: 500px;" name="person_nameone" class="inline-box" readonly>
 										
 									</div>
 						        </div>
@@ -308,7 +312,7 @@
 						          		<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
 										
 									</div>
 						        </div>
@@ -334,7 +338,7 @@
 						          		<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="attachedone" name="attachedone" >
+										<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
 										
 									</div>
 						        </div>
@@ -347,7 +351,7 @@
 						          		<span>Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="jobtakenbyone" id="jobtakenbyone" placeholder=""  class=""/>
+										<input type="text" 	name="jobtakenbyone" id="jobtakenbyone" placeholder="" class="inline-box" style="width: 500px;"/>
 										
 									</div>
 									 and
@@ -361,7 +365,7 @@
 						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder=""  class=""/>
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder="" class="inline-box" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -374,7 +378,7 @@
 						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="replacestaffone" id="replacestaffone" placeholder=""  class=""/>
+										<input type="text" 	name="replacestaffone" id="replacestaffone" placeholder="" class="inline-box" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -387,12 +391,12 @@
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="appcontactone" id="appcontactone" placeholder=""  class=""/>
+										<input type="text" 	name="appcontactone" id="appcontactone" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Office</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appofficeone" id="appofficeone" placeholder=""  class=""/>
+										<input type="text" 	name="appofficeone" id="appofficeone" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -405,17 +409,17 @@
 									</span>	
 									
 									<div class="input-field inline">
-										<input type="text" 	name="apphpone" id="apphpone" placeholder=""  class=""/>
+										<input type="text" 	name="apphpone" id="apphpone" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Fax</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appfaxone" id="appfaxone" placeholder=""  class=""/>
+										<input type="text" 	name="appfaxone" id="appfaxone" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									<span>Email</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appemailone" id="appemailone" placeholder=""  class=""/>
+										<input type="email" name="appemailone" id="appemailone" placeholder="" class="inline-box " style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -431,7 +435,7 @@
 						          		<span>Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="memberdemisedtwo" name="memberdemisedtwo" >
+										<input type="text" class="inline-box" id="memberdemisedtwo" style="width: 560px;" name="memberdemisedtwo" >
 										
 									</div>
 						        </div>
@@ -445,7 +449,7 @@
 						          		<span>Name of Member’s next of kin is</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="nameofpersontwo" id="nameofpersontwo" placeholder=""  class=""/>
+										<input type="text" class="inline-box" style="width: 500px;" name="nameofpersontwo" id="nameofpersontwo" placeholder="" />
 										
 									</div>
 						        </div>
@@ -456,7 +460,7 @@
 						          		<span>Relationship is</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="relationshiptwo" id="relationshiptwo" placeholder=""  class=""/>
+										<input type="text" 	name="relationshiptwo" id="relationshiptwo" placeholder="" class="inline-box" style="width: 300px;"/>
 										
 									</div>
 						        </div>
@@ -499,7 +503,7 @@
 						          		<span>Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="jobtakenbytwo" id="jobtakenbytwo" placeholder=""  class=""/>
+										<input type="text" 	name="jobtakenbytwo" id="jobtakenbytwo" placeholder="" class="inline-box" style="width: 400px;"/>
 										
 									</div>
 									 and
@@ -513,7 +517,7 @@
 						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbytwo" id="posfilledbytwo" placeholder=""  class=""/>
+										<input type="text" 	name="posfilledbytwo" class="inline-box" style="width: 250px;" id="posfilledbytwo" placeholder=""/>
 										
 									</div>
 						        </div>
@@ -526,7 +530,7 @@
 						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="replacestafftwo" id="replacestafftwo" placeholder=""  class=""/>
+										<input type="text" 	name="replacestafftwo" id="replacestafftwo" placeholder=""  class="inline-box" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -540,12 +544,12 @@
 						          		<span>Next of Kin’s Contact</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="appcontacttwo" id="appcontacttwo" placeholder=""  class=""/>
+										<input type="text" 	name="appcontacttwo" id="appcontacttwo" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Office</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appofficetwo" id="appofficetwo" placeholder=""  class=""/>
+										<input type="text" 	name="appofficetwo" id="appofficetwo" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -558,17 +562,17 @@
 									</span>	
 									
 									<div class="input-field inline">
-										<input type="text" 	name="appmobiletwo" id="appmobiletwo" placeholder=""  class=""/>
+										<input type="text" 	name="appmobiletwo" id="appmobiletwo" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Fax</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appfaxtwo" id="appfaxtwo" placeholder=""  class=""/>
+										<input type="text" 	name="appfaxtwo" id="appfaxtwo" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									<span>Email</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appemailtwo" id="appemailtwo" placeholder=""  class=""/>
+										<input type="email" name="appemailtwo" id="appemailtwo" placeholder="" class="inline-box " style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -586,7 +590,7 @@
 						          		<span>BF Applicant’s Name:</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="person_namethree" name="person_namethree" readonly>
+										<input type="text" id="person_namethree" name="person_namethree" class="inline-box" style="width: 560px;" readonly>
 										
 									</div>
 						        </div>
@@ -611,12 +615,12 @@
 						          		<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="promotedthree" name="promotedthree" required="">
+										<input type="text" id="promotedthree" name="promotedthree" class="inline-box" style="width: 300px;" required="">
 										
 									</div>
 									grade w.e.f.
 									<div class="input-field inline">
-										<input type="text" 	name="gradewefthree" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										<input type="text" 	name="gradewefthree" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
 										
 									</div>
 						        </div>
@@ -631,7 +635,7 @@
 						          		<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" name="attachedthree" id="attachedthree" class="">
+										<input type="text" name="attachedthree" id="attachedthree" class="inline-box" style="width: 500px;">
 										
 									</div>
 						        </div>
@@ -641,7 +645,7 @@
 						          		<span><span class="gender"></span> promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" name="transfertoplacethree" id="transfertoplacethree" >
+										<input type="text" name="transfertoplacethree" id="transfertoplacethree" class="inline-box" style="width: 500px;" >
 										
 									</div>
 						        </div>
@@ -666,7 +670,7 @@
 						          		<span>Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="jobtakenbythree" id="jobtakenbythree" placeholder=""  class=""/>
+										<input type="text" 	name="jobtakenbythree" id="jobtakenbythree" placeholder="" class="inline-box" style="width: 500px;"/>
 										
 									</div>
 									 and
@@ -680,7 +684,7 @@
 						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder=""  class=""/>
+										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder="" class="inline-box" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -693,7 +697,7 @@
 						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="replacestaffthree" id="replacestaffthree" placeholder=""  class=""/>
+										<input type="text" 	name="replacestaffthree" id="replacestaffthree" placeholder=""  class="inline-box" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -706,12 +710,12 @@
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="appcontactthree" id="appcontactthree" placeholder=""  class=""/>
+										<input type="text" 	name="appcontactthree" id="appcontactthree" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Office</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appofficethree" id="appofficethree" placeholder=""  class=""/>
+										<input type="text" 	name="appofficethree" id="appofficethree" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -724,17 +728,17 @@
 									</span>	
 									
 									<div class="input-field inline">
-										<input type="text" 	name="apphpthree" id="apphpthree" placeholder=""  class=""/>
+										<input type="text" 	name="apphpthree" id="apphpthree" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Fax</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appfaxthree" id="appfaxthree" placeholder=""  class=""/>
+										<input type="text" 	name="appfaxthree" id="appfaxthree" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									<span>Email</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appemailthree" id="appemailthree" placeholder=""  class=""/>
+										<input type="email" name="appemailthree" id="appemailthree" placeholder="" class="inline-box " style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -752,7 +756,7 @@
 						          		<span>BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="person_namefour" name="person_namefour" readonly>
+										<input type="text" id="person_namefour" class="inline-box" style="width: 560px;" name="person_namefour" readonly>
 										
 									</div>
 						        </div>
@@ -762,7 +766,7 @@
 						          		<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
 										
 									</div>
 						        </div>
@@ -793,7 +797,7 @@
 									</label> 
 										
 									<div class="input-field inline">
-										 <input type="text" id="attachedfour" name="attachedfour" class="">
+										 <input type="text" id="attachedfour" name="attachedfour" class="inline-box" style="width: 330px;">
 									</div>
 								</div>
 								
@@ -808,7 +812,7 @@
 									</label> 
 									
 									<div class="input-field inline">
-										 <input type="text" name="jobtakenbyfour" id="jobtakenbyfour" placeholder=""  class=""/>
+										 <input type="text" name="jobtakenbyfour" id="jobtakenbyfour" placeholder="" class="inline-box" style="width: 400px;"/>
 									</div>
 									and
 								</div>
@@ -823,7 +827,7 @@
 									</label> 
 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder=""  class=""/>
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder="" class="inline-box" style="width: 250px;"/>
 									</div>	
 								</div>
 								
@@ -837,7 +841,7 @@
 									</label> 
 										
 									<div class="input-field inline">						
-										<input type="text" 	name="replacestafffour" id="replacestafffour" placeholder=""  class=""/>
+										<input type="text" 	name="replacestafffour" id="replacestafffour" placeholder="" class="inline-box" style="width: 250px;"/>
 									</div>
 								</div>
 							</div>	
@@ -848,12 +852,12 @@
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="appcontactfour" id="appcontactfour" placeholder=""  class=""/>
+										<input type="text" 	name="appcontactfour" id="appcontactfour" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Office</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appofficefour" id="appofficefour" placeholder=""  class=""/>
+										<input type="text" 	name="appofficefour" id="appofficefour" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -866,17 +870,17 @@
 									</span>	
 									
 									<div class="input-field inline">
-										<input type="text" 	name="apphpfour" id="apphpfour" placeholder=""  class=""/>
+										<input type="text" 	name="apphpfour" id="apphpfour" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									 <span>Fax</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appfaxfour" id="appfaxfour" placeholder=""  class=""/>
+										<input type="text" 	name="appfaxfour" id="appfaxfour" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
 										
 									</div>
 									<span>Email</span>
 									 <div class="input-field inline">
-										<input type="text" 	name="appemailfour" id="appemailfour" placeholder=""  class=""/>
+										<input type="email" name="appemailfour" id="appemailfour" placeholder=""  style="width: 250px;"  class="inline-box"/>
 										
 									</div>
 						        </div>
@@ -894,7 +898,7 @@
 									</label> 
 
 									<div class="input-field inline">						
-										<input type="text" 	name="gradeweffive" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom"/>
+										<input type="text" 	name="gradeweffive" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
 									</div>
 								</div>
 							</div>
@@ -953,11 +957,11 @@
 							<span>I</span>
 						</label> 
 						<div class="input-field inline">	
-							<input type="text" id="committiename" name="committiename" placeholder="" value="">	
+							<input type="text" id="committiename" name="committiename" placeholder="" value="" class="inline-box" style="width: 280px;">	
 						</div>
 						Branch Committee of NUBE
 						<div class="input-field inline">	
-							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="">	
+							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="" class="inline-box" style="width: 280px;">	
 						</div>
 						Branch have verified the above and <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; confirm that the declaration 
 						 by the IRC is correct.
@@ -979,7 +983,7 @@
 							</label> 
 							<br>
 							<div class="input-field inline" style="margin: 0 0 0 27px !important;">	
-								<input type="text" name="committieremark" id="committieremark" style="width: 450px;">
+								<input type="text" name="committieremark" id="committieremark" style="width: 650px;">
 							</div>
 							<span>(Remark)</span>
 							
@@ -1002,7 +1006,7 @@
 									</label> 
 								</p>	
 							</div>
-							<div class="col s12 m3 ">
+							<div class="col s12 m4 ">
 									<input type="text" name="person_name">
 							</div>
 						</div>	
@@ -1016,7 +1020,7 @@
 									</label> 
 								</p>	
 							</div>
-							<div class="col s12 m3 ">
+							<div class="col s12 m4 ">
 									<input type="text" name="person_name">
 							</div>
 							<div class="col s12 m3 ">
@@ -1253,5 +1257,14 @@ function ChangeFields(){
 		$("#section_type").val(4);
 	}
 }
+$(document).on('input', '.allow_contactnumbers', function(){
+   var self = $(this);
+   self.val(self.val().replace(/[^0-9\+ .]/g, ''));
+   if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+   {
+     evt.preventDefault();
+   }
+ });
+
 </script>
 @endsection

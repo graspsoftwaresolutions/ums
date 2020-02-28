@@ -622,9 +622,10 @@ class IrcController extends CommonController
 			$insertdata['relationshipboxtwo'] = isset($relationshipboxtwo) ? 1 : 0;
 			$insertdata['relationshiptwo'] = $relationshiptwo;
 			$insertdata['applicantboxtwo'] = isset($applicantboxtwo) ? 1 : 0;
+			$insertdata['nameofperson'] = isset($nameofpersonboxtwo) ? 1 : 0;
 			$insertdata['applicanttwo'] = $applicanttwo;
 
-			if($jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $insertdata['demised_onboxtwo'] == 1 && $insertdata['member_nameboxtwo'] == 1 && $insertdata['relationshipboxtwo'] == 1 && $insertdata['applicantboxtwo'] == 1){
+			if($jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $insertdata['demised_onboxtwo'] == 1 && $insertdata['member_nameboxtwo'] == 1 && $insertdata['relationshipboxtwo'] == 1 && $insertdata['applicantboxtwo'] == 1 && $insertdata['nameofperson'] == 1){
 				$ircstatus = 1;
 			}
 
@@ -680,8 +681,9 @@ class IrcController extends CommonController
 			$insertdata['promotedto'] = $promotedthree;
 			$insertdata['transfertoplaceboxthree'] = isset($transfertoplaceboxthree) ? 1 : 0;
 			$insertdata['transfertoplacethree'] = $transfertoplacethree;
+			$insertdata['nameofperson'] = isset($nameofpersonboxthree) ? 1 : 0;
 
-			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $samebranchbox == 1 && $attachedbox == 1 && $insertdata['promotedboxthree'] == 1 && $insertdata['transfertoplaceboxthree'] == 1){
+			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $samebranchbox == 1 && $attachedbox == 1 && $insertdata['promotedboxthree'] == 1 && $insertdata['transfertoplaceboxthree'] == 1 && $insertdata['nameofperson'] == 1){
 				$ircstatus = 1;
 			}
 
@@ -728,8 +730,9 @@ class IrcController extends CommonController
 			$appemail = $request->input('appemailfour');
 
 			$insertdata['resignedonboxfour'] = isset($resignedonboxfour) ? 1 : 0;
+			$insertdata['nameofperson'] = isset($personnameboxfour) ? 1 : 0;
 
-			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['resignedonboxfour'] == 1 ){
+			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['resignedonboxfour'] == 1 && $insertdata['nameofperson'] == 1 ){
 				$ircstatus = 1;
 			}
 		

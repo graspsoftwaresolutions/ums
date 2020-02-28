@@ -50,6 +50,10 @@
         margin: 0 !important;
         margin-bottom: 5px;
     }
+    .inline-box{
+        height: 2rem !important;
+        margin-top: 10px !important;
+    }
 
 </style>
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-app.css')}}">
@@ -215,7 +219,7 @@
                                                                         <span>BF Applicant’s Name is</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="person_nameone" name="person_nameone" readonly value="{{$irc_details->resignedmembername}}">
+                                                                        <input type="text" id="person_nameone" name="person_nameone" readonly value="{{$irc_details->resignedmembername}}" class="inline-box" style="width: 500px;">
                                                                         
                                                                     </div>
                                                                 </div>
@@ -225,7 +229,7 @@
                                                                         <span><span class="gender">{{$genderlable}}</span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom" value="{{$irc_details->gradewef}}" />
+                                                                        <input type="text"  name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom inline-box" value="{{$irc_details->gradewef}}" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -251,7 +255,7 @@
                                                                         <span>Attached is <span class="genderone">{{$genderlableone}}</span> RETIREMENT Letter (compulsory)</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="attachedone" name="attachedone" value="{{$irc_details->attached_desc}}" >
+                                                                        <input type="text" id="attachedone" name="attachedone" value="{{$irc_details->attached_desc}}" class="inline-box" style="width: 500px;" >
                                                                         
                                                                     </div>
                                                                 </div>
@@ -264,7 +268,7 @@
                                                                         <span>Member’s job functions have been taken over by</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="jobtakenbyone" id="jobtakenbyone" placeholder="" value="{{$irc_details->jobtakenby}}" class=""/>
+                                                                        <input type="text"  name="jobtakenbyone" id="jobtakenbyone" placeholder="" value="{{$irc_details->jobtakenby}}" class="inline-box" style="width: 500px;"/>
                                                                         
                                                                     </div>
                                                                      and
@@ -278,7 +282,7 @@
                                                                         <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder=""  class="inline-box" style="width: 200px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -291,7 +295,7 @@
                                                                         <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="replacestaffone" id="replacestaffone" value="{{$irc_details->replacestaff}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="replacestaffone" id="replacestaffone" value="{{$irc_details->replacestaff}}" placeholder=""  class="inline-box" style="width: 200px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -304,12 +308,12 @@
                                                                         <span>Applicant Contact</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="appcontactone" id="appcontactone" value="{{$irc_details->appcontact}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="appcontactone" id="appcontactone" value="{{$irc_details->appcontact}}" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                      <span>Office</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appofficeone" id="appofficeone" value="{{$irc_details->appoffice}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="appofficeone" id="appofficeone" value="{{$irc_details->appoffice}}" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -322,17 +326,17 @@
                                                                     </span> 
                                                                     
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="apphpone" id="apphpone" placeholder="" value="{{$irc_details->appmobile}}" class=""/>
+                                                                        <input type="text"  name="apphpone" id="apphpone" placeholder="" value="{{$irc_details->appmobile}}" class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                      <span>Fax</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appfaxone" id="appfaxone" placeholder="" value="{{$irc_details->appfax}}" class=""/>
+                                                                        <input type="text"  name="appfaxone" id="appfaxone" placeholder="" value="{{$irc_details->appfax}}" class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                     <span>Email</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appemailone" id="appemailone" placeholder="" value="{{$irc_details->appemail}}" class=""/>
+                                                                        <input type="text"  name="appemailone" id="appemailone" placeholder="" value="{{$irc_details->appemail}}" class="inline-box " style="width: 250px;"/>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -348,7 +352,7 @@
                                                                         <span>Member DEMISED on</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="memberdemisedtwo" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
+                                                                        <input type="text" id="memberdemisedtwo" value="{{$irc_details->demised_ontwo}}" class="inline-box" style="width: 560px;" name="memberdemisedtwo" >
                                                                         
                                                                     </div>
                                                                 </div>
@@ -362,7 +366,7 @@
                                                                         <span>Name of Member’s next of kin is</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="nameofpersontwo" id="nameofpersontwo" placeholder="" value="{{$irc_details->member_nametwo}}" class=""/>
+                                                                        <input type="text"  name="nameofpersontwo" id="nameofpersontwo" placeholder="" value="{{$irc_details->member_nametwo}}" class="inline-box" style="width: 500px;"/>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -373,7 +377,7 @@
                                                                         <span>Relationship is</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="relationshiptwo" value="{{$irc_details->relationshiptwo}}" id="relationshiptwo" placeholder=""  class=""/>
+                                                                        <input type="text"  name="relationshiptwo" value="{{$irc_details->relationshiptwo}}" id="relationshiptwo" placeholder="" class="inline-box" style="width: 300px;"/>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -416,7 +420,7 @@
                                                                         <span>Member’s job functions have been taken over by</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="jobtakenbytwo" id="jobtakenbytwo" value="{{$irc_details->jobtakenby}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="jobtakenbytwo" id="jobtakenbytwo" value="{{$irc_details->jobtakenby}}" placeholder=""  class="inline-box" style="width: 400px;" />
                                                                         
                                                                     </div>
                                                                      and
@@ -430,7 +434,7 @@
                                                                         <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder=""  class=""/>
+                                                                        <input type="text"  name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder=""  class="inline-box" style="width: 200px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -443,7 +447,7 @@
                                                                         <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="replacestafftwo" value="{{$irc_details->replacestaff}}" id="replacestafftwo" placeholder=""  class=""/>
+                                                                        <input type="text"  name="replacestafftwo" value="{{$irc_details->replacestaff}}" id="replacestafftwo" placeholder=""  class="inline-box" style="width: 200px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -457,12 +461,12 @@
                                                                         <span>Next of Kin’s Contact</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="appcontacttwo" value="{{$irc_details->appcontact}}" id="appcontacttwo" placeholder=""  class=""/>
+                                                                        <input type="text"  name="appcontacttwo" value="{{$irc_details->appcontact}}" id="appcontacttwo" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                      <span>Office</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appofficetwo" id="appofficetwo" placeholder="" value="{{$irc_details->appoffice}}" class=""/>
+                                                                        <input type="text"  name="appofficetwo" id="appofficetwo" placeholder="" value="{{$irc_details->appoffice}}" class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -475,17 +479,17 @@
                                                                     </span> 
                                                                     
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="appmobiletwo" id="appmobiletwo" placeholder="" value="{{$irc_details->appmobile}}" class=""/>
+                                                                        <input type="text"  name="appmobiletwo" id="appmobiletwo" placeholder="" value="{{$irc_details->appmobile}}" class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                      <span>Fax</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appfaxtwo" id="appfaxtwo" placeholder="" value="{{$irc_details->appfax}}" class=""/>
+                                                                        <input type="text"  name="appfaxtwo" id="appfaxtwo" placeholder="" value="{{$irc_details->appfax}}"  class="inline-box allow_contactnumbers" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                     <span>Email</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appemailtwo" id="appemailtwo" placeholder="" value="{{$irc_details->appemail}}" class=""/>
+                                                                        <input type="email"  name="appemailtwo" id="appemailtwo" placeholder="" value="{{$irc_details->appemail}}" class="inline-box " style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -503,7 +507,7 @@
                                                                         <span>BF Applicant’s Name:</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="person_namethree" name="person_namethree" readonly value="{{$irc_details->resignedmembername}}">
+                                                                        <input type="text" id="person_namethree" name="person_namethree" readonly value="{{$irc_details->resignedmembername}}" class="inline-box" style="width: 560px;">
                                                                         
                                                                     </div>
                                                                 </div>
@@ -528,12 +532,12 @@
                                                                         <span><span class="gender">{{$genderlable}}</span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) required @endif >
+                                                                        <input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) required @endif class="inline-box" style="width: 300px;" >
                                                                         
                                                                     </div>
                                                                     grade w.e.f.
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="gradewefthree" value="{{$irc_details->gradewef}}" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom"/>
+                                                                        <input type="text"  name="gradewefthree" value="{{$irc_details->gradewef}}" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -548,7 +552,7 @@
                                                                         <span>Attached is <span class="genderone">{{$genderlableone}}</span> Job Description (compulsory)</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="">
+                                                                        <input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="width: 500px;" >
                                                                         
                                                                     </div>
                                                                 </div>
@@ -558,7 +562,7 @@
                                                                         <span>He promoted and transfer to new place</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" name="transfertoplacethree" value="{{$irc_details->transfertoplacethree}}" id="transfertoplacethree" >
+                                                                        <input type="text" name="transfertoplacethree" value="{{$irc_details->transfertoplacethree}}" id="transfertoplacethree" class="inline-box" style="width: 500px;" >
                                                                         
                                                                     </div>
                                                                 </div>
@@ -583,7 +587,7 @@
                                                                         <span>Member’s job functions have been taken over by</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="jobtakenbythree" value="{{$irc_details->jobtakenby}}" id="jobtakenbythree" placeholder=""  class=""/>
+                                                                        <input type="text"  name="jobtakenbythree" value="{{$irc_details->jobtakenby}}" id="jobtakenbythree" placeholder="" class="inline-box" style="width: 500px;"/>
                                                                         
                                                                     </div>
                                                                      and
@@ -597,7 +601,7 @@
                                                                         <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder=""  class=""/>
+                                                                        <input type="text"  name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder="" class="inline-box" style="width: 200px;"/>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -610,7 +614,7 @@
                                                                         <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="replacestaffthree" id="replacestaffthree" value="{{$irc_details->replacestaff}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="replacestaffthree" id="replacestaffthree" value="{{$irc_details->replacestaff}}" placeholder=""  class="inline-box" style="width: 200px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -623,12 +627,12 @@
                                                                         <span>Applicant Contact</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="appcontactthree" value="{{$irc_details->appcontact}}" id="appcontactthree" placeholder=""  class=""/>
+                                                                        <input type="text"  name="appcontactthree" value="{{$irc_details->appcontact}}" id="appcontactthree" placeholder="" class="inline-box" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                      <span>Office</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appofficethree" id="appofficethree" value="{{$irc_details->appoffice}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="appofficethree" id="appofficethree" value="{{$irc_details->appoffice}}" placeholder=""  class="inline-box" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                 </div>
@@ -641,17 +645,17 @@
                                                                     </span> 
                                                                     
                                                                     <div class="input-field inline">
-                                                                        <input type="text"  name="apphpthree" id="apphpthree" value="{{$irc_details->appmobile}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="apphpthree" id="apphpthree" value="{{$irc_details->appmobile}}" placeholder="" class="inline-box" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                      <span>Fax</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appfaxthree" id="appfaxthree" value="{{$irc_details->appfax}}" placeholder=""  class=""/>
+                                                                        <input type="text"  name="appfaxthree" id="appfaxthree" value="{{$irc_details->appfax}}" placeholder="" class="inline-box" style="width: 250px;" />
                                                                         
                                                                     </div>
                                                                     <span>Email</span>
                                                                      <div class="input-field inline">
-                                                                        <input type="text"  name="appemailthree" id="appemailthree" value="{{$irc_details->appemail}}" placeholder=""  class=""/>
+                                                                        <input type="email"  name="appemailthree" id="appemailthree" value="{{$irc_details->appemail}}" placeholder=""  class="inline-box"/>
                                                                         
                                                                     </div>
                                                                 </div>
@@ -669,7 +673,7 @@
                                                                         <span>BF Applicant’s Name is</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="person_namefour" name="person_namefour" readonly value="{{$irc_details->resignedmembername}}">
+                                                                        <input type="text" id="person_namefour" name="person_namefour" readonly value="{{$irc_details->resignedmembername}}" class="inline-box" style="width: 560px;">
                                                                         
                                                                     </div>
                                                                 </div>
@@ -892,7 +896,7 @@
                                                                     </label> 
                                                                     <br>
                                                                     <div class="input-field inline" style="margin: 0 0 0 27px !important;"> 
-                                                                        <input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}" style="width: 450px;">
+                                                                        <input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}" style="width: 650px;">
                                                                     </div>
                                                                     <span>(Remark)</span>
                                                                     
@@ -912,7 +916,7 @@
                                                                           
                                                                         </p >
                                                                      </div>
-                                                                     <div class="col s12 m3 ">
+                                                                     <div class="col s12 m4 ">
                                                                         <input id="irc_branch_committie_name" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeName : '' }}" class="validate">
                                                                     </div>
                                                                 </div>
@@ -926,7 +930,7 @@
                                                                            
                                                                         </p>    
                                                                     </div>
-                                                                    <div class="col s12 m3 ">
+                                                                    <div class="col s12 m4 ">
                                                                            <input id="irc_branch_committie_zone" type="text" value="{{ !empty($irc_data) ? $irc_data->branchcommitteeZone : '' }}"  class="validate">
                                                                     </div>
                                                                     <div class="col s12 m3 ">
