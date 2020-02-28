@@ -1021,7 +1021,9 @@
 							</div>
 							<div class="col s12 m3 ">
 							<!--<label>Date</label> -->
+								<div class="input-field inline"> 
 									<input type="text" class="datepicker-custom" placeholder="DD/MM/YYYY" name="date">
+								</div>(Date)
 							</div>
 						</div>	
 					</div>

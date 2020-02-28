@@ -1178,7 +1178,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</div>
 							<div class="col s12 m3 ">
 							<!--<label>Date</label> -->
+								<div class="input-field inline"> 
 									<input type="text" class="datepicker-custom" name="branchcommitteedate" id="branchcommitteedate" value="@isset($dataresigneddata->branchcommitteedate){{$dataresigneddata->branchcommitteedate}}@endisset" placeholder="DD/MM/YYYY" name="date">
+								</div>(Date)
 							</div>
 						</div>	
 					</div>

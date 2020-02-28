@@ -892,7 +892,7 @@
                                                                     </label> 
                                                                     <br>
                                                                     <div class="input-field inline" style="margin: 0 0 0 27px !important;"> 
-                                                                        <input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}">
+                                                                        <input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}" style="width: 450px;">
                                                                     </div>
                                                                     <span>(Remark)</span>
                                                                     
@@ -931,7 +931,10 @@
                                                                     </div>
                                                                     <div class="col s12 m3 ">
                                                                     <!--<label>Date</label> -->
-                                                                          <input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=" "  ? date('d/m/Y',strtotime($irc_data->branchcommitteedate)) : '' }}">
+                                                                            <div class="input-field inline"> 
+                                                                              <input type="text" class="" palceholder="Date" name="date" value="{{ !empty($irc_data) && $irc_data->branchcommitteedate!=" "  ? date('d/m/Y',strtotime($irc_data->branchcommitteedate)) : '' }}">
+                                                                            </div>
+                                                                            (Date)
                                                                     </div>
                                                                 </div>  
                                                             </div>
