@@ -45,7 +45,18 @@
 		cursor:pointer;
 		background: #dbdbf7;font-weight:bold;
 	}
+	.btn-sm{
+	    padding: 0 1rem;
+	}
 </style>
+<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
+<script type="text/javascript">
+
+	function RemoveTR(memberid){
+		$("#member"+memberid).remove();
+		console.log("#member"+memberid);
+	}
+</script>
 @endsection
 @section('main-content')
 <div class="row">
@@ -102,6 +113,10 @@
 					<div class="card-content">
 						<div class="row">
 							<div class="col s12 m12">
+								@php
+									$userid = Auth::user()->id;
+									$companyid = CommonHelper::getCompanyID($userid);
+								@endphp
 								<div class="row">
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_variance') }}" enctype="multipart/form-data">
 										@csrf
@@ -109,11 +124,12 @@
 											
 											<div class="input-field col m2 s12">
 												<label for="doe">{{__('From Month') }}*</label>
-												<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y',strtotime($data['last_month_year'])) }}" class="datepicker-custom" />
+												<input type="text" name="from_date" id="from_date" required="" value="{{ date('M/Y',strtotime($data['from_year_full'])) }}" class="datepicker-custom" />
 											</div>
 											<div class="input-field col m2 s12">
 												<label for="doe">{{__('To Month') }}*</label>
-												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
+												<input type="text" name="to_date" id="to_date" required value="{{ $data['to_month_year'] }}" class="datepicker-custom" />
+												<input type="text" name="companyid" id="companyid" required value="{{ $companyid }}" class="hide" />
 											</div>
 											
 											
@@ -148,18 +164,116 @@
 						</h4>
 					</div>
 					<div class="card-body">
-						
+						<table id="page-length-option" class="display" width="100%">
+							@if($data['diff_in_months']==1)
+							<thead>
+								<tr class="" >
+									<th>Member Name</th>
+									<th>NRIC</th>
+									
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} Amount</th>
+
+									<th>Action</th>
+									
+										
+									
+								</tr>
+							</thead>
+							<tbody class="tbody-area" width="100%">
+								@php
+									//dd($data['diff_in_months']);
+									$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
+								@endphp
+								@foreach($variance_company_members as $member)
+								<tr class="bold table-footer">
+									<td style="width:30%">{{ $member->name }}</td>
+									<td style="width:20%">{{ $member->ic }}</td>
+									@if($data['diff_in_months']==1)
+									<td style="width:20%">{{ $member->Amount }}</td>
+									<td style="width:20%">{{ $member->last_amount }}</td>
+									<td>
+										<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return UpdateRemark({{ $member->submemberid }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a>
+									</td>
+									@endif
+								</tr> 
+								@endforeach
+							</tbody>
+							@endif
+							@if($data['diff_in_months']>1)
+							<thead>
+								<tr class="" >
+									<th>Member Name</th>
+									<th>NRIC</th>
+							
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} Amount</th>
+									@for($i=1;$i<=$data['diff_in_months'];$i++)
+										<th>{{ date('M Y',strtotime($data['to_year_full'].' -'.$i.' Month')) }} Amount</th>
+									@endfor
+							
+								</tr>
+							</thead>
+							<tbody class="tbody-area" width="100%">
+								@foreach($data['submembers'] as $member)
+									@php
+										for($j=1;$j<=$data['diff_in_months'];$j++){
+											$subsamt{$j} = CommonHelper::getMemberPaidSubs($member->member_id, date('Y-m-d',strtotime($data['to_year_full'].' -'.$j.' Month')));
+											
+										}
+										
+									@endphp
+								
+									<tr id="member{{$member->submemberid}}" class="" >
+										<td style="width:15%">{{$member->Name}}</td>
+										<td style="width:7%">{{$member->NRIC}}</td>
+										<td class="membersubs membersubs{{$member->submemberid}}" style="">{{$member->Amount}}</td>
+										@for($i=1;$i<=$data['diff_in_months'];$i++)
+											<td class="membersubs membersubs{{$member->submemberid}}">@php echo $subsamt{$i} @endphp</td>
+										@endfor
+									</tr>
+									@for($k=1;$k<=$data['diff_in_months'];$k++)
+										@if($member->Amount == $subsamt{$k})
+										<style type="text/css">
+											#member{{$member->submemberid}}{
+												display: none !important;
+											}
+										</style>
+										<script type="text/javascript">
+											//RemoveTR('{{$member->submemberid}}');
+										</script>
+										@endif
+									@endfor
+								@endforeach
+							</tbody>
+							@endif
+						</table>
 					</div> 
 				</div> 
 			</div> 
 		</div> 
 	</div>
-	
+	<!-- Modal Trigger -->
+
+	<div id="modal-remarks" class="modal">
+		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
+        @csrf
+			<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
+			<div class="modal-content">
+				<h4>Remarks</h4>
+				<textarea id="description" name="description" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
+			  	<button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+			</div>
+		</form>
+	</div>
+  
 </div>
 
 @endsection
 @section('footerSection')
-<script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
+
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
 
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
@@ -245,7 +359,70 @@ $(document).ready(function() {
 	function ViewVarianceList(thisdata){
 		window.open($(thisdata).attr("data-href"), '_blank');
 	}
+
+	function UpdateRemark(sub_member_id){
+		$('.modal').modal();
+		$("#sub_member_id").val(sub_member_id);
+		$("#modal-remarks").modal('open');
+			var url = "{{ url(app()->getLocale().'/varation_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
+		$.ajax({
+			url: url,
+			type: "GET",
+			dataType: "json",
+			success: function(result) {
+				//console.log(result);
+				//$(".match_case_row").addClass('hide');
+				//$(".match_case_row").css('pointer-events','unset');
+				//$("#view_member_name").html(result.up_member_data.Name);
+				//$("#view_nric").html(result.up_member_data.NRIC);
+				//$("#view_paid").html(result.up_member_data.Amount);
+				unmatchinfo = result.unmatchdata;
+				$("#description").val('');
+					//console.log(res);
+				if(unmatchinfo!=null){
+					$("#description").val(unmatchinfo.remarks);
+					
+					
+				}
+			
+				$("#modal-approval").modal('open');
+				loader.hideLoader();
+			}
+		});
+	}
 	
+	$(document).on('submit','#approvalformValidate',function(event){
+		event.preventDefault();
+		$(".submitApproval").attr('disabled', true);
+		var url = "{{ url(app()->getLocale().'/ajax_save_variation') }}" ;
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType: "json",
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: $('#approvalformValidate').serialize(),
+			success: function(result) {
+				if(result.status==1){
+					
+					M.toast({
+						html: result.message
+					});
+				}else{
+					M.toast({
+						html: result.message
+					});
+				}
+				$("#modal-remarks").modal('close');
+			}
+		});
+	});
+	// $(".subscription_amount").each(function() {
+	//       var subs_value = $(this).val()=='' ? 0 : $(this).val();
+	//       total_subs += parseFloat(subs_value);
+	//  });
+
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subvariation_sidebar_li_id").addClass('active');
 	$("#subvariation_sidebar_sidebar_a_id").addClass('active');

@@ -456,6 +456,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('list_sub_company','SubscriptionController@sub_company_list')->name('company.sub_company');
 	Route::post('ajax_subscriptioncompany_list','SubscriptionAjaxController@ajax_subscription_company_list');
+	Route::get('unmatched_member_info','SubscriptionAjaxController@unmatchedMemberDetails')->name('unmatched.members');
+	Route::get('varation_member_info','SubscriptionAjaxController@VariationMemberDetails')->name('variation.members');
+	Route::post('ajax_save_variation','SubscriptionController@saveVariance')->name('variance.save');
 
 });
 /* Master */

@@ -203,6 +203,14 @@
 								//dd($member);
 								$approval_status = $member->approval_status;
 								//$approval_status = CommonHelper::get_overall_approval_status($member->sub_member_id);
+								$unmatchdata = CommonHelper::get_unmatched_data($member->sub_member_id);
+								$unmatchreason = '';
+								$approval_status = 0;
+								if(!empty($unmatchdata)){
+									$unmatchreason = $unmatchdata->reason;
+									$unmatchreason = CommonHelper::get_unmatch_reason($unmatchreason);
+									$approval_status = 1;
+								}
 								//$duemonths = $member->memberid!="" ? CommonHelper::get_duemonths_monthend($member->memberid, $data['filter_date']) : '';
 								//dd($duemonths );
 								
@@ -225,7 +233,7 @@
 								@endif
 								@endif
 								@if($data['status']!=1 && $user_role=='union')
-									<th width="10%">Resigned</th>
+									<th width="10%">{{$unmatchreason}}</th>
 								@endif
 							</tr> 
 							@php
@@ -243,7 +251,7 @@
 	</div>
 	  <!-- Modal Structure -->
 	  <div id="modal-approval" class="modal">
-		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('approval.save',app()->getLocale()) }}">
+		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
         @csrf
 		<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
 		<div class="modal-content">
@@ -277,7 +285,7 @@
 						<tr class="" >
 							<td width="30%">
 								
-								<select name="edit_fee_name" id="edit_fee_name" onclick="return EnableDescription(this.value)" class="browser-default valid" aria-invalid="false">
+								<select name="reasonid" id="reasonid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
 									<option value="">Select</option>
 									<option value="1">Resigned</option>
 									<option value="2">Retired</option>
@@ -405,91 +413,102 @@ $(document).ready(function(){
 		}
   });
   function showApproval(sub_member_id){
+  		//alert(123);
 	   $(".submitApproval").attr('disabled', false);
 	   $('.modal').modal();
 	   $("#sub_member_id").val(sub_member_id);
 	   loader.showLoader();
-		var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
+		var url = "{{ url(app()->getLocale().'/unmatched_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
 		$.ajax({
 			url: url,
 			type: "GET",
 			dataType: "json",
 			success: function(result) {
-				console.log(result);
+				//console.log(result);
 				$(".match_case_row").addClass('hide');
 				$(".match_case_row").css('pointer-events','unset');
 				$("#view_member_name").html(result.up_member_data.Name);
 				$("#view_nric").html(result.up_member_data.NRIC);
 				$("#view_paid").html(result.up_member_data.Amount);
-				matchinfo = result.match;
+				unmatchinfo = result.unmatchdata;
+				$(".descriptiontd").addClass('hide');
+				$("#reasonid").val('');
 					//console.log(res);
-				$.each(matchinfo,function(key,entry){
-					$(".match_row_"+entry.match_id).removeClass('hide');
-					if(entry.match_id==1){
-						$("#nric_approved_by").html(entry.updated_user);
-						$("#nric_approve").prop('checked',entry.approval_status==1 ? true : false);
-					}
-					else if(entry.match_id==2){
-						$("#nric_not_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#nric_not_approved_by").html(entry.updated_user);
-						
-						$("#not-registered-area").removeClass('hide');
-						if(entry.approval_status == 1){
-							$("#member_search_auto_id").val(result.up_member_data.MemberCode);
-							$("#member_search_match").val(result.registered_member_name+'/'+result.registered_member_number);
-							$("#member_search_match").attr('readonly',true);
-							$(".match_row_2").css('pointer-events','none');
-							$("#not-registered-area").addClass('hide');
-						}
-					}
-					else if(entry.match_id==3){
-						$("#member_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#registered_member_name").html(result.registered_member_name);
-						$("#uploaded_member_name").html(entry.uploaded_member_name);
-						$("#name_approved_by").html(entry.updated_user);
-						if(result.registered_member_name == entry.uploaded_member_name){
-							$(".match_row_3").css('pointer-events','none');
-						}
-					}
-					else if(entry.match_id==4){
-						$("#bank_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#registered_bank_name").html(entry.registered_bank_name);
-						$("#uploaded_bank_name").html(entry.uploaded_bank_name);
-						$("#registered_bank_id").val(entry.registered_bank_id);
-						$("#uploaded_bank_id").val(entry.uploaded_bank_id);
-						$("#memebr_tansfer_link").prop('href',entry.transfer_link);
-						$("#bank_approved_by").html(entry.updated_user);
-						$("#memebr_tansfer_link").removeClass('hide');
-						if(entry.registered_bank_id == entry.uploaded_bank_id && entry.approval_status==1){
-							$(".match_row_4").css('pointer-events','none');
-							$("#memebr_tansfer_link").addClass('hide');
-						}
-					}else if(entry.match_id==5){
-						$("#previous_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#current_month_amount").html(result.up_member_data.Amount);
-						$("#last_month_amount").html(entry.old_payment);
-						$("#previous_approved_by").html(entry.updated_user);
-					}
-					else if(entry.match_id==6){
-						$("#struckoff_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#struckoff_approved_by").html(entry.updated_user);
-					}
-					else if(entry.match_id==7){
-						$("#resign_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#resign_approved_by").html(entry.updated_user);
-					}
-					else if(entry.match_id==8){
-						$("#nric_old_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#nric_old_approved_by").html(entry.updated_user);
-					}else if(entry.match_id==9){
-						$("#nric_bank_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#nric_bank_approved_by").html(entry.updated_user);
-					}else if(entry.match_id==10){
-						$("#previous_unpaid_approve").prop('checked',entry.approval_status==1 ? true : false);
-						$("#previous_unpaid_approved_by").html(entry.updated_user);
+				if(unmatchinfo!=null){
+					$("#reasonid").val(unmatchinfo.reason);
+					if(unmatchinfo.reason==5){
+						$(".descriptiontd").removeClass('hide');
+						$("#description").val(unmatchinfo.remarks);
 					}
 					
-				});
+				}
+				// $.each(matchinfo,function(key,entry){
+				// 	$(".match_row_"+entry.match_id).removeClass('hide');
+				// 	if(entry.match_id==1){
+				// 		$("#nric_approved_by").html(entry.updated_user);
+				// 		$("#nric_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 	}
+				// 	else if(entry.match_id==2){
+				// 		$("#nric_not_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#nric_not_approved_by").html(entry.updated_user);
+						
+				// 		$("#not-registered-area").removeClass('hide');
+				// 		if(entry.approval_status == 1){
+				// 			$("#member_search_auto_id").val(result.up_member_data.MemberCode);
+				// 			$("#member_search_match").val(result.registered_member_name+'/'+result.registered_member_number);
+				// 			$("#member_search_match").attr('readonly',true);
+				// 			$(".match_row_2").css('pointer-events','none');
+				// 			$("#not-registered-area").addClass('hide');
+				// 		}
+				// 	}
+				// 	else if(entry.match_id==3){
+				// 		$("#member_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#registered_member_name").html(result.registered_member_name);
+				// 		$("#uploaded_member_name").html(entry.uploaded_member_name);
+				// 		$("#name_approved_by").html(entry.updated_user);
+				// 		if(result.registered_member_name == entry.uploaded_member_name){
+				// 			$(".match_row_3").css('pointer-events','none');
+				// 		}
+				// 	}
+				// 	else if(entry.match_id==4){
+				// 		$("#bank_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#registered_bank_name").html(entry.registered_bank_name);
+				// 		$("#uploaded_bank_name").html(entry.uploaded_bank_name);
+				// 		$("#registered_bank_id").val(entry.registered_bank_id);
+				// 		$("#uploaded_bank_id").val(entry.uploaded_bank_id);
+				// 		$("#memebr_tansfer_link").prop('href',entry.transfer_link);
+				// 		$("#bank_approved_by").html(entry.updated_user);
+				// 		$("#memebr_tansfer_link").removeClass('hide');
+				// 		if(entry.registered_bank_id == entry.uploaded_bank_id && entry.approval_status==1){
+				// 			$(".match_row_4").css('pointer-events','none');
+				// 			$("#memebr_tansfer_link").addClass('hide');
+				// 		}
+				// 	}else if(entry.match_id==5){
+				// 		$("#previous_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#current_month_amount").html(result.up_member_data.Amount);
+				// 		$("#last_month_amount").html(entry.old_payment);
+				// 		$("#previous_approved_by").html(entry.updated_user);
+				// 	}
+				// 	else if(entry.match_id==6){
+				// 		$("#struckoff_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#struckoff_approved_by").html(entry.updated_user);
+				// 	}
+				// 	else if(entry.match_id==7){
+				// 		$("#resign_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#resign_approved_by").html(entry.updated_user);
+				// 	}
+				// 	else if(entry.match_id==8){
+				// 		$("#nric_old_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#nric_old_approved_by").html(entry.updated_user);
+				// 	}else if(entry.match_id==9){
+				// 		$("#nric_bank_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#nric_bank_approved_by").html(entry.updated_user);
+				// 	}else if(entry.match_id==10){
+				// 		$("#previous_unpaid_approve").prop('checked',entry.approval_status==1 ? true : false);
+				// 		$("#previous_unpaid_approved_by").html(entry.updated_user);
+				// 	}
+					
+				// });
 				//var match_data = result.match;
 				/* $(".bank_match_row").addClass('hide');
 				$(".nric_match_row").addClass('hide');

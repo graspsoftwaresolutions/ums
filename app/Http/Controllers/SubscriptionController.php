@@ -3146,13 +3146,33 @@ class SubscriptionController extends CommonController
     }
 
     public function saveMismatched($lang, Request $request){
+        //return 1;
         $sub_member_id = $request->input('sub_member_id');
+        $description = $request->input('description');
+        $reasonid = $request->input('reasonid');
 		$match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_id)->get();
 		$total_match_count = 0;
 		$member_code = '';
 		$member_status = '';
 		$member_match = '';
         $approval_masg = 'Updated Succesfully';
+
+        $mismatchedcount = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$sub_member_id)->where('type','=',0)->count();
+        //return $mismatchedcount;
+
+        $insertdata = [];
+        $insertdata['mon_sub_member_id'] = $sub_member_id;
+        $insertdata['type'] = 0;
+        $insertdata['approval_status'] = 1;
+        $insertdata['reason'] = $reasonid;
+        $insertdata['remarks'] = $description;
+        if($mismatchedcount==0){
+            $saveunmatch = DB::table('mon_sub_remarks')->insert($insertdata);
+        }else{
+            $saveunmatch = DB::table('mon_sub_remarks')
+            ->where('mon_sub_member_id', $sub_member_id)
+            ->update($insertdata);
+        }
         
         $member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_id)->pluck('MemberCode')->first();
 	
@@ -3175,28 +3195,94 @@ class SubscriptionController extends CommonController
         return view('subscription.subscription_company_list')->with('data', $data);
     }
 
-    public function varianceList(){
-		$data['month_year'] = date('M/Y');
-		$data['month_year_full'] = date('Y-m-01');
-		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
+    public function varianceList($lang, Request $request){
+		$data['to_month_year'] = date('M/Y');
+		$data['from_year_full'] = date("Y-m-01", strtotime("first day of previous month"));
+		$data['to_year_full']= date('Y-m-01');
 		
-		$data['company_view']=[];
-		$data['branch_view']=[];
+        $data['company_view']=[];
+        $data['diff_in_months']=1;
+        $data['branch_view']=[];
+        $data['submembers']=[];
 	
 		return view('subscription.variation_bank_members')->with('data', $data);
     }
     
-    public function varianceFilter(){
-        $data['month_year'] = date('M/Y');
-		$data['month_year_full'] = date('Y-m-01');
-		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
+    public function varianceFilter($lang, Request $request){
+        $from_date_str = $request->input('from_date');
+        $to_date_str = $request->input('to_date');
+        $companyid = $request->input('companyid');
+
+        $to_date = explode("/",$to_date_str);
+        $from_date = explode("/",$from_date_str);
+      
+       // $fm_date[1].'-'.$fm_date[0].'-'.'01';
+        $todatestring = strtotime($to_date[1].'-'.$to_date[0].'-'.'01');
+        
+        $fromdatestring = strtotime($from_date[1].'-'.$from_date[0].'-'.'01');
+
+        $to = Carbon::createFromFormat('Y-m-d H:s:i', date('Y-m-01',$todatestring).' '.date('H:i:s'));
+        $from = Carbon::createFromFormat('Y-m-d H:s:i',  date('Y-m-01',$fromdatestring).' '.date('H:i:s'));
+        $diff_in_months = $to->diffInMonths($from);
+        
+
+       // $from_date = explode("/",$from_date_str);
+		$data['to_month_year'] = $to_date_str;
+		$data['from_year_full'] = date('Y-m-01',$fromdatestring);
+        $data['to_year_full']= date('Y-m-01',$todatestring);
+        //return 1;
+
+        $submembers = DB::table('mon_sub_member as mm')
+        ->select('mm.MemberCode as member_id','mm.Amount','mm.NRIC','mm.Name','mm.id as submemberid')
+        ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+                    ->where('sc.CompanyCode','=',$companyid)
+                    ->where('ms.Date','=', $data['to_year_full'])
+                    ->get();
+        //dd($submembers);
 		
-		$data['company_view']=[];
+        $data['company_view']=[];
+        $data['diff_in_months']=$diff_in_months;
+        $data['submembers']=$submembers;
 		$data['branch_view']=[];
 	
 		return view('subscription.variation_bank_members')->with('data', $data);
     }
 
+
+    public function saveVariance($lang, Request $request){
+        //return 1;
+        $sub_member_id = $request->input('sub_member_id');
+        $description = $request->input('description');
+        
+		
+		$member_status = '';
+		
+        $approval_masg = 'Updated Succesfully';
+
+        $mismatchedcount = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$sub_member_id)->where('type','=',1)->count();
+        //return $mismatchedcount;
+
+        $insertdata = [];
+        $insertdata['mon_sub_member_id'] = $sub_member_id;
+        $insertdata['type'] = 1;
+        $insertdata['approval_status'] = 1;
+        $insertdata['remarks'] = $description;
+        if($mismatchedcount==0){
+            $saveunmatch = DB::table('mon_sub_remarks')->insert($insertdata);
+        }else{
+            $saveunmatch = DB::table('mon_sub_remarks')
+            ->where('mon_sub_member_id', $sub_member_id)
+            ->update($insertdata);
+        }
+        
+        $member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_id)->pluck('MemberCode')->first();
+	
+        Artisan::call('cache:clear');
+		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_id, 'member_status' => $member_status, 'approval_status' => 1];
+		echo json_encode($return_data);
+    }
     
     
 }

@@ -3047,4 +3047,122 @@ class CommonHelper
        // $membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
         return $res;
     }
+
+    public static function getSubscriptionVarianceMembers($date, $companyid){
+        //0 dec
+        //1 inc
+        if($date==""){
+            $date = date('Y-m-01');
+        }
+        $month = date("m", strtotime($date));
+        $year = date("Y", strtotime($date));
+        //return $month;
+        $last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+        $current_month_temp = date('m-Y',strtotime('01-'.$month.'-'.$year));
+        
+        $membersqry = DB::table('mon_sub_member as sm')
+                                ->select('sm.MemberCode','sm.Amount')
+                                ->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                //->where(DB::raw("DATE_FORMAT(m.doj, '%m-%Y')"),'=',$last_month_temp)
+                                //->where('cb.union_branch_id','=',$unionid)
+                                ->where('ms.Date','=',$last_month);
+        // if($type==1){
+        //     $membersqry = $membersqry->where('cb.union_branch_id','=',$type_id);
+        // }else if($type==2){
+             $membersqry = $membersqry->where('mc.CompanyCode','=',$companyid);
+        // }
+        // else{
+        //     $membersqry = $membersqry->where('m.branch_id','=',$type_id);
+        // }
+        $members = $membersqry->get();
+       //dd($members);
+        $subdata = [];
+
+       
+
+        foreach ($members as $member) {
+
+           $subscription_data = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as Amount','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic',DB::raw($member->Amount.' as last_amount'),'mm.id as submemberid')
+                        ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                        ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                        ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                        ->where('mm.update_status', '=', 1)
+                        ->where('mm.MemberCode', '=', $member->MemberCode) 
+                        ->where('mm.Amount', '!=', $member->Amount) 
+                        ->where(DB::raw('month(ms.Date)'),'=',$month)
+                        ->where(DB::raw('year(ms.Date)'),'=',$year)->first();
+            if($subscription_data!=null){
+             //   print_r($member);
+                 //dd($subscription_data); 
+                $subdata[] = $subscription_data;
+            }     
+            
+        }
+          
+        // $count = 0;                     
+        // foreach($members as $member){
+        //     $memebr_id = $member->MemberCode;
+        //     $old_subscription_count = DB::table("mon_sub_member as mm")
+        //                     ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+        //                     ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+        //                     ->where('mm.MemberCode','=',$memebr_id)
+        //                     ->where('ms.Date','=',$last_month)
+        //                     ->orderBY('mm.MonthlySubscriptionCompanyId','desc')
+        //                     ->count();
+        //     if($old_subscription_count==0){
+        //         $count++;
+        //     }
+        // }   
+        return $subdata;
+    }
+    public static function get_unmatched_data($submemberid){
+        $matchdata = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$submemberid)
+        ->where('type','=',0)
+        ->where('approval_status','=',1)
+        ->first();
+        
+        return $matchdata;
+    }
+    public static function get_unmatch_reason($reasonid){
+        if($reasonid==1){
+            $reasonname = 'Resigned';
+        }elseif($reasonid==2){
+            $reasonname = 'Retired';
+        }elseif($reasonid==3){
+            $reasonname = 'Promoted';
+        }elseif($reasonid==4){
+            $reasonname = 'Demised';
+        }else{
+            $reasonname = 'Others';
+        }
+        
+        return $reasonname;
+    }
+
+    public static function getMemberPaidSubs($member_id,$date){
+        if($date==""){
+            $date = date('Y-m-01');
+        }
+        $month = date("m", strtotime($date));
+        $year = date("Y", strtotime($date));
+        $subscriptions = DB::table("mon_sub_member as mm")->select('mm.Amount as SUBSCRIPTION_AMOUNT')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->where(DB::raw('month(ms.Date)'),'=',$month)
+                                ->where(DB::raw('year(ms.Date)'),'=',$year)
+                                ->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '=', $member_id)
+                                ->first();
+       
+        if($subscriptions!=Null){
+            return $subscriptions->SUBSCRIPTION_AMOUNT;
+        }else{
+            return '*';
+        }
+    }
 }
