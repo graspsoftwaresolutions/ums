@@ -9,7 +9,13 @@
 @section('main-content')
 <div id="">
 	<div class="row">
+		@php
+			$get_roles = Auth::user()->roles; 
+			$user_role = $get_roles[0]->slug;
+		@endphp
+		@if($user_role != 'company')
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+		@endif
 		<div class="col s12">
 			<div class="container">
 				@if (session()->has('error'))
