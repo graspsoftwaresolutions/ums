@@ -47,6 +47,45 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     	//margin : 20px;
     	padding: 10px 10px;
 	}
+	.collection-header,.task-cat{
+		color: #fff;
+	}
+		@media print {
+		#printbutton{
+			display: none !important;
+		}
+		.sidenav-main,.nav-wrapper {
+		 	display:none !important;
+		}
+
+		.gradient-45deg-indigo-purple{
+			display:none !important;
+		}
+		#filterarea{
+			display:none !important;
+		}
+
+		#subsfilter{
+			display:none !important;
+		}
+
+		#tabdiv{
+			display:none !important;
+		}
+		#advancedsearchs{
+			display:none !important;
+		}
+		.btn{
+			display:none !important;
+		}
+
+		#printableArea {
+		 	display:block !important;
+		}
+		.collection-header,.task-cat{
+			color: #000 !important;
+		}
+	}
 </style>
 @endsection
 @section('main-content')
@@ -139,8 +178,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<ul id="projects-collection" class="collection z-depth-1 animate fadeLeft">
 				               <li class="">
 				                
-				                  <h6 class="collection-header m-20" style="margin: 10px 10px;color: #fff;">Subscription Summary</h6>
-				                  <p></p>
+				                  <h6 class="collection-header m-20" style="margin: 10px 10px;">Subscription Summary <a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a></h6>
+				                    <p>
+			                  	
+										
+						 	
+									
+								    </p>
 				               </li>
 				               <li class="collection-item">
 				                  <div class="row">

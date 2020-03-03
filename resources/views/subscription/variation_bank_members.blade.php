@@ -48,6 +48,46 @@
 	.btn-sm{
 	    padding: 0 1rem;
 	}
+	@media print {
+		#printbutton{
+			display: none !important;
+		}
+		.sidenav-main,.nav-wrapper {
+		 	display:none !important;
+		}
+
+		.gradient-45deg-indigo-purple{
+			display:none !important;
+		}
+		#filterarea{
+			display:none !important;
+		}
+
+		#subsfilter{
+			display:none !important;
+		}
+
+		#tabdiv{
+			display:none !important;
+		}
+		#advancedsearchs{
+			display:none !important;
+		}
+		.btn{
+			display:none !important;
+		}
+
+		#printableArea {
+		 	display:block !important;
+		}
+		td, th {
+		    display: table-cell;
+		    padding: 5px 4px;
+		    text-align: left;
+		    vertical-align: middle;
+		    border-radius: 2px;
+		}
+	}
 </style>
 <script src="{{ asset('public/assets/js/jquery.min.js') }}"></script>
 <script type="text/javascript">
@@ -62,7 +102,7 @@
 <div class="row">
 	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
 	<div class="col s12">
-		<div class="container">
+		<div id="tabdiv" class="container">
 			<div class="section section-data-tables">
 				<!-- BEGIN: Page Main-->
 				<div class="row">
@@ -110,7 +150,7 @@
 							 </div>
 						@endif
 					</div>
-					<div class="card-content">
+					<div id="filterarea" class="card-content">
 						<div class="row">
 							<div class="col s12 m12">
 								@php
@@ -159,7 +199,8 @@
 					<div class="card-content">
 						<h4 class="card-title">Subscription variation Members
 						<div class="right">
-							
+							<a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a>
+			 	
 						</div>
 						</h4>
 					</div>
@@ -168,11 +209,12 @@
 							@if($data['diff_in_months']==1)
 							<thead>
 								<tr class="" >
+									<th>{{__('S.No')}}</th>
 									<th>Member Name</th>
 									<th>NRIC</th>
 									
-									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} Amount</th>
-									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
 
 									<th>Action</th>
 									
@@ -184,9 +226,11 @@
 								@php
 									//dd($data['diff_in_months']);
 									$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
+									$slno=1;
 								@endphp
 								@foreach($variance_company_members as $member)
 								<tr class="bold table-footer">
+									<td style="width:3%">{{ $slno }}</td>
 									<td style="width:30%">{{ $member->name }}</td>
 									<td style="width:20%">{{ $member->ic }}</td>
 									@if($data['diff_in_months']==1)
@@ -197,52 +241,64 @@
 									</td>
 									@endif
 								</tr> 
+								@php
+									$slno++;
+								@endphp
 								@endforeach
 							</tbody>
 							@endif
 							@if($data['diff_in_months']>1)
 							<thead>
 								<tr class="" >
+									<th>{{__('S.No')}}</th>
 									<th>Member Name</th>
 									<th>NRIC</th>
 							
-									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 									@for($i=1;$i<=$data['diff_in_months'];$i++)
-										<th>{{ date('M Y',strtotime($data['to_year_full'].' -'.$i.' Month')) }} Amount</th>
+										<th>{{ date('M Y',strtotime($data['to_year_full'].' -'.$i.' Month')) }} <br> Amount</th>
 									@endfor
 							
 								</tr>
 							</thead>
 							<tbody class="tbody-area" width="100%">
+								@php
+									$slno=1;
+								@endphp
 								@foreach($data['submembers'] as $member)
 									@php
-										for($j=1;$j<=$data['diff_in_months'];$j++){
+										for($j=0;$j<=$data['diff_in_months'];$j++){
 											$subsamt{$j} = CommonHelper::getMemberPaidSubs($member->member_id, date('Y-m-d',strtotime($data['to_year_full'].' -'.$j.' Month')));
 											
 										}
-										
+										//dd($subsamt);
 									@endphp
-								
+									@if(count($subsamt) !== count(array_unique($subsamt)) && count(array_unique($subsamt))!=1)
 									<tr id="member{{$member->submemberid}}" class="" >
-										<td style="width:15%">{{$member->Name}}</td>
-										<td style="width:7%">{{$member->NRIC}}</td>
+										<td style="width:3%">{{ $slno }}</td>
+										<td style="width:17%">{{$member->Name}}</td>
+										<td style="width:10%">{{$member->NRIC}}</td>
 										<td class="membersubs membersubs{{$member->submemberid}}" style="">{{$member->Amount}}</td>
 										@for($i=1;$i<=$data['diff_in_months'];$i++)
 											<td class="membersubs membersubs{{$member->submemberid}}">@php echo $subsamt{$i} @endphp</td>
 										@endfor
 									</tr>
-									@for($k=1;$k<=$data['diff_in_months'];$k++)
+										@php
+											$slno++;
+										@endphp
+									@endif
+									<!-- @for($k=1;$k<=$data['diff_in_months'];$k++)
 										@if($member->Amount == $subsamt{$k})
 										<style type="text/css">
 											#member{{$member->submemberid}}{
-												display: none !important;
+												//display: none !important;
 											}
 										</style>
 										<script type="text/javascript">
 											//RemoveTR('{{$member->submemberid}}');
 										</script>
 										@endif
-									@endfor
+									@endfor -->
 								@endforeach
 							</tbody>
 							@endif
@@ -424,7 +480,7 @@ $(document).ready(function() {
 	//  });
 
 	$("#subscriptions_sidebars_id").addClass('active');
-	$("#subvariation_sidebar_li_id").addClass('active');
-	$("#subvariation_sidebar_sidebar_a_id").addClass('active');
+	$("#subvariance_sidebar_li_id").addClass('active');
+	$("#subvariance_sidebar_sidebar_a_id").addClass('active');
 </script>
 @endsection
