@@ -1016,7 +1016,7 @@ class ReportsController extends Controller
         // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
         // $total_fee = $entry_fee+$ins_fee;
         
-        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
         ,'m.gender'
         ,'com.company_name'
         ,'m.doj'
@@ -1088,7 +1088,7 @@ class ReportsController extends Controller
         // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
         // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
         // $total_fee = $entry_fee+$ins_fee;
-          $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+          $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
           ,'m.gender'
           ,'com.company_name'
           ,'m.doj'
@@ -1115,12 +1115,22 @@ class ReportsController extends Controller
                       $members = $members->where('c.company_id','=',$company_id);
                   }
               }
-              if($join_type==2){
-                $members = $members->where('m.old_member_number','!=',NULL);
-              }
-              if($join_type==1){
-                $members = $members->where('m.old_member_number','=',NULL);
-              }
+            //   if($join_type==2){
+            //     $members = $members->where('m.old_member_number','!=',NULL);
+            //   }
+             if($join_type!=''){
+                if($join_type==1){
+                    $members = $members->where('m.old_member_number','=',NULL);
+                }else{
+                if($join_type==2){
+                    $members = $members->where('m.designation_id','=',2);
+                }else{
+                    $members = $members->where('m.designation_id','=',3);
+                }
+                }
+             }
+              
+
               if($member_auto_id!=""){
                   $members = $members->where('m.id','=',$member_auto_id);
               }
@@ -1175,7 +1185,7 @@ class ReportsController extends Controller
         // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
         // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
         // $total_fee = $entry_fee+$ins_fee;
-          $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+          $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
           ,'m.gender'
           ,'com.company_name'
           ,'m.doj','m.employee_id'
@@ -1202,11 +1212,17 @@ class ReportsController extends Controller
                       $members = $members->where('c.company_id','=',$company_id);
                   }
               }
-              if($join_type==2){
-                $members = $members->where('m.old_member_number','!=',NULL);
-              }
+            //   if($join_type==2){
+            //     $members = $members->where('m.old_member_number','!=',NULL);
+            //   }
               if($join_type==1){
                 $members = $members->where('m.old_member_number','=',NULL);
+              }else{
+                if($join_type==2){
+                    $members = $members->where('m.designation_id','=',2);
+                }else{
+                    $members = $members->where('m.designation_id','=',3);
+                }
               }
               if($member_auto_id!=""){
                   $members = $members->where('m.id','=',$member_auto_id);
@@ -2779,7 +2795,7 @@ class ReportsController extends Controller
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
         
-        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
         ,'m.gender'
         ,'com.company_name'
         ,'m.doj','m.employee_id'
@@ -2838,7 +2854,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name = '';
 
-        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
         ,'m.gender'
         ,'com.company_name'
         ,'m.doj','m.employee_id'
@@ -2866,12 +2882,23 @@ class ReportsController extends Controller
                 $members = $members->where('c.company_id','=',$company_id);
             }
         }
-        if($join_type==2){
-            $members = $members->where('m.old_member_number','!=',NULL);
-        }
-        if($join_type==1){
-            $members = $members->where('m.old_member_number','=',NULL);
-        }
+        if($join_type!=''){
+            if($join_type==1){
+                $members = $members->where('m.old_member_number','=',NULL);
+            }else{
+            if($join_type==2){
+                $members = $members->where('m.designation_id','=',2);
+            }else{
+                $members = $members->where('m.designation_id','=',3);
+            }
+            }
+         }
+        // if($join_type==2){
+        //     $members = $members->where('m.old_member_number','!=',NULL);
+        // }
+        // if($join_type==1){
+        //     $members = $members->where('m.old_member_number','=',NULL);
+        // }
         if($member_auto_id!=""){
             $members = $members->where('m.id','=',$member_auto_id);
         }
@@ -2916,7 +2943,7 @@ class ReportsController extends Controller
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name = '';
 
-        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name')
+        $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
         ,'m.gender'
         ,'com.company_name'
         ,'m.doj','m.employee_id'
@@ -2944,12 +2971,23 @@ class ReportsController extends Controller
                 $members = $members->where('c.company_id','=',$company_id);
             }
         }
-        if($join_type==2){
-            $members = $members->where('m.old_member_number','!=',NULL);
-        }
-        if($join_type==1){
-            $members = $members->where('m.old_member_number','=',NULL);
-        }
+        if($join_type!=''){
+            if($join_type==1){
+                $members = $members->where('m.old_member_number','=',NULL);
+            }else{
+            if($join_type==2){
+                $members = $members->where('m.designation_id','=',2);
+            }else{
+                $members = $members->where('m.designation_id','=',3);
+            }
+            }
+         }
+        // if($join_type==2){
+        //     $members = $members->where('m.old_member_number','!=',NULL);
+        // }
+        // if($join_type==1){
+        //     $members = $members->where('m.old_member_number','=',NULL);
+        // }
         if($member_auto_id!=""){
             $members = $members->where('m.id','=',$member_auto_id);
         }

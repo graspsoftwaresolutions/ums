@@ -86,6 +86,7 @@
 								<option value="" selected>{{__('All') }}</option>
 								<option value="1">New Joined</option>
 								<option value="2">Rejoined</option>
+								<option value="3">Special Grade</option>
 							</select>
 						</div>
 						<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
