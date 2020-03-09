@@ -118,14 +118,36 @@
                                                 type="password" data-error=".errorTxt4">
                                             <div class="errorTxt4"></div>
                                         </div>
+                                         <div class="clearfix" style="clear:both"></div>
+                                        <div class="input-field col s12 m6">
+                                            <label for="irc_type"
+                                                class="common-label force-active">{{__('Account Type') }}</label>
+                                            <input id="irc_type" data-autoid="" readonly class="common-input" name="irc_type"
+                                                type="text" value="IRC Confirmation" data-error=".errorTxt2">
+                                            <div class="errorTxt2"></div>
+                                        </div>
+                                        <div id="unionbrancharea" class="input-field col s12 m6">
+                                            <label for="unionbranchname"
+                                                class="common-label force-active">{{__('Union branch') }}</label>
+                                            <input id="unionbranchname" value="KL" data-autoid="" readonly class="common-input" name="unionbranchname"
+                                                type="text" data-error=".errorTxt2">
+                                            <div class="errorTxt2"></div>
+                                        </div> 
+                                        <div id="memberarea" class="input-field col s12 m6">
+                                            <label for="membername"
+                                                class="common-label force-active">{{__('Member') }}</label>
+                                            <input id="membername" value="Name(Number)" data-autoid="" readonly class="common-input" name="membername"
+                                                type="text" data-error=".errorTxt2">
+                                            <div class="errorTxt2"></div>
+                                        </div>
                                         <div class="clearfix" style="clear:both"></div>
                                         <div class="input-field col s12">
                                             <a href="#!"
                                                 class="modal-action modal-close btn waves-effect waves-light cyan">Close</a>
-                                            <button class="btn waves-effect waves-light right submit edit_hide_btn "
+                                            <button class="btn waves-effect waves-light right hide submit edit_hide_btn "
                                                 type="submit" name="action">{{__('Update')}}
                                             </button>
-                                            <button class="btn waves-effect waves-light right submit add_hide"
+                                            <button class="btn waves-effect waves-light right submit hide add_hide"
                                                 style="display:none;" type="submit" name="action">{{__('Save')}}
                                             </button>
                                         </div>
@@ -281,7 +303,7 @@ function showeditForm(userid) {
     $('.edit_hide_btn').show();
     $('.modal').modal();
     loader.showLoader();
-    var url = "{{ url(app()->getLocale().'/users_detail') }}" + '?id=' + userid;
+    var url = "{{ url(app()->getLocale().'/irc_users_detail') }}" + '?id=' + userid;
     $.ajax({
         url: url,
         type: "GET",
@@ -290,6 +312,17 @@ function showeditForm(userid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#name').val(result.name);
             $('#email').val(result.email);
+            $('#irc_type').val(result.irc_type);
+            if(result.irc_type=='irc-confirmation'){
+                $('#membername').val(result.membership.member_number);
+                $('#unionbrancharea').addClass('hide');
+                $('#memberarea').removeClass('hide');
+            }else{
+                $('#unionbranchname').val(result.unionbranch);
+                $('#unionbrancharea').removeClass('hide');
+                $('#memberarea').addClass('hide');
+            }
+           
             $('#email').attr('data-autoid', result.id);
             loader.hideLoader();
             $("#modal_add_edit").modal('open');

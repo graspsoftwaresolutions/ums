@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         
         //$this->call(MonthlySubMatchTypeTableSeeder::class);
 		//$this->call(IRCRolesSeeder::class);
-        $this->call(EntryRolesSeeder::class);
+        //$this->call(EntryRolesSeeder::class);
+        $this->call(UnionGroupsTableSeeder::class);
     }
 }

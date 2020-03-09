@@ -1095,7 +1095,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					if($user_role=='irc-branch-committee' && $branchcommitteeZone==''){
 						$commitiiedata = CommonHelper::getCommittieinfo($userid);  
 						$branchcommitteeZone = $commitiiedata->union_branch;
-						$committieverifyname = $branchcommitteeZone;
+						//$committieverifyname = $branchcommitteeZone;
+
+						if($branchcommitteeZone==1){
+							$committieverifyname = 'SMJ';
+						}else if($branchcommitteeZone==2){
+							$committieverifyname = 'PKP';
+						}else if($branchcommitteeZone==3){
+							$committieverifyname = 'PERAK';
+						}else if($branchcommitteeZone==4){
+							$committieverifyname = 'KELANTAN TERENGGANU';
+						}else{
+							$committieverifyname = 'KLSP';
+						}
 
 					}
 

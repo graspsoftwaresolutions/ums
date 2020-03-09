@@ -117,10 +117,10 @@
 													data-error=".errorTxt7" style="height: 4rem;">
 													<option value="" disabled="" selected="">
 														{{__('Select Union Branch') }}</option>
-													@foreach($data['union_view'] as $value)
+													@foreach($data['union_group'] as $value)
 													<option value="{{$value->id}}" @isset($row) @php if($value->id
 														== $row->union_branch_id) { echo "selected";} @endphp
-														@endisset >{{$value->union_branch}}</option>
+														@endisset >{{$value->group_name}}</option>
 													@endforeach
 												</select>
 												 <div class="input-field">

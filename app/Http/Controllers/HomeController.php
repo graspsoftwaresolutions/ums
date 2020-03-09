@@ -140,6 +140,48 @@ class HomeController extends Controller
 				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();
 
+
+			$union_no = $unionbranchid;
+
+			$unionbranchname = DB::table('union_branch as ub')
+			->where('ub.id','=',$unionbranchid)
+			->pluck('union_branch')->first();  
+
+			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JOHOR BAHRU'){
+				$unionbranchids = DB::table('union_branch as ub')
+						->where(function($query) use ($union_no){
+							$query->where('ub.union_branch', '=',"SEREMBAN")
+								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+						})
+					->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"PENANG")
+						->orWhere('ub.union_branch', '=',"KEDAH");
+				})
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='IPOH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','IPOH')
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='KELANTAN'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','KELANTAN')
+				->pluck('ub.id')->toArray();  
+			}else{
+				//return $union_no;
+				$unionbranchids = DB::table('union_branch as ub')
+				->select('ub.id')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"KL")
+						->orWhere('ub.union_branch', '=',"KELANG")
+						->orWhere('ub.union_branch', '=',"PAHANG");
+				})
+				->pluck('ub.id')->toArray();
+				//->first();  
+			}
+
 			$c_head = DB::table('union_branch as ub')->select('ub.id')
 						->where('ub.id','=',$unionbranchid)
 						->where('ub.is_head','=',1)
@@ -165,18 +207,22 @@ class HomeController extends Controller
 								// 	  ->orWhereNull('i.filledby')
 								// 	  ->orWhereNull('i.nameofperson');
 								// 	});
-			if($c_head!=1){
-				$total_ircpending_qry = $total_ircpending_qry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			// if($c_head!=1){
+			// 	$total_ircpending_qry = $total_ircpending_qry->where('cb.union_branch_id','=',$unionbranchid);
+			// }
+			$total_ircpending_qry = $total_ircpending_qry->whereIn('cb.union_branch_id',$unionbranchids);
+
 			$total_ircpending_count = $total_ircpending_qry->count();
 								
 			$total_ircconfirm_qry = DB::table('irc_confirmation as i')
 								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')    
 								->where('i.status','=',1);
-			if($c_head!=1){
-				$total_ircconfirm_qry = $total_ircconfirm_qry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+
+			$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			// if($c_head!=1){
+			// 	$total_ircconfirm_qry = $total_ircconfirm_qry->where('cb.union_branch_id','=',$unionbranchid);
+			// }
 			$total_ircconfirm_count = $total_ircconfirm_qry->count();
 
 			
@@ -191,9 +237,11 @@ class HomeController extends Controller
 									// ->where('i.filledby','=','1')
 									->where('i.status','=',0)
 									->where('i.irc_status','=',1);
-			if($c_head!=1){
-				$total_ircapp_qry = $total_ircapp_qry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+
+			$total_ircapp_qry = $total_ircapp_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			// if($c_head!=1){
+			// 	$total_ircapp_qry = $total_ircapp_qry->where('cb.union_branch_id','=',$unionbranchid);
+			// }
 
 			$total_ircapp_count = $total_ircapp_qry->count();
 
@@ -213,6 +261,47 @@ class HomeController extends Controller
 						//->dump()
 						->count();
 
+			$union_no = $unionbranchid;
+
+			// $unionbranchname = DB::table('union_branch as ub')
+			// ->where('ub.id','=',$unionbranchid)
+			// ->pluck('union_branch')->first();  
+
+			if($unionbranchid==1){
+				$unionbranchids = DB::table('union_branch as ub')
+						->where(function($query) use ($union_no){
+							$query->where('ub.union_branch', '=',"SEREMBAN")
+								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+						})
+					->pluck('ub.id')->toArray();  
+			}else if($unionbranchid==2){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"PENANG")
+						->orWhere('ub.union_branch', '=',"KEDAH");
+				})
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchid==3){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','IPOH')
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchid==4){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','KELANTAN')
+				->pluck('ub.id')->toArray();  
+			}else{
+				//return $union_no;
+				$unionbranchids = DB::table('union_branch as ub')
+				->select('ub.id')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"KL")
+						->orWhere('ub.union_branch', '=',"KELANG")
+						->orWhere('ub.union_branch', '=',"PAHANG");
+				})
+				->pluck('ub.id')->toArray();
+				//->first();  
+			}
+
 			$total_ircpending_qry = DB::table('irc_confirmation as i')
 								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
@@ -232,18 +321,18 @@ class HomeController extends Controller
 								// 	  ->orWhereNull('i.filledby')
 								// 	  ->orWhereNull('i.nameofperson');
 								// 	});
-			if($c_head!=1){
-				$total_ircpending_qry = $total_ircpending_qry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			//if($c_head!=1){
+				$total_ircpending_qry = $total_ircpending_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
 			$total_ircpending_count = $total_ircpending_qry->count();
 								
 			$total_ircconfirm_qry = DB::table('irc_confirmation as i')
 								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')    
 								->where('i.status','=',1);
-			if($c_head!=1){
-				$total_ircconfirm_qry = $total_ircconfirm_qry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			//if($c_head!=1){
+				$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
 			$total_ircconfirm_count = $total_ircconfirm_qry->count();
 
 			
@@ -258,9 +347,9 @@ class HomeController extends Controller
 									// ->where('i.filledby','=','1')
 									->where('i.status','=',0)
 									->where('i.irc_status','=',1);
-			if($c_head!=1){
-				$total_ircapp_qry = $total_ircapp_qry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			//if($c_head!=1){
+				$total_ircapp_qry = $total_ircapp_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
 
 			$total_ircapp_count = $total_ircapp_qry->count();
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;

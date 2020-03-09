@@ -460,6 +460,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('varation_member_info','SubscriptionAjaxController@VariationMemberDetails')->name('variation.members');
 	Route::post('ajax_save_variation','SubscriptionController@saveVariance')->name('variance.save');
 
+	Route::get('irc_users_detail','IrcController@userDetail');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

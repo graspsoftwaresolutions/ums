@@ -45,7 +45,9 @@ class IrcController extends CommonController
     }
 	
 	public function AddIrcAccount() {
-		$data['union_view'] = DB::table('union_branch')->where('status','=','1')->get();
+		$data['union_view'] = []; 
+		//DB::table('union_branch')->where('status','=','1')->get();
+		$data['union_group'] = DB::table('union_groups')->get();
 		return view('irc.add_user')->with('data',$data);
     }
 	public function SaveUserAccount(Request $request) {
@@ -251,6 +253,43 @@ class IrcController extends CommonController
 		if($user_role=='irc-branch-committee'){
 			$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
 			->pluck('union_branch_id')->first();  
+
+			$union_no = $unionbranchid;
+			if($unionbranchid==1){
+				$unionbranchids = DB::table('union_branch as ub')
+						->where(function($query) use ($union_no){
+							$query->where('ub.union_branch', '=',"SEREMBAN")
+								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+						})
+					->pluck('ub.id')->toArray();  
+			}else if($unionbranchid==2){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"PENANG")
+						->orWhere('ub.union_branch', '=',"KEDAH");
+				})
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchid==3){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','IPOH')
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchid==4){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','KELANTAN')
+				->pluck('ub.id')->toArray();  
+			}else{
+				//return $union_no;
+				$unionbranchids = DB::table('union_branch as ub')
+				->select('ub.id')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"KL")
+						->orWhere('ub.union_branch', '=',"KELANG")
+						->orWhere('ub.union_branch', '=',"PAHANG");
+				})
+				->pluck('ub.id')->toArray();
+				//->first();  
+			}
+
 			$c_head = DB::table('union_branch as ub')->select('ub.id')
 						->where('ub.id','=',$unionbranchid)
 						->where('ub.is_head','=',1)
@@ -268,15 +307,57 @@ class IrcController extends CommonController
 			}else{
 				 $totalqry = $totalqry->where('i.irc_status','=',1);
 			}
-			if($c_head!=1){
-				$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			$totalqry = $totalqry->whereIn('cb.union_branch_id',$unionbranchids);
+			// if($c_head!=1){
+			// 	$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+			// }
 		}else{
 			$memberid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
 			->pluck('MemberCode')->first();  
 			$unionbranchid = DB::table('membership as m')
 				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();
+
+			$union_no = $unionbranchid;
+
+			$unionbranchname = DB::table('union_branch as ub')
+			->where('ub.id','=',$unionbranchid)
+			->pluck('union_branch')->first();  
+
+			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JOHOR BAHRU'){
+				$unionbranchids = DB::table('union_branch as ub')
+						->where(function($query) use ($union_no){
+							$query->where('ub.union_branch', '=',"SEREMBAN")
+								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+						})
+					->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"PENANG")
+						->orWhere('ub.union_branch', '=',"KEDAH");
+				})
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='IPOH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','IPOH')
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='KELANTAN'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','KELANTAN')
+				->pluck('ub.id')->toArray();  
+			}else{
+				//return $union_no;
+				$unionbranchids = DB::table('union_branch as ub')
+				->select('ub.id')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"KL")
+						->orWhere('ub.union_branch', '=',"KELANG")
+						->orWhere('ub.union_branch', '=',"PAHANG");
+				})
+				->pluck('ub.id')->toArray();
+				//->first();  
+			}
 
 			$c_head = DB::table('union_branch as ub')->select('ub.id')
 						->where('ub.id','=',$unionbranchid)
@@ -301,22 +382,23 @@ class IrcController extends CommonController
 							// 	  ->orWhereNull('i.filledby')
 							// 	  ->orWhereNull('i.nameofperson');
 							// 	});
-						if($c_head!=1){
-							$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
-						}
+						// if($c_head!=1){
+						// 	$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+						// }
 				}else{
 					$totalqry = $totalqry->where('i.irc_status','=',1);
 					  //->where('i.status','=','0');
-					if($c_head!=1){
-						$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
-					}
+					// if($c_head!=1){
+					// 	$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+					// }
 				}
 			}else{
-				if($c_head!=1){
-					$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
-				}
+				// if($c_head!=1){
+				// 	$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
+				// }
 				 //$totalqry = $totalqry->where('i.status','=','0');
 			}
+			$totalqry = $totalqry->whereIn('cb.union_branch_id',$unionbranchids);
 		}
 		
 		
@@ -335,9 +417,9 @@ class IrcController extends CommonController
 			}else{
 				 $commonselect = $commonselect->where('i.irc_status','=',1);
 			}
-			if($c_head!=1){
-				$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			// if($c_head!=1){
+			// 	$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
+			// }
 		}else{
 			if($statusfilter!=''){
 				if($statusfilter==0){
@@ -365,10 +447,12 @@ class IrcController extends CommonController
 			}else{
 				 //$commonselect = $commonselect->where('i.status','=','0');
 			}
-			if($c_head!=1){
-				$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
-			}
+			// if($c_head!=1){
+			// 	$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
+			// }
 		}
+
+		$commonselect = $commonselect->whereIn('cb.union_branch_id',$unionbranchids);
 		
 		$totalData = $totalqry->count();
         $totalFiltered = $totalData;
@@ -932,6 +1016,50 @@ class IrcController extends CommonController
 			->pluck('union_branch_id')->first();  
 		}
 
+		$unionbranchname = DB::table('union_branch as ub')
+		->where('ub.id','=',$unionbranchid)
+		->pluck('union_branch')->first();  
+
+		//return $unionbranchname;
+
+
+		$union_no = $unionbranchid;
+		if($unionbranchname=='SEREMBAN' || $unionbranchname=='JOHOR BAHRU'){
+			$unionbranchids = DB::table('union_branch as ub')
+					->where(function($query) use ($union_no){
+						$query->where('ub.union_branch', '=',"SEREMBAN")
+							->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+					})
+				->pluck('ub.id')->toArray();  
+		}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+			$unionbranchids = DB::table('union_branch as ub')
+			->where(function($query) use ($union_no){
+				$query->where('ub.union_branch', '=',"PENANG")
+					->orWhere('ub.union_branch', '=',"KEDAH");
+			})
+			->pluck('ub.id')->toArray();  
+		}else if($unionbranchname=='IPOH'){
+			$unionbranchids = DB::table('union_branch as ub')
+			->where('ub.union_branch','=','IPOH')
+			->pluck('ub.id')->toArray();  
+		}else if($unionbranchname=='KELANTAN'){
+			$unionbranchids = DB::table('union_branch as ub')
+			->where('ub.union_branch','=','KELANTAN')
+			->pluck('ub.id')->toArray();  
+		}else{
+			//return $union_no;
+			$unionbranchids = DB::table('union_branch as ub')
+			->select('ub.id')
+			->where(function($query) use ($union_no){
+				$query->where('ub.union_branch', '=',"KL")
+					->orWhere('ub.union_branch', '=',"KELANG")
+					->orWhere('ub.union_branch', '=',"PAHANG");
+			})
+			->pluck('ub.id')->toArray();
+			//->first();  
+		}
+		//return $unionbranchids;
+
 		$c_head = DB::table('union_branch as ub')->select('ub.id')
 							->where('ub.id','=',$unionbranchid)
 							->where('ub.is_head','=',1)
@@ -949,9 +1077,11 @@ class IrcController extends CommonController
 									->orWhere('m.new_ic', 'LIKE',"{$search}%");
                             })->limit(25)
                             ->where('status_id','!=',4);   
-		if($c_head!=1){
-			$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
-		}
+		// if($c_head!=1){
+		// 	$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
+		// }else{
+		$ircsuggestions = $ircsuggestions->whereIn('cb.union_branch_id',$unionbranchids);
+		//}
 		$res['suggestions'] = $ircsuggestions->get();
          return response()->json($res);
 	}
@@ -972,5 +1102,57 @@ class IrcController extends CommonController
         //$queries = DB::getQueryLog();
                             //  dd($queries);
          return response()->json($res);
+	}
+	
+	public function userDetail(Request $request)
+    {
+        $id = $request->id;
+       // $User = new User();
+		$data = User::find($id);
+
+		$irc_account = DB::table('irc_account')
+		->where('user_id','=',$data->id)
+		->first();  
+
+		if($irc_account->account_type=='irc-confirmation'){
+			$unionbranchid = '';
+			$memberid = $irc_account->MemberCode;
+
+			$membership = DB::table('membership')
+			->where('id','=',$memberid)
+			->first();  
+			$unionbranch = '';
+
+		}else{
+			$memberid = '';
+			$membership = [];
+			$unionbranchid = $irc_account->union_branch_id;
+
+			if($unionbranchid==1){
+				$unionbranch = 'SMJ';
+			}else if($unionbranchid==2){
+				$unionbranch = 'PKP';
+			}else if($unionbranchid==3){
+				$unionbranch = 'PERAK';
+			}else if($unionbranchid==4){
+				$unionbranch = 'KELANTAN TERENGGANU';
+			}else{
+				$unionbranch = 'KLSP';
+			}
+			// $unionbranch = DB::table('union_branch')
+			// ->where('id','=',$unionbranchid)
+			// ->first();  
+
+		}
+		
+		$userdata['name'] = $data->name;
+		$userdata['email'] = $data->email;
+		$userdata['id'] = $data->id;
+		$userdata['irc_account'] = $irc_account;
+		$userdata['irc_type'] = $irc_account->account_type;
+		$userdata['membership'] = $membership;
+		$userdata['unionbranch'] = $unionbranch;
+
+        return $userdata;
     }
 }
