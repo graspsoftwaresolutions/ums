@@ -147,11 +147,11 @@ class HomeController extends Controller
 			->where('ub.id','=',$unionbranchid)
 			->pluck('union_branch')->first();  
 
-			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JOHOR BAHRU'){
+			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
 				$unionbranchids = DB::table('union_branch as ub')
 						->where(function($query) use ($union_no){
 							$query->where('ub.union_branch', '=',"SEREMBAN")
-								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+								->orWhere('ub.union_branch', '=',"JB");
 						})
 					->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
@@ -271,7 +271,7 @@ class HomeController extends Controller
 				$unionbranchids = DB::table('union_branch as ub')
 						->where(function($query) use ($union_no){
 							$query->where('ub.union_branch', '=',"SEREMBAN")
-								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+								->orWhere('ub.union_branch', '=',"JB");
 						})
 					->pluck('ub.id')->toArray();  
 			}else if($unionbranchid==2){

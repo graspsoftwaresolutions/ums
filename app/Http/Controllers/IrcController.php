@@ -259,7 +259,7 @@ class IrcController extends CommonController
 				$unionbranchids = DB::table('union_branch as ub')
 						->where(function($query) use ($union_no){
 							$query->where('ub.union_branch', '=',"SEREMBAN")
-								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+								->orWhere('ub.union_branch', '=',"JB");
 						})
 					->pluck('ub.id')->toArray();  
 			}else if($unionbranchid==2){
@@ -324,11 +324,11 @@ class IrcController extends CommonController
 			->where('ub.id','=',$unionbranchid)
 			->pluck('union_branch')->first();  
 
-			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JOHOR BAHRU'){
+			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
 				$unionbranchids = DB::table('union_branch as ub')
 						->where(function($query) use ($union_no){
 							$query->where('ub.union_branch', '=',"SEREMBAN")
-								->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+								->orWhere('ub.union_branch', '=',"JB");
 						})
 					->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
@@ -1024,11 +1024,11 @@ class IrcController extends CommonController
 
 
 		$union_no = $unionbranchid;
-		if($unionbranchname=='SEREMBAN' || $unionbranchname=='JOHOR BAHRU'){
+		if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
 			$unionbranchids = DB::table('union_branch as ub')
 					->where(function($query) use ($union_no){
 						$query->where('ub.union_branch', '=',"SEREMBAN")
-							->orWhere('ub.union_branch', '=',"JOHOR BAHRU");
+							->orWhere('ub.union_branch', '=',"JB");
 					})
 				->pluck('ub.id')->toArray();  
 		}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
