@@ -1086,18 +1086,21 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					$user_role = $get_roles[0]->slug;
 					$branchcommitteeName = $dataresigneddata->branchcommitteeName;
 					$branchcommitteeZone = $dataresigneddata->branchcommitteeZone;
+
 					$committieverifyname = $irc_details->committieverifyname;
 					$committiename = $irc_details->committiename;
 					if($user_role=='irc-branch-committee' && $branchcommitteeName==''){
 						$commitiiedata = CommonHelper::getCommittieinfo($userid);  
+						//dd($commitiiedata);
 						$branchcommitteeName = $commitiiedata->name;
 					}
 					if($user_role=='irc-branch-committee' && $branchcommitteeZone==''){
 						$commitiiedata = CommonHelper::getCommittieinfo($userid);  
-						$branchcommitteeZone = $commitiiedata->union_branch;
+						$committieverifyname = $commitiiedata->union_branch;
+						
 						//$committieverifyname = $branchcommitteeZone;
 
-						if($branchcommitteeZone==1){
+						/* if($branchcommitteeZone==1){
 							$committieverifyname = 'SMJ';
 						}else if($branchcommitteeZone==2){
 							$committieverifyname = 'PKP';
@@ -1107,7 +1110,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							$committieverifyname = 'KELANTAN TERENGGANU';
 						}else{
 							$committieverifyname = 'KLSP';
-						}
+						} */
+						//dd($branchcommitteeZone);
 
 					}
 

@@ -3037,8 +3037,8 @@ class CommonHelper
     }
 
     public static function getCommittieinfo($userid){
-        $res = DB::table('irc_account as irc')->select('ub.id as unionid','ub.union_branch as union_branch','u.name as name')
-                ->leftjoin('union_branch as ub','ub.id','=','irc.union_branch_id')
+        $res = DB::table('irc_account as irc')->select('ub.id as unionid','ub.group_name as union_branch','u.name as name')
+                ->leftjoin('union_groups as ub','ub.id','=','irc.union_branch_id')
                 ->leftjoin('users as u','u.id','=','irc.user_id')
                 //->leftjoin('company as c','cb.company_id','=','c.id')
                 //->where('irc.account_type','=','irc-confirmation')
