@@ -70,7 +70,7 @@
 		
 		
 			<h5 class="padding-left-10"> Resignation Member <a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h5>
-			<div class="row">
+			<div id="memberdetailssection" class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
@@ -1124,51 +1124,57 @@ $("#member_number").devbridgeAutocomplete({
 	onSelect: function (suggestion) {
 			$("#member_number").val(suggestion.member_number);
 			$.ajax({
-				url: "{{ URL::to('/get-member-list-values') }}?member_id="+ $("#member_number").val(),
+				url: "{{ URL::to('/get-member-irclist-values') }}?member_id="+ $("#member_number").val(),
                 type: "GET",
 				dataType: "json",
 				success: function(res) {
-					
-					$('#member_type').val(res.membertype);
-					$('#type').val(res.membertype);
-					$('#member_title').val(res.persontitle);
-					$('#member_name').val(res.membername);
-					$('#person_nameone,#person_namethree,#person_namefour').val(res.membername);
-					$('#memberid').val(res.memberid);
-					$('#member_id').val(res.memberid);
-					$('#union_branch_id').val(res.union_branch_id);
-					$('#branch_name').val(res.branch_name);
-					$('#bank_name').val(res.company_name);
-					$('#dob').val(res.dob);
-					$('#member_age').val(res.age);
-					if(res.gender == 'Male')
-					{
-						$(".gender").text('He');
-						$(".genderone").text('His');
-						//alert('male');
-						$("#malegender").attr("checked",true);
-					}
-					else if(res.gender == 'Female')
-					{
-						//alert('Female');
-						$(".gender").text('She');
-						$(".genderone").text('Her');
-						$("#femalegender").attr("checked",true);
-					}
-					$('#doj').val(res.doj);
-					$('#race_name').val(res.race_name);
-					$('#nric_n').val(res.nric);
-					$('#genders').val(res.gender);
 
-					if(res.gender == 'Male')
-					{
-						//$('#gen').html("He was");
-						//$('#gend').html("I hearby confirm that He got He is no longer doing any clerical job function.");
+					if(res!=1){
+						$('#member_type').val(res.membertype);
+						$('#type').val(res.membertype);
+						$('#member_title').val(res.persontitle);
+						$('#member_name').val(res.membername);
+						$('#person_nameone,#person_namethree,#person_namefour').val(res.membername);
+						$('#memberid').val(res.memberid);
+						$('#member_id').val(res.memberid);
+						$('#union_branch_id').val(res.union_branch_id);
+						$('#branch_name').val(res.branch_name);
+						$('#bank_name').val(res.company_name);
+						$('#dob').val(res.dob);
+						$('#member_age').val(res.age);
+						if(res.gender == 'Male')
+						{
+							$(".gender").text('He');
+							$(".genderone").text('His');
+							//alert('male');
+							$("#malegender").attr("checked",true);
+						}
+						else if(res.gender == 'Female')
+						{
+							//alert('Female');
+							$(".gender").text('She');
+							$(".genderone").text('Her');
+							$("#femalegender").attr("checked",true);
+						}
+						$('#doj').val(res.doj);
+						$('#race_name').val(res.race_name);
+						$('#nric_n').val(res.nric);
+						$('#genders').val(res.gender);
+
+						if(res.gender == 'Male')
+						{
+							//$('#gen').html("He was");
+							//$('#gend').html("I hearby confirm that He got He is no longer doing any clerical job function.");
+						}
+						else{
+							//$('#gen').html("She was");
+							//$('#gend').html("I hearby confirm that She got She is no longer doing any clerical job function.");
+						}
+					}else{
+						alert("IRC entry already added for this member");
+						$('#memberdetailssection').find('input:text').val('');    
 					}
-					else{
-						//$('#gen').html("She was");
-						//$('#gend').html("I hearby confirm that She got She is no longer doing any clerical job function.");
-					}
+				
 				}
 			});
 			
