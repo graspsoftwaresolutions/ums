@@ -1261,11 +1261,13 @@ class CommonHelper
 		$resign = Resignation::where('member_code', '=' ,$memberid)->first();
 		return $resign;
     }
+
 	public static function getlastMonthEndByMember($memberid){
 		$lastrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
-						->OrderBy('ms.StatusMonth','desc')->first();
+						->OrderBy('ms.StatusMonth','desc')->OrderBy('ms.arrear_status','desc')->first();
 		return $lastrecord;
     }
+
 	public static function getResignData(){
 		$reason = Reason::where('status','=',1)->get();
 		return $reason;
