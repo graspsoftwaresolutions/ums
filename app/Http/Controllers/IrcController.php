@@ -1075,7 +1075,8 @@ class IrcController extends CommonController
                                     ->orWhere('m.name', 'LIKE',"{$search}%")
 									->orWhere('m.old_ic', 'LIKE',"{$search}%")
 									->orWhere('m.new_ic', 'LIKE',"{$search}%");
-                            })->limit(25)
+							})->limit(25)
+							->where('m.id','!=',$memberid)
                             ->where('status_id','!=',4);   
 		// if($c_head!=1){
 		// 	$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
@@ -1154,5 +1155,36 @@ class IrcController extends CommonController
 		$userdata['unionbranch'] = $unionbranch;
 
         return $userdata;
-    }
+	}
+	
+	public function getMembersListValues(Request $request)
+	{
+		$member_id = $request->member_id;
+		
+		//DB::connection()->enableQueryLog();
+		
+		
+		$res = DB::table('membership as m')->select(DB::raw("if(count('m.new_ic') > 0  ,m.new_ic,m.old_ic) as nric"),'m.member_number','m.id as memberid','d.designation_name as membertype','p.person_title as persontitle','m.name as membername','cb.branch_name','c.company_name',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(dob, '%Y%m') )) DIV 12 AS age"),'r.race_name','cb.address_one','cb.phone','cb.mobile','cb.union_branch_id')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+							->leftjoin('persontitle as p','p.id','=','m.member_title_id')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('company as c','c.id','=','cb.company_id')
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->where('m.member_number','=',$member_id)
+							->first();
+		
+		$irc_count = DB::table('irc_confirmation as irc')
+		->where('irc.resignedmemberno','=',$res->memberid)
+		->count();
+		
+
+		if($irc_count==0){
+			return response()->json($res);
+		}
+		return 1;
+
+		// $queries = DB::getQueryLog();
+		// dd($queries);
+		
+	}
 }
