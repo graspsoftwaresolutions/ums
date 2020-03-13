@@ -133,11 +133,26 @@
 			</tr>
 			@endif
 			@php
+				$member_dojstr = strtotime($member_data->doj);
+				//echo $member_dojstr;
+				$insdatestr = strtotime(date('2017-06-01'));
+				//dd($insdatestr);
 				$data = CommonHelper::getInsuranceData($member_data->id)[0];
+				$reasonname = CommonHelper::getircreason_byid($resign_data->reason_code);
 			@endphp
 			@if($resign_data->insuranceamount>0)
 			<tr>
-				<td class="align-right">INSURANCE AMOUNT @if($data->count!=0)(RM {{ 3 }} x  {{$data->count}} )@endif</td>
+				<td class="align-right">
+					@if($member_dojstr>=$insdatestr && ($reasonname=='RETIRED' || $reasonname=='DECEASED'))
+						@php
+							$months = CommonHelper::getMonthendPaidMonths($member_data->id);
+							//dd($months);
+						@endphp
+						INSURANCE [ {{date('M Y',strtotime($months[0]))}} - {{ date('M Y',strtotime($months[count($months)-1]))}} ]( {{count($months)}} Months )
+					@else
+						INSURANCE AMOUNT @if($data->count!=0)(RM {{ 3 }} x  {{$data->count}} )@endif
+					@endif
+				</td>
 				<td class="align-right">{{ number_format($resign_data->insuranceamount,2,".",",") }}</td>
 				<td class="align-right"></td>
 			</tr>

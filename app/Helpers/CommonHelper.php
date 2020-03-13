@@ -3165,4 +3165,15 @@ class CommonHelper
             return '*';
         }
     }
+
+    public static function getMonthendPaidMonths($memberid){
+        $data = DB::table('membermonthendstatus as ms')
+                ->select('ms.StatusMonth')
+                ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','=',1)
+                ->orderBy('ms.StatusMonth','asc')
+                ->pluck('ms.StatusMonth');
+       
+       return $data;
+        //->pluck('ms.StatusMonth');
+    }
 }
