@@ -143,7 +143,7 @@
 			@if($resign_data->insuranceamount>0)
 			<tr>
 				<td class="align-right">
-					@if($member_dojstr>=$insdatestr && ($reasonname=='RETIRED' || $reasonname=='DECEASED'))
+					@if($reasonname=='RETIRED' || $reasonname=='DECEASED')
 						@php
 							$months = CommonHelper::getMonthendPaidMonths($member_data->id);
 							//dd($months);
