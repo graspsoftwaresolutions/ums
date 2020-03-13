@@ -3169,7 +3169,7 @@ class CommonHelper
     public static function getMonthendPaidMonths($memberid){
         $data = DB::table('membermonthendstatus as ms')
                 ->select('ms.StatusMonth')
-                ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','=',1)
+                ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','=',1)->where('ms.TOTALINSURANCE_AMOUNT','!=',0)
                 ->orderBy('ms.StatusMonth','asc')
                 ->pluck('ms.StatusMonth');
        
