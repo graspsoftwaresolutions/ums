@@ -1654,6 +1654,7 @@
 													<li>
 													<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
+                                                              @if($user_role!='member')
 															<div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="col s12 m6">
                                                                     <label for="new_fee_id">Fee name* </label>
@@ -1673,11 +1674,15 @@
                                                                 </div>
                                                                 <div class="clearfix"> </div>
                                                                 <div class="col s12 m12">
+
+                                                                  
                                                                     <button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
                                                                         <i class="material-icons right">send</i>
                                                                     </button>
+                                                                   
                                                                 </div>
                                                             </div>
+                                                             @endif
                                                             </br>
                                                             <div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="col s12">
@@ -1716,8 +1721,10 @@
                                                                                 </td>
 
                                                                                 <td>
+                                                                                    @if($user_role!='member')
                                                                                     <a class="btn-floating waves-effect waves-light cyan edit_fee_row hide" href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
                                                                                     <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
+                                                                                    @endif
                                                                                 </td>
 
                                                                             </tr>

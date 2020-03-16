@@ -497,7 +497,10 @@ class SubscriptionAjaxController extends CommonController
                 $members_amt = round($members_amt,2);
                 
                 $nestedData['company_name'] = $company->company_name;  
-               // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
+               // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';  
+               if($user_role =='company'){ 
+                 $editurl= '#';
+               }          
                 $nestedData['count'] = '<a href="'.$editurl.'" class="new badge" title="View Members"><span class=" badge light-blue">'.$members_count.'</span></a> &nbsp; &nbsp;';
 
                 // if($user_role =='company'){
@@ -1415,7 +1418,10 @@ class SubscriptionAjaxController extends CommonController
                 $members_amt = round($members_amt,2);
                 
                 $nestedData['company_name'] = $company->company_name;  
-               // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';            
+               // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';       
+               if($user_role =='company'){
+                   $editurl = '#';
+               }     
                 $nestedData['count'] = '<a href="'.$editurl.'" class="new badge" title="View Members"><span class=" badge light-blue">'.$members_count.'</span></a> &nbsp; &nbsp;';
 
                 //if($user_role =='company'){

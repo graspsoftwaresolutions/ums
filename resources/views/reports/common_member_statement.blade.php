@@ -4,6 +4,8 @@
 	$history = $data['history_view'];
 	$last_history = $data['last_history_view'];
 	//dd($history);
+	$get_roles = Auth::user()->roles; 
+	$user_role = $get_roles[0]->slug; 
 @endphp
 <div class="" style="text-align: center">
 	<table width="100%">
@@ -37,9 +39,10 @@
 				
 			</td>
 			<td width="40%" style="padding-top: 0px;">
+				@if($user_role!='member')
 				<p><b class="bold">BRANCH CODE</b>: {{ $member->branch_shortcode }}</p>
 				<p><b class="bold">BANK CODE</b>: {{ $member->short_code }}</p>
-				
+				@endif
 			</td>
 			<td width="10%" style="text-align:center;padding-top: 0px;">
 				
