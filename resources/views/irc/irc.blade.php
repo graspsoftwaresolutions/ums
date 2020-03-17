@@ -194,7 +194,7 @@
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
 					<input id="irc_member_no" name="ircmember" class="common-input"
-						type="text" required data-error=".errorTxt8"  value="{{ $confirmdata->member_number }}">
+						type="text" required data-error=".errorTxt8" readonly="" value="{{ $confirmdata->member_number }}">
 						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{ $confirmdata->mid }}">
 					<div class="errorTxt8"></div>
 				</div>
@@ -1194,39 +1194,39 @@ $('.datepicker').datepicker({
 	format: 'dd/mm/yyyy'
 });
 //IRC Member Details 
-$("#irc_member_no").devbridgeAutocomplete({
-	//lookup: countries,
-	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
-	type:'GET',
-	params: { 
-		union_branch_id:  function(){ return $("#union_branch_id").val();  },
-	},
-	//callback just to show it's working
-	onSelect: function (suggestion) {
-			$("#irc_member_no").val(suggestion.member_number);	
-			$.ajax({
-				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
-                type: "GET",
-				dataType: "json",
-				success: function(res) {
-					$('#irc_name').val(res.membername);
-					$('#irc_bank').val(res.bankname);
-					$('#irc_member_code').val(res.mid);
-					$('#bank_address').val(res.address_one);
-					$('#irctelephoneno').val(res.phone);
-					$('#ircmobileno').val(res.mobile);
-				}
-			});
+// $("#irc_member_no").devbridgeAutocomplete({
+// 	//lookup: countries,
+// 	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
+// 	type:'GET',
+// 	params: { 
+// 		union_branch_id:  function(){ return $("#union_branch_id").val();  },
+// 	},
+// 	//callback just to show it's working
+// 	onSelect: function (suggestion) {
+// 			$("#irc_member_no").val(suggestion.member_number);	
+// 			$.ajax({
+// 				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
+//                 type: "GET",
+// 				dataType: "json",
+// 				success: function(res) {
+// 					$('#irc_name').val(res.membername);
+// 					$('#irc_bank').val(res.bankname);
+// 					$('#irc_member_code').val(res.mid);
+// 					$('#bank_address').val(res.address_one);
+// 					$('#irctelephoneno').val(res.phone);
+// 					$('#ircmobileno').val(res.mobile);
+// 				}
+// 			});
 
-	},
-	showNoSuggestionNotice: true,
-	noSuggestionNotice: 'Sorry, no matching results',
-	onSearchComplete: function (query, suggestions) {
-		if(!suggestions.length){
-			//$("#irc_member_no").val('');
-		}
-	}
-});
+// 	},
+// 	showNoSuggestionNotice: true,
+// 	noSuggestionNotice: 'Sorry, no matching results',
+// 	onSearchComplete: function (query, suggestions) {
+// 		if(!suggestions.length){
+// 			//$("#irc_member_no").val('');
+// 		}
+// 	}
+// });
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#irc_member_no").val('');
 });
