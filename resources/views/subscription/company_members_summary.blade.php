@@ -228,7 +228,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				                        <p class="collections-title">Uploaded Amount</p>
 				                        <p class="collections-content"></p>
 				                     </div>
-				                     <div class="col s3"><p class="collections-title"><span class="task-cat deep-orange accent-2">{{ $data['matched_amount'] }}</span></p></div>
+				                     <div class="col s3"><p class="collections-title"><span class="task-cat deep-orange accent-2">{{ number_format($data['matched_amount'],2,".",",") }}</span></p></div>
 				                     <div class="col s3">
 				                        <div id="project-line-4"></div>
 				                     </div>

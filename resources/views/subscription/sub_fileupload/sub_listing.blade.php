@@ -159,7 +159,7 @@
                 <!-- jQuery Plugin Initialization -->
                 <div class="row">
                 	<br>
-					<div class="col s4">
+					<div class="col s4 hide">
 					
 						<div class="card" style="padding:10px;">
 							<header class="kanban-board-header blue" style="padding:10px;color: #fff;"><div class="kanban-title-board line-ellipsis" contenteditable="true">Members</div><div class="dropdown"><a class="dropdown-trigger" href="#" data-target="1"> </a></div></header>
@@ -172,7 +172,7 @@
 							</main>
 						</div>
 					</div>
-                    <div class="col s8">
+                    <div class="col s12">
                         <div id="basic-form" class="card card card-default scrollspy">
                             <div class="card-content">
 

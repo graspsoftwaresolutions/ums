@@ -3223,7 +3223,8 @@ class SubscriptionController extends CommonController
 
         $to = Carbon::createFromFormat('Y-m-d H:s:i', date('Y-m-01',$todatestring).' '.date('H:i:s'));
         $from = Carbon::createFromFormat('Y-m-d H:s:i',  date('Y-m-01',$fromdatestring).' '.date('H:i:s'));
-        $diff_in_months = $to->diffInMonths($from);
+        //$diff_in_months = $to->diffInMonths($from);
+        $diff_in_months = 1;
         
 
        // $from_date = explode("/",$from_date_str);

@@ -162,12 +162,12 @@
 										@csrf
 										<div class="row">
 											
-											<div class="input-field col m2 s12">
+											<div class="input-field col m2 s12 hide">
 												<label for="doe">{{__('From Month') }}*</label>
 												<input type="text" name="from_date" id="from_date" required="" value="{{ date('M/Y',strtotime($data['from_year_full'])) }}" class="datepicker-custom" />
 											</div>
 											<div class="input-field col m2 s12">
-												<label for="doe">{{__('To Month') }}*</label>
+												<label for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="to_date" id="to_date" required value="{{ $data['to_month_year'] }}" class="datepicker-custom" />
 												<input type="text" name="companyid" id="companyid" required value="{{ $companyid }}" class="hide" />
 											</div>
@@ -215,8 +215,8 @@
 									
 									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
-
-									<th>Action</th>
+<!-- 
+									<th>Action</th> -->
 									
 										
 									
@@ -224,84 +224,41 @@
 							</thead>
 							<tbody class="tbody-area" width="100%">
 								@php
-									//dd($data['diff_in_months']);
-									$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
-									$slno=1;
+									$slno = 1;
+									//dd($data['type']); 
+									$pre_company_members = CommonHelper::getLastMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
+									$current_company_members = CommonHelper::getcurrentMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
 								@endphp
-								@foreach($variance_company_members as $member)
-								<tr class="bold table-footer">
-									<td style="width:3%">{{ $slno }}</td>
-									<td style="width:30%">{{ $member->name }}</td>
-									<td style="width:20%">{{ $member->ic }}</td>
-									@if($data['diff_in_months']==1)
-									<td style="width:20%">{{ $member->Amount }}</td>
-									<td style="width:20%">{{ $member->last_amount }}</td>
-									<td>
-										<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return UpdateRemark({{ $member->submemberid }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a>
-									</td>
-									@endif
-								</tr> 
-								@php
-									$slno++;
-								@endphp
-								@endforeach
-							</tbody>
-							@endif
-							@if($data['diff_in_months']>1)
-							<thead>
-								<tr class="" >
-									<th>{{__('S.No')}}</th>
-									<th>Member Name</th>
-									<th>NRIC</th>
-							
-									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
-									@for($i=1;$i<=$data['diff_in_months'];$i++)
-										<th>{{ date('M Y',strtotime($data['to_year_full'].' -'.$i.' Month')) }} <br> Amount</th>
-									@endfor
-							
-								</tr>
-							</thead>
-							<tbody class="tbody-area" width="100%">
-								@php
-									$slno=1;
-								@endphp
-								@foreach($data['submembers'] as $member)
-									@php
-										for($j=0;$j<=$data['diff_in_months'];$j++){
-											$subsamt{$j} = CommonHelper::getMemberPaidSubs($member->member_id, date('Y-m-d',strtotime($data['to_year_full'].' -'.$j.' Month')));
-											
-										}
-										//dd($subsamt);
-									@endphp
-									@if(count($subsamt) !== count(array_unique($subsamt)) && count(array_unique($subsamt))!=1)
-									<tr id="member{{$member->submemberid}}" class="" >
-										<td style="width:3%">{{ $slno }}</td>
-										<td style="width:17%">{{$member->Name}}</td>
-										<td style="width:10%">{{$member->NRIC}}</td>
-										<td class="membersubs membersubs{{$member->submemberid}}" style="">{{$member->Amount}}</td>
-										@for($i=1;$i<=$data['diff_in_months'];$i++)
-											<td class="membersubs membersubs{{$member->submemberid}}">@php echo $subsamt{$i} @endphp</td>
-										@endfor
+								@foreach($pre_company_members as $company)
+									<tr>
+										<td>{{$slno}}</td>
+										<td>{{ $company->name }}</td>
+										<td>{{ $company->ic }}</td>
+										<td>0</td>
+										<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
+										<!-- <td class="hide"></td> -->
 									</tr>
-										@php
-											$slno++;
-										@endphp
-									@endif
-									<!-- @for($k=1;$k<=$data['diff_in_months'];$k++)
-										@if($member->Amount == $subsamt{$k})
-										<style type="text/css">
-											#member{{$member->submemberid}}{
-												//display: none !important;
-											}
-										</style>
-										<script type="text/javascript">
-											//RemoveTR('{{$member->submemberid}}');
-										</script>
-										@endif
-									@endfor -->
+									@php
+										$slno++;
+									@endphp
 								@endforeach
+								@foreach($current_company_members as $company)
+									<tr>
+										<td>{{$slno}}</td>
+										<td>{{ $company->name }}</td>
+										<td>{{ $company->ic }}</td>
+										<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
+										<td>0</td>
+										<!-- <td></td> -->
+									</tr>
+									@php
+										$slno++;
+									@endphp
+								@endforeach
+
 							</tbody>
 							@endif
+							
 						</table>
 					</div> 
 				</div> 

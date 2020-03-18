@@ -494,7 +494,7 @@ class SubscriptionAjaxController extends CommonController
                     $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersAmount($company_enc_id, $user_role, $userid,$date);
                 }
-                $members_amt = round($members_amt,2);
+                $members_amt = number_format($members_amt,2,".",",");
                 
                 $nestedData['company_name'] = $company->company_name;  
                // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';  
@@ -961,7 +961,8 @@ class SubscriptionAjaxController extends CommonController
               ->limit($data['data_limit'])
 			  ->groupBy('m.id')
 			  //->dump()
-			  ->get();
+              ->get();
+            
 		}
 		$data['status'] = 0;
         if($member_status!=""){
@@ -1415,7 +1416,7 @@ class SubscriptionAjaxController extends CommonController
                     $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersAmount($company_enc_id, $user_role, $userid,$date);
                 }
-                $members_amt = round($members_amt,2);
+                $members_amt = number_format($members_amt,2,".",",");
                 
                 $nestedData['company_name'] = $company->company_name;  
                // $nestedData['company_name'] = $company->company_name."&nbsp;&nbsp;&nbsp;".'<a href="'.$editurl.'">&nbsp; <span class="badge badge pill light-blue mr-10">'.$members_count.'</span></a>';       

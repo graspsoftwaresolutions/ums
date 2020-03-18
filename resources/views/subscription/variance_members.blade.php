@@ -176,7 +176,7 @@
 											<td>{{ $company->member_number }}</td>
 											<td>{{ $company->doj }}</td>
 											<td>0</td>
-											<td>{{ $company->SUBSCRIPTION_AMOUNT }}</td>
+											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td class="hide"></td>
 										</tr>
 										@php
@@ -189,7 +189,7 @@
 											<td>{{ $company->name }}</td>
 											<td>{{ $company->member_number }}</td>
 											<td>{{ $company->doj }}</td>
-											<td>{{ $company->SUBSCRIPTION_AMOUNT }}</td>
+											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td>0</td>
 											<td></td>
 										</tr>

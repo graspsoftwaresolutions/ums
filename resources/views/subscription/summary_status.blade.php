@@ -144,7 +144,7 @@
 				@else
 					Uploaded Not Matched Members List 
 				@endif
-				<b>[Total Amount : {{ $data['total_amt']}}]</b>
+				<b>[Total Amount : {{ number_format($data['total_amt'],2,".",",") }}]</b>
 				@php
 					$companyid = $data['company_id'];
 				@endphp
@@ -221,7 +221,7 @@
 								<!--td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td-->
 								
 								<td>{{ $member->up_nric }}</td>
-								<td>{{ $member->Amount }}</td>
+								<td>{{ number_format($member->Amount,2,".",",") }}</td>
 								@if($data['status']!=1)
 
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
