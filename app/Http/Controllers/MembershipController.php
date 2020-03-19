@@ -1499,6 +1499,26 @@ class MembershipController extends Controller
         return view('membership.edit_membership')->with('data',$data); 
     }
 
+    public function SalaryUpload(Request $request, $lang){
+        $data = [];
+        return view('membership.salary_upload')->with('data',$data); 
+    }
+
+    public function getBankMembersList(Request $request, $lang){
+        $sub_companyid = $request->input('sub_company');
+
+        $data['members'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid')
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->where('cb.company_id','=',$sub_companyid)
+                            ->where('m.status_id','<=',2)
+                            ->where('m.status','=','1')->get();
+        $data['status'] = 1;
+        
+        return $data;
+       // $data = [];
+       // return view('membership.salary_upload')->with('data',$data); 
+    }
+
     
 }
 

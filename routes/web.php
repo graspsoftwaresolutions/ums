@@ -462,6 +462,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('irc_users_detail','IrcController@userDetail');
 
+
+	Route::get('salary_upload','MembershipController@SalaryUpload')->name('salary.upload');
+	Route::get('get_bankmembers','MembershipController@getBankMembersList')->name('bank.members');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

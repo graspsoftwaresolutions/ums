@@ -62,7 +62,7 @@
           <?php //print_r($user_role);die; ?>
           @if($user_role=='union' || $user_role=='union-branch')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
-            <li class="bold"><a id="salupdate_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Salary Updation') }}</span></a>
+            <li class="bold"><a id="salupdate_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.upload',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Salary Updation') }}</span></a>
           @endif
            @if($user_role=='data-entry')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
