@@ -1506,17 +1506,114 @@ class MembershipController extends Controller
 
     public function getBankMembersList(Request $request, $lang){
         $sub_companyid = $request->input('sub_company');
+        $member_auto_id = $request->input('member_auto_id');
 
-        $data['members'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid')
+        $members = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid')
                             ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                             ->where('cb.company_id','=',$sub_companyid)
-                            ->where('m.status_id','<=',2)
-                            ->where('m.status','=','1')->get();
+                            ->where('m.status_id','<=',2);
+
+        if($member_auto_id!=''){
+            $members = $members->where('m.id','=',$member_auto_id);
+        }
+
+        $data['members'] = $members->where('m.status','=','1')->get();
         $data['status'] = 1;
         
         return $data;
        // $data = [];
        // return view('membership.salary_upload')->with('data',$data); 
+    }
+
+    public function saveSalary(Request $request, $lang){
+        //return $request->all();
+        ini_set('memory_limit', -1);
+		ini_set('max_execution_time', '1000');
+        $datearr = explode("/",$request->input('entry_date'));
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $sub_company = $request->input('sub_company');
+        $is_increment = $request->input('is_increment');
+        $inc_per = $request->input('inc_per');
+        $memberids = $request->input('memberids');
+        $is_increment == isset($is_increment) ? 1 : 0;
+        $inc_per = $inc_per=='' ? 0 : $inc_per;
+
+        if($is_increment==1){
+            if(isset($memberids)){
+                $mcount = count($memberids);
+                for($i=0;$i<$mcount;$i++){
+                    $memberid = $memberids[$i];
+
+                    $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                    $salary = $salary=='' ? 0 : $salary;
+                    $newsalary = $salary+($salary*$inc_per/100);
+
+                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
+                                        ->where('date','=',$form_date)
+                                        ->where('increment_type_id','=',1)
+                                        ->count();
+
+                    if($salcount==0){
+                        $insertdata = [];
+                        $insertdata['member_id'] = $memberid;
+                        $insertdata['date'] = $form_date;
+                        $insertdata['increment_type_id'] = 1;
+                        $insertdata['amount_type'] = 1;
+                        $insertdata['basic_salary'] = $salary;
+                        $insertdata['value'] = $inc_per;
+                        $insertdata['updated_salary'] = $newsalary;
+                        $insertdata['created_by'] = Auth::user()->id;
+
+                        $savesal = DB::table('salary_updations')->insert($insertdata);
+                        
+                    }
+                }
+            }
+        }else{
+            if(isset($memberids)){
+                $mcount = count($memberids);
+                for($i=0;$i<$mcount;$i++){
+                    $memberid = $memberids[$i];
+
+                    $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                    $salary = $salary=='' ? 0 : $salary;
+
+                    $incvalue = $request->input('incvalueind_'.$memberid)[0];
+                    $incidind = $request->input('incidind_'.$memberid)[0];
+                    $typeidind = $request->input('typeidind_'.$memberid)[0];
+
+                    if($incidind==1){
+                        $newsalary = $salary+($salary*$inc_per/100);
+                    }else{
+                        $newsalary = $salary+$incvalue;
+                    }
+                    
+
+                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
+                                        ->where('date','=',$form_date)
+                                        ->where('increment_type_id','=',$typeidind)
+                                        ->count();
+
+                    if($salcount==0){
+                        $insertdata = [];
+                        $insertdata['member_id'] = $memberid;
+                        $insertdata['date'] = $form_date;
+                        $insertdata['increment_type_id'] = $typeidind;
+                        $insertdata['amount_type'] = $incidind;
+                        $insertdata['basic_salary'] = $salary;
+                        $insertdata['value'] = $incvalue;
+                        $insertdata['updated_salary'] = $newsalary;
+                        $insertdata['created_by'] = Auth::user()->id;
+
+                        $savesal = DB::table('salary_updations')->insert($insertdata);
+                        
+                    }
+                }
+            }
+        }
+        return redirect($lang.'/salary_upload')->with('message','Salary Updations Added successfully!!');
     }
 
     

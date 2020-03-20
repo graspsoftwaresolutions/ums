@@ -4,6 +4,13 @@
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('public/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <style>
+    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
+    .autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
+    .autocomplete-selected { background: #F0F0F0; }
+    .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+    .autocomplete-group { padding: 8px 5px; }
+    .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
     table.highlight > tbody > tr {
         -webkit-transition: background-color .25s ease;
         -moz-transition: background-color .25s ease;
@@ -155,81 +162,17 @@
             </div>
         </div>
     </div>
+    <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/upload_salary') }}" enctype="multipart/form-data">
+    @csrf
     <div id="subsfilter" class="row">
         <div class="col s12">
+           
             <div class="container">
                 @php 
                  $auth_user = Auth::user(); $companylist = []; $companyid = ''; if(!empty($auth_user)){ $userid = Auth::user()->id; $get_roles = Auth::user()->roles; $user_role = $get_roles[0]->slug; if($user_role =='union'){ $companylist = CommonHelper::getCompanyListAll(); } else if($user_role =='union-branch'){ $unionbranchid = CommonHelper::getUnionBranchID($userid); $companylist = CommonHelper::getUnionCompanyList($unionbranchid); } else if($user_role =='company'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } else if($user_role =='company-branch'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } $company_count = count($companylist); }
                 @endphp 
                 @if($user_role=='company')
-                <!--Basic Form-->
-
-                <!-- jQuery Plugin Initialization -->
-                <div class="row">
-                	<br>
-					<div class="col s4 hide">
-					
-						<div class="card" style="padding:10px;">
-							<header class="kanban-board-header blue" style="padding:10px;color: #fff;"><div class="kanban-title-board line-ellipsis" contenteditable="true">Members</div><div class="dropdown"><a class="dropdown-trigger" href="#" data-target="1"> </a></div></header>
-							<main class="kanban-drag">
-
-								<br>
-									Salary Updation
-								<br>
-								<br>
-							</main>
-						</div>
-					</div>
-                    <div class="col s12">
-                        <div id="basic-form" class="card card card-default scrollspy">
-                            <div class="card-content">
-
-                                <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
-                                    @csrf
-									</br>
-                                    <div class="row">
-                                        <div class="input-field col s6">
-                                            <label for="doe">{{__('Subscription Month') }}*</label>
-                                            <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
-
-                                        </div>
-                                        <div class="col s6">
-                                            <label for="sub_company">{{__('Company') }}*</label>
-                                            <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
-                                                <option value="" selected>{{__('Choose Company') }}</option>
-                                                @foreach($companylist as $value)
-                                                <option selected="" data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="errorTxt6"></div>
-                                        </div>
-                                       
-                                    </div>
-                                    
-                                    <div class="col m2 s12 ">
-                                        <label for="type">{{__('Type') }}*</label>
-                                        
-                                    </div>
-                                    
-                                    <div class="row">
-
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                              
-                                                <button id="submit-upload" style="margin-right: 10px;" class="mb-3 btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="button">{{__('Submit') }}</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                    </div>
+                
                     @endif
 					@if($user_role!='company')
                     <div class="card">
@@ -250,17 +193,16 @@
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
-
+                                    @include('includes.messages')
                                     <div class="row">
-                                        <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_download') }}" enctype="multipart/form-data">
-                                            @csrf
+                                        
                                             <div class="row">
 
-                                                <div class="input-field col m3 s12">
+                                                <div class="input-field col m2 s12">
                                                     <label for="doe">{{__('Subscription Month') }}*</label>
                                                     <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
                                                 </div>
-                                                <div class="col m4 s12">
+                                                <div class="col m3 s12">
                                                     <label for="sub_company">{{__('Company') }}*</label>
                                                     <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
                                                         <option value="" selected>{{__('Choose Company') }}</option>
@@ -270,19 +212,32 @@
                                                     </select>
                                                     <div class="errorTxt6"></div>
                                                 </div>
-                                                <div class="col m2 s12 ">
-                                                    <label for="type">{{__('Type') }}*</label>
+                                                <div class="input-field col m3 s12 ">
+                                                    <label for="member_search"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
+                                                    <input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
+                                                    <input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
+                                                    <div class="input-field">
+                                                        <div class="errorTxt24"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col m1 s12 ">
+                                                    <label for="type">{{__('Increment') }}</label>
                                                     <p>
                                                       <label>
-                                                        <input type="checkbox" />
-                                                        <span>Increment</span>
+                                                        <input type="checkbox" onclick="EnablePercent()" name="is_increment" id="is_increment" value="1" />
+                                                        <span>Inc</span>
                                                       </label>
                                                     </p>
                                                 </div>
+
+                                                <div id="incrementperdiv" class="input-field col m1 s12 hide">
+                                                    <label for="inc_per">{{__('Inc %') }}*</label>
+                                                    <input type="text" name="inc_per" id="inc_per" value="" class="" />
+                                                </div>
                                                
-                                                <div class="col m3 s12 " style="padding-top:5px;">
+                                                <div class="col m1 s12 " style="padding-top:5px;">
                                                     </br>
-                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 
                                                 </div>
 
@@ -297,7 +252,7 @@
 
                                                 </div>
                                             </div>
-                                        </form>
+                                        
 
                                     </div>
                                 </div>
@@ -309,7 +264,7 @@
                 </div>
             </div>
         </div>
-        @if($user_role!='company')
+       
         <div class="row">
          
             <div id="monthly_status" class="col s12" style="padding: 020px;">
@@ -339,14 +294,14 @@
             </div>
             
         </div>
-        @endif
-
+       
+        </form>
         <!-- Modal Trigger -->
 
         <div id="modal-uploads" class="modal">
             <form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
             @csrf
-                <input type="text" class="hide" name="sub_member_id" id="sub_member_id">
+               
                 <div class="modal-content">
                     <h4>Salary Updation</h4>
                     
@@ -356,9 +311,10 @@
                         <label for="typeid">{{__('Type') }}*</label>
                         <select name="typeid" id="typeid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
                             <option value="">Select</option>
-                            <option value="1" selected >Bonus</option>
+                            <option value="3" selected >Bonus</option>
                             <option value="2">OT</option>
                         </select>
+                        <input type="text" class="hide" readonly="" name="member_id" id="member_id">
                     </div>
                      <div class="col m3">
                         <label for="incid">{{__('Inc Type') }}*</label>
@@ -377,7 +333,7 @@
                 <div class="modal-footer">
                      <br>
                     <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-                    <button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+                    <button type="button" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
                 </div>
             </form>
         </div>
@@ -390,9 +346,10 @@
     <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
     <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
-
+     <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
     @endsection @section('footerSecondSection')
     <script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
+   
 
     <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
     <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
@@ -461,7 +418,11 @@
             var sub_company = $("#sub_company").val();
             $(".datamonth").text('[' + entry_date + ']');
             $("#entry_date_one").val(entry_date);
-            if (sub_company != "") {
+            if (sub_company != "") {  
+               
+                var member_auto_id = $("#member_auto_id").val();
+
+
                 var selected = $("#sub_company").find('option:selected');
                 var company_name = selected.data('companyname');
                 $("#bankname-listing").removeClass('hide');
@@ -469,7 +430,7 @@
                 //alert(company_name);
                 loader.showLoader();
                 
-                var url = "{{ url(app()->getLocale().'/get_bankmembers') }}" + '?sub_company=' + sub_company;
+                var url = "{{ url(app()->getLocale().'/get_bankmembers') }}" + '?sub_company=' + sub_company + '&member_auto_id=' + member_auto_id;
                 $.ajax({
                     url: url,
                     type: "GET",
@@ -483,7 +444,8 @@
                             $.each(result.members, function(key, entry) {
 
                                  actions = ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showUpload('+entry.memberid+')" title="Approval" type="button" name="action"><i class="material-icons">edit</i></a>';
-                                 $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p></td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+actions+'</td></tr>');
+                                 var hiddensec = '<input type="text" name="incvalueind_'+entry.memberid+'[]" id="incvalueind_'+entry.memberid+'" value="0" class="incvalueind hide"/><input type="text" name="incidind_'+entry.memberid+'[]" id="incidind_'+entry.memberid+'" value="1" class="incidind hide"/><input type="text" name="typeidind_'+entry.memberid+'[]" id="typeidind_'+entry.memberid+'" value="" class="typeidind hide"/>';
+                                 $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+actions+'</td></tr>');
 
                                 var baselink = base_url + '/{{ app()->getLocale() }}/';
                                 //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
@@ -511,6 +473,9 @@
            
         }
         $(document).on('change', '#entry_date,#sub_company', function() {
+            $("#member_search,#member_auto_id,#inc_per").val('');
+            $("#is_increment").prop('checked',false);
+            $("#incrementperdiv").addClass('hide');
             getDataStatus();
         });
 
@@ -557,7 +522,95 @@
             $('#checkAll').prop('checked', false);
         });
         function showUpload(memberid){
+            $("#member_id").val(memberid);
+
+            var incvalue = $("#incvalueind_"+memberid).val();
+            var increfid = $("#incidind_"+memberid).val();
+            var typeid = $("#typeidind_"+memberid).val();
+
+            $("#typeid").val(typeid);
+            $("#incid").val(increfid);
+            $("#incvalue").val(incvalue);
+
             $("#modal-uploads").modal('open');
         }
+        function ConfirmSubmit(){
+            var memberid = $("#member_id").val();
+            var typeid = $("#typeid").val();
+            var increfid = $("#incid").val();
+            var incvalue = $("#incvalue").val();
+
+            $("#incvalueind_"+memberid).val(incvalue);
+            $("#incidind_"+memberid).val(increfid);
+            $("#typeidind_"+memberid).val(typeid);
+            $("#modal-uploads").modal('close');
+            // var hiddensec = '<input type="text" name="incvalueind" id="incvalueind" value="'+incvalue+'" class="incvalueind"/>';
+            // hiddensec += '<input type="text" name="incidind" id="incidind" value="'+increfid+'" class="incidind"/>';
+            // hiddensec += '<input type="text" name="typeidind" id="typeidind" value="'+typeid+'" class="typeidind"/>';
+            // $("#salarysection_"+memberid).html(hiddensec);
+        }
+
+        function EnablePercent(){
+            if($("#is_increment").prop("checked") == true){
+                $("#incrementperdiv").removeClass('hide');
+            }else{
+                $("#incrementperdiv").addClass('hide');
+            }
+        }
+
+        $("#member_search").devbridgeAutocomplete({
+            //lookup: countries,
+            serviceUrl: "{{ URL::to('/get-auto-member-list') }}?serachkey="+ $("#member_search").val(),
+            type:'GET',
+            //callback just to show it's working
+            onSelect: function (suggestion) {
+                 $("#member_search").val(suggestion.value);
+                 $("#member_auto_id").val(suggestion.number);
+                 getDataStatus();
+            },
+            showNoSuggestionNotice: true,
+            noSuggestionNotice: 'Sorry, no matching results',
+            onSearchComplete: function (query, suggestions) {
+                if(!suggestions.length){
+                    //$("#member_search_match").val('');
+                    //$("#member_search_auto_id").val('');
+                }
+            }
+        }); 
+
+        $(document).on('click','#approvalformValidate',function(event){
+            event.preventDefault();
+         
+            // $(".submitApproval").attr('disabled', true);
+            // var url = "{{ url(app()->getLocale().'/ajax_save_summary') }}" ;
+            // $.ajax({
+            //     url: url,
+            //     type: "POST",
+            //     dataType: "json",
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     },
+            //     data: $('#approvalformValidate').serialize(),
+            //     success: function(result) {
+            //         if(result.status==1){
+            //             var badge_color = result.approval_status == 1 ? 'green' : 'red';
+            //             var badge_label = result.approval_status == 1 ? 'Updated' : 'Pending';
+            //             $("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
+            //             if(result.member_match==2){
+            //                 $("#member_code_"+result.sub_member_auto_id).html(result.member_number);
+            //                 $("#member_status_"+result.sub_member_auto_id).html(result.member_status);
+            //             }
+            //             M.toast({
+            //                 html: result.message
+            //             });
+            //         }else{
+            //             M.toast({
+            //                 html: result.message
+            //             });
+            //         }
+            //         $("#modal-approval").modal('close');
+            //     }
+            // });
+        });
     </script>
     @endsection

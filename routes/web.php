@@ -465,6 +465,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('salary_upload','MembershipController@SalaryUpload')->name('salary.upload');
 	Route::get('get_bankmembers','MembershipController@getBankMembersList')->name('bank.members');
+	Route::post('upload_salary','MembershipController@saveSalary')->name('salary.save');
+
 
 });
 /* Master */
