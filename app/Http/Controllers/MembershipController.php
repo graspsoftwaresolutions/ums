@@ -1535,12 +1535,14 @@ class MembershipController extends Controller
         $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
         $sub_company = $request->input('sub_company');
         $is_increment = $request->input('is_increment');
+        $is_incrementamt = $request->input('is_incrementamt');
         $inc_per = $request->input('inc_per');
         $memberids = $request->input('memberids');
         $is_increment == isset($is_increment) ? 1 : 0;
+        $is_incrementamt == isset($is_incrementamt) ? 1 : 0;
         $inc_per = $inc_per=='' ? 0 : $inc_per;
 
-        if($is_increment==1){
+        if($is_increment==1 || $is_incrementamt==1){
             if(isset($memberids)){
                 $mcount = count($memberids);
                 for($i=0;$i<$mcount;$i++){
@@ -1548,7 +1550,12 @@ class MembershipController extends Controller
 
                     $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
                     $salary = $salary=='' ? 0 : $salary;
-                    $additional_amt = ($salary*$inc_per/100);
+                    if($is_increment==1){
+                        $additional_amt = ($salary*$inc_per/100);
+                    }else{
+                        $additional_amt = $inc_per;
+                    }
+                    
                     $newsalary = $salary+$additional_amt;
 
                     $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)

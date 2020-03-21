@@ -1867,7 +1867,8 @@ class SubscriptionController extends CommonController
 		
         $data['groupby'] = 1;
         $data['variationtype']='';
-		$data['DisplaySubscription'] = false;
+        $data['DisplaySubscription'] = false;
+        $data['types'] = '';
 		//$data['sixmonthvariation'] = false;
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		// $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
@@ -1901,6 +1902,7 @@ class SubscriptionController extends CommonController
 		$groupby = $request->input('groupby');
         $display_subs = $request->input('display_subs');
         $variationtype = $request->input('variationtype');
+        $types = $request->input('types');
 		//$sixmonthvariation = $request->input('sixmonth-variation');
 		$fm_date = explode("/",$entry_date);
         $fm_date[1].'-'.$fm_date[0].'-'.'01';
@@ -1910,7 +1912,8 @@ class SubscriptionController extends CommonController
 		$data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));
 		
 		$data['groupby'] = $groupby;
-		$data['DisplaySubscription'] = $display_subs;
+        $data['DisplaySubscription'] = $display_subs;
+        $data['types'] = $types;
        // $data['sixmonthvariation'] = $sixmonthvariation;
         $data['variationtype']=$variationtype;
 		if($groupby==1){
@@ -1990,6 +1993,7 @@ class SubscriptionController extends CommonController
 		$data['DisplaySubscription'] = $display_subs;
 		$data['print'] = $request->input('print');
         $data['variation'] = $request->input('variation');
+        $data['inctype'] = $request->input('inctype');
        // $last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
         $data['last_month_year']= date("Y-m-01", strtotime($data['month_year_full']." -1 Month"));
 		if($groupby==1){

@@ -3178,4 +3178,21 @@ class CommonHelper
        return $data;
         //->pluck('ms.StatusMonth');
     }
+
+    public static function getIncrementValue($memberid,$tomonth,$frommonth){
+         $data = DB::table('salary_updations as s')
+                ->select('increment_type_id','date','amount_type','additional_amt')
+                ->where('s.member_id', '=' ,$memberid)
+                ->where('s.date', '>=' ,$frommonth)
+                ->where('s.date', '<=' ,$tomonth)
+                
+                ->orderBy('s.date','desc')
+                //->dump()
+                ->get();
+        return $data;
+    }
+
+    public static function getIncrementTypeName($typeid){
+          return DB::table('increment_types as i')->where('id','=',$typeid)->pluck('type_name')->first();
+    }
 }

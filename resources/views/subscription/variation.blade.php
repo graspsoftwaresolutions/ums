@@ -132,7 +132,7 @@
 												<label for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
 											</div>
-											<div class="col m3 s12">
+											<div class="col m2 s12">
 												<label for="doe">&nbsp;</label>
 												<p>
 													<label>
@@ -141,7 +141,7 @@
 													</label>
 												</p>
 											</div>
-											<div class="col m3 s12">
+											<div class="col m2 s12">
 												
 												<label for="doe">{{__('Variation') }}</label>
 												<p>
@@ -165,7 +165,15 @@
 												</p>
 												
 											</div>
-											
+											<div class="col m2 s12">
+												<label for="types">{{__('Increment Types') }}</label>
+												<select name="types" id="types" class="browser-default valid" aria-invalid="false">
+						                            <option {{ $data['types']=='' ? 'selected' : ''}} value="">Select</option>
+						                            <option {{ $data['types']==1 ? 'selected' : ''}} value="1">Increment</option>
+						                            <option {{ $data['types']==3 ? 'selected' : ''}} value="3">Bonus</option>
+						                            <option {{ $data['types']==2 ? 'selected' : ''}} value="2">OT</option>
+						                        </select>
+											</div>
 											
 											
 											<div class="col m2 s12 " style="padding-top:5px;">
@@ -194,7 +202,7 @@
 					<div class="card-content">
 						<h4 class="card-title">Subscription variation
 						<div class="right">
-							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype']) }}" >{{__('Print')}}</a>
+							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>

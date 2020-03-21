@@ -222,11 +222,12 @@
 			@php
 				//dd($member);
 				$salary = $member->salary==Null ? 0 : $member->salary;
-				$total_subs = ($salary*1)/100;
+
+
+				
 				$bf_amt = 3;
 				$ins_amt = 7;
-				$payable_subs = $total_subs;
-				//$payable_subs = $total_subs-($bf_amt+$ins_amt);
+				
 
 				$doj_str = date('Y-m-01',strtotime($member->doj));
 				$fifth_str = date('Y-m-01',strtotime($data['month_year_full'].' -5 Month'));
@@ -235,6 +236,45 @@
 				$second_str = date('Y-m-01',strtotime($data['month_year_full'].' -2 Month'));
 				$last_str = date('Y-m-01',strtotime($data['month_year_full'].' -1 Month'));
 				$this_str = date('Y-m-01',strtotime($data['month_year_full']));
+
+				if($data['variation']==6){
+					$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$fifth_str);
+				}else{
+					$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$third_str);
+				}
+				$subremarks = '';
+				$addonsalary = 0;
+				if($data['inctype'] != ''){
+					$displaymember = 0;
+				}else{
+					$displaymember = 1;
+				}
+				
+				if(!empty($updated_salary)){
+					//dd($updated_salary);
+					foreach($updated_salary as $key => $upsalary){
+						$addonsalary += $upsalary->additional_amt;
+
+						$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
+						if($key!=0){
+							$subremarks .= ', ';
+						}
+						if($data['inctype'] != '' && $data['inctype'] == $upsalary->increment_type_id){
+							$displaymember = 1;
+						}
+						$subremarks .= $inctype;
+					}
+					$newsalary = $salary+$addonsalary;
+					$total_subs = ($newsalary*1)/100;
+					$payable_subs = $total_subs;
+					//$payable_subs = number_format($total_subs,2,".","");
+
+				}else{
+					$total_subs = ($salary*1)/100;
+					$payable_subs = $total_subs;
+				}
+
+				
 
 				if($data['variation']==6){
 					$fifth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')));
@@ -345,7 +385,7 @@
 					}
 				}
 
-				if($variedamt){
+				if($variedamt && $displaymember==1){
 				if($data['variation']==6){
 					if($fifth_amt=='*'){
 						$fifth_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')), $member->doj)>0 ? 'N' : '*';
@@ -452,7 +492,7 @@
 				<td>{{ $member->member_number }}</td>
 				<td>{{ $member->name }}</td>
 				<td>{{ date('M Y',strtotime($member->doj)) }}</td>
-				<td>{{ $lastpaydate }}</td>
+				<td>{{ date('M Y',strtotime($data['month_year_full'])) }}</td>
 				<td>{{ $payable_subs }}</td>
 				@if($data['variation']==6)
 				<td>{{ $fifth_paid_status }}
@@ -517,7 +557,7 @@
 						@endphp
 					@endif
 				</td>
-				<td></td>
+				<td>{{ $subremarks }}</td>
 				
 			</tr>
 			@php

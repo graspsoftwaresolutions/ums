@@ -225,13 +225,19 @@
                                                     <p>
                                                       <label>
                                                         <input type="checkbox" onclick="EnablePercent()" name="is_increment" id="is_increment" value="1" />
-                                                        <span>Inc</span>
+                                                        <span>Inc %</span>
+                                                      </label>
+                                                    </p>
+                                                    <p>
+                                                      <label>
+                                                        <input type="checkbox" onclick="EnableAmount()" name="is_incrementamt" id="is_incrementamt" value="1" />
+                                                        <span>Inc Amt</span>
                                                       </label>
                                                     </p>
                                                 </div>
 
                                                 <div id="incrementperdiv" class="input-field col m1 s12 hide">
-                                                    <label for="inc_per">{{__('Inc %') }}*</label>
+                                                    <label for="inc_per">{{__('Inc Value') }}*</label>
                                                     <input type="text" name="inc_per" id="inc_per" value="" class="" />
                                                 </div>
                                                
@@ -552,6 +558,15 @@
 
         function EnablePercent(){
             if($("#is_increment").prop("checked") == true){
+                $("#incrementperdiv").removeClass('hide');
+                $("#is_incrementamt").prop("checked",false);
+            }else{
+                $("#incrementperdiv").addClass('hide');
+            }
+        }
+        function EnableAmount(){
+            if($("#is_incrementamt").prop("checked") == true){
+                $("#is_increment").prop("checked",false);
                 $("#incrementperdiv").removeClass('hide');
             }else{
                 $("#incrementperdiv").addClass('hide');
