@@ -252,6 +252,7 @@
 				
 				if(!empty($updated_salary)){
 					//dd($updated_salary);
+					$newbasicsal = $salary;
 					foreach($updated_salary as $key => $upsalary){
 						$addonsalary += $upsalary->additional_amt;
 
@@ -259,12 +260,15 @@
 						if($key!=0){
 							$subremarks .= ', ';
 						}
+						if($key==0){
+							$newbasicsal = $upsalary->basic_salary;
+						}
 						if($data['inctype'] != '' && $data['inctype'] == $upsalary->increment_type_id){
 							$displaymember = 1;
 						}
 						$subremarks .= $inctype;
 					}
-					$newsalary = $salary+$addonsalary;
+					$newsalary = $newbasicsal+$addonsalary;
 					$total_subs = ($newsalary*1)/100;
 					$payable_subs = $total_subs;
 					//$payable_subs = number_format($total_subs,2,".","");

@@ -493,9 +493,8 @@
             //$("#submit-download").prop('disabled',true);
         });
         
-        $("#subscriptions_sidebars_id").addClass('active');
-        $("#subscription_sidebar_li_id").addClass('active');
-        $("#subscription_sidebar_a_id").addClass('active');
+       
+        $("#salupdate_sidebar_a_id").addClass('active');
 
         function printDiv() {
 

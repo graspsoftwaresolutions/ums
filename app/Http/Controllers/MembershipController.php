@@ -1548,7 +1548,35 @@ class MembershipController extends Controller
                 for($i=0;$i<$mcount;$i++){
                     $memberid = $memberids[$i];
 
-                    $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                    $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                        ->where('s.date','<',$form_date)
+                                        ->orderBy('s.date','desc')
+                                        ->pluck('s.date')->first();
+
+                    $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                        ->where('s.date','<',$form_date)
+                                        ->orderBy('s.date','desc')
+                                        ->pluck('s.basic_salary')->first();
+                    
+                    $basicsalry = DB::table('salary_updations as s')
+                                        ->select(DB::raw("SUM(s.additional_amt) as additions"))
+                                        ->where('s.member_id','=',$memberid)
+                                        ->where('s.date','=',$lastupdate)
+                                        ->get();
+
+                    if($lastupdate!=''){
+                        $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
+                        $salary = $lastsalary+$basicsalry[0]->additions;
+                    }else{
+                        $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                    }
+
+                    $companyid = DB::table('membership as m')
+                                ->select('c.company_id')
+                                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
+
+                   
                     $salary = $salary=='' ? 0 : $salary;
                     if($is_increment==1){
                         $additional_amt = ($salary*$inc_per/100);
@@ -1567,6 +1595,7 @@ class MembershipController extends Controller
                         $insertdata = [];
                         $insertdata['member_id'] = $memberid;
                         $insertdata['date'] = $form_date;
+                        $insertdata['company_id'] = $companyid;
                         $insertdata['increment_type_id'] = 1;
                         $insertdata['amount_type'] = 1;
                         $insertdata['basic_salary'] = $salary;
@@ -1586,7 +1615,34 @@ class MembershipController extends Controller
                 for($i=0;$i<$mcount;$i++){
                     $memberid = $memberids[$i];
 
-                    $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                    $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                        ->where('s.date','<',$form_date)
+                                        ->orderBy('s.date','desc')
+                                        ->pluck('s.date')->first();
+                    $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                        ->where('s.date','<',$form_date)
+                                        ->orderBy('s.date','desc')
+                                        ->pluck('s.basic_salary')->first();
+                    
+                    $basicsalry = DB::table('salary_updations as s')
+                                        ->select(DB::raw("SUM(s.additional_amt) as additions"))
+                                        ->where('s.member_id','=',$memberid)
+                                        ->where('s.date','=',$lastupdate)
+                                        ->get();
+
+                    $companyid = DB::table('membership as m')
+                                        ->select('c.company_id')
+                                        ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                        ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
+
+                    if($lastupdate!=''){
+                        $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
+                        $salary = $lastsalary+$basicsalry[0]->additions;
+                    }else{
+                        $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                    }
+
+                    //$salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
                     $salary = $salary=='' ? 0 : $salary;
 
                     $incvalue = $request->input('incvalueind_'.$memberid)[0];
@@ -1611,6 +1667,7 @@ class MembershipController extends Controller
                         $insertdata = [];
                         $insertdata['member_id'] = $memberid;
                         $insertdata['date'] = $form_date;
+                        $insertdata['company_id'] = $companyid;
                         $insertdata['increment_type_id'] = $typeidind;
                         $insertdata['amount_type'] = $incidind;
                         $insertdata['basic_salary'] = $salary;

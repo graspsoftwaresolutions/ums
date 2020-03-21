@@ -3181,7 +3181,7 @@ class CommonHelper
 
     public static function getIncrementValue($memberid,$tomonth,$frommonth){
          $data = DB::table('salary_updations as s')
-                ->select('increment_type_id','date','amount_type','additional_amt')
+                ->select('increment_type_id','date','amount_type','additional_amt','basic_salary')
                 ->where('s.member_id', '=' ,$memberid)
                 ->where('s.date', '>=' ,$frommonth)
                 ->where('s.date', '<=' ,$tomonth)
