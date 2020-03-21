@@ -122,7 +122,7 @@
 
     td, th {
         display: table-cell;
-        padding: 0;
+        padding: 10px;
         text-align: left;
         vertical-align: middle;
         border-radius: 2px;
@@ -141,12 +141,12 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col s10 m6 l6">
-                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Salary Updation') }}</h5>
+                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Salary List') }}</h5>
                                     <ol class="breadcrumbs mb-0">
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('Salary Updation') }}
+                                            <li class="breadcrumb-item active">{{__('Salary List') }}
                                             </li>
                                         </ol>
                                 </div>
@@ -212,33 +212,23 @@
                                                     </select>
                                                     <div class="errorTxt6"></div>
                                                 </div>
-                                                <div class="input-field col m3 s12 ">
+                                                <div class="col s12 m6 l3 ">
+                                                    <label>{{__('Company Branch Name') }}</label>
+                                                    <select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+                                                        <option value="">{{__('Select Branch') }}</option>
+                                                        
+                                                    </select>
+                                                    <div class="input-field">
+                                                        <div class="errorTxt23"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col m2 s12 ">
                                                     <label for="member_search"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
                                                     <input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
                                                     <input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
                                                     <div class="input-field">
                                                         <div class="errorTxt24"></div>
                                                     </div>
-                                                </div>
-                                                <div class="col m1 s12 ">
-                                                    <label for="type">{{__('Increment') }}</label>
-                                                    <p>
-                                                      <label>
-                                                        <input type="checkbox" onclick="EnablePercent()" name="is_increment" id="is_increment" value="1" />
-                                                        <span>Inc %</span>
-                                                      </label>
-                                                    </p>
-                                                    <p>
-                                                      <label>
-                                                        <input type="checkbox" onclick="EnableAmount()" name="is_incrementamt" id="is_incrementamt" value="1" />
-                                                        <span>Inc Amt</span>
-                                                      </label>
-                                                    </p>
-                                                </div>
-
-                                                <div id="incrementperdiv" class="input-field col m1 s12 hide">
-                                                    <label for="inc_per">{{__('Inc Value') }}*</label>
-                                                    <input type="text" name="inc_per" id="inc_per" value="" class="" />
                                                 </div>
                                                
                                                 <div class="col m1 s12 " style="padding-top:5px;">
@@ -271,12 +261,13 @@
             </div>
         </div>
        
+        </form>
         <div class="row">
          
             <div id="monthly_status" class="col s12" style="padding: 020px;">
                 <div id="DivIdToPrint" class="card subscriber-list-card animate fadeRight">
                     <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
-                        <h4 class="card-title mb-0">{{__('Members List [ Active & Defaulters ]') }} 
+                        <h4 class="card-title mb-0">{{__('Members List ') }} 
                         <!-- <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm" style="background:#ccc;" onClick="return printDiv()"> <i class="material-icons">print</i></a> -->
                         <span class="right datamonth">[{{ date('M/Y') }}]</span>
                     </h4>
@@ -284,10 +275,12 @@
                     <table class="subscription-table responsive-table highlight">
                         <thead>
                             <tr style="">
-                                <th><p style="margin-left: 10px; "><label><input class="checkall" id="checkAll" type="checkbox" /> <span>Check All</span> </label> </p></th>
+                                <th>Slno</th>
                                 <th>Name</th>
                                 <th>NRIC</th>
                                 <th>M/NO</th>
+                                <th>Basic Salary</th>
+                                <th>Updated Salary</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -301,48 +294,7 @@
             
         </div>
        
-        </form>
-        <!-- Modal Trigger -->
-
-        <div id="modal-uploads" class="modal">
-            <form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
-            @csrf
-               
-                <div class="modal-content">
-                    <h4>Salary Updation</h4>
-                    
-                </div>
-                <div class="row">
-                    <div class="col m3">
-                        <label for="typeid">{{__('Type') }}*</label>
-                        <select name="typeid" id="typeid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
-                            <option value="">Select</option>
-                            <option value="3" selected >Bonus</option>
-                            <option value="2">OT</option>
-                        </select>
-                        <input type="text" class="hide" readonly="" name="member_id" id="member_id">
-                    </div>
-                     <div class="col m3">
-                        <label for="incid">{{__('Inc Type') }}*</label>
-                        <select name="incid" id="incid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
-                            <option value="" disabled >Select</option>
-                            <option value="1">%</option>
-                            <option value="2">Amt</option>
-                        </select>
-                    </div>
-                    <div class="col m3">
-                          <label for="incvalue">{{__('Value') }}*</label>
-                          <input type="text" name="incvalue" id="incvalue" value="" class="" />
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                     <br>
-                    <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-                    <button type="button" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
-                </div>
-            </form>
-        </div>
+       
     </div>
 
     @endsection @section('footerSection')
@@ -424,20 +376,23 @@
             var sub_company = $("#sub_company").val();
             $(".datamonth").text('[' + entry_date + ']');
             $("#entry_date_one").val(entry_date);
-            if (sub_company != "") {  
-               
-                var member_auto_id = $("#member_auto_id").val();
+        }
+        // $(document).on('change', '#entry_date,#sub_company', function() {
+        //     $("#member_search,#member_auto_id,#inc_per").val('');
+        //     $("#is_increment").prop('checked',false);
+        //     $("#incrementperdiv").addClass('hide');
+        //     getDataStatus();
+        // });
 
-
-                var selected = $("#sub_company").find('option:selected');
-                var company_name = selected.data('companyname');
-                $("#bankname-listing").removeClass('hide');
-                $(".subscription-bankname").text(company_name);
-                //alert(company_name);
-                loader.showLoader();
-                
-                var url = "{{ url(app()->getLocale().'/get_bankmembers') }}" + '?sub_company=' + sub_company + '&member_auto_id=' + member_auto_id;
-                $.ajax({
+        $(document).on('submit', 'form#subscribe_formValidate', function(e) {
+           e.preventDefault();
+           var sub_company = $("#sub_company").val();
+           var entry_date = $("#entry_date").val();
+           var member_auto_id = $("#member_auto_id").val();
+           var branch_id = $("#branch_id").val();
+           loader.showLoader();
+           var url = "{{ url(app()->getLocale().'/get_memberssalaries') }}" + '?sub_company=' + sub_company + '&member_auto_id=' + member_auto_id+ '&entry_date=' + entry_date+ '&branch_id=' + branch_id;
+            $.ajax({
                     url: url,
                     type: "GET",
                     success: function(result) {
@@ -446,16 +401,17 @@
                         if (result.status == 1 ) {
                          
                             $("#memberslist").empty();
-
+                            var slno = 1;
                             $.each(result.members, function(key, entry) {
 
                                  actions = ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showUpload('+entry.memberid+')" title="Approval" type="button" name="action"><i class="material-icons">edit</i></a>';
-                                 var hiddensec = '<input type="text" name="incvalueind_'+entry.memberid+'[]" id="incvalueind_'+entry.memberid+'" value="0" class="incvalueind hide"/><input type="text" name="incidind_'+entry.memberid+'[]" id="incidind_'+entry.memberid+'" value="1" class="incidind hide"/><input type="text" name="typeidind_'+entry.memberid+'[]" id="typeidind_'+entry.memberid+'" value="" class="typeidind hide"/>';
-                                 $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+actions+'</td></tr>');
+                                
+                                 $("#memberslist").append('<tr style=""> <td width="15%"> '+slno+'</td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+entry.basic_salary+'</td><td>'+entry.updated_salary+'</td><td>'+actions+'</td></tr>');
 
                                 var baselink = base_url + '/{{ app()->getLocale() }}/';
                                 //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
                                // $("#company_member_status_count_" + key).html(entry);
+                               slno++;
                             });
                       
                            
@@ -469,33 +425,12 @@
                         }
                     }
                 });
-            } else {
-                //$(".subscription-bankname").text('');
-                $(".clear-approval").html(0);
-                $(".monthly-company-approval-status").attr('data-href', '');
-                $(".monthly-company-sub-status").attr('data-href', '');
-                //$("#bankname-listing").addClass('hide');
-            }
-           
-        }
-        $(document).on('change', '#entry_date,#sub_company', function() {
-            $("#member_search,#member_auto_id,#inc_per").val('');
-            $("#is_increment").prop('checked',false);
-            $("#incrementperdiv").addClass('hide');
-            getDataStatus();
-        });
-
-        $(document).on('submit', 'form#subscribe_formValidate', function() {
-            var type = $("#type").val();
-            if (type == 1) {
-                loader.showLoader();
-            }
             //$("#submit-download").prop('disabled',true);
         });
         
         $("#sal_updates_sidebars_id").addClass('active');
-        $("#sal_updates_sidebar_li_id").addClass('active');
-        $("#sal_updates_sidebar_a_id").addClass('active');
+        $("#sal_updatelist_sidebar_li_id").addClass('active');
+        $("#sal_updatelist_sidebar_a_id").addClass('active');
 
         function printDiv() {
 
@@ -514,63 +449,6 @@
                 newWin.close();
             }, 10);
 
-        }
-
-        $("#checkAll").click(function(){
-            $('.checkboxes').not(this).prop('checked', this.checked);
-        });
-
-        $(document).on('submit', function () {
-           
-        });
-
-        $(document).on('click', '.checkboxes', function() {
-            $('#checkAll').prop('checked', false);
-        });
-        function showUpload(memberid){
-            $("#member_id").val(memberid);
-
-            var incvalue = $("#incvalueind_"+memberid).val();
-            var increfid = $("#incidind_"+memberid).val();
-            var typeid = $("#typeidind_"+memberid).val();
-
-            $("#typeid").val(typeid);
-            $("#incid").val(increfid);
-            $("#incvalue").val(incvalue);
-
-            $("#modal-uploads").modal('open');
-        }
-        function ConfirmSubmit(){
-            var memberid = $("#member_id").val();
-            var typeid = $("#typeid").val();
-            var increfid = $("#incid").val();
-            var incvalue = $("#incvalue").val();
-
-            $("#incvalueind_"+memberid).val(incvalue);
-            $("#incidind_"+memberid).val(increfid);
-            $("#typeidind_"+memberid).val(typeid);
-            $("#modal-uploads").modal('close');
-            // var hiddensec = '<input type="text" name="incvalueind" id="incvalueind" value="'+incvalue+'" class="incvalueind"/>';
-            // hiddensec += '<input type="text" name="incidind" id="incidind" value="'+increfid+'" class="incidind"/>';
-            // hiddensec += '<input type="text" name="typeidind" id="typeidind" value="'+typeid+'" class="typeidind"/>';
-            // $("#salarysection_"+memberid).html(hiddensec);
-        }
-
-        function EnablePercent(){
-            if($("#is_increment").prop("checked") == true){
-                $("#incrementperdiv").removeClass('hide');
-                $("#is_incrementamt").prop("checked",false);
-            }else{
-                $("#incrementperdiv").addClass('hide');
-            }
-        }
-        function EnableAmount(){
-            if($("#is_incrementamt").prop("checked") == true){
-                $("#is_increment").prop("checked",false);
-                $("#incrementperdiv").removeClass('hide');
-            }else{
-                $("#incrementperdiv").addClass('hide');
-            }
         }
 
         $("#member_search").devbridgeAutocomplete({
@@ -593,39 +471,37 @@
             }
         }); 
 
-        $(document).on('click','#approvalformValidate',function(event){
-            event.preventDefault();
-         
-            // $(".submitApproval").attr('disabled', true);
-            // var url = "{{ url(app()->getLocale().'/ajax_save_summary') }}" ;
-            // $.ajax({
-            //     url: url,
-            //     type: "POST",
-            //     dataType: "json",
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     },
-            //     data: $('#approvalformValidate').serialize(),
-            //     success: function(result) {
-            //         if(result.status==1){
-            //             var badge_color = result.approval_status == 1 ? 'green' : 'red';
-            //             var badge_label = result.approval_status == 1 ? 'Updated' : 'Pending';
-            //             $("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
-            //             if(result.member_match==2){
-            //                 $("#member_code_"+result.sub_member_auto_id).html(result.member_number);
-            //                 $("#member_status_"+result.sub_member_auto_id).html(result.member_status);
-            //             }
-            //             M.toast({
-            //                 html: result.message
-            //             });
-            //         }else{
-            //             M.toast({
-            //                 html: result.message
-            //             });
-            //         }
-            //         $("#modal-approval").modal('close');
-            //     }
-            // });
+        $('#sub_company').change(function(){
+           var CompanyID = $(this).val();
+           var ajaxunionbranchid = '';
+           var ajaxbranchid = '';
+           var additional_cond;
+           if(CompanyID!='' && CompanyID!='undefined')
+           {
+             additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+             $.ajax({
+                type: "GET",
+                dataType: "json",
+                url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
+                success:function(res){
+                    if(res)
+                    {
+                        $('#branch_id').empty();
+                        $("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+                        $.each(res,function(key,entry){
+                            $('#branch_id').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+                        });
+                    }else{
+                        $('#branch_id').empty();
+                    }
+                }
+             });
+           }else{
+               $('#branch_id').empty();
+           }
+          
         });
+
+        
     </script>
     @endsection

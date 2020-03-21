@@ -1685,6 +1685,43 @@ class MembershipController extends Controller
         return redirect($lang.'/salary_upload')->with('message','Salary Updations Added successfully!!');
     }
 
+    public function Salarylists(Request $request,$lang){
+        $data = [];
+        return view('membership.salary_list')->with('data',$data); 
+    }
+
+    public function getBankMembersSalaries(Request $request,$lang)
+    {
+        $sub_company = $request->input('sub_company');
+        $member_auto_id = $request->input('member_auto_id');
+        $entry_date = $request->input('entry_date');
+        $branch_id = $request->input('branch_id');
+
+        $datearr = explode("/",$entry_date);
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+       
+        $members = DB::table('salary_updations as s')
+                        ->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','s.basic_salary','s.updated_salary')
+                        //->select(DB::raw("SUM(s.additional_amt) as additions"))
+                        ->leftjoin('membership as m','m.id','=','s.member_id')
+                        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                        ->where('s.company_id','=',$sub_company)
+                        ->where('s.date','=',$form_date);
+
+        if($branch_id!=""){
+            $members = $members->where('m.branch_id','=',$branch_id);
+        }
+        if($member_auto_id!=""){
+            $members = $members->where('m.id','=',$member_auto_id);
+        }
+
+        $data['members'] = $members->get();
+        $data['status'] = 1;
+        
+        return $data;
+    }
     
 }
 

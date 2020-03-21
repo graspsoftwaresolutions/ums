@@ -62,7 +62,16 @@
           <?php //print_r($user_role);die; ?>
           @if($user_role=='union' || $user_role=='union-branch')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
-            <li class="bold"><a id="salupdate_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.upload',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation') }}</span></a>
+            <li id="sal_updates_sidebars_id" class="bold"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="Dashboard">Salary Updation</span></a>
+	          <div class="collapsible-body">
+	            <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+	               <li id="sal_updates_sidebar_li_id" class=""><a id="sal_updates_sidebar_a_id" class="collapsible-body " href="{{ route('salary.upload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update Salary') }}</span></a></li>
+	               <li id="sal_updatelist_sidebar_li_id" class=""><a id="sal_updatelist_sidebar_a_id" class="collapsible-body " href="{{ route('salary.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Updated Salary List') }}</span></a></li>
+	               
+	              
+	            </ul>
+	          </div>
+	        </li>
           @endif
            @if($user_role=='data-entry')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
