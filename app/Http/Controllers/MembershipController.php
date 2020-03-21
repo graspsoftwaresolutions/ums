@@ -1548,7 +1548,8 @@ class MembershipController extends Controller
 
                     $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
                     $salary = $salary=='' ? 0 : $salary;
-                    $newsalary = $salary+($salary*$inc_per/100);
+                    $additional_amt = ($salary*$inc_per/100);
+                    $newsalary = $salary+$additional_amt;
 
                     $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
                                         ->where('date','=',$form_date)
@@ -1564,6 +1565,7 @@ class MembershipController extends Controller
                         $insertdata['basic_salary'] = $salary;
                         $insertdata['value'] = $inc_per;
                         $insertdata['updated_salary'] = $newsalary;
+                        $insertdata['additional_amt'] = $additional_amt;
                         $insertdata['created_by'] = Auth::user()->id;
 
                         $savesal = DB::table('salary_updations')->insert($insertdata);
@@ -1585,8 +1587,10 @@ class MembershipController extends Controller
                     $typeidind = $request->input('typeidind_'.$memberid)[0];
 
                     if($incidind==1){
-                        $newsalary = $salary+($salary*$inc_per/100);
+                        $additional_amt = ($salary*$incvalue)/100;
+                        $newsalary = $salary+$additional_amt;
                     }else{
+                        $additional_amt = $incvalue;
                         $newsalary = $salary+$incvalue;
                     }
                     
@@ -1605,6 +1609,7 @@ class MembershipController extends Controller
                         $insertdata['basic_salary'] = $salary;
                         $insertdata['value'] = $incvalue;
                         $insertdata['updated_salary'] = $newsalary;
+                        $insertdata['additional_amt'] = $additional_amt;
                         $insertdata['created_by'] = Auth::user()->id;
 
                         $savesal = DB::table('salary_updations')->insert($insertdata);
