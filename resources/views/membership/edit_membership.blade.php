@@ -55,11 +55,26 @@
         margin-top: 10px !important;
     }
 
+    .hidemember{
+        pointer-events: none;
+        background-color: #f4f8fb !important;  
+    }
+
 </style>
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-app.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/css/wizard-theme.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <link class="rtl_switch_page_css" href="{{ asset('public/css/steps.css') }}" rel="stylesheet" type="text/css"> @endsection @section('main-content')
+@php
+    $userid = Auth::user()->id;
+    $get_roles = Auth::user()->roles;
+    $user_role = $get_roles[0]->slug;
+
+    $hidemember='';
+    if($user_role=='member'){
+        $hidemember='hidemember';
+    }
+@endphp
 <div id="">
     <div class="row">
         <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
@@ -1011,12 +1026,12 @@
                                                         <div class="errorTxt25"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <input type="text" value="{{ date('d/m/Y',strtotime($values->doe)) }}" class="datepicker" id="doe" name="doe">
                                                         <label for="doe" class="force-active">Date of Emp</label>
                                                         <div class="errorTxt26"></div>
                                                     </div>
-                                                      <div class="col s12 m6">
+                                                      <div class="col s12 m6 {{ $hidemember }}">
                                                         @php
                                                             $designname = '';
                                                         @endphp
@@ -1031,7 +1046,7 @@
                                                             <div class="errorTxt2"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="col s12 m6 {{ $values->status_id>2 ? 'hide' : '' }}">
+                                                    <div class="col s12 m6 {{ $values->status_id>2 ? 'hide' : '' }} {{ $hidemember }}">
                                                         @php
                                                             $old_membercode = '';
                                                             if($values->old_member_number!="" && $values->old_member_number!=Null){
@@ -1059,7 +1074,7 @@
                                                         @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'Old Number: '.$old_membercode : ''; @endphp @endif
                                                         <input type="text" name="old_member_id" value="{{$values->old_member_number}}" id="old_member_id" class=" hide">
                                                     </div>
-                                                     <div class="col s12 m6">
+                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>Race*</label>
                                                         <select name="race" id="race" data-error=".errorTxt3" class="error browser-default selectpicker">
                                                             <option value="">Select</option>
@@ -1074,7 +1089,7 @@
                                                     <div class="clearfix" style="clear:both"></div>
                                                   
                                                    
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>Country Name*</label>
                                                         <select name="country_id" id="country_id" data-error=".errorTxt4" class="error browser-default selectpicker">
                                                             <option value="">Select</option>
@@ -1086,7 +1101,7 @@
                                                             <div class="errorTxt4"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>State Name*</label>
                                                         <select name="state_id" id="state_id" data-error=".errorTxt5" class="error browser-default selectpicker">
                                                             <option value="">Select</option>
@@ -1099,7 +1114,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>City Name*</label>
                                                         <select name="city_id" id="city_id" data-error=".errorTxt6" class="error browser-default selectpicker">
                                                             <option value="">Select</option>
@@ -1111,24 +1126,24 @@
                                                             <div class="errorTxt6"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="postal_code" class="force-active">Postal Code *</label>
                                                         <input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt7">
                                                         <div class="errorTxt7"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_one" class="force-active">Address Line 1*</label>
                                                         <input id="address_one" name="address_one" required type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
                                                         <div class="errorTxt8"></div>
                                                     </div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_two" class="force-active">Address Line 2*</label>
                                                         <input id="address_two" name="address_two" required type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
                                                         <div class="errorTxt9"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_three" class="force-active">Address Line 3</label>
                                                         <input id="address_three" name="address_three"  type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
                                                         <div class="errorTxt10"></div>
@@ -1146,23 +1161,23 @@
                                                         </div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <input type="text" class="datepicker" id="doj" value="{{ date('d/m/Y',strtotime($values->doj)) }}" name="doj">
                                                         <label for="doj" class="force-active">Date of Joining</label>
                                                         <div class="errorTxt"></div>
                                                     </div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="salary" class="force-active">Salary*</label>
                                                         <input id="salary" name="salary" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
                                                         <div class="errorTxt11"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="salary" class="force-active">Old IC Number</label>
                                                         <input id="old_ic" name="old_ic" value="{{$values->old_ic}}" type="text" data-error=".errorTxt12">
                                                         <div class="errorTxt12"></div>
                                                     </div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="new_ic" class="force-active">New IC Number*</label>
                                                         <input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
                                                         <div class="errorTxt13"></div>
@@ -1239,7 +1254,7 @@
                                                     </div>
                                                     @endif
                                                      <div class="clearfix" style="clear:both"></div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>{{__('Levy') }}</label>
                                                         <select name="levy" id="levy" class="error browser-default selectpicker">
                                                             <option value="">{{__('Select levy') }}</option>
@@ -1249,12 +1264,12 @@
                                                         </select>
                                                     </div>
                                                     
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
                                                         <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
                                                     </div>
                                                     <div class="clearfix"></div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>{{__('TDF') }}</label>
                                                         <select name="tdf" id="tdf" class="error browser-default selectpicker">
                                                             <option value="0">Select TDF</option>
@@ -1264,12 +1279,12 @@
                                                         </select>
                                                     </div>
                                                    
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
                                                         <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
                                                     </div>
                                                      <div class="clearfix"></div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="employee_id" class="force-active">Employee ID</label>
                                                         <input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
                                                     </div>

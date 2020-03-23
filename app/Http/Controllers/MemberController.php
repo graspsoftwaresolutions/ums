@@ -553,6 +553,7 @@ class MemberController extends CommonController
 				'created_by' => $created_by,
 				'created_at' => date('Y-m-d'),
 			];
+			$update_history = 0;
 			if($user_role == 'union'){
 				$memberdata = Membership::find($member_id);
 				$branch_data = CacheMembers::getbranchbyBranchid($memberdata->branch_id);

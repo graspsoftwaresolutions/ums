@@ -101,7 +101,7 @@
 			<tr>
 				<td width="20%"></td>
 				<td width="10%"></td>
-				<td width="50%" class="title-area" style="text-align:center;">NUBE Monthly Subscription {{ date('M Y',strtotime($data['month_year_full'])) }} - Variation Report
+				<td width="50%" class="title-area" style="text-align:center;">NUBE Monthly Subscription {{ date('M Y',strtotime($data['month_year_full'])) }} - Discrepancy Report
 					
 				</td>
 				<td width="20%">	
@@ -216,8 +216,9 @@
 				<th>{{__('S.No')}}</th>
 				<th>{{__('NRIC')}}</th>
 				<th>{{__('Member Name')}}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 				<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
+				
 				<th>{{__('Different')}}</th>
 				
 			</tr>
@@ -245,8 +246,9 @@
 				<td>{{$countj}}</td>
 				<td>{{ $member->ic }}</td>
 				<td>{{ $member->name }}</td>
-				<td>{{ $payable_subs }}</td>
 				<td>{{ 0 }}</td>
+				<td>{{ $payable_subs }}</td>
+				
 				<td>{{ $payable_subs }}</td>
 				
 			</tr>
@@ -260,8 +262,9 @@
 		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
-				<th>{{ $total_newjoin_subs }}</th>
 				<th>{{ 0 }}</th>
+				<th>{{ $total_newjoin_subs }}</th>
+				
 				<th>{{ $total_newjoin_subs }}</th>
 				
 			</tr>
@@ -281,8 +284,9 @@
 				<th>{{__('S.No')}}</th>
 				<th>{{__('NRIC')}}</th>
 				<th>{{__('Member Name')}}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 				<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
+				
 				<th>{{__('Different')}}</th>
 				
 			</tr>
@@ -304,8 +308,9 @@
 				<td>{{$count}}</td>
 				<td>{{ $member->ic }}</td>
 				<td>{{ $member->name }}</td>
-				<td>{{ 0 }}</td>
 				<td>{{ $payable_subs }}</td>
+				<td>{{ 0 }}</td>
+				
 				<td>{{ $payable_subs }}</td>
 				
 			</tr>
@@ -319,8 +324,9 @@
 		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
-				<th>{{ 0 }}</th>
 				<th>{{ $total_previous_subs }}</th>
+				<th>{{ 0 }}</th>
+				
 				<th>{{ $total_previous_subs }}</th>
 				
 				
@@ -342,8 +348,9 @@
 				<th>{{__('S.No')}}</th>
 				<th>{{__('NRIC')}}</th>
 				<th>{{__('Member Name')}}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 				<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
+				
 				<th>{{__('Different')}}</th>
 				
 				
@@ -366,8 +373,9 @@
 				<td>{{$countone}}</td>
 				<td>{{ $member->ic }}</td>
 				<td>{{ $member->name }}</td>
-				<td>{{ $payable_subs }}</td>
 				<td>{{ 0 }}</td>
+				<td>{{ $payable_subs }}</td>
+				
 				<td>{{ $payable_subs }}</td>
 				
 			</tr>
@@ -381,8 +389,9 @@
 		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
-				<th>{{ $total_current_subs }}</th>
 				<th>{{ 0 }}</th>
+				<th>{{ $total_current_subs }}</th>
+				
 				<th>{{ $total_current_subs }}</th>
 				
 				
@@ -403,8 +412,9 @@
 				<th>{{__('S.No')}}</th>
 				<th>{{__('NRIC')}}</th>
 				<th>{{__('Member Name')}}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 				<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
+				
 				<th>{{__('Different')}}</th>
 				
 				
@@ -431,9 +441,10 @@
 				<td>{{$countinc}}</td>
 				<td>{{ $member->ic }}</td>
 				<td>{{ $member->name }}</td>
-				<td>{{ $member->Amount }}</td>
 				<td>{{ $member->last_amount }}</td>
-				<td>{{ $member->Amount-$member->last_amount }}</td>
+				<td>{{ $member->Amount }}</td>
+				
+				<td>{{ number_format($member->Amount-$member->last_amount,2,".","") }}</td>
 				
 			</tr>
 			@php
@@ -448,9 +459,10 @@
 		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
-				<th>{{ $total_inc_subs }}</th>
 				<th>{{ $total_inc_subs_old }}</th>
-				<th>{{ $total_inc_subs_diff }}</th>
+				<th>{{ $total_inc_subs }}</th>
+				
+				<th>{{ number_format($total_inc_subs_diff,2,".","") }}</th>
 				
 				
 			</tr>
@@ -470,8 +482,9 @@
 				<th>{{__('S.No')}}</th>
 				<th>{{__('NRIC')}}</th>
 				<th>{{__('Member Name')}}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
 				<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
+				
 				<th>{{__('Different')}}</th>
 				
 				
@@ -497,8 +510,9 @@
 				<td>{{$countdec}}</td>
 				<td>{{ $member->ic }}</td>
 				<td>{{ $member->name }}</td>
-				<td>{{ $member->Amount }}</td>
 				<td>{{ $member->last_amount }}</td>
+				<td>{{ $member->Amount }}</td>
+				
 				<td>{{ abs($member->Amount-$member->last_amount) }}</td>
 				
 			</tr>
@@ -514,8 +528,9 @@
 		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
-				<th>{{ $total_dec_subs }}</th>
 				<th>{{ $total_dec_subs_old }}</th>
+				<th>{{ $total_dec_subs }}</th>
+				
 				<th>{{ $total_dec_subs_diff }}</th>
 				
 				

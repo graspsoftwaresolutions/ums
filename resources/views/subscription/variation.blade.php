@@ -213,8 +213,9 @@
 							<thead>
 								<tr class="" >
 									<th>{{__('Union Branch Name')}}</th>
-									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
 									<th>{{ date('M Y',strtotime($data['last_month_year'])) }} {{__('Members')}}</th>
+									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
+									
 									<th>{{__('Different')}}</th>
 									<th>{{__('Unpaid')}}</th>
 									<th>{{__('Paid')}}</th>
@@ -237,8 +238,9 @@
 										@endphp
 										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid='.$union->union_branchid.'&company_id=&branch_id=') }}" onClick="return ViewVarianceList(this)">
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
 											<td style="width:10%">{{ $last_month_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											
 											<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
 											<td style="width:10%">{{ $current_unpaid_count }}</td>
 											<td style="width:10%">{{ $last_paid_count }}</td>
@@ -255,8 +257,9 @@
 								@endforeach
 								<tr class="bold table-footer">
 									<td style="width:50%">Total</td>
-									<td style="width:10%">{{ $totalno21 }}</td>
 									<td style="width:10%">{{ $totalno22 }}</td>
+									<td style="width:10%">{{ $totalno21 }}</td>
+									
 									<td style="width:10%">--</td>
 									<td style="width:10%">{{ $totalno24 }}</td>
 									<td style="width:10%">{{ $totalno25 }}</td>
@@ -269,8 +272,9 @@
 							<thead>
 								<tr class="" >
 									<th>{{__('Bank Name')}}</th>
-									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
 									<th>{{ date('M Y',strtotime($data['last_month_year'])) }} {{__('Members')}}</th>
+									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
+									
 									<th>{{__('Different')}}</th>
 									<th>{{__('Unpaid')}}</th>
 									<th>{{__('Paid')}}</th>
@@ -298,8 +302,9 @@
 									@if($company_data->total_members>0)
 									<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id='.$company_id.'&branch_id=') }}" onClick="return ViewVarianceList(this)">
 										<td style="width:50%">{{ $company['company_name'] }}</td>
-										<td style="width:10%">{{ $current_count }}</td>
 										<td style="width:10%">{{ $last_month_count }}</td>
+										<td style="width:10%">{{ $current_count }}</td>
+										
 										<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
 										<td style="width:10%">{{ $current_unpaid_count }}</td>
 										<td style="width:10%">{{ $last_paid_count }}</td>
@@ -318,8 +323,9 @@
 								@endforeach
 								<tr class="bold table-footer">
 									<td style="width:50%">Total</td>
-									<td style="width:10%">{{ $totalno11 }}</td>
 									<td style="width:10%">{{ $totalno12 }}</td>
+									<td style="width:10%">{{ $totalno11 }}</td>
+									
 									<td style="width:10%">--</td>
 									<td style="width:10%">{{ $totalno14 }}</td>
 									<td style="width:10%">{{ $totalno15 }}</td>
@@ -333,8 +339,9 @@
 								<tr class="" >
 									<th>{{__('Bank Name')}}</th>
 									<th>{{__('Branch Name')}}</th>
-									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
 									<th>{{ date('M Y',strtotime($data['last_month_year'])) }} {{__('Members')}}</th>
+									<th>{{ date('M Y',strtotime($data['month_year_full'])) }} {{__('Members')}}</th>
+									
 									<th>{{__('Different')}}</th>
 									<th>{{__('Unpaid')}}</th>
 									<th>{{__('Paid')}}</th>
@@ -359,8 +366,9 @@
 										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id=&branch_id='.$branch->branch_id) }}" onClick="return ViewVarianceList(this)">
 											<td style="width:20%">{{ $branch->company_name }}</td>
 											<td style="width:30%">{{ $branch->branch_name }}</td>
-											<td style="width:10%">{{ $current_count }}</td>
 											<td style="width:10%">{{ $last_month_count }}</td>
+											<td style="width:10%">{{ $current_count }}</td>
+											
 											<td style="width:10%"><span style="color:#fff;" class="badge {{$current_count-$last_month_count>=0 ? 'green' : 'red'}}">{{ $current_count-$last_month_count }}</span></td>
 											<td style="width:10%">{{ $current_unpaid_count }}</td>
 											<td style="width:10%">{{ $last_paid_count }}</td>
@@ -378,8 +386,9 @@
 								@endforeach
 								<tr class="bold table-footer">
 									<td colspan="2" style="width:50%">Total</td>
-									<td>{{ $totalno1 }}</td>
 									<td>{{ $totalno2 }}</td>
+									<td>{{ $totalno1 }}</td>
+									
 									<td>--</td>
 									<td>{{ $totalno4 }}</td>
 									<td>{{ $totalno5 }}</td>
