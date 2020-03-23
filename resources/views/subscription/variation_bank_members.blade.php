@@ -212,9 +212,9 @@
 									<th>{{__('S.No')}}</th>
 									<th>Member Name</th>
 									<th>NRIC</th>
-									
-									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+									
 <!-- 
 									<th>Action</th> -->
 									
@@ -234,8 +234,9 @@
 										<td>{{$slno}}</td>
 										<td>{{ $company->name }}</td>
 										<td>{{ $company->ic }}</td>
-										<td>0</td>
 										<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
+										<td>0</td>
+										
 										<!-- <td class="hide"></td> -->
 									</tr>
 									@php
@@ -247,8 +248,9 @@
 										<td>{{$slno}}</td>
 										<td>{{ $company->name }}</td>
 										<td>{{ $company->ic }}</td>
-										<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 										<td>0</td>
+										<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
+										
 										<!-- <td></td> -->
 									</tr>
 									@php

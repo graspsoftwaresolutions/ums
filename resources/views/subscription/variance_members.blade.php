@@ -157,8 +157,9 @@
                                         <th width="35%">{{__('Member Name') }}</th>
                                         <th width="15%">{{__('Member Number') }}</th>
                                         <th width="10%">{{__('Joining') }}</th>
+                                        <th>{{ date('M Y',strtotime($data['date'].' -1 Month')) }}</th>
                                         <th>{{ date('M Y',strtotime($data['date'])) }}</th>
-										<th>{{ date('M Y',strtotime($data['date'].' -1 Month')) }}</th>
+										
                                         <th class="hide"> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
@@ -175,8 +176,9 @@
 											<td>{{ $company->name }}</td>
 											<td>{{ $company->member_number }}</td>
 											<td>{{ $company->doj }}</td>
-											<td>0</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
+											<td>0</td>
+											
 											<td class="hide"></td>
 										</tr>
 										@php
@@ -189,8 +191,9 @@
 											<td>{{ $company->name }}</td>
 											<td>{{ $company->member_number }}</td>
 											<td>{{ $company->doj }}</td>
-											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td>0</td>
+											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
+											
 											<td></td>
 										</tr>
 										@php
