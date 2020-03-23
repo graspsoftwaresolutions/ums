@@ -513,7 +513,7 @@
 						@php
 						if($total_fifth_diff!=0){
 							$fifth_disp= $total_fifth_diff<0 ? '+'.abs($total_fifth_diff) : '-'.abs($total_fifth_diff);
-							echo '</br>('.$fifth_disp.')';
+							echo ' ('.$fifth_disp.')';
 						}
 						@endphp
 					@endif
@@ -523,7 +523,7 @@
 						@php
 						if($total_fourth_diff!=0){
 							$fourth_disp= $total_fourth_diff<0 ? '+'.abs($total_fourth_diff) : '-'.abs($total_fourth_diff);
-							echo '</br>('.$fourth_disp.')';
+							echo ' ('.$fourth_disp.')';
 						}
 						@endphp
 					@endif
@@ -534,7 +534,7 @@
 						@php
 						if($total_third_diff!=0 ){
 							$third_disp= $total_third_diff<0 ? '+'.abs($total_third_diff) : '-'.abs($total_third_diff);
-							echo '</br>('.$third_disp.')';
+							echo ' ('.$third_disp.')';
 						}
 						@endphp
 					@endif
@@ -544,7 +544,7 @@
 						@php
 						if($total_second_diff!=0){
 							$second_disp= $total_second_diff<0 ? '+'.abs($total_second_diff) : '-'.abs($total_second_diff);
-							echo '</br>('.$second_disp.')';
+							echo ' ('.$second_disp.')';
 						}
 						@endphp
 					@endif
@@ -554,7 +554,7 @@
 						@php
 						if($total_last_diff!=0){
 							$last_disp= $total_last_diff<0 ? '+'.abs($total_last_diff) : '-'.abs($total_last_diff);
-							echo '</br>('.$last_disp.')';
+							echo ' ('.$last_disp.')';
 						}
 						@endphp
 					@endif
@@ -565,7 +565,7 @@
 						@php
 						if($total_this_diff!=0){
 							$this_disp= $total_this_diff<0 ? '+'.abs($total_this_diff) : '-'.abs($total_this_diff);
-							echo '</br>('.$this_disp.')';
+							echo ' ('.$this_disp.')';
 						}
 						@endphp
 					@endif
