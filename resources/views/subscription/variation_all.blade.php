@@ -136,7 +136,16 @@
 	
 	@foreach($memberslist as $company)
 	
-	<table id="page-length-option" class="display" width="100%">
+	@php
+		if($data['groupby']==1){
+			$typeidref = $company->union_branchid;
+		}elseif($data['groupby']==2){
+			$typeidref = $company->company_id;
+		}else{
+			$typeidref = $company->branch_id;
+		}
+	@endphp
+	<table id="page-length-option-{{ $typeidref }}" class="display" width="100%">
 		<thead>
 			
 			<tr class="title-area" >
@@ -645,7 +654,14 @@
 		
 		
 	</table>
-	
+	@if($count==1)
+	<style type="text/css">
+		#page-length-option-{{ $typeidref }}{
+			display: none;
+		}
+		
+	</style>
+	@endif
 	@php
 		$overall_total_fifth_new+=$total_fifth_new;
 		$overall_total_fourth_new+=$total_fourth_new;

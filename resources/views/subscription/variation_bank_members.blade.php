@@ -290,7 +290,7 @@
 @section('footerSection')
 
 <script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
-
+																																																																																																																						
 <script src="{{ asset('public/assets/vendors/noUiSlider/nouislider.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/materialize.min.js') }}"></script>
 <script src="{{ asset('public/assets/js/scripts/form-elements.js') }}" type="text/javascript"></script>
