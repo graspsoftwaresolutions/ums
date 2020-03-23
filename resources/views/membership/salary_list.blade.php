@@ -223,7 +223,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-field col m2 s12 ">
-                                                    <label for="member_search"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__('Member Name / Member Code')}}</label>
+                                                    <label for="member_search"><span class="bold" style="color: #000;">{{ __('NRIC / ') }}</span>{{__(' Member Code')}}</label>
                                                     <input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
                                                     <input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
                                                     <div class="input-field">
