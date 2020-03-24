@@ -1728,6 +1728,28 @@ class MembershipController extends Controller
         
         return $data;
     }
+
+    public function getMembersIncrements(Request $request,$lang)
+    {
+        $member_id = $request->input('member_id');
+        $datestr = $request->input('datestr');
+        
+        $form_date = date('Y-m-d',$datestr);
+
+        $date_str = strtotime($form_date);
+       
+        $members = DB::table('salary_updations as s')
+                        ->select('s.basic_salary','s.updated_salary','s.additional_amt','s.increment_type_id','i.type_name')
+                        //->select(DB::raw("SUM(s.additional_amt) as additions"))
+                        ->leftjoin('increment_types as i','i.id','=','s.increment_type_id')
+                        ->where('s.member_id','=',$member_id)
+                        ->where('s.date','=',$form_date);
+
+        $data['members'] = $members->get();
+        $data['status'] = 1;
+        
+        return $data;
+    }
     
 }
 

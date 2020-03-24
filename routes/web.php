@@ -469,6 +469,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('upload_salary','MembershipController@saveSalary')->name('salary.save');
 
 	Route::get('get_memberssalaries','MembershipController@getBankMembersSalaries')->name('bank.salaries');
+	Route::get('get-salary-list-inc','MembershipController@getMembersIncrements')->name('salary.increments');
 
 
 });

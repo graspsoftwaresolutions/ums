@@ -294,6 +294,38 @@
             
         </div>
        
+         <!-- Modal Trigger -->
+
+        <div id="modal-uploads" class="modal">
+            <form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
+            @csrf
+               
+                <div class="modal-content">
+                    <h4>Updated Salary Details</h4>
+                    
+                </div>
+                <div class="row">
+                    <div class="col m12">
+                       <table>
+                           <thead>
+                               <tr>
+                                   <th>Type Name</th>
+                                   <th>Amount</th>
+                               </tr>
+                           </thead>
+                           <tbody id="displaytypes">
+                            
+                           </tbody>
+                       </table>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                     <br>
+                    <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
+                </div>
+            </form>
+        </div>
        
     </div>
 
@@ -506,7 +538,24 @@
         });
 
         function showUpload(memberid, datestr){
-            
+            cond = '&datestr='+datestr;
+             $.ajax({
+                type: "GET",
+                dataType: "json",
+                url : "{{ URL::to('/en/get-salary-list-inc') }}?member_id="+memberid+cond,
+                success:function(res){
+                    if(res.status==1)
+                    {
+                      $("#displaytypes").empty();
+                        $.each(res.members, function(key, entry) {
+                            $("#displaytypes").append('<tr><td>'+entry.type_name+'</td><td>'+entry.additional_amt+'</td><tr>');
+                        });
+                      $("#modal-uploads").modal('open');
+                    }else{
+                        
+                    }
+                }
+             });
         }
         
     </script>
