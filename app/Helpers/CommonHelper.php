@@ -3183,10 +3183,15 @@ class CommonHelper
          $data = DB::table('salary_updations as s')
                 ->select('increment_type_id','date','amount_type','additional_amt','basic_salary')
                 ->where('s.member_id', '=' ,$memberid)
-                ->where('s.date', '>=' ,$frommonth)
-                ->where('s.date', '<=' ,$tomonth)
-                
-                ->orderBy('s.date','desc')
+                ///->where('s.date', '>=' ,$frommonth)
+                //->where('s.date', '<=' ,$tomonth)
+                ->where('s.date', '=' ,(function($query) use ($tomonth,$memberid){
+                    $query->select(DB::raw("max(date)"))
+                    ->from('salary_updations')
+                    ->where('date', '<=' ,$tomonth)
+                    ->where('member_id', '=' ,$memberid)
+                    ->limit(1);
+                }))->orderBy('s.date','desc')
                 //->dump()
                 ->get();
         return $data;

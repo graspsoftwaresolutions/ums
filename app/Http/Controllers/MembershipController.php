@@ -1562,6 +1562,7 @@ class MembershipController extends Controller
                                         ->select(DB::raw("SUM(s.additional_amt) as additions"))
                                         ->where('s.member_id','=',$memberid)
                                         ->where('s.date','=',$lastupdate)
+                                        ->where('s.increment_type_id','=',1)
                                         ->get();
 
                     if($lastupdate!=''){
@@ -1628,7 +1629,10 @@ class MembershipController extends Controller
                                         ->select(DB::raw("SUM(s.additional_amt) as additions"))
                                         ->where('s.member_id','=',$memberid)
                                         ->where('s.date','=',$lastupdate)
+                                        ->where('s.increment_type_id','=',1)
                                         ->get();
+
+                   
 
                     $companyid = DB::table('membership as m')
                                         ->select('c.company_id')
@@ -1701,9 +1705,11 @@ class MembershipController extends Controller
         $monthname = $datearr[0];
         $year = $datearr[1];
         $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+
+        $date_str = strtotime($form_date);
        
         $members = DB::table('salary_updations as s')
-                        ->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','s.basic_salary','s.updated_salary')
+                        ->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','s.basic_salary','s.updated_salary',DB::raw("SUM(s.additional_amt) as additions"),DB::raw($date_str.' as datestr'))
                         //->select(DB::raw("SUM(s.additional_amt) as additions"))
                         ->leftjoin('membership as m','m.id','=','s.member_id')
                         ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
@@ -1717,7 +1723,7 @@ class MembershipController extends Controller
             $members = $members->where('m.id','=',$member_auto_id);
         }
 
-        $data['members'] = $members->get();
+        $data['members'] = $members->groupBy('m.id')->get();
         $data['status'] = 1;
         
         return $data;
