@@ -21,7 +21,12 @@ class IncrementTypesTableDataSeeder extends Seeder
 				array(
 					'type_name' => 'Bonus',
 				),
-				
+				array(
+					'type_name' => 'Decrement',
+				),
+				array(
+					'type_name' => 'Others',
+				),
 			);
         DB::table('increment_types')->insert($groups);
     }

@@ -3288,6 +3288,184 @@ class SubscriptionController extends CommonController
 		$return_data = ['status' => 1, 'message' => $approval_masg, 'sub_member_auto_id' => $sub_member_id, 'member_number' => $member_id, 'member_status' => $member_status, 'approval_status' => 1];
 		echo json_encode($return_data);
     }
+
+    public function Discripancy(){
+		$data['month_year'] = date('M/Y');
+		$data['month_year_full'] = date('Y-m-01');
+		$data['last_month_year']= date("Y-m-01", strtotime("first day of previous month"));
+		
+        $data['groupby'] = 2;
+        $data['variationtype']='4';
+        $data['DisplaySubscription'] = false;
+        $data['types'] = '';
+        $data['inctypes'] = DB::table('increment_types')->get();
+		
+		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+		
+		$data['company_view']=[];
+		$data['branch_view']=[];
+	
+		return view('subscription.discrepancy')->with('data', $data);
+    }
     
+    public function DiscripancyFilter($lang, Request $request){
+		//return $request->all();
+		$entry_date = $request->input('entry_date');
+		$groupby = $request->input('groupby');
+        $display_subs = $request->input('display_subs');
+        $variationtype = $request->input('variationtype');
+        $types = $request->input('types');
+		//$sixmonthvariation = $request->input('sixmonth-variation');
+		$fm_date = explode("/",$entry_date);
+        $fm_date[1].'-'.$fm_date[0].'-'.'01';
+        $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
+		$data['month_year'] = date('M/Y',$datestring);
+		$data['month_year_full'] = date('Y-m-01',$datestring);
+		$data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));
+		
+		$data['groupby'] = $groupby;
+        $data['DisplaySubscription'] = $display_subs;
+        $data['types'] = $types;
+        $data['inctypes'] = DB::table('increment_types')->get();
+       // $data['sixmonthvariation'] = $sixmonthvariation;
+        $data['variationtype']=$variationtype;
+		if($groupby==1){
+			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+			$data['company_view']=[];
+			$data['branch_view']=[];
+			$data['head_company_view']=[];
+		}
+		elseif($groupby==2){
+			$head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')->where('status','=','1')
+			->where(function ($query) {
+				$query->where('head_of_company', '=', '')
+					->orWhere('head_of_company', '=', 0)
+						->orWhereNull('head_of_company');
+			})->get();
+				//dd($head_company_view);
+			foreach($head_company_view as $mkey => $company){
+				$companyid = $company->id;
+				//$company_str_List ="'".$companyid."'";
+				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
+				$res_company = array_merge($company_ids, [$companyid]); 
+
+
+				foreach($company as $newkey => $newvalue){
+					$data['head_company_view'][$mkey][$newkey] = $newvalue;
+				}
+				$data['head_company_view'][$mkey]['company_list'] = $res_company;
+				//$company_str_List ='';
+
+			}
+			$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+			$data['union_branch_view']=[];
+			$data['branch_view']=[];
+		}
+		else{
+			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+			$data['union_branch_view']=[];
+			$data['company_view']=[];
+			$data['head_company_view']=[];
+		}
+		
+		return view('subscription.discrepancy')->with('data', $data);
+	}
+    
+    public function DiscripancyUpdate(Request $request, $lang)
+    {
+        $groupby = $request->input('disgroupby');
+        $entry_date = $request->input('disentry_date');
+
+        $datearr = explode("/",$entry_date);
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+
+        $companyid = '';
+        $unionid = '';
+        $branchid = '';
+
+        $disrefid = $request->input('disrefid');
+
+        if(isset($disrefid)){
+            foreach ($disrefid as $key => $value) {
+                $refid = $value;
+                $inctype = $request->input('inctype_'.$refid);
+                $others = $request->input('others_'.$refid);
+                if($inctype!=null){
+                   $memberids = $request->input('memberids_'.$refid);
+                   if(isset($memberids)){
+                        for($i=0; $i<count($memberids);$i++){
+                            $memberid = $request->input('memberids_'.$refid)[$i];
+                            $subsamt = $request->input('thissubs_'.$refid)[$i];
+                            $subssal = $subsamt*100;
+                            if($inctype==1){
+
+                                $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                ->where('s.date','<',$form_date)
+                                ->orderBy('s.date','desc')
+                                ->pluck('s.date')->first();
+
+                                $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                                    ->where('s.date','<',$form_date)
+                                                    ->orderBy('s.date','desc')
+                                                    ->pluck('s.basic_salary')->first();
+                                
+                                $basicsalry = DB::table('salary_updations as s')
+                                                    ->select(DB::raw("SUM(s.additional_amt) as additions"))
+                                                    ->where('s.member_id','=',$memberid)
+                                                    ->where('s.date','=',$lastupdate)
+                                                    ->where('s.increment_type_id','=',1)
+                                                    ->get();
+
+                                if($lastupdate!=''){
+                                    $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
+                                    $salary = $lastsalary+$basicsalry[0]->additions;
+                                }else{
+                                    $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                                }
+
+                                $additional_amt = $subssal-$salary;
+                                if($additional_amt>0){
+                                    
+                                    $companyid = DB::table('membership as m')
+                                                ->select('c.company_id')
+                                                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                                ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
+                                    $newsalary = $subssal;
+
+                                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
+                                    ->where('date','=',$form_date)
+                                    ->where('increment_type_id','=',1)
+                                    ->count();
+
+                                    if($salcount==0){
+                                        $insertdata = [];
+                                        $insertdata['member_id'] = $memberid;
+                                        $insertdata['date'] = $form_date;
+                                        $insertdata['company_id'] = $companyid;
+                                        $insertdata['increment_type_id'] = 1;
+                                        $insertdata['amount_type'] = 1;
+                                        $insertdata['basic_salary'] = $salary;
+                                        $insertdata['value'] = $additional_amt;
+                                        $insertdata['updated_salary'] = $newsalary;
+                                        $insertdata['additional_amt'] = $additional_amt;
+                                        $insertdata['created_by'] = Auth::user()->id;
+
+                                        $savesal = DB::table('salary_updations')->insert($insertdata);
+                                        
+                                    }
+                                }
+
+
+                            }
+                        }
+                   }
+                }
+
+            }
+        }
+        return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
+    }
     
 }

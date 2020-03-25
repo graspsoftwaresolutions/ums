@@ -471,6 +471,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get_memberssalaries','MembershipController@getBankMembersSalaries')->name('bank.salaries');
 	Route::get('get-salary-list-inc','MembershipController@getMembersIncrements')->name('salary.increments');
 
+	Route::get('subscription_discrepancy','SubscriptionController@Discripancy')->name('subscription.discrepancy');
+	Route::post('subscription_discrepancy','SubscriptionController@DiscripancyFilter')->name('discrepancy.filter');
+	Route::post('update_discrepancy','SubscriptionController@DiscripancyUpdate')->name('discrepancy.update');
 
 });
 /* Master */

@@ -60,13 +60,13 @@
 						<div class="container">
 							<div class="row">
 								<div class="col s10 m6 l6">
-									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription List') }}</h5>
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription Variance List') }}</h5>
 									<ol class="breadcrumbs mb-0">
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a
 													href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Subscription') }}
+											<li class="breadcrumb-item active">{{__('Subscription Variance') }}
 											</li>
 									</ol>
 								</div>
@@ -132,7 +132,7 @@
 												<label for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
 											</div>
-											<div class="col m2 s12">
+											<div class="col m2 s12 hide">
 												<label for="doe">&nbsp;</label>
 												<p>
 													<label>
@@ -141,7 +141,7 @@
 													</label>
 												</p>
 											</div>
-											<div class="col m2 s12">
+											<div class="col m2 s12 hide">
 												
 												<label for="doe">{{__('Variation') }}</label>
 												<p>
@@ -165,7 +165,7 @@
 												</p>
 												
 											</div>
-											<div class="col m2 s12">
+											<div class="col m2 s12 hide">
 												<label for="types">{{__('Increment Types') }}</label>
 												<select name="types" id="types" class="browser-default valid" aria-invalid="false">
 						                            <option {{ $data['types']=='' ? 'selected' : ''}} value="">Select</option>
