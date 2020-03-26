@@ -265,7 +265,12 @@
 					foreach($updated_salary as $key => $upsalary){
 
 						if($upsalary->date==$this_str){
-							$addonsalary += $upsalary->additional_amt;
+							if($upsalary->increment_type_id==4){
+								$addonsalary -= $upsalary->additional_amt;
+							}else{
+								$addonsalary += $upsalary->additional_amt;
+							}
+							
 
 							$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
 							if($key!=0){
@@ -277,10 +282,19 @@
 							if($data['inctype'] != '' && $data['inctype'] == $upsalary->increment_type_id){
 								$displaymember = 1;
 							}
-							$subremarks .= $inctype;
+							if($upsalary->increment_type_id==5){
+								$subremarks .= $upsalary->summary;
+							}else{
+								$subremarks .= $inctype;
+							}
+							
 						}else{
-							if($upsalary->increment_type_id==1){
-								$addonsalary += $upsalary->additional_amt;
+							if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
+								if($upsalary->increment_type_id==4){
+									$addonsalary -= $upsalary->additional_amt;
+								}else{
+									$addonsalary += $upsalary->additional_amt;
+								}
 
 								$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
 								if($key!=0){

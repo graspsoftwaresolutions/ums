@@ -3303,7 +3303,9 @@ class SubscriptionController extends CommonController
 		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 		
 		$data['company_view']=[];
-		$data['branch_view']=[];
+        $data['branch_view']=[];
+        $data['sub_company'] = '';
+        $data['unionbranch_id'] = '';
 	
 		return view('subscription.discrepancy')->with('data', $data);
     }
@@ -3321,7 +3323,10 @@ class SubscriptionController extends CommonController
         $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
-		$data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));
+        $data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));
+        
+        $data['sub_company'] = $request->input('sub_company');
+        $data['unionbranch_id'] = $request->input('unionbranch_id');
 		
 		$data['groupby'] = $groupby;
         $data['DisplaySubscription'] = $display_subs;
@@ -3330,7 +3335,24 @@ class SubscriptionController extends CommonController
        // $data['sixmonthvariation'] = $sixmonthvariation;
         $data['variationtype']=$variationtype;
 		if($groupby==1){
-			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+            if($data['unionbranch_id']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                ->leftjoin('company as c','cb.company_id','=','c.id')
+                                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+                                ->where('cb.union_branch_id', '=', $data['unionbranch_id']);
+                $data['union_branch_view'] = $company_view->groupBY('cb.union_branch_id')
+								->get();
+            }else{
+                $data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+            }
+			
 			$data['company_view']=[];
 			$data['branch_view']=[];
 			$data['head_company_view']=[];
@@ -3356,13 +3378,46 @@ class SubscriptionController extends CommonController
 				$data['head_company_view'][$mkey]['company_list'] = $res_company;
 				//$company_str_List ='';
 
-			}
-			$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+            }
+            if($data['sub_company']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('mc.CompanyCode as company_id','c.company_name as company_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+								->leftjoin('membership as m','m.id','=','mm.MemberCode')
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+                                ->where('mc.CompanyCode', '=', $data['sub_company']);
+                $data['company_view'] = $company_view->groupBY('mc.CompanyCode')
+								->get();
+            }else{
+                $data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+            }
+			
 			$data['union_branch_view']=[];
 			$data['branch_view']=[];
 		}
 		else{
-			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+            if($data['sub_company']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('m.branch_id as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                ->leftjoin('company as c','cb.company_id','=','c.id')
+                                //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+                                ->where('mc.CompanyCode', '=', $data['sub_company']);
+                $data['branch_view'] = $company_view->groupBY('m.branch_id')
+								->get();
+            }else{
+                 $data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+            }
 			$data['union_branch_view']=[];
 			$data['company_view']=[];
 			$data['head_company_view']=[];
@@ -3397,10 +3452,10 @@ class SubscriptionController extends CommonController
                    if(isset($memberids)){
                         for($i=0; $i<count($memberids);$i++){
                             $memberid = $request->input('memberids_'.$refid)[$i];
-                            $subsamt = $request->input('thissubs_'.$refid)[$i];
+                            $subsamt = $request->input('thissubs_'.$memberid);
                             $subssal = $subsamt*100;
-                            if($inctype==1){
 
+                            if($inctype!=''){
                                 $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
                                 ->where('s.date','<',$form_date)
                                 ->orderBy('s.date','desc')
@@ -3418,25 +3473,30 @@ class SubscriptionController extends CommonController
                                                     ->where('s.increment_type_id','=',1)
                                                     ->get();
 
+                                $companyid = DB::table('membership as m')
+                                                    ->select('c.company_id')
+                                                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                                    ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
                                 if($lastupdate!=''){
                                     $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
                                     $salary = $lastsalary+$basicsalry[0]->additions;
                                 }else{
                                     $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
                                 }
+                            }else{
+                                return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
+                            }
+
+                            if($inctype<=3){
 
                                 $additional_amt = $subssal-$salary;
                                 if($additional_amt>0){
-                                    
-                                    $companyid = DB::table('membership as m')
-                                                ->select('c.company_id')
-                                                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-                                                ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
+                                  
                                     $newsalary = $subssal;
 
                                     $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
                                     ->where('date','=',$form_date)
-                                    ->where('increment_type_id','=',1)
+                                    ->where('increment_type_id','=',$inctype)
                                     ->count();
 
                                     if($salcount==0){
@@ -3444,12 +3504,13 @@ class SubscriptionController extends CommonController
                                         $insertdata['member_id'] = $memberid;
                                         $insertdata['date'] = $form_date;
                                         $insertdata['company_id'] = $companyid;
-                                        $insertdata['increment_type_id'] = 1;
+                                        $insertdata['increment_type_id'] = $inctype;
                                         $insertdata['amount_type'] = 1;
                                         $insertdata['basic_salary'] = $salary;
                                         $insertdata['value'] = $additional_amt;
                                         $insertdata['updated_salary'] = $newsalary;
                                         $insertdata['additional_amt'] = $additional_amt;
+                                        $insertdata['summary'] = $others;
                                         $insertdata['created_by'] = Auth::user()->id;
 
                                         $savesal = DB::table('salary_updations')->insert($insertdata);
@@ -3457,8 +3518,69 @@ class SubscriptionController extends CommonController
                                     }
                                 }
 
+                            }else if($inctype==4){
+                               
+                                $dec_amt = $salary-$subssal;
+                              
+                                if($dec_amt>0){
+                                    
+                                    $newsalary = $subssal;
 
+                                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
+                                    ->where('date','=',$form_date)
+                                    ->where('increment_type_id','=',$inctype)
+                                    ->count();
+
+                                    if($salcount==0){
+                                        $insertdata = [];
+                                        $insertdata['member_id'] = $memberid;
+                                        $insertdata['date'] = $form_date;
+                                        $insertdata['company_id'] = $companyid;
+                                        $insertdata['increment_type_id'] = $inctype;
+                                        $insertdata['amount_type'] = 1;
+                                        $insertdata['basic_salary'] = $salary;
+                                        $insertdata['value'] = $dec_amt;
+                                        $insertdata['updated_salary'] = $newsalary;
+                                        $insertdata['additional_amt'] = $dec_amt;
+                                        $insertdata['summary'] = $others;
+                                        $insertdata['created_by'] = Auth::user()->id;
+
+                                        $savesal = DB::table('salary_updations')->insert($insertdata);
+                                        
+                                    }
+                                }
+
+                            }else{
+                                $additional_amt = $subssal-$salary;
+                                //if($additional_amt>0){
+                                  
+                                    $newsalary = $subssal;
+
+                                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
+                                    ->where('date','=',$form_date)
+                                    ->where('increment_type_id','=',$inctype)
+                                    ->count();
+
+                                    if($salcount==0){
+                                        $insertdata = [];
+                                        $insertdata['member_id'] = $memberid;
+                                        $insertdata['date'] = $form_date;
+                                        $insertdata['company_id'] = $companyid;
+                                        $insertdata['increment_type_id'] = $inctype;
+                                        $insertdata['amount_type'] = 1;
+                                        $insertdata['basic_salary'] = $salary;
+                                        $insertdata['value'] = $additional_amt;
+                                        $insertdata['updated_salary'] = $newsalary;
+                                        $insertdata['additional_amt'] = $additional_amt;
+                                        $insertdata['summary'] = $others;
+                                        $insertdata['created_by'] = Auth::user()->id;
+
+                                        $savesal = DB::table('salary_updations')->insert($insertdata);
+                                        
+                                    }
+                                //}
                             }
+
                         }
                    }
                 }

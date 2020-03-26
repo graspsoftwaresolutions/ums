@@ -103,10 +103,15 @@
 			</div>   
 		</div>
 	</div>
+	@php
+		$companylist = CommonHelper::getCompanyListAll();
+		$unionbranchlist = CommonHelper::getUnionListAll();
+	@endphp
 	<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_discrepancy') }}" enctype="multipart/form-data">
 	@csrf
 	<div class="row">
 		<div class="col s12">
+			 @include('includes.messages')
 			<div class="container">
 				<div class="card">
 					<div class="card-title">
@@ -133,25 +138,47 @@
 												<label for="doe">{{__('Group By') }}*</label>
 												<p>
 													<label>
-														<input name="groupby" type="radio" value="1" {{ $data['groupby']==1 ? 'checked' : ''}} />
+														<input name="groupby" onclick="return ViewLists(1)" type="radio" value="1" {{ $data['groupby']==1 ? 'checked' : ''}} />
 														<span>{{__('Union Branch') }} </span>
 													</label>
 												</p>
 												<p>
 													<label>
-														<input name="groupby" type="radio" value="2"  {{ $data['groupby']==2 ? 'checked' : ''}} />
+														<input name="groupby" onclick="return ViewLists(2)" type="radio" value="2"  {{ $data['groupby']==2 ? 'checked' : ''}} />
 														<span>Bank </span>
 													</label>
 												</p>
 												<p>
 													<label>
-														<input name="groupby" type="radio" value="3"  {{ $data['groupby']==3 ? 'checked' : ''}} />
+														<input name="groupby" onclick="return ViewLists(2)" type="radio" value="3"  {{ $data['groupby']==3 ? 'checked' : ''}} />
 														<span>Bank Branch</span>
 													</label>
 												</p>
 											</div>
-											<div class="input-field col m2 s12">
-												<label for="doe">{{__('Subscription Month') }}*</label>
+											<div class="col m2 s12">
+												<div id="banksection" class="{{ $data['groupby']==1 ? 'hide' : '' }}">
+	                                                <label for="sub_company">{{__('Company') }}</label>
+	                                                <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
+	                                                    <option value="" selected>{{__('Choose Company') }}</option>
+	                                                    @foreach($companylist as $value)
+	                                                    <option {{ $data['sub_company']==$value->id ? 'selected' : ''}} data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
+	                                                    @endforeach
+	                                                </select>
+	                                            </div>
+	                                            <div id="unionsection" class="{{ $data['groupby']>1 ? 'hide' : '' }}">
+	                                               <label>{{__('Union Branch Name') }}</label>
+													<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+														<option value="">{{__('Select Union') }}</option>
+														@foreach($unionbranchlist as $value)
+						                                <option {{ $data['unionbranch_id']==$value->id ? 'selected' : ''}}  value="{{$value->id}}">
+						                                    {{$value->union_branch}}</option>
+						                                @endforeach
+													</select>
+	                                            </div>
+                                                <div class="errorTxt6"></div>
+                                            </div>
+											<div class="input-field col m1 s12">
+												<label style="left: 1rem;" for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
 											</div>
 											<div class="col m2 s12 ">
@@ -181,7 +208,7 @@
 
 												
 											</div>
-											<div class="col m2 s12 ">
+											<div class="col m1 s12 ">
 												<label for="types">{{__('Increment Types') }}</label>
 												<select name="types" id="types" class="browser-default valid" aria-invalid="false">
 						                            <option {{ $data['types']=='' ? 'selected' : ''}} value="">Select</option>
@@ -285,7 +312,7 @@
 	
 	<div id="companyheading_{{ $typeidref }}" class="row">
 		<br>
-		<div class="col m2">
+		<div class="col m2" style="font-weight: bold;">
 			@if($data['groupby']==1)
 				{{ $company->union_branch_name }}
 			@elseif($data['groupby']==2)
@@ -421,7 +448,11 @@
 					foreach($updated_salary as $key => $upsalary){
 
 						if($upsalary->date==$this_str){
-							$addonsalary += $upsalary->additional_amt;
+							if($upsalary->increment_type_id==4){
+								$addonsalary -= $upsalary->additional_amt;
+							}else{
+								$addonsalary += $upsalary->additional_amt;
+							}
 
 							$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
 							if($key!=0){
@@ -435,8 +466,12 @@
 							}
 							$subremarks .= $inctype;
 						}else{
-							if($upsalary->increment_type_id==1){
-								$addonsalary += $upsalary->additional_amt;
+							if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
+								if($upsalary->increment_type_id==4){
+									$addonsalary -= $upsalary->additional_amt;
+								}else{
+									$addonsalary += $upsalary->additional_amt;
+								}
 
 								$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
 								if($key!=0){
@@ -736,7 +771,7 @@
 					@endif
 				</td>
 				
-				<td>{{ $this_paid }}<input type="text" name="thissubs_{{ $typeidref }}[]" class="hide" value="{{ $this_paid }}" />
+				<td>{{ $this_paid }}<input type="text" name="thissubs_{{ $member->member_id }}" class="hide" value="{{ $this_paid }}" />
 					@if($data['DisplaySubscription']==1)
 						@php
 						if($total_this_diff!=0){
@@ -918,6 +953,18 @@ $(document).ready(function() {
 
 	function ViewVarianceList(thisdata){
 		window.open($(thisdata).attr("data-href"), '_blank');
+	}
+
+	function ViewLists(refid){
+		$("#sub_company").val('').trigger("change");
+		$("#unionbranch_id").val('').trigger("change");
+		if(refid==1){
+			$("#banksection").addClass('hide');
+			$("#unionsection").removeClass('hide');
+		}else{
+			$("#banksection").removeClass('hide');
+			$("#unionsection").addClass('hide');
+		}
 	}
 	
 	$("#subscriptions_sidebars_id").addClass('active');

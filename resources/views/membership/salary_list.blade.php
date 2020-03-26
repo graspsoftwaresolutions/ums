@@ -441,7 +441,7 @@
                                  var additions = entry.additions;
                                  var updated_salary = parseFloat(entry.basic_salary)+parseFloat(additions);
                                 
-                                 $("#memberslist").append('<tr style=""> <td width="15%"> '+slno+'</td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+entry.basic_salary+'</td><td>'+updated_salary+'</td><td>'+actions+'</td></tr>');
+                                 $("#memberslist").append('<tr style=""> <td width="15%"> '+slno+'</td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+entry.basic_salary+'</td><td>'+entry.updated_salary+'</td><td>'+actions+'</td></tr>');
 
                                 var baselink = base_url + '/{{ app()->getLocale() }}/';
                                 //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
