@@ -1113,7 +1113,7 @@ class AjaxController extends CommonController
         $dir = $request->input('order.0.dir');
         if(empty($request->input('search.value')))
         {            
-            $Company = Company::select('id','company_name','short_code')->orderBy($order,$dir)
+            $Company = Company::select('id','company_name','short_code',DB::raw('if(head_of_company=0,1,0) as is_head'))->orderBy($order,$dir)
             ->where('status','=','1');
             if($limit != -1){
                 $Company = $Company->offset($start)->limit($limit);
@@ -1126,7 +1126,7 @@ class AjaxController extends CommonController
         }
         else {
             $search = $request->input('search.value'); 
-            $Company  = Company::select('id','company_name','short_code')->where('id','LIKE',"%{$search}%")
+            $Company  = Company::select('id','company_name','short_code',DB::raw('if(head_of_company=0,1,0) as is_head'))->where('id','LIKE',"%{$search}%")
                             ->orWhere('company_name', 'LIKE',"%{$search}%")
                             ->orWhere('short_code', 'LIKE',"%{$search}%")
                             ->where('status','=','1');

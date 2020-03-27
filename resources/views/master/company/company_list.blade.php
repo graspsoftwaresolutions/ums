@@ -87,6 +87,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                   <tr>
                                                       <th>{{__('Company Name') }}</th>
                                                       <th>{{__('Short Name') }}</th>
+                                                      <th>{{__('Is Head') }}</th>
                                                       <th style="text-align:center;"> {{__('Action') }}</th>
                                                   </tr>
                                               </thead>
@@ -289,6 +290,9 @@ $('#page-length-option').DataTable({
       },
       {
           "data": "short_code"
+      },
+      {
+          "data": "is_head"
       },
       {
           "data": "options"

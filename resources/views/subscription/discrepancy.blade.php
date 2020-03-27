@@ -250,7 +250,7 @@
 						<h4 class="card-title">Subscription Discrepancy
 						<button id="submit-upload" style="margin-left: 50px; " class="btn waves-effect waves-light purple lightrn-1 form-download-btn center" type="submit">{{__('Update Salary') }}</button>
 						<div class="right">
-							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types']) }}" >{{__('Print')}}</a>
+							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>
