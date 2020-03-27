@@ -205,6 +205,7 @@
 						</h4>
 					</div>
 					<div class="card-body">
+						<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Previous Subscription Paid - Current Subscription Unpaid</p>
 						<table id="page-length-option" class="display" width="100%">
 							@if($data['diff_in_months']==1)
 							<thead>
@@ -243,9 +244,40 @@
 										$slno++;
 									@endphp
 								@endforeach
+								
+							</tbody>
+							@endif
+							
+						</table>
+						<br>
+						<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Previous Subscription Unpaid - Current Subscription Paid</p>
+						<table id="page-length-option" class="display" width="100%">
+							@if($data['diff_in_months']==1)
+							<thead>
+								<tr class="" >
+									<th>{{__('S.No')}}</th>
+									<th>Member Name</th>
+									<th>NRIC</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+									
+<!-- 
+									<th>Action</th> -->
+									
+										
+									
+								</tr>
+							</thead>
+							<tbody class="tbody-area" width="100%">
+								@php
+									$slno1 = 1;
+									//dd($data['type']); 
+									$pre_company_members = CommonHelper::getLastMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
+									$current_company_members = CommonHelper::getcurrentMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
+								@endphp
 								@foreach($current_company_members as $company)
 									<tr>
-										<td>{{$slno}}</td>
+										<td>{{$slno1}}</td>
 										<td>{{ $company->name }}</td>
 										<td>{{ $company->ic }}</td>
 										<td>0</td>
@@ -254,13 +286,105 @@
 										<!-- <td></td> -->
 									</tr>
 									@php
-										$slno++;
+										$slno1++;
 									@endphp
 								@endforeach
 
 							</tbody>
 							@endif
 							
+						</table>
+
+						<br>
+						<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Subscription Increment</p>
+						<table id="page-length-option" class="display" width="100%">
+							@if($data['diff_in_months']==1)
+							<thead>
+								<tr class="" >
+									<th>{{__('S.No')}}</th>
+									<th>Member Name</th>
+									<th>NRIC</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+									
+<!-- 
+									<th>Action</th> -->
+									
+										
+									
+								</tr>
+							</thead>
+							<tbody>
+								@php
+									//dd($data['diff_in_months']);
+									$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
+									$slno4=1;
+								@endphp
+								@foreach($variance_company_members as $member)
+								@if($member->Amount > $member->last_amount)
+								<tr class="">
+									<td style="width:3%">{{ $slno4 }}</td>
+									<td style="width:30%">{{ $member->name }}</td>
+									<td style="width:20%">{{ $member->ic }}</td>
+									
+									<td style="width:20%">{{ $member->last_amount }}</td>
+									<td style="width:20%">{{ $member->Amount }}</td>
+									
+								
+								</tr> 
+								@php
+									$slno4++;
+								@endphp
+								@endif
+								@endforeach
+							</tbody>
+							@endif
+						</table>
+
+						<br>
+						<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Subscription Decrement</p>
+						<table id="page-length-option" class="display" width="100%">
+							@if($data['diff_in_months']==1)
+							<thead>
+								<tr class="" >
+									<th>{{__('S.No')}}</th>
+									<th>Member Name</th>
+									<th>NRIC</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
+									<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+									
+<!-- 
+									<th>Action</th> -->
+									
+										
+									
+								</tr>
+							</thead>
+							<tbody>
+								@php
+									//dd($data['diff_in_months']);
+									$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
+									$slno5=1;
+								@endphp
+								@foreach($variance_company_members as $member)
+								@if($member->last_amount > $member->Amount)
+								<tr class="">
+									<td style="width:3%">{{ $slno5 }}</td>
+									<td style="width:30%">{{ $member->name }}</td>
+									<td style="width:20%">{{ $member->ic }}</td>
+									
+									<td style="width:20%">{{ $member->last_amount }}</td>
+									<td style="width:20%">{{ $member->Amount }}</td>
+									
+								
+								</tr> 
+								@php
+									$slno5++;
+								@endphp
+								@endif
+								@endforeach
+							</tbody>
+							@endif
 						</table>
 					</div> 
 				</div> 
