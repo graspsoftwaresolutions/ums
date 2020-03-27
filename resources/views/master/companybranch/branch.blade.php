@@ -52,7 +52,7 @@
 											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
-														<th>{{__('Company Name') }}</th>
+														<th>{{__('Company Name') }}(is_head)</th>
 														<th>{{__('Branch Name') }}</th>
 														<th>{{__('Email') }}</th>
 														<th>{{__('Head') }}</th>
@@ -149,7 +149,7 @@
 		       },
 			},
 			"columns": [
-				{"data": "company_name"},
+				{"data": "head_of_company"},
 				{"data": "branch_name"},
 				{"data": "email"},
 				{"data": "is_head"},

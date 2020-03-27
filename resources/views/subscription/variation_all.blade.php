@@ -83,7 +83,7 @@
 			<tr>
 				<td width="20%"></td>
 				<td width="10%"></td>
-				<td width="50%" class="title-area" style="text-align:center;">NUBE Monthly Subscription {{ date('M Y',strtotime($data['month_year_full'])) }} - Variation Report
+				<td width="50%" class="title-area" style="text-align:center;">NUBE Monthly Subscription {{ date('M Y',strtotime($data['month_year_full'])) }} - Discrepancy Report
 					
 				</td>
 				<td width="20%">	

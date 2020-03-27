@@ -1225,7 +1225,7 @@ class AjaxController extends CommonController
         if(empty($request->input('search.value')))
         {
             $companybranchs = DB::table('company_branch as b')
-            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'))
             ->leftjoin('company as c','c.id','=','b.company_id')
             ->where('b.status','=','1');
             if($limit != -1){
@@ -1240,7 +1240,7 @@ class AjaxController extends CommonController
         else {
             $search = $request->input('search.value'); 
             $companybranchs = DB::table('company_branch as b')
-            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head')
+            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'))
             ->leftjoin('company as c','c.id','=','b.company_id')
             ->where('b.status','=','1');
             if($limit != -1){

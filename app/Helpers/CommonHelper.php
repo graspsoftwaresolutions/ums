@@ -3204,4 +3204,7 @@ class CommonHelper
     public static function getUnionListAll(){
         return $results = DB::table('union_branch')->where('status','=','1')->get();
     }
+    public static function getHeadCompanyListAll(){
+        return $results = Company::where('status',1)->where('head_of_company','=','0')->get();
+    }
 }

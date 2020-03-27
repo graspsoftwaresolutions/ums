@@ -104,7 +104,7 @@
 		</div>
 	</div>
 	@php
-		$companylist = CommonHelper::getCompanyListAll();
+		$companylist = CommonHelper::getHeadCompanyListAll();
 		$unionbranchlist = CommonHelper::getUnionListAll();
 	@endphp
 	<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_discrepancy') }}" enctype="multipart/form-data">
