@@ -287,6 +287,7 @@
 							}else{
 								$subremarks .= $inctype;
 							}
+							$subremarks .= " [".date('M Y',strtotime($upsalary->date))."]";
 							
 						}else{
 							if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
@@ -307,6 +308,7 @@
 									$displaymember = 1;
 								}
 								$subremarks .= $inctype;
+								$subremarks .= " [".date('M Y',strtotime($upsalary->date))."]";
 							}
 						}
 						
