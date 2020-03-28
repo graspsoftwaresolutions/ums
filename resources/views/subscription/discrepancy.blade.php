@@ -155,7 +155,7 @@
 													</label>
 												</p>
 											</div>
-											<div class="col m2 s12">
+											<div class="col m3 s12">
 												<div id="banksection" class="{{ $data['groupby']==1 ? 'hide' : '' }}">
 	                                                <label for="sub_company">{{__('Company') }}</label>
 	                                                <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
@@ -220,7 +220,7 @@
 											</div>
 											
 											
-											<div class="col m2 s12 " style="padding-top:5px;">
+											<div class="col m1 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
@@ -250,7 +250,7 @@
 						<h4 class="card-title">Subscription Discrepancy
 						<button id="submit-upload" style="margin-left: 50px; " class="btn waves-effect waves-light purple lightrn-1 form-download-btn center" type="submit">{{__('Update Salary') }}</button>
 						<div class="right">
-							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
+							<a id="printdiscrepancy" class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>
@@ -310,7 +310,7 @@
 		}
 	@endphp
 	
-	<div id="companyheading_{{ $typeidref }}" class="row">
+	<div id="companyheading_{{ $typeidref }}" class="row tablesall">
 		<br>
 		<div class="col m2" style="font-weight: bold;">
 			@if($data['groupby']==1)
@@ -334,7 +334,7 @@
 			<input type="text" name="others_{{ $typeidref }}" id="others" value="" class="" />
 		</div>
 	</div>
-	<table id="page-length-option-{{ $typeidref }}" class="display" width="100%">
+	<table id="page-length-option-{{ $typeidref }}" class="display tablesall" width="100%">
 		<thead>
 			
 			<tr class="title-area" >
@@ -939,8 +939,28 @@ $(document).ready(function() {
 		//getDataStatus();
 	});
 	
-	$(document).on('submit','form#subscribe_formValidate',function(){
-		
+	$(document).on('submit','form#update_formValidate',function(e){
+		e.preventDefault();
+		var url = "{{ url(app()->getLocale().'/update_discrepancy') }}" ;
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType: "json",
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: $('#update_formValidate').serialize(),
+			success: function(result) {
+				if(result.status==1){
+					$(".tablesall").remove();
+					alert(result.message);
+					var link = $('#printdiscrepancy').attr('href');
+					window.open( link, "_blank");
+				}else{
+					alert('failed to update');
+				}
+			}
+		});
 		//$("#submit-download").prop('disabled',true);
 	});
 	// $(document).on('click','.variationtype',function(){

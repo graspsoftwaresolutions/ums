@@ -3642,7 +3642,8 @@ class SubscriptionController extends CommonController
 
             }
         }
-        return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
+        echo json_encode(['status' => 1, 'message' => 'Salary Updations Added successfully!!']);
+        //return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
     }
     
 }

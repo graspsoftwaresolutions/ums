@@ -333,8 +333,8 @@
 										<td style="width:30%">{{ $member->name }}</td>
 										<td style="width:20%">{{ $member->ic }}</td>
 										
-										<td style="width:20%">{{ $member->last_amount }}</td>
-										<td style="width:20%">{{ $member->Amount }}</td>
+										<td style="width:20%">{{ number_format($member->last_amount,2,".",",") }}</td>
+										<td style="width:20%">{{ number_format($member->Amount,2,".",",") }}</td>
 										
 									
 									</tr> 
@@ -380,8 +380,8 @@
 										<td style="width:30%">{{ $member->name }}</td>
 										<td style="width:20%">{{ $member->ic }}</td>
 										
-										<td style="width:20%">{{ $member->last_amount }}</td>
-										<td style="width:20%">{{ $member->Amount }}</td>
+										<td style="width:20%">{{ number_format($member->last_amount,2,".",",") }}</td>
+										<td style="width:20%">{{ number_format($member->Amount,2,".",",") }}</td>
 										
 									
 									</tr> 
