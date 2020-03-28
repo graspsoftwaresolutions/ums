@@ -1166,11 +1166,22 @@
                                                         <label for="doj" class="force-active">Date of Joining</label>
                                                         <div class="errorTxt"></div>
                                                     </div>
-                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
-                                                        <label for="salary" class="force-active">Salary*</label>
-                                                        <input id="salary" name="salary" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
-                                                        <div class="errorTxt11"></div>
+                                                    <div class="col s12 m6">
+                                                    	<div class="row">
+	                                                    	<div class="input-field col s12 m6 {{ $hidemember }}">
+		                                                        <label for="salary" class="force-active">Salary*</label>
+		                                                        <input id="salary" name="salary" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
+		                                                        <div class="errorTxt11"></div>
+		                                                    </div>
+		                                                    <div class="input-field col s12 m6 ">
+		                                                        <label for="cursalary" class="force-active">Current Salary</label>
+		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary}}" required type="text" data-error=".errorTxt11">
+		                                                        <div class="errorTxt11"></div>
+		                                                    </div>
+	                                                    </div>
                                                     </div>
+                                                    
+                                                    
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="salary" class="force-active">Old IC Number</label>

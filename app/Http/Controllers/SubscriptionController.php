@@ -3522,11 +3522,13 @@ class SubscriptionController extends CommonController
                                                     ->pluck('s.basic_salary')->first();
                                 
                                 $basicsalry = DB::table('salary_updations as s')
-                                                    ->select(DB::raw("SUM(s.additional_amt) as additions"))
+                                                    ->select("s.additional_amt as additions","s.increment_type_id")
                                                     ->where('s.member_id','=',$memberid)
                                                     ->where('s.date','=',$lastupdate)
-                                                    ->where('s.increment_type_id','=',1)
-                                                    ->get();
+                                                    ->where(function($query) use ($lastupdate){
+                                                        $query->Where('s.increment_type_id','=',1)
+                                                            ->orWhere('s.increment_type_id','=',4);
+                                                    })->get();
 
                                 $companyid = DB::table('membership as m')
                                                     ->select('c.company_id')
@@ -3534,7 +3536,12 @@ class SubscriptionController extends CommonController
                                                     ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
                                 if($lastupdate!=''){
                                     $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
-                                    $salary = $lastsalary+$basicsalry[0]->additions;
+                                    if($basicsalry[0]->increment_type_id==1){
+                                        $salary = $lastsalary+$basicsalry[0]->additions;
+                                    }else{
+                                        $salary = $lastsalary-$basicsalry[0]->additions;
+                                    }
+                                    
                                 }else{
                                     $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
                                 }
@@ -3635,7 +3642,13 @@ class SubscriptionController extends CommonController
                                     }
                                 //}
                             }
+                            DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newsalary]);
 
+                            // $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
+                            //         ->where('date','=',$form_date)
+                            //         ->where('increment_type_id','=',$inctype)
+                            //         ->count();          
+                            
                         }
                    }
                 }
