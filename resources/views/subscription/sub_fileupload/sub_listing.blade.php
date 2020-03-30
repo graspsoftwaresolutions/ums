@@ -653,7 +653,7 @@
                     success: function(result) {
                         loader.hideLoader();
                         if (result.status == 1 || result.status == 2) {
-                            if (result.status == 1) {
+                            if (result.status ==1 ) { // =1
                                 swal({
                                     title: "Data Already Exists!",
                                     text: "Are you sure you want to download existance data?",
@@ -672,11 +672,11 @@
                                 });
                             } else {
                                 //alert('test');
-                                $("#sub_company").val('').trigger('change');
-                                swal({
-                                    title: 'Subscription for this bank already uploaded by bank',
-                                    icon: 'error'
-                                });
+                                // $("#sub_company").val('').trigger('change');
+                                // swal({
+                                //     title: 'Subscription for this bank already uploaded by bank',
+                                //     icon: 'error'
+                                // });
                             }
 
                             $.each(result.status_data.count, function(key, entry) {

@@ -178,7 +178,38 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<ul id="projects-collection" class="collection z-depth-1 animate fadeLeft">
 				               <li class="">
 				                
-				                  <h6 class="collection-header m-20" style="margin: 10px 10px;">Subscription Summary <a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a></h6>
+				                  <h6 class="collection-header m-20" style="margin: 10px 10px;">Subscription Summary 
+
+				                
+									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_variance') }}" target="_blank" enctype="multipart/form-data">
+										@csrf
+										<div class="">
+											
+											<div class="hide">
+												<label for="doe">{{__('From Month') }}*</label>
+												<input type="text" name="from_date" id="from_date" required="" value="{{ date('M/Y',strtotime($datacmpy->Date.' -1 month')) }}" class="datepicker-custom" />
+											
+												<label for="doe">{{__('Subscription Month') }}*</label>
+												<input type="text" name="to_date" id="to_date" required value="{{ date('M/Y',strtotime($datacmpy->Date)) }}" class="datepicker-custom" />
+												<input type="text" name="companyid" id="companyid" required value="{{ $data['companyid'] }}" class="hide" />
+											</div>
+											
+											
+											<div class=" " >
+												
+												<button id="submit-upload" class=" btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="submit">{{__('View Variation') }}</button>
+												
+											</div>
+											
+										</div>
+										
+									</form>
+									
+								
+
+				                  	<!--a style="" target="_blank" href="{{ URL::to(app()->getLocale().'/summary-status?status=0&date='.strtotime('now').'&company_id='.$data['company_auto_id']) }}" title="View Members" class="waves-effect waves-light blue btn btn-sm" href="">View Variation</a-->
+
+				                  	<a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a></h6>
 				                    <p>
 			                  	
 										
@@ -189,7 +220,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				               <li class="collection-item">
 				                  <div class="row">
 				                     <div class="col s6">
-				                        <p class="collections-title">Total Members Count</p>
+				                        <p class="collections-title">Total Members in NUBE</p>
 				                        <p class="collections-content"></p>
 				                     </div>
 				                     <div class="col s3"> <p class="collections-title"><span class="task-cat deep-orange accent-2">{{ $data['members_count'] }}</span></p></div>
@@ -201,7 +232,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				               <li class="collection-item">
 				                  <div class="row">
 				                     <div class="col s6">
-				                        <p class="collections-title">Total Uploaded Members Count</p>
+				                        <p class="collections-title">Total Members Uploaded</p>
 				                        <p class="collections-content"></p>
 				                     </div>
 				                     <div class="col s3"><p class="collections-title"><span class="task-cat deep-orange accent-2">{{ $data['company_subscription_list']-$data['doj_count'] }}</span></p></div>
@@ -213,7 +244,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				               <li class="collection-item">
 				                  <div class="row">
 				                     <div class="col s6">
-				                        <p class="collections-title">Uploaded Members Matched Count</p>
+				                        <p class="collections-title">Total Members Matched</p>
 				                        <p class="collections-content"></p>
 				                     </div>
 				                     <div class="col s3"><p class="collections-title"><span class="task-cat deep-orange accent-2">{{ $data['matched_count']-$data['doj_count'] }}</span></p></div>
@@ -225,7 +256,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				               <li class="collection-item">
 				                  <div class="row">
 				                     <div class="col s6">
-				                        <p class="collections-title">Uploaded Amount</p>
+				                        <p class="collections-title">Uploaded Amount (RM)</p>
 				                        <p class="collections-content"></p>
 				                     </div>
 				                     <div class="col s3"><p class="collections-title"><span class="task-cat deep-orange accent-2">{{ number_format($data['matched_amount'],2,".",",") }}</span></p></div>
@@ -237,7 +268,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				               <li class="collection-item">
 				                  <div class="row">
 				                     <div class="col s6">
-				                        <p class="collections-title">Uploaded Not Matched Count</p>
+				                        <p class="collections-title">Not Matched Members</p>
 				                        <p class="collections-content"></p>
 				                     </div>
 				                     <div class="col s3"><p class="collections-title"><span class="task-cat deep-orange accent-2">{{ $data['company_subscription_list']-$data['matched_count'] }}</span> </p></div>

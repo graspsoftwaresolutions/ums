@@ -125,6 +125,7 @@ class SubscriptionController extends CommonController
     }
 	
 	public function subscribeDownload(Request $request){
+       // return $request->all();
         $file_name = '';
         $fmmm_date = explode("/",$request->entry_date);  
         $file_name .= $fmmm_date[0];
@@ -151,6 +152,7 @@ class SubscriptionController extends CommonController
             $validator = Validator::make(Input::all(), $rules);
             if($validator->fails())
             {
+                //return 1;
                 return back()->withErrors($validator);
             }
             else
@@ -3123,6 +3125,7 @@ class SubscriptionController extends CommonController
             }else{
                 $company_id = $data['subsdata']->company_id;
             }
+            $data['companyid'] = $company_id;
            
 
             $data['members_count'] = DB::table('membership as m')
@@ -3268,6 +3271,7 @@ class SubscriptionController extends CommonController
     }
     
     public function varianceFilter($lang, Request $request){
+        //return $request->all();
         $from_date_str = $request->input('from_date');
         $to_date_str = $request->input('to_date');
         $companyid = $request->input('companyid');
@@ -3292,20 +3296,22 @@ class SubscriptionController extends CommonController
         $data['to_year_full']= date('Y-m-01',$todatestring);
         //return 1;
 
-        $submembers = DB::table('mon_sub_member as mm')
-        ->select('mm.MemberCode as member_id','mm.Amount','mm.NRIC','mm.Name','mm.id as submemberid')
-        ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
-        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
-        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
-                    ->where('sc.CompanyCode','=',$companyid)
-                    ->where('ms.Date','=', $data['to_year_full'])
-                    ->get();
+        // $submembers = DB::table('mon_sub_member as mm')
+        // ->select('mm.MemberCode as member_id','mm.Amount','mm.NRIC','mm.Name','mm.id as submemberid')
+        // ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+        // ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+        // ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        //             ->where('sc.CompanyCode','=',$companyid)
+        //             ->where('ms.Date','=', $data['to_year_full'])
+        //             ->get();
         //dd($submembers);
 		
         $data['company_view']=[];
         $data['diff_in_months']=$diff_in_months;
-        $data['submembers']=$submembers;
-		$data['branch_view']=[];
+        $data['submembers']=[];
+        $data['branch_view']=[];
+        
+        //return $data;
 	
 		return view('subscription.variation_bank_members')->with('data', $data);
     }
