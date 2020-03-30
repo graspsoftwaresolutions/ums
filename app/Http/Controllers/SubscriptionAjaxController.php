@@ -1486,4 +1486,26 @@ class SubscriptionAjaxController extends CommonController
         
         echo json_encode($data);  
      }
+
+     public function unpaidMemberDetails(Request $request){
+        $sub_member_auto_id = $request->input('sub_member_auto_id');
+        $up_member_data = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->first();
+        $match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_auto_id)->get();
+        $member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->pluck('MemberCode')->first();
+        $data['up_member_data'] = $up_member_data;
+        $unmatchdata = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$sub_member_auto_id)
+        ->where('type','=',1)
+        ->where('approval_status','=',1)
+        ->first();
+        $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
+	    $data['registered_member_number'] = CommonHelper::getmembercode_byid($member_id);
+        $data['unmatchdata'] = $unmatchdata;
+        //$data['up_nric'] = $up_member_data->NRIC;
+       // $data['registered_member_name'] = CommonHelper::getmemberName($member_id);
+       // $data['registered_member_number'] = CommonHelper::getmembercode_byid($member_id);
+        $data['status'] = 1;
+        $baseurl = URL::to('/');
+        
+        echo json_encode($data);  
+     }
 }

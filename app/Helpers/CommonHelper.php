@@ -2888,7 +2888,7 @@ class CommonHelper
        $members = $membersqry->pluck('sm.MemberCode');
       // dd($members);
 
-        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic')
+        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id')
                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                         ->leftjoin('membership as m','m.id','=','mm.MemberCode')
@@ -2956,7 +2956,7 @@ class CommonHelper
        $members = $membersqry->pluck('sm.MemberCode');
        // /dd($members);
 
-        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic')
+        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id')
                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                         ->leftjoin('membership as m','m.id','=','mm.MemberCode')
@@ -3130,7 +3130,28 @@ class CommonHelper
         
         return $matchdata;
     }
+    public static function get_unpaid_data($submemberid){
+        $matchdata = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$submemberid)
+        ->where('type','=',1)
+        ->where('approval_status','=',1)
+        ->first();
+        
+        return $matchdata;
+    }
     public static function get_unmatch_reason($reasonid){
+        if($reasonid==1){
+            $reasonname = 'Resigned';
+        }elseif($reasonid==2){
+            $reasonname = 'IC not match';
+        }elseif($reasonid==3){
+            $reasonname = 'Bank not match';
+        }else{
+            $reasonname = 'Others';
+        }
+        
+        return $reasonname;
+    }
+    public static function get_unpaid_reason($reasonid){
         if($reasonid==1){
             $reasonname = 'Resigned';
         }elseif($reasonid==2){

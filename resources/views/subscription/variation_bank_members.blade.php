@@ -111,13 +111,13 @@
 						<div class="container">
 							<div class="row">
 								<div class="col s10 m6 l6">
-									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription Variance List') }}</h5>
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription Variation List') }}</h5>
 									<ol class="breadcrumbs mb-0">
 										<ol class="breadcrumbs mb-0">
 											<li class="breadcrumb-item"><a
 													href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Subscription Variance') }}
+											<li class="breadcrumb-item active">{{__('Subscription Variation') }}
 											</li>
 									</ol>
 								</div>
@@ -156,6 +156,8 @@
 								@php
 									$userid = Auth::user()->id;
 									$companyid = CommonHelper::getCompanyID($userid);
+									$get_roles = Auth::user()->roles;
+									$user_role = $get_roles[0]->slug;
 								@endphp
 								<div class="row">
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_variance') }}" enctype="multipart/form-data">
@@ -197,18 +199,95 @@
 			<div class="container">
 				<div class="card">
 					<div class="card-content">
-						<h4 class="card-title">Subscription variation Members
+						<h4 class="card-title">Subscription Variation Members
 						<div class="right">
-							<a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a>
+							<a id="printbutton" target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation-members?date='.strtotime($data['to_year_full']).'&companyid='.$companyid) }}" style="" class="export-button btn right" style="background:#ccc;" > Print</a>
 			 	
 						</div>
 						</h4>
 					</div>
 					<div class="card-body">
 						@php
+						
+							$notmatched = $data['submembers'];
+							//dd($notmatched);
+						@endphp
+						<div id="notmatcheddetails" class="@if(count($notmatched)==0) hide @endif"  >
+							<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Not Matched Members List</p>
+							<table id="page-length-option" class="display" width="100%">
+								@if($data['diff_in_months']==1)
+								<thead>
+									<tr>
+										<th width="3%">{{__('S.No')}}</th>
+										<th width="10%">{{__('Member Name')}}</th>
+										
+										<th width="10%">{{__('NRIC')}}</th>
+										<th width="7%">{{__('Amount')}}</th>
+										<th width="10%">{{__('Reason')}}</th>
+										@if($user_role=='company')
+										<th width="10%">{{__('Update Status')}}</th>
+										<th width="15%">{{__('Action')}}</th>
+										@endif
+										
+									</tr> 
+								</thead>
+								<tbody>
+									@php
+										$slno=1;
+										//dd($user_role);
+									@endphp
+									@foreach($notmatched as  $key => $member)
+										@php
+											//dd($member);
+											$approval_status = $member->approval_status;
+											
+											$unmatchdata = CommonHelper::get_unmatched_data($member->sub_member_id);
+											$unmatchreason = '';
+											$approval_status = 0;
+											if(!empty($unmatchdata)){
+												$unmatchreason = $unmatchdata->reason;
+												$unmatchreason = CommonHelper::get_unmatch_reason($unmatchreason);
+												if($unmatchdata->reason==4){
+													$unmatchreason = $unmatchdata->remarks;
+												}
+												$approval_status = 1;
+											}
+											
+										@endphp
+										<tr style="overflow-x:auto;">
+											<td>{{$slno}}</td>
+											<td>{{ $member->up_member_name }}</td>
+											<!--td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td-->
+											
+											<td>{{ $member->up_nric }}</td>
+											<td>{{ number_format($member->Amount,2,".",",") }}</td>
+											<td id="unmatch_reason_{{ $member->sub_member_id }}" width="10%">{{$unmatchreason}}</td>
+											@if($user_role=='company')
+
+											<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
+											
+											
+											<td>
+											
+											<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td>
+											
+											@endif
+											
+										</tr> 
+										@php
+											$slno++;
+										@endphp
+									@endforeach
+								</tbody>
+								@endif
+								
+							</table>
+							<br>
+						</div>
+						@php
 							$pre_company_members = CommonHelper::getLastMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
 							$current_company_members = CommonHelper::getcurrentMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
-							$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
+							//$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
 						@endphp
 						<div id="predetails" class="@if(count($pre_company_members)==0) hide @endif"  >
 							<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Previous Subscription Paid - Current Subscription Unpaid</p>
@@ -221,9 +300,8 @@
 										<th>NRIC</th>
 										<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
 										<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
-										
-	<!-- 
-										<th>Action</th> -->
+										<th width="10%">{{__('Reason')}}</th>
+										<th>Action</th> 
 										
 											
 										
@@ -234,14 +312,28 @@
 										$slno = 1;
 									@endphp
 									@foreach($pre_company_members as $company)
+										@php
+											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
+											$unpaidreason = '';
+											$approval_status = 0;
+											if(!empty($unmpaiddata)){
+												$unmatchreason = $unmpaiddata->reason;
+												$unpaidreason = CommonHelper::get_unpaid_reason($unmatchreason);
+												if($unmatchreason==5){
+													$unpaidreason = $unmpaiddata->remarks;
+												}
+												$approval_status = 1;
+											}
+										@endphp
 										<tr>
 											<td>{{$slno}}</td>
 											<td>{{ $company->name }}</td>
 											<td>{{ $company->ic }}</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td>0</td>
+											<td id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
 											
-											<!-- <td class="hide"></td> -->
+											<td class=""><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showVarianceApproval({{ $company->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td></td> 
 										</tr>
 										@php
 											$slno++;
@@ -266,9 +358,8 @@
 										<th>NRIC</th>
 										<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
 										<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
-										
-	<!-- 
-										<th>Action</th> -->
+										<th width="10%">{{__('Reason')}}</th>
+										<th>Action</th>
 										
 											
 										
@@ -280,6 +371,19 @@
 										
 									@endphp
 									@foreach($current_company_members as $company)
+										@php
+											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
+											$unpaidreason = '';
+											$approval_status = 0;
+											if(!empty($unmpaiddata)){
+												$unmatchreason = $unmpaiddata->reason;
+												$unpaidreason = CommonHelper::get_unpaid_reason($unmatchreason);
+												if($unmatchreason==5){
+													$unpaidreason = $unmpaiddata->remarks;
+												}
+												$approval_status = 1;
+											}
+										@endphp
 										<tr>
 											<td>{{$slno1}}</td>
 											<td>{{ $company->name }}</td>
@@ -287,7 +391,9 @@
 											<td>0</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											
-											<!-- <td></td> -->
+											<td id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
+											
+											<td class=""><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showVarianceApproval({{ $company->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td></td> 
 										</tr>
 										@php
 											$slno1++;
@@ -301,117 +407,106 @@
 							<br>
 						</div>
 
-						<div id="incdetails" class="@if(count($variance_company_members)==0) hide @endif"  >
-							<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Subscription Increment</p>
-							<table id="page-length-option" class="display" width="100%">
-								@if($data['diff_in_months']==1)
-								<thead>
-									<tr class="" >
-										<th>{{__('S.No')}}</th>
-										<th>Member Name</th>
-										<th>NRIC</th>
-										<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
-										<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
-										
-	<!-- 
-										<th>Action</th> -->
-										
-											
-										
-									</tr>
-								</thead>
-								<tbody>
-									@php
-										//dd($data['diff_in_months']);
-										
-										$slno4=1;
-									@endphp
-									@foreach($variance_company_members as $member)
-									@if($member->Amount > $member->last_amount)
-									<tr class="">
-										<td style="width:3%">{{ $slno4 }}</td>
-										<td style="width:30%">{{ $member->name }}</td>
-										<td style="width:20%">{{ $member->ic }}</td>
-										
-										<td style="width:20%">{{ number_format($member->last_amount,2,".",",") }}</td>
-										<td style="width:20%">{{ number_format($member->Amount,2,".",",") }}</td>
-										
-									
-									</tr> 
-									@php
-										$slno4++;
-									@endphp
-									@endif
-									@endforeach
-								</tbody>
-								@endif
-							</table>
-							<br>
-						</div>
-						<div id="decdetails" class="@if(count($variance_company_members)==$slno4-1 || count($variance_company_members)==0) hide @endif"  >
-							<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Subscription Decrement</p>
-							<table id="page-length-option" class="display" width="100%">
-								@if($data['diff_in_months']==1)
-								<thead>
-									<tr class="" >
-										<th>{{__('S.No')}}</th>
-										<th>Member Name</th>
-										<th>NRIC</th>
-										<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
-										<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
-										
-	<!-- 
-										<th>Action</th> -->
-										
-											
-										
-									</tr>
-								</thead>
-								<tbody>
-									@php
-										//dd($data['diff_in_months']);
-										$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
-										$slno5=1;
-									@endphp
-									@foreach($variance_company_members as $member)
-									@if($member->last_amount > $member->Amount)
-									<tr class="">
-										<td style="width:3%">{{ $slno5 }}</td>
-										<td style="width:30%">{{ $member->name }}</td>
-										<td style="width:20%">{{ $member->ic }}</td>
-										
-										<td style="width:20%">{{ number_format($member->last_amount,2,".",",") }}</td>
-										<td style="width:20%">{{ number_format($member->Amount,2,".",",") }}</td>
-										
-									
-									</tr> 
-									@php
-										$slno5++;
-									@endphp
-									@endif
-									@endforeach
-								</tbody>
-								@endif
-							</table>
-						</div>
+						
+						
 					</div> 
 				</div> 
 			</div> 
 		</div> 
 	</div>
-	<!-- Modal Trigger -->
-
-	<div id="modal-remarks" class="modal">
+	<!-- Modal Structure -->
+	  <div id="modal-approval" class="modal">
 		<form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
         @csrf
-			<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
+		<input type="text" class="hide" name="sub_member_id" id="sub_member_id">
+		<div class="modal-content">
+		  <h4>Not Matched Member details</h4>
+			<div class="row">
+				<div class="col s12 m6">
+					 <p>
+						Member Name: <span id="view_member_name" class="bold"></span>
+						</br>
+						NRIC: <span id="view_nric" class="bold"></span>
+				   </p>
+				</div>
+				<div class="col s12 m6">
+					 <p>
+						Amount: <span id="view_paid" class="bold"></span>
+				   </p>
+				</div>
+			</div>
+		  
+		   </hr>
+				<div class="row">
+	                <div class="col m3">
+	                    <label for="typeid">{{__('Reason') }}*</label>
+	                    <select name="reasonid" id="reasonid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
+							<option value="">Select</option>
+							<option value="1">Resigned</option>
+							<option value="2">IC not match</option>
+							<option value="3">Bank not match</option>
+							<option value="4">Others</option>
+						</select>
+	                </div>
+	                <div class="col m9 descriptiontd hide">
+	                	<label for="description">{{__('Description') }}*</label>
+	                	<textarea id="description" name="description" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
+	                </div>
+	            </div>
+				
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
+		  <button type="submit" class="btn waves-effect waves-light submitApproval" >Submit</button>
+		</div>
+		 </form>
+	  </div>
+	<!-- Modal Trigger -->
+
+	<div id="modal-variance" class="modal">
+		<form class="formValidate" id="varianceformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
+        @csrf
+			<input type="text" class="hide" name="vsub_member_id" id="vsub_member_id">
 			<div class="modal-content">
-				<h4>Remarks</h4>
-				<textarea id="description" name="description" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
+				<h4>Subscription Unpaid Member details</h4>
+				<div class="row">
+					<div class="col s12 m6">
+						 <p>
+							Member Name: <span id="view_vmember_name" class="bold"></span>
+							</br>
+							NRIC: <span id="view_vnric" class="bold"></span>
+					   </p>
+					</div>
+					<div class="col s12 m6">
+						 <p>
+							Amount: <span id="view_vpaid" class="bold"></span>
+					   </p>
+					</div>
+				</div>
+			  
+			   </hr>
+				<div class="row">
+	                <div class="col m3">
+	                    <label for="typeid">{{__('Reason') }}*</label>
+	                    <select name="vreasonid" id="vreasonid" onclick="return EnableVDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
+							<option value="">Select</option>
+							<option value="1">Resigned</option>
+							<option value="2">Retired</option>
+							<option value="3">Promoted</option>
+							<option value="4">Demised</option>
+							<option value="5">Others</option>
+						</select>
+	                </div>
+	                <div class="col m9 vdescriptiontd hide">
+	                	<label for="vdescription">{{__('Description') }}*</label>
+	                	<textarea id="vdescription" name="vdescription" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
+	                </div>
+	            </div>
+				
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-			  	<button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+			  	<button type="submit" class="btn waves-effect waves-light submitApproval" >Submit</button>
 			</div>
 		</form>
 	</div>
@@ -538,10 +633,106 @@ $(document).ready(function() {
 		});
 	}
 	
+	
+	function showApproval(sub_member_id){
+  		//alert(123);
+	   $(".submitApproval").attr('disabled', false);
+	   $('.modal').modal();
+	   $("#sub_member_id").val(sub_member_id);
+	   loader.showLoader();
+		var url = "{{ url(app()->getLocale().'/unmatched_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
+		$.ajax({
+			url: url,
+			type: "GET",
+			dataType: "json",
+			success: function(result) {
+				//console.log(result);
+				$(".match_case_row").addClass('hide');
+				$(".match_case_row").css('pointer-events','unset');
+				$("#view_member_name").html(result.up_member_data.Name);
+				$("#view_nric").html(result.up_member_data.NRIC);
+				$("#view_paid").html(result.up_member_data.Amount);
+				unmatchinfo = result.unmatchdata;
+				$(".descriptiontd").addClass('hide');
+				$("#reasonid").val('');
+					//console.log(res);
+				if(unmatchinfo!=null){
+					$("#reasonid").val(unmatchinfo.reason);
+					if(unmatchinfo.reason==4){
+						$(".descriptiontd").removeClass('hide');
+						$("#description").val(unmatchinfo.remarks);
+					}
+					
+				}
+				
+				$("#modal-approval").modal('open');
+				loader.hideLoader();
+			}
+		});
+    }
+
+    function showVarianceApproval(sub_member_id){
+    	$(".submitApproval").attr('disabled', false);
+	    $('.modal').modal();
+	    $("#vsub_member_id").val(sub_member_id);
+	    loader.showLoader();
+		var url = "{{ url(app()->getLocale().'/unpaid_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
+		$.ajax({
+			url: url,
+			type: "GET",
+			dataType: "json",
+			success: function(result) {
+				//console.log(result);
+				$(".match_case_row").addClass('hide');
+				$(".match_case_row").css('pointer-events','unset');
+				$("#view_vmember_name").html(result.up_member_data.Name);
+				$("#view_vnric").html(result.up_member_data.NRIC);
+				$("#view_vpaid").html(result.up_member_data.Amount);
+				unmatchinfo = result.unmatchdata;
+				$(".vdescriptiontd").addClass('hide');
+				$("#vreasonid").val('');
+					//console.log(res);
+				if(unmatchinfo!=null){
+					$("#vreasonid").val(unmatchinfo.reason);
+					if(unmatchinfo.reason==5){
+						$(".vdescriptiontd").removeClass('hide');
+						$("#vdescription").val(unmatchinfo.remarks);
+					}
+					
+				}
+				
+				$("#modal-variance").modal('open');
+				loader.hideLoader();
+			}
+		});	
+    }
+	// $(".subscription_amount").each(function() {
+	//       var subs_value = $(this).val()=='' ? 0 : $(this).val();
+	//       total_subs += parseFloat(subs_value);
+	//  });
+
+	function EnableDescription(reasonval){
+		if(reasonval==4){
+			$(".descriptiontd").removeClass('hide');
+		}else{
+			$(".descriptiontd").addClass('hide');
+		}
+	}
+
+	function EnableVDescription(reasonval){
+		if(reasonval==5){
+			$(".vdescriptiontd").removeClass('hide');
+		}else{
+			$(".vdescriptiontd").addClass('hide');
+		}
+	}
+
 	$(document).on('submit','#approvalformValidate',function(event){
 		event.preventDefault();
 		$(".submitApproval").attr('disabled', true);
-		var url = "{{ url(app()->getLocale().'/ajax_save_variation') }}" ;
+		var url = "{{ url(app()->getLocale().'/ajax_save_summary') }}" ;
+		var vreasonval = $("#reasonid option:selected").html();
+		//alert(vreasonval);
 		$.ajax({
 			url: url,
 			type: "POST",
@@ -552,7 +743,16 @@ $(document).ready(function() {
 			data: $('#approvalformValidate').serialize(),
 			success: function(result) {
 				if(result.status==1){
-					
+					var badge_color = result.approval_status == 1 ? 'green' : 'red';
+					var badge_label = result.approval_status == 1 ? 'Updated' : 'Pending';
+					$("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
+					if(result.member_match==2){
+						$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
+						$("#member_status_"+result.sub_member_auto_id).html(result.member_status);
+						
+						
+					}
+					$("#unmatch_reason_"+result.sub_member_auto_id).html(vreasonval);
 					M.toast({
 						html: result.message
 					});
@@ -561,14 +761,40 @@ $(document).ready(function() {
 						html: result.message
 					});
 				}
-				$("#modal-remarks").modal('close');
+				$("#modal-approval").modal('close');
 			}
 		});
 	});
-	// $(".subscription_amount").each(function() {
-	//       var subs_value = $(this).val()=='' ? 0 : $(this).val();
-	//       total_subs += parseFloat(subs_value);
-	//  });
+
+
+	$(document).on('submit','#varianceformValidate',function(event){
+		event.preventDefault();
+		$(".submitApproval").attr('disabled', true);
+		var url = "{{ url(app()->getLocale().'/ajax_save_variation') }}" ;
+		var vreasonval = $("#vreasonid option:selected").html();
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType: "json",
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			data: $('#varianceformValidate').serialize(),
+			success: function(result) {
+				if(result.status==1){
+					$("#unpaid_reason_"+result.sub_member_auto_id).html(vreasonval);
+					M.toast({
+						html: result.message
+					});
+				}else{
+					M.toast({
+						html: result.message
+					});
+				}
+				$("#modal-variance").modal('close');
+			}
+		});
+	});
 
 	$("#subscriptions_sidebars_id").addClass('active');
 	$("#subvariance_sidebar_li_id").addClass('active');

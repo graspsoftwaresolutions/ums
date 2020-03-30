@@ -328,6 +328,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription_variation','SubscriptionController@variation')->name('subscription.month');
 	Route::get('subscription-variation','SubscriptionController@variationAll')->name('subscription.all');
 	Route::post('subscription_variation','SubscriptionController@variationFilter')->name('subscription.filter');
+	Route::get('subscription-variation-members','SubscriptionController@variationMembersAll')->name('subscription.membersall');
 	
 	Route::get('newtakaful_premium_report','ReportsController@PremiumTakaulReport')->name('takafulnew.premium');
 	Route::get('newtakaful_summary_report','ReportsController@SummaryTakaulReport')->name('takafulnew.summary');
@@ -457,6 +458,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('list_sub_company','SubscriptionController@sub_company_list')->name('company.sub_company');
 	Route::post('ajax_subscriptioncompany_list','SubscriptionAjaxController@ajax_subscription_company_list');
 	Route::get('unmatched_member_info','SubscriptionAjaxController@unmatchedMemberDetails')->name('unmatched.members');
+	Route::get('unpaid_member_info','SubscriptionAjaxController@unpaidMemberDetails')->name('unpaid.members');
 	Route::get('varation_member_info','SubscriptionAjaxController@VariationMemberDetails')->name('variation.members');
 	Route::post('ajax_save_variation','SubscriptionController@saveVariance')->name('variance.save');
 

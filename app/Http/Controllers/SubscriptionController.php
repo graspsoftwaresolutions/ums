@@ -3260,12 +3260,29 @@ class SubscriptionController extends CommonController
     public function varianceList($lang, Request $request){
 		$data['to_month_year'] = date('M/Y');
 		$data['from_year_full'] = date("Y-m-01", strtotime("first day of previous month"));
-		$data['to_year_full']= date('Y-m-01');
+        $data['to_year_full']= date('Y-m-01');
+
+        $userid = Auth::user()->id;
+		$companyid = CommonHelper::getCompanyID($userid);
+        
+        $subcompanyid = DB::table('mon_sub_company as sc')
+                        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+                        ->where('sc.CompanyCode','=',$companyid)
+                        ->where('ms.Date','=',$data['to_year_full'])
+                        ->pluck('sc.id')
+                        ->first();
+        
+        $cond ='';
+        if(isset($subcompanyid) && $subcompanyid!=''){
+            $cond =" AND m.MonthlySubscriptionCompanyId = '$subcompanyid'";
+        }
+       
+        $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>"2" OR m.MemberCode is null)'));
 		
         $data['company_view']=[];
         $data['diff_in_months']=1;
         $data['branch_view']=[];
-        $data['submembers']=[];
+        $data['submembers'] = $members_data;
 	
 		return view('subscription.variation_bank_members')->with('data', $data);
     }
@@ -3305,10 +3322,26 @@ class SubscriptionController extends CommonController
         //             ->where('ms.Date','=', $data['to_year_full'])
         //             ->get();
         //dd($submembers);
+
+        $subcompanyid = DB::table('mon_sub_company as sc')
+                        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+                        ->where('sc.CompanyCode','=',$companyid)
+                        ->where('ms.Date','=',$data['to_year_full'])
+                        ->pluck('sc.id')
+                        ->first();
+        
+        $cond ='';
+        if(isset($subcompanyid) && $subcompanyid!=''){
+            $cond =" AND m.MonthlySubscriptionCompanyId = '$subcompanyid'";
+        }
+       
+        $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>"2" OR m.MemberCode is null)'));
+
+        $data['submembers'] = $members_data;
 		
         $data['company_view']=[];
         $data['diff_in_months']=$diff_in_months;
-        $data['submembers']=[];
+      //  $data['submembers']=[];
         $data['branch_view']=[];
         
         //return $data;
@@ -3319,8 +3352,9 @@ class SubscriptionController extends CommonController
 
     public function saveVariance($lang, Request $request){
         //return 1;
-        $sub_member_id = $request->input('sub_member_id');
-        $description = $request->input('description');
+        $sub_member_id = $request->input('vsub_member_id');
+        $description = $request->input('vdescription');
+        $reasonid = $request->input('vreasonid');
         
 		
 		$member_status = '';
@@ -3334,7 +3368,9 @@ class SubscriptionController extends CommonController
         $insertdata['mon_sub_member_id'] = $sub_member_id;
         $insertdata['type'] = 1;
         $insertdata['approval_status'] = 1;
+        $insertdata['reason'] = $reasonid;
         $insertdata['remarks'] = $description;
+       
         if($mismatchedcount==0){
             $saveunmatch = DB::table('mon_sub_remarks')->insert($insertdata);
         }else{
@@ -3663,6 +3699,85 @@ class SubscriptionController extends CommonController
         }
         echo json_encode(['status' => 1, 'message' => 'Salary Updations Added successfully!!']);
         //return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
+    }
+
+    public function variationMembersAll($lang, Request $request){
+        $datestring = $request->input('date');
+		$companyid = $request->input('companyid');
+	
+        $data['companyid'] = $companyid;
+        
+		//$datestring = strtotime('2019-04-01');
+		//return date('Y-m-01',strtotime($datestring));
+		$data['month_year'] = date('M/Y',$datestring);
+        $data['month_year_full'] = date('Y-m-01',$datestring);
+
+        $subcompanyid = DB::table('mon_sub_company as sc')
+                        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+                        ->where('sc.CompanyCode','=',$companyid)
+                        ->where('ms.Date','=',$data['month_year_full'])
+                        ->pluck('sc.id')
+                        ->first();
+        
+        $cond ='';
+        if(isset($subcompanyid) && $subcompanyid!=''){
+            $cond =" AND m.MonthlySubscriptionCompanyId = '$subcompanyid'";
+        }
+       
+        $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>"2" OR m.MemberCode is null)'));
+
+        $data['subsdata'] = DB::table('mon_sub_company as sc')->select('s.Date','c.short_code','c.company_name','c.id as company_id')
+        ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        ->where('sc.id','=',$subcompanyid)
+        ->first();
+
+        $data['matched_count'] = DB::table('mon_sub_member as mm')->select('*')
+        ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+        //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        ->where('sc.id','=',$subcompanyid)
+        ->where('mm.StatusId','<=',2)
+        ->count();
+
+        $data['doj_count'] = DB::table('mon_sub_member as mm')->select('*')
+        ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+        ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+        ->where('sc.id','=',$subcompanyid)
+        ->where('s.Date','=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+        ->count();
+
+        $data['matched_amount'] = DB::table('mon_sub_member as mm')->select(DB::raw('sum(Amount) as Amount'))
+        ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+        ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+        ->where('sc.id','=',$subcompanyid)
+        ->where('mm.StatusId','<=',2)
+        ->where('s.Date','<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+        ->pluck('Amount')
+        ->first();
+        //return $data['matched_amount'] ;
+
+        $data['company_subscription_list'] = DB::table('mon_sub_member as mm')->select('*')
+        ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+        //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+        ->where('sc.id','=',$subcompanyid)
+        //->where('mm.STatusId','<=',2)
+        ->count();
+
+
+        $data['members_count'] = DB::table('membership as m')
+        ->leftjoin('company_branch as cb', 'cb.id' ,'=','m.branch_id')
+        ->leftjoin('company as c', 'c.id' ,'=','cb.company_id')
+        ->where('status_id','<=',2)->where('c.id','=',$companyid)->count();
+		
+        $data['submembers'] = $members_data;
+        
+        return view('subscription.variation_bank_members_print')->with('data', $data);
     }
     
 }

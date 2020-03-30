@@ -140,9 +140,9 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				@if($data['status']==1)
-					Uploaded Matched Members List 
+					Members Matched List 
 				@else
-					Uploaded Not Matched Members List 
+					Not Matched Members List 
 				@endif
 				<b>[Total Amount : {{ number_format($data['total_amt'],2,".",",") }}]</b>
 				@php
@@ -288,10 +288,9 @@
 								<select name="reasonid" id="reasonid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
 									<option value="">Select</option>
 									<option value="1">Resigned</option>
-									<option value="2">Retired</option>
-									<option value="3">Promoted</option>
-									<option value="4">Demised</option>
-									<option value="5">Others</option>
+									<option value="2">IC not match</option>
+									<option value="3">Bank not match</option>
+									<option value="4">Others</option>
 								</select>
 								
 							</td>
