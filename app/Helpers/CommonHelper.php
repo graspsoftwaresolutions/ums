@@ -3228,4 +3228,12 @@ class CommonHelper
     public static function getHeadCompanyListAll(){
         return $results = Company::where('status',1)->where('head_of_company','=','0')->get();
     }
+
+    public static function get_mismatchstatus_data($submemberid){
+        $matchdata = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$submemberid)
+                        ->where('match_id','!=',1)
+                        ->first();
+        
+        return $matchdata;
+    }
 }

@@ -3226,7 +3226,7 @@ class SubscriptionController extends CommonController
         $insertdata['mon_sub_member_id'] = $sub_member_id;
         $insertdata['type'] = 0;
         $insertdata['approval_status'] = 1;
-        $insertdata['reason'] = $reasonid;
+        $insertdata['reason'] = '';
         $insertdata['remarks'] = $description;
         if($mismatchedcount==0){
             $saveunmatch = DB::table('mon_sub_remarks')->insert($insertdata);

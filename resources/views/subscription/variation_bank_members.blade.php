@@ -224,6 +224,7 @@
 										<th width="10%">{{__('NRIC')}}</th>
 										<th width="7%">{{__('Amount')}}</th>
 										<th width="10%">{{__('Reason')}}</th>
+										<th width="10%">{{__('Remarks')}}</th>
 										@if($user_role=='company')
 										<th width="10%">{{__('Update Status')}}</th>
 										<th width="15%">{{__('Action')}}</th>
@@ -240,17 +241,25 @@
 										@php
 											//dd($member);
 											$approval_status = $member->approval_status;
+
+											$mismatchstatusdata = CommonHelper::get_mismatchstatus_data($member->sub_member_id);
 											
 											$unmatchdata = CommonHelper::get_unmatched_data($member->sub_member_id);
+											$matchname = '';
 											$unmatchreason = '';
 											$approval_status = 0;
+											
 											if(!empty($unmatchdata)){
-												$unmatchreason = $unmatchdata->reason;
-												$unmatchreason = CommonHelper::get_unmatch_reason($unmatchreason);
-												if($unmatchdata->reason==4){
-													$unmatchreason = $unmatchdata->remarks;
-												}
-												$approval_status = 1;
+												$unmatchreason = $unmatchdata->remarks;
+												$approval_status = $unmatchdata->approval_status;
+											}
+											
+
+											if(!empty($mismatchstatusdata)){
+												$matchid = $mismatchstatusdata->match_id;
+												$matchname = CommonHelper::get_member_match_name($matchid);
+												
+												$approval_status = $mismatchstatusdata->approval_status;
 											}
 											
 										@endphp
@@ -261,6 +270,7 @@
 											
 											<td>{{ $member->up_nric }}</td>
 											<td>{{ number_format($member->Amount,2,".",",") }}</td>
+											<td id="unmatch_status_{{ $member->sub_member_id }}" width="10%">{{$matchname}}</td>
 											<td id="unmatch_reason_{{ $member->sub_member_id }}" width="10%">{{$unmatchreason}}</td>
 											@if($user_role=='company')
 
@@ -439,18 +449,12 @@
 		   </hr>
 				<div class="row">
 	                <div class="col m3">
-	                    <label for="typeid">{{__('Reason') }}*</label>
-	                    <select name="reasonid" id="reasonid" onclick="return EnableDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
-							<option value="">Select</option>
-							<option value="1">Resigned</option>
-							<option value="2">IC not match</option>
-							<option value="3">Bank not match</option>
-							<option value="4">Others</option>
-						</select>
+	                    <label for="typeid">{{__('Reason') }}</label>
+	                    <input type="text" class="" name="reason" id="reason" readonly="" value="StruckOff Members" />
 	                </div>
-	                <div class="col m9 descriptiontd hide">
-	                	<label for="description">{{__('Description') }}*</label>
-	                	<textarea id="description" name="description" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
+	                <div class="col m9 descriptiontd">
+	                	<label for="description">{{__('Remarks') }}*</label>
+	                	<textarea id="description" name="description" required="" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
 	                </div>
 	            </div>
 				
@@ -639,6 +643,7 @@ $(document).ready(function() {
 	   $(".submitApproval").attr('disabled', false);
 	   $('.modal').modal();
 	   $("#sub_member_id").val(sub_member_id);
+	   var unmatch_status = $("#unmatch_status_"+sub_member_id).text();
 	   loader.showLoader();
 		var url = "{{ url(app()->getLocale().'/unmatched_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
 		$.ajax({
@@ -653,15 +658,12 @@ $(document).ready(function() {
 				$("#view_nric").html(result.up_member_data.NRIC);
 				$("#view_paid").html(result.up_member_data.Amount);
 				unmatchinfo = result.unmatchdata;
-				$(".descriptiontd").addClass('hide');
+				//$(".descriptiontd").addClass('hide');
 				$("#reasonid").val('');
 					//console.log(res);
 				if(unmatchinfo!=null){
-					$("#reasonid").val(unmatchinfo.reason);
-					if(unmatchinfo.reason==4){
-						$(".descriptiontd").removeClass('hide');
-						$("#description").val(unmatchinfo.remarks);
-					}
+					$("#description").val(unmatchinfo.remarks);
+					$("#reason").val(unmatch_status);
 					
 				}
 				
@@ -731,7 +733,7 @@ $(document).ready(function() {
 		event.preventDefault();
 		$(".submitApproval").attr('disabled', true);
 		var url = "{{ url(app()->getLocale().'/ajax_save_summary') }}" ;
-		var vreasonval = $("#reasonid option:selected").html();
+		//var vreasonval = $("#reasonid option:selected").html();
 		//alert(vreasonval);
 		$.ajax({
 			url: url,
@@ -745,13 +747,15 @@ $(document).ready(function() {
 				if(result.status==1){
 					var badge_color = result.approval_status == 1 ? 'green' : 'red';
 					var badge_label = result.approval_status == 1 ? 'Updated' : 'Pending';
+					var vreasonval = $("#description").val();
 					$("#approve_status_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
-					if(result.member_match==2){
-						$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
-						$("#member_status_"+result.sub_member_auto_id).html(result.member_status);
+					//$("#unmatch_reason_"+result.sub_member_auto_id).html('<span class="badge '+badge_color+'">'+badge_label+'</span>');
+					// if(result.member_match==2){
+					// 	$("#member_code_"+result.sub_member_auto_id).html(result.member_number);
+					// 	$("#member_status_"+result.sub_member_auto_id).html(result.member_status);
 						
 						
-					}
+					// }
 					$("#unmatch_reason_"+result.sub_member_auto_id).html(vreasonval);
 					M.toast({
 						html: result.message
