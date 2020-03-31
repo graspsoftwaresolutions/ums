@@ -1411,7 +1411,7 @@ class SubscriptionAjaxController extends CommonController
                 
                 if($company->banktype==1){
                     $members_count = CommonHelper::subCompanyMembersNotDOJActCount($company_enc_id, $user_role, $userid,$date);
-                    $members_amt = CommonHelper::subCompanyMembersActAmount($company_enc_id, $user_role, $userid,$date);
+                    $members_amt = CommonHelper::subCompanyMembersNotDOJActAmount($company_enc_id, $user_role, $userid,$date);
                 }else{
                     $members_count = CommonHelper::subCompanyMembersNotDojCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersNotDojAmount($company_enc_id, $user_role, $userid,$date);
