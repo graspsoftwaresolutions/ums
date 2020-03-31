@@ -220,7 +220,12 @@
 
 								if(!empty($mismatchstatusdata)){
 									$matchid = $mismatchstatusdata->match_id;
-									$matchname = CommonHelper::get_member_match_name($matchid);
+									if($matchid==6){
+										$matchname = 'Others';
+									}else{
+										$matchname = CommonHelper::get_member_match_name($matchid);
+									}
+									
 									
 									$approval_status = $mismatchstatusdata->approval_status;
 								}

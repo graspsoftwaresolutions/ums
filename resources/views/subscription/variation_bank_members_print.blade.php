@@ -185,7 +185,7 @@
 	  }
   </style>
 	<script type="text/javascript">
-		
+		//window.print();
 	</script>
 </head>
 @php 
@@ -326,14 +326,15 @@
 		<table id="page-length-option" class="display" width="100%">
 			<thead>
 				<tr>
-					<th style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-					<th style="border: 1px solid #988989 !important;">{{__('Member Name')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="5%">{{__('S.No')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="15%">{{__('Member Name')}}</th>
 					
-					<th style="border: 1px solid #988989 !important;">{{__('NRIC')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="10%">{{__('NRIC')}}</th>
 					<th style="border: 1px solid #988989 !important;">{{__('Amount')}}</th>
-					<th style="border: 1px solid #988989 !important;">{{__('Reason')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="20%">{{__('Reason')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="20%">{{__('Remarks')}}</th>
 					@if($user_role=='company')
-					<th style="border: 1px solid #988989 !important;">{{__('Update Status')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Update Status')}}</th>
 					
 					@endif
 					
@@ -349,16 +350,29 @@
 						//dd($member);
 						$approval_status = $member->approval_status;
 						
+						$mismatchstatusdata = CommonHelper::get_mismatchstatus_data($member->sub_member_id);
+											
 						$unmatchdata = CommonHelper::get_unmatched_data($member->sub_member_id);
+						$matchname = '';
 						$unmatchreason = '';
 						$approval_status = 0;
+						
 						if(!empty($unmatchdata)){
-							$unmatchreason = $unmatchdata->reason;
-							$unmatchreason = CommonHelper::get_unmatch_reason($unmatchreason);
-							if($unmatchdata->reason==4){
-								$unmatchreason = $unmatchdata->remarks;
+							$unmatchreason = $unmatchdata->remarks;
+							$approval_status = $unmatchdata->approval_status;
+						}
+						
+
+						if(!empty($mismatchstatusdata)){
+							$matchid = $mismatchstatusdata->match_id;
+							
+							if($matchid==6){
+								$matchname = 'Others';
+							}else{
+								$matchname = CommonHelper::get_member_match_name($matchid);
 							}
-							$approval_status = 1;
+							
+							$approval_status = $mismatchstatusdata->approval_status;
 						}
 						
 					@endphp
@@ -369,7 +383,8 @@
 						
 						<td style="border: 1px solid #988989 !important;">{{ $member->up_nric }}</td>
 						<td style="border: 1px solid #988989 !important;">{{ number_format($member->Amount,2,".",",") }}</td>
-						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}" width="10%">{{$unmatchreason}}</td>
+						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}">{{$matchname}}</td>
+						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}">{{$unmatchreason}}</td>
 						@if($user_role=='company')
 
 						<td style="border: 1px solid #988989 !important;" id="approve_status_{{ $member->sub_member_id }}"><span class="">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
