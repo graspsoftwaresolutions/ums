@@ -1920,7 +1920,7 @@ class CommonHelper
                             //->join('company','company.id','=','mon_sub_company.CompanyCode')
                             ->join('mon_sub_member as mm','mc.id','=','mm.MonthlySubscriptionCompanyId')
                             //->leftjoin('status','mon_sub_member.StatusId','=','status.id')
-                            ->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
+                            ->leftjoin('membership as m','m.id','=','mm.MemberCode')
                             //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
                             //->leftjoin('race as r','r.id','=','m.race_id')
                             //->leftjoin('designation as d','d.id','=','m.designation_id')
