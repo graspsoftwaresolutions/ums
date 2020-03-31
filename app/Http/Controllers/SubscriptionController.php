@@ -3070,6 +3070,12 @@ class SubscriptionController extends CommonController
         $user_id = Auth::user()->id;
 
         //if($user_role=='company'){
+            $cond ='';
+            if(isset($company_auto_id) && $company_auto_id!=''){
+                $cond =" AND m.MonthlySubscriptionCompanyId = '$company_auto_id'";
+            }
+
+            $members_data = DB::select(DB::raw('SELECT member.name AS member_name, member.member_number AS member_number, m.Amount AS Amount, member.new_ic AS ic, "0" AS due, s.status_name AS status_name, `member`.`id` AS memberid, m.id AS sub_member_id, m.Name AS up_member_name, m.NRIC AS up_nric, m.approval_status FROM mon_sub_member_match as mm LEFT JOIN `mon_sub_member` AS `m` ON mm.mon_sub_member_id=m.id left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND mm.match_id in (2,4,6,7)'));
 
             $data['subsdata'] = DB::table('mon_sub_company as sc')->select('s.Date','c.short_code','c.company_name','c.id as company_id')
             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
@@ -3079,13 +3085,23 @@ class SubscriptionController extends CommonController
             //->pluck('s.Date')
             ->first();
 
-            $data['matched_count'] = DB::table('mon_sub_member as mm')->select('*')
+            // //$data['matched_count'] = DB::table('mon_sub_member as mm')->select('*')
+            // ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
+            // //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
+            // ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+            // ->where('sc.id','=',$company_auto_id)
+            // ->where('mm.StatusId','<=',2)
+            // ->count();
+
+            $data['company_subscription_list'] = DB::table('mon_sub_member as mm')->select('*')
             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
             //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
             ->leftjoin('company as c','c.id','=','sc.CompanyCode')
             ->where('sc.id','=',$company_auto_id)
-            ->where('mm.StatusId','<=',2)
+            //->where('mm.STatusId','<=',2)
             ->count();
+
+            $data['matched_count'] = $data['company_subscription_list']-count($members_data);
 
             $data['doj_count'] = DB::table('mon_sub_member as mm')->select('*')
             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
@@ -3096,7 +3112,14 @@ class SubscriptionController extends CommonController
             ->where('s.Date','=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
             ->count();
 
-            $data['matched_amount'] = DB::table('mon_sub_member as mm')->select(DB::raw('sum(Amount) as Amount'))
+            $members_amt = DB::select(DB::raw('SELECT sum(Amount) as Amount FROM mon_sub_member_match as mm LEFT JOIN `mon_sub_member` AS `m` ON mm.mon_sub_member_id=m.id left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND mm.match_id =4 '));
+
+            $misbankamt = 0;
+            if(!empty($members_amt)){
+                $misbankamt = $members_amt[0]->Amount;
+            }
+
+            $matchedamt = DB::table('mon_sub_member as mm')->select(DB::raw('sum(Amount) as Amount'))
             ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
             ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
             ->leftjoin('company as c','c.id','=','sc.CompanyCode')
@@ -3106,15 +3129,15 @@ class SubscriptionController extends CommonController
             ->where('s.Date','<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
             ->pluck('Amount')
             ->first();
+
+            $data['matched_amount'] = $matchedamt-$misbankamt;
             //return $data['matched_amount'] ;
 
-            $data['company_subscription_list'] = DB::table('mon_sub_member as mm')->select('*')
-            ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
-            //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
-            ->leftjoin('company as c','c.id','=','sc.CompanyCode')
-            ->where('sc.id','=',$company_auto_id)
-            //->where('mm.STatusId','<=',2)
-            ->count();
+            
+
+            //dd($members_amt);
+
+            
 
             if($user_role=='company'){
                 $company_id = DB::table('company_branch as cb')->select('cb.company_id')
@@ -3739,13 +3762,15 @@ class SubscriptionController extends CommonController
         ->where('sc.id','=',$subcompanyid)
         ->first();
 
-        $data['matched_count'] = DB::table('mon_sub_member as mm')->select('*')
+        $data['company_subscription_list'] = DB::table('mon_sub_member as mm')->select('*')
         ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
         //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
         ->leftjoin('company as c','c.id','=','sc.CompanyCode')
         ->where('sc.id','=',$subcompanyid)
-        ->where('mm.StatusId','<=',2)
+        //->where('mm.STatusId','<=',2)
         ->count();
+
+        $data['matched_count'] = $data['company_subscription_list']-count($members_data);
 
         $data['doj_count'] = DB::table('mon_sub_member as mm')->select('*')
         ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
@@ -3756,7 +3781,14 @@ class SubscriptionController extends CommonController
         ->where('s.Date','=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
         ->count();
 
-        $data['matched_amount'] = DB::table('mon_sub_member as mm')->select(DB::raw('sum(Amount) as Amount'))
+        $members_amt = DB::select(DB::raw('SELECT sum(Amount) as Amount FROM mon_sub_member_match as mm LEFT JOIN `mon_sub_member` AS `m` ON mm.mon_sub_member_id=m.id left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND mm.match_id =4 '));
+
+        $misbankamt = 0;
+        if(!empty($members_amt)){
+            $misbankamt = $members_amt[0]->Amount;
+        }
+
+        $matchedamt = DB::table('mon_sub_member as mm')->select(DB::raw('sum(Amount) as Amount'))
         ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
         ->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
         ->leftjoin('company as c','c.id','=','sc.CompanyCode')
@@ -3766,15 +3798,12 @@ class SubscriptionController extends CommonController
         ->where('s.Date','<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
         ->pluck('Amount')
         ->first();
+
+        $data['matched_amount'] = $matchedamt-$misbankamt;
+
         //return $data['matched_amount'] ;
 
-        $data['company_subscription_list'] = DB::table('mon_sub_member as mm')->select('*')
-        ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','mm.MonthlySubscriptionCompanyId')
-        //->leftjoin('mon_sub as s', 's.id' ,'=','sc.MonthlySubscriptionId')
-        ->leftjoin('company as c','c.id','=','sc.CompanyCode')
-        ->where('sc.id','=',$subcompanyid)
-        //->where('mm.STatusId','<=',2)
-        ->count();
+        
 
 
         $data['members_count'] = DB::table('membership as m')

@@ -306,7 +306,7 @@
 					</tr>
 					<tr>
 						<td style="border: 1px solid #988989 !important;">Not Matched Members</td>
-						<td style="border: 1px solid #988989 !important;">{{ $data['company_subscription_list']-$data['matched_count'] }}</td>
+						<td style="border: 1px solid #988989 !important;">{{ count($data['submembers']) }}</td>
 					</tr>
 					
 				</tbody>
