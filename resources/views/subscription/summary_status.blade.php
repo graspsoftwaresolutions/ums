@@ -180,9 +180,10 @@
 							
 							<th width="10%">{{__('NRIC')}}</th>
 							<th width="7%">{{__('Amount')}}</th>
+							@if($data['status']!=1)
 							<th width="10%">{{__('Reason')}}</th>
 							<th width="10%">{{__('Remarks')}}</th>
-							@if($data['status']!=1)
+							
 							<th width="10%">{{__('Update Status')}}</th>
 
 							
@@ -190,9 +191,7 @@
 							<th width="15%">{{__('Action')}}</th>
 							@endif
 							@endif
-							@if($data['status']!=1 && $user_role=='union')
-								<th width="10%">{{__('Reason')}}</th>
-							@endif
+							
 						</tr> 
 					</thead>
 					<tbody>
@@ -238,9 +237,10 @@
 								
 								<td>{{ $member->up_nric }}</td>
 								<td>{{ number_format($member->Amount,2,".",",") }}</td>
+								@if($data['status']!=1)
 								<td id="unmatch_status_{{ $member->sub_member_id }}" width="10%">{{$matchname}}</td>
 								<td id="unmatch_reason_{{ $member->sub_member_id }}" width="10%">{{$unmatchreason}}</td>
-								@if($data['status']!=1)
+								
 
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
 								
@@ -250,9 +250,7 @@
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td>
 								@endif
 								@endif
-								@if($data['status']!=1 && $user_role=='union')
-									<th width="10%">{{$unmatchreason}}</th>
-								@endif
+								
 							</tr> 
 							@php
 								$slno++;

@@ -3283,6 +3283,7 @@ class SubscriptionController extends CommonController
         $data['diff_in_months']=1;
         $data['branch_view']=[];
         $data['submembers'] = $members_data;
+        $data['companyid'] = $companyid;
 	
 		return view('subscription.variation_bank_members')->with('data', $data);
     }
@@ -3341,6 +3342,7 @@ class SubscriptionController extends CommonController
 		
         $data['company_view']=[];
         $data['diff_in_months']=$diff_in_months;
+        $data['companyid'] = $companyid;
       //  $data['submembers']=[];
         $data['branch_view']=[];
         

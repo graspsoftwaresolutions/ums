@@ -155,11 +155,11 @@
 							<div class="col s12 m12">
 								@php
 									$userid = Auth::user()->id;
-									$companyid = CommonHelper::getCompanyID($userid);
+									$companyid = $data['companyid'];
 									$get_roles = Auth::user()->roles;
 									$user_role = $get_roles[0]->slug;
 								@endphp
-								<div class="row">
+								<div class="row @if($user_role!='company') hide @endif">
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscription_variance') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
@@ -316,8 +316,9 @@
 										<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
 										<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 										<th width="10%">{{__('Reason')}}</th>
+										@if($user_role=='company')
 										<th>Action</th> 
-										
+										@endif
 											
 										
 									</tr>
@@ -347,8 +348,9 @@
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td>0</td>
 											<td id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
-											
+											@if($user_role=='company')
 											<td class=""><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showVarianceApproval({{ $company->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td></td> 
+											@endif
 										</tr>
 										@php
 											$slno++;
@@ -374,8 +376,9 @@
 										<th>{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
 										<th>{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 										<th width="10%">{{__('Reason')}}</th>
+										@if($user_role=='company')
 										<th>Action</th>
-										
+										@endif
 											
 										
 									</tr>
@@ -407,8 +410,9 @@
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											
 											<td id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
-											
+											@if($user_role=='company')
 											<td class=""><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showVarianceApproval({{ $company->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td></td> 
+											@endif
 										</tr>
 										@php
 											$slno1++;
@@ -665,10 +669,11 @@ $(document).ready(function() {
 				unmatchinfo = result.unmatchdata;
 				//$(".descriptiontd").addClass('hide');
 				$("#reasonid").val('');
+				$("#reason").val(unmatch_status);
 					//console.log(res);
 				if(unmatchinfo!=null){
 					$("#description").val(unmatchinfo.remarks);
-					$("#reason").val(unmatch_status);
+					
 					
 				}
 				
