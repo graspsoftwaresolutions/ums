@@ -158,6 +158,9 @@
 			//border: 1px solid #ddd !important;
 			padding: 4px;
 		}
+		.hide{
+			display: none !important;
+		}
 		
 	</style>
 	<style>
@@ -325,14 +328,14 @@
 		<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Not Matched Members List</p>
 		<table id="page-length-option" class="display" width="100%">
 			<thead>
-				<tr>
+				<tr width="100%">
 					<th style="border: 1px solid #988989 !important;" width="5%">{{__('S.No')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="15%">{{__('Member Name')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="25%">{{__('Member Name')}}</th>
 					
 					<th style="border: 1px solid #988989 !important;" width="10%">{{__('NRIC')}}</th>
-					<th style="border: 1px solid #988989 !important;">{{__('Amount')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="20%">{{__('Reason')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="20%">{{__('Remarks')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Amount')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="15%">{{__('Reason')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="25%">{{__('Remarks')}}</th>
 					@if($user_role=='company')
 					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Update Status')}}</th>
 					
@@ -372,13 +375,13 @@
 								$matchname = CommonHelper::get_member_match_name($matchid);
 							}
 							
-							$approval_status = $mismatchstatusdata->approval_status;
+							//$approval_status = $mismatchstatusdata->approval_status;
 						}
 						
 					@endphp
 					<tr style="overflow-x:auto;">
 						<td style="border: 1px solid #988989 !important;">{{$slno}}</td>
-						<td style="border: 1px solid #988989 !important;">{{ $member->up_member_name }}</td>
+						<td width="25%" style="border: 1px solid #988989 !important;">{{ $member->up_member_name }}</td>
 						<!--td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td-->
 						
 						<td style="border: 1px solid #988989 !important;">{{ $member->up_nric }}</td>
@@ -416,12 +419,12 @@
 			<table id="page-length-option" class="display" width="100%">
 				<thead>
 					<tr class="" >
-						<th style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-						<th style="border: 1px solid #988989 !important;">Member Name</th>
-						<th style="border: 1px solid #988989 !important;">NRIC</th>
-						<th style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
-						<th style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
-						<th style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
+						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
+						<th width="25%" style="border: 1px solid #988989 !important;">Member Name</th>
+						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
+						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
+						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
+						<th width="30%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
 						
 							
 						
@@ -472,12 +475,12 @@
 			<table id="page-length-option" class="display" width="100%">
 				<thead>
 					<tr class="" >
-						<th style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-						<th style="border: 1px solid #988989 !important;">Member Name</th>
-						<th style="border: 1px solid #988989 !important;">NRIC</th>
-						<th style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
-						<th style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
-						<th style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
+						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
+						<th width="25%" style="border: 1px solid #988989 !important;">Member Name</th>
+						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
+						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
+						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
+						<th width="30%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
 						
 							
 						
@@ -524,7 +527,7 @@
 		</div>
 
 	</div>
-	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="25"></input>
+	
 </body>
 <script src="http://localhost/ums/public/excel/jquery-ui.min.js"></script>
 <script>

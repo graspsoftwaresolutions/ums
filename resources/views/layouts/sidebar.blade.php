@@ -94,7 +94,7 @@
               <li id="subscompbank_sidebar_li_id" class=""><a id="subscompbank_sidebar_a_id" class="collapsible-body " href="{{ route('company.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank[Bank]') }}</span></a></li>
                
               @if($user_role=='company')
-                 <li id="subvariance_sidebar_li_id" class=""><a id="subvariance_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.variance',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variation') }}</span></a></li>
+                 <li id="subvariance_sidebar_li_id" class="hide"><a id="subvariance_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.variance',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variation') }}</span></a></li>
                 <!--li id="invalidsubs_sidebar_li_id" class=""><a id="invalidsubs_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.invalidsubs',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Struckoff/Resigned') }}</span></a></li>
                   <li id="subvariance_sidebar_li_id" class=""><a id="subvariance_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.variance',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variance list') }}</span></a></li-->
               @endif

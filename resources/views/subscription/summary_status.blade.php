@@ -126,6 +126,15 @@
 	#clear{
 		color:#fff;
 	}
+	@media  print {
+		@page  {
+			size: landscape; 
+			margin: 3mm;
+		}
+		.badge{
+			color: #000 !important;
+		}
+	}
 	
 </style>
 
@@ -149,7 +158,7 @@
 					$companyid = $data['company_id'];
 				@endphp
 				
-				<a class="btn waves-effect waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
+				<a class="btn waves-effect waves-light right hide" href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
 				</h4> 
 				
 				</h4> 
@@ -175,20 +184,20 @@
 				<table id="page-length-option" class="display nowrap" width="100%">
 					<thead>
 						<tr>
-							<th width="3%">{{__('S.No')}}</th>
-							<th width="10%">{{__('Member Name')}}</th>
+							<th width="2%">{{__('S.No')}}</th>
+							<th width="20%">{{__('Member Name')}}</th>
 							
-							<th width="10%">{{__('NRIC')}}</th>
+							<th width="8%">{{__('NRIC')}}</th>
 							<th width="7%">{{__('Amount')}}</th>
 							@if($data['status']!=1)
-							<th width="10%">{{__('Reason')}}</th>
-							<th width="10%">{{__('Remarks')}}</th>
+							<th width="13%">{{__('Reason')}}</th>
+							<th width="20%">{{__('Remarks')}}</th>
 							
-							<th width="10%">{{__('Update Status')}}</th>
+							<th width="8%">{{__('Update Status')}}</th>
 
 							
 							@if($user_role=='company')
-							<th width="15%">{{__('Action')}}</th>
+							<th width="5%">{{__('Action')}}</th>
 							@endif
 							@endif
 							
@@ -226,7 +235,7 @@
 									}
 									
 									
-									$approval_status = $mismatchstatusdata->approval_status;
+									//$approval_status = $mismatchstatusdata->approval_status;
 								}
 					
 							@endphp
@@ -429,10 +438,11 @@ $(document).ready(function(){
 				unmatchinfo = result.unmatchdata;
 				//$(".descriptiontd").addClass('hide');
 				$("#reasonid").val('');
+				$("#reason").val(unmatch_status);
 					//console.log(res);
 				if(unmatchinfo!=null){
 					$("#description").val(unmatchinfo.remarks);
-					$("#reason").val(unmatch_status);
+					
 					
 				}
 				// $.each(matchinfo,function(key,entry){

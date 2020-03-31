@@ -197,7 +197,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											
 											<div class=" " >
 												
-												<button id="submit-upload" class=" btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="submit">{{__('View Variation') }}</button>
+												<button id="submit-upload" style="margin-left: 10px;" class=" btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="submit">{{__('Variation') }}</button>
 												
 											</div>
 											
