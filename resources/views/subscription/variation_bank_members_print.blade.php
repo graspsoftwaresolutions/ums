@@ -337,7 +337,7 @@
 					<th style="border: 1px solid #988989 !important;" width="15%">{{__('Reason')}}</th>
 					<th style="border: 1px solid #988989 !important;" width="25%">{{__('Remarks')}}</th>
 					@if($user_role=='company')
-					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Update Status')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Status')}}</th>
 					
 					@endif
 					
@@ -420,11 +420,11 @@
 				<thead>
 					<tr class="" >
 						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-						<th width="25%" style="border: 1px solid #988989 !important;">Member Name</th>
+						<th width="32%" style="border: 1px solid #988989 !important;">Member Name</th>
 						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
-						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
-						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
-						<th width="30%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
+						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
 						
 							
 						
@@ -476,11 +476,11 @@
 				<thead>
 					<tr class="" >
 						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-						<th width="25%" style="border: 1px solid #988989 !important;">Member Name</th>
+						<th width="32%" style="border: 1px solid #988989 !important;">Member Name</th>
 						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
-						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
-						<th width="10%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
-						<th width="30%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
+						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
 						
 							
 						

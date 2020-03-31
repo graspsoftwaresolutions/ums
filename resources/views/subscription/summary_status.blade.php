@@ -134,6 +134,9 @@
 		.badge{
 			color: #000 !important;
 		}
+		.action-remove{
+			display: none;
+		}
 	}
 	
 </style>
@@ -193,11 +196,11 @@
 							<th width="13%">{{__('Reason')}}</th>
 							<th width="20%">{{__('Remarks')}}</th>
 							
-							<th width="8%">{{__('Update Status')}}</th>
+							<th width="8%">{{__('Status')}}</th>
 
 							
 							@if($user_role=='company')
-							<th width="5%">{{__('Action')}}</th>
+							<th width="5%" class="action-remove">{{__('Action')}}</th>
 							@endif
 							@endif
 							
@@ -254,7 +257,7 @@
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
 								
 								@if($user_role=='company')
-								<td>
+								<td class="action-remove">
 								
 								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td>
 								@endif

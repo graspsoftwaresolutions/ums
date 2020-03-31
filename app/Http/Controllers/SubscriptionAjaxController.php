@@ -1410,11 +1410,11 @@ class SubscriptionAjaxController extends CommonController
                 $summaryurl =  route('subscription.summary', [app()->getLocale(),$company_enc_id]) ;
                 
                 if($company->banktype==1){
-                    $members_count = CommonHelper::subCompanyMembersActCount($company_enc_id, $user_role, $userid,$date);
+                    $members_count = CommonHelper::subCompanyMembersNotDOJActCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersActAmount($company_enc_id, $user_role, $userid,$date);
                 }else{
-                    $members_count = CommonHelper::subCompanyMembersCount($company_enc_id, $user_role, $userid,$date);
-                    $members_amt = CommonHelper::subCompanyMembersAmount($company_enc_id, $user_role, $userid,$date);
+                    $members_count = CommonHelper::subCompanyMembersNotDojCount($company_enc_id, $user_role, $userid,$date);
+                    $members_amt = CommonHelper::subCompanyMembersNotDojAmount($company_enc_id, $user_role, $userid,$date);
                 }
                 $members_amt = number_format($members_amt,2,".",",");
                 

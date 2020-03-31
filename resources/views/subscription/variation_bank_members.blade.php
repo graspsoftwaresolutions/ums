@@ -226,7 +226,7 @@
 										<th width="13%">{{__('Reason')}}</th>
 										<th width="20%">{{__('Remarks')}}</th>
 										@if($user_role=='company')
-										<th width="8%">{{__('Update Status')}}</th>
+										<th width="8%">{{__('Status')}}</th>
 										<th width="5%">{{__('Action')}}</th>
 										@endif
 										
@@ -311,10 +311,10 @@
 								<thead>
 									<tr class="" >
 										<th width="3%">{{__('S.No')}}</th>
-										<th width="20%">Member Name</th>
+										<th width="25%">Member Name</th>
 										<th width="10%">NRIC</th>
-										<th width="8%">{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
-										<th width="8%">{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+										<th width="7%">{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
+										<th width="7%">{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 										<th width="20%">{{__('Reason')}}</th>
 										@if($user_role=='company')
 										<th width="5%">Action</th> 
@@ -371,10 +371,10 @@
 								<thead>
 									<tr class="" >
 										<th width="3%">{{__('S.No')}}</th>
-										<th width="20%">Member Name</th>
+										<th width="25%">Member Name</th>
 										<th width="10%">NRIC</th>
-										<th width="8%">{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
-										<th width="8%">{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
+										<th width="7%">{{ date('M Y',strtotime($data['to_year_full'].' -1 Month')) }} <br> Amount</th>
+										<th width="7%">{{ date('M Y',strtotime($data['to_year_full'])) }} <br> Amount</th>
 										<th width="20%">{{__('Reason')}}</th>
 										@if($user_role=='company')
 										<th width="5%">Action</th>
