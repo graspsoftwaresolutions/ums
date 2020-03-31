@@ -443,6 +443,7 @@ $(document).ready(function(){
 				$("#reasonid").val('');
 				$("#reason").val(unmatch_status);
 					//console.log(res);
+				$("#description").val('');
 				if(unmatchinfo!=null){
 					$("#description").val(unmatchinfo.remarks);
 					

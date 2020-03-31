@@ -670,6 +670,7 @@ $(document).ready(function() {
 				//$(".descriptiontd").addClass('hide');
 				$("#reasonid").val('');
 				$("#reason").val(unmatch_status);
+				$("#description").val('');
 					//console.log(res);
 				if(unmatchinfo!=null){
 					$("#description").val(unmatchinfo.remarks);
