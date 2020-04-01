@@ -10,6 +10,8 @@ use DB;
 use URL;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 use Illuminate\Http\Request;
 
@@ -564,7 +566,7 @@ class IrcController extends CommonController
 		
 		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
 									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%m/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%m/%Y') as gradewef"),
-									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%m/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%m/%Y') as branchcommitteedate"),'irc.comments','cb.union_branch_id')
+									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%m/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%m/%Y') as branchcommitteedate"),'irc.comments','cb.union_branch_id','irc.posfilledbytype','irc.posfilledmemberid','irc.messengertype','irc.attachment_file','irc.attachfourtype','irc.committiecode','irc.replacestafftype')
 									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
 									->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 									->leftjoin('designation as d','m.designation_id','=','d.id')
@@ -611,6 +613,12 @@ class IrcController extends CommonController
 		$attachedbox = 0;
 		$attached = '';
 
+		$posfilledbytype = '';
+		$posfilledmemberid = '';
+		$messengertype = '';
+		$attachment_file = '';
+		$replacestafftype = '';
+
 		$insertdata = ['resignedmemberno' => $data['resignedmemberno'],'resignedmembername' => $data['resignedmembername'],'resignedmembericno' => $data['resignedmembericno'],'resignedmemberbankname' => $data['resignedmemberbankname'],'resignedmemberbranchname' => $data['resignedmemberbranchname'],'resignedreason' => $data['resignedreason'],'ircmembershipno' => $data['ircmembershipno'],'ircname' => $data['ircname'],'ircposition' => $data['ircposition'],
 		'ircbank' => $data['ircbank'],'ircbankaddress' => $data['ircbankaddress'],'irctelephoneno' => $data['irctelephoneno'],'ircmobileno' => $data['ircmobileno'],'ircfaxno' => $data['ircfaxno']];
 		$ircstatus = 0;
@@ -656,8 +664,19 @@ class IrcController extends CommonController
 			$appfax = $request->input('appfaxone');
 			$appemail = $request->input('appemailone');
 
+			$posfilledbytype = $request->input('posfilledbytypeone');
+			$posfilledmemberid = $request->input('posfilledbymemberidone');
+			$messengertype = $request->input('messengerone');
+			$replacestafftype = $request->input('replacestafftypeone');
+			$attachment_file = 'attachmentone';
+
 			$insertdata['nameofperson'] = isset($personnameboxone) ? 1 : 0;
 			$insertdata['retiredbox'] = isset($retiredboxone) ? 1 : 0;
+
+			$insertdata['posfilledbytype'] = $posfilledbytype;
+			$insertdata['posfilledmemberid'] = $posfilledmemberid;
+			$insertdata['messengertype'] = $messengertype;
+			$insertdata['replacestafftype'] = $replacestafftype;
 
 			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['nameofperson'] == 1 && $insertdata['retiredbox'] == 1){
 				$ircstatus = 1;
@@ -699,6 +718,10 @@ class IrcController extends CommonController
 			$appemail = $request->input('appemailtwo');
 			$applicanttwo = $request->input('applicanttwo');
 
+			$posfilledbytype = $request->input('posfilledbytypetwo');
+			$posfilledmemberid = $request->input('posfilledbymemberidtwo');
+			$replacestafftype = $request->input('replacestafftypetwo');
+
 			$insertdata['demised_onboxtwo'] = isset($memberdemisedboxtwo) ? 1 : 0;
 			$insertdata['demised_ontwo'] = $memberdemisedtwo;
 			$insertdata['member_nameboxtwo'] = isset($memberdemisedboxtwo) ? 1 : 0;
@@ -708,6 +731,10 @@ class IrcController extends CommonController
 			$insertdata['applicantboxtwo'] = isset($applicantboxtwo) ? 1 : 0;
 			$insertdata['nameofperson'] = isset($nameofpersonboxtwo) ? 1 : 0;
 			$insertdata['applicanttwo'] = $applicanttwo;
+
+			$insertdata['posfilledbytype'] = $posfilledbytype;
+			$insertdata['posfilledmemberid'] = $posfilledmemberid;
+			$insertdata['replacestafftype'] = $replacestafftype;
 
 			if($jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $insertdata['demised_onboxtwo'] == 1 && $insertdata['member_nameboxtwo'] == 1 && $insertdata['relationshipboxtwo'] == 1 && $insertdata['applicantboxtwo'] == 1 && $insertdata['nameofperson'] == 1){
 				$ircstatus = 1;
@@ -761,11 +788,23 @@ class IrcController extends CommonController
 			$appfax = $request->input('appfaxthree');
 			$appemail = $request->input('appemailthree');
 
+			$posfilledbytype = $request->input('posfilledbytypethree');
+			$posfilledmemberid = $request->input('posfilledbymemberidthree');
+			$messengertype = $request->input('messengerthree');
+			$replacestafftype = $request->input('replacestafftypethree');
+			$attachment_file = 'attachmentthree';
+
+
 			$insertdata['promotedboxthree'] = isset($promotedboxthree) ? 1 : 0;
 			$insertdata['promotedto'] = $promotedthree;
 			$insertdata['transfertoplaceboxthree'] = isset($transfertoplaceboxthree) ? 1 : 0;
 			$insertdata['transfertoplacethree'] = $transfertoplacethree;
 			$insertdata['nameofperson'] = isset($nameofpersonboxthree) ? 1 : 0;
+
+			$insertdata['posfilledbytype'] = $posfilledbytype;
+			$insertdata['posfilledmemberid'] = $posfilledmemberid;
+			$insertdata['messengertype'] = $messengertype;
+			$insertdata['replacestafftype'] = $replacestafftype;
 
 			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $samebranchbox == 1 && $attachedbox == 1 && $insertdata['promotedboxthree'] == 1 && $insertdata['transfertoplaceboxthree'] == 1 && $insertdata['nameofperson'] == 1){
 				$ircstatus = 1;
@@ -813,8 +852,21 @@ class IrcController extends CommonController
 			$appfax = $request->input('appfaxfour');
 			$appemail = $request->input('appemailfour');
 
+			$posfilledbytype = $request->input('posfilledbytypefour');
+			$posfilledmemberid = $request->input('posfilledbymemberidfour');
+			$messengertype = $request->input('messengerfour');
+			$replacestafftype = $request->input('replacestafftypefour');
+			$attachment_file = 'attachmentfour';
+			$attachfourtype = $request->input('attachfourtype');
+
 			$insertdata['resignedonboxfour'] = isset($resignedonboxfour) ? 1 : 0;
 			$insertdata['nameofperson'] = isset($personnameboxfour) ? 1 : 0;
+
+			$insertdata['posfilledbytype'] = $posfilledbytype;
+			$insertdata['posfilledmemberid'] = $posfilledmemberid;
+			$insertdata['messengertype'] = $messengertype;
+			$insertdata['replacestafftype'] = $replacestafftype;
+			$insertdata['attachfourtype'] = $attachfourtype;
 
 			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['resignedonboxfour'] == 1 && $insertdata['nameofperson'] == 1 ){
 				$ircstatus = 1;
@@ -870,15 +922,19 @@ class IrcController extends CommonController
 		$insertdata['attachedbox'] = $attachedbox;
 		$insertdata['attached_desc'] = $attached;
 		$insertdata['irc_status'] = $ircstatus;
-		//return $insertdata;
+
+		if($attachment_file!=''){
+			if(Input::hasFile($attachment_file)){
+				$filenameWithExt = $request->file($attachment_file)->getClientOriginalExtension();
+				$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+				$file = $request->file($attachment_file)->storeAs('irc', $inputfilenames ,'local');
+				$insertdata['attachment_file'] = $inputfilenames;
+				
+			}
+		}
 		
-		// if($data['gradewef'])
-		// {
-		// 	$fmmm_date = explode("/",$data['gradewef']);           							
-		// 	$gradewef = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
-		// 	$grade = date('Y-m-d', strtotime($gradewef));
-		// 	$data['gradewef'] =  $grade;
-		// }
+
+		
 		$submitted_at = $request->input('submitted_at');
 		$created_at = date('Y-m-d h:i:s');
 		$insertdata['created_at'] = $created_at;
@@ -923,6 +979,7 @@ class IrcController extends CommonController
 				$committieverificationboxone = $request->input('committieverificationboxone');
 				$committieverificationboxtwo = $request->input('committieverificationboxtwo');
 				$committieverificationboxthree = $request->input('committieverificationboxthree');
+				$committiecode  = $request->input('committiecode');
 
 				$committieremark = $request->input('committieremark');
 				$branchcommitteeName = $request->input('branchcommitteeName');
@@ -937,6 +994,7 @@ class IrcController extends CommonController
 				$updatedata['committieverifyname'] = $request->input('committieverifyname');
 				$updatedata['branchcommitteeName'] = $branchcommitteeName;
 				$updatedata['branchcommitteeZone'] = $branchcommitteeZone;
+				$updatedata['committiecode'] = $committiecode;
 				
 				if($branchcommitteedate!='')
 				{

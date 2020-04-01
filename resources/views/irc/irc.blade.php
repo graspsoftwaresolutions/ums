@@ -63,7 +63,7 @@
 		}
 	@endphp
 		<form class="formValidate" id="irc_formValidate" method="post"
-		action="{{ route('irc.saveIrc',app()->getLocale()) }}">
+		action="{{ route('irc.saveIrc',app()->getLocale()) }}" enctype="multipart/form-data">
 		@csrf
 		<div class="container">
 		<div class="card">
@@ -322,12 +322,24 @@
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
+									
 										<label>
-										<input type="checkbox" class="common-checkbox" name="messengerboxone" id="messengerboxone"  value="1"/>
-										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
+											<input type="checkbox" class="common-checkbox" name="messengerboxone" id="messengerboxone"  value="1"/>
+											<span><span class="gender"></span> was a </span>
 										</label> 
-									</p>	
+										<div class="input-field inline">
+											<select id="messengerone" name="messengerone" class="browser-default">
+											    <option value="" disabled selected>Choose your option</option>
+											    <option>MESSENGER</option>
+											    <option>CLERICAL</option>
+											    <option>SPECIAL GRADE CLERK</option>
+											    <option>OTHER</option>
+											</select>
+										</div>
+										<span>
+											before RETIEMENT [Delete which is not applicable]
+										</span>
+										
 								</div>
 							
 							</div>	
@@ -338,8 +350,22 @@
 						          		<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
-										
+										<div class="row">
+											<div class="col s12 m3">
+												 <div id="">
+			                                        <div class=" ">
+			                                         	<br>
+			                                            <input type="file" name="attachmentone" class="" accept="">
+			                                        </div>
+			                                        <div class="file-path-wrapper hide">
+			                                            <input class="file-path validate" type="text">
+			                                        </div>
+			                                    </div>
+											</div>
+											<div class="col s12 m6">
+												<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
+											</div>
+										</div>
 									</div>
 						        </div>
 								
@@ -362,10 +388,23 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
-						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						          		<span>Member’s position has not been filled up by another  </span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder="" class="inline-box" style="width: 250px;"/>
+										<select id="posfilledbytypeone" name="posfilledbytypeone" onchange="return showAutocomplete(this.value,'posfillarea')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option value="1">Member</option>
+										    <option value="2">Non-Member</option>
+										    <option value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillarea" class="input-field inline hide">
+										<input type="text"	name="posfilledbymemberone" id="posfilledbymemberone" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidone" id="posfilledbymemberidone" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									<div class="input-field inline">
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -375,8 +414,18 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						          		<span>REPLACEMENT Staff Grade is </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="replacestafftypeone" name="replacestafftypeone" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option >Non-Clerical</option>
+										    <option >Clerical</option>
+										    <option >Special Grade Clerical</option>
+										    <option >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 									<div class="input-field inline">
 										<input type="text" 	name="replacestaffone" id="replacestaffone" placeholder="" class="inline-box" style="width: 250px;"/>
 										
@@ -514,10 +563,24 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
-						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						          		<span>Member’s position has not been filled up by another </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="posfilledbytypetwo" name="posfilledbytypetwo" onchange="return showAutocomplete(this.value,'posfillareatwo')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option value="1">Member</option>
+										    <option value="2">Non-Member</option>
+										    <option value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillareatwo" class="input-field inline hide">
+										<input type="text"	name="posfilledbymembertwo" id="posfilledbymembertwo" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidtwo" id="posfilledbymemberidtwo" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbytwo" class="inline-box" style="width: 250px;" id="posfilledbytwo" placeholder=""/>
+										<input type="text" 	name="posfilledbytwo" class="inline-box posfilledbyone" style="width: 250px;" id="posfilledbytwo" placeholder=""/>
 										
 									</div>
 						        </div>
@@ -527,8 +590,18 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						          		<span>REPLACEMENT Staff Grade is </span>
 						            </label> 
+						             <div class="input-field inline">
+										<select id="replacestafftypetwo" name="replacestafftypetwo" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option >Non-Clerical</option>
+										    <option >Clerical</option>
+										    <option >Special Grade Clerical</option>
+										    <option >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 									<div class="input-field inline">
 										<input type="text" 	name="replacestafftwo" id="replacestafftwo" placeholder=""  class="inline-box" style="width: 250px;"/>
 										
@@ -599,12 +672,21 @@
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
+									
 										<label>
 										<input type="checkbox" class="common-checkbox" name="messengerboxthree" id="messengerboxthree"  value="1"/>
-										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
+										<span><span class="gender"></span> was a </span>
 										</label> 
-									</p>	
+										<div class="input-field inline">
+											<select id="messengerthree" name="messengerthree" class="browser-default">
+											    <option value="" disabled selected>Choose your option</option>
+											    <option>MESSENGER</option>
+											    <option>CLERICAL</option>
+											    <option>SPECIAL GRADE CLERK</option>
+											    <option>OTHER</option>
+											</select>
+										</div>
+										<span> before PROMOTION [Delete which is not applicable]</span>
 								</div>
 							
 							</div>	
@@ -634,8 +716,26 @@
 										<input type="checkbox" class="common-checkbox" name="attachedboxthree" id="attachedboxthree"  value="1"/>
 						          		<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
 						            </label> 
+
 									<div class="input-field inline">
-										<input type="text" name="attachedthree" id="attachedthree" class="inline-box" style="width: 500px;">
+										<div class="row">
+											<div class="col s12 m3">
+												 <div id="">
+			                                        <div class=" ">
+			                                         	<br>
+			                                            <input type="file" name="attachmentthree" class="" accept="">
+			                                        </div>
+			                                        <div class="file-path-wrapper hide">
+			                                            <input class="file-path validate" type="text">
+			                                        </div>
+			                                    </div>
+											</div>
+											<div class="col s12 m6">
+												<input type="text" name="attachedthree" id="attachedthree" class="inline-box" style="width: 500px;">
+											</div>
+										</div>
+										
+										
 										
 									</div>
 						        </div>
@@ -681,10 +781,25 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
-						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						          		<span>Member’s position has not been filled up by another </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="posfilledbytypethree" name="posfilledbytypethree" onchange="return showAutocomplete(this.value,'posfillareathree')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option value="1">Member</option>
+										    <option value="2">Non-Member</option>
+										    <option value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillareathree" class="input-field inline hide">
+										<input type="text"	name="posfilledbymemberthree" id="posfilledbymemberthree" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidthree" id="posfilledbymemberidthree" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
+									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder="" class="inline-box" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -694,8 +809,18 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						          		<span>REPLACEMENT Staff Grade is </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="replacestafftypethree" name="replacestafftypethree" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option >Non-Clerical</option>
+										    <option >Clerical</option>
+										    <option >Special Grade Clerical</option>
+										    <option >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 									<div class="input-field inline">
 										<input type="text" 	name="replacestaffthree" id="replacestaffthree" placeholder=""  class="inline-box" style="width: 250px;"/>
 										
@@ -776,12 +901,21 @@
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
+									
 										<label>
-										<input type="checkbox" class="common-checkbox" name="messengerboxfour" id="messengerboxfour"  value="1"/>
-										<span><span class="gender"></span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
+											<input type="checkbox" class="common-checkbox" name="messengerboxfour" id="messengerboxfour"  value="1"/>
+											<span><span class="gender"></span> was a </span>
 										</label> 
-									</p>	
+										<div class="input-field inline">
+											<select id="messengerfour" name="messengerfour" class="browser-default">
+											    <option value="" disabled selected>Choose your option</option>
+											    <option>MESSENGER</option>
+											    <option>CLERICAL</option>
+											    <option>SPECIAL GRADE CLERK</option>
+											    <option>OTHER</option>
+											</select>
+										</div>
+										<span> before RESIGNATION [Delete which is not applicable]</span>
 								</div>
 							
 							</div>	
@@ -793,11 +927,36 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="attachedboxfour" id="attachedboxfour"  value="1"/>
-									<span>Attached is <span class="genderone"></span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+									<span>Attached is <span class="genderone"></span> </span>
 									</label> 
+									<div class="input-field inline">
+										<select id="attachfourtype" name="attachfourtype" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option>RESIGNATION</option>
+										    <option>TERMINATION</option>
+										    <option>EXPULSION</option>
+										    <option>STRUCK OFF</option>
+										</select>
+									</div>
+									Letter (compulsory)
 										
 									<div class="input-field inline">
-										 <input type="text" id="attachedfour" name="attachedfour" class="inline-box" style="width: 330px;">
+										<div class="row">
+											<div class="col s12 m4">
+												 <div id="">
+			                                        <div class=" ">
+			                                         	<br>
+			                                            <input type="file" name="attachmentfour" class="" accept="">
+			                                        </div>
+			                                        <div class="file-path-wrapper hide">
+			                                            <input class="file-path validate" type="text">
+			                                        </div>
+			                                    </div>
+											</div>
+											<div class="col s12 m6">
+												 <input type="text" id="attachedfour" name="attachedfour" class="inline-box" style="width: 330px;">
+											</div>
+										</div>
 									</div>
 								</div>
 								
@@ -823,11 +982,26 @@
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
-									<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+									<span>Member’s position has not been filled up by another </span>
 									</label> 
+									<div class="input-field inline">
+										<select id="posfilledbytypefour" name="posfilledbytypefour" onchange="return showAutocomplete(this.value,'posfillareafour')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option value="1">Member</option>
+										    <option value="2">Non-Member</option>
+										    <option value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillareafour" class="input-field inline hide">
+										<input type="text"	name="posfilledbymemberfour" id="posfilledbymemberfour" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidfour" id="posfilledbymemberidfour" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
+									
 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder="" class="inline-box" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 									</div>	
 								</div>
 								
@@ -837,8 +1011,18 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
-									<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+									<span>REPLACEMENT Staff Grade is </span>
 									</label> 
+									<div class="input-field inline">
+										<select id="replacestafftypefour" name="replacestafftypefour" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option >Non-Clerical</option>
+										    <option >Clerical</option>
+										    <option >Special Grade Clerical</option>
+										    <option >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 										
 									<div class="input-field inline">						
 										<input type="text" 	name="replacestafffour" id="replacestafffour" placeholder="" class="inline-box" style="width: 250px;"/>
@@ -970,7 +1154,7 @@
 						<p>
 							<label>
 							<input type="checkbox" class="common-checkbox" name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
-							<span>Staff who has taken over the job functions under CODE 01 / 02 / 03 / 04 is a NUBE Member. </span>
+							<span>Staff who has taken over the job functions under CODE <span id="codenumber"></span> is a NUBE Member. </span>
 							</label> 
 						</p>	
 					</div>
@@ -978,7 +1162,15 @@
 							
 							<label>
 								<input type="checkbox" class="common-checkbox" name="committieverificationboxthree" id="committieverificationboxthree"  value="1" />
-								<span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+								<span>Staff who is under 
+								<div class="input-field inline">
+									<select id="committiecode" name="committiecode" class="browser-default">
+									    <option value="" disabled selected>Choose code</option>
+									    <option value="3">CODE 03</option>
+									    <option value="5">CODE 05</option>
+									</select>
+								</div>
+								  is still performing the same job function.  The additional information for this staff is as follows:  </span>
 								
 							</label> 
 							<br>
@@ -1242,26 +1434,58 @@ function ChangeFields(){
 	var reason = $("#reason option:selected").text();
 	//alert(reason);
 	$(".reasonsections").addClass('hide');
+	var codenumber = '';
 	if(reason=='RETIRED'){
 		$("#retired_section").removeClass('hide');
 		$("#section_type").val(1);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',true);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '01';
 	}else if(reason=='DECEASED'){
 		$("#deceased_section").removeClass('hide');
 		$("#section_type").val(2);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '02';
 	}else if(reason=='PROMOTED'){
 		$("#promoted_section").removeClass('hide');
 		$("#section_type").val(3);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '03';
 	}
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		codenumber = '04';
 	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACKLISTED FROM UNION' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
 		$("#section_type").val(5);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '05';
 	}else{
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		codenumber = '04';
 	}
+	$("#codenumber").text(codenumber);
 }
 $(document).on('input', '.allow_contactnumbers', function(){
    var self = $(this);
@@ -1271,6 +1495,53 @@ $(document).on('input', '.allow_contactnumbers', function(){
      evt.preventDefault();
    }
  });
+
+$(".posfilledbymemberone").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-activemember-list') }}?searchkey="+ $(".posfilledbymemberone").val(),
+	type:'GET',
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$(".posfilledbymemberone").val(suggestion.member_number);
+			$.ajax({
+				url: "{{ URL::to('/get-member-irclist-values') }}?member_id="+ $(".posfilledbymemberone").val(),
+                type: "GET",
+				dataType: "json",
+				success: function(res) {
+
+					if(res!=1){
+						
+						$('.posfilledbyone').val(res.membername);
+						$('.posfilledbymemberidone').val(res.memberid);
+						
+					}else{
+						$('.posfilledbyone').val('');    
+						$('.posfilledbymemberidone').val('');    
+						alert("IRC entry already added for this member");
+					}
+				
+				}
+			});
+			
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#member_number").val('');
+		}
+	}
+});
+function showAutocomplete(type,refname){
+	if(type==1){
+		$("#"+refname).removeClass('hide');
+	}else{
+		$("#"+refname).addClass('hide');
+		$('.posfilledbyone').val('');
+		$('.posfilledbymemberidone').val('');
+		$('.posfilledbymemberone').val('');
+	}
+}
 
 </script>
 @endsection

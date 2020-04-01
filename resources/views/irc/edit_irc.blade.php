@@ -359,12 +359,26 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
+									
 										<label>
 										<input type="checkbox" class="common-checkbox" name="messengerboxone" @if($irc_details->messengerbox ==1) checked @endif id="messengerboxone"  value="1"/>
-										<span><span class="gender">{{ $genderlable }}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
+										<span><span class="gender">{{ $genderlable }}</span> was a 
 										</label> 
-									</p>	
+										<div class="input-field inline">
+											<select id="messengerone" name="messengerone" class="browser-default">
+											    <option value="" disabled selected>Choose your option</option>
+											    <option @if($irc_details->messengertype =='MESSENGER') selected @endif >MESSENGER</option>
+											    <option @if($irc_details->messengertype =='CLERICAL') selected @endif >CLERICAL</option>
+											    <option @if($irc_details->messengertype =='SPECIAL GRADE CLERK') selected @endif >SPECIAL GRADE CLERK</option>
+											    <option @if($irc_details->messengertype =='OTHER') selected @endif >OTHER</option>
+											</select>
+										</div>
+										<span>
+											before RETIEMENT [Delete which is not applicable]
+										</span>
+										
+										
+									
 								</div>
 							
 							</div>	
@@ -374,10 +388,29 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<input type="checkbox" class="common-checkbox" name="attachedboxone" @if($irc_details->attachedbox ==1) checked @endif id="attachedboxone"  value="1"/>
 						          		<span>Attached is <span class="genderone">{{ $genderlableone }}</span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
-									<div class="input-field inline">
-										<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" value="{{$irc_details->attached_desc}}" >
-										
+						            <div class="input-field inline">
+										<div class="row">
+											<div class="col s12 m3">
+												 <div id="">
+			                                        <div class=" ">
+			                                         	<br>
+			                                            <input type="file" name="attachmentone" class="" accept="">
+			                                        </div>
+			                                        <div class="file-path-wrapper hide">
+			                                            <input class="file-path validate" type="text">
+			                                        </div>
+			                                    </div>
+											</div>
+											<div class="col s12 m1">
+												<br>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+											</div>
+											<div class="col s12 m6">
+												<input type="text" id="attachedone" name="attachedone" class="inline-box" style="margin-left:10px; width: 500px;" value="{{$irc_details->attached_desc}}" >
+											</div>
+										</div>
 									</div>
+									
 						        </div>
 								
 							</div>	
@@ -399,10 +432,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
-						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						          		<span>Member’s position has not been filled up by another </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="posfilledbytypeone" name="posfilledbytypeone" onchange="return showAutocomplete(this.value,'posfillarea')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->posfilledbytype == 1) selected @endif value="1">Member</option>
+										    <option @if($irc_details->posfilledbytype == 2) selected @endif  value="2">Non-Member</option>
+										    <option @if($irc_details->posfilledbytype == 3) selected @endif  value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillarea" class="input-field inline @if($irc_details->posfilledbytype != 1) hide @endif">
+										<input type="text"	name="posfilledbymemberone" id="posfilledbymemberone" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" value="{{ CommonHelper::getmembercode_byid($irc_details->posfilledmemberid) }}" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidone" value="{{$irc_details->posfilledmemberid}}" id="posfilledbymemberidone" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -412,12 +459,23 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif  name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
-						            </label> 
+						          		<span>REPLACEMENT Staff Grade is </span>
+						            </label>
+						            <div class="input-field inline">
+										<select id="replacestafftypeone" name="replacestafftypeone" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->replacestafftype == 'Non-Clerical') selected @endif >Non-Clerical</option>
+										    <option  @if($irc_details->replacestafftype == 'Clerical') selected @endif>Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Special Grade Clerical') selected @endif >Special Grade Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Other') selected @endif >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 									<div class="input-field inline">
 										<input type="text" 	name="replacestaffone" id="replacestaffone" value="{{$irc_details->replacestaff}}" placeholder="" class="inline-box" style="width: 250px;"/>
 										
-									</div>
+									</div> 
+									
 						        </div>
 								
 							</div>	
@@ -472,7 +530,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						          		<span>Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="memberdemisedtwo" class="inline-box" style="width: 560px;" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
+										<input type="text" id="memberdemisedtwo" class="datepicker-custom inline-box" style="width: 560px;" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
 										
 									</div>
 						        </div>
@@ -551,10 +609,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
-						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						          		<span>Member’s position has not been filled up by another </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="posfilledbytypetwo" name="posfilledbytypetwo" onchange="return showAutocomplete(this.value,'posfillareatwo')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option value="1">Member</option>
+										    <option value="2">Non-Member</option>
+										    <option value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillareatwo" class="input-field inline @if($irc_details->posfilledbytype != 1) hide @endif">
+										<input type="text"	name="posfilledbymembertwo" id="posfilledbymembertwo" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" value="{{ CommonHelper::getmembercode_byid($irc_details->posfilledmemberid) }}" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidtwo" id="posfilledbymemberidtwo" value="{{ $irc_details->posfilledmemberid }}" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder="" class="inline-box" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -564,12 +636,23 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						          		<span>REPLACEMENT Staff Grade is </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="replacestafftypetwo" name="replacestafftypetwo" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->replacestafftype == 'Non-Clerical') selected @endif >Non-Clerical</option>
+										    <option  @if($irc_details->replacestafftype == 'Clerical') selected @endif>Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Special Grade Clerical') selected @endif >Special Grade Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Other') selected @endif >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 									<div class="input-field inline">
 										<input type="text" 	name="replacestafftwo" value="{{$irc_details->replacestaff}}" id="replacestafftwo" placeholder="" class="inline-box" style="width: 250px;"/>
 										
 									</div>
+									
 						        </div>
 								
 							</div>	
@@ -636,12 +719,22 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
+									
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxthree" id="messengerboxthree"  value="1"/>
-										<span><span class="gender">{{ $genderlable }}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
+										<span><span class="gender">{{ $genderlable }}</span> was a </span>
 										</label> 
-									</p>	
+										<div class="input-field inline">
+											<select id="messengerthree" name="messengerthree" class="browser-default">
+											    <option value="" disabled selected>Choose your option</option>
+											    <option @if($irc_details->messengertype =='MESSENGER') selected @endif >MESSENGER</option>
+											    <option @if($irc_details->messengertype =='CLERICAL') selected @endif >CLERICAL</option>
+											    <option @if($irc_details->messengertype =='SPECIAL GRADE CLERK') selected @endif >SPECIAL GRADE CLERK</option>
+											    <option @if($irc_details->messengertype =='OTHER') selected @endif >OTHER</option>
+											</select>
+										</div>
+										<span> before PROMOTION [Delete which is not applicable]</span>
+									
 								</div>
 							
 							</div>	
@@ -671,10 +764,32 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxthree" id="attachedboxthree"  value="1"/>
 						          		<span>Attached is <span class="genderone">{{ $genderlableone }}</span> Job Description (compulsory)</span>
 						            </label> 
-									<div class="input-field inline">
-										<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="width: 500px;">
+						            <div class="input-field inline">
+										<div class="row">
+											<div class="col s12 m3">
+												 <div id="">
+			                                        <div class=" ">
+			                                         	<br>
+			                                            <input type="file" name="attachmentthree" class="" accept="">
+			                                        </div>
+			                                        <div class="file-path-wrapper hide">
+			                                            <input class="file-path validate" type="text">
+			                                        </div>
+			                                    </div>
+											</div>
+											<div class="col s12 m1">
+												<br>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+											</div>
+											<div class="col s12 m6">
+												<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="margin-left:10px; width: 500px;">
+											</div>
+										</div>
+										
+										
 										
 									</div>
+									
 						        </div>
 						        <div class="col s12">
 									<label>
@@ -718,10 +833,25 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
-						          		<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+						          		<span>Member’s position has not been filled up by another </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="posfilledbytypethree" name="posfilledbytypethree" onchange="return showAutocomplete(this.value,'posfillareathree')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->posfilledbytype == 1) selected @endif  value="1">Member</option>
+										    <option  @if($irc_details->posfilledbytype == 2) selected @endif value="2">Non-Member</option>
+										    <option @if($irc_details->posfilledbytype == 3) selected @endif  value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillareathree" class="input-field inline @if($irc_details->posfilledbytype != 1) hide @endif">
+										<input type="text"	name="posfilledbymemberthree" id="posfilledbymemberthree" value="{{ CommonHelper::getmembercode_byid($irc_details->posfilledmemberid) }}" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidthree" id="posfilledbymemberidthree" value="{{ $irc_details->posfilledmemberid }}" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
+									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder="" class="inline-box" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 										
 									</div>
 						        </div>
@@ -731,8 +861,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+						          		<span>REPLACEMENT Staff Grade is </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="replacestafftypethree" name="replacestafftypethree" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->replacestafftype == 'Non-Clerical') selected @endif >Non-Clerical</option>
+										    <option  @if($irc_details->replacestafftype == 'Clerical') selected @endif>Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Special Grade Clerical') selected @endif >Special Grade Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Other') selected @endif >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
+									
 									<div class="input-field inline">
 										<input type="text" 	name="replacestaffthree" id="replacestaffthree" value="{{$irc_details->replacestaff}}" placeholder="" class="inline-box" style="width: 250px;"/>
 										
@@ -813,12 +954,22 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
+									
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxfour" id="messengerboxfour"  value="1"/>
-										<span><span class="gender">{{ $genderlable }}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
+										<span><span class="gender">{{ $genderlable }}</span> was a </span>
 										</label> 
-									</p>	
+										<div class="input-field inline">
+											<select id="messengerfour" name="messengerfour" class="browser-default">
+											    <option value="" disabled selected>Choose your option</option>
+											    <option @if($irc_details->messengertype =='MESSENGER') selected @endif >MESSENGER</option>
+											    <option @if($irc_details->messengertype =='CLERICAL') selected @endif >CLERICAL</option>
+											    <option @if($irc_details->messengertype =='SPECIAL GRADE CLERK') selected @endif >SPECIAL GRADE CLERK</option>
+											    <option @if($irc_details->messengertype =='OTHER') selected @endif >OTHER</option>
+											</select>
+										</div>
+										<span> before RESIGNATION [Delete which is not applicable]</span>
+										
 								</div>
 							
 							</div>	
@@ -830,12 +981,43 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxfour" id="attachedboxfour"  value="1"/>
-									<span>Attached is <span class="genderone">{{ $genderlableone }}</span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+									<span>Attached is <span class="genderone">{{ $genderlableone }}</span> </span>
 									</label> 
+									
+									<div class="input-field inline">
+										<select id="attachfourtype" name="attachfourtype" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->attachfourtype == 'RESIGNATION') selected @endif>RESIGNATION</option>
+										    <option @if($irc_details->attachfourtype == 'TERMINATION') selected @endif>TERMINATION</option>
+										    <option @if($irc_details->attachfourtype == 'EXPULSION') selected @endif>EXPULSION</option>
+										    <option @if($irc_details->attachfourtype == 'STRUCK OFF') selected @endif>STRUCK OFF</option>
+										</select>
+									</div>
+									Letter (compulsory)
 										
 									<div class="input-field inline">
-										 <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="inline-box" style="width: 330px;">
+										<div class="row">
+											<div class="col s12 m4">
+												 <div id="">
+			                                        <div class=" ">
+			                                         	<br>
+			                                            <input type="file" name="attachmentfour" class="" accept="">
+			                                        </div>
+			                                        <div class="file-path-wrapper hide">
+			                                            <input class="file-path validate" type="text">
+			                                        </div>
+			                                    </div>
+											</div>
+											<div class="col s12 m1">
+												<br>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+											</div>
+											<div class="col s12 m6">
+												 <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="inline-box" style="margin-left:20px; width: 330px;">
+											</div>
+										</div>
 									</div>
+									
 								</div>
 								
 							</div>	
@@ -860,11 +1042,25 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
-									<span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+									<span>Member’s position has not been filled up by another </span>
 									</label> 
+									<div class="input-field inline">
+										<select id="posfilledbytypefour" name="posfilledbytypefour" onchange="return showAutocomplete(this.value,'posfillareafour')" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->posfilledbytype == 1) selected @endif  value="1">Member</option>
+										    <option @if($irc_details->posfilledbytype == 2) selected @endif  value="2">Non-Member</option>
+										    <option @if($irc_details->posfilledbytype == 3) selected @endif  value="3">Other</option>
+										</select>
+									</div>
+									<div id="posfillareafour" class="input-field inline @if($irc_details->posfilledbytype != 1) hide @endif">
+										<input type="text"	name="posfilledbymemberfour" id="posfilledbymemberfour" value="{{ CommonHelper::getmembercode_byid($irc_details->posfilledmemberid) }}" placeholder="Member No/NRIC" class="inline-box posfilledbymemberone" style="width: 250px;"/>
+										<input type="hidden" name="posfilledbymemberidfour" id="posfilledbymemberidfour" value="{{ $irc_details->posfilledmemberid }}" class="posfilledbymemberidone">
+									</div>
+									<span>[Please specify others in detail]</span>
+									
 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
 									</div>	
 								</div>
 								
@@ -874,9 +1070,20 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
-									<span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+									<span>REPLACEMENT Staff Grade is  </span>
 									</label> 
+									<div class="input-field inline">
+										<select id="replacestafftypefour" name="replacestafftypefour" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->replacestafftype == 'Non-Clerical') selected @endif >Non-Clerical</option>
+										    <option  @if($irc_details->replacestafftype == 'Clerical') selected @endif>Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Special Grade Clerical') selected @endif >Special Grade Clerical</option>
+										    <option @if($irc_details->replacestafftype == 'Other') selected @endif >Other</option>
+										</select>
+									</div>
+									[Please specify others in detail]
 										
+									
 									<div class="input-field inline">						
 										<input type="text" 	name="replacestafffour" value="{{$irc_details->replacestaff}}" id="replacestafffour" placeholder="" class="inline-box" style="width: 250px;"/>
 									</div>
@@ -1142,7 +1349,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<p>
 							<label>
 							<input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxtwo ==1) checked @endif name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
-							<span>Staff who has taken over the job functions under CODE 01 / 02 / 03 / 04 is a NUBE Member. </span>
+							<span>Staff who has taken over the job functions under CODE 0{{$section_type_val}} is a NUBE Member. </span>
 							</label> 
 						</p>	
 					</div>
@@ -1150,7 +1357,15 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							
 							<label>
 								<input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxthree ==1) checked @endif name="committieverificationboxthree" id="committieverificationboxthree"  value="1" />
-								<span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+								<span>Staff who is under 
+								<div class="input-field inline">
+									<select id="committiecode" name="committiecode" class="browser-default">
+									    <option value="" disabled selected>Choose code</option>
+									    <option @if($irc_details->committiecode == '3') selected @endif value="3">CODE 03</option>
+									    <option @if($irc_details->committiecode == '5') selected @endif value="5">CODE 05</option>
+									</select>
+								</div>
+								 is still performing the same job function.  The additional information for this staff is as follows:  </span>
 								
 							</label> 
 							<br>
@@ -1446,26 +1661,58 @@ function ChangeFields(){
 	var reason = $("#reason option:selected").text();
 	//alert(reason);
 	$(".reasonsections").addClass('hide');
+	var codenumber = '';
 	if(reason=='RETIRED'){
 		$("#retired_section").removeClass('hide');
 		$("#section_type").val(1);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',true);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '01';
 	}else if(reason=='DECEASED'){
 		$("#deceased_section").removeClass('hide');
 		$("#section_type").val(2);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '02';
 	}else if(reason=='PROMOTED'){
 		$("#promoted_section").removeClass('hide');
 		$("#section_type").val(3);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '03';
 	}
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		codenumber = '04';
 	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACKLISTED FROM UNION' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
 		$("#section_type").val(5);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		codenumber = '05';
 	}else{
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		codenumber = '04';
 	}
+	$("#codenumber").text(codenumber);
 }
 $(".datepicker-custom").datepicker({
     format: 'dd/mm/yyyy',
@@ -1480,7 +1727,52 @@ $(document).on('input', '.allow_contactnumbers', function(){
      evt.preventDefault();
    }
  });
+$(".posfilledbymemberone").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-activemember-list') }}?searchkey="+ $(".posfilledbymemberone").val(),
+	type:'GET',
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$(".posfilledbymemberone").val(suggestion.member_number);
+			$.ajax({
+				url: "{{ URL::to('/get-member-irclist-values') }}?member_id="+ $(".posfilledbymemberone").val(),
+                type: "GET",
+				dataType: "json",
+				success: function(res) {
 
+					if(res!=1){
+						
+						$('.posfilledbyone').val(res.membername);
+						$('.posfilledbymemberidone').val(res.memberid);
+						
+					}else{
+						$('.posfilledbyone').val('');    
+						$('.posfilledbymemberidone').val('');    
+						alert("IRC entry already added for this member");
+					}
+				
+				}
+			});
+			
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#member_number").val('');
+		}
+	}
+});
+function showAutocomplete(type,refname){
+	if(type==1){
+		$("#"+refname).removeClass('hide');
+	}else{
+		$("#"+refname).addClass('hide');
+		$('.posfilledbyone').val('');
+		$('.posfilledbymemberidone').val('');
+		$('.posfilledbymemberone').val('');
+	}
+}
 
 </script>
 @endsection
