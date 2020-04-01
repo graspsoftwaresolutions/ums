@@ -435,7 +435,7 @@
 						          		<span>Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" class="inline-box" id="memberdemisedtwo" style="width: 560px;" name="memberdemisedtwo" >
+										<input type="text" class="datepicker-custom inline-box" id="memberdemisedtwo" style="width: 560px;" name="memberdemisedtwo" >
 										
 									</div>
 						        </div>

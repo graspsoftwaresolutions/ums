@@ -1412,6 +1412,19 @@ class SubscriptionAjaxController extends CommonController
                 if($company->banktype==1){
                     $members_count = CommonHelper::subCompanyMembersNotDOJActCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersNotDOJActAmount($company_enc_id, $user_role, $userid,$date);
+
+                    $cond =" AND m.MonthlySubscriptionCompanyId = '$company->id'";
+
+                    $members_countone = DB::select(DB::raw('SELECT Amount as value FROM mon_sub_member_match as mm LEFT JOIN `mon_sub_member` AS `m` ON mm.mon_sub_member_id=m.id left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND mm.match_id =4 '));
+
+                    $members_amtone = DB::select(DB::raw('SELECT sum(Amount) as Amount FROM mon_sub_member_match as mm LEFT JOIN `mon_sub_member` AS `m` ON mm.mon_sub_member_id=m.id left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND mm.match_id =4 '));
+                    $members_countone = [];
+                    $misbankamt = 0;
+                    if(!empty($members_amtone)){
+                        $misbankamt = $members_amtone[0]->Amount;
+                    }
+                    $members_amt = $members_amt-$misbankamt;
+                    $members_count = $members_count-count($members_countone);
                 }else{
                     $members_count = CommonHelper::subCompanyMembersNotDojCount($company_enc_id, $user_role, $userid,$date);
                     $members_amt = CommonHelper::subCompanyMembersNotDojAmount($company_enc_id, $user_role, $userid,$date);
