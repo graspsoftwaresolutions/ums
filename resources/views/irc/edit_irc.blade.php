@@ -61,7 +61,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	@endphp
 		<div class="container">
 		<div class="card">
-		<form class="formValidate" id="irc_formValidate" method="post"
+		<form class="formValidate" id="irc_formValidate" method="post" enctype="multipart/form-data"
 		action="{{ route('irc.updateIrc',app()->getLocale()) }}">
 		@csrf
         @php 
