@@ -312,7 +312,7 @@
 						          		<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
+										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  value="{{ date('d/m/Y') }}" class="datepicker-custom inline-box"/>
 										
 									</div>
 						        </div>
@@ -355,7 +355,7 @@
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentone" class="" accept="">
+			                                            <input type="file" name="attachmentone" class="" accept="" style="width: 170px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
@@ -484,7 +484,7 @@
 						          		<span>Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" class="datepicker-custom inline-box" id="memberdemisedtwo" style="width: 560px;" name="memberdemisedtwo" >
+										<input type="text" class="datepicker-custom inline-box" id="memberdemisedtwo" value="{{ date('d/m/Y') }}" name="memberdemisedtwo" >
 										
 									</div>
 						        </div>
@@ -702,7 +702,7 @@
 									</div>
 									grade w.e.f.
 									<div class="input-field inline">
-										<input type="text" 	name="gradewefthree" id="gradewefthree" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
+										<input type="text" 	name="gradewefthree" id="gradewefthree" placeholder="grade w.e.f" value="{{ date('d/m/Y') }}"  class="datepicker-custom inline-box"/>
 										
 									</div>
 						        </div>
@@ -723,7 +723,7 @@
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentthree" class="" accept="">
+			                                            <input type="file" name="attachmentthree" class="" accept="" style="width: 170px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
@@ -754,12 +754,19 @@
 							
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-										<span>Member is still in the same Branch / Department performing the same job functions </span>
-										</label> 
-									</p>	
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
+									<span>Member is still in the same </span>
+									</label> 
+									<div class="input-field inline">
+										<select id="samebranchtype" name="samebranchtype" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option>Branch</option>
+										    <option>Department</option>
+										</select>
+									</div>
+									performing the same job functions
 								</div>
 							
 							</div>	
@@ -888,10 +895,18 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-						          		<span><span class="gender"></span> RESIGNED / TERMINATED on </span>
+						          		<span><span class="gender"></span>  </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="resigntypefour" name="resigntypefour" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option>RESIGNED</option>
+										    <option>TERMINATED</option>
+										</select>
+									</div>	
+									on
 									<div class="input-field inline">
-										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
+										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f"  value="{{ date('d/m/Y') }}" class="datepicker-custom inline-box"/>
 										
 									</div>
 						        </div>
@@ -946,7 +961,7 @@
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentfour" class="" accept="">
+			                                            <input type="file" name="attachmentfour" class="" accept="" style="width: 170px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
@@ -1078,11 +1093,20 @@
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" name="expelledboxfive" id="expelledboxfive"  value="1"/>
-									<span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
+									<span>Member was 
 									</label> 
 
+									<div class="input-field inline">
+										<select id="expelledtypefive" name="expelledtypefive" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option>EXPELLED</option>
+										    <option>STRUCK OFF</option>
+										    <option>BLACKLISTED</option>
+										</select>
+									</div>
+									 on
 									<div class="input-field inline">						
-										<input type="text" 	name="gradeweffive" id="gradewef" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
+										<input type="text" 	name="gradeweffive" id="gradewef" placeholder="grade w.e.f" value="{{ date('d/m/Y') }}"  class="datepicker-custom inline-box"/>
 									</div>
 								</div>
 							</div>
@@ -1102,23 +1126,40 @@
 							</div>
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-										<span>Member is still in the same Branch / Department</span>
-										</label> 
-									</p>	
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
+									<span>Member is still in the same </span>
+									</label> 
+									
+									<div class="input-field inline">
+										<select id="samebranchtypefive" name="samebranchtypefive" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option>Branch</option>
+										    <option>Department</option>
+										</select>
+									</div>
 								</div>
 								
 							</div>	
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
-										<span>Member HAS STOPPED / HAS NOT STOPPED the Check-Off [Delete whichever is applicable] </span>
-										</label> 
-									</p>	
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
+									<span>Member </span>
+									</label> 
+									
+									<div class="input-field inline">
+										<select id="stoppedtypefive" name="stoppedtypefive" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option>HAS STOPPED</option>
+										    <option>HAS NOT STOPPED</option>
+										</select>
+									</div>	
+									 the Check-Off [Delete whichever is applicable]
+									 <br>
+									 <br>
 								</div>
 								
 							</div>	

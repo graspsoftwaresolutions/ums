@@ -566,7 +566,7 @@ class IrcController extends CommonController
 		
 		$data['resignedmember'] = DB::table('irc_confirmation as irc')->select('irc.id as ircid','irc.resignedmemberno','irc.resignedmembername','irc.resignedmembericno','irc.resignedmemberbankname','irc.resignedmemberbranchname','irc.ircname','irc.ircposition','irc.ircbank','irc.ircbankaddress','irc.irctelephoneno','irc.ircmobileno','irc.ircfaxno','irc.gradewef','irc.nameofperson',
 									'irc.waspromoted','irc.beforepromotion','irc.attached','irc.herebyconfirm','irc.filledby','irc.nameforfilledby','irc.remarks','irc.status',DB::raw("DATE_FORMAT(irc.submitted_at,'%d/%m/%Y') as submitted_at"),DB::raw("DATE_FORMAT(irc.gradewef,'%d/%m/%Y') as gradewef"),
-									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%m/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%m/%Y') as branchcommitteedate"),'irc.comments','cb.union_branch_id','irc.posfilledbytype','irc.posfilledmemberid','irc.messengertype','irc.attachment_file','irc.attachfourtype','irc.committiecode','irc.replacestafftype')
+									'm.member_number','d.designation_name','p.person_title',DB::raw("DATE_FORMAT(m.dob,'%d/%m/%Y') as dob"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(m.dob, '%Y%m') )) DIV 12 AS age"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'r.race_name','irc.ircmembershipno','reas.id as reasonid','irc.branchcommitteeverification1','irc.branchcommitteeverification2','irc.branchcommitteeName','irc.branchcommitteeZone',DB::raw("DATE_FORMAT(irc.branchcommitteedate,'%d/%m/%Y') as branchcommitteedate"),'irc.comments','cb.union_branch_id','irc.posfilledbytype','irc.posfilledmemberid','irc.messengertype','irc.attachment_file','irc.attachfourtype','irc.committiecode','irc.replacestafftype','irc.samebranchtype','irc.expelledtypefive','irc.stoppedtypefive','irc.resigntypefour')
 									->leftjoin('membership as m','irc.resignedmemberno','=','m.id')
 									->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 									->leftjoin('designation as d','m.designation_id','=','d.id')
@@ -794,6 +794,8 @@ class IrcController extends CommonController
 			$replacestafftype = $request->input('replacestafftypethree');
 			$attachment_file = 'attachmentthree';
 
+			$samebranchtype = $request->input('samebranchtype');
+
 
 			$insertdata['promotedboxthree'] = isset($promotedboxthree) ? 1 : 0;
 			$insertdata['promotedto'] = $promotedthree;
@@ -805,6 +807,7 @@ class IrcController extends CommonController
 			$insertdata['posfilledmemberid'] = $posfilledmemberid;
 			$insertdata['messengertype'] = $messengertype;
 			$insertdata['replacestafftype'] = $replacestafftype;
+			$insertdata['samebranchtype'] = $samebranchtype;
 
 			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $samebranchbox == 1 && $attachedbox == 1 && $insertdata['promotedboxthree'] == 1 && $insertdata['transfertoplaceboxthree'] == 1 && $insertdata['nameofperson'] == 1){
 				$ircstatus = 1;
@@ -858,6 +861,7 @@ class IrcController extends CommonController
 			$replacestafftype = $request->input('replacestafftypefour');
 			$attachment_file = 'attachmentfour';
 			$attachfourtype = $request->input('attachfourtype');
+			$resigntypefour = $request->input('resigntypefour');
 
 			$insertdata['resignedonboxfour'] = isset($resignedonboxfour) ? 1 : 0;
 			$insertdata['nameofperson'] = isset($personnameboxfour) ? 1 : 0;
@@ -867,6 +871,7 @@ class IrcController extends CommonController
 			$insertdata['messengertype'] = $messengertype;
 			$insertdata['replacestafftype'] = $replacestafftype;
 			$insertdata['attachfourtype'] = $attachfourtype;
+			$insertdata['resigntypefour'] = $resigntypefour;
 
 			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $attachedbox == 1 && $insertdata['resignedonboxfour'] == 1 && $insertdata['nameofperson'] == 1 ){
 				$ircstatus = 1;
@@ -882,6 +887,15 @@ class IrcController extends CommonController
 			}
 
 			$gradewef = $request->input('gradeweffive');
+
+			$expelledtypefive = $request->input('expelledtypefive');
+			$stoppedtypefive = $request->input('stoppedtypefive');
+			$samebranchtype = $request->input('samebranchtypefive');
+
+			$insertdata['samebranchtype'] = $samebranchtype;
+			$insertdata['expelledtypefive'] = $expelledtypefive;
+			$insertdata['stoppedtypefive'] = $stoppedtypefive;
+
 			//$committiename = $request->input('committiename');
 			//$attachedfour = $request->input('committieverifyname');
 			$insertdata['expelledboxfive'] = isset($expelledboxfive) ? 1 : 0;

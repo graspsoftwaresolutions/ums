@@ -394,7 +394,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentone" class="" accept="">
+			                                            <input type="file" name="attachmentone" class="" accept="" style="width: 170px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
@@ -403,10 +403,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											</div>
 											<div class="col s12 m1">
 												<br>
+												@if($irc_details->attachment_file!="")
 												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+												@endif
 											</div>
 											<div class="col s12 m6">
-												<input type="text" id="attachedone" name="attachedone" class="inline-box" style="margin-left:10px; width: 500px;" value="{{$irc_details->attached_desc}}" >
+												<input type="text" id="attachedone" name="attachedone" class="inline-box" style="margin-left:30px; width: 500px;" value="{{$irc_details->attached_desc}}" >
 											</div>
 										</div>
 									</div>
@@ -530,7 +532,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						          		<span>Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="memberdemisedtwo" class="datepicker-custom inline-box" style="width: 560px;" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
+										<input type="text" id="memberdemisedtwo" class="datepicker-custom inline-box" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
 										
 									</div>
 						        </div>
@@ -614,9 +616,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						            <div class="input-field inline">
 										<select id="posfilledbytypetwo" name="posfilledbytypetwo" onchange="return showAutocomplete(this.value,'posfillareatwo')" class="browser-default">
 										    <option value="" disabled selected>Choose your option</option>
-										    <option value="1">Member</option>
-										    <option value="2">Non-Member</option>
-										    <option value="3">Other</option>
+										    <option @if($irc_details->posfilledbytype == 1) selected @endif value="1">Member</option>
+										    <option @if($irc_details->posfilledbytype == 2) selected @endif value="2">Non-Member</option>
+										    <option @if($irc_details->posfilledbytype == 3) selected @endif value="3">Other</option>
 										</select>
 									</div>
 									<div id="posfillareatwo" class="input-field inline @if($irc_details->posfilledbytype != 1) hide @endif">
@@ -770,7 +772,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentthree" class="" accept="">
+			                                            <input type="file" name="attachmentthree" class="" accept="" style="width: 170px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
@@ -779,10 +781,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											</div>
 											<div class="col s12 m1">
 												<br>
+												@if($irc_details->attachment_file!="")
 												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+												@endif
 											</div>
 											<div class="col s12 m6">
-												<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="margin-left:10px; width: 500px;">
+												<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="margin-left:30px; width: 500px;">
 											</div>
 										</div>
 										
@@ -806,12 +810,20 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-										<span>Member is still in the same Branch / Department performing the same job functions </span>
-										</label> 
-									</p>	
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
+									<span>Member is still in the same </span>
+									</label> 
+									<div class="input-field inline">
+										<select id="samebranchtype" name="samebranchtype" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->samebranchtype =='Branch') selected @endif >Branch</option>
+										    <option @if($irc_details->samebranchtype =='Department') selected @endif >Department</option>
+										</select>
+									</div>
+									performing the same job functions
+										
 								</div>
 							
 							</div>	
@@ -941,8 +953,16 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->resignedonboxfour ==1) checked @endif name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-						          		<span><span class="gender">{{ $genderlable }}</span> RESIGNED / TERMINATED on </span>
+						          		<span><span class="gender">{{ $genderlable }}</span> </span>
 						            </label> 
+						            <div class="input-field inline">
+										<select id="resigntypefour" name="resigntypefour" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->resigntypefour =='RESIGNED') selected @endif >RESIGNED</option>
+										    <option @if($irc_details->resigntypefour =='TERMINATED') selected @endif >TERMINATED</option>
+										</select>
+									</div>	
+									on
 									<div class="input-field inline">
 										<input type="text" 	name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f" value="{{$dataresigneddata->gradewef}}" class="datepicker-custom inline-box"/>
 										
@@ -1001,7 +1021,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentfour" class="" accept="">
+			                                            <input type="file" name="attachmentfour" class="" accept="" style="width: 170px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
@@ -1010,10 +1030,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											</div>
 											<div class="col s12 m1">
 												<br>
+												@if($irc_details->attachment_file!="")
 												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+												@endif
 											</div>
 											<div class="col s12 m6">
-												 <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="inline-box" style="margin-left:20px; width: 330px;">
+												 <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="inline-box" style="margin-left:30px; width: 330px;">
 											</div>
 										</div>
 									</div>
@@ -1138,8 +1160,18 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->expelledboxfive ==1) checked @endif name="expelledboxfive" id="expelledboxfive"  value="1"/>
-									<span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
+									<span>Member was 
 									</label> 
+
+									<div class="input-field inline">
+										<select id="expelledtypefive" name="expelledtypefive" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->expelledtypefive == 'EXPELLED') selected @endif >EXPELLED</option>
+										    <option @if($irc_details->expelledtypefive == 'STRUCK OFF') selected @endif >STRUCK OFF</option>
+										    <option @if($irc_details->expelledtypefive == 'BLACKLISTED') selected @endif >BLACKLISTED</option>
+										</select>
+									</div>
+									 on
 
 									<div class="input-field inline">						
 										<input type="text" 	name="gradeweffive" id="gradewef" value="{{$dataresigneddata->gradewef}}" placeholder="grade w.e.f"  class="datepicker-custom inline-box"/>
@@ -1162,23 +1194,41 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</div>
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-										<span>Member is still in the same Branch / Department.</span>
-										</label> 
-									</p>	
+								
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
+									<span>Member is still in the same </span>
+									</label> 
+
+									<div class="input-field inline">
+										<select id="samebranchtypefive" name="samebranchtypefive" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->samebranchtype == 'Branch') selected @endif >Branch</option>
+										    <option @if($irc_details->samebranchtype == 'Department') selected @endif >Department</option>
+										</select>
+									</div>
+									
 								</div>
 								
 							</div>	
 							<div class="row padding-left-20">
 								<div class="col s12 m12 ">
-									<p>
-										<label>
-										<input type="checkbox" class="common-checkbox" @if($irc_details->memberstoppedboxfive ==1) checked @endif name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
-										<span>Member HAS STOPPED / HAS NOT STOPPED the Check-Off [Delete whichever is applicable] </span>
-										</label> 
-									</p>	
+									
+									<label>
+									<input type="checkbox" class="common-checkbox" @if($irc_details->memberstoppedboxfive ==1) checked @endif name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
+									<span>Member </span>
+									</label> 
+									<div class="input-field inline">
+										<select id="stoppedtypefive" name="stoppedtypefive" class="browser-default">
+										    <option value="" disabled selected>Choose your option</option>
+										    <option @if($irc_details->stoppedtypefive == 'HAS STOPPED') selected @endif >HAS STOPPED</option>
+										    <option @if($irc_details->stoppedtypefive == 'HAS NOT STOPPED') selected @endif >HAS NOT STOPPED</option>
+										</select>
+									</div>	
+									 the Check-Off [Delete whichever is applicable]
+									 <br>
+									 <br>
+									
 								</div>
 								
 							</div>	
