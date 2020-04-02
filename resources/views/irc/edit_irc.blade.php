@@ -44,10 +44,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     	height: 2rem !important;
     	margin-top: 10px !important;
     }
+    .download-link{
+    	line-height: 33px;
+	    display: inline-block;
+	    height: 33px;
+	    padding: 0 1rem;
+    }
 </style>
 @endsection
 @section('main-content')
 <div id="">
+	<form class="formValidate" id="irc_formValidate" method="post" enctype="multipart/form-data"
+		action="{{ route('irc.updateIrc',app()->getLocale()) }}">
+		@csrf
 <div class="row">
 <div class="content-wrapper-before"></div>
 	@php 
@@ -60,10 +69,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		}
 	@endphp
 		<div class="container">
+
 		<div class="card">
-		<form class="formValidate" id="irc_formValidate" method="post" enctype="multipart/form-data"
-		action="{{ route('irc.updateIrc',app()->getLocale()) }}">
-		@csrf
+		
         @php 
 			$dataresigneddata = $data['resignedmember']; 
         @endphp
@@ -390,24 +398,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						            </label> 
 						            <div class="input-field inline">
 										<div class="row">
-											<div class="col s12 m3">
+											<div class="col s12 m8">
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentone" class="" accept="" style="width: 170px;">
+			                                            <input type="file" name="attachmentone" class="" accept="" style="width: 500px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
 			                                        </div>
 			                                    </div>
 											</div>
-											<div class="col s12 m1">
+											<div class="col s12 m4">
 												<br>
 												@if($irc_details->attachment_file!="")
-												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" style="" target="_blank">VIEW ATTACHMENT</a>
 												@endif
 											</div>
-											<div class="col s12 m6">
+											<div class="col s12 m6 hide">
 												<input type="text" id="attachedone" name="attachedone" class="inline-box" style="margin-left:30px; width: 500px;" value="{{$irc_details->attached_desc}}" >
 											</div>
 										</div>
@@ -451,7 +459,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<span>[Please specify others in detail]</span>
 									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 										
 									</div>
 						        </div>
@@ -484,7 +492,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxone"  value="1"/>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxone" onclick="return MakeRequired('appcontactboxone',1)"  value="1"/>
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -628,7 +636,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<span>[Please specify others in detail]</span>
 									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 										
 									</div>
 						        </div>
@@ -662,7 +670,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxtwo"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxtwo" onclick="return MakeRequired('appcontactboxtwo',2)"  value="1"/>
 						          		<span>Next of Kin’s Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -768,24 +776,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						            </label> 
 						            <div class="input-field inline">
 										<div class="row">
-											<div class="col s12 m3">
+											<div class="col s12 m8">
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentthree" class="" accept="" style="width: 170px;">
+			                                            <input type="file" name="attachmentthree" class="" accept="" style="width: 500px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
 			                                        </div>
 			                                    </div>
 											</div>
-											<div class="col s12 m1">
+											<div class="col s12 m4">
 												<br>
 												@if($irc_details->attachment_file!="")
-												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a>
 												@endif
 											</div>
-											<div class="col s12 m6">
+											<div class="col s12 m6 hide">
 												<input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="margin-left:30px; width: 500px;">
 											</div>
 										</div>
@@ -863,7 +871,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 										
 									</div>
 						        </div>
@@ -896,7 +904,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxthree" id="appcontactboxthree"  value="1"/>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxthree" id="appcontactboxthree" onclick="return MakeRequired('appcontactboxthree',3)"  value="1"/>
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -1017,24 +1025,24 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										
 									<div class="input-field inline">
 										<div class="row">
-											<div class="col s12 m4">
+											<div class="col s12 m8">
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentfour" class="" accept="" style="width: 170px;">
+			                                            <input type="file" name="attachmentfour" class="" accept="" style="width: 500px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
 			                                        </div>
 			                                    </div>
 											</div>
-											<div class="col s12 m1">
+											<div class="col s12 m4">
 												<br>
 												@if($irc_details->attachment_file!="")
-												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" target="_blank">Attachment</a>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a>
 												@endif
 											</div>
-											<div class="col s12 m6">
+											<div class="col s12 m6 hide">
 												 <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="inline-box" style="margin-left:30px; width: 330px;">
 											</div>
 										</div>
@@ -1082,7 +1090,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" value="{{$irc_details->posfilledby}}" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 									</div>	
 								</div>
 								
@@ -1114,7 +1122,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxfour" id="appcontactboxfour"  value="1"/>
+										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxfour" id="appcontactboxfour" onclick="return MakeRequired('appcontactboxfour',4)"  value="1"/>
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -1428,6 +1436,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 			   </div>
 			   <div class="row">
+			    	<div class="col s12 m12">
+			    		<div class="col s12 m12">
+				    		<p class="bold">
+				    			Note: 
+				    		</p>
+				    		<p>
+				    			01 - RETIRED, &nbsp; &nbsp; 02 - DECEASED, &nbsp; &nbsp; 03 - PROMOTED, &nbsp; &nbsp; 04 - RESIGNED FROM BANK / RESIGNED FROM NUBE / TERMINATED BY BANK / TRANSFERRED TO SABAH / SARAWAK, &nbsp; &nbsp; 05 - EXPELLED / STRUCK OFF / BLACKLISTED FROM NUBE
+				    		</p>
+				    	</div>
+			    		
+			    	</div>
+			   	</div>
+			   <div class="row">
 					
 					<div class="padding-left-20 ">
 						<br>
@@ -1547,9 +1568,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</div>
 						</div>
 					</div>
-				</form>
+				
 		 </div>
+		 
 	  </div><!-- START RIGHT SIDEBAR NAV -->
+	  </form>
 		  @include('layouts.right-sidebar')
 		  <!-- END RIGHT SIDEBAR NAV -->
 
@@ -1579,11 +1602,51 @@ type="text/javascript"></script>
 <script>
 
 $("#irc_sidebar_a_id").addClass('active');
-
+$(document).ready(function() {
+	$("#irc_formValidate").validate({
+		rules: {
+			member_number: {
+				required: true,
+			},
+			irc_member_no: {
+				required: true,
+			},
+		},
+		//For custom messages
+		messages: {
+			member_number: {
+				required: '{{__("Enter a Member Number") }}',
+			},
+			irc_member_no: {
+				required: '{{__("Enter irc Member Number") }}',
+			},
+		},
+		errorElement: 'div',
+		errorPlacement: function(error, element) {
+			var placement = $(element).data('error');
+			if (placement) {
+				$(placement).append(error)
+			} else {
+				error.insertAfter(element);
+			}
+		}
+	});
+});
 //Model
 $(document).ready(function() {
-// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-$('.modal').modal();
+	var section_type = $("#section_type").val();
+	if(section_type==1){
+		MakeRequired('appcontactboxone',1);
+	}else if(section_type==2){
+		MakeRequired('appcontactboxtwo',2);
+	}else if(section_type==3){
+		MakeRequired('appcontactboxthree',3);
+	}else if(section_type==4){
+		MakeRequired('appcontactboxfour',4);
+	}else if(section_type==5){
+		MakeRequired('appcontactboxfive',5);
+	}
+	$('.modal').modal();
 });
 /* $("#member_number").devbridgeAutocomplete({
 	//lookup: countries,
@@ -1715,51 +1778,33 @@ function ChangeFields(){
 	if(reason=='RETIRED'){
 		$("#retired_section").removeClass('hide');
 		$("#section_type").val(1);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',true);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '01';
 	}else if(reason=='DECEASED'){
 		$("#deceased_section").removeClass('hide');
 		$("#section_type").val(2);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	
 		codenumber = '02';
 	}else if(reason=='PROMOTED'){
 		$("#promoted_section").removeClass('hide');
 		$("#section_type").val(3);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '03';
 	}
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		
 		codenumber = '04';
 	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACKLISTED FROM UNION' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
 		$("#section_type").val(5);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '05';
 	}else{
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		
 		codenumber = '04';
 	}
 	$("#codenumber").text(codenumber);
@@ -1823,6 +1868,58 @@ function showAutocomplete(type,refname){
 		$('.posfilledbymemberone').val('');
 	}
 }
+
+function MakeRequired(refid,refno){
+	if(refno==1){
+		if($("#"+refid).is(':checked')){
+			$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',true);
+		}else{
+			$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		}
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else if(refno==2){
+		if($("#appcontactboxtwo").is(':checked')){
+			$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',true);
+		}else{
+			$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		}
+
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else if(refno==3){
+		if($("#appcontactboxthree").is(':checked')){
+			$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',true);
+		}else{
+			$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		}
+
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else if(refno==4){
+		if($("#appcontactboxfour").is(':checked')){
+			$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
+		}else{
+			$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		}
+
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+	}else if(refno==5){
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else{
+
+	}
+	
+}
+
 
 </script>
 @endsection

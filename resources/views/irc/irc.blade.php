@@ -355,14 +355,14 @@
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentone" class="" accept="" style="width: 170px;">
+			                                            <input type="file" name="attachmentone" class="" accept="" style="width: 500px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
 			                                        </div>
 			                                    </div>
 											</div>
-											<div class="col s12 m6">
+											<div class="col s12 m6 hide">
 												<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
 											</div>
 										</div>
@@ -404,7 +404,7 @@
 									</div>
 									<span>[Please specify others in detail]</span>
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyone" id="posfilledbyone" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 										
 									</div>
 						        </div>
@@ -436,7 +436,7 @@
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" name="appcontactboxone" id="appcontactboxone"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxone" onclick="return MakeRequired('appcontactboxone',1)" id="appcontactboxone"  value="1"/>
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -580,7 +580,7 @@
 									<span>[Please specify others in detail]</span>
 									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbytwo" class="inline-box posfilledbyone" style="width: 250px;" id="posfilledbytwo" placeholder=""/>
+										<input type="text" 	name="posfilledbytwo" class="inline-box posfilledbyone" style="width: 500px;" id="posfilledbytwo" placeholder=""/>
 										
 									</div>
 						        </div>
@@ -613,7 +613,7 @@
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" id="appcontactboxtwo"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" id="appcontactboxtwo"  onclick="return MakeRequired('appcontactboxtwo',2)" value="1"/>
 						          		<span>Next of Kin’s Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -723,14 +723,14 @@
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentthree" class="" accept="" style="width: 170px;">
+			                                            <input type="file" name="attachmentthree" class="" accept="" style="width: 500px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
 			                                        </div>
 			                                    </div>
 											</div>
-											<div class="col s12 m6">
+											<div class="col s12 m6 hide">
 												<input type="text" name="attachedthree" id="attachedthree" class="inline-box" style="width: 500px;">
 											</div>
 										</div>
@@ -806,7 +806,7 @@
 									
 									
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbythree" id="posfilledbythree" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 										
 									</div>
 						        </div>
@@ -838,7 +838,7 @@
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" name="appcontactboxthree" id="appcontactboxthree"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxthree" id="appcontactboxthree" onclick="return MakeRequired('appcontactboxthree',3)"  value="1"/>
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -961,14 +961,14 @@
 												 <div id="">
 			                                        <div class=" ">
 			                                         	<br>
-			                                            <input type="file" name="attachmentfour" class="" accept="" style="width: 170px;">
+			                                            <input type="file" name="attachmentfour" class="" accept="" style="width: 500px;">
 			                                        </div>
 			                                        <div class="file-path-wrapper hide">
 			                                            <input class="file-path validate" type="text">
 			                                        </div>
 			                                    </div>
 											</div>
-											<div class="col s12 m6">
+											<div class="col s12 m6 hide">
 												 <input type="text" id="attachedfour" name="attachedfour" class="inline-box" style="width: 330px;">
 											</div>
 										</div>
@@ -1016,7 +1016,7 @@
 									
 
 									<div class="input-field inline">
-										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder="" class="inline-box posfilledbyone" style="width: 250px;"/>
+										<input type="text" 	name="posfilledbyfour" id="posfilledbyfour" placeholder="" class="inline-box posfilledbyone" style="width: 500px;"/>
 									</div>	
 								</div>
 								
@@ -1047,7 +1047,7 @@
 							<div class="row padding-left-20">
 								<div class="col s12">
 									<label>
-										<input type="checkbox" class="common-checkbox" name="appcontactboxfour" id="appcontactboxfour"  value="1"/>
+										<input type="checkbox" class="common-checkbox" name="appcontactboxfour" id="appcontactboxfour" onclick="return MakeRequired('appcontactboxfour',4)"  value="1"/>
 						          		<span>Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
@@ -1223,6 +1223,19 @@
 						
 					</div>
 			   </div>
+			    <div class="row">
+			    	<div class="col s12 m12">
+			    		<div class="col s12 m12">
+				    		<p class="bold">
+				    			Note: 
+				    		</p>
+				    		<p>
+				    			01 - RETIRED, &nbsp; &nbsp; 02 - DECEASED, &nbsp; &nbsp; 03 - PROMOTED, &nbsp; &nbsp; 04 - RESIGNED FROM BANK / RESIGNED FROM NUBE / TERMINATED BY BANK / TRANSFERRED TO SABAH / SARAWAK, &nbsp; &nbsp; 05 - EXPELLED / STRUCK OFF / BLACKLISTED FROM NUBE
+				    		</p>
+				    	</div>
+			    		
+			    	</div>
+			   	</div>
 				<div class="row">
 					
 					<div class="padding-left-20 ">
@@ -1479,51 +1492,33 @@ function ChangeFields(){
 	if(reason=='RETIRED'){
 		$("#retired_section").removeClass('hide');
 		$("#section_type").val(1);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',true);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '01';
 	}else if(reason=='DECEASED'){
 		$("#deceased_section").removeClass('hide');
 		$("#section_type").val(2);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '02';
 	}else if(reason=='PROMOTED'){
 		$("#promoted_section").removeClass('hide');
 		$("#section_type").val(3);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '03';
 	}
 	else if(reason=='RESIGN FROM BANK' || reason=='RESIGN FROM UNION' || reason=='TERMINATED BY BANK'){
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		
 		codenumber = '04';
 	}else if(reason=='EXPELLED' || reason=='STRUCK OFF' || reason=='BLACKLISTED FROM UNION' || reason=='BLACK LIST'){
 		$("#expelled_section").removeClass('hide');
 		$("#section_type").val(5);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		
 		codenumber = '05';
 	}else{
 		$("#resign_section").removeClass('hide');
 		$("#section_type").val(4);
-		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
-		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
-		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
-		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		
 		codenumber = '04';
 	}
 	$("#codenumber").text(codenumber);
@@ -1582,6 +1577,56 @@ function showAutocomplete(type,refname){
 		$('.posfilledbymemberidone').val('');
 		$('.posfilledbymemberone').val('');
 	}
+}
+function MakeRequired(refid,refno){
+	if(refno==1){
+		if($("#"+refid).is(':checked')){
+			$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',true);
+		}else{
+			$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		}
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else if(refno==2){
+		if($("#appcontactboxtwo").is(':checked')){
+			$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',true);
+		}else{
+			$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		}
+
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else if(refno==3){
+		if($("#appcontactboxthree").is(':checked')){
+			$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',true);
+		}else{
+			$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		}
+
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else if(refno==4){
+		if($("#appcontactboxfour").is(':checked')){
+			$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',true);
+		}else{
+			$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+		}
+
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+	}else if(refno==5){
+		$("#appcontactone,#appofficeone,#apphpone,#appemailone").attr('required',false);
+		$("#appcontacttwo,#appofficetwo,#appmobiletwo,#appemailtwo").attr('required',false);
+		$("#appcontactthree,#appofficethree,#apphpthree,#appemailthree").attr('required',false);
+		$("#appcontactfour,#appofficefour,#apphpfour,#appemailfour").attr('required',false);
+	}else{
+
+	}
+	
 }
 
 </script>
