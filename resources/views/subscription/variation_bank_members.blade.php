@@ -236,6 +236,7 @@
 									@php
 										$slno=1;
 										//dd($user_role);
+										$notmembers = [];
 									@endphp
 									@foreach($notmatched as  $key => $member)
 										@php
@@ -243,6 +244,7 @@
 											$approval_status = $member->approval_status;
 
 											$mismatchstatusdata = CommonHelper::get_mismatchstatus_data($member->sub_member_id);
+											$notmembers[] = $member->sub_member_id;
 											
 											$unmatchdata = CommonHelper::get_unmatched_data($member->sub_member_id);
 											$matchname = '';
@@ -328,7 +330,14 @@
 										$slno = 1;
 									@endphp
 									@foreach($pre_company_members as $company)
+										@if( !in_array( $company->sub_member_id ,$notmembers) )
 										@php
+											//dd($notmembers);
+											if( in_array( $company->sub_member_id ,$notmembers) )
+											{
+											    dd($notmatched);
+											}
+											
 											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
 											$unpaidreason = '';
 											$approval_status = 0;
@@ -355,6 +364,7 @@
 										@php
 											$slno++;
 										@endphp
+										@endif
 									@endforeach
 									
 								</tbody>
@@ -363,6 +373,15 @@
 							</table>
 							<br>
 						</div>
+						@if($slno==1)
+						<style type="text/css">
+							
+							#predetails{
+								display: none !important;
+							}
+							
+						</style>
+						@endif
 						
 						<div id="currentdetails" class="@if(count($current_company_members)==0) hide @endif"  >
 							<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Previous Subscription Unpaid - Current Subscription Paid</p>
@@ -389,7 +408,9 @@
 										
 									@endphp
 									@foreach($current_company_members as $company)
+										@if( !in_array( $company->sub_member_id ,$notmembers) )
 										@php
+
 											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
 											$unpaidreason = '';
 											$approval_status = 0;
@@ -417,6 +438,7 @@
 										@php
 											$slno1++;
 										@endphp
+										@endif
 									@endforeach
 
 								</tbody>
@@ -425,8 +447,15 @@
 							</table>
 							<br>
 						</div>
-
-						
+						@if($slno1==1)
+						<style type="text/css">
+							
+							#currentdetails{
+								display: none !important;
+							}
+							
+						</style>
+						@endif
 						
 					</div> 
 				</div> 
