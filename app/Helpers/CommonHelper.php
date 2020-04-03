@@ -3038,7 +3038,7 @@ class CommonHelper
             if($type==1){
                 $subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
             }else if($type==2){
-                $subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
+                $subscription_qry = $subscription_qry->where('mc.CompanyCode','=',$type_id);
             }
             else{
                 $subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
@@ -3105,7 +3105,7 @@ class CommonHelper
             if($type==1){
                 $subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
             }else if($type==2){
-                $subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
+                $subscription_qry = $subscription_qry->where('mc.CompanyCode','=',$type_id);
             }
             else{
                 $subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
@@ -3172,7 +3172,7 @@ class CommonHelper
             if($type==1){
                 $subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
             }else if($type==2){
-                $subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
+                $subscription_qry = $subscription_qry->where('mc.CompanyCode','=',$type_id);
             }
             else{
                 $subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
