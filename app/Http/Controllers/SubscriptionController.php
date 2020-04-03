@@ -3618,6 +3618,8 @@ class SubscriptionController extends CommonController
                                 return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
                             }
 
+                            $newincsalary = $salary;
+
                             if($inctype<=3){
 
                                 $additional_amt = $subssal-$salary;
@@ -3645,6 +3647,10 @@ class SubscriptionController extends CommonController
                                         $insertdata['created_by'] = Auth::user()->id;
 
                                         $savesal = DB::table('salary_updations')->insert($insertdata);
+
+                                        if($inctype==1){
+                                            $newincsalary = $newsalary;
+                                        }
                                         
                                     }
                                 }
@@ -3711,7 +3717,12 @@ class SubscriptionController extends CommonController
                                     }
                                 //}
                             }
-                            DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newsalary]);
+                            if($newincsalary==$newsalary){
+                                DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary, 'last_update' => $form_date]);
+                            }else{
+                                DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary]);
+                            }
+                            
 
                             // $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
                             //         ->where('date','=',$form_date)

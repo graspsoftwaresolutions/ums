@@ -300,7 +300,7 @@
 							<br>
 						</div>
 						@php
-							$pre_company_members = CommonHelper::getLastMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
+							$pre_company_members = CommonHelper::getBankLastMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
 							$current_company_members = CommonHelper::getcurrentMonthlyPaidMembersAll($companyid,$data['to_year_full'],2);
 							//$variance_company_members = CommonHelper::getSubscriptionVarianceMembers($data['to_year_full'],$companyid);
 						@endphp
@@ -395,7 +395,7 @@
 											$approval_status = 0;
 											if(!empty($unmpaiddata)){
 												$unmatchreason = $unmpaiddata->reason;
-												$unpaidreason = CommonHelper::get_unpaid_reason($unmatchreason);
+												$unpaidreason = CommonHelper::get_lastunpaid_reason($unmatchreason);
 												if($unmatchreason==5){
 													$unpaidreason = $unmpaiddata->remarks;
 												}
@@ -411,7 +411,7 @@
 											
 											<td id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
 											@if($user_role=='company')
-											<td class=""><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showVarianceApproval({{ $company->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td></td> 
+											<td class=""><a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showVarianceApproval({{ $company->sub_member_id }}, 1)"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td></td> 
 											@endif
 										</tr>
 										@php
@@ -502,12 +502,7 @@
 	                <div class="col m3">
 	                    <label for="typeid">{{__('Reason') }}*</label>
 	                    <select name="vreasonid" id="vreasonid" onclick="return EnableVDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
-							<option value="">Select</option>
-							<option value="1">Resigned</option>
-							<option value="2">Retired</option>
-							<option value="3">Promoted</option>
-							<option value="4">Demised</option>
-							<option value="5">Others</option>
+							
 						</select>
 	                </div>
 	                <div class="col m9 vdescriptiontd hide">
@@ -684,7 +679,7 @@ $(document).ready(function() {
 		});
     }
 
-    function showVarianceApproval(sub_member_id){
+    function showVarianceApproval(sub_member_id, refno=false){
     	$(".submitApproval").attr('disabled', false);
 	    $('.modal').modal();
 	    $("#vsub_member_id").val(sub_member_id);
@@ -701,6 +696,18 @@ $(document).ready(function() {
 				$("#view_vmember_name").html(result.up_member_data.Name);
 				$("#view_vnric").html(result.up_member_data.NRIC);
 				$("#view_vpaid").html(result.up_member_data.Amount);
+
+				var prepaid = '<option value="">Select</option><option value="1">Resigned</option><option value="2">Retired</option><option value="3">Promoted</option><option value="4">Demised</option><option value="5">Others</option>';
+
+				var preunpaid = '<option value="">Select</option><option value="1">No pay leave</option><option value="2">Excessive medical leave</option><option value="5">Others</option>';
+
+				//alert(refno);
+				if(refno==1){
+					$('#vreasonid').empty().append(preunpaid);
+				}else{
+					$('#vreasonid').empty().append(prepaid);
+				}
+
 				unmatchinfo = result.unmatchdata;
 				$(".vdescriptiontd").addClass('hide');
 				$("#vreasonid").val('');

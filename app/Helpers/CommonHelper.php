@@ -3007,6 +3007,7 @@ class CommonHelper
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('membership as m','sm.MemberCode','=','m.id')
                                 ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                ->where('sm.MemberCode', '!=', Null)
                                 //->where(DB::raw("DATE_FORMAT(m.doj, '%m-%Y')"),'!=',$last_month_temp)
                                 //->where('cb.union_branch_id','=',$unionid)
                                 ->where('ms.Date','=',$last_month);
@@ -3076,6 +3077,7 @@ class CommonHelper
                                 ->leftjoin('membership as m','sm.MemberCode','=','m.id')
                                 ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                                 //->where('cb.union_branch_id','=',$unionid)
+                                ->where('sm.MemberCode', '!=', Null) 
                                 ->where(DB::raw('month(ms.Date)'),'=',$month)
                                 ->where(DB::raw('year(ms.Date)'),'=',$year);
         if($type==1){
@@ -3123,6 +3125,60 @@ class CommonHelper
         //         $count++;
         //     }
         // }   
+        return $subscriptions;
+    }
+
+     public static function getBankLastMonthlyPaidMembersAll($type_id, $date, $type){
+        if($date==""){
+            $date = date('Y-m-01');
+        }
+        $month = date("m", strtotime($date));
+        $year = date("Y", strtotime($date));
+        //return $month;
+        $last_month = date('Y-m-01',strtotime('01-'.$month.'-'.$year.' -1 Month'));
+        
+        $membersqry = DB::table('mon_sub_member as sm')
+                                //->select('sm.MemberCode as MemberCode')
+                                ->leftjoin('mon_sub_company as mc','sm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','sm.MemberCode','=','m.id')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                //->where('cb.union_branch_id','=',$unionid)
+                                ->where(DB::raw('month(ms.Date)'),'=',$month)
+                                ->where('sm.MemberCode', '!=', Null) 
+                                ->where(DB::raw('year(ms.Date)'),'=',$year);
+        if($type==1){
+            $membersqry = $membersqry->where('cb.union_branch_id','=',$type_id);
+        }else if($type==2){
+            $membersqry = $membersqry->where('mc.CompanyCode','=',$type_id);
+        }
+        else{
+            $membersqry = $membersqry->where('m.branch_id','=',$type_id);
+        }
+       $members = $membersqry->pluck('sm.MemberCode');
+       // /dd($members);
+
+        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id')
+                        ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                        ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                        ->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                        ->where('mm.update_status', '=', 1)
+                        ->where('mm.MemberCode', '!=', Null) 
+                        ->whereNotIn('mm.MemberCode',$members)
+                        ->where('ms.Date','=',$last_month);
+        
+            if($type==1){
+                $subscription_qry = $subscription_qry->where('cb.union_branch_id','=',$type_id);
+            }else if($type==2){
+                $subscription_qry = $subscription_qry->where('cb.company_id','=',$type_id);
+            }
+            else{
+                $subscription_qry = $subscription_qry->where('m.branch_id','=',$type_id);
+            }
+            $subscriptions = $subscription_qry->get();  
+       //dd($subscriptions);
         return $subscriptions;
     }
 
@@ -3297,6 +3353,17 @@ class CommonHelper
             $reasonname = 'Others';
         }
         
+        return $reasonname;
+    }
+
+    public static function get_lastunpaid_reason($reasonid){
+        if($reasonid==1){
+            $reasonname = 'No pay leave';
+        }elseif($reasonid==2){
+            $reasonname = 'Excessive medical leave';
+        }else{
+            $reasonname = 'Others';
+        }
         return $reasonname;
     }
 

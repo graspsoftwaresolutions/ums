@@ -498,7 +498,7 @@
 							$approval_status = 0;
 							if(!empty($unmpaiddata)){
 								$unmatchreason = $unmpaiddata->reason;
-								$unpaidreason = CommonHelper::get_unpaid_reason($unmatchreason);
+								$unpaidreason = CommonHelper::get_lastunpaid_reason($unmatchreason);
 								if($unmatchreason==5){
 									$unpaidreason = $unmpaiddata->remarks;
 								}

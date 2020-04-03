@@ -1173,11 +1173,16 @@
 		                                                        <input id="salary" name="salary" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
 		                                                        <div class="errorTxt11"></div>
 		                                                    </div>
-		                                                    <div class="input-field col s12 m6 ">
+		                                                    <div class="input-field col s12 m4 ">
 		                                                        <label for="cursalary" class="force-active">Current Salary</label>
-		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary}}" required type="text" data-error=".errorTxt11">
+		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary}}" type="text" data-error=".errorTxt11">
 		                                                        <div class="errorTxt11"></div>
 		                                                    </div>
+                                                            <div class="input-field col s12 m2 ">
+                                                                <label for="lastupdate" class="force-active">Updated at</label>
+                                                                <input id="lastupdate" name="lastupdate" readonly="" value="{{ $values->last_update!='' ? date('M/Y',strtotime($values->last_update)) : '' }}" type="text" data-error=".errorTxt11">
+                                                                <div class="errorTxt11"></div>
+                                                            </div>
 	                                                    </div>
                                                     </div>
                                                     
