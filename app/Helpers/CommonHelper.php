@@ -3165,6 +3165,7 @@ class CommonHelper
                         ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                         ->leftjoin('company as c','mc.CompanyCode','=','c.id')
                         ->where('mm.update_status', '=', 1)
+                        ->where('mm.StatusId', '<=', 2)
                         ->where('mm.MemberCode', '!=', Null) 
                         ->whereNotIn('mm.MemberCode',$members)
                         ->where('ms.Date','=',$last_month);
