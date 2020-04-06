@@ -3437,4 +3437,28 @@ class CommonHelper
         
         return $matchdata;
     }
+
+     public static function getStateCity($stateid){
+        $res = DB::table('state as s')->select(Db::raw("concat(s.state_name,' - ',c.country_name) as statename"))
+                ->leftjoin('country as c','c.id','=','s.country_id')
+                ->where('s.id','=',$stateid)
+                ->pluck('statename')
+                ->first();
+       // $membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
+        return $res;
+    }
+
+    public static function getcityusedcount($cityid){
+        $City_membership =  DB::table('membership as m')->where('m.city_id','=',$cityid)->count();
+        $City_member_gua =  DB::table('member_guardian as mg')->where('mg.city_id','=',$cityid)->count();
+        $City_member_nomi =  DB::table('member_nominees as mn')->where('mn.city_id','=',$cityid)->count();
+        $City_company_bran =  DB::table('company_branch as cb')->where('cb.city_id','=',$cityid)->count();
+        $City_union_bran =  DB::table('union_branch as ub')->where('ub.city_id','=',$cityid)->count();
+        if($City_membership > 0 || $City_member_gua > 0 || $City_member_nomi > 0 || $City_company_bran  > 0 || $City_union_bran > 0)
+        {
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }

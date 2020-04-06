@@ -254,6 +254,13 @@ class MasterController extends CommonController {
         $City_company_bran =  DB::table('company_branch as cb')->where('cb.city_id','=',$id)->count();
         $City_union_bran =  DB::table('union_branch as ub')->where('ub.city_id','=',$id)->count();
 
+        // echo 'm '.$City_membership.'<br>';
+        // echo 'g '.$City_member_gua.'<br>';
+        // echo 'n '.$City_member_nomi.'<br>';
+        // echo 'cb '.$City_company_bran.'<br>';
+        // echo 'u '.$City_union_bran.'<br>';
+        // return '--';
+
         $defdaultLang = app()->getLocale();
         if($City_membership > 0 || $City_member_gua > 0 || $City_member_nomi > 0 || $City_company_bran  > 0 || $City_union_bran > 0)
         {
@@ -1392,4 +1399,11 @@ public function companyDestroy($lang,$id)
         return view('master.companybranch.companybranch_details')->with('data',$data);
     }
     
+    public function EmptycityList()
+    {
+        //$data['country_view'] = Country::where('status','=','1')->get();
+        //$data['state_view'] = State::where('status','=','1')->get();
+        $data['city_view'] = City::where('status','=','1')->get();
+        return view('master.city.empty_city_list',compact('data',$data));
+    }
 }
