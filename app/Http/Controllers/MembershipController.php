@@ -1549,19 +1549,19 @@ class MembershipController extends Controller
                     $memberid = $memberids[$i];
 
                     $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
-                                        ->where('s.date','<',$form_date)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                         ->orderBy('s.date','desc')
                                         ->pluck('s.date')->first();
 
                     $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
-                                        ->where('s.date','<',$form_date)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                         ->orderBy('s.date','desc')
                                         ->pluck('s.basic_salary')->first();
                     
                     $basicsalry = DB::table('salary_updations as s')
                                         ->select(DB::raw("SUM(s.additional_amt) as additions"))
                                         ->where('s.member_id','=',$memberid)
-                                        ->where('s.date','=',$lastupdate)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$lastupdate)
                                         ->where('s.increment_type_id','=',1)
                                         ->get();
 
@@ -1588,7 +1588,7 @@ class MembershipController extends Controller
                     $newsalary = $salary+$additional_amt;
 
                     $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
-                                        ->where('date','=',$form_date)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
                                         ->where('increment_type_id','=',1)
                                         ->count();
 
@@ -1617,18 +1617,18 @@ class MembershipController extends Controller
                     $memberid = $memberids[$i];
 
                     $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
-                                        ->where('s.date','<',$form_date)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                         ->orderBy('s.date','desc')
                                         ->pluck('s.date')->first();
                     $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
-                                        ->where('s.date','<',$form_date)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                         ->orderBy('s.date','desc')
                                         ->pluck('s.basic_salary')->first();
                     
                     $basicsalry = DB::table('salary_updations as s')
                                         ->select(DB::raw("SUM(s.additional_amt) as additions"))
                                         ->where('s.member_id','=',$memberid)
-                                        ->where('s.date','=',$lastupdate)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$lastupdate)
                                         ->where('s.increment_type_id','=',1)
                                         ->get();
 
@@ -1663,7 +1663,7 @@ class MembershipController extends Controller
                     
 
                     $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
-                                        ->where('date','=',$form_date)
+                                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
                                         ->where('increment_type_id','=',$typeidind)
                                         ->count();
 
@@ -1691,6 +1691,9 @@ class MembershipController extends Controller
 
     public function Salarylists(Request $request,$lang){
         $data = [];
+        $data['types'] = '';
+        $data['inctypes'] = DB::table('increment_types')->get();
+
         return view('membership.salary_list')->with('data',$data); 
     }
 
@@ -1700,6 +1703,7 @@ class MembershipController extends Controller
         $member_auto_id = $request->input('member_auto_id');
         $entry_date = $request->input('entry_date');
         $branch_id = $request->input('branch_id');
+        $types = $request->input('types');
 
         $datearr = explode("/",$entry_date);
         $monthname = $datearr[0];
@@ -1709,18 +1713,22 @@ class MembershipController extends Controller
         $date_str = strtotime($form_date);
        
         $members = DB::table('salary_updations as s')
-                        ->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','s.basic_salary','s.updated_salary',DB::raw("SUM(s.additional_amt) as additions"),DB::raw($date_str.' as datestr'))
+                        ->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','s.basic_salary','s.updated_salary',DB::raw("SUM(s.additional_amt) as additions"),DB::raw($date_str.' as datestr'),'i.type_name')
                         //->select(DB::raw("SUM(s.additional_amt) as additions"))
                         ->leftjoin('membership as m','m.id','=','s.member_id')
                         ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                        ->leftjoin('increment_types as i','i.id','=','s.increment_type_id')
                         ->where('s.company_id','=',$sub_company)
-                        ->where('s.date','=',$form_date);
+                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date);
 
         if($branch_id!=""){
             $members = $members->where('m.branch_id','=',$branch_id);
         }
         if($member_auto_id!=""){
             $members = $members->where('m.id','=',$member_auto_id);
+        }
+        if($types!=""){
+            $members = $members->where('s.increment_type_id','=',$types);
         }
 
         $data['members'] = $members->groupBy('m.id')->get();
@@ -1743,7 +1751,7 @@ class MembershipController extends Controller
                         //->select(DB::raw("SUM(s.additional_amt) as additions"))
                         ->leftjoin('increment_types as i','i.id','=','s.increment_type_id')
                         ->where('s.member_id','=',$member_id)
-                        ->where('s.date','=',$form_date);
+                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date);
 
         $data['members'] = $members->get();
         $data['status'] = 1;

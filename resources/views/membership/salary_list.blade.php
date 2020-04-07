@@ -230,6 +230,17 @@
                                                         <div class="errorTxt24"></div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col m1 s12 ">
+                                                    <label for="types">{{__('Increment Types') }}</label>
+                                                    <select name="types" id="types" class="browser-default valid" aria-invalid="false">
+                                                        <option {{ $data['types']=='' ? 'selected' : ''}} value="">Select</option>
+                                                        @foreach($data['inctypes'] as $type)
+                                                            <option {{ $data['types']==$type->id ? 'selected' : ''}} value="{{$type->id}}">{{$type->type_name}}</option>
+                                                        @endforeach
+                                                       
+                                                    </select>
+                                                </div>
                                                
                                                 <div class="col m1 s12 " style="padding-top:5px;">
                                                     </br>
@@ -238,6 +249,7 @@
                                                 </div>
 
                                             </div>
+
                                             <div class="row hide">
                                                 <div class="col s7">
 
@@ -281,6 +293,7 @@
                                 <th>M/NO</th>
                                 <th>Basic Salary</th>
                                 <th>Updated Salary</th>
+                                <th>Type</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -422,8 +435,9 @@
            var entry_date = $("#entry_date").val();
            var member_auto_id = $("#member_auto_id").val();
            var branch_id = $("#branch_id").val();
+           var types = $("#types").val();
            loader.showLoader();
-           var url = "{{ url(app()->getLocale().'/get_memberssalaries') }}" + '?sub_company=' + sub_company + '&member_auto_id=' + member_auto_id+ '&entry_date=' + entry_date+ '&branch_id=' + branch_id;
+           var url = "{{ url(app()->getLocale().'/get_memberssalaries') }}" + '?sub_company=' + sub_company + '&member_auto_id=' + member_auto_id+ '&entry_date=' + entry_date+ '&branch_id=' + branch_id+ '&types=' + types;
             $.ajax({
                     url: url,
                     type: "GET",
@@ -441,7 +455,7 @@
                                  var additions = entry.additions;
                                  var updated_salary = parseFloat(entry.basic_salary)+parseFloat(additions);
                                 
-                                 $("#memberslist").append('<tr style=""> <td width="15%"> '+slno+'</td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+entry.basic_salary+'</td><td>'+entry.updated_salary+'</td><td>'+actions+'</td></tr>');
+                                 $("#memberslist").append('<tr style=""> <td width="15%"> '+slno+'</td><td>'+entry.name+'</td><td>'+entry.icno+'</td><td>'+entry.member_number+'</td><td>'+entry.basic_salary+'</td><td>'+entry.updated_salary+'</td><td>'+entry.type_name+'</td><td>'+actions+'</td></tr>');
 
                                 var baselink = base_url + '/{{ app()->getLocale() }}/';
                                 //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);

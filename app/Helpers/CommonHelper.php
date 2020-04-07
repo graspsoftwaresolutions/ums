@@ -3403,14 +3403,14 @@ class CommonHelper
 
     public static function getIncrementValue($memberid,$tomonth,$frommonth){
          $data = DB::table('salary_updations as s')
-                ->select('increment_type_id','date','amount_type','additional_amt','basic_salary','summary')
+                ->select('increment_type_id',DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d") as date'),'amount_type','additional_amt','basic_salary','summary')
                 ->where('s.member_id', '=' ,$memberid)
                 ///->where('s.date', '>=' ,$frommonth)
                 //->where('s.date', '<=' ,$tomonth)
                 ->where('s.date', '=' ,(function($query) use ($tomonth,$memberid){
                     $query->select(DB::raw("max(date)"))
                     ->from('salary_updations')
-                    ->where('date', '<=' ,$tomonth)
+                    ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'), '<=' ,$tomonth)
                     ->where('member_id', '=' ,$memberid)
                     ->limit(1);
                 }))->orderBy('s.date','desc')
@@ -3460,5 +3460,16 @@ class CommonHelper
         }else{
             return 0;
         }
+    }
+
+    public static function getBasicSalary($memberid,$date){
+        $data = DB::table('salary_updations as s')
+                ->select('basic_salary')
+                ->where('s.member_id', '=' ,$memberid)
+                ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'), '=' ,$date)
+                //->orderBy('s.date','desc')
+                ->pluck('basic_salary')
+                ->first();
+        return $data;
     }
 }

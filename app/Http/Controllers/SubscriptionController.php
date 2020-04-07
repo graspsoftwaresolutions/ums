@@ -3559,6 +3559,7 @@ class SubscriptionController extends CommonController
         $monthname = $datearr[0];
         $year = $datearr[1];
         $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $form_datefull = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year)).' '.date('h:i:s');
 
         $companyid = '';
         $unionid = '';
@@ -3581,19 +3582,21 @@ class SubscriptionController extends CommonController
 
                             if($inctype!=''){
                                 $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
-                                ->where('s.date','<',$form_date)
+                               // ->where('s.date','<',$form_date)
+                                ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                 ->orderBy('s.date','desc')
-                                ->pluck('s.date')->first();
+                                ->pluck(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d") as date'))->first();
+                                
 
                                 $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
-                                                    ->where('s.date','<',$form_date)
+                                                    ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                                     ->orderBy('s.date','desc')
                                                     ->pluck('s.basic_salary')->first();
                                 
                                 $basicsalry = DB::table('salary_updations as s')
                                                     ->select("s.additional_amt as additions","s.increment_type_id")
                                                     ->where('s.member_id','=',$memberid)
-                                                    ->where('s.date','=',$lastupdate)
+                                                    ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$lastupdate)
                                                     ->where(function($query) use ($lastupdate){
                                                         $query->Where('s.increment_type_id','=',1)
                                                             ->orWhere('s.increment_type_id','=',4);
@@ -3627,15 +3630,15 @@ class SubscriptionController extends CommonController
                                   
                                     $newsalary = $subssal;
 
-                                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
-                                    ->where('date','=',$form_date)
+                                    $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
+                                    ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
                                     ->where('increment_type_id','=',$inctype)
                                     ->count();
 
                                     if($salcount==0){
                                         $insertdata = [];
                                         $insertdata['member_id'] = $memberid;
-                                        $insertdata['date'] = $form_date;
+                                        $insertdata['date'] = $form_datefull;
                                         $insertdata['company_id'] = $companyid;
                                         $insertdata['increment_type_id'] = $inctype;
                                         $insertdata['amount_type'] = 1;
@@ -3658,20 +3661,28 @@ class SubscriptionController extends CommonController
                             }else if($inctype==4){
                                
                                 $dec_amt = $salary-$subssal;
+                                
                               
                                 if($dec_amt>0){
                                     
+                                    
                                     $newsalary = $subssal;
 
-                                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
-                                    ->where('date','=',$form_date)
+                                    $newincsalary = $newsalary;
+
+                                    
+
+                                    $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
+                                    ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
                                     ->where('increment_type_id','=',$inctype)
                                     ->count();
+
+                                   // return $salcount;
 
                                     if($salcount==0){
                                         $insertdata = [];
                                         $insertdata['member_id'] = $memberid;
-                                        $insertdata['date'] = $form_date;
+                                        $insertdata['date'] = $form_datefull;
                                         $insertdata['company_id'] = $companyid;
                                         $insertdata['increment_type_id'] = $inctype;
                                         $insertdata['amount_type'] = 1;
@@ -3683,6 +3694,7 @@ class SubscriptionController extends CommonController
                                         $insertdata['created_by'] = Auth::user()->id;
 
                                         $savesal = DB::table('salary_updations')->insert($insertdata);
+                                        //dd($savesal);
                                         
                                     }
                                 }
@@ -3693,15 +3705,15 @@ class SubscriptionController extends CommonController
                                   
                                     $newsalary = $subssal;
 
-                                    $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
-                                    ->where('date','=',$form_date)
+                                    $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
+                                    ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
                                     ->where('increment_type_id','=',$inctype)
                                     ->count();
 
                                     if($salcount==0){
                                         $insertdata = [];
                                         $insertdata['member_id'] = $memberid;
-                                        $insertdata['date'] = $form_date;
+                                        $insertdata['date'] = $form_datefull;
                                         $insertdata['company_id'] = $companyid;
                                         $insertdata['increment_type_id'] = $inctype;
                                         $insertdata['amount_type'] = 1;
@@ -3718,7 +3730,7 @@ class SubscriptionController extends CommonController
                                 //}
                             }
                             if($newincsalary==$newsalary){
-                                DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary, 'last_update' => $form_date]);
+                                DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary, 'last_update' => $form_datefull]);
                             }else{
                                 DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary]);
                             }

@@ -1168,19 +1168,23 @@
                                                     </div>
                                                     <div class="col s12 m6">
                                                     	<div class="row">
-	                                                    	<div class="input-field col s12 m6 {{ $hidemember }}">
-		                                                        <label for="salary" class="force-active">Salary*</label>
-		                                                        <input id="salary" name="salary" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
+                                                            @php
+                                                               $basicsalary = CommonHelper::getBasicSalary($values->mid,date('Y-m-d',strtotime($values->last_update))); 
+                                                            @endphp
+	                                                    	<div class="input-field col s12 m3 {{ $hidemember }}">
+		                                                        <label for="basicsalary" class="force-active">Basic Salary</label>
+		                                                        <input id="basicsalary" name="basicsalary" value="{{$basicsalary=='' ? $values->salary : $basicsalary}}" readonly="" type="text" data-error=".errorTxt11">
+                                                                <input id="salary" name="salary" class="hide" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
 		                                                        <div class="errorTxt11"></div>
 		                                                    </div>
-		                                                    <div class="input-field col s12 m4 ">
+		                                                    <div class="input-field col s12 m3 ">
 		                                                        <label for="cursalary" class="force-active">Current Salary</label>
-		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary}}" type="text" data-error=".errorTxt11">
+		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary==0 ? '' : $values->current_salary}}" type="text" data-error=".errorTxt11">
 		                                                        <div class="errorTxt11"></div>
 		                                                    </div>
-                                                            <div class="input-field col s12 m2 ">
+                                                            <div class="input-field col s12 m6 ">
                                                                 <label for="lastupdate" class="force-active">Updated at</label>
-                                                                <input id="lastupdate" name="lastupdate" readonly="" value="{{ $values->last_update!='' ? date('M/Y',strtotime($values->last_update)) : '' }}" type="text" data-error=".errorTxt11">
+                                                                <input id="lastupdate" name="lastupdate" readonly="" value="{{ $values->last_update!='' ? date('d-m-Y  h:i:s',strtotime($values->last_update)) : '' }}" type="text" data-error=".errorTxt11">
                                                                 <div class="errorTxt11"></div>
                                                             </div>
 	                                                    </div>
@@ -1189,7 +1193,7 @@
                                                     
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
-                                                        <label for="salary" class="force-active">Old IC Number</label>
+                                                        <label for="old_ic" class="force-active">Old IC Number</label>
                                                         <input id="old_ic" name="old_ic" value="{{$values->old_ic}}" type="text" data-error=".errorTxt12">
                                                         <div class="errorTxt12"></div>
                                                     </div>
