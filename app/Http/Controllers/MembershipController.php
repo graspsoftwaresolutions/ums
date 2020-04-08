@@ -1759,6 +1759,66 @@ class MembershipController extends Controller
         return $data;
     }
     
+    public function ListStateMembers(Request $request,$lang)
+    {
+        $data = [];
+        $data['state_view'] = DB::table('state as s')->where('status','=',1)->where('country_id','=',130)->get();
+        return view('membership.state_clear')->with('data',$data); 
+    }
+
+    public function getStateMembersList(Request $request, $lang){
+        $from_city_id = $request->input('from_city_id');
+        $from_state_id = $request->input('from_state_id');
+
+        $members = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid');
+
+        if($from_state_id!=''){
+            if($from_state_id=='empty'){
+                $members = $members->where('m.state_id','=',0);
+            }
+           
+        }
+
+        if($from_city_id!=''){
+            if($from_city_id=='empty'){
+                $members = $members->where('m.city_id','=',0);
+            }else{
+                $members = $members->where('m.city_id','=',$from_city_id);
+            }
+           
+        }
+
+        $data['members'] = $members->where('m.status','=','1')
+        ->limit(1000)->get();
+        $data['status'] = 1;
+        
+        return $data;
+       // $data = [];
+       // return view('membership.salary_upload')->with('data',$data); 
+    }
+
+    public function UpdateStateCity(Request $request, $lang){
+        $from_state_id = $request->input('from_state_id');
+        $from_city_id = $request->input('from_city_id');
+        $to_state_id = $request->input('to_state_id');
+        $to_city_id = $request->input('to_city_id');
+        if($from_city_id!=$to_city_id && $to_city_id!="" && $to_state_id!=""){
+            $memberids = $request->input('memberids');
+            //return $memberids;
+            if(isset($memberids)){
+                $mcount = count($memberids);
+                $data = DB::table('membership')->whereIn('id',$memberids)->update(['state_id' => $to_state_id, 'city_id' => $to_city_id]);
+                // for($i=0;$i<$mcount;$i++){
+                //     $memberid = $memberids[$i];
+                    
+                // }
+                return redirect($lang.'/clean-state')->with('message','State,city updated successfully!!');
+            }
+        }else{
+            return redirect($lang.'/clean-state')->with('error','Please select correct to city!!');
+        }
+       
+    }
 }
 
 

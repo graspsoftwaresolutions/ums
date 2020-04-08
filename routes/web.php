@@ -478,6 +478,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('subscription_discrepancy','SubscriptionController@DiscripancyFilter')->name('discrepancy.filter');
 	Route::post('update_discrepancy','SubscriptionController@DiscripancyUpdate')->name('discrepancy.update');
 
+	Route::get('clean-state','MembershipController@ListStateMembers')->name('cleaning.state');
+	Route::post('clean-state','MembershipController@UpdateStateCity')->name('state.cleaning');
+	Route::get('get_statemembers','MembershipController@getStateMembersList')->name('state.members');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
