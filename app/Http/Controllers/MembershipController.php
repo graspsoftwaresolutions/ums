@@ -1819,6 +1819,40 @@ class MembershipController extends Controller
         }
        
     }
+
+    public function ListMembers(Request $request){
+        $data['from_date'] = date('1940-01-01');
+        $data['to_date'] = date('Y-m-d');
+        $data['status_id'] = '';
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+       // $data['members_list'] = DB::table('membership as m')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
+        return view('subscription.promemberlist')->with('data',$data);  
+    }
+
+    public function memberlevy(Request $request, $lang,$encid)
+    {
+        $id = Crypt::decrypt($encid);
+        $data['member_view'] = DB::table('membership as m')->select('m.id as mid','m.member_title_id','m.member_number','m.name','cb.branch_name','c.company_name','s.status_name','m.doj','m.salary','m.levy','m.levy_amount','m.tdf','m.tdf_amount')
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->leftjoin('company as c','cb.company_id','=','c.id')
+                            ->leftjoin('status as s','m.status_id','=','s.id')
+                            ->where('m.id','=',$id)
+                            ->first();
+        return view('subscription.levy_update')->with('data',$data);  
+    }
+
+    public function UpdateLevy(Request $request, $lang)
+    {
+        $memberid = $request->input('memberid');
+        $levy = $request->input('levy');
+        $levy_amount = $request->input('levy_amount');
+        $tdf = $request->input('tdf');
+        $tdf_amount = $request->input('tdf_amount');
+
+        $data = DB::table('membership')->where('id','=',$memberid)->update(['levy' => $levy, 'levy_amount' => $levy_amount, 'tdf' => $tdf, 'tdf_amount' => $tdf_amount]);
+
+        return redirect($lang.'/clean-membershiplist')->with('message','Details updated successfully!!');
+    }
 }
 
 

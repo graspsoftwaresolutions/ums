@@ -481,6 +481,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('clean-state','MembershipController@ListStateMembers')->name('cleaning.state');
 	Route::post('clean-state','MembershipController@UpdateStateCity')->name('state.cleaning');
 	Route::get('get_statemembers','MembershipController@getStateMembersList')->name('state.members');
+
+	Route::get('clean-membershiplist','MembershipController@ListMembers')->name('clean.membership');
+	Route::post('ajax_cleanmember_list','MonthEndController@ajax_cleanmember_list')->name('ajax.listcleanmembership');
+
+	Route::get('member-levy/{parameter}','MembershipController@memberlevy')->name('member.viewlevy');
+	Route::post('levyupdate','MembershipController@UpdateLevy')->name('member.levyupdate');
+	//Route::post('clean-membership','MonthEndController@ListMemberFilter')->name('membership.clean');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

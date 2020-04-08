@@ -518,6 +518,7 @@ class MonthEndController extends Controller
                 $actions ="<a class='waves-effect waves-light btn btn-sm' href='$edit'>Update</a><a style='margin-left: 10px;' title='History'  class='waves-effect waves-light blue btn btn-sm' href='$view'>View</a>";
 
                 $actions .="<a style='margin-left: 10px;' title='History'  class='waves-effect waves-light green btn btn-sm' href='$newhistory'>Add New</a>";
+                
                 $nestedData['options'] = $actions;
                 // if($irc->status_id!=4){
                 //     $nestedData['options'] = "";
@@ -946,5 +947,165 @@ class MonthEndController extends Controller
         return view('subscription.followup_members_list')->with('data',$data);  
      
     }
+
+    public function ajax_cleanmember_list(Request $request){
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $status_id = $request->input('status_id');
+        $columns = array( 
+
+            0 => 'name', 
+            1 => 'member_number', 
+            2 => 'doj',
+            3 => 'branch_id',
+            4 => 'branch_id',
+            5 => 'status_id',
+            6 => 'id',
+        );
+
+        $totalDataqry = DB::table('membership as m')
+                    ->where('m.doj','>=',$from_date)
+                    ->where('m.doj','<=',$to_date);
+
+        if($status_id!=''){
+            $totalDataqry = $totalDataqry->where('m.status_id','=',$status_id);
+        }
+
+        $totalData = $totalDataqry->orderBY('m.doj','asc')->count();
+
+
+        $totalFiltered = $totalData; 
+
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+                
+                $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
+                ->where('m.doj','>=',$from_date)
+                ->where('m.doj','<=',$to_date);
+                if($status_id!=''){
+                    $membersqry = $membersqry->where('m.status_id','=',$status_id);
+                }
+                //->join('state','country.id','=','state.country_id')
+                $members = $membersqry->orderBy($order,$dir)
+                ->where('m.status','=','1')
+                ->get()->toArray();
+            }else{
+                $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
+                ->where('m.doj','>=',$from_date)
+                ->where('m.doj','<=',$to_date);
+                if($status_id!=''){
+                    $membersqry = $membersqry->where('m.status_id','=',$status_id);
+                }
+                $members = $membersqry->offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->where('m.status','=','1')
+                ->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $membersqry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
+                    ->orWhere('m.name', 'LIKE',"%{$search}%")
+                    ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                    ->where('m.doj','>=',$from_date)
+                    ->where('m.doj','<=',$to_date);
+                    if($status_id!=''){
+                        $membersqry = $membersqry->where('m.status_id','=',$status_id);
+                    }
+                    $members = $membersqry->where('m.status','=','1')
+                    ->orderBy($order,$dir)
+                    ->get()->toArray();
+        }else{
+            $membersqry    =  DB::table('membership as m')->select('m.id','m.name','m.member_number','m.status_id','m.doj','m.branch_id')
+                        ->orWhere('m.name', 'LIKE',"%{$search}%")
+                        ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                        ->where('m.doj','>=',$from_date)
+                        ->where('m.doj','<=',$to_date);
+                        if($status_id!=''){
+                            $membersqry = $membersqry->where('m.status_id','=',$status_id);
+                        }
+                        $members = $membersqry->where('m.status','=','1')
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get()->toArray();
+        }
+        $totalFilteredqry = DB::table('membership as m')
+                    ->where('m.doj','>=',$from_date)
+                    ->where('m.doj','<=',$to_date);
+                    if($status_id!=''){
+                        $totalFilteredqry = $totalFilteredqry->where('m.status_id','=',$status_id);
+                    }
+                    $totalFiltered = $totalFilteredqry->where('id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    
+                    ->where('status','=','1')
+                    ->count();
+        }
+        
+        $table ="membership";
+
+        $data = array();
+        if(!empty($members))
+        {
+            foreach ($members as $member)
+            {
+                $statusdate = date('Y-m-01',strtotime($member->doj));
+
+                $branch_data = CommonHelper::getBranchCompany($member->branch_id);
+                
+                
+                $nestedData['id'] = $member->id;
+                $nestedData['name'] = $member->name;
+                $nestedData['member_number'] = $member->member_number;
+                $nestedData['company'] = $branch_data->company_name;
+                $nestedData['branch'] = $branch_data->branch_name;
+                $enc_id = Crypt::encrypt($member->id);
+                $nestedData['doj'] = date('d/M/Y',strtotime($member->doj));
+                $nestedData['status'] = CommonHelper::get_member_status_name($member->status_id);
+                //$editurl =  route('edit.irc', [app()->getLocale(),$enc_id]) ;
+                //$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
+                $edit = route('member.viewlevy', [app()->getLocale(),$enc_id]);
+                $view = route('member.history', [app()->getLocale(),$enc_id]);
+                $newhistory = route('monthend.addhistory', [app()->getLocale(),$enc_id]);
+                
+                $actions ="<a class='waves-effect waves-light btn btn-sm' href='$edit'>Update Levy</a>";
+
+                //$actions .="<a style='margin-left: 10px;' title='History'  class='waves-effect waves-light green btn btn-sm' href='$newhistory'>Add New</a>";
+                
+                $nestedData['options'] = $actions;
+                // if($irc->status_id!=4){
+                //     $nestedData['options'] = "";
+                //  //$nestedData['options'] = "<a style='float: left;' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$editurl."'><i class='material-icons'>edit</i></a>";
+                // }else{
+                //  $nestedData['options'] = "";
+                // }
+                $data[] = $nestedData;
+                
+                
+            }
+        }
+       // dd($totalFiltered);
+       
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+
 
 }

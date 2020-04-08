@@ -167,9 +167,12 @@
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
                <li id="update_history_sidebar_li_id" class=""><a id="update_history_sidebar_a_id" class="collapsible-body " href="{{ route('history.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update Unpaid History') }}</span></a></li>
+
                 <li id="due_sidebar_li_id" class=""><a id="due_sidebar_a_id" class="collapsible-body " href="{{ route('due.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Due Members') }}</span></a></li>
                
-              <li id="members_list_sidebar_li_id" class=""><a id="members_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.membership',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members List') }}</span></a></li>
+              <li id="members_list_sidebar_li_id" class=""><a id="members_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.membership',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members List') }}[history]</span></a></li>
+
+              <li id="members_cleanlist_sidebar_li_id" class=""><a id="members_cleanlist_sidebar_a_id" class="collapsible-body " href="{{ route('clean.membership',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members List') }}[Profile]</span></a></li>
 
               <li id="stateclear_list_sidebar_li_id" class=""><a id="stateclear_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.state',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Clear State') }}</span></a></li>
               
