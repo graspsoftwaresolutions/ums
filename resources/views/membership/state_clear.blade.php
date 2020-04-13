@@ -507,7 +507,7 @@ $('.datepicker,.datepicker-custom').datepicker({
     });
 	
 	$("#data_cleaning_sidebars_id").addClass('active');
-	$("#members_list_sidebar_li_id").addClass('active');
-	$("#members_list_sidebar_a_id").addClass('active');
+	$("#stateclear_list_sidebar_li_id").addClass('active');
+	$("#stateclear_list_sidebar_a_id").addClass('active');
 </script>
 @endsection
