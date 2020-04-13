@@ -85,6 +85,9 @@
 		</div>
 	</div>
 	<div class="row">
+		 @php 
+         	$auth_user = Auth::user(); $companylist = []; $companyid = ''; if(!empty($auth_user)){ $userid = Auth::user()->id; $get_roles = Auth::user()->roles; $user_role = $get_roles[0]->slug; if($user_role =='union'){ $companylist = CommonHelper::getCompanyListAll(); } else if($user_role =='union-branch'){ $unionbranchid = CommonHelper::getUnionBranchID($userid); $companylist = CommonHelper::getUnionCompanyList($unionbranchid); } else if($user_role =='company'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } else if($user_role =='company-branch'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } $company_count = count($companylist); }
+        @endphp 
 		<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/clean-state') }}" enctype="multipart/form-data">
 		@csrf
 		<div class="col s12">
@@ -149,33 +152,31 @@
 												</div>
 											</div>
 
-											<div class="col s12 m6 l2">
-												<label>{{__('To State') }}</label>
-												<select name="to_state_id" id="to_state_id" class="error browser-default selectpicker" data-error=".errorTxt25" >
-													<option value="">{{__('Select State') }}</option>
-													 @foreach($data['state_view'] as $value)
-	                                                <option value="{{$value->id}}" >
-	                                                    {{$value->state_name}}</option>
-	                                                @endforeach
-													
-												</select>
-												<div class="input-field">
-													<div class="errorTxt25"></div>
-												</div>
-											</div>
-											<div class="col s12 m6 l3">
-												<label>{{__('To City') }}</label>
-												<select name="to_city_id" id="to_city_id" class="error browser-default selectpicker" data-error=".errorTxt27" >
-													<option value="">{{__('Select City') }}</option>
-													
-												</select>
-												<div class="input-field">
-													<div class="errorTxt27"></div>
-												</div>
-											</div>
-											<div class="col m2 s12 " style="padding-top:5px;">
+											<div class="col m3 s12">
+                                                <label for="sub_company">{{__('Company') }}*</label>
+                                                <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
+                                                    <option value="" selected>{{__('Choose Company') }}</option>
+                                                    @foreach($companylist as $value)
+                                                    <option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="errorTxt6"></div>
+                                            </div>
+                                            <div class="col s12 m6 l3 ">
+                                                <label>{{__('Company Branch Name') }}</label>
+                                                <select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+                                                    <option value="">{{__('Select Branch') }}</option>
+                                                    
+                                                </select>
+                                                <div class="input-field">
+                                                    <div class="errorTxt23"></div>
+                                                </div>
+                                            </div>
+
+											
+											<div class="col m1 s12 " style="padding-top:5px;">
 												</br>
-												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
+												<button id="get_list" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Get list') }}</button>
 												
 											</div>
 											
@@ -194,16 +195,55 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Members List') }}</h4>
+                   
+                    	<div class="row">
+                    		<div class="col s12 m6 l2">
+                    			<br>
+                    			 <h4 class="card-title">{{__('Members List') }}</h4>
+                    		</div>
+                    		<div class="col s12 m6 l2">
+								<label>{{__('To State') }}</label>
+								<select name="to_state_id" id="to_state_id" class="error browser-default selectpicker" data-error=".errorTxt25" >
+									<option value="">{{__('Select State') }}</option>
+									 @foreach($data['state_view'] as $value)
+	                                <option value="{{$value->id}}" >
+	                                    {{$value->state_name}}</option>
+	                                @endforeach
+									
+								</select>
+								<div class="input-field">
+									<div class="errorTxt25"></div>
+								</div>
+							</div>
+							<div class="col s12 m6 l3">
+								<label>{{__('To City') }}</label>
+								<select name="to_city_id" id="to_city_id" class="error browser-default selectpicker" data-error=".errorTxt27" >
+									<option value="">{{__('Select City') }}</option>
+									
+								</select>
+								<div class="input-field">
+									<div class="errorTxt27"></div>
+								</div>
+							</div>
+							<div class="col m2 s12 " style="padding-top:5px;">
+								</br>
+								<button id="submit-upload" class="mb-6 btn waves-effect waves-light form-download-btn" type="submit">{{__('Update') }}</button>
+								
+							</div>
+                    	</div>
+                    	
+                    
                     @include('includes.messages')
                     <div class="row">
-                        <div class="col s6">
+                        <div class="col s12">
                             <table id="page-length-option" class="display" width="100%">
                                 <thead>
                                     <tr>
-                                        <th width="5%"><p style="margin-left: 10px; "><label><input class="checkall" id="checkAll" type="checkbox" /> <span>Check All</span> </label> </p></th>
-                                        <th width="30%">{{__('Member Name') }}</th>
+                                        <th width="10%"><p style="margin-left: 10px; "><label><input class="checkall" id="checkAll" type="checkbox" /> <span>Check All</span> </label> </p></th>
+                                        <th width="25%">{{__('Member Name') }}</th>
                                         <th width="10%">{{__('Member Number') }}</th>
+                                        <th width="20%">{{__('Bank') }}</th>
+                                        <th width="20%">{{__('Branch') }}</th>
                                        
                                     </tr>
                                 </thead>
@@ -290,41 +330,41 @@ $('.datepicker,.datepicker-custom').datepicker({
 	   if(StateId!='' && StateId!='undefined')
 	   {
 	   	$("#memberslist").empty();
-	   	if(StateId=='empty'){
-	   		var url = "{{ url(app()->getLocale().'/get_statemembers') }}" + '?from_city_id=&from_state_id='+StateId;
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function(result) {
-                    loader.hideLoader();
-                    console.log(result);
-                    if (result.status == 1 ) {
+	   	// if(StateId=='empty'){
+	   	// 	var url = "{{ url(app()->getLocale().'/get_statemembers') }}" + '?from_city_id=&from_state_id='+StateId;
+     //        $.ajax({
+     //            url: url,
+     //            type: "GET",
+     //            success: function(result) {
+     //                loader.hideLoader();
+     //                console.log(result);
+     //                if (result.status == 1 ) {
                      
-                        $("#memberslist").empty();
+     //                    $("#memberslist").empty();
 
-                        $.each(result.members, function(key, entry) {
+     //                    $.each(result.members, function(key, entry) {
 
                              
-                             var hiddensec = '';
-                             $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.member_number+'</td></tr>');
+     //                         var hiddensec = '';
+     //                         $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.member_number+'</td></tr>');
 
-                            var baselink = base_url + '/{{ app()->getLocale() }}/';
-                            //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
-                           // $("#company_member_status_count_" + key).html(entry);
-                        });
+     //                        var baselink = base_url + '/{{ app()->getLocale() }}/';
+     //                        //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
+     //                       // $("#company_member_status_count_" + key).html(entry);
+     //                    });
                   
                        
-                    } else {
-                        //$(".subscription-bankname").text('');
-                        $(".clear-approval").html(0);
-                        $(".monthly-company-approval-status").attr('data-href', '');
-                        $(".monthly-company-sub-status").attr('data-href', '');
+     //                } else {
+     //                    //$(".subscription-bankname").text('');
+     //                    $(".clear-approval").html(0);
+     //                    $(".monthly-company-approval-status").attr('data-href', '');
+     //                    $(".monthly-company-sub-status").attr('data-href', '');
 
-                        //$("#bankname-listing").addClass('hide');
-                    }
-                }
-            });
-	   	}else{
+     //                    //$("#bankname-listing").addClass('hide');
+     //                }
+     //            }
+     //        });
+	   	// }
 	   		$("#memberslist").empty();
 	   		$.ajax({
 				type: "GET",
@@ -345,7 +385,7 @@ $('.datepicker,.datepicker-custom').datepicker({
 					}
 				}
 			 });
-	   	}
+	   	
 		 
 	   }else{
 		   $('#from_city_id').empty();
@@ -382,12 +422,14 @@ $('.datepicker,.datepicker-custom').datepicker({
 	   }
 	});
 
-	$('#from_city_id').change(function(){
-		var from_city_id = $(this).val();
+	$('#get_list').click(function(){
+		var from_city_id = $('#from_city_id').val();
+		var from_state_id = $('#from_state_id').val();
 		$("#memberslist").empty();
-		if(from_city_id!=''){
-
-			 var url = "{{ url(app()->getLocale().'/get_statemembers') }}" + '?from_city_id=' + from_city_id+'&from_state_id=';
+		if(from_city_id!='' || from_state_id=='empty'){
+            company_id = $('#sub_company').val();
+            branch_id = $('#branch_id').val();
+			var url = "{{ url(app()->getLocale().'/get_statemembers') }}" + '?from_city_id=' + from_city_id+'&from_state_id=' + from_state_id+'&company_id=' + company_id+'&branch_id=' + branch_id;
             $.ajax({
                 url: url,
                 type: "GET",
@@ -402,11 +444,9 @@ $('.datepicker,.datepicker-custom').datepicker({
 
                              
                              var hiddensec = '';
-                             $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.member_number+'</td></tr>');
+                             $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.member_number+'</td><td>'+entry.company_name+'</td><td>'+entry.branch_name+'</td></tr>');
 
                             var baselink = base_url + '/{{ app()->getLocale() }}/';
-                            //$("#monthly_company_sub_status_" + key).attr('data-href', baselink + "subscription-status?member_status=" + key + "&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
-                           // $("#company_member_status_count_" + key).html(entry);
                         });
                   
                        
@@ -432,6 +472,38 @@ $('.datepicker,.datepicker-custom').datepicker({
 
     $(document).on('click', '.checkboxes', function() {
         $('#checkAll').prop('checked', false);
+    });
+
+     $('#sub_company').change(function(){
+       var CompanyID = $(this).val();
+       var ajaxunionbranchid = '';
+       var ajaxbranchid = '';
+       var additional_cond;
+       if(CompanyID!='' && CompanyID!='undefined')
+       {
+         additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+         $.ajax({
+            type: "GET",
+            dataType: "json",
+            url : "{{ URL::to('/get-branch-list-register') }}?company_id="+CompanyID+additional_cond,
+            success:function(res){
+                if(res)
+                {
+                    $('#branch_id').empty();
+                    $("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+                    $.each(res,function(key,entry){
+                        $('#branch_id').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
+                    });
+                }else{
+                    $('#branch_id').empty();
+                }
+            }
+         });
+       }else{
+           $('#branch_id').empty();
+           $("#branch_id").append($('<option></option>').attr('value', '').text("Select"));
+       }
+      
     });
 	
 	$("#data_cleaning_sidebars_id").addClass('active');

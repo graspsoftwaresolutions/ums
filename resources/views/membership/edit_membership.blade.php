@@ -221,6 +221,14 @@
                                                             $genderlable = 'He';
                                                             $genderlableone = 'His';
                                                         }
+
+                                                        if($irc_details->posfilledbytype==1){
+                                                            $filledbytype = 'Member';
+                                                        }elseif($irc_details->posfilledbytype==2){
+                                                            $filledbytype = 'Non-Member';
+                                                        }else{
+                                                            $filledbytype = 'Other';
+                                                        }
                                                     @endphp
                                                    
                                                     <div class="col s12 m12">
@@ -257,7 +265,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" name="messengerboxone" @if($irc_details->messengerbox ==1) checked @endif id="messengerboxone"  value="1"/>
-                                                                        <span><span class="gender">{{$genderlable}}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RETIEMENT [Delete which is not applicable]</span>
+                                                                        <span><span class="gender">{{$genderlable}}</span> was a {{$irc_details->messengertype}} before RETIEMENT [Delete which is not applicable]</span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -269,7 +277,7 @@
                                                                         <input type="checkbox" class="common-checkbox" name="attachedboxone" @if($irc_details->attachedbox ==1) checked @endif id="attachedboxone"  value="1"/>
                                                                         <span>Attached is <span class="genderone">{{$genderlableone}}</span> RETIREMENT Letter (compulsory)</span>
                                                                     </label> 
-                                                                    <div class="input-field inline">
+                                                                    <div class="input-field inline hide">
                                                                         <input type="text" id="attachedone" name="attachedone" value="{{$irc_details->attached_desc}}" class="inline-box" style="width: 500px;" >
                                                                         
                                                                     </div>
@@ -294,7 +302,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
-                                                                        <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+                                                                        <span>Member’s position has not been filled up by another {{$filledbytype}} [Please specify others in detail]</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="posfilledbyone" id="posfilledbyone" value="{{$irc_details->posfilledby}}" placeholder=""  class="inline-box" style="width: 200px;" />
@@ -307,7 +315,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif  name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
-                                                                        <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+                                                                        <span>REPLACEMENT Staff Grade is {{$irc_details->replacestafftype}} [Please specify others in detail] </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="replacestaffone" id="replacestaffone" value="{{$irc_details->replacestaff}}" placeholder=""  class="inline-box" style="width: 200px;" />
@@ -446,7 +454,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
-                                                                        <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+                                                                        <span>Member’s position has not been filled up by another {{$filledbytype}} [Please specify others in detail]</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="posfilledbytwo" value="{{$irc_details->posfilledby}}" id="posfilledbytwo" placeholder=""  class="inline-box" style="width: 200px;" />
@@ -459,7 +467,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
-                                                                        <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+                                                                        <span>REPLACEMENT Staff Grade is {{$irc_details->replacestafftype}} [Please specify others in detail] </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="replacestafftwo" value="{{$irc_details->replacestaff}}" id="replacestafftwo" placeholder=""  class="inline-box" style="width: 200px;" />
@@ -534,7 +542,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxthree" id="messengerboxthree"  value="1"/>
-                                                                        <span><span class="gender">{{$genderlable}}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before PROMOTION [Delete which is not applicable]</span>
+                                                                        <span><span class="gender">{{$genderlable}}</span> was a {{$irc_details->messengertype}}before PROMOTION [Delete which is not applicable]</span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -566,7 +574,7 @@
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxthree" id="attachedboxthree"  value="1"/>
                                                                         <span>Attached is <span class="genderone">{{$genderlableone}}</span> Job Description (compulsory)</span>
                                                                     </label> 
-                                                                    <div class="input-field inline">
+                                                                    <div class="input-field inline hide">
                                                                         <input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="width: 500px;" >
                                                                         
                                                                     </div>
@@ -589,7 +597,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-                                                                        <span>Member is still in the same Branch / Department performing the same job functions </span>
+                                                                        <span>Member is still in the same {{$irc_details->samebranchtype}} performing the same job functions </span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -613,7 +621,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
-                                                                        <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+                                                                        <span>Member’s position has not been filled up by another {{$filledbytype}} [Please specify others in detail]</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="posfilledbythree" value="{{$irc_details->posfilledby}}" id="posfilledbythree" placeholder="" class="inline-box" style="width: 200px;"/>
@@ -626,7 +634,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
-                                                                        <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+                                                                        <span>REPLACEMENT Staff Grade is {{$irc_details->replacestafftype}} [Please specify others in detail] </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="replacestaffthree" id="replacestaffthree" value="{{$irc_details->replacestaff}}" placeholder=""  class="inline-box" style="width: 200px;" />
@@ -695,7 +703,7 @@
                                                                 <div class="col s12">
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->resignedonboxfour ==1) checked @endif name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-                                                                        <span><span class="gender">{{$genderlable}}</span> RESIGNED / TERMINATED on </span>
+                                                                        <span><span class="gender">{{$genderlable}}</span> {{$irc_details->resigntypefour}} on </span>
                                                                     </label> 
                                                                     <div class="input-field inline">
                                                                         <input type="text"  name="gradeweffour" id="gradeweffour" placeholder="grade w.e.f" value="{{$irc_details->gradewef}}" class="datepicker-custom"/>
@@ -711,7 +719,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxfour" id="messengerboxfour"  value="1"/>
-                                                                        <span><span class="gender">{{$genderlable}}</span> was a MESSENGER / CLERICAL / SPECIAL GRADE CLERK / OTHER before RESIGNATION [Delete which is not applicable]</span>
+                                                                        <span><span class="gender">{{$genderlable}}</span> was a {{$irc_details->messengertype}} before RESIGNATION [Delete which is not applicable]</span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -725,10 +733,10 @@
                                                                     
                                                                     <label>
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxfour" id="attachedboxfour"  value="1"/>
-                                                                    <span>Attached is <span class="genderone">{{$genderlableone}}</span> RESIGNATION / TERMINATION / EXPULSION / STRUCK OFF Letter (compulsory)</span>
+                                                                    <span>Attached is <span class="genderone">{{$genderlableone}}</span> {{$irc_details->attachfourtype}} Letter (compulsory)</span>
                                                                     </label> 
                                                                         
-                                                                    <div class="input-field inline">
+                                                                    <div class="input-field inline hide">
                                                                          <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="">
                                                                     </div>
                                                                 </div>
@@ -755,7 +763,7 @@
                                                                 
                                                                     <label>
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
-                                                                    <span>Member’s position has not been filled up by another Member / Non-Member - Other [Please specify others in detail]</span>
+                                                                    <span>Member’s position has not been filled up by another {{$filledbytype}} [Please specify others in detail]</span>
                                                                     </label> 
 
                                                                     <div class="input-field inline">
@@ -769,7 +777,7 @@
                                                                     
                                                                     <label>
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
-                                                                    <span>REPLACEMENT Staff Grade is Non-Clerical / Clerical / Special Grade Clerical / Other [Please specify others in detail] </span>
+                                                                    <span>REPLACEMENT Staff Grade is {{$irc_details->replacestafftype}} [Please specify others in detail] </span>
                                                                     </label> 
                                                                         
                                                                     <div class="input-field inline">                        
@@ -826,7 +834,7 @@
                                                                 
                                                                     <label>
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->expelledboxfive ==1) checked @endif name="expelledboxfive" id="expelledboxfive"  value="1"/>
-                                                                    <span>Member was EXPELLED / STRUCK OFF / BLACKLISTED on
+                                                                    <span>Member was {{$irc_details->expelledtypefive}} on
                                                                     </label> 
 
                                                                     <div class="input-field inline">                        
@@ -853,7 +861,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-                                                                        <span>Member is still in the same Branch / Department</span>
+                                                                        <span>Member is still in the same {{$irc_details->samebranchtype}}</span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -864,7 +872,7 @@
                                                                     <p>
                                                                         <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->memberstoppedboxfive ==1) checked @endif name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
-                                                                        <span>Member HAS STOPPED / HAS NOT STOPPED the Check-Off [Delete whichever is applicable] </span>
+                                                                        <span>Member {{$irc_details->stoppedtypefive}} the Check-Off [Delete whichever is applicable] </span>
                                                                         </label> 
                                                                     </p>    
                                                                 </div>
@@ -898,7 +906,7 @@
                                                                 <p>
                                                                     <label>
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxtwo ==1) checked @endif name="committieverificationboxtwo" id="committieverificationboxtwo"  value="1"/>
-                                                                    <span>Staff who has taken over the job functions under CODE 01 / 02 / 03 / 04 is a NUBE Member. </span>
+                                                                    <span>Staff who has taken over the job functions under CODE 0{{$section_type_val}} is a NUBE Member. </span>
                                                                     </label> 
                                                                 </p>    
                                                             </div>
@@ -906,7 +914,7 @@
                                                                     
                                                                     <label>
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->committieverificationboxthree ==1) checked @endif name="committieverificationboxthree" id="committieverificationboxthree"  value="1" />
-                                                                        <span>Staff who is under CODE 05 is still performing the same job function.  The additional information for this staff is as follows:  </span>
+                                                                        <span>Staff who is under CODE 0{{$irc_details->committiecode}} is still performing the same job function.  The additional information for this staff is as follows:  </span>
                                                                         
                                                                     </label> 
                                                                     <br>

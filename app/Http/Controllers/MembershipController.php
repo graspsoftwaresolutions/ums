@@ -1769,8 +1769,12 @@ class MembershipController extends Controller
     public function getStateMembersList(Request $request, $lang){
         $from_city_id = $request->input('from_city_id');
         $from_state_id = $request->input('from_state_id');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
 
-        $members = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid');
+        $members = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','cb.branch_name','c.company_name')
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->leftjoin('company as c','cb.company_id','=','c.id');
 
         if($from_state_id!=''){
             if($from_state_id=='empty'){
@@ -1786,6 +1790,14 @@ class MembershipController extends Controller
                 $members = $members->where('m.city_id','=',$from_city_id);
             }
            
+        }
+
+        if($company_id!=''){
+            $members = $members->where('c.id','=',$company_id);
+        }
+
+        if($branch_id!=''){
+            $members = $members->where('cb.id','=',$branch_id);
         }
 
         $data['members'] = $members->where('m.status','=','1')
