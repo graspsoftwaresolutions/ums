@@ -1779,16 +1779,21 @@ class MembershipController extends Controller
         if($from_state_id!=''){
             if($from_state_id=='empty'){
                 $members = $members->where('m.state_id','=',0);
+            }else{
+                $members = $members->where('m.state_id','=',$from_state_id);
+                if($from_city_id=='empty'){
+                    $members = $members->where('m.city_id','=',0);
+                }
             }
            
         }
 
         if($from_city_id!=''){
-            if($from_city_id=='empty'){
-                $members = $members->where('m.city_id','=',0);
-            }else{
+            // if($from_city_id=='empty'){
+            //     $members = $members->where('m.city_id','=',0);
+            // }else{
                 $members = $members->where('m.city_id','=',$from_city_id);
-            }
+            //}
            
         }
 
