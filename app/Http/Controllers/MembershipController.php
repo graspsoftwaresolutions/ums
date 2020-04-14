@@ -1849,7 +1849,7 @@ class MembershipController extends Controller
     public function memberlevy(Request $request, $lang,$encid)
     {
         $id = Crypt::decrypt($encid);
-        $data['member_view'] = DB::table('membership as m')->select('m.id as mid','m.member_title_id','m.member_number','m.name','cb.branch_name','c.company_name','s.status_name','m.doj','m.salary','m.levy','m.levy_amount','m.tdf','m.tdf_amount')
+        $data['member_view'] = DB::table('membership as m')->select('m.id as mid','m.member_title_id','m.member_number','m.name','cb.branch_name','c.company_name','s.status_name','m.doj','m.salary','m.levy','m.levy_amount','m.tdf','m.tdf_amount','m.levy_update_date')
                             ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                             ->leftjoin('company as c','cb.company_id','=','c.id')
                             ->leftjoin('status as s','m.status_id','=','s.id')
@@ -1865,8 +1865,9 @@ class MembershipController extends Controller
         $levy_amount = $request->input('levy_amount');
         $tdf = $request->input('tdf');
         $tdf_amount = $request->input('tdf_amount');
+        $update = date('Y-m-d h:i:s');
 
-        $data = DB::table('membership')->where('id','=',$memberid)->update(['levy' => $levy, 'levy_amount' => $levy_amount, 'tdf' => $tdf, 'tdf_amount' => $tdf_amount]);
+        $data = DB::table('membership')->where('id','=',$memberid)->update(['levy' => $levy, 'levy_amount' => $levy_amount, 'tdf' => $tdf, 'tdf_amount' => $tdf_amount, 'levy_update_date' => $update]);
 
         return redirect($lang.'/clean-membershiplist')->with('message','Details updated successfully!!');
     }

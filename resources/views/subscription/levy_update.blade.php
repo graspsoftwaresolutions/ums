@@ -196,6 +196,11 @@
                               <input id="tdf_amount" name="tdf_amount" type="text" value="{{$edit_data->tdf_amount}}">
                              
                           </div>
+                           <div class="input-field col s12 m6 ">
+                                <label for="lastupdate" class="force-active">Last Updated Date</label>
+                                <input id="lastupdate" name="lastupdate" readonly="" value="{{ $edit_data->levy_update_date!='' ? date('d-m-Y  h:i:s',strtotime($edit_data->levy_update_date)) : '' }}" type="text" data-error=".errorTxt11">
+                                <div class="errorTxt11"></div>
+                            </div>
 
                           <div class="col m12 s12 " style="padding-top:5px;">
                               </br>
