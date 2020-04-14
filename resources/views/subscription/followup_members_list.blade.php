@@ -258,7 +258,8 @@
                                 <tbody>
 									@php
 										$slno = 1;
-										$update = date("Y-m-01", strtotime("+1 month", strtotime($data['subs_month'])));
+										//dd($data['subs_month']);
+										$update = $data['subs_month'];
 										$file_upload_date = strtotime($update);
 										$upload_date = $update;
 									@endphp
@@ -280,7 +281,7 @@
 								                    //$to = Carbon::createFromFormat('Y-m-d H:s:i', $last_pay_date.' 3:30:34');
 								                    //$from = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
 													//$diff_in_months = $to->diffInMonths($from);
-							                    }
+							                   }
 							                    //&& ($data['followup_type']==2 && $due_count>=3)
 							                    $duedisplay = 0;
 							                    if(($data['followup_type']==1 && $due_count>=4) && $diff_in_months>=4 && $diff_in_months<=12 && $members->status_id==1){
