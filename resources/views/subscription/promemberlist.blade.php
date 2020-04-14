@@ -113,7 +113,7 @@
 							 </div>
 						@endif
 					</div>
-					<div class="card-content">
+					<div class="card-content hide">
 						<div class="row">
 							<div class="col s12 m12">
 								<div class="row">
@@ -174,7 +174,7 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Unpaid List') }}</h4>
+                    <h4 class="card-title">{{__('Members List') }}</h4>
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
@@ -275,7 +275,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_member_list') }}?from_date={{$data['from_date']}}&to_date={{$data['to_date']}}&status_id={{$data['status_id']}}",
+            "url": "{{ url(app()->getLocale().'/ajax_cleanmember_list') }}?from_date={{$data['from_date']}}&to_date={{$data['to_date']}}&status_id={{$data['status_id']}}",
             "dataType": "json",
             "type": "POST",
             "data": {
@@ -357,7 +357,7 @@ $('.datepicker,.datepicker-custom').datepicker({
 	});
 	
 	$("#data_cleaning_sidebars_id").addClass('active');
-	$("#members_list_sidebar_li_id").addClass('active');
-	$("#members_list_sidebar_a_id").addClass('active');
+	$("#members_cleanlist_sidebar_li_id").addClass('active');
+	$("#members_cleanlist_sidebar_a_id").addClass('active');
 </script>
 @endsection

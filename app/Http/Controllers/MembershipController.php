@@ -1759,6 +1759,117 @@ class MembershipController extends Controller
         return $data;
     }
     
+    public function ListStateMembers(Request $request,$lang)
+    {
+        $data = [];
+        $data['state_view'] = DB::table('state as s')->where('status','=',1)->where('country_id','=',130)->get();
+        return view('membership.state_clear')->with('data',$data); 
+    }
+
+    public function getStateMembersList(Request $request, $lang){
+        $from_city_id = $request->input('from_city_id');
+        $from_state_id = $request->input('from_state_id');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+
+        $members = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','cb.branch_name','c.company_name')
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->leftjoin('company as c','cb.company_id','=','c.id');
+
+        if($from_state_id!=''){
+            if($from_state_id=='empty'){
+                $members = $members->where('m.state_id','=',0);
+            }else{
+                $members = $members->where('m.state_id','=',$from_state_id);
+                if($from_city_id=='empty'){
+                    $members = $members->where('m.city_id','=',0);
+                }
+            }
+           
+        }
+
+        if($from_city_id!=''){
+            // if($from_city_id=='empty'){
+            //     $members = $members->where('m.city_id','=',0);
+            // }else{
+                $members = $members->where('m.city_id','=',$from_city_id);
+            //}
+           
+        }
+
+        if($company_id!=''){
+            $members = $members->where('c.id','=',$company_id);
+        }
+
+        if($branch_id!=''){
+            $members = $members->where('cb.id','=',$branch_id);
+        }
+
+        $data['members'] = $members->where('m.status','=','1')
+        ->limit(1000)->get();
+        $data['status'] = 1;
+        
+        return $data;
+       // $data = [];
+       // return view('membership.salary_upload')->with('data',$data); 
+    }
+
+    public function UpdateStateCity(Request $request, $lang){
+        $from_state_id = $request->input('from_state_id');
+        $from_city_id = $request->input('from_city_id');
+        $to_state_id = $request->input('to_state_id');
+        $to_city_id = $request->input('to_city_id');
+        if($from_city_id!=$to_city_id && $to_city_id!="" && $to_state_id!=""){
+            $memberids = $request->input('memberids');
+            //return $memberids;
+            if(isset($memberids)){
+                $mcount = count($memberids);
+                $data = DB::table('membership')->whereIn('id',$memberids)->update(['state_id' => $to_state_id, 'city_id' => $to_city_id]);
+                // for($i=0;$i<$mcount;$i++){
+                //     $memberid = $memberids[$i];
+                    
+                // }
+                return redirect($lang.'/clean-state')->with('message','State,city updated successfully!!');
+            }
+        }else{
+            return redirect($lang.'/clean-state')->with('error','Please select correct to city!!');
+        }
+       
+    }
+
+    public function ListMembers(Request $request){
+        $data['from_date'] = date('1940-01-01');
+        $data['to_date'] = date('Y-m-d');
+        $data['status_id'] = '';
+        $data['status_view'] = DB::table('status')->where('status','=','1')->get();
+       // $data['members_list'] = DB::table('membership as m')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
+        return view('subscription.promemberlist')->with('data',$data);  
+    }
+
+    public function memberlevy(Request $request, $lang,$encid)
+    {
+        $id = Crypt::decrypt($encid);
+        $data['member_view'] = DB::table('membership as m')->select('m.id as mid','m.member_title_id','m.member_number','m.name','cb.branch_name','c.company_name','s.status_name','m.doj','m.salary','m.levy','m.levy_amount','m.tdf','m.tdf_amount')
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->leftjoin('company as c','cb.company_id','=','c.id')
+                            ->leftjoin('status as s','m.status_id','=','s.id')
+                            ->where('m.id','=',$id)
+                            ->first();
+        return view('subscription.levy_update')->with('data',$data);  
+    }
+
+    public function UpdateLevy(Request $request, $lang)
+    {
+        $memberid = $request->input('memberid');
+        $levy = $request->input('levy');
+        $levy_amount = $request->input('levy_amount');
+        $tdf = $request->input('tdf');
+        $tdf_amount = $request->input('tdf_amount');
+
+        $data = DB::table('membership')->where('id','=',$memberid)->update(['levy' => $levy, 'levy_amount' => $levy_amount, 'tdf' => $tdf, 'tdf_amount' => $tdf_amount]);
+
+        return redirect($lang.'/clean-membershiplist')->with('message','Details updated successfully!!');
+    }
 }
 
 
