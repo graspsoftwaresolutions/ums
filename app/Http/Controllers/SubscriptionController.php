@@ -1254,6 +1254,7 @@ class SubscriptionController extends CommonController
             ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
             ->where('StatusMonth', '>=', $history_update_from)->where('MEMBER_CODE', '=', $member_id)
             ->orderBY('StatusMonth','asc')
+            ->OrderBy('ms.arrear_status','asc')
             ->get();
 
             $last_ACCINSURANCE = !empty($last_mont_record) ? $last_mont_record->ACCINSURANCE : 0;

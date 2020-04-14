@@ -1045,6 +1045,7 @@ class SubscriptionAjaxController extends CommonController
 											->offset($offset)
                                             ->limit($this->limit)
                                             ->OrderBy('ms.StatusMonth','asc')
+                                            ->OrderBy('ms.arrear_status','asc')
                                             ->get();
 		
 		// $company_list =  $company_view->get();
