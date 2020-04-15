@@ -199,6 +199,8 @@
               <li id="member_transfers_sidebar_li_id" class=""><a id="member_transfers_sidebar_a_id" class="collapsible-body" href="{{ route('reports.transfers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Member Transfers</span></a></li>
               <li id="branch_advice_sidebar_li_id" class=""><a id="branch_advice_sidebar_a_id" class="collapsible-body" href="{{ route('reports.advice',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Advice</span></a></li>
               <li id="branch_status_sidebar_li_id" class=""><a id="branch_status_sidebar_a_id" class="collapsible-body" href="{{ route('reports.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Branch Status</span></a></li>
+
+              <li id="designation_report_sidebar_li_id" class=""><a id="designation_report_sidebar_a_id" class="collapsible-body" href="{{ route('reports.designation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Designation Report</span></a></li>
               
               <li id="takaful_report_sidebar_li_id" class=""><a id="takaful_report_sidebar_a_id" class="collapsible-body" href="{{ route('reports.takaful',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Takaful Report</span></a></li>
 			   <li id="member_statistic_sidebar_li_id" class=""><a id="member_statistic_sidebar_a_id" class="collapsible-body" href="{{ route('reports.statistics',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Statistics Report') }}</span></a></li>

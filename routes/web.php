@@ -488,6 +488,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('member-levy/{parameter}','MembershipController@memberlevy')->name('member.viewlevy');
 	Route::post('levyupdate','MembershipController@UpdateLevy')->name('member.levyupdate');
 	//Route::post('clean-membership','MonthEndController@ListMemberFilter')->name('membership.clean');
+
+	Route::get('designation_report','ReportsController@DesignationReport')->name('reports.designation');
+	Route::get('empty_report','ReportsController@EmptyReport')->name('reports.empty');
+	Route::get('get-designation-filter-report','ReportsController@IframeDesignationReport')->name('reports.memberdesignation');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

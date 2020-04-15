@@ -18,10 +18,20 @@
 				</td>
 			</tr>
 			<tr class="">
-				
+				@php
+					if($data['join_type']==1){
+						$jtypename = '[NEW JOINED]';
+					}else if($data['join_type']==2){
+						$jtypename = '[REJOINED]';
+					}else if($data['join_type']==3){
+						$jtypename = '[SPECIAL GRADE]';
+					}else{
+						$jtypename = '';
+					}
+				@endphp
 				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">NEW MEMBERS REPORT</span>
+					<span style="margin-top:0;">NEW MEMBERS{{$jtypename}} REPORT</span>
 				</td>
 				
 			</tr>

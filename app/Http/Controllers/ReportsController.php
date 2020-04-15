@@ -4108,5 +4108,66 @@ class ReportsController extends Controller
         $pdf = PDF::loadView('reports.pdf_member_transfers', $dataarr)->setPaper('a4', 'landscape'); 
         return $pdf->download('pdf_member_transfers_report.pdf');
     }
+
+    public function DesignationReport(Request $request, $lang){
+        //$data['data_limit']=$this->limit;
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
+
+        return view('reports.member_designation')->with('data',$data);  
+    }
+
+    public function EmptyReport(Request $request, $lang){
+        
+    }
+
+    public function IframeDesignationReport(Request $request,$lang){
+        $designation = $request->input('designation');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $unionbranch_name = '';
+      
+
+        $members = DB::table('membership as m')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
+                //->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+                //->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','cb.company_id')
+                ->leftjoin('status as s','s.id','=','m.status_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id');
+                // ->where(function($query) use ($branch_id){
+                //     $query->orWhere('m.status_id','=',1)
+                //         ->orWhere('m.status_id', '=',2);
+                // });
+               
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }else{
+                    if($unionbranch_id!=""){
+                        $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                        $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+                    }
+                    if($company_id!=""){
+                        $members = $members->where('cb.company_id','=',$company_id);
+                    }
+                }
+                if($designation!=""){
+                    $members = $members->where('m.designation_id','=',$designation);
+                }
+            $members = $members->get();
+       
+       
+        $data['member_view'] = $members;
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['branch_id'] = $branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['designation'] = $designation;
+        
+
+        return view('reports.iframe_designation')->with('data',$data); 
+    }
 }
 
