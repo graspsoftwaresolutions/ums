@@ -3109,7 +3109,7 @@ class ReportsController extends Controller
         }else{
             if($unionbranch_id!=""){
                 $members = $members->where('c.union_branch_id','=',$unionbranch_id);
-                $unionbranch_name = DB::table('union_branch')->where('id','=',$union_branch_id)->pluck('union_branch')->first();
+                $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
             }
             if($company_id!=""){
                 $members = $members->where('c.company_id','=',$company_id);
@@ -4130,7 +4130,7 @@ class ReportsController extends Controller
         $unionbranch_name = '';
       
 
-        $members = DB::table('membership as m')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
+        $members = DB::table('membership as m')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('`com`.`short_code` AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
                 //->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
                 //->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
                 ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
@@ -4144,6 +4144,9 @@ class ReportsController extends Controller
                
                 if($branch_id!=""){
                     $members = $members->where('m.branch_id','=',$branch_id);
+                    if($unionbranch_id!=""){
+                        $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+                    }
                 }else{
                     if($unionbranch_id!=""){
                         $members = $members->where('cb.union_branch_id','=',$unionbranch_id);

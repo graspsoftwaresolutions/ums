@@ -3490,4 +3490,12 @@ class CommonHelper
 
         return $months+1;
     }
+
+    public static function get_designation_name($designationid){
+        $des = DB::table('designation')->where('id','=',$designationid)
+        ->pluck('designation_name')
+        ->first();
+        
+        return $des;
+    }
 }

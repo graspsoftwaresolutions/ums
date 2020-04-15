@@ -34,7 +34,7 @@
 					@endif
 				</td>
 				<td colspan="5" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
-					{{ CommonHelper::getdesignationname($data['designation']) }} 
+					{{ CommonHelper::get_designation_name($data['designation']) }} 
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
 					
@@ -49,7 +49,7 @@
 				<th style="border : 1px solid #988989;" align="center">SNO</th>
 				<th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
                 <th style="border : 1px solid #988989;">{{__('MEMBER NAME')}}</th>
-                <th style="border : 1px solid #988989;">{{__('BANK/BR.')}}</th>
+                <th style="border : 1px solid #988989;">{{__('BANK')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK BRANCH')}}</th>
               
                 <th style="border : 1px solid #988989;">{{__('NRIC')}}</th>
