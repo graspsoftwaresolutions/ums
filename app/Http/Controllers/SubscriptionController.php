@@ -2693,12 +2693,12 @@ class SubscriptionController extends CommonController
 
                 
 
-                
+                $noofmonths = CommonHelper::GetMonthsCount($from_entry_month,$to_entry_month);
 
-                $start = new DateTime($from_entry_month);
-                $end   = new DateTime($to_entry_month);
-                $diff  = $start->diff($end);
-                $total_paids += $diff->format('%y') * 12 + $diff->format('%m') + 1;
+                // $start = new DateTime($from_entry_month);
+                // $end   = new DateTime($to_entry_month);
+                // $diff  = $start->diff($end);
+                $total_paids += $noofmonths;
 
                 $subs_amount = $subs_amount=='' ? 0 : $subs_amount;
                 $bf_amount = $bf_amount=='' ? 0 : $bf_amount;

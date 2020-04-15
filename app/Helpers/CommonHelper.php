@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Log;
 use Facades\App\Repository\CacheMonthEnd;
+use DateTime;
 
 class CommonHelper
 {
@@ -3471,5 +3472,22 @@ class CommonHelper
                 ->pluck('basic_salary')
                 ->first();
         return $data;
+    }
+
+    public static function GetMonthsCount($frommonth,$tomonth)
+    {
+        $start = new DateTime($frommonth);
+        $end   = new DateTime($tomonth);
+        $diff  = $start->diff($end);
+
+        $date_diff = abs(strtotime($tomonth) - strtotime($frommonth));
+
+        $years = floor($date_diff / (365*60*60*24));
+        $months = floor(($date_diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($date_diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+        $months += $diff->format('%y') * 12;
+
+        return $months+1;
     }
 }
