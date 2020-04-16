@@ -200,7 +200,7 @@ class MasterController extends CommonController {
 	public function cityList()
     {
         $data['country_view'] = Country::where('status','=','1')->get();
-        $data['state_view'] = State::where('status','=','1')->get();
+        $data['state_view'] = State::where('status','=','1')->orderBy('state_name','asc')->get();
         return view('master.city.city_list',compact('data',$data));
     }
 	
