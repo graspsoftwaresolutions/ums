@@ -1872,6 +1872,39 @@ class MembershipController extends Controller
 
         return redirect($lang.'/clean-membershiplist')->with('message','Details updated successfully!!');
     }
+
+    public function ListSalaryMembers(Request $request, $lang){
+        $data = [];
+        return view('membership.salary_clear')->with('data',$data); 
+    }
+
+    public function getSalaryMembersList(Request $request, $lang){
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+
+        $members = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic as icno','m.id as memberid','cb.branch_name','c.company_name',DB::raw('`c`.`short_code` AS companycode'))
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->leftjoin('company as c','cb.company_id','=','c.id');
+
+        $members = $members->where('m.salary','=',0);
+
+        if($company_id!=''){
+            $members = $members->where('c.id','=',$company_id);
+        }
+
+        if($branch_id!=''){
+            $members = $members->where('cb.id','=',$branch_id);
+        }
+
+        $data['members'] = $members->where('m.status','=','1')
+        //->limit(1000)
+        ->get();
+        $data['status'] = 1;
+        
+        return $data;
+       // $data = [];
+       // return view('membership.salary_upload')->with('data',$data); 
+    }
 }
 
 

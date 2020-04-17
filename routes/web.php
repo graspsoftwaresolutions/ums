@@ -495,6 +495,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-designation-filter-report','ReportsController@IframeDesignationReport')->name('reports.memberdesignation');
 
 	Route::get('export-pdf-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
+
+	Route::get('clean-salary','MembershipController@ListSalaryMembers')->name('cleaning.salary');
+	Route::post('clean-salary','MembershipController@UpdateMembersSalary')->name('salary.cleaning');
+
+	Route::get('get_salarymembers','MembershipController@getSalaryMembersList')->name('salary.members');
 	//Route::get('export-excel-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
 });
 /* Master */
