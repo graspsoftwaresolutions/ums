@@ -331,6 +331,10 @@ class CommonController extends Controller
                         }
                     }
                 }
+                if($table=='company_branch'){
+                    $emptycount = DB::table('membership')->where('branch_id','=',$autoid)->where('state_id','=',0)->count();
+                    $nestedData['empty'] = $emptycount;
+                }
                 
                 $enc_id = Crypt::encrypt($autoid);
                 
