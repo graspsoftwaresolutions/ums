@@ -240,6 +240,7 @@
                                 <thead>
                                     <tr>
                                         <th width="10%"><p style="margin-left: 10px; "><label><input class="checkall" id="checkAll" type="checkbox" /> <span>Check All</span> </label> </p></th>
+                                        <th width="5%">Sno</th>
                                         <th width="25%">{{__('Member Name') }}</th>
                                         <th width="10%">{{__('Member Number') }}</th>
                                         <th width="20%">{{__('Bank') }}</th>
@@ -439,13 +440,13 @@ $('.datepicker,.datepicker-custom').datepicker({
                     if (result.status == 1 ) {
                      
                         $("#memberslist").empty();
-
+                         var slno = 1;
                         $.each(result.members, function(key, entry) {
 
                              
                              var hiddensec = '';
-                             $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+entry.name+'</td><td>'+entry.member_number+'</td><td>'+entry.company_name+'</td><td>'+entry.branch_name+'</td></tr>');
-
+                             $("#memberslist").append('<tr style=""> <td width="15%"><p style="margin-left: 10px; "><label><input name="memberids[]" class="checkboxes" value="'+entry.memberid+'" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p><div id="salarysection_'+entry.memberid+'">'+hiddensec+'</div></td><td>'+slno+'</td><td>'+entry.name+'</td><td>'+entry.member_number+'</td><td>'+entry.company_name+'</td><td>'+entry.branch_name+'</td></tr>');
+                             slno++;
                             var baselink = base_url + '/{{ app()->getLocale() }}/';
                         });
                   
