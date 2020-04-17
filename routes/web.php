@@ -125,6 +125,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('city_nameexists','AjaxController@checkCityNameExists');
 	Route::get('city_detail','CommonController@cityDetail');
 	Route::delete('city-delete/{id}','MasterController@citydestroy')->name('master.citydestroy');
+	Route::delete('city-deleteone/{id}','MasterController@citydestroyone')->name('master.citydestroyone');
 
 	//Union Branch
 	Route::get('unionbranch','MasterController@unionBranchList')->name('master.unionbranch');
