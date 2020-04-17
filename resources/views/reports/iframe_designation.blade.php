@@ -180,7 +180,7 @@
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value=""></input>
 </body>
 <script>
-	var excelfilenames="Branch Status Report";
+	var excelfilenames="Designation Report";
 </script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>

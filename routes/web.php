@@ -492,6 +492,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('designation_report','ReportsController@DesignationReport')->name('reports.designation');
 	Route::get('empty_report','ReportsController@EmptyReport')->name('reports.empty');
 	Route::get('get-designation-filter-report','ReportsController@IframeDesignationReport')->name('reports.memberdesignation');
+
+	Route::get('export-pdf-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
+	//Route::get('export-excel-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
