@@ -271,6 +271,33 @@ class MasterController extends CommonController {
         }
         return redirect($defdaultLang.'/city')->with('message','City Details Deleted Successfully!!');
 	}
+	public function citydestroyone($lang,$id)
+	{
+        $city = new City();
+        $City = City::find($id);
+        $City_membership =  DB::table('membership as m')->where('m.city_id','=',$id)->count();
+        $City_member_gua =  DB::table('member_guardian as mg')->where('mg.city_id','=',$id)->count();
+        $City_member_nomi =  DB::table('member_nominees as mn')->where('mn.city_id','=',$id)->count();
+        $City_company_bran =  DB::table('company_branch as cb')->where('cb.city_id','=',$id)->count();
+        $City_union_bran =  DB::table('union_branch as ub')->where('ub.city_id','=',$id)->count();
+
+        // echo 'm '.$City_membership.'<br>';
+        // echo 'g '.$City_member_gua.'<br>';
+        // echo 'n '.$City_member_nomi.'<br>';
+        // echo 'cb '.$City_company_bran.'<br>';
+        // echo 'u '.$City_union_bran.'<br>';
+        // return '--';
+
+        $defdaultLang = app()->getLocale();
+        if($City_membership > 0 || $City_member_gua > 0 || $City_member_nomi > 0 || $City_company_bran  > 0 || $City_union_bran > 0)
+        {
+            return redirect($defdaultLang.'/city')->with('error','You cannot delete the City');
+        }
+        else{
+            $city->where('id','=',$id)->update(['status'=>'0']);
+        }
+        return redirect($defdaultLang.'/cityclear')->with('message','City Details Deleted Successfully!!');
+	}
     //user Details Save and Update
     public function userSave(Request $request) {
         

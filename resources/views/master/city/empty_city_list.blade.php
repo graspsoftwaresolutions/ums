@@ -75,7 +75,7 @@
                                                         <td>{{$statecity}}</td>
                                                         <td>{{$city->city_name}}</td>
                                                         <td>
-                                                            <a><form style="display:inline-block;" action="http://localhost/ums/index.php/en/city-delete/{{$city->id}}" method="POST">
+                                                            <a><form style="display:inline-block;" action="{{ url(app()->getLocale()) }}/city-deleteone/{{$city->id}}" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="" style="background:none;border:none;" onclick="return ConfirmDeletion()"><i class="material-icons" style="color:red;">delete</i></button> </form>
@@ -164,8 +164,8 @@ $(function() {
       [0, 'asc']
     ],
     "lengthMenu": [
-        [10, 25, 50, 100, 3000],
-        [10, 25, 50, 100, 'All']
+        [3000, 10, 25, 50, 100 ],
+        ['All',10, 25, 50, 100 ]
     ],
 	dom: 'lBfrtip', 
         buttons: [
