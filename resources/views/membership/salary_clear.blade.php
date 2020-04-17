@@ -162,7 +162,7 @@
             </div>
         </div>
     </div>
-    <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/upload_salary') }}" enctype="multipart/form-data">
+    <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/update_salary') }}" enctype="multipart/form-data">
     @csrf
     <div id="subsfilter" class="row">
         <div class="col s12">
@@ -255,7 +255,15 @@
             <div id="monthly_status" class="col s12" style="padding: 020px;">
                 <div id="DivIdToPrint" class="card subscriber-list-card animate fadeRight">
                     <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
-                        <h4 class="card-title mb-0">{{__('Zero Salaried Members List ') }} 
+                        <div class="row">
+                            <div class="col s12 m6 l2">
+                               
+                                 <h4 class="card-title mb-0">{{__('Zero Salaried Members List ') }} </h4>
+                            </div>
+                            <div class="col s12 m6 l2">
+                                <button id="submit-upload" class="btn waves-effect waves-light form-download-btn" type="submit">{{__('Update Salary') }}</button>
+                            </div>
+                        </div>
                         <!-- <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm" style="background:#ccc;" onClick="return printDiv()"> <i class="material-icons">print</i></a> -->
                         <span class="right datamonth"></span>
                     </h4>

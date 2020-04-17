@@ -1905,6 +1905,41 @@ class MembershipController extends Controller
        // $data = [];
        // return view('membership.salary_upload')->with('data',$data); 
     }
+
+    public function updateSalary(Request $request, $lang){
+        //return $request->all();
+        ini_set('memory_limit', -1);
+		ini_set('max_execution_time', '1000');
+       
+        $sub_company = $request->input('sub_company');
+        $branch_id = $request->input('branch_id');
+       
+        $memberids = $request->input('memberids');
+      
+        if($sub_company!=''){
+            if(isset($memberids)){
+                $mcount = count($memberids);
+                for($i=0;$i<$mcount;$i++){
+                    $memberid = $memberids[$i];
+                    //$data = DB::table('mon_sub_member')->where('id','=',$memberid)->orderBy('m.id','DESC')
+                    $members_amt =  DB::table('mon_sub_member as m')->select('m.Amount')
+                    ->leftjoin('mon_sub_company as sc','m.MonthlySubscriptionCompanyId','=','sc.id')
+                    ->leftjoin('mon_sub as sm','sc.MonthlySubscriptionId','=','sm.id')
+                    ->where('m.MemberCode','=',$memberid)
+                    ->orderBy('sm.Date','DESC')
+                    ->pluck('m.Amount')
+                    ->first();
+                    $salary = $members_amt!='' ? $members_amt*100 : 0;
+                    if($salary!=0){
+                        $data = DB::table('membership')->where('id','=',$memberid)->update(['salary' => $salary]);
+                        //print_r(['salary' => $salary,'id' => $memberid]);
+                    }
+                   
+                }
+            }
+        }
+        return redirect($lang.'/clean-salary')->with('message','Salary updated successfully!!');
+    }
 }
 
 

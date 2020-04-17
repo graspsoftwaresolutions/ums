@@ -500,6 +500,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('clean-salary','MembershipController@UpdateMembersSalary')->name('salary.cleaning');
 
 	Route::get('get_salarymembers','MembershipController@getSalaryMembersList')->name('salary.members');
+
+	Route::post('update_salary','MembershipController@updateSalary')->name('salary.update');
 	//Route::get('export-excel-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
 });
 /* Master */
