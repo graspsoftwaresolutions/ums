@@ -332,8 +332,18 @@ class CommonController extends Controller
                     }
                 }
                 if($table=='company_branch'){
-                    $emptycount = DB::table('membership')->where('branch_id','=',$autoid)->where('state_id','=',0)->count();
-                    $nestedData['empty'] = $emptycount;
+                    //$emptycount = DB::table('membership')->where('branch_id','=',$autoid)->where('state_id','=',0)->count();
+
+                    $statename = DB::table('company_branch as cb')
+                                    ->leftjoin('state as s','cb.state_id','=','s.id')
+                                    ->where('cb.id','=',$autoid)->pluck('s.state_name')->first();
+
+                    $cityname = DB::table('company_branch as cb')
+                                    ->leftjoin('city as c','cb.city_id','=','c.id')
+                                    ->where('cb.id','=',$autoid)->pluck('c.city_name')->first();
+                    $nestedData['statename'] = $statename;
+                    $nestedData['cityname'] = $cityname;
+                    //$nestedData['empty'] = $emptycount;
                 }
                 
                 $enc_id = Crypt::encrypt($autoid);

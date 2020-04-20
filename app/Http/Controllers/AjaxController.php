@@ -1205,8 +1205,10 @@ class AjaxController extends CommonController
             0 => 'company_id', 
             1 => 'branch_name',
             2 => 'email',
-            3 => 'is_head',
-            4 => 'id'
+            3 => 'state_id',
+            4 => 'city_id',
+            5 => 'is_head',
+            6 => 'id'
         );
 
        
@@ -1234,7 +1236,7 @@ class AjaxController extends CommonController
             if($user_role!='union'){
                 $companybranchs = $companybranchs->whereIn('b.company_id', $company_ids);
             }
-            $companybranchs = $companybranchs->orderBy($order,$dir)->get()->toArray();
+            $companybranchs = $companybranchs->orderBy('b.state_id','asc')->get()->toArray();
 
         }
         else {

@@ -55,7 +55,9 @@
 														<th>{{__('Company Name') }}(is_head)</th>
 														<th>{{__('Branch Name') }}</th>
 														<th>{{__('Email') }}</th>
-														<th>{{__('Empty State') }}</th>
+														<th>{{__('State') }}</th>
+														<th>{{__('City') }}</th>
+														<!-- <th>{{__('Empty State') }}</th> -->
 														<th>{{__('Head') }}</th>
 														<th style="text-align:center;">{{__('Action') }}</th>
 													</tr>
@@ -100,15 +102,15 @@
 			"responsive": true,
 			dom: 'lBfrtip', 
 			"lengthMenu": [
-	            [10, 25, 50, 100, 4000],
-	            [10, 25, 50, 100, 'All']
+	            [500, 10, 25, 50, 100, 4000],
+	            [500, 10, 25, 50, 100, 'All']
 	        ],
 			buttons: [
 			   {
 				   extend: 'pdf',
 				   footer: true,
 				   exportOptions: {
-						columns: [0,1,2,3]
+						columns: [0,1,2,3,4,5]
 					},
 					title : 'Bank Branch List',
 					titleAttr: 'pdf',
@@ -118,7 +120,7 @@
 				   extend: 'excel',
 				   footer: false,
 				   exportOptions: {
-						columns: [0,1,2,3]
+						columns: [0,1,2,3,4,5]
 					},
 					title : 'Bank Branch List',
 					text:      '<i class="fa fa-file-excel-o"></i>',
@@ -128,7 +130,7 @@
 				   extend: 'print',
 				   footer: false,
 				   exportOptions: {
-						columns: [0,1,2,3]
+						columns: [0,1,2,3,4,5]
 					},
 					title : 'Bank Branch List',
 					text:   '<i class="fa fa-files-o"></i>',
@@ -153,7 +155,9 @@
 				{"data": "head_of_company"},
 				{"data": "branch_name"},
 				{"data": "email"},
-				{"data": "empty"},
+				//{"data": "empty"},
+				{"data": "statename"},
+				{"data": "cityname"},
 				{"data": "is_head"},
 				{"data": "options"}
 			]
