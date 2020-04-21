@@ -57,7 +57,7 @@
 														<th>{{__('Email') }}</th>
 														<th>{{__('State') }}</th>
 														<th>{{__('City') }}</th>
-														<!-- <th>{{__('Empty State') }}</th> -->
+														<th>{{__('Empty State') }}</th>
 														<th>{{__('Head') }}</th>
 														<th style="text-align:center;">{{__('Action') }}</th>
 													</tr>
@@ -155,9 +155,9 @@
 				{"data": "head_of_company"},
 				{"data": "branch_name"},
 				{"data": "email"},
-				//{"data": "empty"},
 				{"data": "statename"},
 				{"data": "cityname"},
+				{"data": "empty"},
 				{"data": "is_head"},
 				{"data": "options"}
 			]
