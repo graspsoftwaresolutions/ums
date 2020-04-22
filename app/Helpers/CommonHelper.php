@@ -238,6 +238,7 @@ class CommonHelper
         if($unionbranchid!=false && $unionbranchid!=''){
             $companyBranch->where('union_branch_id',$unionbranchid);
         }
+        $companyBranch->where('status',1);
                               
         return  $companyBranch->get();
      }
