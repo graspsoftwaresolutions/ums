@@ -1166,4 +1166,25 @@ class MemberController extends CommonController
 		return view('membership.membership_design')->with('data',$data);  
 		//return view('membership.register-resign');
 	}
+
+	public function UpdateMemberPassword(Request $request){
+		ini_set('memory_limit', -1);
+		ini_set('max_execution_time', '1000');
+		$members = DB::table('membership')->select('id','user_id','new_ic','old_ic','employee_id')->limit(10000)->offset(0)->get();
+		foreach ($members as $key => $value) {
+			$encpassword = '';
+			if($value->new_ic!=''){
+				$encpassword = bcrypt($value->new_ic);
+			}else if($value->old_ic!=''){
+				$encpassword = bcrypt($value->old_ic);
+			}else if($value->employee_id!=''){
+				$encpassword = bcrypt($value->employee_id);
+			}
+			if($encpassword!=''){
+				DB::table('users')->where('id', '=', $value->user_id)->update(['password' => $encpassword]);
+				Log::info($value->id);
+			}
+			
+		}
+	}
 }

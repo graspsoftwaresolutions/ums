@@ -332,7 +332,7 @@ class CommonController extends Controller
                     }
                 }
                 if($table=='company_branch'){
-                    $emptycount = DB::table('membership')->where('branch_id','=',$autoid)->where('state_id','=',0)->count();
+                    //$emptycount = DB::table('membership')->where('branch_id','=',$autoid)->where('state_id','=',0)->count();
 
                     $statename = DB::table('company_branch as cb')
                                     ->leftjoin('state as s','cb.state_id','=','s.id')
@@ -343,7 +343,7 @@ class CommonController extends Controller
                                     ->where('cb.id','=',$autoid)->pluck('c.city_name')->first();
                     $nestedData['statename'] = $statename;
                     $nestedData['cityname'] = $cityname;
-                    $nestedData['empty'] = $emptycount;
+                    //$nestedData['empty'] = $emptycount;
                 }
                 
                 $enc_id = Crypt::encrypt($autoid);

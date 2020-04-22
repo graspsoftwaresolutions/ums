@@ -23,7 +23,7 @@
 						<div class="row margin">
 							<div class="input-field col s12" style="margin-top: 0.5rem;">
 								<i class="material-icons prefix pt-2">person_outline</i>
-								<input id="email" name="email" type="email" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required >
+								<input id="email" name="email" type="text" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required >
 								<label for="email" class="center-align hide">{{ __('E-Mail Address') }}</label>
 								@error('email')
                                     <span class="invalid-feedback" role="alert">

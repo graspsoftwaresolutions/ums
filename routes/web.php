@@ -574,3 +574,6 @@ Route::get('register-one','MemberController@NewRegisterDesign');
 Route::get('takaful-excel-export','ReportsController@exportTakafulExcel')->name('takaful.excelexport');
 
 Route::get('get-member-irclist-values','IrcController@getMembersListValues');
+
+
+Route::get('update_password','MemberController@UpdateMemberPassword');
