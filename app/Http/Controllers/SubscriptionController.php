@@ -3614,14 +3614,21 @@ class SubscriptionController extends CommonController
                                                     ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
                                 if($lastupdate!=''){
                                     $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
-                                    if($basicsalry[0]->increment_type_id==1){
-                                        $salary = $lastsalary+$basicsalry[0]->additions;
+                                    if(count($basicsalry)>0){
+                                        //return $basicsalry;
+                                        if($basicsalry[0]->increment_type_id==1){
+                                            $salary = $lastsalary+$basicsalry[0]->additions;
+                                        }else{
+                                            $salary = $lastsalary-$basicsalry[0]->additions;
+                                        }
                                     }else{
-                                        $salary = $lastsalary-$basicsalry[0]->additions;
+                                        $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
                                     }
-                                    
+                                  
+                                    //return $salary;
                                 }else{
                                     $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+
                                 }
                             }else{
                                 return redirect($lang.'/subscription_discrepancy')->with('message','Salary Updations Added successfully!!');
@@ -3632,6 +3639,7 @@ class SubscriptionController extends CommonController
                             if($inctype<=3){
 
                                 $additional_amt = $subssal-$salary;
+
                                 if($additional_amt>0){
                                   
                                     $newsalary = $subssal;
