@@ -72,7 +72,15 @@ class LoginController extends Controller
           // Attempt to log the user in
           if (Auth::attempt(['email' => $email, 'password' => $request->password])) {
             // if successful, then redirect to their intended location
-            return redirect()->intended('en/home');
+            $get_roles = Auth::user()->roles; 
+            $user_role = $get_roles[0]->slug;
+            if($user_role=='member'){
+                $redirect_url = app()->getLocale().'/edit-membership-profile';
+                return redirect()->intended($redirect_url);
+            }else{
+              return redirect()->intended('en/home');  
+            }
+            
           } 
           // if unsuccessful, then redirect back to the login with the form data
           return redirect()->back()->withInput($request->only('email', 'remember'));
