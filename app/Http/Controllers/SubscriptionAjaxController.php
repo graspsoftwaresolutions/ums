@@ -1505,11 +1505,13 @@ class SubscriptionAjaxController extends CommonController
 
      public function unpaidMemberDetails(Request $request){
         $sub_member_auto_id = $request->input('sub_member_auto_id');
+        $date = $request->input('date');
         $up_member_data = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->first();
         $match_data = DB::table('mon_sub_member_match')->where('mon_sub_member_id','=',$sub_member_auto_id)->get();
         $member_id = DB::table('mon_sub_member')->where('id','=',$sub_member_auto_id)->pluck('MemberCode')->first();
         $data['up_member_data'] = $up_member_data;
         $unmatchdata = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$sub_member_auto_id)
+        ->where('date','=',$date)
         ->where('type','=',1)
         ->where('approval_status','=',1)
         ->first();

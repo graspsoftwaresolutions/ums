@@ -3398,13 +3398,14 @@ class SubscriptionController extends CommonController
         $sub_member_id = $request->input('vsub_member_id');
         $description = $request->input('vdescription');
         $reasonid = $request->input('vreasonid');
+        $subs_date = $request->input('subs_date');
         
 		
 		$member_status = '';
 		
         $approval_masg = 'Updated Succesfully';
 
-        $mismatchedcount = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$sub_member_id)->where('type','=',1)->count();
+        $mismatchedcount = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$sub_member_id)->where('type','=',1)->where('date','=',$subs_date)->count();
         //return $mismatchedcount;
 
         $insertdata = [];
@@ -3413,6 +3414,7 @@ class SubscriptionController extends CommonController
         $insertdata['approval_status'] = 1;
         $insertdata['reason'] = $reasonid;
         $insertdata['remarks'] = $description;
+        $insertdata['date'] = $subs_date;
        
         if($mismatchedcount==0){
             $saveunmatch = DB::table('mon_sub_remarks')->insert($insertdata);

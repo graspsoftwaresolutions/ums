@@ -338,7 +338,7 @@
 											    dd($notmatched);
 											}
 											
-											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
+											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id,$data['to_year_full']);
 											$unpaidreason = '';
 											$approval_status = 0;
 											if(!empty($unmpaiddata)){
@@ -411,7 +411,7 @@
 										@if( !in_array( $company->sub_member_id ,$notmembers) )
 										@php
 
-											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
+											$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id,$data['to_year_full']);
 											$unpaidreason = '';
 											$approval_status = 0;
 											if(!empty($unmpaiddata)){
@@ -509,6 +509,7 @@
 		<form class="formValidate" id="varianceformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
         @csrf
 			<input type="text" class="hide" name="vsub_member_id" id="vsub_member_id">
+			<input type="text" class="hide" name="subs_date" id="subs_date">
 			<div class="modal-content">
 				<h4>Subscription Unpaid Member details</h4>
 				<div class="row">
@@ -713,7 +714,8 @@ $(document).ready(function() {
 	    $('.modal').modal();
 	    $("#vsub_member_id").val(sub_member_id);
 	    loader.showLoader();
-		var url = "{{ url(app()->getLocale().'/unpaid_member_info') }}" + '?sub_member_auto_id=' + sub_member_id;
+		var url = "{{ url(app()->getLocale().'/unpaid_member_info') }}" + "?sub_member_auto_id=" + sub_member_id + "&date={{ $data['to_year_full'] }}";
+		$("#subs_date").val("{{ $data['to_year_full'] }}");
 		$.ajax({
 			url: url,
 			type: "GET",
@@ -823,6 +825,10 @@ $(document).ready(function() {
 		$(".submitApproval").attr('disabled', true);
 		var url = "{{ url(app()->getLocale().'/ajax_save_variation') }}" ;
 		var vreasonval = $("#vreasonid option:selected").html();
+		var vreasonno = $("#vreasonid").val();
+		if(vreasonno==5){
+			vreasonval = $("#vdescription").val();
+		}
 		$.ajax({
 			url: url,
 			type: "POST",

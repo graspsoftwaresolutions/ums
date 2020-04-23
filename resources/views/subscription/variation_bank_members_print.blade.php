@@ -439,7 +439,7 @@
 					@foreach($pre_company_members as $company)
 						@if( !in_array( $company->sub_member_id ,$notmembers) )
 						@php
-							$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
+							$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id,$data['month_year_full']);
 							$unpaidreason = '';
 							$approval_status = 0;
 							if(!empty($unmpaiddata)){
@@ -507,7 +507,7 @@
 					@foreach($current_company_members as $company)
 						@if( !in_array( $company->sub_member_id ,$notmembers) )
 						@php
-							$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id);
+							$unmpaiddata = CommonHelper::get_unpaid_data($company->sub_member_id,$data['month_year_full']);
 							$unpaidreason = '';
 							$approval_status = 0;
 							if(!empty($unmpaiddata)){

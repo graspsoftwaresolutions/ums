@@ -3322,9 +3322,10 @@ class CommonHelper
         
         return $matchdata;
     }
-    public static function get_unpaid_data($submemberid){
+    public static function get_unpaid_data($submemberid,$date){
         $matchdata = DB::table('mon_sub_remarks')->where('mon_sub_member_id','=',$submemberid)
         ->where('type','=',1)
+        ->where('date','=',$date)
         ->where('approval_status','=',1)
         ->first();
         
