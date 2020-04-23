@@ -351,7 +351,7 @@
 				if($data['variation']==6){
 					//print_r($fifth_str);
 					//print_r($doj_str);
-					if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){
+					if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){
 						$variedamt = 1;
 						if($this_str==$doj_str)
 						{
@@ -399,7 +399,7 @@
 						
 					}
 				}else{
-					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){	
+					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){	
 						$variedamt = 1;
 
 						if($this_str==$doj_str)

@@ -178,15 +178,18 @@
                                                 <div class="errorTxt6"></div>
                                             </div>
 											<div class="input-field col m1 s12">
-												<label style="left: 1rem;" for="doe">{{__('Subscription Month') }}*</label>
+												<label style="left: 1rem;" for="doe">{{__('Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
 											</div>
-											<div class="col m2 s12 ">
+											<div class="col m1 s12 ">
 												<label for="doe">&nbsp;</label>
 												<p>
 													<label>
 														<input name="display_subs" type="checkbox" value="1" {{ $data['DisplaySubscription']==true ? 'checked' : ''}} />
-														<span>{{__('Display Subscription') }} </span>
+														<span style="font-size: 12px;">{{__('Display') }} 
+														<br>
+														Subscription
+														</span>
 													</label>
 												</p>
 											</div>
@@ -196,19 +199,19 @@
 												<p>
 													<label>
 														<input name="variationtype" class="variationtype" type="radio" value="4" {{ $data['variationtype']==4 ? 'checked' : ''}} />
-														<span>{{__('Last 4 Months') }} </span>
+														<span style="font-size: 12px;">{{__('Last 4 Months') }} </span>
 													</label>
 												</p>
 												<p>
 													<label>
 														<input name="variationtype" class="variationtype" type="radio" value="6"  {{ $data['variationtype']==6 ? 'checked' : ''}} />
-														<span>{{__('Last 6 Months') }} </span>
+														<span style="font-size: 12px;">{{__('Last 6 Months') }} </span>
 													</label>
 												</p>
 
 												
 											</div>
-											<div class="col m1 s12 ">
+											<div class="col m2 s12 ">
 												<label for="types">{{__('Increment Types') }}</label>
 												<select name="types" id="types" class="browser-default valid" aria-invalid="false">
 						                            <option {{ $data['types']=='' ? 'selected' : ''}} value="">Select</option>
@@ -222,7 +225,7 @@
 											
 											<div class="col m1 s12 " style="padding-top:5px;">
 												</br>
-												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
+												<button id="submit-upload" style="margin: 0;padding: 1px 10px;line-height: 30px;" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
 											</div>
 											
@@ -433,6 +436,7 @@
 					$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$fifth_str);
 				}else{
 					$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$third_str);
+
 				}
 				$subremarks = '';
 				$addonsalary = 0;
@@ -489,8 +493,10 @@
 						
 					}
 					$newsalary = $newbasicsal+$addonsalary;
+
 					$total_subs = ($newsalary*1)/100;
 					$payable_subs = $total_subs;
+
 					//$payable_subs = number_format($total_subs,2,".","");
 
 				}else{
@@ -523,10 +529,11 @@
 
 				$variedamt = 0;
 
+
 				if($data['variationtype']==6){
 					//print_r($fifth_str);
 					//print_r($doj_str);
-					if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){
+					if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){
 						$variedamt = 1;
 						if($this_str==$doj_str)
 						{
@@ -574,9 +581,9 @@
 						
 					}
 				}else{
-					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs && $this_paid==$payable_subs){	
+					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){	
 						$variedamt = 1;
-
+						
 						if($this_str==$doj_str)
 						{
 							$variedamt = 0;
