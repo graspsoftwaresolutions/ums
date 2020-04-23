@@ -149,7 +149,7 @@ class MemberController extends CommonController
 
 				$member_role = Role::where('slug', 'member')->first();
 				//$randompass = CommonHelper::random_password(5,true);
-				$randompass = 'nube12345';
+				$randompass = bcrypt('nube12345');
 
 				$email_exists = DB::table('membership')->where([
 					['email','=',$member_email],
@@ -164,10 +164,25 @@ class MemberController extends CommonController
 					return redirect()->back()->withInput()->with('error','Email already Exists');
 				}
 				else{
+					$old_ic = $request->input('old_ic');
+					$new_ic = $request->input('new_ic');
+					$employee_id = $request->input('employee_id');
+
+					if($new_ic!=''){
+						$randompass = bcrypt($new_ic);
+					}else if($old_ic!=''){
+						$randompass = bcrypt($old_ic);
+						//return 1;
+					}else if($employee_id!=''){
+						$randompass = bcrypt($employee_id);
+						//return 1;
+					}
+					//return $randompass;
+
 					$member_user = new User();
 					$member_user->name = $member_name;
 					$member_user->email = $member_email;
-					$member_user->password = bcrypt($randompass);
+					$member_user->password = $randompass;
 					$member_user->save();
 					$member_user->roles()->attach($member_role);
 					// return $member_user;die;
