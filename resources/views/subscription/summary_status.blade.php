@@ -302,11 +302,11 @@
 		   </hr>
 			
 				<div class="row">
-	                <div class="col m3">
+	                <div class="col m4">
 	                    <label for="typeid">{{__('Reason') }}</label>
 	                    <input type="text" class="" name="reason" id="reason" readonly="" value="StruckOff Members" />
 	                </div>
-	                <div class="col m9 descriptiontd">
+	                <div class="col m8 descriptiontd">
 	                	<label for="description">{{__('Remarks') }}*</label>
 	                	<textarea id="description" name="description" required="" style="height: 43px !important;" class="materialize-textarea" spellcheck="false"></textarea>
 	                </div>
@@ -314,7 +314,7 @@
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-		  <button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+		  <button type="submit" class="btn waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
 		</div>
 		 </form>
 	  </div>

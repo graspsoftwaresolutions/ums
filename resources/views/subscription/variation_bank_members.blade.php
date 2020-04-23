@@ -486,11 +486,11 @@
 		  
 		   </hr>
 				<div class="row">
-	                <div class="col m3">
+	                <div class="col m4">
 	                    <label for="typeid">{{__('Reason') }}</label>
 	                    <input type="text" class="" name="reason" id="reason" readonly="" value="StruckOff Members" />
 	                </div>
-	                <div class="col m9 descriptiontd">
+	                <div class="col m8 descriptiontd">
 	                	<label for="description">{{__('Remarks') }}*</label>
 	                	<textarea id="description" name="description" required="" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
 	                </div>
@@ -499,7 +499,7 @@
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-		  <button type="submit" class="btn waves-effect waves-light submitApproval" >Submit</button>
+		  <button type="submit" class="btn waves-light submitApproval" >Submit</button>
 		</div>
 		 </form>
 	  </div>
@@ -528,13 +528,13 @@
 			  
 			   </hr>
 				<div class="row">
-	                <div class="col m3">
+	                <div class="col m4">
 	                    <label for="typeid">{{__('Reason') }}*</label>
 	                    <select name="vreasonid" id="vreasonid" onclick="return EnableVDescription(this.value)" class="browser-default valid" required="" aria-invalid="false">
 							
 						</select>
 	                </div>
-	                <div class="col m9 vdescriptiontd hide">
+	                <div class="col m8 vdescriptiontd hide">
 	                	<label for="vdescription">{{__('Description') }}*</label>
 	                	<textarea id="vdescription" name="vdescription" style="height: 58px !important;" class="materialize-textarea" spellcheck="false"></textarea>
 	                </div>
@@ -543,7 +543,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-			  	<button type="submit" class="btn waves-effect waves-light submitApproval" >Submit</button>
+			  	<button type="submit" class="btn waves-light submitApproval" >Submit</button>
 			</div>
 		</form>
 	</div>

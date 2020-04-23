@@ -3209,7 +3209,17 @@ class SubscriptionController extends CommonController
                     $cond =" AND m.MonthlySubscriptionCompanyId = '$company_id'";
                 }
                
-                $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId<="2" '.$cond));
+                $allmembers_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode` left join status as s on `s`.`id` = `m`.`StatusId` where m.StatusId<="2" '.$cond));
+                $members_data = [];
+               // $members_dataone = [];
+                foreach ($allmembers_data as $key => $value) {
+                    $checkmisbank = DB::table("mon_sub_member_match as mm")->select('mm.id')->where('mm.mon_sub_member_id','=',$value->sub_member_id)->where('mm.match_id','=',4)->count();
+                    if($checkmisbank!=1){
+                        $members_data[] = $value;
+                    }
+                    
+                }
+                //dd($members_dataone);
                 $data['member'] = $members_data;
               //  dd($members_data);
                 
