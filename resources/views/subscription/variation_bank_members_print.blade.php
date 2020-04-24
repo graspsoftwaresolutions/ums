@@ -325,19 +325,19 @@
 	@endphp
 	<div class="row">
 	<div id="notmatcheddetails" style="margin-top: 30px;padding: 10px;" class="@if(count($notmatched)==0) hide @endif"  >
-		<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Not Matched Members List</p>
+		<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">{{ strtoupper('Not Matched Members List') }}</p>
 		<table id="page-length-option" class="display" width="100%">
 			<thead>
 				<tr width="100%">
-					<th style="border: 1px solid #988989 !important;" width="5%">{{__('S.No')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="25%">{{__('Member Name')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="5%">{{__('S.NO')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="25%">{{__('MEMBER NAME')}}</th>
 					
 					<th style="border: 1px solid #988989 !important;" width="10%">{{__('NRIC')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Amount')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="15%">{{__('Reason')}}</th>
-					<th style="border: 1px solid #988989 !important;" width="25%">{{__('Remarks')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="10%">{{__('AMOUNT')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="15%">{{__('REASON')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="25%">{{__('REMARKS')}}</th>
 					@if($user_role=='company')
-					<th style="border: 1px solid #988989 !important;" width="10%">{{__('Status')}}</th>
+					<th style="border: 1px solid #988989 !important;" width="10%">{{__('STATUS')}}</th>
 					
 					@endif
 					
@@ -383,16 +383,16 @@
 					@endphp
 					<tr style="overflow-x:auto;">
 						<td style="border: 1px solid #988989 !important;">{{$slno}}</td>
-						<td width="25%" style="border: 1px solid #988989 !important;">{{ $member->up_member_name }}</td>
+						<td width="25%" style="border: 1px solid #988989 !important;">{{ strtoupper($member->up_member_name) }}</td>
 						<!--td id="member_code_{{ $member->sub_member_id }}" >{{ $member->member_number }}</td-->
 						
 						<td style="border: 1px solid #988989 !important;">{{ $member->up_nric }}</td>
 						<td style="border: 1px solid #988989 !important;">{{ number_format($member->Amount,2,".",",") }}</td>
-						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}">{{$matchname}}</td>
-						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}">{{$unmatchreason}}</td>
+						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}">{{ strtoupper($matchname) }}</td>
+						<td style="border: 1px solid #988989 !important;" id="unmatch_reason_{{ $member->sub_member_id }}">{{ strtoupper($unmatchreason) }}</td>
 						@if($user_role=='company')
 
-						<td style="border: 1px solid #988989 !important;" id="approve_status_{{ $member->sub_member_id }}"><span class="">{{ $approval_status==1 ? 'Updated' : 'Pending' }}</span></td>
+						<td style="border: 1px solid #988989 !important;" id="approve_status_{{ $member->sub_member_id }}"><span class="">{{ $approval_status==1 ? 'UPDATED' : 'PENDING' }}</span></td>
 						
 						
 						<td>
@@ -417,16 +417,16 @@
 	@endphp
 	<div class="row">
 		<div id="predetails" style="margin-top: 30px;padding: 10px;" class="@if(count($pre_company_members)==0) hide @endif"  >
-			<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">Previous Subscription Paid - Current Subscription Unpaid</p>
+			<p style="font-size: 16px;text-decoration: underline;font-size: 16px;font-weight:bold;">{{ strtoupper('Previous Subscription Paid - Current Subscription Unpaid') }}</p>
 			<table id="page-length-option" class="display" width="100%">
 				<thead>
 					<tr class="" >
-						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-						<th width="32%" style="border: 1px solid #988989 !important;">Member Name</th>
+						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.NO')}}</th>
+						<th width="32%" style="border: 1px solid #988989 !important;">MEMBER NAME</th>
 						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
-						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full'].' -1 Month'))) }} <br> Amount</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full']))) }} <br> Amount</th>
+						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('REASON')}}</th>
 						
 							
 						
@@ -453,11 +453,11 @@
 						@endphp
 						<tr>
 							<td style="border: 1px solid #988989 !important;">{{$slno}}</td>
-							<td style="border: 1px solid #988989 !important;">{{ $company->name }}</td>
+							<td style="border: 1px solid #988989 !important;">{{ strtoupper($company->name) }}</td>
 							<td style="border: 1px solid #988989 !important;">{{ $company->ic }}</td>
 							<td style="border: 1px solid #988989 !important;">{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 							<td style="border: 1px solid #988989 !important;">0</td>
-							<td style="border: 1px solid #988989 !important;" id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
+							<td style="border: 1px solid #988989 !important;" id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{ strtoupper($unpaidreason) }}</td>
 							
 							
 						</tr>
@@ -484,16 +484,16 @@
 	@endif
 	<div class="row">
 		<div id="currentdetails" style="margin-top: 30px;padding: 10px;" class="@if(count($current_company_members)==0) hide @endif"  >
-			<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">Previous Subscription Unpaid - Current Subscription Paid</p>
+			<p style="font-size: 16px;text-decoration: underline;font-weight:bold;">{{ strtoupper('Previous Subscription Unpaid - Current Subscription Paid') }}</p>
 			<table id="page-length-option" class="display" width="100%">
 				<thead>
 					<tr class="" >
-						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.No')}}</th>
-						<th width="32%" style="border: 1px solid #988989 !important;">Member Name</th>
+						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.NO')}}</th>
+						<th width="32%" style="border: 1px solid #988989 !important;">MEMBER NAME</th>
 						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }} <br> Amount</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ date('M Y',strtotime($data['month_year_full'])) }} <br> Amount</th>
-						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('Reason')}}</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full'].' -1 Month'))) }} <br> Amount</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full']))) }} <br> AMOUNT</th>
+						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('REASON')}}</th>
 						
 							
 						
@@ -521,12 +521,12 @@
 						@endphp
 						<tr>
 							<td style="border: 1px solid #988989 !important;">{{$slno1}}</td>
-							<td style="border: 1px solid #988989 !important;">{{ $company->name }}</td>
+							<td style="border: 1px solid #988989 !important;">{{ strtoupper($company->name) }}</td>
 							<td style="border: 1px solid #988989 !important;">{{ $company->ic }}</td>
 							<td style="border: 1px solid #988989 !important;">0</td>
 							<td style="border: 1px solid #988989 !important;">{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 							
-							<td style="border: 1px solid #988989 !important;" id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{$unpaidreason}}</td>
+							<td style="border: 1px solid #988989 !important;" id="unpaid_reason_{{ $company->sub_member_id }}" width="10%">{{ strtoupper($unpaidreason) }}</td>
 							
 						</tr>
 						@php

@@ -63,10 +63,12 @@
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Subscription') }}</h4>
                                     @include('includes.messages')
-									@if (session()->has('success'))
-									{{__('File Updated successfully') }}
-									@endif
-									{{__('File Updated successfully, Scanning process will begin shortly') }}
+                                    <div id="updatedsection" class="hide">
+										@if (session()->has('success'))
+										{{__('File Updated successfully') }}
+										@endif
+										{{__('File Updated successfully, Scanning process will begin shortly') }}
+									</div>
 									@php	
 										$company_auto_id = $data['company_auto_id'];
 									@endphp
@@ -181,7 +183,7 @@
 		var row_count = {{ $data['row_count'] }};
 		if(row_count>0){
 			setTimeout(function(){
-			  loader.showLoader();
+			  jQuery( '.loading-overlay' ).show();
 			  ScanMembership({{ $company_auto_id }},0);
 			}, 1500);
 		}else{
@@ -225,6 +227,7 @@
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
 							loader.hideLoader();
 							TriggerPendingMembers(company_id);
+							$("#updatedsection").removeClass('hide');
 							setTimeout(function(){
 								window.location.href = result.redirect_url;
 							}, 1500);

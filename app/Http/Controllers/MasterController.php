@@ -781,22 +781,22 @@ class MasterController extends CommonController {
                 
             }
             if($status == 1){
-                return redirect($redirect_url)->with('message','Union Account created successfully');
-                // $mail_data = array( 
-                //     'name' => $union['union_branch'],
-                //     'email' => $union['email'],
-                //     'password' => $randompass,
-                //     'site_url' => URL::to("/"),
-                //     'union_type' => $union_type,
-                // );
-                // $cc_mail = CommonHelper::getCCTestMail();
-                // $status = Mail::to($union['email'])->cc([ $cc_mail ])->send(new UnionBranchMailable($mail_data));
+                //return redirect($redirect_url)->with('message','Union Account created successfully');
+                $mail_data = array( 
+                    'name' => $union['union_branch'],
+                    'email' => $union['email'],
+                    'password' => $randompass,
+                    'site_url' => URL::to("/"),
+                    'union_type' => $union_type,
+                );
+                $cc_mail = CommonHelper::getCCTestMail();
+                $status = Mail::to($union['email'])->cc([ $cc_mail ])->send(new UnionBranchMailable($mail_data));
 
-                // if( count(Mail::failures()) > 0 ) {
-                //     return redirect($redirect_url)->with('message','Union Account created successfully, Failed to send mail');
-                // }else{
-                //     return redirect($redirect_url)->with('message','Union Account created successfully, password sent to mail');
-                // }
+                if( count(Mail::failures()) > 0 ) {
+                    return redirect($redirect_url)->with('message','Union Account created successfully, Failed to send mail');
+                }else{
+                    return redirect($redirect_url)->with('message','Union Account created successfully, password sent to mail');
+                }
             }
             if($status == 0)
             {
@@ -1353,22 +1353,22 @@ public function companyDestroy($lang,$id)
                     $member_user->roles()->attach($company_head_role);
                 }
                 $id = $this->CompanyBranch->StoreBranch($branch);
-                return redirect($redirect_url)->with('message','Bank Account created successfully');
-                // $mail_data = array( 
-                //     'name' => $request->input('branch_name'),
-                //     'email' => $branch['email'],
-                //     'password' => $randompass,
-                //     'site_url' => URL::to("/"),
-                //     'company_type' => $company_type,
-                // );
-                // $cc_mail = CommonHelper::getCCTestMail();
-                // $status = Mail::to($branch['email'])->cc([$cc_mail])->send(new CompanyBranchMailable($mail_data));
+                //return redirect($redirect_url)->with('message','Bank Account created successfully');
+                $mail_data = array( 
+                    'name' => $request->input('branch_name'),
+                    'email' => $branch['email'],
+                    'password' => $randompass,
+                    'site_url' => URL::to("/"),
+                    'company_type' => $company_type,
+                );
+                $cc_mail = CommonHelper::getCCTestMail();
+                $status = Mail::to($branch['email'])->cc([$cc_mail])->send(new CompanyBranchMailable($mail_data));
     
-                // if( count(Mail::failures()) > 0 ) {
-                //     return redirect($redirect_url)->with('message','Bank Account created successfully, Failed to send mail');
-                // }else{
-                //     return redirect($redirect_url)->with('message','Bank Account created successfully, password sent to mail');
-                // }
+                if( count(Mail::failures()) > 0 ) {
+                    return redirect($redirect_url)->with('message','Bank Account created successfully, Failed to send mail');
+                }else{
+                    return redirect($redirect_url)->with('message','Bank Account created successfully, password sent to mail');
+                }
             }
         }else{
              $user_id = CompanyBranch::where('id',$auto_id)->pluck('user_id')[0];

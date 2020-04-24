@@ -150,6 +150,7 @@ class MemberController extends CommonController
 				$member_role = Role::where('slug', 'member')->first();
 				//$randompass = CommonHelper::random_password(5,true);
 				$randompass = bcrypt('nube12345');
+				$randompassone = 'nube12345';
 
 				$email_exists = DB::table('membership')->where([
 					['email','=',$member_email],
@@ -170,11 +171,14 @@ class MemberController extends CommonController
 
 					if($new_ic!=''){
 						$randompass = bcrypt($new_ic);
+						$randompassone = $new_ic;
 					}else if($old_ic!=''){
 						$randompass = bcrypt($old_ic);
+						$randompassone = $old_ic;
 						//return 1;
 					}else if($employee_id!=''){
 						$randompass = bcrypt($employee_id);
+						$randompassone = $employee_id;
 						//return 1;
 					}
 					//return $randompass;
@@ -910,21 +914,21 @@ class MemberController extends CommonController
 			
 
 			if($auto_id==''){
-				return redirect($redirect_url)->with('message','Member Account created successfully');
-				// $mail_data = array(
-				// 	'name' => $member_name,
-				// 	'email' => $member_email,
-				// 	'password' => $randompass,
-				// 	'site_url' => URL::to("/"),
-				// );
-				// $cc_mail = CommonHelper::getCCTestMail();
-				// $status = Mail::to($member_email)->cc([$cc_mail])->send(new SendMemberMailable($mail_data));
+				//return redirect($redirect_url)->with('message','Member Account created successfully');
+				$mail_data = array(
+					'name' => $member_name,
+					'email' => $member_email,
+					'password' => $randompassone,
+					'site_url' => URL::to("/"),
+				);
+				$cc_mail = CommonHelper::getCCTestMail();
+				$status = Mail::to($member_email)->cc([$cc_mail])->send(new SendMemberMailable($mail_data));
 				
-				// if( count(Mail::failures()) > 0 ) {
-				// 	return redirect($redirect_url)->with('message','Member Account created successfully, Failed to send mail');
-				// }else{
-				// 	return redirect($redirect_url)->with('message','Member Account created successfully, password sent to mail');
-				// }
+				if( count(Mail::failures()) > 0 ) {
+					return redirect($redirect_url)->with('message','Member Account created successfully, Failed to send mail');
+				}else{
+					return redirect($redirect_url)->with('message','Member Account created successfully, password sent to mail');
+				}
 			}else{
 				 return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
 			}
