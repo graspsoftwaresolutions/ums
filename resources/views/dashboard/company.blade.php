@@ -33,6 +33,7 @@
    $logo = CommonHelper::getLogo();
    $userid = Auth::user()->id;
    $companyid = CommonHelper::getCompanyID($userid);
+   $companyname = CommonHelper::getCompanyName($companyid);
 @endphp
 <div class="row">
 	<div class="col s12 m4 l4">
@@ -41,6 +42,7 @@
     <div class="col s12 m4 l4">
     	<br>
     	<br>
+        <h4 class="center">{{ $companyname }}</h4>
       <div class="card gradient-45deg-indigo-purple">
         <div class="card-content white-text">
           	<div class="col s12 m4 l4" style="text-align: center;">

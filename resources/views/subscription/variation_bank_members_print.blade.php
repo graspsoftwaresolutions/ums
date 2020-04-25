@@ -289,23 +289,23 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td style="border: 1px solid #988989 !important;">Total Members in NUBE</td>
+						<td style="border: 1px solid #988989 !important;">TOTAL MEMBERS IN NUBE</td>
 						<td style="border: 1px solid #988989 !important;">{{ $data['members_count'] }}</td>
 					</tr>
 					<tr>
-						<td style="border: 1px solid #988989 !important;">Total Members Uploaded</td>
+						<td style="border: 1px solid #988989 !important;">TOTAL MEMBERS UPLOADED</td>
 						<td style="border: 1px solid #988989 !important;">{{ $data['company_subscription_list']-$data['doj_count'] }}</td>
 					</tr>
 					<tr>
-						<td style="border: 1px solid #988989 !important;">Total Members Matched</td>
+						<td style="border: 1px solid #988989 !important;">TOTAL MEMBERS MATCHED</td>
 						<td style="border: 1px solid #988989 !important;">{{ $data['matched_count']-$data['doj_count'] }}</td>
 					</tr>
 					<tr>
-						<td style="border: 1px solid #988989 !important;">Uploaded Amount (RM)</td>
+						<td style="border: 1px solid #988989 !important;">UPLOADED AMOUNT (RM)</td>
 						<td style="border: 1px solid #988989 !important;">{{ number_format($data['matched_amount'],2,".",",") }}</td>
 					</tr>
 					<tr>
-						<td style="border: 1px solid #988989 !important;">Not Matched Members</td>
+						<td style="border: 1px solid #988989 !important;">NOT MATCHED MEMBERS</td>
 						<td style="border: 1px solid #988989 !important;">{{ count($data['submembers']) }}</td>
 					</tr>
 					
@@ -424,8 +424,8 @@
 						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.NO')}}</th>
 						<th width="32%" style="border: 1px solid #988989 !important;">MEMBER NAME</th>
 						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full'].' -1 Month'))) }} <br> Amount</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full']))) }} <br> Amount</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full'].' -1 Month'))) }} <br> AMOUNT</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full']))) }} <br> AMOUNT</th>
 						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('REASON')}}</th>
 						
 							
@@ -491,7 +491,7 @@
 						<th width="5%" style="border: 1px solid #988989 !important;">{{__('S.NO')}}</th>
 						<th width="32%" style="border: 1px solid #988989 !important;">MEMBER NAME</th>
 						<th width="10%" style="border: 1px solid #988989 !important;">NRIC</th>
-						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full'].' -1 Month'))) }} <br> Amount</th>
+						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full'].' -1 Month'))) }} <br> AMOUNT</th>
 						<th width="6%" style="border: 1px solid #988989 !important;">{{ strtoupper(date('M Y',strtotime($data['month_year_full']))) }} <br> AMOUNT</th>
 						<th width="32%" style="border: 1px solid #988989 !important;" width="10%">{{__('REASON')}}</th>
 						
