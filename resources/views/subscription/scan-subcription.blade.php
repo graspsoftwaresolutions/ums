@@ -63,7 +63,17 @@
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Subscription') }}</h4>
                                     @include('includes.messages')
-                                    <div id="updatedsection" class="hide">
+                                    <div id="updatedalert" class="card-alert-nonclose card gradient-45deg-green-teal hide">
+						                <div class="card-content white-text">
+						                  <p>
+						                    <i class="material-icons">check</i> SUCCESS : File Uploaded Successfully.</p>
+						                </div>
+						                <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+						                  <span aria-hidden="true">×</span>
+						                </button>
+						            </div>
+
+                                    <div id="" class="">
 										@if (session()->has('success'))
 										{{__('File Updated successfully') }}
 										@endif
@@ -155,7 +165,7 @@
 											</table>
 											@endif
 											<input type="text" name="number_of_calls" id="number_of_calls" value="{{ $count }}">
-											<input type="text" name="percent_per_call" id="percent_per_call" value="{{ round(100/$count) }}">
+											<input type="text" name="percent_per_call" id="percent_per_call" value="{{ $count>0 ? round(100/$count) : 1 }}">
 										</div>
 									</div>
 									
@@ -227,7 +237,7 @@
 							$('#check_updated_'+start+' span').html('<i class="material-icons">done</i>');
 							loader.hideLoader();
 							TriggerPendingMembers(company_id);
-							$("#updatedsection").removeClass('hide');
+							$("#updatedalert").removeClass('hide');
 							setTimeout(function(){
 								window.location.href = result.redirect_url;
 							}, 1500);

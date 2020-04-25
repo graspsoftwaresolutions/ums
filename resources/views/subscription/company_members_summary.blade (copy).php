@@ -8,8 +8,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 @endsection
 @section('headSecondSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/chartist-js/chartist.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/chartist-js/chartist-plugin-tooltip.css') }}">
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
 	.autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
@@ -87,18 +85,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		.collection-header,.task-cat{
 			color: #000 !important;
 		}
-	}
-
-	.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
-	    stroke: #ff4bac !important;
-		fill: #ff4bac !important;
-	}
-	.ct-series-b .ct-area, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-slice-pie {
-	    stroke: #BBBBBB !important;
-		fill: #BBBBBB !important;
-	}
-	#current-balance-donutone-chart > .ct-series-a .ct-point, .ct-series-a .ct-slice-donut{
-		stroke: #ff4bac !important;
 	}
 </style>
 @endsection
@@ -211,7 +197,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											
 											<div class=" " >
 												
-												<button id="submit-upload" style="margin-left: 10px;margin-top: -24px;" class=" btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="submit">{{__('Variation') }}</button>
+												<button id="submit-upload" style="margin-left: 10px;" class=" btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="submit">{{__('Variation') }}</button>
 												
 											</div>
 											
@@ -223,7 +209,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 
 				                  	<!--a style="" target="_blank" href="{{ URL::to(app()->getLocale().'/summary-status?status=0&date='.strtotime('now').'&company_id='.$data['company_auto_id']) }}" title="View Members" class="waves-effect waves-light blue btn btn-sm" href="">View Variation</a-->
 
-				                  	<a id="printbutton" href="#" class="export-button btn red right" style="background:#ccc;;margin-top: -24px;" onClick="window.print()"> Print</a></h6>
+				                  	<a id="printbutton" href="#" style="" class="export-button btn right" style="background:#ccc;" onClick="window.print()"> Print</a></h6>
 				                    <p>
 			                  	
 										
@@ -291,44 +277,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				                     </div>
 				                  </div>
 				               </li>
-
 				            </ul>
-				            <div class="row hide">
-				            	<div class="col s12 m6 l4">
-							      <div class="ct-chart card z-depth-2 border-radius-6">
-							        <div class="card-content">
-							          <div class="row">
-							            <div class="col s12">
-							              <h4 class="card-title center">Total Members in NUBE</h4>
-							            </div>
-							            <div class="col s10 offset-s2 display-flex" style="padding-left: 30px;">
-								            <div class="current-balance-container">
-								               <div id="current-balance-donut-chart" class="current-balance-shadow"></div>
-								            </div>
-							            </div>
-							          </div>
-							        </div>
-							      </div>
-							    </div>
-							    <div class="col s12 m6 l4">
-							      <div class="ct-chart card z-depth-2 border-radius-6">
-							        <div class="card-content">
-							          <div class="row">
-							            <div class="col s12">
-							              <h4 class="card-title center">Total Members Uploaded</h4>
-							            </div>
-							            <div class="col s10 offset-s2 display-flex" style="padding-left: 30px;">
-								            <div class="current-balance-container">
-								               <div id="current-balance-donutone-chart" class="current-balance-shadow"></div>
-								            </div>
-							            </div>
-							          </div>
-							        </div>
-							      </div>
-							    </div>
-							    
-
-				            </div>
 						</div>
 					</div>
 				   
@@ -347,14 +296,18 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 @endsection
 @section('footerSection')
 
-
+<script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}" type="text/javascript">
+</script>
+<script src="{{ asset('public/assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"
+type="text/javascript"></script>
+<script src="{{ asset('public/assets/vendors/data-tables/js/dataTables.select.min.js') }}" type="text/javascript">
+</script>
 @endsection
 @section('footerSecondSection')
-<script src="{{ asset('public/assets/vendors/chartjs/chart.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/chartist-js/chartist.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/chartist-js/chartist-plugin-tooltip.js') }}" type="text/javascript"></script>
-<script src="{{ asset('public/assets/vendors/chartist-js/chartist-plugin-fill-donut.min.js') }}" type="text/javascript"></script>
-
+<script src="{{ asset('public/assets/vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+<script src="{{ asset('public/assets/js/scripts/form-validation.js')}}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/scripts/data-tables.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 <script>
 $("#subscriptions_sidebars_id").addClass('active');
 $("#subcomp_sidebar_li_id").addClass('active');
@@ -362,89 +315,5 @@ $("#subcomp_sidebar_a_id").addClass('active');
 //Model
 
 
-</script>
-<script>
-	var data = {
-	  series: [97, 3]
-	};
-
-	var sum = function (a, b) { return a + b };
-	new Chartist.Pie('#ct9-chart', data, {
-	  labelInterpolationFnc: function (value) {
-		return Math.round(value);
-	  }
-	});
-	(function (window, document, $) {
-		// Donut chart
-		// -----------
-		var CurrentBalanceDonutChart = new Chartist.Pie(
-			"#current-balance-donut-chart",
-			{
-				labels: [1, 2],
-				series: [{ meta: "", value: {{ 915555 }} }]
-			},
-			{
-				donut: true,
-				donutWidth: 8,
-				showLabel: false,
-				plugins: [
-					Chartist.plugins.tooltip({ class: "current-balance-tooltip", appendToBody: true }),
-					Chartist.plugins.fillDonut({
-						items: [
-							{
-								content: '<p class="small">{{ "91,55,55" }}'
-							}
-						]
-					})
-				]
-			}
-		);
-
-		var CurrentBalanceDonutChart = new Chartist.Pie(
-			"#current-balance-donutone-chart",
-			{
-				labels: [1, 2],
-				series: [{ meta: "", value: {{ 4500 }} }]
-			},
-			{
-				donut: true,
-				donutWidth: 8,
-				showLabel: false,
-				plugins: [
-					Chartist.plugins.tooltip({ class: "current-balance-tooltip", appendToBody: true }),
-					Chartist.plugins.fillDonut({
-						items: [
-							{
-								content: {{4500}}
-							}
-						]
-					})
-				]
-			}
-		);
-
-		var CurrentBalanceDonutChart = new Chartist.Pie(
-			"#current-balance-donuttwo-chart",
-			{
-				labels: [1, 2],
-				series: [{ meta: "", value: {{ 4500 }} }]
-			},
-			{
-				donut: true,
-				donutWidth: 8,
-				showLabel: false,
-				plugins: [
-					Chartist.plugins.tooltip({ class: "current-balance-tooltip", appendToBody: true }),
-					Chartist.plugins.fillDonut({
-						items: [
-							{
-								content: '<p class="small">'+{{4500}}
-							}
-						]
-					})
-				]
-			}
-		);
-   })(window, document, jQuery);
 </script>
 @endsection

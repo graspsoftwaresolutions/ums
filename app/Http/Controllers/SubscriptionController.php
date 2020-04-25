@@ -169,7 +169,7 @@ class SubscriptionController extends CommonController
                     $company_auto_id = $this->getCommonStatus($request->entry_date, $request->sub_company);
                     if( $company_auto_id!=""){
                         $enc_id = Crypt::encrypt($company_auto_id);
-                        return redirect(app()->getLocale().'/scan-subscription/'.$enc_id)->with('message', 'File Uploaded Successfully');
+                        return redirect(app()->getLocale().'/scan-subscription/'.$enc_id);
                     }else{
                         return redirect(app()->getLocale().'/home');
                     }

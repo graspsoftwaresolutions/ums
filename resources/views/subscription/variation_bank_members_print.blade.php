@@ -279,7 +279,7 @@
 			&nbsp;
 		</div>
 		<div class="column" width="40%;">
-			<center><h4>Subscription Summary</h4></center>
+			<center><h5>SUBSCRIPTION SUMMARY</h5></center>
 			<table id="page-summary" class="display table2excel" width="100%">
 				<thead>
 					<tr class="" style="">
