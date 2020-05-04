@@ -81,17 +81,17 @@
 					}
 				@endphp
                 <tr>
-					<td style="border : 1px solid #988989;">{{ $sno }}</td>
-					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
-                    <td style="border : 1px solid #988989;">{{ $member->name }}</td>
-                    <td style="border : 1px solid #988989;"> {{ $member->companycode }}</td>
-                    <td style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
+					<td style="border : 1px solid #988989;vertical-align: top;">{{ $sno }}</td>
+					<td style="border : 1px solid #988989;vertical-align: top;">{{ $member->member_number }}</td>
+                    <td style="border : 1px solid #988989;vertical-align: top;">{{ $member->name }}</td>
+                    <td style="border : 1px solid #988989;vertical-align: top;"> {{ $member->companycode }}</td>
+                    <td style="border : 1px solid #988989;vertical-align: top;">{{ $member->branch_name }}</td>
                     
-                    <td style="border : 1px solid #988989;">{{ $ic }}</td>
-                    <td style="border : 1px solid #988989;">{{ $member->gender[0] }}</td>
+                    <td style="border : 1px solid #988989;vertical-align: top;">{{ $ic }}</td>
+                    <td style="border : 1px solid #988989;vertical-align: top;">{{ $member->gender[0] }}</td>
                     
-                    <td style="border : 1px solid #988989;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
-                    <td style="border : 1px solid #988989;"> 
+                    <td style="border : 1px solid #988989;vertical-align: top;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
+                    <td style="border : 1px solid #988989;vertical-align: top;"> 
                     	@foreach($advance as $alists)
                     		{{ date('M-Y',strtotime($alists->StatusMonth)) }} / {{ $alists->TOTALSUBCRP_AMOUNT+$alists->TOTALBF_AMOUNT+$alists->TOTALINSURANCE_AMOUNT }} <br>
                     	@endforeach
