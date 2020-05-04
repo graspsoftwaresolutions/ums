@@ -3500,4 +3500,27 @@ class CommonHelper
         
         return $des;
     }
+
+    public static function getMemberDetails($memberid){
+        $member = DB::table('membership as m')
+            ->select('m.member_number','m.name','m.new_ic','m.old_ic','m.employee_id','com.short_code as companycode','cb.branch_name','m.gender','m.doj','s.status_name')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->leftjoin('company as com','com.id','=','cb.company_id')
+            ->leftjoin('status as s','s.id','=','m.status_id')
+            ->where('m.id','=',$memberid)
+            ->first();
+           // dd($memberid);
+        return $member;
+    }
+
+    public static function getAdvanceDetails($memberid){
+        $history = DB::table('membermonthendstatus as mm')
+            ->select('mm.StatusMonth','mm.TOTALSUBCRP_AMOUNT','mm.TOTALBF_AMOUNT','mm.TOTALINSURANCE_AMOUNT')
+            ->where('mm.MEMBER_CODE', $memberid)
+            ->where('mm.TOTAL_MONTHS','>',1)
+            ->where('mm.TOTALMONTHSDUE','<',0)
+            ->get();
+           // dd($memberid);
+        return $history;
+    }
 }

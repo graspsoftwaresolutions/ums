@@ -212,6 +212,9 @@
                <li id="member_due_sidebar_li_id" class=""><a id="member_due_sidebar_a_id" class="collapsible-body" href="{{ route('reports.due',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Due Report') }}</span></a></li>
                 <li id="member_statement_sidebar_li_id" class=""><a id="member_statement_sidebar_a_id" class="collapsible-body" href="{{ route('reports.statement',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Member Statement') }}</span></a></li>
                 @endif
+                @if($user_role=='union')
+                 <li id="advance_payment_sidebar_li_id" class=""><a id="advance_payment_sidebar_a_id" class="collapsible-body" href="{{ route('reports.advance',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Advance Payment') }}</span></a></li>
+                @endif
             </ul>
           </div>
         </li>

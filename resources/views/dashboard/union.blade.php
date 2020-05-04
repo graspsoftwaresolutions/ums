@@ -220,7 +220,7 @@ text{
 		},
     },
     series: [{
-		name : "Staus Count",
+		name : "Status Count",
 		data: [ @php echo  $data['totla_active_member_count'] @endphp, @php echo $data['totla_defaulter_member_count'] @endphp, @php echo $data['totla_struckoff_member_count'] @endphp,@php echo $data['totla_resigned_member_count'] @endphp]
     }]
 }); 

@@ -503,6 +503,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::post('update_salary','MembershipController@updateSalary')->name('salary.update');
 	//Route::get('export-excel-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
+
+	Route::get('advance-report','ReportsController@AdvanceReport')->name('reports.advance');
+	Route::get('iframe_advance_report','ReportsController@IframeAdvanceReport')->name('reports.iframeadvance');
+	Route::get('get-advance-filter-report','ReportsController@IframeAdvanceFilterReport')->name('more.advance');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

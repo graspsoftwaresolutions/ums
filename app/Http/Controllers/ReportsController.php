@@ -4227,5 +4227,100 @@ class ReportsController extends Controller
         $pdf = PDF::loadView('reports.pdf_designation', $dataarr)->setPaper('a4', 'landscape'); 
         return $pdf->download('pdf_designation_report.pdf');
     }
+
+    public function AdvanceReport(){
+        $data = [];
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        return view('reports.advance')->with('data',$data);  
+    }
+
+    public function IframeAdvanceReport(Request $request,$lang){
+        return '';
+        // $data['data_limit']=$this->limit;
+        // $get_roles = Auth::user()->roles;
+        // $user_role = $get_roles[0]->slug;
+        // $user_id = Auth::user()->id; 
+        
+        // $data['company_id'] = '';
+        // $data['unionbranch_id'] = '';
+        // $data['branch_id'] = '';
+        // $unionbranch_name = '';
+         
+        // $members = DB::table('membermonthendstatus as mm')->select('mm.MEMBER_CODE as memberid')
+        //             ->where('mm.TOTAL_MONTHS','>',1)
+        //             ->where('mm.TOTALMONTHSDUE','<',0)
+        //             ->groupBY('mm.MEMBER_CODE');
+        // $members = $members->get();
+       
+       
+        // $data['member_view'] = $members;
+        // $data['month_year'] = date('Y-m-01');
+        // $data['unionbranch_name'] = $unionbranch_name; 
+        // $data['company_id'] = '';   
+        // $data['branch_id'] = '';      
+        // $data['unionbranch_id'] = '';  
+        // $data['member_auto_id'] = '';  
+        // $data['from_member_no']='';
+        // $data['to_member_no']='';
+        // $data['member_search'] = '';
+      // return view('reports.iframe_branch_status')->with('data',$data);
+    }
+
+    public function IframeAdvanceFilterReport($lang,Request $request){
+        $offset = $request->input('offset');
+        //$month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+      
+        $unionbranch_name = '';
+        
+        $members = DB::table('membership as m')->select('m.id as memberid')
+                    ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','cb.company_id');
+       
+
+        if($branch_id!=""){
+            $members = $members->where('m.branch_id','=',$branch_id);
+        }else{
+            if($unionbranch_id!=""){
+                $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+            }
+            if($company_id!=""){
+                $members = $members->where('cb.company_id','=',$company_id);
+            }
+        }
+        if($member_auto_id!=""){
+            $members = $members->where('m.id','=',$member_auto_id);
+        }
+        $members = $members->pluck('memberid');
+
+      
+
+        $membersone = DB::table('membermonthendstatus as mm')->select('mm.MEMBER_CODE as memberid')
+        ->leftjoin('membership as m','mm.MEMBER_CODE','=','m.id')
+        ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+        ->leftjoin('company as com','com.id','=','cb.company_id')
+        ->whereIn('mm.MEMBER_CODE', $members)
+        ->where('mm.TOTAL_MONTHS','>',1)
+        ->where('mm.TOTALMONTHSDUE','<',0);
+        $membersone = $membersone->groupBY('mm.MEMBER_CODE')->get();
+
+       
+       
+        $data['member_view'] = $membersone;
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['branch_id'] = $branch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['member_auto_id'] = '';
+       
+        
+
+        return view('reports.iframe_advance')->with('data',$data);  
+    }
 }
 
