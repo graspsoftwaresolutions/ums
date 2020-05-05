@@ -336,7 +336,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                 </div>
 				<div class="clearfix"></div>
 				<div class="input-field col s6">
-					<input  placeholder="Amount" name="sub_member_amount" id="sub_member_amount" type="text" class="validate">
+					<input  placeholder="Amount" name="sub_member_amount" id="sub_member_amount" type="text" class="validate allow_decimal">
 					<label for="sub_member_amount">Amount</label>
 				</div>
 			</div>
@@ -845,7 +845,7 @@ $('#subsformValidate').validate({
 		
 		sub_member_amount: {
 			required: true,
-			digits: true,
+			//digits: true,
 		},
 	},
 	//For custom messages
@@ -859,7 +859,7 @@ $('#subsformValidate').validate({
 			
 			sub_member_amount: {
 				required: '{{__("Please Enter Member Amount") }}',
-				digits: '{{__("please Enter numbers only")}}'
+				//digits: '{{__("please Enter numbers only")}}'
 			},
 	},
 	errorElement: 'div',
@@ -872,5 +872,13 @@ $('#subsformValidate').validate({
 	}
 	}
 });
+$(document).on('input', '.allow_decimal', function(){
+   var self = $(this);
+   self.val(self.val().replace(/[^0-9\.]/g, ''));
+   if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+   {
+     evt.preventDefault();
+   }
+ });
 </script>
 @endsection
