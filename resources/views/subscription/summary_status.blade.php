@@ -200,6 +200,10 @@
 
 							
 							@if($user_role=='company')
+							<th width="8%" class="action-remove">{{__('Action')}}</th>
+							@endif
+							@else
+							@if($user_role=='company')
 							<th width="5%" class="action-remove">{{__('Action')}}</th>
 							@endif
 							@endif
@@ -240,6 +244,9 @@
 									
 									//$approval_status = $mismatchstatusdata->approval_status;
 								}
+								$baseurl = URL::to('/');
+               
+              					$member_delete_link = $baseurl.'/'.app()->getLocale().'/subscription_delete_bank?sub_id='.$member->sub_member_id;
 					
 							@endphp
 							<tr style="overflow-x:auto;">
@@ -259,8 +266,22 @@
 								@if($user_role=='company')
 								<td class="action-remove">
 								
-								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Update" type="button" name="action"><i class="material-icons">edit</i></a></td>
+									<a style='float: left; margin-left: 10px;cursor:pointer;' class="btn btn-sm" onClick="return showApproval({{ $member->sub_member_id }})"  title="Update Reason" type="button" name="action"><i class="material-icons">edit</i></a>
+
+									<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Subscription'  class='' onClick='return EditSubscription({{ $member->sub_member_id }})' ><i class='material-icons' style='color:#00bcd4'>mode_edit</i></a>
+
+                					<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='{{$member_delete_link}}'><i class='material-icons' style='color:red'>delete</i></a>
+								</td>
 								@endif
+								@else
+									@if($user_role=='company')
+									<td class="action-remove">
+									
+										<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Subscription'  class='' onClick='return EditSubscription({{ $member->sub_member_id }})' ><i class='material-icons' style='color:#00bcd4'>mode_edit</i></a>
+
+                						<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='{{$member_delete_link}}'><i class='material-icons' style='color:red'>delete</i></a>
+									</td>
+									@endif
 								@endif
 								
 							</tr> 
@@ -319,6 +340,37 @@
 		 </form>
 	  </div>
 </div> 
+
+<!-- Modal Structure -->
+  <div id="modal-edit-subscription" class="modal">
+    <form class="col s12" class="formValidate" id="subsformValidate" method="post" action="{{ route('subscription.update',app()->getLocale()) }}">
+    	 @csrf
+        <div class="modal-content">
+			<h5>Subscription</h5>
+			<div class="row">
+				 <input id="sub_member_auto_id" name="sub_member_auto_id" type="text" class="validate hide">
+                <div class="input-field col s6">
+                    <input placeholder="Name" name="sub_member_name" id="sub_member_name" type="text" class="validate">
+                   
+                    <label for="sub_member_name">Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="NRIC" name="sub_member_nric" id="sub_member_nric" type="text" class="validate">
+                    <label for="sub_member_nric">NRIC</label>
+                </div>
+				<div class="clearfix"></div>
+				<div class="input-field col s6">
+					<input  placeholder="Amount" name="sub_member_amount" id="sub_member_amount" type="text" class="validate allow_decimal">
+					<label for="sub_member_amount">Amount</label>
+				</div>
+			</div>
+		</div>
+        <div class="modal-footer">
+             <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
+            <button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+        </div>
+    </form>
+</div>
 
 @endsection
 @section('footerSection')
@@ -797,6 +849,33 @@ function EnableDescription(reasonval){
 	}else{
 		$(".descriptiontd").addClass('hide');
 	}
+}
+
+function ConfirmDeletion() {
+    if (confirm("{{ __('Are you sure you want to delete?') }}")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function EditSubscription(autoid){
+	 $('.modal').modal();
+	 $(".submitApproval").attr('disabled', false);
+	var url = "{{ url(app()->getLocale().'/subscription_member_info') }}" + '?sub_member_auto_id=' + autoid;
+		$.ajax({
+			url: url,
+			type: "GET",
+			dataType: "json",
+			success: function(result) {
+				var member_info = result.up_member_data;
+				console.log(result.up_member_data);
+				$("#sub_member_auto_id").val(member_info.id);
+				$("#sub_member_name").val(member_info.Name);
+				$("#sub_member_amount").val(member_info.Amount);
+				$("#sub_member_nric").val(member_info.NRIC);
+				$("#modal-edit-subscription").modal('open');
+			}
+		});
 }
 
 </script>

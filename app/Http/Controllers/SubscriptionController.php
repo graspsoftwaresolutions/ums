@@ -3864,5 +3864,60 @@ class SubscriptionController extends CommonController
         
         return view('subscription.variation_bank_members_print')->with('data', $data);
     }
+
+    public function DeleteSubscriptionBank($lang, Request $request)
+    {
+        $sub_member_id = $request->input('sub_id');
+        $member_data = DB::table("mon_sub_member as mm")->select('mm.MemberCode as member_id','ms.Date as date','mm.MonthlySubscriptionCompanyId as MonthlySubscriptionCompanyId')
+                    ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                    ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                    ->where('mm.id', '=', $sub_member_id)
+                    ->first();
+        $historydel = DB::table('membermonthendstatus')
+                            ->where('StatusMonth','=',$member_data->date)
+                            ->where('MEMBER_CODE','=',$member_data->member_id)
+                            ->delete();
+        if($historydel!=0){
+            $historylast = DB::table('membermonthendstatus')
+                            ->select('LASTPAYMENTDATE','SUBSCRIPTIONDUE','TOTALMONTHSPAID','TOTALMONTHSCONTRIBUTION','ACCBF','ACCSUBSCRIPTION','ACCINSURANCE')
+                            ->where('MEMBER_CODE','=',$member_data->member_id)
+                            ->orderBy('StatusMonth','DESC')
+                            ->first();
+            if($historylast!=Null){
+               $LASTPAYMENTDATE = $historylast->LASTPAYMENTDATE;
+               $SUBSCRIPTIONDUE = $historylast->SUBSCRIPTIONDUE;
+               $payment_data = [
+                    'last_paid_date' => $LASTPAYMENTDATE,
+                    'totpaid_months' => $historylast->TOTALMONTHSPAID,
+                    'totcontribution_months' => $historylast->TOTALMONTHSCONTRIBUTION,
+                    'accbf_amount' => $historylast->ACCBF,
+                    'accsub_amount' => $historylast->ACCSUBSCRIPTION,
+                    'accins_amount' => $historylast->ACCINSURANCE,
+                    'updated_by' => Auth::user()->id,
+                ];
+                DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
+            }else{
+                $payment_data = [
+                    'last_paid_date' => Null,
+                    'due_amount' => 0,
+                    'updated_by' => Auth::user()->id,
+                ];
+                DB::table('member_payments')->where('member_id', $member_data->member_id)->update($payment_data);
+            }
+        }
+        $matchel = DB::table('mon_sub_member_match')
+                            ->where('mon_sub_member_id','=',$sub_member_id)
+                            ->delete();
+        $submemberdel = DB::table('mon_sub_member')
+                            ->where('id','=',$sub_member_id)
+                            ->delete();
+        $enc_id = Crypt::encrypt($member_data->MonthlySubscriptionCompanyId); 
+        if($submemberdel){
+            
+            return redirect(URL::to('/'.app()->getLocale().'/sub-company-summary/'.$enc_id))->with('message', 'Subscription deleted Successfully');
+        }else{
+             return redirect(URL::to('/'.app()->getLocale().'/sub-company-summary/'.$enc_id))->with('error', 'Failed to delete');
+        }
+    }
     
 }

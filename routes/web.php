@@ -339,6 +339,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('statistic_union_report','ReportsController@UnionStatisticReport')->name('statsticsnew.union');
 	Route::get('process-memberstatus','SubscriptionAjaxController@UpdateMemberStatus');
 	Route::get('subscription_delete','SubscriptionController@DeleteSubscription');
+	Route::get('subscription_delete_bank','SubscriptionController@DeleteSubscriptionBank');
 	Route::post('update_subscription','SubscriptionController@saveSubscription')->name('subscription.update');
 	Route::get('get-new-members-print','MembershipController@MembersNewPrint')->name('reports.newmembersprint');
 	Route::get('get-new-members-back-print','MembershipController@MembersNewBackPrint')->name('reports.membersbackprint');
