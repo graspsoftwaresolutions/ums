@@ -3919,5 +3919,73 @@ class SubscriptionController extends CommonController
              return redirect(URL::to('/'.app()->getLocale().'/sub-company-summary/'.$enc_id))->with('error', 'Failed to delete');
         }
     }
+
+     
+    public function AddAdvance()
+    {
+        return view('subscription.advance_entry');
+    }
     
+    public function GetMonthsDifference($lang, Request $request)
+    {
+        $to_date_str = $request->input('to_date');
+        $from_date_str = $request->input('from_date');
+        $to_date = explode("/",$to_date_str);
+        $from_date = explode("/",$from_date_str);
+      
+       // $fm_date[1].'-'.$fm_date[0].'-'.'01';
+        $to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
+        
+        $from_entry_month = date('Y-m-d',strtotime($from_date[1].'-'.$from_date[0].'-'.'01'));
+
+        $noofmonths = CommonHelper::GetMonthsCount($from_entry_month,$to_entry_month);
+
+        return $noofmonths;
+    }
+
+    public function AdvanceEntrySave(Request $request)
+    {
+        $request->validate([
+            'nric'=>'required',
+            'from_date'=>'required',
+        ],
+        [
+            'nric.required'=>'please enter NRIC',
+            'from_date.required'=>'please choose date',
+        ]);
+
+        $to_date_str = $request->input('to_date');
+        $from_date_str = $request->input('from_date');
+        $to_date = explode("/",$to_date_str);
+        $from_date = explode("/",$from_date_str);
+      
+        $to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
+        $from_entry_month = date('Y-m-d',strtotime($from_date[1].'-'.$from_date[0].'-'.'01'));
+
+         
+        $advancedata['advance_date'] = $request->input('advance_date');
+        $advancedata['member_id'] = $request->input('membercode');
+        $advancedata['from_date'] = $from_entry_month;
+        $advancedata['to_date'] = $to_entry_month;
+        $advancedata['no_of_months'] = $request->input('no_of_months');
+        $advancedata['advance_amount'] = $request->input('advance_amount');
+        $advancedata['created_by'] = Auth::user()->id;
+        $defdaultLang = app()->getLocale();
+
+        $saveAdvanceEntry = DB::table('advance_payments')->insert($advancedata);
+        
+        if($saveAdvanceEntry == true)
+        {
+            //$arrearid = $saveArrearEntry->id;
+            //$enc_arrearid = Crypt::encrypt($arrearid);
+            return redirect($defdaultLang.'/sub-advanceentry')->with('message','Entry Added Succesfully');
+        }else{
+            return redirect($defdaultLang.'/subs-advance')->with('message','Failed to Add Advance');
+        }
+    }
+
+    public function advanceentryList()
+    {
+        return view('subscription.advance_entry_list');
+    }
 }

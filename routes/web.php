@@ -508,6 +508,14 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('advance-report','ReportsController@AdvanceReport')->name('reports.advance');
 	Route::get('iframe_advance_report','ReportsController@IframeAdvanceReport')->name('reports.iframeadvance');
 	Route::get('get-advance-filter-report','ReportsController@IframeAdvanceFilterReport')->name('more.advance');
+
+	Route::get('subs-advance','SubscriptionController@AddAdvance')->name('subscription.advance');
+	Route::get('get_months_number','SubscriptionController@GetMonthsDifference')->name('months.difference');
+
+	Route::post('subscription-saveAdvance','SubscriptionController@AdvanceEntrySave')->name('subscription.saveAdvance');
+
+	Route::get('sub-advanceentry','SubscriptionController@advanceentryList')->name('subscription.advanceentry');
+	Route::post('ajax_advance_list','SubscriptionAjaxController@ajax_advance_list');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

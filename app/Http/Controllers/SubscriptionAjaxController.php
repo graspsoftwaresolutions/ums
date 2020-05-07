@@ -1526,4 +1526,150 @@ class SubscriptionAjaxController extends CommonController
         
         echo json_encode($data);  
      }
+
+     public function ajax_advance_list(Request $request,$lang)
+    {
+        $userid = Auth::user()->id;
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+       // echo "hii"; die;
+        $sl=0;
+        $columns = array( 
+            $sl++ => 'ap.member_id', 
+            $sl++ => 'm.name',
+            $sl++ => 'cb.company_id', 
+            $sl++ => 'm.branch_id',
+            $sl++ => 'ap.from_date',
+            $sl++ => 'ap.to_date',
+            $sl++ => 'ap.advance_amount',
+            $sl++ => 'ap.no_of_months',
+            $sl++ => 'm.status_id',
+        );
+        
+       // DB::enableQueryLog();
+		$commonqry = DB::table('advance_payments as ap')->select('ap.no_of_months','ap.id as advanceid','ap.from_date','ap.to_date','ap.advance_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color','ap.member_id')
+                    ->leftjoin('membership as m','ap.member_id','=','m.id')
+                    ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                    ->leftjoin('company as c','cb.company_id','=','c.id')
+                    ->leftjoin('status as s','m.status_id','=','s.id')
+                    ->orderBy('ap.id','DESC');
+        if($user_role == 'union'){
+            $commonqry = $commonqry;
+        }else if($user_role =='union-branch'){
+            $unionbranchid = CommonHelper::getUnionBranchID($userid);
+            $commonqry = $commonqry->where('cb.union_branch_id', '=' ,$unionbranchid);
+        }else if($user_role =='company'){
+            $companyid = CommonHelper::getCompanyID($userid);
+            $commonqry = $commonqry->where('cb.company_id', '=' ,$companyid);
+        }else if($user_role =='company-branch'){
+            $branchid = CommonHelper::getCompanyBranchID($userid);
+            $commonqry = $commonqry->where('cb.id', '=' ,$branchid);
+        }
+        //  $queries = DB::getQueryLog();
+		// 					dd($queries);
+        $totalData = $commonqry->count();
+        
+        $totalFiltered = $totalData; 
+        
+        $limit = $request->input('length');
+        $start = $request->input('start');
+		
+        $order = $columns[$request->input('order.0.column')];
+     
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            $sub_mem = $commonqry;
+			if( $limit != -1){
+				$sub_mem = $sub_mem->offset($start)
+							->limit($limit);
+			}
+			$sub_mem = $sub_mem->orderBy($order,$dir)
+			->get()->toArray();
+        }
+        else {
+            
+            $search = $request->input('search.value'); 
+            $sub_mem =  $commonqry->where(function($query) use ($search){
+                $query->where('m.id', 'LIKE',"%{$search}%")
+                      ->orWhere('ar.nric', 'LIKE',"%{$search}%")
+                       ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
+                       ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
+                       ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                       ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                       ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                       ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
+                       ->orWhere('m.name', 'LIKE',"%{$search}%")
+                       ->orWhere('ar.no_of_months', 'LIKE',"%{$search}%");
+            });          
+		    if( $limit != -1){
+			   $sub_mem = $sub_mem->offset($start)
+						->limit($limit);
+		    }
+		    $sub_mem = $sub_mem->orderBy($order,$dir)
+					  ->get()->toArray();
+			
+            $totalFiltered =  $commonqry->where(function($query) use ($search){
+                        $query->where('m.id', 'LIKE',"%{$search}%")
+                              ->orWhere('ar.nric', 'LIKE',"%{$search}%")
+                               ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
+                               ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
+                               ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                               ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                               ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                               ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
+                               ->orWhere('m.name', 'LIKE',"%{$search}%")
+                               ->orWhere('ar.no_of_months', 'LIKE',"%{$search}%");
+                    })->count();
+        }
+      
+        $data = array();
+        if(!empty($sub_mem))
+        {
+            foreach ($sub_mem as $arrear)
+            {
+                $nestedData['membercode'] = $arrear->member_number;
+                $nestedData['membername'] = $arrear->membername;
+                $nestedData['company_id'] = $arrear->company_name;
+                $nestedData['branch_id'] = $arrear->branch_name;
+                $nestedData['from_date'] = date('d/M/ Y',strtotime($arrear->from_date));
+                $nestedData['to_date'] = date('d/M/ Y',strtotime($arrear->to_date));
+                $nestedData['advance_amount'] = $arrear->advance_amount;
+                $nestedData['no_of_months'] = $arrear->no_of_months;
+                $nestedData['status_id'] = $arrear->status_name;
+                $font_color = $arrear->font_color;
+                $nestedData['font_color'] = $font_color;
+
+                $enc_id = Crypt::encrypt($arrear->advanceid);
+                $delete =  route('subscription.arrearentrydelete', [app()->getLocale(),$enc_id]) ;
+
+                $histry = route('member.history', [app()->getLocale(),Crypt::encrypt($arrear->member_id)]) ;
+                               
+               // $edit = route('subscription.editbulkarrearrecords', [app()->getLocale(),$enc_id]);
+                //$edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
+
+                $edit = '';
+                
+                $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+
+                $actions .="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+
+                $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
+                
+                // $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
+                // $actions .="<button  type='submit' class='' style='background:none;border:none;'  onclick='return ConfirmDeletion()'><i class='material-icons' style='color:red;'>delete</i></button> </form>";
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+			}
+        }
+      
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
 }

@@ -691,6 +691,8 @@
 																		<div class="collapsible-header gradient-45deg-indigo-purple white-text" ><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
 																		
 																		<div class="collapsible-body ">
+																			
+																			@if($auth_user!=null )
 																			<form id="fee_new_form" name="fee_new_form">
 																			<div class="row">
 																				<div class="col s12 m6">
@@ -716,6 +718,7 @@
 																				</div>
 																			</div>
 																			</form>
+																			@endif
 																			</br>
 																			<div class="row">
 																				<div class="col s12">

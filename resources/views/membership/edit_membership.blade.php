@@ -1318,14 +1318,31 @@
                                                     </div>
                                                     @php if($values->is_request_approved==0 && $check_union==1){ @endphp
                                                     <div class="col s12 m6 ">
-                                                        <label>Status*</label>
-                                                        <label>
-                                                            <input type="checkbox" id="activate_account" name="activate_account" value='1' /> &nbsp; <span>Verify account</span>
-                                                        </label>
-                                                        <div class="input-field">
-                                                            <div class="errorTxt16"></div>
+                                                        <div class="row">
+                                                            <div class="col s12 m6 ">
+                                                                <label>Status*</label>
+                                                                <label>
+                                                                    <input type="checkbox" id="activate_account" name="activate_account" value='1' /> &nbsp; <span>Verify account</span>
+                                                                </label>
+                                                                <div class="input-field">
+                                                                    <div class="errorTxt16"></div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="col s12 m6">
+                                                                <div class="">
+                                                                     <select name="approval_status" id="approval_status" class="error browser-default">
+                                                                        <option value="0">Select Status</option>
+                                                                        <option selected="" {{ $values->approval_status == 'Pending' ? 'selected' : '' }}> Pending</option>
+                                                                        <option {{ $values->approval_status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                                                        <option {{ $values->approval_status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                                                                    </select>
+                                                                </div>
+                                                               
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <div class="clearfix"></div>
                                                     @php } @endphp @php if($values->is_request_approved==0){ @endphp
                                                     <div class="col s12 m6 ">
                                                         <label>Status*</label>

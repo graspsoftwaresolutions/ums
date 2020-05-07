@@ -219,6 +219,9 @@ class MemberController extends CommonController
 			}else{
 				$member_email = $request->input('email');
 				$member_number = $request->input('member_number');
+				$approval_status = $request->input('approval_status');
+				$member['approval_status'] = $approval_status;
+
 				if(!empty(Auth::user())){
 					$user_id = Auth::user()->id;
 					$get_roles = User::find($user_id)->roles;
@@ -232,8 +235,9 @@ class MemberController extends CommonController
 					}
 					if($user_role=='union' || $user_role=='data-entry'){
 						$activate_account = $request->input('activate_account');
+						
 						$activate_account = isset($activate_account) ? 1 : 0;
-						if($activate_account==1){
+						if($activate_account==1 && $approval_status=='Completed'){
 
 							$member['is_request_approved'] = $activate_account;
 							$member['status_id'] = 1;
