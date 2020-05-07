@@ -74,6 +74,7 @@
 													$branchlist = [];
 													$companyid = '';
 													$branchid = '';
+													$showfee = 0;
 													if(!empty($auth_user)){
 														$userid = Auth::user()->id;
 														$get_roles = Auth::user()->roles;
@@ -86,6 +87,7 @@
 															$member_number_hide = '';
 															$member_status = 2;
 															$companylist = $data['company_view'];
+															$showfee = 1;
 														}
 														else if($user_role =='union-branch'){
 															$unionbranchid = CommonHelper::getUnionBranchID($userid);
@@ -692,7 +694,7 @@
 																		
 																		<div class="collapsible-body ">
 																			
-																			@if($auth_user!=null )
+																			@if($showfee==1)
 																			<form id="fee_new_form" name="fee_new_form">
 																			<div class="row">
 																				<div class="col s12 m6">
