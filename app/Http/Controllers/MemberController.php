@@ -221,7 +221,9 @@ class MemberController extends CommonController
 				$member_email = $request->input('email');
 				$member_number = $request->input('member_number');
 				$approval_status = $request->input('approval_status');
+				$approval_reason = $request->input('approval_reason');
 				$member['approval_status'] = $approval_status;
+				$member['approval_reason'] = $approval_reason;
 
 				if(!empty(Auth::user())){
 					$user_id = Auth::user()->id;
@@ -1022,7 +1024,7 @@ class MemberController extends CommonController
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
 										'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved',
-										'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount','membership.current_salary','membership.last_update')
+										'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount','membership.current_salary','membership.last_update','membership.approval_status','membership.approval_reason')
                                 ->leftjoin('country','membership.country_id','=','country.id')
                                 ->leftjoin('state','membership.state_id','=','state.id')
                                 ->leftjoin('city','membership.city_id','=','city.id')

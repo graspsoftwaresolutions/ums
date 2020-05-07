@@ -689,12 +689,13 @@
 																			</div>
 																		</div>
 																	</li>
+																	@if($showfee==1)
 																	<li>
 																		<div class="collapsible-header gradient-45deg-indigo-purple white-text" ><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
 																		
 																		<div class="collapsible-body ">
 																			
-																			@if($showfee==1)
+																			
 																			<form id="fee_new_form" name="fee_new_form">
 																			<div class="row">
 																				<div class="col s12 m6">
@@ -720,7 +721,7 @@
 																				</div>
 																			</div>
 																			</form>
-																			@endif
+																			
 																			</br>
 																			<div class="row">
 																				<div class="col s12">
@@ -743,6 +744,7 @@
 																			</div>
 																		</div>
 																	</li>
+																	@endif
 																</ul>
 															</div>
 														
@@ -1099,9 +1101,10 @@
 			 $("#address_one").val(suggestion.address_one);
 			 $("#address_three").val(suggestion.address_three);
 			 $("#address_two").val(suggestion.address_two);
-			 $("#branch").val(suggestion.branch_id).trigger("change");
-			 $("#city_id").val(suggestion.city_id).trigger("change");
-			 $("#company").val(suggestion.company_id).trigger("change");
+			 
+			 $("#state_id").val(suggestion.state_id).trigger("change",[{state_id: suggestion.state_id, city_id: suggestion.city_id}]);
+			 //$("#city_id").val(suggestion.city_id).trigger("change");
+			 $("#company").val(suggestion.company_id).trigger("change",[{branch_id: suggestion.branch_id}]);
 			 $("#designation").val(suggestion.designation_id).trigger("change");
 			 $("#dob").val(suggestion.dob);
 			 $("#doe").val(suggestion.doe);
@@ -1118,7 +1121,8 @@
 			 $("#postal_code").val(suggestion.postal_code);
 			 $("#race").val(suggestion.race_id).trigger("change");
 			 $("#salary").val(suggestion.salary);
-			 $("#state_id").val(suggestion.state_id).trigger("change");
+			 //$("#branch").val(suggestion.branch_id).trigger("change");
+			
 			 $("#tdf").val(suggestion.tdf).trigger("change");
 			 $("#tdf_amount").val(suggestion.tdf_amount);
 			 $('#dob').trigger('change');
@@ -1154,6 +1158,38 @@
     	}
     	
     }
+ //    $('#state_id').change(function(e, data){
+	//    var StateId = $(this).val();
+	  
+	//    if(StateId!='' && StateId!='undefined')
+	//    {
+	// 	 $.ajax({
+	// 		type: "GET",
+	// 		dataType: "json",
+	// 		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+	// 		success:function(res){
+	// 			if(res)
+	// 			{
+	// 				$('#city_id').empty();
+	// 				$("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
+	// 				$.each(res,function(key,entry){
+	// 					$('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+						
+	// 				});
+	// 				if(typeof data !='undefined'){
+	// 					//loader.hideLoader();
+	// 					alert(data.city_id);
+	// 					$('#city_id').val(data.city_id);
+	// 				}
+	// 			}else{
+	// 				$('#city_id').empty();
+	// 			}
+	// 		}
+	// 	 });
+	//    }else{
+	// 	   $('#city_id').empty();
+	//    }
+	// });
 </script>
 @include('membership.member_common_script')
 @endsection

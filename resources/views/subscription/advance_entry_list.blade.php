@@ -238,5 +238,27 @@ $(document).ready(function() {
     $(".footer").css('position','fixed');
   }
 });
+
+
+function PaySubscription(advanceid){
+      //alert(123);
+    $(".submitApproval").attr('disabled', false);
+    $('.modal').modal();
+    $("#advanceid").val(advanceid);
+    loader.showLoader();
+    var url = "{{ url(app()->getLocale().'/advance_payment_info') }}" + '?advanceid=' + advanceid;
+    $.ajax({
+      url: url,
+      type: "GET",
+      dataType: "json",
+      success: function(result) {
+        //console.log(result);
+       
+       
+        $("#modal-approval").modal('open');
+        loader.hideLoader();
+      }
+    });
+  }
 </script>
 @endsection

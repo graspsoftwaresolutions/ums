@@ -490,7 +490,7 @@ $('#country_id').change(function(){
 		$("#city_id").empty();
 	}      
 });
-$('#state_id').change(function(){
+$('#state_id').change(function(e, data){
    var StateId = $(this).val();
   
    if(StateId!='' && StateId!='undefined')
@@ -508,6 +508,11 @@ $('#state_id').change(function(){
 					$('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
 					
 				});
+				if(typeof data !='undefined'){
+					//loader.hideLoader();
+					//alert(data.city_id);
+					$('#city_id').val(data.city_id);
+				}
 			}else{
 				$('#city_id').empty();
 			}
@@ -517,7 +522,34 @@ $('#state_id').change(function(){
 	   $('#city_id').empty();
    }
 });
-$('#company').change(function(){
+// $('#state_id').change(function(){
+//    var StateId = $(this).val();
+  
+//    if(StateId!='' && StateId!='undefined')
+//    {
+// 	 $.ajax({
+// 		type: "GET",
+// 		dataType: "json",
+// 		url : "{{ URL::to('/get-cities-list') }}?State_id="+StateId,
+// 		success:function(res){
+// 			if(res)
+// 			{
+// 				$('#city_id').empty();
+// 				$("#city_id").append($('<option></option>').attr('value', '').text("Select City"));
+// 				$.each(res,function(key,entry){
+// 					$('#city_id').append($('<option></option>').attr('value',entry.id).text(entry.city_name));
+					
+// 				});
+// 			}else{
+// 				$('#city_id').empty();
+// 			}
+// 		}
+// 	 });
+//    }else{
+// 	   $('#city_id').empty();
+//    }
+// });
+$('#company').change(function(e, data){
    var CompanyID = $(this).val();
    var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
    var ajaxbranchid = '{{ $ajaxbranchid }}';
@@ -537,6 +569,11 @@ $('#company').change(function(){
 				$.each(res,function(key,entry){
 					$('#branch').append($('<option></option>').attr('value',entry.id).text(entry.branch_name)); 
 				});
+				if(typeof data !='undefined'){
+					//loader.hideLoader();
+					//alert(data.city_id);
+					$('#branch').val(data.branch_id);
+				}
 			}else{
 				$('#branch').empty();
 			}

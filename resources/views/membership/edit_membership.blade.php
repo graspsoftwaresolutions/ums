@@ -1681,10 +1681,11 @@
                                                             </div>
                                                         </div>
                                                     </li>
+                                                    @if($user_role!='member')
 													<li>
 													<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
-                                                              @if($user_role!='member')
+                                                              
 															<div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="col s12 m6">
                                                                     <label for="new_fee_id">Fee name* </label>
@@ -1712,7 +1713,7 @@
                                                                    
                                                                 </div>
                                                             </div>
-                                                             @endif
+                                                            
                                                             </br>
                                                             <div class="row @if($data['view_status']==1) readonlyarea @endif">
                                                                 <div class="col s12">
@@ -1769,6 +1770,7 @@
                                                             </div>
                                                         </div>
                                                     </li>
+                                                     @endif
                                                     <li>
                                                     <div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fund Details') }}</div>
                                                         <div class="collapsible-body ">
@@ -1932,21 +1934,16 @@
                                                 </ul>
                                                 @php if($values->is_request_approved==0 && $check_union==1){ @endphp
                                                     <br>
-                                                    <div class="col s12 m6 ">
+                                                    <div class="col s12 m10 ">
                                                         <div class="row">
-                                                            <div class="col s12 m6 ">
+                                                            <div class="col s12 m1">
+                                                                <br>
                                                                 <label>Status*</label>
-                                                                <label>
-                                                                    <input type="checkbox" id="activate_account" name="activate_account" value='1' /> &nbsp; <span>Verify account</span>
-                                                                </label>
-                                                                <div class="input-field">
-                                                                    <div class="errorTxt16"></div>
-                                                                </div>
-                                                                
+                                                               
                                                             </div>
-                                                            <div class="col s12 m6">
+                                                            <div class="col s12 m4">
                                                                 <div class="">
-                                                                     <select name="approval_status" id="approval_status" class="error browser-default">
+                                                                     <select name="approval_status" id="approval_status" onclick="return EnableReason(this.value)" class="error browser-default">
                                                                         <option value="0">Select Status</option>
                                                                         <option selected="" {{ $values->approval_status == 'Pending' ? 'selected' : '' }}> Pending</option>
                                                                         <option {{ $values->approval_status == 'Completed' ? 'selected' : '' }}>Completed</option>
@@ -1954,6 +1951,22 @@
                                                                     </select>
                                                                 </div>
                                                                
+                                                            </div>
+                                                            <div id="app_reason" class="col s12 m4 @if($values->approval_status != 'Rejected') hide @endif">
+                                                                <div class="">
+                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" class="validate" style="">
+                                                                </div>
+                                                               
+                                                            </div>
+                                                            <div class="col s12 m3 ">
+                                                                
+                                                                <label>
+                                                                    <input type="checkbox" id="activate_account" data-error=".errorTxt129" name="activate_account" @if($values->approval_status == 'Rejected') checked @endif value='1' /> &nbsp; <span>Verify account</span>
+                                                                </label>
+                                                                <div class="input-field">
+                                                                    <div class="errorTxt129"></div>
+                                                                </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2720,6 +2733,19 @@
             $("#rejoined_label").text('Rejoined');
         }
         
+    }
+    function EnableReason(type){
+        if(type=='Rejected'){
+            $("#app_reason").removeClass('hide');
+            $("#activate_account").attr('required',true);
+        }else if(type=='Completed'){
+            $("#app_reason").addClass('hide');
+            $("#activate_account").attr('required',true);
+        }else{
+            $("#activate_account").attr('required',false);
+            $("#app_reason").addClass('hide');
+        }
+       
     }
 </script>
 @include('membership.member_common_script') 

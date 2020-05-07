@@ -1654,6 +1654,8 @@ class SubscriptionAjaxController extends CommonController
 
                 $actions .="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 
+                $actions .="<a style='float: left; margin-left: 10px;' id='$edit' title='Pay' onclick='return PaySubscription($arrear->advanceid)' class='modal-trigger' href='#'><i class='material-icons' style='color:#ff4081'>payment</i></a>";
+
                 $actions .="<a style='float: left; margin-left: 10px;' title='History'  class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
                 
                 // $actions .="<a><form style='display:inline-block;' action='$delete' method='POST'>".method_field('DELETE').csrf_field();
@@ -1671,5 +1673,10 @@ class SubscriptionAjaxController extends CommonController
             );
 
         echo json_encode($json_data); 
+    }
+
+    public function AdvanceDetails($lang,Request $request)
+    {
+        return $request->all();
     }
 }
