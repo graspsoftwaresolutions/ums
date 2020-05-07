@@ -1317,39 +1317,9 @@
                                                         <input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
                                                     </div>
                                                     @php if($values->is_request_approved==0 && $check_union==1){ @endphp
-                                                    <div class="col s12 m6 ">
-                                                        <div class="row">
-                                                            <div class="col s12 m6 ">
-                                                                <label>Status*</label>
-                                                                <label>
-                                                                    <input type="checkbox" id="activate_account" name="activate_account" value='1' /> &nbsp; <span>Verify account</span>
-                                                                </label>
-                                                                <div class="input-field">
-                                                                    <div class="errorTxt16"></div>
-                                                                </div>
-                                                                
-                                                            </div>
-                                                            <div class="col s12 m6">
-                                                                <div class="">
-                                                                     <select name="approval_status" id="approval_status" class="error browser-default">
-                                                                        <option value="0">Select Status</option>
-                                                                        <option selected="" {{ $values->approval_status == 'Pending' ? 'selected' : '' }}> Pending</option>
-                                                                        <option {{ $values->approval_status == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                                                        <option {{ $values->approval_status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
-                                                                    </select>
-                                                                </div>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearfix"></div>
+                                                   
                                                     @php } @endphp @php if($values->is_request_approved==0){ @endphp
-                                                    <div class="col s12 m6 ">
-                                                        <label>Status*</label>
-                                                        <p style="margin-top:10px;">
-                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Pending</span>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     @php }else{ @endphp
                                                     <div class="col s12 m6 ">
                                                         <label>Status*</label>
@@ -1960,6 +1930,43 @@
                                                         </div>
                                                     </li>
                                                 </ul>
+                                                @php if($values->is_request_approved==0 && $check_union==1){ @endphp
+                                                    <br>
+                                                    <div class="col s12 m6 ">
+                                                        <div class="row">
+                                                            <div class="col s12 m6 ">
+                                                                <label>Status*</label>
+                                                                <label>
+                                                                    <input type="checkbox" id="activate_account" name="activate_account" value='1' /> &nbsp; <span>Verify account</span>
+                                                                </label>
+                                                                <div class="input-field">
+                                                                    <div class="errorTxt16"></div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="col s12 m6">
+                                                                <div class="">
+                                                                     <select name="approval_status" id="approval_status" class="error browser-default">
+                                                                        <option value="0">Select Status</option>
+                                                                        <option selected="" {{ $values->approval_status == 'Pending' ? 'selected' : '' }}> Pending</option>
+                                                                        <option {{ $values->approval_status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                                                        <option {{ $values->approval_status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                                                                    </select>
+                                                                </div>
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <br>
+                                                    @php } @endphp @php if($values->is_request_approved==0){ @endphp
+                                                   <!--  <div class="col s12 m6 ">
+                                                        <label>Status*</label>
+                                                        <p style="margin-top:10px;">
+                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class=" gradient-45deg-deep-orange-orange padding-2 medium-small">Pending</span>
+                                                        </p>
+                                                    </div> -->
+                                                @php } @endphp
                                             </div>
                                         </fieldset>
                                         @if($irc_status==1 || $new_resign_status==1)
@@ -2183,7 +2190,7 @@
 													@endphp
                                                   
 													<h4 style="color:{{$color}};font-size:2rem;">
-                                                    {{ CommonHelper::getStatusName($values->status_id) }} 
+                                                    {{ $values->status_id==null ? $values->approval_status : CommonHelper::getStatusName($values->status_id) }} 
                                                     @if(!empty($resignedrow))
                                                        - {{ $voucher_date }}
                                                     @endif

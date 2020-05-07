@@ -198,6 +198,7 @@ class MemberController extends CommonController
 						$member['status_id'] = 1;
 					}else{
 						$member['is_request_approved'] = 0;
+						$member['approval_status'] = 'Pending';
 						$member['status_id'] = NUll;
 					}
 					
