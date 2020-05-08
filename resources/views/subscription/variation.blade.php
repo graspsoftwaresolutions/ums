@@ -262,7 +262,7 @@
 											$last_paid_count = CommonHelper::getUnionLastMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 											$current_unpaid_count = CommonHelper::getUnioncurrentMonthlyPaidCount($union->union_branchid,$data['month_year_full']);
 										@endphp
-										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid='.$union->union_branchid.'&company_id=&branch_id=') }}" onClick="return ViewVarianceList(this)">
+										<tr class="monthly-sub-status " data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid='.$union->union_branchid.'&company_id=&branch_id=') }}" onClick="return ViewVarianceList(this)">
 											<td style="width:50%">{{ $union->union_branch_name }}</td>
 											<td style="width:10%">{{ $last_month_count }}</td>
 											<td style="width:10%">{{ $current_count }}</td>
@@ -326,7 +326,7 @@
 										$current_unpaid_count = CommonHelper::getGroupcurrentMonthlyPaidCount($company['company_list'],$data['month_year_full']);
 									@endphp
 									@if($company_data->total_members>0)
-									<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id='.$company_id.'&branch_id=') }}" onClick="return ViewVarianceList(this)">
+									<tr class="monthly-sub-status " data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id='.$company_id.'&branch_id=') }}" onClick="return ViewVarianceList(this)">
 										<td style="width:50%">{{ $company['company_name'] }}</td>
 										<td style="width:10%">{{ $last_month_count }}</td>
 										<td style="width:10%">{{ $current_count }}</td>
@@ -389,7 +389,7 @@
 											$last_paid_count = CommonHelper::getBranchLastMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 											$current_unpaid_count = CommonHelper::getBranchcurrentMonthlyPaidCount($branch->branch_id,$data['month_year_full']);
 										@endphp
-										<tr class="monthly-sub-status @if($current_count-$last_month_count==0) hide @endif" data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id=&branch_id='.$branch->branch_id) }}" onClick="return ViewVarianceList(this)">
+										<tr class="monthly-sub-status " data-href="{{ URL::to(app()->getLocale().'/variancemembers-list?type='.$data['groupby'].'&date='.strtotime($data['month_year_full']).'&union_branchid=&company_id=&branch_id='.$branch->branch_id) }}" onClick="return ViewVarianceList(this)">
 											<td style="width:20%">{{ $branch->company_name }}</td>
 											<td style="width:30%">{{ $branch->branch_name }}</td>
 											<td style="width:10%">{{ $last_month_count }}</td>
