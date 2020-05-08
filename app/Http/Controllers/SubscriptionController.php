@@ -1889,7 +1889,9 @@ class SubscriptionController extends CommonController
 		$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
 		
 		$data['company_view']=[];
-		$data['branch_view']=[];
+        $data['branch_view']=[];
+        $data['sub_company'] = '';
+        $data['unionbranch_id'] = '';
 	/* 	$data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')
                                 ->where('mm.StatusMonth', '=', date('Y-m-01'))
@@ -1917,6 +1919,10 @@ class SubscriptionController extends CommonController
 		$data['groupby'] = $groupby;
         $data['DisplaySubscription'] = $display_subs;
         $data['types'] = $types;
+
+        $data['sub_company'] = $request->input('sub_company');
+        $data['unionbranch_id'] = $request->input('unionbranch_id');
+
        // $data['sixmonthvariation'] = $sixmonthvariation;
         $data['variationtype']=$variationtype;
 		if($groupby==1){
@@ -1931,15 +1937,38 @@ class SubscriptionController extends CommonController
 			// 					->where('mm.update_status', '=', 1)
 			// 					->where('mm.MemberCode', '!=', Null)
 			// 					->groupBY('cb.union_branch_id')
-			// 					->get();
-			$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+            // 					->get();
+            if($data['unionbranch_id']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                ->leftjoin('company as c','cb.company_id','=','c.id')
+                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                ->where('ms.Date', '=', $data['month_year_full'])
+                ->where('mm.update_status', '=', 1)
+                ->where('mm.MemberCode', '!=', Null)
+                ->where('cb.union_branch_id', '=', $data['unionbranch_id']);
+
+                $data['union_branch_view'] = $company_view->groupBY('cb.union_branch_id')
+                ->get();
+            }else{
+                $data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+            }
 			$data['company_view']=[];
 			$data['branch_view']=[];
 			$data['head_company_view']=[];
 		}
 		elseif($groupby==2){
-			$head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')->where('status','=','1')
-			->where(function ($query) {
+            $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')
+            ->where('status','=','1');
+
+            if($data['sub_company']!=''){
+                $head_company_view = $head_company_view->where('id','=',$data['sub_company']);
+            }
+
+			$head_company_view = $head_company_view->where(function ($query) {
 				$query->where('head_of_company', '=', '')
 					->orWhere('head_of_company', '=', 0)
 						->orWhereNull('head_of_company');
@@ -1964,7 +1993,26 @@ class SubscriptionController extends CommonController
 			$data['branch_view']=[];
 		}
 		else{
-			$data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+            if($data['sub_company']!=''){
+                $branch_view = DB::table("mon_sub_member as mm")->select('m.branch_id as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
+                        ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                        ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                        ->leftjoin('company as c','cb.company_id','=','c.id')
+                        //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                        ->where('ms.Date', '=', $data['month_year_full'])
+                        ->where('mm.update_status', '=', 1)
+                        ->where('mm.MemberCode', '!=', Null)
+                        ->where('mc.CompanyCode', '=', $data['sub_company'])
+                        ->groupBY('m.branch_id')
+                        //->limit(2000)
+                        ->get();
+                $data['branch_view'] = $branch_view;
+            }else{
+                $data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+            }
+			
 			$data['union_branch_view']=[];
 			$data['company_view']=[];
 			$data['head_company_view']=[];
@@ -2046,8 +2094,13 @@ class SubscriptionController extends CommonController
 			//$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
 			$data['union_branch_view']=[];
             $data['branch_view']=[];
-            $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')->where('status','=','1')
-			->where(function ($query) {
+            $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')
+            ->where('status','=','1');
+
+            if($data['sub_company']!=''){
+                $head_company_view = $head_company_view->where('id','=',$data['sub_company']);
+            }
+			$head_company_view = $head_company_view->where(function ($query) {
 				$query->where('head_of_company', '=', '')
 					->orWhere('head_of_company', '=', 0)
 						->orWhereNull('head_of_company');

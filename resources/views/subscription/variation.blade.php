@@ -99,6 +99,10 @@
 							 </div>
 						@endif
 					</div>
+					@php
+						$companylist = CommonHelper::getHeadCompanyListAll();
+						$unionbranchlist = CommonHelper::getUnionListAll();
+					@endphp
 					<div class="card-content">
 						<div class="row">
 							<div class="col s12 m12">
@@ -111,23 +115,45 @@
 												<label for="doe">{{__('Group By') }}*</label>
 												<p>
 													<label>
-														<input name="groupby" type="radio" value="1" {{ $data['groupby']==1 ? 'checked' : ''}} />
+														<input name="groupby" type="radio" onclick="return ViewLists(1)" value="1" {{ $data['groupby']==1 ? 'checked' : ''}} />
 														<span>{{__('Union Branch') }} </span>
 													</label>
 												</p>
 												<p>
 													<label>
-														<input name="groupby" type="radio" value="2"  {{ $data['groupby']==2 ? 'checked' : ''}} />
+														<input name="groupby" type="radio" value="2" onclick="return ViewLists(2)" {{ $data['groupby']==2 ? 'checked' : ''}} />
 														<span>Bank </span>
 													</label>
 												</p>
 												<p>
 													<label>
-														<input name="groupby" type="radio" value="3"  {{ $data['groupby']==3 ? 'checked' : ''}} />
+														<input name="groupby" type="radio" value="3" onclick="return ViewLists(2)" {{ $data['groupby']==3 ? 'checked' : ''}} />
 														<span>Bank Branch</span>
 													</label>
 												</p>
 											</div>
+											<div class="col m3 s12">
+												<div id="banksection" class="{{ $data['groupby']==1 ? 'hide' : '' }}">
+	                                                <label for="sub_company">{{__('Company') }}</label>
+	                                                <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
+	                                                    <option value="" selected>{{__('Choose Company') }}</option>
+	                                                    @foreach($companylist as $value)
+	                                                    <option {{ $data['sub_company']==$value->id ? 'selected' : ''}} data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
+	                                                    @endforeach
+	                                                </select>
+	                                            </div>
+	                                            <div id="unionsection" class="{{ $data['groupby']>1 ? 'hide' : '' }}">
+	                                               <label>{{__('Union Branch Name') }}</label>
+													<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+														<option value="">{{__('Select Union') }}</option>
+														@foreach($unionbranchlist as $value)
+						                                <option {{ $data['unionbranch_id']==$value->id ? 'selected' : ''}}  value="{{$value->id}}">
+						                                    {{$value->union_branch}}</option>
+						                                @endforeach
+													</select>
+	                                            </div>
+                                                <div class="errorTxt6"></div>
+                                            </div>
 											<div class="input-field col m2 s12">
 												<label for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
@@ -202,7 +228,7 @@
 					<div class="card-content">
 						<h4 class="card-title">Subscription variation
 						<div class="right">
-							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types']) }}" >{{__('Print')}}</a>
+							<a class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>
@@ -492,6 +518,18 @@ $(document).ready(function() {
 
 	function ViewVarianceList(thisdata){
 		window.open($(thisdata).attr("data-href"), '_blank');
+	}
+
+	function ViewLists(refid){
+		$("#sub_company").val('').trigger("change");
+		$("#unionbranch_id").val('').trigger("change");
+		if(refid==1){
+			$("#banksection").addClass('hide');
+			$("#unionsection").removeClass('hide');
+		}else{
+			$("#banksection").removeClass('hide');
+			$("#unionsection").addClass('hide');
+		}
 	}
 	
 	$("#subscriptions_sidebars_id").addClass('active');
