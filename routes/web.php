@@ -518,6 +518,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_advance_list','SubscriptionAjaxController@ajax_advance_list');
 
 	Route::get('advance_payment_info','SubscriptionAjaxController@AdvanceDetails')->name('advance.info');
+	Route::post('ajax_pending_members_list/{parameter}','MembershipController@AjaxPendingmembersList')->name('pending.ajaxmemberslist');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

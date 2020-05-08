@@ -1217,7 +1217,9 @@
                                                     $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
                                                     $check_union = $auth_user->hasRole('union'); 
                                                     $check_entry = $auth_user->hasRole('data-entry'); 
+                                                    $showfee = 0;
                                                     if($check_union || $check_entry){ 
+                                                        $showfee = 1;
                                                         $branch_requird = 'required'; 
                                                         $branch_disabled = ''; 
                                                         $branch_hide = ''; 
@@ -1681,7 +1683,7 @@
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    @if($user_role!='member')
+                                                    @if($showfee==1)
 													<li>
 													<div class="collapsible-header gradient-45deg-indigo-purple white-text"><i class="material-icons">blur_circular</i> {{__('Fee Details') }}</div>
                                                         <div class="collapsible-body ">
@@ -1875,13 +1877,13 @@
 																		<div class="col s12">
 																			UC &nbsp;&nbsp; :
 																		    <div class="input-field inline" style="margin:0;">
-																				<input id="email_inline" type="text" class="validate" value="{{$total_ins_count}}" readonly style="height:2rem;">
+																				<input id="email_inline" type="text" class="validate" value="{{ $total_ins_count==0 ? '' : $total_ins_count }}" readonly style="height:2rem;">
 																		    </div>
 																		</div>
                                                                         <div class="col s12">
                                                                             Ins &nbsp;&nbsp; :
                                                                             <div class="input-field inline" style="margin:0;">
-                                                                                <input id="email_inline" type="text" class="validate" value="{{$total_ins_count}}" readonly style="height:2rem;">
+                                                                                <input id="email_inline" type="text" class="validate" value="{{ $total_ins_count==0 ? '' : $total_ins_count }}" readonly style="height:2rem;">
                                                                             </div>
                                                                         </div>
 																	</div>
