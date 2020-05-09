@@ -1286,7 +1286,7 @@
                                                      <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>{{__('Levy') }}</label>
-                                                        <select name="levy" id="levy" class="error browser-default selectpicker">
+                                                        <select name="levy" id="levy" onChange="return HideLevy(this.value)" class="error browser-default selectpicker">
                                                             <option value="">{{__('Select levy') }}</option>
                                                             <option value="Not Applicable" {{ $values->levy == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
                                                             <option value="Yes" {{ $values->levy == 'Yes' ? 'selected' : '' }}>Yes</option>
@@ -1294,14 +1294,14 @@
                                                         </select>
                                                     </div>
                                                     
-                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
+                                                    <div id="levydiv" class="input-field col s12 m6 @if($values->levy == 'NO') hide @endif {{ $hidemember }}">
                                                         <input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
                                                         <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
                                                     </div>
-                                                    <div class="clearfix"></div>
+                                                   
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>{{__('TDF') }}</label>
-                                                        <select name="tdf" id="tdf" class="error browser-default selectpicker">
+                                                        <select name="tdf" id="tdf" onChange="return HideTDF(this.value)" class="error browser-default selectpicker">
                                                             <option value="0">Select TDF</option>
                                                             <option value="Not Applicable" {{ $values->tdf == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
                                                             <option value="Yes" {{ $values->tdf == 'Yes' ? 'selected' : '' }}>Yes</option>
@@ -1309,11 +1309,11 @@
                                                         </select>
                                                     </div>
                                                    
-                                                    <div class="input-field col s12 m6 {{ $hidemember }}">
+                                                    <div id="tdfdiv" class="input-field col s12 m6 @if($values->tdf == 'NO') hide @endif {{ $hidemember }}">
                                                         <input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
                                                         <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
                                                     </div>
-                                                     <div class="clearfix"></div>
+                                                     
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="employee_id" class="force-active">Employee ID</label>
                                                         <input id="employee_id" name="employee_id" value="{{$values->employee_id}}" type="text">
@@ -2748,6 +2748,20 @@
             $("#app_reason").addClass('hide');
         }
        
+    }
+    function HideLevy(levytitle){
+        if(levytitle=='NO'){
+            $("#levydiv").addClass('hide');
+        }else{
+            $("#levydiv").removeClass('hide');
+        }
+    }
+    function HideTDF(tdftitle){
+        if(tdftitle=='NO'){
+            $("#tdfdiv").addClass('hide');
+        }else{
+            $("#tdfdiv").removeClass('hide');
+        }
     }
 </script>
 @include('membership.member_common_script') 

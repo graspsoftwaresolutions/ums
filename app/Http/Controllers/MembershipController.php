@@ -151,7 +151,8 @@ class MembershipController extends Controller
     }
     
 
-    public function new_members(Request $request){
+    public function new_members(Request $request, $lang){
+        $type = $request->input('type');
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
@@ -163,6 +164,11 @@ class MembershipController extends Controller
         $data['member_status'] = 'all';
         if(!empty($request->all())){
             $data['member_status'] = $request->input('status');
+        }
+        if($type==''){
+            $data['type'] = 0;
+        }else{
+            $data['type'] = $type;
         }
         $data['member_type'] = 0;
         //return 'pending';
@@ -301,8 +307,8 @@ class MembershipController extends Controller
 						 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
 						 ->leftjoin('status as s','s.id','=','m.status_id')
 						 ->leftjoin('country as con','con.id','=','m.country_id')
-						 ->leftjoin('state as st','st.id','=','m.state_id')
-						 ->leftjoin('city as cit','cit.id','=','m.city_id')
+						 ->leftjoin('state as st','st.id','=','c.state_id')
+						 ->leftjoin('city as cit','cit.id','=','c.city_id')
 						 ->leftjoin('race as r','r.id','=','m.race_id')
                          ->where('m.is_request_approved','=',$approved_cond)
                          ->orderBy('m.id','DESC');
@@ -328,15 +334,15 @@ class MembershipController extends Controller
 			 }
 			 if($country_id != "")
 			 {
-				 $member_qry = $member_qry->where('m.country_id','=',$country_id);
+				 $member_qry = $member_qry->where('c.country_id','=',$country_id);
 			 }
 			 if($state_id != "")
 			 {
-				 $member_qry = $member_qry->where('m.state_id','=',$state_id);
+				 $member_qry = $member_qry->where('c.state_id','=',$state_id);
 			 }
 			 if($city_id != "")
 			 {
-				 $member_qry = $member_qry->where('m.city_id','=',$city_id);
+				 $member_qry = $member_qry->where('c.city_id','=',$city_id);
 			 }
 			  
 			if($member_status !='all'){
@@ -361,8 +367,8 @@ class MembershipController extends Controller
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('country as con','con.id','=','m.country_id')
-                ->leftjoin('state as st','st.id','=','m.state_id')
-                ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('state as st','st.id','=','c.state_id')
+                ->leftjoin('city as cit','cit.id','=','c.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -395,11 +401,11 @@ class MembershipController extends Controller
                    }
                    if($state_id != "")
                    {
-                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                       $member_qry = $member_qry->where('c.state_id','=',$state_id);
                    }
                    if($city_id != "")
                    {
-                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                       $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -417,8 +423,8 @@ class MembershipController extends Controller
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('country as con','con.id','=','m.country_id')
-                ->leftjoin('state as st','st.id','=','m.state_id')
-                ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('state as st','st.id','=','c.state_id')
+                ->leftjoin('city as cit','cit.id','=','c.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -447,15 +453,15 @@ class MembershipController extends Controller
                    }
                    if($country_id != "")
                    {
-                       $member_qry = $member_qry->where('m.country_id','=',$country_id);
+                       $member_qry = $member_qry->where('c.country_id','=',$country_id);
                    }
                    if($state_id != "")
                    {
-                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                       $member_qry = $member_qry->where('c.state_id','=',$state_id);
                    }
                    if($city_id != "")
                    {
-                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                       $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -473,8 +479,8 @@ class MembershipController extends Controller
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('country as con','con.id','=','m.country_id')
-                ->leftjoin('state as st','st.id','=','m.state_id')
-                ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('state as st','st.id','=','c.state_id')
+                ->leftjoin('city as cit','cit.id','=','c.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->where([
@@ -503,15 +509,15 @@ class MembershipController extends Controller
                    }
                    if($country_id != "")
                    {
-                       $member_qry = $member_qry->where('m.country_id','=',$country_id);
+                       $member_qry = $member_qry->where('c.country_id','=',$country_id);
                    }
                    if($state_id != "")
                    {
-                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                       $member_qry = $member_qry->where('c.state_id','=',$state_id);
                    }
                    if($city_id != "")
                    {
-                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                       $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -540,8 +546,8 @@ class MembershipController extends Controller
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
-                ->leftjoin('state as st','st.id','=','m.state_id')
-                ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('state as st','st.id','=','c.state_id')
+                ->leftjoin('city as cit','cit.id','=','c.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id')
                 ->where('m.is_request_approved','=',$approved_cond);
                 if($member_status!='all'){
@@ -585,15 +591,15 @@ class MembershipController extends Controller
                }
                if($country_id != "")
                {
-                   $compQuery = $compQuery->where('m.country_id','=',$country_id);
+                   $compQuery = $compQuery->where('c.country_id','=',$country_id);
                }
                if($state_id != "")
                {
-                   $compQuery = $compQuery->where('m.state_id','=',$state_id);
+                   $compQuery = $compQuery->where('c.state_id','=',$state_id);
                }
                if($city_id != "")
                {
-                   $compQuery = $compQuery->where('m.city_id','=',$city_id);
+                   $compQuery = $compQuery->where('c.city_id','=',$city_id);
                }
                 
               if($member_status !='all'){
@@ -625,8 +631,8 @@ class MembershipController extends Controller
                             ->leftjoin('designation as d','m.designation_id','=','d.id')
                             ->leftjoin('company as com','com.id','=','c.company_id')
                             ->leftjoin('status as s','s.id','=','m.status_id')
-                            ->leftjoin('state as st','st.id','=','m.state_id')
-                            ->leftjoin('city as cit','cit.id','=','m.city_id')
+                            ->leftjoin('state as st','st.id','=','c.state_id')
+                            ->leftjoin('city as cit','cit.id','=','c.city_id')
                             ->leftjoin('race as r','r.id','=','m.race_id')
                             ->where('m.is_request_approved','=',$approved_cond);
                             if($member_status!='all'){

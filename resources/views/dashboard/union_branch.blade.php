@@ -25,6 +25,13 @@
 
 </style>
 @endsection
+@php
+	$get_roles = Auth::user()->roles;
+	
+    $user_role = $get_roles[0]->slug;
+    $user_id = Auth::user()->id;
+    $rejected_count = CommonHelper::getUnionRejectedCount($user_id);
+@endphp
 <!-- card stats start -->
 <div id="card-stats">
    <div class="row">
@@ -51,5 +58,17 @@
 			</div>
 		 </div>
 		</div>
+		<div class="dash-tab-clearfix"/>
+	      <div class="col s12 m6 l3">
+	         <div class="card animate fadeRight">
+	            <div class="card-content orange lighten-1 white-text">
+	               <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Rejected Members') }}</p>
+	               <h4 class="card-stats-number white-text">{{ $rejected_count }}</h4>
+	            </div>
+	            <div class="card-action orange">
+	               <div id="invoice-line" class="center-align"><a style="color:white" href="{{ url(app()->getLocale().'/membership_list?type=1') }}"> {{__('Rejected Members List') }}</a></div>
+	            </div>
+	         </div>
+	      </div>
    </div>
 </div>

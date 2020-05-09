@@ -165,7 +165,7 @@
                      <div class="row">
                          <div class="col s12 l6">
                               <label>{{__('Levy') }}</label>
-                              <select name="levy" id="levy" class="error browser-default selectpicker">
+                              <select name="levy" id="levy" onChange="return HideLevy(this.value)" class="error browser-default selectpicker">
                                   <option value="">{{__('Select levy') }}</option>
                                   <option value="Not Applicable" {{ $edit_data->levy == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
                                   <option value="Yes" {{ $edit_data->levy == 'Yes' ? 'selected' : '' }}>Yes</option>
@@ -173,7 +173,7 @@
                               </select>
                           </div>
                           
-                          <div class="col s12 l6 ">
+                          <div id="levydiv" class="col s12 l6 @if($edit_data->levy == 'NO') hide @endif ">
                             <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
                               <input id="levy_amount" name="levy_amount" type="text" value="{{$edit_data->levy_amount}}">
                               
@@ -183,7 +183,7 @@
                            <div class="clearfix"></div>
                           <div class="col s12 l6">
                               <label>{{__('TDF') }}</label>
-                              <select name="tdf" id="tdf" class="error browser-default selectpicker">
+                              <select name="tdf" id="tdf" onChange="return HideTDF(this.value)" class="error browser-default selectpicker">
                                   <option value="0">Select TDF</option>
                                   <option value="Not Applicable" {{ $edit_data->tdf == 'Not Applicable' ? 'selected' : '' }}> N/A</option>
                                   <option value="Yes" {{ $edit_data->tdf == 'Yes' ? 'selected' : '' }}>Yes</option>
@@ -191,7 +191,7 @@
                               </select>
                           </div>
                          
-                          <div class="col s12 l6">
+                          <div id="tdfdiv" class="col s12 l6 @if($edit_data->tdf == 'NO') hide @endif">
                              <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
                               <input id="tdf_amount" name="tdf_amount" type="text" value="{{$edit_data->tdf_amount}}">
                              
@@ -296,6 +296,20 @@ $(document).on('input', '.allow_decimal', function(){
      evt.preventDefault();
    }
  });
+ function HideLevy(levytitle){
+      if(levytitle=='NO'){
+          $("#levydiv").addClass('hide');
+      }else{
+          $("#levydiv").removeClass('hide');
+      }
+  }
+  function HideTDF(tdftitle){
+      if(tdftitle=='NO'){
+          $("#tdfdiv").addClass('hide');
+      }else{
+          $("#tdfdiv").removeClass('hide');
+      }
+  }
 
 
 // $("#addarrear_formValidate").on("submit", function(evt) {

@@ -90,6 +90,7 @@ span.dtr-title::after {
 							</div>
 						</div>
 						@php 
+							//dd($data['type']);
 							$auth_user = Auth::user();
 							$member_number_readonly = 'readonly';
 							$member_number_hide = 'hide';
@@ -143,7 +144,7 @@ span.dtr-title::after {
 									@else
 										Pending
 									@endif
-									 Membership List &nbsp; @if($data['member_status'] !='all')  <span class="custom-badge">Status : {{ CommonHelper::get_member_status_name($data['member_status']) }}</span> @endif </h4>
+									 Membership List &nbsp; </h4>
 								</div>
 								<div >
 									<input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn col s12 m4 l3" value="Advanced search">
@@ -279,7 +280,7 @@ span.dtr-title::after {
 											<select name="pending_type" id="pending_type" class="error browser-default selectpicker" data-error=".errorTxt29" >
 												<option value="">{{__('Select Type') }}</option>
 												<option>{{__('Pending') }}</option>
-												<option>{{__('Rejected') }}</option>
+												<option @if($data['type']==1) selected @endif>{{__('Rejected') }}</option>
 												
 												
 											</select>

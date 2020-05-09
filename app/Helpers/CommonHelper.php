@@ -3523,4 +3523,19 @@ class CommonHelper
            // dd($memberid);
         return $history;
     }
+
+    public static function getUnionRejectedCount($userid){
+        $union_branch_id = UnionBranch::where('user_id',$userid)->pluck('id')->first();
+        $count = 0;
+        if($union_branch_id!=''){
+            $count = DB::table('membership as m')
+            ->select('m.member_number','m.name','m.new_ic','m.old_ic','m.employee_id','com.short_code as companycode','cb.branch_name','m.gender','m.doj','s.status_name')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->leftjoin('union_branch as u','u.id','=','cb.union_branch_id')
+            ->where('u.id','=',$union_branch_id)
+            ->where('m.approval_status','=','Rejected')
+            ->count();
+        }
+        return $count;
+    }
 }

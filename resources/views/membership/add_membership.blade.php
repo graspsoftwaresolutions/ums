@@ -358,39 +358,39 @@
 																<div class="clearfix" ></div>	
 																<div class="col s12 m6">
 																<label>{{__('Levy') }}</label>
-																  <select name="levy" id="levy" class="error browser-default selectpicker" >
+																  <select name="levy" id="levy" onChange="return HideLevy(this.value)" class="error browser-default selectpicker" >
 																		<option value="">{{__('Select levy') }}</option>
 																		<option value="Not Applicable">N/A</option>
 																		<option value="Yes">Yes</option>
 																		<option value="NO">No</option>
 																	</select>
 																</div>
-																<div class="input-field col s12 m6">
-																<input id="levy_amount" name="levy_amount" type="text">
+																<div id="levydiv" class="input-field col s12 m6">
+																	<input id="levy_amount" name="levy_amount" type="text">
 																	<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
 																	
 																</div>
-																<div class="clearfix" ></div>
+																
 
 																<div class="col s12 m6">
 																<label>{{__('TDF') }}</label>
-																  <select name="tdf" id="tdf" class="error browser-default selectpicker">
+																  <select name="tdf" id="tdf" onChange="return HideTDF(this.value)" class="error browser-default selectpicker">
 																		<option value="">{{__('Select TDF') }}</option>
 																		<option value="Not Applicable">N/A</option>
 																		<option value="Yes">Yes</option>
 																		<option value="NO">No</option>
 																	</select>
 																</div>
-																<div class="input-field col s12 m6">
+																<div id="tdfdiv" class="input-field col s12 m6">
 																<input id="tdf_amount" name="tdf_amount" type="text">
 																	<label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
 																</div>
-																<div class="clearfix" ></div>
+																
 																<div class="input-field col s12 m6">
 																	<label for="employee_id" class="force-active">{{__('Employee ID') }}</label>
 																	<input id="employee_id" name="employee_id" value="{{ old('employee_id') }}" type="text">
 																</div>
-																<div class="clearfix" style="clear:both"></div>
+																
 																<div class="row">
 																	<!--div class="col m4 s12 mb-3">
 																		<button class="red btn btn-reset" type="reset">
@@ -1157,6 +1157,21 @@
 			$("#rejoined_label").text('Rejoined');
     	}
     	
+    }
+
+    function HideLevy(levytitle){
+    	if(levytitle=='NO'){
+    		$("#levydiv").addClass('hide');
+    	}else{
+			$("#levydiv").removeClass('hide');
+    	}
+    }
+    function HideTDF(tdftitle){
+    	if(tdftitle=='NO'){
+    		$("#tdfdiv").addClass('hide');
+    	}else{
+			$("#tdfdiv").removeClass('hide');
+    	}
     }
  //    $('#state_id').change(function(e, data){
 	//    var StateId = $(this).val();
