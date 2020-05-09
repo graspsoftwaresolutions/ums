@@ -317,7 +317,7 @@ class MembershipController extends Controller
 			  }elseif($company_id!= ''){
 				   $member_qry = $member_qry->where('c.company_id','=',$company_id);
 			  }
-			  elseif($unionbranch_id!= ''){
+			  if($unionbranch_id!= ''){
 				  $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
 			  }
 			 if($gender!="")
@@ -380,7 +380,7 @@ class MembershipController extends Controller
                     }elseif($company_id!= ''){
                          $member_qry = $member_qry->where('c.company_id','=',$company_id);
                     }
-                    elseif($unionbranch_id!= ''){
+                    if($unionbranch_id!= ''){
                         $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
                     }
                    if($gender!="")
@@ -436,7 +436,7 @@ class MembershipController extends Controller
                     }elseif($company_id!= ''){
                          $member_qry = $member_qry->where('c.company_id','=',$company_id);
                     }
-                    elseif($unionbranch_id!= ''){
+                    if($unionbranch_id!= ''){
                         $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
                     }
                    if($gender!="")
@@ -492,7 +492,7 @@ class MembershipController extends Controller
                     }elseif($company_id!= ''){
                          $member_qry = $member_qry->where('c.company_id','=',$company_id);
                     }
-                    elseif($unionbranch_id!= ''){
+                    if($unionbranch_id!= ''){
                         $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
                     }
                    if($gender!="")
@@ -573,7 +573,7 @@ class MembershipController extends Controller
                 }elseif($company_id!= ''){
                      $compQuery = $compQuery->where('c.company_id','=',$company_id);
                 }
-                elseif($unionbranch_id!= ''){
+                if($unionbranch_id!= ''){
                     $compQuery = $compQuery->where('c.union_branch_id','=',$unionbranch_id);
                 }
                // $compQuery->dump()->get();
