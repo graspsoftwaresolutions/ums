@@ -4022,6 +4022,7 @@ class SubscriptionController extends CommonController
         $advancedata['to_date'] = $to_entry_month;
         $advancedata['no_of_months'] = $request->input('no_of_months');
         $advancedata['advance_amount'] = $request->input('advance_amount');
+        $advancedata['balance_amount'] = $request->input('advance_amount');
         $advancedata['created_by'] = Auth::user()->id;
         $defdaultLang = app()->getLocale();
 

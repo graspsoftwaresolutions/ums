@@ -66,8 +66,10 @@
           @if($user_role=='union' || $user_role=='union-branch')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>
+            @if($user_role=='union')
              <li class="bold"><a id="sal_updatelist_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.list',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation List') }}</span></a>
             </li>
+            @endif
 
               <!-- <li id="sal_updates_sidebar_li_id" class=""><a id="sal_updates_sidebar_a_id" class="collapsible-body hide" href="{{ route('salary.upload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update Salary') }}</span></a></li> -->
             
@@ -80,7 +82,7 @@
             <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan hide" href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a>
           @endif
         @endif
-        @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch' || $user_role == 'member')
+        @if($user_role=='union' || $user_role=='company' || $user_role=='company-branch' || $user_role == 'member')
          <li id="subscriptions_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">subscriptions</i><span class="menu-title" data-i18n="">{{ __('Subscription') }}</span></a>
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
@@ -144,7 +146,7 @@
     @endif
 		@endforeach
    -->
-      @if($user_role=='union' || $user_role=='union-branch')
+      @if($user_role=='union')
         <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
       @endif
       @if($user_role=='union')
@@ -183,7 +185,7 @@
           </div>
         </li>
 		@endif
-		   @if($user_role=='union' || $user_role=='union-branch')
+		   @if($user_role=='union')
 	  <li id="reports_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">receipt	</i><span class="menu-title" data-i18n="">{{ __('Reports') }}</span></a>
           <div class="collapsible-body">
             @php

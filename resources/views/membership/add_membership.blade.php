@@ -144,7 +144,7 @@
 																</div>
 																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
-																	<label for="name" class="force-active">{{__('Member Name') }} *</label>
+																	<label for="name" class="force-active">{{__('Member Name as per NRIC') }} *</label>
 																	<input id="name" name="name" type="text" class="validate" value="{{ old('name') }}" data-error=".errorTxt3">
 																	<div class="errorTxt3"></div>
 																</div>
@@ -189,7 +189,7 @@
 																	<div class="errorTxt7"></div>
 																</div>
 																<div class="col s12 m6">
-																	<label>{{__('Designation') }}*</label>
+																	<label>{{__('Grade') }}*</label>
 																	<select name="designation" id="designation" class="error browser-default selectpicker" onchange="return ChangeRejoinLabel(this.value)" data-error=".errorTxt8" style="line-height: 0.8;">
 																		<option value="" >{{__('Select') }}</option>
 																		@foreach($data['designation_view'] as $key=>$value)
@@ -201,6 +201,8 @@
 																	</div>
 																</div>
 																<div class="clearfix" ></div>
+																
+																
 																<div class="col s12 m6">
 																	<div class="input-field col s12 m3">
 																		<p>
@@ -218,6 +220,32 @@
 																		</span>
 																	</div>
 																</div>
+																@php
+																	$newdesignation = CommonHelper::getNewDesignationList();
+																@endphp
+																
+																<div class="col s12 m6">
+																	<div class="row">
+																		<div class="col s12 m6">
+																			<label>{{__('Designation') }}*</label>
+																			<select name="designationnew" id="designationnew" required="" class="error browser-default selectpicker" onchange="return ShowRemarks(this.value)" data-error=".errorTxt52" style="line-height: 0.8;">
+																				<option value="" >{{__('Select') }}</option>
+																				@foreach($newdesignation as $key=>$des)
+																				<option value="{{$des->id}}">{{$des->designation_name}}</option>
+																				@endforeach
+																			</select>
+																			<div class="input-field">
+																				<div class="errorTxt52"></div>
+																			</div>
+																		</div>
+																		<div id="remarksdiv" class="input-field col s12 m6 hide">
+																			<input type="text" class="" id="remarks" value="" name="remarks">
+																			<label for="remarks" class="force-active">{{__('Remarks') }}*</label>
+																		</div>
+																	</div>
+																</div>
+															
+																<div class="clearfix" ></div>
 																<div class="col s12 m6">
 																	<label>Race*</label>
 																	<select name="race" id="race" value="{{ old('race') }}" class="error browser-default selectpicker" data-error=".errorTxt9">
@@ -232,7 +260,7 @@
 																</div>
 																
 																
-																<div class="clearfix" ></div>
+																
 																<div class="col s12 m6">
 																	<label>{{__('Country Name') }}*</label>
 																	@php
@@ -248,6 +276,7 @@
 																		<div class="errorTxt10"></div>
 																	</div>
 																</div>
+																<div class="clearfix" ></div>
 																@php
 																$statelist = CommonHelper::getStateList($Defcountry);
 																@endphp
@@ -263,7 +292,7 @@
 																		<div class="errorTxt11"></div>
 																	</div>
 																</div>
-																<div class="clearfix" style="clear:both"></div>
+																
 																<div class="col s12 m6">
 																	<label>{{__('City Name') }}*</label>
 																	<select name="city_id" id="city_id" class="error browser-default selectpicker" aria-required="true" required data-error=".errorTxt12">
@@ -273,28 +302,31 @@
 																		<div class="errorTxt12"></div>
 																	</div>
 																</div>
+																<div class="clearfix" style="clear:both"></div>
 																<div class="input-field col s12 m6">
 																	<label for="postal_code" class="force-active">{{__('Postal Code') }} *</label>
 																	<input id="postal_code" name="postal_code" class="padding-top-6" value="{{ old('postal_code') }}" type="text" data-error=".errorTxt13">
 																	<div class="errorTxt13"></div>
 																</div>
-																<div class="clearfix" ></div>
+															
 																<div class="input-field col s12 m6">
 																	<label for="address_one" class="force-active">{{__('Address Line 1') }}*</label>
 																	<input id="address_one" name="address_one" value="{{ old('address_one') }}" type="text" data-error=".errorTxt14">
 																	<div class="errorTxt14"></div>
 																</div>
+																	<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<label for="address_two" class="force-active">{{__('Address Line 2') }}*</label>
 																	<input id="address_two" name="address_two" value="{{ old('address_two') }}" type="text" data-error=".errorTxt15">
 																	<div class="errorTxt15"></div>
 																</div>
-																<div class="clearfix" ></div>
+																
 																<div class="input-field col s12 m6">
 																	<label for="address_three" class="force-active">{{__('Address Line 3') }}</label>
 																	<input id="address_three" name="address_three" value="{{ old('address_three') }}" type="text" data-error=".errorTxt16">
 																	<div class="errorTxt16"></div>
 																</div>
+																<div class="clearfix" ></div>
 																<div class="col s12 m6">
 																	<div class="row">
 																		<div class="input-field col s12 m8">
@@ -307,29 +339,32 @@
 																		</div>
 																	</div>
 																</div>
-																<div class="clearfix" ></div>
+
+																
 																<div class="input-field col s12 m6">
 																	<input type="text" class="datepicker" id="doj" value="{{ old('doj') }}" name="doj" data-error=".errorTxt18">
-																	<label for="doj" class="force-active">{{__('Date of Joining') }}*</label>
+																	<label for="doj" class="force-active">{{__('Date Joined') }}*</label>
 																	<div class="errorTxt18"></div>
 																</div>
+																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<label for="salary" class="force-active">{{__('Salary') }}*</label>
 																	<input id="salary" name="salary" value="{{ old('salary') }}" type="text" data-error=".errorTxt19">
 																	<div class="errorTxt19"></div>
 																</div>
-																<div class="clearfix" ></div>
+																
 																<div class="input-field col s12 m6">
 																	<label for="salary" class="force-active">{{__('Old IC Number') }}</label>
 																	<input id="old_ic" name="old_ic" type="text" value="{{ old('old_ic') }}" data-error=".errorTxt20">
 																	<div class="errorTxt20"></div>
 																</div>
+																<div class="clearfix" ></div>
 																<div class="input-field col s12 m6">
 																	<label for="new_ic" class="force-active">{{__('New IC Number') }}*</label>
 																	<input id="new_ic" name="new_ic" type="text" value="{{ old('new_ic') }}" data-error=".errorTxt21">
 																	<div class="errorTxt21"></div>
 																</div>
-																<div class="clearfix" ></div>
+																
 																<div class=" col s12 m6 union-data ">
 																	<label>{{__('Company Name') }}*</label>
 																	<select name="company_id" id="company" class="error browser-default selectpicker" data-error=".errorTxt22" required >
@@ -342,7 +377,7 @@
 																		<div class="errorTxt22"></div>
 																	</div>
 																</div>
-
+																<div class="clearfix" ></div>
 																<div class="col s12 m6 union-data ">
 																	<label>{{__('Company Branch Name') }}*</label>
 																	<select name="branch_id" id="branch" class="error browser-default selectpicker" data-error=".errorTxt23" required >
@@ -355,7 +390,7 @@
 																		<div class="errorTxt23"></div>
 																	</div>
 																</div>
-																<div class="clearfix" ></div>	
+																
 																<div class="col s12 m6">
 																<label>{{__('Levy') }}</label>
 																  <select name="levy" id="levy" onChange="return HideLevy(this.value)" class="error browser-default selectpicker" >
@@ -365,6 +400,7 @@
 																		<option value="NO">No</option>
 																	</select>
 																</div>
+																<div class="clearfix" ></div>
 																<div id="levydiv" class="input-field col s12 m6">
 																	<input id="levy_amount" name="levy_amount" type="text">
 																	<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
@@ -381,6 +417,7 @@
 																		<option value="NO">No</option>
 																	</select>
 																</div>
+																<div class="clearfix" ></div>
 																<div id="tdfdiv" class="input-field col s12 m6">
 																<input id="tdf_amount" name="tdf_amount" type="text">
 																	<label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
@@ -1016,7 +1053,7 @@
 				remote: '{{__("Email Already exists") }}',
             },
             designation: {
-                required: "Please choose  your Designation",
+                required: "Please choose  your Grade",
             },
             
             race: {
@@ -1171,6 +1208,13 @@
     		$("#tdfdiv").addClass('hide');
     	}else{
 			$("#tdfdiv").removeClass('hide');
+    	}
+    }
+    function ShowRemarks(designationid){
+    	if(designationid==12){
+    		$("#remarksdiv").removeClass('hide');
+    	}else{
+    		$("#remarksdiv").addClass('hide');
     	}
     }
  //    $('#state_id').change(function(e, data){

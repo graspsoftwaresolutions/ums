@@ -3538,4 +3538,10 @@ class CommonHelper
         }
         return $count;
     }
+
+    public static function getNewDesignationList(){
+        $des_data = DB::table('designation_new')->where('status', 1)->get();
+        
+        return $des_data;
+     }
 }

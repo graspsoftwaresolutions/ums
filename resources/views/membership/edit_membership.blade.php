@@ -995,7 +995,7 @@
                                                         <div class="errorTxt29"></div>
                                                     </div>
                                                     <div class="input-field col s12 m6">
-                                                        <label for="name" class="force-active">Member Name *</label>
+                                                        <label for="name" class="force-active">Member Name as per NRIC *</label>
                                                         <input id="name" name="name" value="{{$values->name}}" type="text" data-error=".errorTxt30">
                                                         <div class="errorTxt30"></div>
                                                     </div>
@@ -1043,7 +1043,7 @@
                                                         @php
                                                             $designname = '';
                                                         @endphp
-                                                        <label>Designation* </label>
+                                                        <label>Grade* </label>
                                                         <select name="designation" id="designation" data-error=".errorTxt2" class="error browser-default selectpicker"  onchange="return ChangeRejoinLabel(this.value)">
                                                             <option value="">Select</option>
                                                             @foreach($data['designation_view'] as $key=>$value)
@@ -1082,6 +1082,30 @@
                                                         @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'Old Number: '.$old_membercode : ''; @endphp @endif
                                                         <input type="text" name="old_member_id" value="{{$values->old_member_number}}" id="old_member_id" class=" hide">
                                                     </div>
+                                                    @php
+                                                        $newdesignation = CommonHelper::getNewDesignationList();
+                                                    @endphp
+                                                    
+                                                    <div class="col s12 m6">
+                                                        <div class="row">
+                                                            <div class="col s12 m6">
+                                                                <label>{{__('Designation') }}</label>
+                                                                <select name="designationnew" id="designationnew" class="error browser-default selectpicker" onchange="return ShowRemarks(this.value)" style="line-height: 0.8;">
+                                                                    <option value="" >{{__('Select') }}</option>
+                                                                    @foreach($newdesignation as $key=>$des)
+                                                                    <option @php if($des->id == $values->designation_new_id) { echo "selected";} @endphp value="{{$des->id}}">{{$des->designation_name}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <div class="input-field">
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                            <div id="remarksdiv" class="input-field col s12 m6 hide">
+                                                                <input type="text" class="" id="remarks" value="{{ $values->designation_others }}" name="remarks">
+                                                                <label for="remarks" class="force-active">{{__('Remarks') }}*</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                      <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>Race*</label>
                                                         <select name="race" id="race" data-error=".errorTxt3" class="error browser-default selectpicker">
@@ -1094,7 +1118,7 @@
                                                             <div class="errorTxt3"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                   
                                                    
                                                     <div class="col s12 m6 {{ $hidemember }}">
@@ -1109,6 +1133,7 @@
                                                             <div class="errorTxt4"></div>
                                                         </div>
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>State Name*</label>
                                                         <select name="state_id" id="state_id" data-error=".errorTxt5" class="error browser-default selectpicker">
@@ -1121,7 +1146,7 @@
                                                             <div class="errorTxt5"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                   
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>City Name*</label>
                                                         <select name="city_id" id="city_id" data-error=".errorTxt6" class="error browser-default selectpicker">
@@ -1134,28 +1159,31 @@
                                                             <div class="errorTxt6"></div>
                                                         </div>
                                                     </div>
+                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="postal_code" class="force-active">Postal Code *</label>
                                                         <input id="postal_code" name="postal_code" value="{{$values->postal_code}}" type="text" data-error=".errorTxt7">
                                                         <div class="errorTxt7"></div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_one" class="force-active">Address Line 1*</label>
                                                         <input id="address_one" name="address_one" required type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
                                                         <div class="errorTxt8"></div>
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_two" class="force-active">Address Line 2*</label>
                                                         <input id="address_two" name="address_two" required type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
                                                         <div class="errorTxt9"></div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_three" class="force-active">Address Line 3</label>
                                                         <input id="address_three" name="address_three"  type="text" value="{{$values->address_three}}" data-error=".errorTxt10">
                                                         <div class="errorTxt10"></div>
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6">
                                                         <div class="row">
                                                             <div class="input-field col s12 m8">
@@ -1168,12 +1196,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <input type="text" class="datepicker" id="doj" value="{{ date('d/m/Y',strtotime($values->doj)) }}" name="doj">
-                                                        <label for="doj" class="force-active">Date of Joining</label>
+                                                        <label for="doj" class="force-active">Date Joined</label>
                                                         <div class="errorTxt"></div>
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m6">
                                                     	<div class="row">
                                                             @php
@@ -1199,23 +1228,25 @@
                                                     </div>
                                                     
                                                     
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="old_ic" class="force-active">Old IC Number</label>
                                                         <input id="old_ic" name="old_ic" value="{{$values->old_ic}}" type="text" data-error=".errorTxt12">
                                                         <div class="errorTxt12"></div>
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="new_ic" class="force-active">New IC Number*</label>
                                                         <input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
                                                         <div class="errorTxt13"></div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                     @php 
 
                                                     $auth_user = Auth::user(); 
                                                     $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
                                                     $check_union = $auth_user->hasRole('union'); 
+                                                    $check_unionbranch = $auth_user->hasRole('union-branch'); 
                                                     $check_entry = $auth_user->hasRole('data-entry'); 
                                                     $showfee = 0;
                                                     if($check_union || $check_entry){ 
@@ -1257,7 +1288,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     
                                                     <div class=" col s12 m6 {{ $branch_hide }}">
                                                         <label>Branch Name*</label>
@@ -1283,7 +1314,7 @@
                                                         </div>
                                                     </div>
                                                     @endif
-                                                     <div class="clearfix" style="clear:both"></div>
+                                                     
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>{{__('Levy') }}</label>
                                                         <select name="levy" id="levy" onChange="return HideLevy(this.value)" class="error browser-default selectpicker">
@@ -1293,7 +1324,7 @@
                                                             <option value="NO" {{ $values->levy == 'NO' ? 'selected' : '' }}>No</option>
                                                         </select>
                                                     </div>
-                                                    
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div id="levydiv" class="input-field col s12 m6 @if($values->levy == 'NO') hide @endif {{ $hidemember }}">
                                                         <input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
                                                         <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
@@ -1308,7 +1339,7 @@
                                                             <option value="NO" {{ $values->tdf == 'NO' ? 'selected' : '' }}>No</option>
                                                         </select>
                                                     </div>
-                                                   
+                                                   <div class="clearfix" style="clear:both"></div>
                                                     <div id="tdfdiv" class="input-field col s12 m6 @if($values->tdf == 'NO') hide @endif {{ $hidemember }}">
                                                         <input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
                                                         <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
@@ -1934,32 +1965,44 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @php if($values->is_request_approved==0 && $check_union==1){ @endphp
+                                                @php if($values->is_request_approved==0 && ($check_union==1 || $check_unionbranch==1)){ @endphp
                                                     <br>
                                                     <div class="col s12 m10 ">
                                                         <div class="row">
+
                                                             <div class="col s12 m1">
                                                                 <br>
                                                                 <label>Status*</label>
                                                                
                                                             </div>
+                                                            @if($check_union==1)
                                                             <div class="col s12 m4">
                                                                 <div class="">
                                                                      <select name="approval_status" id="approval_status" onclick="return EnableReason(this.value)" class="error browser-default">
                                                                         <option value="0">Select Status</option>
                                                                         <option selected="" {{ $values->approval_status == 'Pending' ? 'selected' : '' }}> Pending</option>
-                                                                        <option {{ $values->approval_status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                                                        <option {{ $values->approval_status == 'Approved' ? 'selected' : '' }}>Approved</option>
                                                                         <option {{ $values->approval_status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
                                                                     </select>
                                                                 </div>
                                                                
                                                             </div>
+                                                            @endif
+                                                            @if($check_unionbranch==1)
+                                                                <div class="col s12 m2">
+                                                                    <br>
+
+                                                                    {{ $values->approval_status }}
+                                                                </div>
+                                                            @endif
                                                             <div id="app_reason" class="col s12 m4 @if($values->approval_status != 'Rejected') hide @endif">
                                                                 <div class="">
-                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" class="validate" style="">
+                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" class="validate" style="">(Remarks)
                                                                 </div>
                                                                
                                                             </div>
+                                                            
+                                                            @if($check_union==1)
                                                             <div class="col s12 m3 ">
                                                                 
                                                                 <label>
@@ -1970,6 +2013,7 @@
                                                                 </div>
                                                                 
                                                             </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -2761,6 +2805,13 @@
             $("#tdfdiv").addClass('hide');
         }else{
             $("#tdfdiv").removeClass('hide');
+        }
+    }
+    function ShowRemarks(designationid){
+        if(designationid==12){
+            $("#remarksdiv").removeClass('hide');
+        }else{
+            $("#remarksdiv").addClass('hide');
         }
     }
 </script>

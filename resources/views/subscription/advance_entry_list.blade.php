@@ -20,6 +20,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+<link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
 	#main.main-full {
 		height: 750px;
@@ -96,6 +98,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th>{{__('To_date') }}</th>
                                                       <th>{{__('Amount') }}</th>
                                                       <th>{{__('No of Months') }}</th>
+                                                      <th>{{__('Paid Amount') }}</th>
+                                                      <th>{{__('Balance Amount') }}</th>
                                                       <th>{{__('Status') }}</th>
                                                       <th style="text-align:center;"> {{__('Action') }}</th>
                                                   </tr>
@@ -116,7 +120,63 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 
           </div>
 <!-- END: Page Main-->
-<!-- Theme Customizer -->
+<!-- Theme Customizer -->  <!-- Modal Structure -->
+<div id="modal-approval" class="modal">
+    <form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
+        @csrf
+    <input type="text" class="" name="member_autoid" id="member_autoid"/>
+    <input type="text" class="" name="advance_autoid" id="advance_autoid"/>
+    <div class="modal-content">
+      <h4>Advance details</h4>
+      <div class="row">
+        <div class="col s12 m6">
+           <p>
+            Member Name: <span id="view_member_name" class="bold"></span>
+            </br>
+            M/O: <span id="view_mno" class="bold"></span>
+           </p>
+        </div>
+        <div class="col s12 m6">
+           <p>
+            Amount: <span id="view_paid" class="bold"></span>
+            </br>
+            Months: <span id="view_months" class="bold"></span>
+           </p>
+        </div>
+      </div>
+      
+       </hr>
+      
+        <div class="row">
+            <div class="col m2">
+                <label for="appmonth">{{__('Approval Month') }}*</label>
+                <input type="text" class="datepicker-custom" name="appmonth" id="appmonth" required="" readonly="" value="" />
+            </div>
+            <div class="col m2">
+              <label for="subscriptionamt">{{__('Subscription') }}*</label>
+              <input type="text" class="allow_decimal" onkeyup="return CalculateTotal()" name="subscriptionamt" id="subscriptionamt" required="" value="" />
+            </div>
+            <div class="col m2">
+              <label for="bfamt">{{__('BF') }}*</label>
+              <input type="text" class="allow_decimal" onkeyup="return CalculateTotal()" name="bfamt" id="bfamt" value="" />
+            </div>
+            <div class="col m2">
+              <label for="insamt">{{__('Insurance') }}*</label>
+              <input type="text" class="allow_decimal" onkeyup="return CalculateTotal()" name="insamt" id="insamt" value="" />
+            </div>
+            <div class="col m2">
+              <label for="totalamt">{{__('Total') }}</label>
+              <input type="text" class="" name="totalamt" id="totalamt" readonly="" value="" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
+      <button type="submit" class="btn waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+    </div>
+     </form>
+</div>
+
 @endsection
 @section('footerSection')
 <script src="{{ asset('public/assets/vendors/data-tables/js/jquery.dataTables.min.js') }}"
@@ -139,6 +199,9 @@ type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/vfs_fonts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/buttons.html5.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/buttons.print.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
+<script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
+<script src="{{ asset('public/js/sweetalert.min.js')}}"></script>
 <script>
 
 $("#subscriptions_sidebars_id").addClass('active');
@@ -214,6 +277,8 @@ $(function () {
                 {"data": "to_date"},
 				{"data": "advance_amount"},
                 {"data": "no_of_months"},
+                {"data": "paid_amount"},
+                {"data": "balance_amount"},
 				{"data": "status_id"},
                 {"data": "options"}
 			],
@@ -253,12 +318,50 @@ function PaySubscription(advanceid){
       dataType: "json",
       success: function(result) {
         //console.log(result);
-       
+        if(result){
+          $("#view_member_name").text(result.name);
+          $("#view_mno").text(result.member_number);
+          $("#view_paid").text(result.advance_amount);
+          $("#view_months").text(result.from_date+' to '+result.to_date);
+          $("#member_autoid").text(result.member_id);
+          $("#advance_autoid").text(result.advanceid);
+        }
        
         $("#modal-approval").modal('open');
         loader.hideLoader();
       }
     });
+  }
+  $(document).ready(function() {
+    $('.datepicker-custom').MonthPicker({
+        Button: false,
+        changeYear: true,
+        MonthFormat: 'M/yy',
+        OnAfterChooseMonth: function() {
+           //getMonthsNumber();
+        }
+    });
+    $('.ui-button').removeClass("ui-state-disabled");
+    //$('.datepicker-custom').MonthPicker({ Button: false,dateFormat: 'M/yy' });
+
+});
+  $(document).on('input', '.allow_decimal', function(){
+   var self = $(this);
+   self.val(self.val().replace(/[^0-9\.]/g, ''));
+   if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+   {
+     evt.preventDefault();
+   }
+ });
+  function CalculateTotal(){
+    var subscriptionamt = $("#subscriptionamt").val();
+    var bfamt = $("#bfamt").val();
+    var insamt = $("#insamt").val();
+    subscriptionamt = subscriptionamt=='' ? 0 : subscriptionamt;
+    bfamt = bfamt=='' ? 0 : bfamt;
+    insamt = insamt=='' ? 0 : insamt;
+    totalamt = parseFloat(subscriptionamt) + parseFloat(bfamt) + parseFloat(insamt);
+    $("#totalamt").val(totalamt);
   }
 </script>
 @endsection

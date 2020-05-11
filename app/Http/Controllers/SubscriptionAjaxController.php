@@ -1547,7 +1547,7 @@ class SubscriptionAjaxController extends CommonController
         );
         
        // DB::enableQueryLog();
-		$commonqry = DB::table('advance_payments as ap')->select('ap.no_of_months','ap.id as advanceid','ap.from_date','ap.to_date','ap.advance_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color','ap.member_id')
+		$commonqry = DB::table('advance_payments as ap')->select('ap.no_of_months','ap.id as advanceid','ap.from_date','ap.to_date','ap.advance_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color','ap.member_id','ap.paid_amount','ap.balance_amount')
                     ->leftjoin('membership as m','ap.member_id','=','m.id')
                     ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                     ->leftjoin('company as c','cb.company_id','=','c.id')
@@ -1639,6 +1639,8 @@ class SubscriptionAjaxController extends CommonController
                 $nestedData['status_id'] = $arrear->status_name;
                 $font_color = $arrear->font_color;
                 $nestedData['font_color'] = $font_color;
+                $nestedData['paid_amount'] = $arrear->paid_amount;
+                $nestedData['balance_amount'] = $arrear->balance_amount;
 
                 $enc_id = Crypt::encrypt($arrear->advanceid);
                 $delete =  route('subscription.arrearentrydelete', [app()->getLocale(),$enc_id]) ;
@@ -1677,6 +1679,14 @@ class SubscriptionAjaxController extends CommonController
 
     public function AdvanceDetails($lang,Request $request)
     {
-        return $request->all();
+        $advanceid = $request->input('advanceid');
+
+        $advanceres = DB::table('advance_payments as ap')
+                        ->select('ap.id as advanceid','ap.member_id','ap.advance_date','ap.from_date','ap.to_date','ap.no_of_months','ap.advance_amount','m.name','m.member_number')
+                        ->leftjoin('membership as m','ap.member_id','=','m.id')
+                        ->where('ap.id','=',$advanceid)
+                        ->first();
+
+        echo json_encode($advanceres);
     }
 }
