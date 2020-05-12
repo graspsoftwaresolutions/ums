@@ -1100,7 +1100,7 @@
                                                                    
                                                                 </div>
                                                             </div>
-                                                            <div id="remarksdiv" class="input-field col s12 m6 hide">
+                                                            <div id="remarksdiv" class="input-field col s12 m6 @if($values->designation_new_id!=12) hide @endif">
                                                                 <input type="text" class="" id="remarks" value="{{ $values->designation_others }}" name="remarks">
                                                                 <label for="remarks" class="force-active">{{__('Remarks') }}*</label>
                                                             </div>
@@ -1516,7 +1516,7 @@
                                                                                 <th data-field="sex">Sex</th>
                                                                                 <th data-field="relationship">Relationship</th>
                                                                                 <th data-field="nric_n">NRIC-N</th>
-                                                                                <th data-field="nric_o">NRIC-0</th>
+                                                                                <th data-field="nric_o">NRIC-O</th>
                                                                                 <th data-field="action" width="25%">Action</th>
                                                                             </tr>
                                                                         </thead>

@@ -36,39 +36,45 @@
 <div id="card-stats">
    <div class="row">
 		<div class="col s12 m6 l3">
-		 <div class="card animate fadeRight">
-			<div class="card-content green lighten-1 white-text">
-			   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Company Branches') }}</p>
-			   <h4 class="card-stats-number white-text">{{ $data['total_company_branch_count'] }}</h4>
-			</div>
-			<div class="card-action green">
-			   <div id="invoice-line" class="center-align"><a style="color:white" href="{{route('master.branch', app()->getLocale())}}"> {{__('Company Branches List') }}</a></div>
-			</div>
-		 </div>
+			<a style="color:white" href="{{route('master.branch', app()->getLocale())}}">
+			 <div class="card animate fadeRight">
+				<div class="card-content green lighten-1 white-text">
+				   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Company Branches') }}</p>
+				   <h4 class="card-stats-number white-text">{{ $data['total_company_branch_count'] }}</h4>
+				</div>
+				<div class="card-action green">
+				   <div id="invoice-line" class="center-align"> {{__('Company Branches List') }}</div>
+				</div>
+			 </div>
+			</a>
 		</div>
 		<div class="col s12 m6 l3">
-		 <div class="card animate fadeLeft">
-			<div class="card-content red accent-2 white-text">
-			   <p class="card-stats-title"><i class="material-icons"></i>{{ __('No of Members') }}</p>
-			   <h4 class="card-stats-number white-text">{{ $data['total_member_count'] }}</h4>
-			  
-			</div>
-			<div class="card-action red">
-			   <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/membership')}}">{{ __('Members List') }}</a></div>
-			</div>
-		 </div>
+			<a style="color:white" href="{{url(app()->getLocale().'/membership')}}">
+			 <div class="card animate fadeLeft">
+				<div class="card-content red accent-2 white-text">
+				   <p class="card-stats-title"><i class="material-icons"></i>{{ __('No of Members') }}</p>
+				   <h4 class="card-stats-number white-text">{{ $data['total_member_count'] }}</h4>
+				  
+				</div>
+				<div class="card-action red">
+				   <div id="sales-compositebar" class="center-align">{{ __('Members List') }}</div>
+				</div>
+			 </div>
+			</a>
 		</div>
 		<div class="dash-tab-clearfix"/>
 	      <div class="col s12 m6 l3">
+	      	<a style="color:white" href="{{ url(app()->getLocale().'/membership_list?type=1') }}"> 
 	         <div class="card animate fadeRight">
 	            <div class="card-content orange lighten-1 white-text">
 	               <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Rejected Members') }}</p>
 	               <h4 class="card-stats-number white-text">{{ $rejected_count }}</h4>
 	            </div>
 	            <div class="card-action orange">
-	               <div id="invoice-line" class="center-align"><a style="color:white" href="{{ url(app()->getLocale().'/membership_list?type=1') }}"> {{__('Rejected Members List') }}</a></div>
+	               <div id="invoice-line" class="center-align">{{__('Rejected Members List') }}</div>
 	            </div>
 	         </div>
+	        </a>
 	      </div>
    </div>
 </div>

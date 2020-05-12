@@ -29,6 +29,7 @@
 <div id="card-stats">
    <div class="row">
       <div class="col s12 m6 l3">
+      	<a style="color:white" href="{{url(app()->getLocale().'/membership')}}">
          <div class="card animate fadeLeft">
             <div class="card-content red accent-2 white-text">
                <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
@@ -36,9 +37,10 @@
               
             </div>
             <div class="card-action red">
-               <div id="sales-compositebar" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/membership')}}">Members List</a></div>
+               <div id="sales-compositebar" class="center-align">Members List</div>
             </div>
          </div>
+         </a>
       </div>
       
    </div>

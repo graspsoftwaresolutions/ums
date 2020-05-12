@@ -588,7 +588,7 @@
 																								<th data-field="sex">Sex</th>
 																								<th data-field="relationship">Relationship</th>
 																								<th data-field="nric_n">NRIC-N</th>
-																								<th data-field="nric_o">NRIC-0</th>
+																								<th data-field="nric_o">NRIC-O</th>
 																								<th data-field="action" width="25%">Action</th>
 																							</tr>
 																						</thead>
@@ -1213,8 +1213,10 @@
     function ShowRemarks(designationid){
     	if(designationid==12){
     		$("#remarksdiv").removeClass('hide');
+    		$("#remarks").attr('required',true);
     	}else{
     		$("#remarksdiv").addClass('hide');
+    		$("#remarks").attr('required',false);
     	}
     }
  //    $('#state_id').change(function(e, data){
