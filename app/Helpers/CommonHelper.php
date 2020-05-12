@@ -3544,4 +3544,10 @@ class CommonHelper
         
         return $des_data;
      }
+
+    public static function getMemberAttachaments($memberid){
+        $m_data = DB::table('membership_attachments')->where('member_id', $memberid)->get();
+        //dd($m_data);
+        return $m_data;
+     }
 }

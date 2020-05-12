@@ -103,7 +103,7 @@
 									@php 
 										$member_autoid = $values->mid; 
 									@endphp
-                                    <form class="formValidate" id="wizard2" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
+                                    <form class="formValidate" id="wizard2" method="post" enctype="multipart/form-data" action="{{ url(app()->getLocale().'/membership_save') }}">
                                         @csrf 
 										@if($irc_status==1) 
 											@php 
@@ -1369,6 +1369,46 @@
                                                         @endif
                                                     </div>
                                                     @php } @endphp
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col s12 m4 hide">
+                                                         <div id="">
+                                                            <div class=" ">
+                                                                <br>
+                                                                <input type="file" name="attachmentone" multiple="" class="" accept="" style="width: 500px;">
+                                                            </div>
+                                                            <div class="file-path-wrapper hide">
+                                                                <input class="file-path validate" type="text">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col s12 m6 hide">
+                                                        <input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
+                                                    </div>
+                                                    @php
+                                                        $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
+                                                        //dd($getfiles);
+                                                    @endphp
+                                                    <div class="col s12 m6">
+                                                         <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>File</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($getfiles as $file)
+                                                                <tr>
+                                                                    <td><a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
+                                                                    <td>Delete</td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                            
+                                                         </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </fieldset>

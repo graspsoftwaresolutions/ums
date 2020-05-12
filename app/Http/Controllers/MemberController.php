@@ -30,6 +30,8 @@ use App\Model\MonthlySubscriptionMember;
 use App\Model\MonSubCompanyAttach;
 use App\Model\MonthlySubMemberMatch;
 use Log;
+use Illuminate\Support\Facades\Input;
+
 
 
 class MemberController extends CommonController
@@ -419,6 +421,21 @@ class MemberController extends CommonController
 				}
 				
 			}
+
+			if(Input::hasFile('attachmentone')){
+				$attachment_file = 'attachmentone';
+				$filenameWithExt = $request->file($attachment_file)->getClientOriginalExtension();
+				$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+				$file = $request->file($attachment_file)->storeAs('member', $inputfilenames ,'local');
+				$data = [
+							'member_id' => $member_id,
+							'file_name' => $inputfilenames,
+				];
+				DB::table('membership_attachments')->insert($data);
+				
+			}
+
+
 			$check_fee_auto_id = $request->input('fee_auto_id');
 			if( isset($check_fee_auto_id)){
 				$fee_count = count($request->input('fee_auto_id'));

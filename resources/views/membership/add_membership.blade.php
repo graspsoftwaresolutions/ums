@@ -64,7 +64,7 @@
 												</h4>
 												
 											</div>
-											<form class="formValidate" id="wizard2" method="post" action="{{ url(app()->getLocale().'/membership_save') }}">
+											<form class="formValidate" id="wizard2" method="post" enctype="multipart/form-data" action="{{ url(app()->getLocale().'/membership_save') }}">
 											@csrf
 												@php 
 													$auth_user = Auth::user();
@@ -427,8 +427,43 @@
 																	<label for="employee_id" class="force-active">{{__('Employee ID') }}</label>
 																	<input id="employee_id" name="employee_id" value="{{ old('employee_id') }}" type="text">
 																</div>
-																
 																<div class="row">
+																	<div class="col s12 m4">
+																		 <div id="">
+									                                        <div class=" ">
+									                                         	<br>
+									                                            <input type="file" name="attachmentone" multiple="" class="" accept="" style="width: 500px;">
+									                                        </div>
+									                                        <div class="file-path-wrapper hide">
+									                                            <input class="file-path validate" type="text">
+									                                        </div>
+									                                    </div>
+																	</div>
+																	<div class="col s12 m6 hide">
+																		<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
+																	</div>
+																	<div class="col s12 m6">
+																		 <table>
+																		 	<thead>
+																		 		<tr>
+																		 			<th>File</th>
+																		 			<th>Action</th>
+																		 		</tr>
+																		 	</thead>
+																		 	<tbody>
+																		 		<tr>
+																			 		<td></td>
+																			 		<td></td>
+																			 	</tr>
+																		 	</tbody>
+																		 	
+																		 </table>
+																	</div>
+																</div>
+																<div class="row">
+																	<div class="input-field inline">
+																		
+																	</div>
 																	<!--div class="col m4 s12 mb-3">
 																		<button class="red btn btn-reset" type="reset">
 																			<i class="material-icons left">clear</i>Reset

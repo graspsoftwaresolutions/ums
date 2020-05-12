@@ -101,7 +101,7 @@
 									@php 
 										$member_autoid = $values->mid; 
 									@endphp
-                                    <form class="formValidate" id="wizard2" method="post" action="{{ url(app()->getLocale().'/u_membership_save') }}">
+                                    <form class="formValidate" id="wizard2" method="post" enctype="multipart/form-data" action="{{ url(app()->getLocale().'/u_membership_save') }}">
                                         @csrf 
 										
                                         
@@ -119,12 +119,12 @@
                                                         </select>
                                                         <div class="errorTxt1"></div>
                                                     </div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="col s12 m6">
                                                         <label for="member_number" class="force-active">Member Number *</label>
                                                         <input id="member_number" name="member_number" value="{{$values->member_number}}" readonly type="text" data-error=".errorTxt29">
                                                         <div class="errorTxt29"></div>
                                                     </div>
-                                                    <div class="input-field col s12 m6">
+                                                    <div class="col s12 m6">
                                                         <label for="name" class="force-active">Member Name as per NRIC *</label>
                                                         <input id="name" name="name" required="" value="{{$values->name}}" type="text" data-error=".errorTxt30">
                                                         <div class="errorTxt30"></div>
@@ -499,6 +499,46 @@
                                                         @endif
                                                     </div>
                                                     @php } @endphp
+                                                    <div class="clearfix" style="clear:both"></div>
+                                                    <div class="row hide">
+                                                    <div class="col s12 m4">
+                                                         <div id="">
+                                                            <div class=" ">
+                                                                <br>
+                                                                <input type="file" name="attachmentone" multiple="" class="" accept="" style="width: 500px;">
+                                                            </div>
+                                                            <div class="file-path-wrapper hide">
+                                                                <input class="file-path validate" type="text">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col s12 m6 hide">
+                                                        <input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
+                                                    </div>
+                                                    @php
+                                                        $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
+                                                        //dd($getfiles);
+                                                    @endphp
+                                                    <div class="col s12 m6">
+                                                         <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>File</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($getfiles as $file)
+                                                                <tr>
+                                                                    <td><a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
+                                                                    <td>Delete</td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                            
+                                                         </table>
+                                                    </div>
+                                                </div>
                                                 </div>
                                             </div>
                                         
