@@ -1216,4 +1216,19 @@ class MemberController extends CommonController
 			
 		}
 	}
+
+	public function MemberSave(Request $request)
+	{
+		$auto_id = $request->input('auto_id');
+		$member_title = $request->input('member_title');
+		$name = $request->input('name');
+
+		$user_data = [
+			'member_title_id' => $member_title,
+			'name' => $name,
+		];
+		DB::table('membership')->where('id', $auto_id)->update($user_data);
+		$redirect_url = app()->getLocale().'/membership';
+		return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
+	}
 }

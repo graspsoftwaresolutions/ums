@@ -519,6 +519,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('advance_payment_info','SubscriptionAjaxController@AdvanceDetails')->name('advance.info');
 	Route::post('ajax_pending_members_list/{parameter}','MembershipController@AjaxPendingmembersList')->name('pending.ajaxmemberslist');
+
+	Route::get('membership-union-edit/{parameter}','MembershipController@editMember')->name('union.editmembership');
+	Route::post('u_membership_save','MemberController@MemberSave')->name('member.saveumembership');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
