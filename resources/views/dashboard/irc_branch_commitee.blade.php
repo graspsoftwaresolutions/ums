@@ -45,27 +45,31 @@
 		</div>
 
 		<div class="col s12 m6 l3">
-			<div class="card animate fadeLeft">
-				<div class="card-content cyan white-text">
-				   <p class="card-stats-title"><i class="material-icons"></i> {{__('No of Pending IRC') }}</p>
-				   <h4 class="card-stats-number white-text">{{ $data['total_ircapproval_count'] }}</h4>
+			<a style="color:white" href="{{url(app()->getLocale().'/irc_list?status=0')}}">
+				<div class="card animate fadeLeft">
+					<div class="card-content cyan white-text">
+					   <p class="card-stats-title"><i class="material-icons"></i> {{__('No of Pending IRC') }}</p>
+					   <h4 class="card-stats-number white-text">{{ $data['total_ircapproval_count'] }}</h4>
+					</div>
+					<div class="card-action cyan darken-1">
+					   <div id="clients-bar" class="center-align">{{__('Pending IRC List') }} </div>
+					</div>
 				</div>
-				<div class="card-action cyan darken-1">
-				   <div id="clients-bar" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/irc_list?status=0')}}">{{__('Pending IRC List') }}</a> </div>
-				</div>
-			</div>
+			</a>
 		</div>
 
 		<div class="col s12 m6 l3">
-			<div class="card animate fadeRight">
-				<div class="card-content green lighten-1 white-text">
-				   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Confirm IRC') }}</p>
-				   <h4 class="card-stats-number white-text">{{ $data['total_ircconfirm_count'] }}</h4>
+			<a style="color:white" href="{{url(app()->getLocale().'/irc_list?status=1')}}">
+				<div class="card animate fadeRight">
+					<div class="card-content green lighten-1 white-text">
+					   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Confirm IRC') }}</p>
+					   <h4 class="card-stats-number white-text">{{ $data['total_ircconfirm_count'] }}</h4>
+					</div>
+					<div class="card-action green">
+					   <div id="profit-tristate" class="center-align">{{__('Confirm IRC List') }} </div>
+					</div>
 				</div>
-				<div class="card-action green">
-				   <div id="profit-tristate" class="center-align"><a style="color:white" href="{{url(app()->getLocale().'/irc_list?status=1')}}">{{__('Confirm IRC List') }} </a></div>
-				</div>
-			</div>
+			</a>
 		</div>
 		<div class="dash-tab-clearfix"/>
 		

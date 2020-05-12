@@ -1476,7 +1476,7 @@ class MembershipController extends Controller
         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
         'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved',
-        'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount','membership.current_salary','membership.last_update','membership.approval_status','membership.approval_reason')
+        'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount','membership.current_salary','membership.last_update','membership.approval_status','membership.approval_reason','membership.designation_new_id','membership.designation_others','membership.approved_by')
         ->leftjoin('country','membership.country_id','=','country.id')
         ->leftjoin('state','membership.state_id','=','state.id')
         ->leftjoin('city','membership.city_id','=','city.id')
@@ -2486,8 +2486,9 @@ class MembershipController extends Controller
                 
                 //$actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
 
-                $actions .="<a style='margin-left: 10px;' title='View' class='btn-sm waves-effect waves-light purple modal-trigger' href='$view'><i class='material-icons'>remove_red_eye
-                </i></a>";
+                if($user_role=='union'){
+                      $actions .="<a style='margin-left: 10px;' title='View' class='btn-sm waves-effect waves-light purple modal-trigger' href='$view'><i class='material-icons'>remove_red_eye</i></a>";
+                }
                 
                // $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 

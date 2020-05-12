@@ -494,7 +494,7 @@
                                                         </select>
                                                         @else
                                                         <p style="margin-top:10px;">. @php $status_val = CommonHelper::getStatusName($values->status_id); if($status_val ==''){ $status_val = 'Pending'; } @endphp
-                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ $status_val }}</span>
+                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-1 medium-small">{{ $status_val }}</span>
                                                         </p>
                                                         @endif
                                                     </div>
@@ -569,7 +569,9 @@
                                                 @php } @endphp
                                             </div>
                                         
-                                      
+                                      @php
+                                        $lastmonthendrecord = CommonHelper::getlastMonthEndByMember($values->mid); 
+                                    @endphp
 										<div class="row">
 											<div class="col s12 m8 center">
 													@php
