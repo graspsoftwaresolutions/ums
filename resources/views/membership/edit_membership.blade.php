@@ -2039,15 +2039,15 @@
                                                                     {{ $values->approval_status }}
                                                                 </div>
                                                             @endif
-                                                            <div id="app_reason" class="col s12 m4 @if($values->approval_status != 'Rejected') hide @endif">
+                                                            <div id="app_reason" class="col s12 m7 @if($values->approval_status != 'Rejected') hide @endif">
                                                                 <div class="">
-                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" class="validate" style="">(Remarks)
+                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" width="1200px;" class="validate" style="">(Remarks)
                                                                 </div>
                                                                
                                                             </div>
                                                             
                                                             @if($check_union==1)
-                                                            <div class="col s12 m3 ">
+                                                            <div class="col s12 m2 ">
                                                                 
                                                                 <label>
                                                                     <input type="checkbox" id="activate_account" data-error=".errorTxt129" name="activate_account" @if($values->approval_status == 'Rejected') checked @endif value='1' /> &nbsp; <span>Verify account</span>
@@ -2828,7 +2828,7 @@
         if(type=='Rejected'){
             $("#app_reason").removeClass('hide');
             $("#activate_account").attr('required',true);
-        }else if(type=='Completed'){
+        }else if(type=='Approved'){
             $("#app_reason").addClass('hide');
             $("#activate_account").attr('required',true);
         }else{

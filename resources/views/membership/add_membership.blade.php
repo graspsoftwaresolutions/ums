@@ -500,7 +500,7 @@
 																				<div class="col s12 m4">
 																					<div class="row">
 																						<div class="input-field col s12 m8">
-																							<label for="nominee_dob">DOB *</label>
+																							<label for="nominee_dob" class="force-active">DOB *</label>
 																							<input id="nominee_dob" name="nominee_dob" data-reflectage="nominee_age" value="" class="datepicker"  type="text"> 
 																						</div>
 																						<div class="input-field col s12 m4">

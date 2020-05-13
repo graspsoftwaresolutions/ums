@@ -242,7 +242,7 @@ class MemberController extends CommonController
 						$activate_account = $request->input('activate_account');
 						
 						$activate_account = isset($activate_account) ? 1 : 0;
-						if($activate_account==1 && $approval_status=='Completed'){
+						if($activate_account==1 && $approval_status=='Approved'){
 
 							$member['is_request_approved'] = $activate_account;
 							$member['status_id'] = 1;
