@@ -422,17 +422,22 @@ class MemberController extends CommonController
 				
 			}
 
-			if(Input::hasFile('attachmentone')){
-				$attachment_file = 'attachmentone';
-				$filenameWithExt = $request->file($attachment_file)->getClientOriginalExtension();
-				$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
-				$file = $request->file($attachment_file)->storeAs('member', $inputfilenames ,'local');
-				$data = [
-							'member_id' => $member_id,
-							'file_name' => $inputfilenames,
-				];
-				DB::table('membership_attachments')->insert($data);
-				
+			if($request->hasfile('attachmentone'))
+			{
+				foreach($request->file('attachmentone') as $file)
+				{
+						$filenameWithExt = $file->getClientOriginalExtension();
+						$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+						$file = $file->storeAs('member', $inputfilenames ,'local');
+						$data = [
+									'member_id' => $member_id,
+									'file_name' => $inputfilenames,
+						];
+						//dd($data);
+						DB::table('membership_attachments')->insert($data);
+		
+				}
+
 			}
 
 
@@ -1246,19 +1251,24 @@ class MemberController extends CommonController
 		];
 		DB::table('membership')->where('id', $auto_id)->update($user_data);
 
-		if(Input::hasFile('attachmentone')){
-			$attachment_file = 'attachmentone';
-			$filenameWithExt = $request->file($attachment_file)->getClientOriginalExtension();
-			$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
-			$file = $request->file($attachment_file)->storeAs('member', $inputfilenames ,'local');
-			$data = [
-						'member_id' => $auto_id,
-						'file_name' => $inputfilenames,
-			];
-			DB::table('membership_attachments')->insert($data);
-			
-		}
 
+		if($request->hasfile('attachmentone'))
+		{
+		   foreach($request->file('attachmentone') as $file)
+		   {
+				$filenameWithExt = $file->getClientOriginalExtension();
+				$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+				$file = $file->storeAs('member', $inputfilenames ,'local');
+				$data = [
+							'member_id' => $auto_id,
+							'file_name' => $inputfilenames,
+				];
+				//dd($data);
+				DB::table('membership_attachments')->insert($data);
+ 
+		   }
+
+		}
 
 		$redirect_url = app()->getLocale().'/membership';
 		return redirect($redirect_url)->with('message','Member Details Updated Succesfully');

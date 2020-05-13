@@ -505,7 +505,7 @@
                                                          <div id="">
                                                             <div class=" ">
                                                                 <br>
-                                                                <input type="file" name="attachmentone" multiple="" class="" accept="" style="width: 500px;">
+                                                                <input type="file" name="attachmentone[]" multiple="" class="" accept="" style="width: 500px;">
                                                             </div>
                                                             <div class="file-path-wrapper hide">
                                                                 <input class="file-path validate" type="text">
