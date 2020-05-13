@@ -2605,6 +2605,20 @@ class MembershipController extends Controller
         return view('membership.edit_union_membership')->with('data',$data); 
    
     }
+
+    public function DeleteFile(Request $request, $lang)
+    {
+        $fileid = $request->input('fileid');
+        $filedata = DB::table('membership_attachments')->where('id','=',$fileid)->first();
+        if(file_exists(storage_path('app/member/'.$filedata->file_name))) {
+            unlink(storage_path('app/member/'.$filedata->file_name));
+            $filedel = DB::table('membership_attachments')->where('id','=',$fileid)->delete();
+        } else {
+            $filedel = DB::table('membership_attachments')->where('id','=',$fileid)->delete();
+        }
+        echo 1;
+       
+    }
 }
 
 

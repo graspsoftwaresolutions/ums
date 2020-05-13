@@ -500,7 +500,7 @@
                                                     </div>
                                                     @php } @endphp
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="row hide">
+                                                    <div class="row">
                                                     <div class="col s12 m4">
                                                          <div id="">
                                                             <div class=" ">
@@ -520,7 +520,7 @@
                                                         //dd($getfiles);
                                                     @endphp
                                                     <div class="col s12 m6">
-                                                         <table>
+                                                         <table id="filetable">
                                                             <thead>
                                                                 <tr>
                                                                     <th>File</th>
@@ -529,9 +529,13 @@
                                                             </thead>
                                                             <tbody>
                                                                 @foreach($getfiles as $file)
-                                                                <tr>
-                                                                    <td><a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
-                                                                    <td>Delete</td>
+                                                                <tr id="del_{{ $file->id }}">
+                                                                    <td>{{$file->file_name}}  &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
+                                                                    <td>
+                                                                        <a href="#" onclick="return DeleteImage('{{ $file->id }}')">
+                                                                             Delete
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -914,6 +918,27 @@
         }else{
             $("#remarksdiv").addClass('hide');
         }
+    }
+
+    function DeleteImage(fileid){
+        if (confirm('Are you sure you want to delete?')){
+            $.ajax({
+                type:"GET",
+                dataType:"json",
+                url:"{{URL::to(app()->getLocale().'/delete_member_file') }}?fileid="+fileid,
+                success:function(res){
+                    if(res){
+                        alert('File deleted successfully');
+                        $('table#filetable tr#del_'+fileid).remove();
+                    }else{
+                        alert('Failed to delete');
+                    }
+                }
+            });
+        }else{
+            return false;
+        }
+        
     }
 </script>
 @include('membership.member_common_script') 

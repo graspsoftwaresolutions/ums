@@ -1395,14 +1395,18 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>File</th>
+                                                                    @if($check_unionbranch==1)
                                                                     <th>Action</th>
+                                                                    @endif
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach($getfiles as $file)
                                                                 <tr>
-                                                                    <td><a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
+                                                                    <td>{{$file->file_name}} &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
+                                                                    @if($check_unionbranch==1)
                                                                     <td>Delete</td>
+                                                                    @endif
                                                                 </tr>
                                                                 @endforeach
                                                             </tbody>

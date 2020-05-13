@@ -1245,6 +1245,21 @@ class MemberController extends CommonController
 			'name' => $name,
 		];
 		DB::table('membership')->where('id', $auto_id)->update($user_data);
+
+		if(Input::hasFile('attachmentone')){
+			$attachment_file = 'attachmentone';
+			$filenameWithExt = $request->file($attachment_file)->getClientOriginalExtension();
+			$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+			$file = $request->file($attachment_file)->storeAs('member', $inputfilenames ,'local');
+			$data = [
+						'member_id' => $auto_id,
+						'file_name' => $inputfilenames,
+			];
+			DB::table('membership_attachments')->insert($data);
+			
+		}
+
+
 		$redirect_url = app()->getLocale().'/membership';
 		return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
 	}

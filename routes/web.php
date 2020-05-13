@@ -522,6 +522,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('membership-union-edit/{parameter}','MembershipController@editMember')->name('union.editmembership');
 	Route::post('u_membership_save','MemberController@MemberSave')->name('member.saveumembership');
+
+	Route::get('delete_member_file','MembershipController@DeleteFile')->name('file.delete');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
