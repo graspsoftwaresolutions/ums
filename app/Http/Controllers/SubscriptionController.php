@@ -4042,4 +4042,15 @@ class SubscriptionController extends CommonController
     {
         return view('subscription.advance_entry_list');
     }
+
+    public function saveAdvanceApprove($lang, Request $request){
+        $member_autoid = $request->input('member_autoid');
+        $advance_autoid = $request->input('advance_autoid');
+        $appmonth = $request->input('appmonth');
+        $subscriptionamt = $request->input('subscriptionamt');
+        $bfamt = $request->input('bfamt');
+        $insamt = $request->input('insamt');
+        $totalamt = $request->input('totalamt');
+        
+    }
 }

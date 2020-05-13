@@ -424,17 +424,20 @@ class MemberController extends CommonController
 
 			if($request->hasfile('attachmentone'))
 			{
+				$sno = 0;
+				$membernumber = DB::table('membership')->where('id', $member_id)->pluck('member_number')->first();
 				foreach($request->file('attachmentone') as $file)
 				{
-						$filenameWithExt = $file->getClientOriginalExtension();
-						$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
-						$file = $file->storeAs('member', $inputfilenames ,'local');
-						$data = [
-									'member_id' => $member_id,
-									'file_name' => $inputfilenames,
-						];
-						//dd($data);
-						DB::table('membership_attachments')->insert($data);
+					$filenameWithExt = $file->getClientOriginalExtension();
+					$inputfilenames = $membernumber.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
+					$file = $file->storeAs('member', $inputfilenames ,'local');
+					$data = [
+								'member_id' => $member_id,
+								'file_name' => $inputfilenames,
+					];
+					//dd($data);
+					DB::table('membership_attachments')->insert($data);
+					$sno++;
 		
 				}
 
@@ -1254,10 +1257,12 @@ class MemberController extends CommonController
 
 		if($request->hasfile('attachmentone'))
 		{
-		   foreach($request->file('attachmentone') as $file)
-		   {
+			$sno = 0;
+			$membernumber = DB::table('membership')->where('id', $auto_id)->pluck('member_number')->first();
+		    foreach($request->file('attachmentone') as $file)
+		   	{
 				$filenameWithExt = $file->getClientOriginalExtension();
-				$inputfilenames = strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+				$inputfilenames = $membernumber.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
 				$file = $file->storeAs('member', $inputfilenames ,'local');
 				$data = [
 							'member_id' => $auto_id,
@@ -1265,8 +1270,15 @@ class MemberController extends CommonController
 				];
 				//dd($data);
 				DB::table('membership_attachments')->insert($data);
- 
-		   }
+				$sno++;
+			}
+			if($sno!=0){
+				$user_dataone = [
+					'approval_status' => 'Pending',
+					'approval_reason' => '',
+				];
+				DB::table('membership')->where('id', $auto_id)->update($user_dataone);
+			}
 
 		}
 

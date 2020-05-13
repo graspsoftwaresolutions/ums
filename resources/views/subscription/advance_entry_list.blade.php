@@ -122,10 +122,10 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <!-- END: Page Main-->
 <!-- Theme Customizer -->  <!-- Modal Structure -->
 <div id="modal-approval" class="modal">
-    <form class="formValidate" id="approvalformValidate" method="post" action="{{ route('mismatched.save',app()->getLocale()) }}">
+    <form class="formValidate" id="approvalformValidate" method="post" action="{{ route('advance_approve.save',app()->getLocale()) }}">
         @csrf
-    <input type="text" class="" name="member_autoid" id="member_autoid"/>
-    <input type="text" class="" name="advance_autoid" id="advance_autoid"/>
+    <input type="text" class="hide" name="member_autoid" id="member_autoid"/>
+    <input type="text" class="hide" name="advance_autoid" id="advance_autoid"/>
     <div class="modal-content">
       <h4>Advance details</h4>
       <div class="row">
@@ -275,11 +275,11 @@ $(function () {
                 {"data": "branch_id"},
                 {"data": "from_date"},
                 {"data": "to_date"},
-				{"data": "advance_amount"},
+				        {"data": "advance_amount"},
                 {"data": "no_of_months"},
                 {"data": "paid_amount"},
                 {"data": "balance_amount"},
-				{"data": "status_id"},
+				        {"data": "status_id"},
                 {"data": "options"}
 			],
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
@@ -317,14 +317,14 @@ function PaySubscription(advanceid){
       type: "GET",
       dataType: "json",
       success: function(result) {
-        //console.log(result);
+        console.log(result.member_id);
         if(result){
           $("#view_member_name").text(result.name);
           $("#view_mno").text(result.member_number);
           $("#view_paid").text(result.advance_amount);
           $("#view_months").text(result.from_date+' to '+result.to_date);
-          $("#member_autoid").text(result.member_id);
-          $("#advance_autoid").text(result.advanceid);
+          $("#member_autoid").val(result.member_id);
+          $("#advance_autoid").val(result.advanceid);
         }
        
         $("#modal-approval").modal('open');
