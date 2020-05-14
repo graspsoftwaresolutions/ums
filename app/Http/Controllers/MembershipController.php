@@ -2442,7 +2442,7 @@ class MembershipController extends Controller
             foreach ($memberslist as $member)
             {
                 
-                $nestedData['name'] = $member->name;
+                
                 $designation = $member->designation_name[0];
                 $nestedData['designation_id'] = $designation;
                 $gender = $member->gender[0];
@@ -2467,6 +2467,8 @@ class MembershipController extends Controller
                 $nestedData['bg_color'] = $member->approval_status=='Rejected' ? '#e20f03' : '#fff';
 
                 $nestedData['member_number'] = $member->approval_status=='Rejected' ? '<span style="background:#e20f03;color:#fff;padding:5px;">'.$member->member_number.'</span>' : $member->member_number ;
+
+                $nestedData['name'] = $member->approval_status=='Rejected' ? '<span style="background:#e20f03;color:#fff;padding:5px;">'.$member->name.'</span>' : $member->name;
                 
                 $enc_id = Crypt::encrypt($member->id);
                 $delete = "";

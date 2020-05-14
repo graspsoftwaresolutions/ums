@@ -1325,7 +1325,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div id="levydiv" class="input-field col s12 m6 @if($values->levy == 'NO') hide @endif {{ $hidemember }}">
+                                                    <div id="levydiv" class="input-field col s12 m6 @if($values->levy != 'Yes') hide @endif {{ $hidemember }}">
                                                         <input id="levy_amount" name="levy_amount" type="text" value="{{$values->levy_amount}}">
                                                         <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
                                                     </div>
@@ -1340,7 +1340,7 @@
                                                         </select>
                                                     </div>
                                                    <div class="clearfix" style="clear:both"></div>
-                                                    <div id="tdfdiv" class="input-field col s12 m6 @if($values->tdf == 'NO') hide @endif {{ $hidemember }}">
+                                                    <div id="tdfdiv" class="input-field col s12 m6 @if($values->tdf != 'Yes') hide @endif {{ $hidemember }}">
                                                         <input id="tdf_amount" name="tdf_amount" type="text" value="{{$values->tdf_amount}}">
                                                         <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
                                                     </div>
@@ -2838,17 +2838,17 @@
        
     }
     function HideLevy(levytitle){
-        if(levytitle=='NO'){
-            $("#levydiv").addClass('hide');
-        }else{
+        if(levytitle=='Yes'){
             $("#levydiv").removeClass('hide');
+        }else{
+            $("#levydiv").addClass('hide');
         }
     }
     function HideTDF(tdftitle){
-        if(tdftitle=='NO'){
-            $("#tdfdiv").addClass('hide');
-        }else{
+        if(tdftitle=='Yes'){
             $("#tdfdiv").removeClass('hide');
+        }else{
+            $("#tdfdiv").addClass('hide');
         }
     }
     function ShowRemarks(designationid){

@@ -401,7 +401,7 @@
 																	</select>
 																</div>
 																<div class="clearfix" ></div>
-																<div id="levydiv" class="input-field col s12 m6">
+																<div id="levydiv" class="input-field col s12 m6 hide">
 																	<input id="levy_amount" name="levy_amount" type="text">
 																	<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
 																	
@@ -409,7 +409,7 @@
 																
 
 																<div class="col s12 m6">
-																<label>{{__('TDF') }}</label>
+																	<label>{{__('TDF') }}</label>
 																  <select name="tdf" id="tdf" onChange="return HideTDF(this.value)" class="error browser-default selectpicker">
 																		<option value="">{{__('Select TDF') }}</option>
 																		<option value="Not Applicable">N/A</option>
@@ -418,7 +418,7 @@
 																	</select>
 																</div>
 																<div class="clearfix" ></div>
-																<div id="tdfdiv" class="input-field col s12 m6">
+																<div id="tdfdiv" class="input-field col s12 m6 hide">
 																<input id="tdf_amount" name="tdf_amount" type="text">
 																	<label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
 																</div>
@@ -427,6 +427,7 @@
 																	<label for="employee_id" class="force-active">{{__('Employee ID') }}</label>
 																	<input id="employee_id" name="employee_id" value="{{ old('employee_id') }}" type="text">
 																</div>
+																<div class="clearfix" ></div>
 																<div class="row">
 																	<div class="col s12 m4">
 																		 <div id="">
@@ -442,7 +443,7 @@
 																	<div class="col s12 m6 hide">
 																		<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
 																	</div>
-																	<div class="col s12 m6">
+																	<!-- <div class="col s12 m6">
 																		 <table>
 																		 	<thead>
 																		 		<tr>
@@ -458,7 +459,7 @@
 																		 	</tbody>
 																		 	
 																		 </table>
-																	</div>
+																	</div> -->
 																</div>
 																<div class="row">
 																	<div class="input-field inline">
@@ -1232,17 +1233,17 @@
     }
 
     function HideLevy(levytitle){
-    	if(levytitle=='NO'){
-    		$("#levydiv").addClass('hide');
+    	if(levytitle=='Yes'){
+    		$("#levydiv").removeClass('hide');
     	}else{
-			$("#levydiv").removeClass('hide');
+			$("#levydiv").addClass('hide');
     	}
     }
     function HideTDF(tdftitle){
-    	if(tdftitle=='NO'){
-    		$("#tdfdiv").addClass('hide');
+    	if(tdftitle=='Yes'){
+    		$("#tdfdiv").removeClass('hide');
     	}else{
-			$("#tdfdiv").removeClass('hide');
+			$("#tdfdiv").addClass('hide');
     	}
     }
     function ShowRemarks(designationid){

@@ -901,17 +901,17 @@
        
     }
     function HideLevy(levytitle){
-        if(levytitle=='NO'){
-            $("#levydiv").addClass('hide');
-        }else{
+        if(levytitle=='Yes'){
             $("#levydiv").removeClass('hide');
+        }else{
+            $("#levydiv").addClass('hide');
         }
     }
     function HideTDF(tdftitle){
-        if(tdftitle=='NO'){
-            $("#tdfdiv").addClass('hide');
-        }else{
+        if(tdftitle=='Yes'){
             $("#tdfdiv").removeClass('hide');
+        }else{
+            $("#tdfdiv").addClass('hide');
         }
     }
     function ShowRemarks(designationid){
