@@ -173,7 +173,7 @@
                               </select>
                           </div>
                           
-                          <div id="levydiv" class="col s12 l6 @if($edit_data->levy == 'NO') hide @endif ">
+                          <div id="levydiv" class="col s12 l6 @if($edit_data->levy != 'Yes') hide @endif ">
                             <label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
                               <input id="levy_amount" name="levy_amount" type="text" value="{{$edit_data->levy_amount}}">
                               
@@ -191,7 +191,7 @@
                               </select>
                           </div>
                          
-                          <div id="tdfdiv" class="col s12 l6 @if($edit_data->tdf == 'NO') hide @endif">
+                          <div id="tdfdiv" class="col s12 l6 @if($edit_data->tdf != 'Yes') hide @endif">
                              <label for="tdf_amount" class="force-active">{{__('TDF Amount') }} </label>
                               <input id="tdf_amount" name="tdf_amount" type="text" value="{{$edit_data->tdf_amount}}">
                              
@@ -296,19 +296,19 @@ $(document).on('input', '.allow_decimal', function(){
      evt.preventDefault();
    }
  });
- function HideLevy(levytitle){
-      if(levytitle=='NO'){
-          $("#levydiv").addClass('hide');
-      }else{
-          $("#levydiv").removeClass('hide');
-      }
+  function HideLevy(levytitle){
+    if(levytitle=='Yes'){
+      $("#levydiv").removeClass('hide');
+    }else{
+    $("#levydiv").addClass('hide');
+    }
   }
   function HideTDF(tdftitle){
-      if(tdftitle=='NO'){
-          $("#tdfdiv").addClass('hide');
-      }else{
-          $("#tdfdiv").removeClass('hide');
-      }
+    if(tdftitle=='Yes'){
+      $("#tdfdiv").removeClass('hide');
+    }else{
+    $("#tdfdiv").addClass('hide');
+    }
   }
 
 
