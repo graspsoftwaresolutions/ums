@@ -119,7 +119,7 @@
                                                         </select>
                                                         <div class="errorTxt1"></div>
                                                     </div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 hide">
                                                         <label for="member_number" class="force-active">Member Number *</label>
                                                         <input id="member_number" name="member_number" value="{{$values->member_number}}" readonly type="text" data-error=".errorTxt29">
                                                         <div class="errorTxt29"></div>
@@ -128,6 +128,7 @@
                                                         <label for="name" class="force-active">Member Name as per NRIC *</label>
                                                         <input id="name" name="name" required="" value="{{$values->name}}" type="text" data-error=".errorTxt30">
                                                         <div class="errorTxt30"></div>
+                                                            <br> 
                                                     </div>
                                                     <div class="input-field col s12 m6 hide">
                                                         <div class="col s12 row">
@@ -370,7 +371,8 @@
                                                         <input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
                                                         <div class="errorTxt13"></div>
                                                     </div>
-                                                    
+                                                
+
                                                     @php 
 
                                                     $auth_user = Auth::user(); 
@@ -418,7 +420,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="clearfix" style="clear:both"></div>
+                                                    
                                                     
                                                     <div class=" col s12 m6 {{ $branch_hide }}">
                                                         <label>Branch Name*</label>

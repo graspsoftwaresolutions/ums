@@ -309,7 +309,7 @@ span.dtr-title::after {
 										<thead>
 											<tr>
 												<th width="20%" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
-												<th width="5%">{{__('Mem/ID') }}</th>
+												<!-- <th width="5%">{{__('Mem/ID') }}</th> -->
 												<th width="5%">{{__('Mem/Name') }}</th>
 												<th width="5%">{{__('Type')}} </th>
 												<th width="5%">{{__('M/F')}}</th>
@@ -394,7 +394,7 @@ $(function () {
 			   extend: 'pdf',
 			   footer: true,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
 				},
                 title : 'Members List', 
                 text: '<i class="fa fa-file-pdf-o"></i>',
@@ -404,7 +404,7 @@ $(function () {
 			   extend: 'excel',
 			   footer: false,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
 				},
 				title : 'Members List',
                 text:    '<i class="fa fa-file-excel-o"></i>',
@@ -414,7 +414,7 @@ $(function () {
 			   extend: 'print',
 			   footer: false,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
 				},
 				title : 'Members List',
                 text:   '<i class="fa fa-files-o"></i>',
@@ -462,7 +462,7 @@ $(function () {
 	},
 	"columns": [
 		{"data": "options"},
-		{"data" : "member_number"},
+		// {"data" : "member_number"},
 		{"data": "name"},
 		{"data" : "designation_id"},
 		{"data" : "gender"},
@@ -492,7 +492,7 @@ $(function () {
                 	return '<span class="testspan" style="color:#000;">'+data+'</span>' ;
                     
                 },
-                "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+                "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
             },
             { "visible": true,  "targets": '_all' }
         ],

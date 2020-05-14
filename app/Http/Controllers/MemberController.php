@@ -137,12 +137,17 @@ class MemberController extends CommonController
 				if($request->input('member_number')!=""){
 					$number_count = DB::table('membership')->where('member_number', $request->input('member_number'))->count();
 				}
-				
-				if($number_count>0){
-					$member_number = CommonHelper::get_auto_member_number();
+				if($user_role!='union'){
+					$member_number = 0;
 				}else{
-					$member_number = $request->input('member_number');
+					if($number_count>0){
+						$member_number = CommonHelper::get_auto_member_number();
+					}else{
+						$member_number = $request->input('member_number');
+					}
 				}
+				
+				
 
 				if($member_email==''){
 					$membername_nospace = strtolower(str_replace(' ', '', $member_name));
@@ -198,6 +203,7 @@ class MemberController extends CommonController
 					if($user_role == 'union' || $user_role == 'data-entry'){
 						$member['is_request_approved'] = 1;
 						$member['status_id'] = 1;
+						
 					}else{
 						$member['is_request_approved'] = 0;
 						$member['approval_status'] = 'Pending';
@@ -246,6 +252,7 @@ class MemberController extends CommonController
 
 							$member['is_request_approved'] = $activate_account;
 							$member['status_id'] = 1;
+							$member_number = CommonHelper::get_auto_member_number();
 							
 							if($auto_id!=''){
 								// $new_fee = new MemberFee();
