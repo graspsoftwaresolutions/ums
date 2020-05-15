@@ -526,7 +526,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('delete_member_file','MembershipController@DeleteFile')->name('file.delete');
 	Route::post('ajax_save_advance','SubscriptionController@saveAdvanceApprove')->name('advance_approve.save');
 
-	Route::get('subscription-variation-pdf','SubscriptionController@variationAllPDF')->name('subscription.all');
+	Route::get('subscription-variation-pdf','SubscriptionController@variationAllPDF')->name('subscription.pdf');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

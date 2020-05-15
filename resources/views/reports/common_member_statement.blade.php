@@ -16,15 +16,15 @@
 						<img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;" alt="Membership logo" height="90">
 					</td>
 					<td width="79%" style="padding: 2px;">
-						<span class="report-address" style="font-weight: bold;font-size:18px;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+						<span class="report-address" style="font-weight: bold;font-size:18px;">NATIONAL UNION OF BANK EMPLOYEES</span>
 				
-						<p style="padding-top: 0px;margin-top: 5px;">MEMBER'S ANNUAL STATEMENT OF ACCOUNT OF BENEVOLENT FUND</p>
+						<p style="padding-top: 0px;margin-top: 5px;">ANNUAL BENEVOLENT FUND STATEMENT OF ACCOUNT</p>
 					</td>
 					<td width="20%" style="padding: 2px;">
 						<br>
 						<br>
 						<p style="margin-bottom: 10px;margin-top: 0;"><span class="bold">DATE JOINED</span>: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
-						<span class="bold">DT PAID TILL</span>: {{  date('d/M/Y',strtotime($data['to_date'])) }}
+						<span class="bold">PAID TILL</span>: {{  date('d/M/Y',strtotime($data['to_date'])) }}
 					</td>
 				</table>
 				
@@ -32,16 +32,36 @@
 			</td>
 			
 		</tr>
+		@php
+			$memberaddr = CommonHelper::getBranchAddress($member->branch_id);
+		@endphp
 		<tr class="statement-address">
-			<td width="40%" style="padding-top: 0px;">
-				<p><b>BRANCH</b>: {{ $member->branch_name }}</p>
-				<p><b>BANK</b>: {{ $member->company_name }}</p>
+			<td width="50%" style="padding-top: 0px;">
+				<table>
+					<tr>
+						<td width="6%" style="vertical-align: top;font-weight: bold;">BRANCH:</td>
+						<td width="95%">
+							 {{ $member->branch_name }}
+								@if($memberaddr->address_one!="") , {{ $memberaddr->address_one }} @endif
+								@if($memberaddr->address_two!="") , {{ $memberaddr->address_two }} @endif
+								@if($memberaddr->city_name!="") , {{ $memberaddr->city_name }} @endif
+								@if($memberaddr->postal_code!="") - {{ $memberaddr->postal_code }} @endif
+							
+						</td>
+					</tr>
+					<tr>
+						<td ><b>BANK</b>:</td>
+						<td>
+							{{ $member->company_name }}
+						</td>
+					</tr>
+				</table>
 				
 			</td>
-			<td width="40%" style="padding-top: 0px;">
+			<td width="30%" style="padding-top: 0px;">
 				@if($user_role!='member')
 				<p><b class="bold">BRANCH CODE</b>: {{ $member->branch_shortcode }}</p>
-				<p><b class="bold">BANK CODE</b>: {{ $member->short_code }}</p>
+				<p><b class="bold">BANK CODE</b>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $member->short_code }}</p>
 				@endif
 			</td>
 			<td width="10%" style="text-align:center;padding-top: 0px;">
@@ -125,7 +145,7 @@
 			<td width="5%" style="vertical-align: top;">NOTE: </td>
 			<td>
 				<p style="padding-top: 0px;margin-top: 0px;">1) Any queries on this statement should be communicated to the Hon. Gen Secretary within 14 days upon receipt of this statement, otherwise it would be treated as correct. </p>
-				<p>2) If you wish to change the nominee, kindly request for the nominee form from you Branch Secretary.</p>
+				<p>2) If you wish to change the nominee, kindly request for the nominee form from you Branch.</p>
 				<!--p>3) The Accrued Benefit will be payable according to Rule 6 of the Benevolent Fund Rules.</p-->
 				<!--<p>3) If arrears indicates less than 2 months then it may be due to transit of payment from Bank to NUBE Headquarters.</p>-->
 				<p>* Payment due for 
@@ -154,10 +174,11 @@
 				</table-->
 				@endif
 				<br>
-				<p align="center">National Union of Bank Employees, 12 NUBE House, 3rd Floor Jalan Tun Sambanthan 3, Brickfields 50470 Kuala Lumpur.</p>
-				<p align="center">
+				<p align="center">National Union of Bank Employees, 12 NUBE House, 3rd Floor Jalan Tun Sambanthan 3, Brickfields 50470 Kuala Lumpur.
+					<br>
 					Tel: (603) 2274 9800 &nbsp;&nbsp; Fox: (603) 2260 1800 &nbsp;&nbsp; Email: nube_hq@nube.org.my &nbsp;&nbsp; Website: www.nube.org.my
 				</p>
+				
 			</td>
 		</tr>
 	</table>

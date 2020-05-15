@@ -3970,7 +3970,7 @@ class ReportsController extends Controller
             $data['duehistory'] = $duehistory;
             $data['due_months'] = $duemonth;
             $data['due_subs'] = $duesubs;
-            $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','m.postal_code','m.id')
+            $data['member_data'] = DB::table('membership as m')->select('m.name','m.member_number','m.new_ic','m.old_ic','m.employee_id','m.doj','cb.branch_name','cb.branch_shortcode','c.company_name','c.short_code','m.address_one','m.address_two','m.postal_code','m.id','m.branch_id')
                             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
                             ->leftjoin('company as c','c.id','=','cb.company_id')->where('m.id','=',$member_id)->first();
             //dd($members);

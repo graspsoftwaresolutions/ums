@@ -3550,4 +3550,13 @@ class CommonHelper
         //dd($m_data);
         return $m_data;
      }
+
+    public static function getBranchAddress($branchid){
+        $m_data = DB::table('company_branch as cb')->select('cb.branch_name','cb.postal_code','cb.address_one','cb.address_two','cb.address_three','cit.city_name','st.state_name')
+                ->leftjoin('state as st','st.id','=','cb.state_id')
+                ->leftjoin('city as cit','cit.id','=','cb.city_id')
+                ->where('cb.id', $branchid)->first();
+        //dd($m_data);
+        return $m_data;
+     }
 }
