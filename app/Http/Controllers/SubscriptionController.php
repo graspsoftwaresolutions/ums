@@ -4053,4 +4053,132 @@ class SubscriptionController extends CommonController
         $totalamt = $request->input('totalamt');
         
     }
+
+    public function variationAllPDF($lang, Request $request){
+        ini_set('memory_limit', -1);
+		ini_set('max_execution_time', 10000);
+		//return strtotime('now');
+		$datestring = $request->input('date');
+		$groupby = $request->input('groupby');
+		$display_subs = $request->input('display_subs');
+        $variation = $request->input('variation');
+
+        $data['sub_company'] = $request->input('sub_company');
+        $data['unionbranch_id'] = $request->input('unionbranch_id');
+        
+		//$datestring = strtotime('2019-04-01');
+		//return date('Y-m-01',strtotime($datestring));
+		$data['month_year'] = date('M/Y',$datestring);
+        $data['month_year_full'] = date('Y-m-01',$datestring);
+
+		$data['groupby'] = $groupby;
+		$data['DisplaySubscription'] = $display_subs;
+		$data['print'] = $request->input('print');
+        $data['variation'] = $request->input('variation');
+        $data['inctype'] = $request->input('inctype');
+       // $last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
+        $data['last_month_year']= date("Y-m-01", strtotime($data['month_year_full']." -1 Month"));
+        
+		if($groupby==1){
+            if($data['unionbranch_id']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('cb.union_branch_id as union_branchid','u.union_branch as union_branch_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                ->leftjoin('company as c','cb.company_id','=','c.id')
+                                ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+                                ->where('cb.union_branch_id', '=', $data['unionbranch_id']);
+                $data['union_branch_view'] = $company_view->groupBY('cb.union_branch_id')
+								->get();
+            }else{
+                $data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+            }
+			//$data['union_branch_view'] = CacheMonthEnd::getUnionBranchByDate($data['month_year_full']);
+			$data['company_view']=[];
+			$data['branch_view']=[];
+		}
+		elseif($groupby==2){
+            if($data['sub_company']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('mc.CompanyCode as company_id','c.company_name as company_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+								->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+								->leftjoin('membership as m','m.id','=','mm.MemberCode')
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+								->leftjoin('company as c','mc.CompanyCode','=','c.id')
+                                //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+                                ->where('mc.CompanyCode', '=', $data['sub_company']);
+                $data['company_view'] = $company_view->groupBY('mc.CompanyCode')
+								->get();
+            }else{
+                $data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+            }
+			//$data['company_view'] = CacheMonthEnd::getCompaniesByDate($data['month_year_full']);
+			$data['union_branch_view']=[];
+            $data['branch_view']=[];
+            $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->orderBy('company_name','asc')
+            ->where('status','=','1');
+
+            if($data['sub_company']!=''){
+                $head_company_view = $head_company_view->where('id','=',$data['sub_company']);
+            }
+			$head_company_view = $head_company_view->where(function ($query) {
+				$query->where('head_of_company', '=', '')
+					->orWhere('head_of_company', '=', 0)
+						->orWhereNull('head_of_company');
+			})->get();
+				//dd($head_company_view);
+			foreach($head_company_view as $mkey => $company){
+				$companyid = $company->id;
+				//$company_str_List ="'".$companyid."'";
+				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
+				$res_company = array_merge($company_ids, [$companyid]); 
+
+
+				foreach($company as $newkey => $newvalue){
+					$data['head_company_view'][$mkey][$newkey] = $newvalue;
+				}
+				$data['head_company_view'][$mkey]['company_list'] = $res_company;
+				//$company_str_List ='';
+
+			}
+		}
+		else{
+            if($data['sub_company']!=''){
+                $company_view = DB::table("mon_sub_member as mm")->select('m.branch_id as branch_id','cb.branch_name as branch_name','c.company_name as company_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                                ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                                ->leftjoin('company as c','cb.company_id','=','c.id')
+                                //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+                                ->where('ms.Date', '=', $data['month_year_full'])
+								->where('mm.update_status', '=', 1)
+                                ->where('mm.MemberCode', '!=', Null)
+                                ->where('mc.CompanyCode', '=', $data['sub_company']);
+                $data['branch_view'] = $company_view->groupBY('m.branch_id')
+								->get();
+            }else{
+                 $data['branch_view'] = CacheMonthEnd::getBranchByDate($data['month_year_full']);
+            }
+			
+			$data['union_branch_view']=[];
+			$data['company_view']=[];
+        }
+        
+	
+        // $new['data'] = $data;
+        // $new['data']['print'] = '0';
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('subscription.variation_difference', $dataarr);  
+        return $pdf->download('subscription-variation.pdf'); 
+    
+	}
 }

@@ -258,8 +258,6 @@
 			
 			@endphp
 			@endforeach
-		</tbody>
-		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
 				<th>{{ 0 }}</th>
@@ -268,8 +266,7 @@
 				<th>{{ $total_newjoin_subs }}</th>
 				
 			</tr>
-		</tfoot>
-		
+		</tbody>
 		
 		</table>
 		@endif
@@ -319,9 +316,6 @@
 				$total_previous_subs+=$payable_subs;
 			@endphp
 			@endforeach
-		
-		</tbody>
-		<tfoot>
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
 				<th>{{ $total_previous_subs }}</th>
@@ -331,7 +325,8 @@
 				
 				
 			</tr>
-		</tfoot>
+		</tbody>
+		
 		
 		
 		</table>
@@ -384,9 +379,7 @@
 				$total_current_subs+=$payable_subs;
 			@endphp
 			@endforeach
-		
-		</tbody>
-		<tfoot>
+
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
 				<th>{{ 0 }}</th>
@@ -396,7 +389,8 @@
 				
 				
 			</tr>
-		</tfoot>
+		
+		</tbody>
 		
 		
 		</table>
@@ -454,9 +448,7 @@
 				$total_inc_subs_diff+=$member->Amount-$member->last_amount;
 			@endphp
 			@endforeach
-		
-		</tbody>
-		<tfoot>
+
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
 				<th>{{ $total_inc_subs_old }}</th>
@@ -466,7 +458,9 @@
 				
 				
 			</tr>
-		</tfoot>
+		
+		</tbody>
+		
 		
 		
 		</table>
@@ -523,9 +517,7 @@
 				$total_dec_subs_diff+=abs($member->Amount-$member->last_amount);
 			@endphp
 			@endforeach
-		
-		</tbody>
-		<tfoot>
+
 			<tr class="table-title">
 				<th colspan="3" style="text-align: right;" >Total</th>
 				<th>{{ $total_dec_subs_old }}</th>
@@ -535,7 +527,9 @@
 				
 				
 			</tr>
-		</tfoot>
+		
+		</tbody>
+		
 		
 		
 		</table>

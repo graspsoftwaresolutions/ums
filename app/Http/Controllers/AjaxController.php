@@ -1244,6 +1244,8 @@ class AjaxController extends CommonController
             $companybranchs = DB::table('company_branch as b')
             ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'))
             ->leftjoin('company as c','c.id','=','b.company_id')
+            ->leftjoin('state as st','st.id','=','b.state_id')
+            ->leftjoin('city as cit','cit.id','=','b.city_id')
             ->where('b.status','=','1');
             if($limit != -1){
                 $companybranchs = $companybranchs->offset($start)->limit($limit);
@@ -1256,6 +1258,8 @@ class AjaxController extends CommonController
                 ->orWhere('c.company_name', 'LIKE',"%{$search}%")
                 ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
                 ->orWhere('b.is_head', 'LIKE',"%{$search}%")
+                ->orWhere('st.state_name', 'LIKE',"%{$search}%")
+                ->orWhere('cit.city_name', 'LIKE',"%{$search}%")
                 ->orWhere('b.email', 'LIKE',"%{$search}%");
             });
             $companybranchs = $companybranchs->orderBy($order,$dir)->get()->toArray();
@@ -1263,12 +1267,16 @@ class AjaxController extends CommonController
            
              $totalFiltered = DB::table('company_branch as b')
                             ->leftjoin('company as c','c.id','=','b.company_id')
+                            ->leftjoin('state as st','st.id','=','b.state_id')
+                            ->leftjoin('city as cit','cit.id','=','b.city_id')
                             ->where('b.status','=','1')
                             ->where(function($query) use ($search){
                                 $query->orWhere('b.id','LIKE',"%{$search}%")
                                 ->orWhere('c.company_name', 'LIKE',"%{$search}%")
                                 ->orWhere('b.branch_name', 'LIKE',"%{$search}%")
                                 ->orWhere('b.is_head', 'LIKE',"%{$search}%")
+                                ->orWhere('st.state_name', 'LIKE',"%{$search}%")
+                                ->orWhere('cit.city_name', 'LIKE',"%{$search}%")
                                 ->orWhere('b.email', 'LIKE',"%{$search}%");
                             });
             if($user_role!='union'){
