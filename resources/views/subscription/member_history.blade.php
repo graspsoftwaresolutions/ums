@@ -121,6 +121,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<th>{{__('Ins.Paid')}}</th>
 										<th>{{__('Month.Paid')}}</th>
 										<th>{{__('LastPaymentDate')}}</th>
+										<th>{{__('Advance')}}</th>
 										<th>{{__('Tot.Mon.Paid')}}</th>
 										<th>{{__('Tot.Mon.Due')}}</th>
 										<th>{{__('Total')}}</th>
@@ -140,6 +141,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->INSURANCE_AMOUNT }}</td>
 										<td>{{ $history->TOTAL_MONTHS }}</td>
 										<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
+										<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
 										<td>{{ $history->TOTALMONTHSPAID }}</td>
 										<td>{{ $history->TOTALMONTHSDUE }}</td>
 										<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
@@ -181,6 +183,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<th>{{__('Ins.Paid')}}</th>
 										<th>{{__('Month.Paid')}}</th>
 										<th>{{__('LastPaymentDate')}}</th>
+										<th>{{__('Advance')}}</th>
 										<th>{{__('Tot.Mon.Paid')}}</th>
 										<th>{{__('Tot.Mon.Due')}}</th>
 										<th>{{__('Total')}}</th>
@@ -199,6 +202,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->INSURANCE_AMOUNT }}</td>
 										<td>{{ $history->TOTAL_MONTHS }}</td>
 										<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
+										<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
 										<td>{{ $history->TOTALMONTHSPAID }}</td>
 										<td>{{ $history->TOTALMONTHSDUE }}</td>
 										<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>

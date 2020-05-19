@@ -1552,6 +1552,7 @@ class SubscriptionAjaxController extends CommonController
                     ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
                     ->leftjoin('company as c','cb.company_id','=','c.id')
                     ->leftjoin('status as s','m.status_id','=','s.id')
+                    ->where('ap.no_of_months', '!=' ,0)
                     ->orderBy('ap.id','DESC');
         if($user_role == 'union'){
             $commonqry = $commonqry;
@@ -1592,15 +1593,15 @@ class SubscriptionAjaxController extends CommonController
             $search = $request->input('search.value'); 
             $sub_mem =  $commonqry->where(function($query) use ($search){
                 $query->where('m.id', 'LIKE',"%{$search}%")
-                      ->orWhere('ar.nric', 'LIKE',"%{$search}%")
-                       ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
+                      ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                       ->orWhere('ap.advance_amount', 'LIKE',"%{$search}%")
                        ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
                        ->orWhere('c.company_name', 'LIKE',"%{$search}%")
                        ->orWhere('s.status_name', 'LIKE',"%{$search}%")
                        ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-                       ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
+                       ->orWhere('ap.from_date', 'LIKE',"%{$search}%")
                        ->orWhere('m.name', 'LIKE',"%{$search}%")
-                       ->orWhere('ar.no_of_months', 'LIKE',"%{$search}%");
+                       ->orWhere('ap.no_of_months', 'LIKE',"%{$search}%");
             });          
 		    if( $limit != -1){
 			   $sub_mem = $sub_mem->offset($start)
@@ -1611,15 +1612,15 @@ class SubscriptionAjaxController extends CommonController
 			
             $totalFiltered =  $commonqry->where(function($query) use ($search){
                         $query->where('m.id', 'LIKE',"%{$search}%")
-                              ->orWhere('ar.nric', 'LIKE',"%{$search}%")
-                               ->orWhere('ar.arrear_amount', 'LIKE',"%{$search}%")
-                               ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
-                               ->orWhere('c.company_name', 'LIKE',"%{$search}%")
-                               ->orWhere('s.status_name', 'LIKE',"%{$search}%")
-                               ->orWhere('m.member_number', 'LIKE',"%{$search}%")
-                               ->orWhere('ar.arrear_date', 'LIKE',"%{$search}%")
-                               ->orWhere('m.name', 'LIKE',"%{$search}%")
-                               ->orWhere('ar.no_of_months', 'LIKE',"%{$search}%");
+                        ->orWhere('m.new_ic', 'LIKE',"%{$search}%")
+                        ->orWhere('ap.advance_amount', 'LIKE',"%{$search}%")
+                        ->orWhere('cb.branch_name', 'LIKE',"%{$search}%")
+                        ->orWhere('c.company_name', 'LIKE',"%{$search}%")
+                        ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                        ->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                        ->orWhere('ap.from_date', 'LIKE',"%{$search}%")
+                        ->orWhere('m.name', 'LIKE',"%{$search}%")
+                        ->orWhere('ap.no_of_months', 'LIKE',"%{$search}%");
                     })->count();
         }
       
