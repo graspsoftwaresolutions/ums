@@ -995,8 +995,8 @@ class MemberController extends CommonController
 						->orWhere('status.status_name','=','STRUCKOFF');
 			})       
 		->where(function($query) use ($search){
-				$query->orWhere('m.member_number', 'LIKE',"%{$search}%")
-					->orWhere('m.name', 'LIKE',"%{$search}%");
+				$query->orWhere('m.member_number', '=',"{$search}")
+					->orWhere('m.name', '=',"{$search}");
 		})->limit(20)->get();
         //$res['suggestions'] = [ array('value' => 'United States', 'data' => 'us'), array('value' => 'India', 'data' => 'in') ];
         //echo json_encode($res); die;
