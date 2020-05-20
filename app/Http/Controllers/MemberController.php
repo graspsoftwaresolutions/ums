@@ -203,6 +203,7 @@ class MemberController extends CommonController
 					if($user_role == 'union' || $user_role == 'data-entry'){
 						$member['is_request_approved'] = 1;
 						$member['status_id'] = 1;
+						$member['approved_by'] = Auth::user()->id;
 						
 					}else{
 						$member['is_request_approved'] = 0;
@@ -253,6 +254,7 @@ class MemberController extends CommonController
 							$member['is_request_approved'] = $activate_account;
 							$member['status_id'] = 1;
 							$member_number = CommonHelper::get_auto_member_number();
+							$member['approved_by'] = Auth::user()->id;
 							
 							if($auto_id!=''){
 								// $new_fee = new MemberFee();

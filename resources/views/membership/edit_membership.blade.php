@@ -1369,6 +1369,11 @@
                                                         @endif
                                                     </div>
                                                     @php } @endphp
+                                                    <div class="clearfix" style="clear:both"></div>
+                                                    <div id="approveddiv" class="input-field col s12 m6 {{ $hidemember }}">
+                                                        <input id="approvedby" readonly="" name="approvedby" type="text" value="{{ $values->approved_by=='' ? '' : CommonHelper::getUserName($values->approved_by) }}">
+                                                        <label for="approvedby" class="force-active">{{__('Approved By') }} </label>
+                                                    </div>
 
                                                 </div>
                                                 <div class="row">
