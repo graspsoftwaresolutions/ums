@@ -891,18 +891,26 @@ class SubscriptionController extends CommonController
                                             ->OrderBy('ms.StatusMonth','desc')
 											->first();
 	
-		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
+        $old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
+        
+        $data['current_member_history'] = [];
+        
+        $data['current_member_years'] = DB::table($this->membermonthendstatus_table.' as ms')->select(DB::raw('YEAR(ms.StatusMonth) as years'))
+        ->where('ms.MEMBER_CODE','=',$id)
+        ->OrderBy('ms.StatusMonth','desc')
+        ->GroupBy(DB::raw('YEAR(ms.StatusMonth)'))
+        ->get();
 		
-		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE')
-											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
-											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
-											->where('ms.MEMBER_CODE','=',$id)
-											->offset(0)
-                                            ->limit($this->limit)
-                                            ->OrderBy('ms.StatusMonth','asc')
-                                            ->OrderBy('ms.arrear_status','asc')
-                                            ->get();
+		// $data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+		// 									'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE')
+		// 									->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+		// 									->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+		// 									->where('ms.MEMBER_CODE','=',$id)
+		// 									->offset(0)
+        //                                     ->limit($this->limit)
+        //                                     ->OrderBy('ms.StatusMonth','asc')
+        //                                     ->OrderBy('ms.arrear_status','asc')
+        //                                     ->get();
 		//dd($data['current_member_history']);
 		if($old_member_id!=""){
 			$data['previous_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
@@ -970,18 +978,25 @@ class SubscriptionController extends CommonController
                                             ->OrderBy('ms.StatusMonth','desc')
 											->first();
 	
-		$old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
-		
-		$data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-											'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE')
-											->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
-											->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
-											->where('ms.MEMBER_CODE','=',$id)
-											->offset(0)
-                                            ->limit($this->limit)
-                                            ->OrderBy('ms.StatusMonth','asc')
-                                            ->OrderBy('ms.arrear_status','asc')
-                                            ->get();
+        $old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
+        $data['current_member_history'] =[];
+
+        $data['current_member_years'] = DB::table($this->membermonthendstatus_table.' as ms')->select(DB::raw('YEAR(ms.StatusMonth) as years'))
+                                         ->where('ms.MEMBER_CODE','=',$id)
+                                         ->OrderBy('ms.StatusMonth','desc')
+                                         ->GroupBy(DB::raw('YEAR(ms.StatusMonth)'))
+                                         ->get();
+		//dd($data['current_member_years']);
+		// $data['current_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+		// 									'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','m.name','m.member_number as member_number','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE')
+		// 									->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+		// 									->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+		// 									->where('ms.MEMBER_CODE','=',$id)
+		// 									->offset(0)
+        //                                     ->limit($this->limit)
+        //                                     ->OrderBy('ms.StatusMonth','asc')
+        //                                     ->OrderBy('ms.arrear_status','asc')
+        //                                     ->get();
 		
 		if($old_member_id!=""){
 			$data['previous_member_history'] = DB::table($this->membermonthendstatus_table.' as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',

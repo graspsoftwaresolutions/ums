@@ -75,9 +75,9 @@
 
                                     <div id="" class="">
 										@if (session()->has('success'))
-										{{__('File Updated successfully') }}
+										{{__('File Submitted successfully') }}
 										@endif
-										{{__('File Updated successfully, Scanning process will begin shortly') }}
+										{{__('File Submitted successfully, Scanning process will begin shortly') }}
 									</div>
 									@php	
 										$company_auto_id = $data['company_auto_id'];

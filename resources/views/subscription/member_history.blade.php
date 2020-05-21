@@ -107,7 +107,133 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</ul>
 					</div>
 					<div id="current_history" class="col s12">
-						<div class="card">
+							@if(isset($data['current_member_years']))
+					         <ul class="collapsible collapsible-accordion">
+					            @foreach($data['current_member_years'] as $year)
+					            @php
+					            	$memberhistory = CommonHelper::getMonthendHistory($data['member_id'],$year->years);
+					            	$slno=1;
+					            @endphp
+					            @if($year->years==date('Y'))
+					            <li class="active">
+					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}</div>
+					               <div class="collapsible-body">
+					                  <table id="page-current-history{{$year->years}}" class="display ">
+											<thead>
+												<tr>
+													<th>{{__('S.No')}}</th>
+													<th>{{__('History Date')}}</th>
+													<th>{{__('Subs.Paid')}}</th>
+													<th>{{__('BF Paid')}}</th>
+													<th>{{__('Ins.Paid')}}</th>
+													<th>{{__('Month.Paid')}}</th>
+													<th>{{__('LastPaymentDate')}}</th>
+													<th>{{__('Advance')}}</th>
+													<th>{{__('Tot.Mon.Paid')}}</th>
+													<th>{{__('Tot.Mon.Due')}}</th>
+													<th>{{__('Total')}}</th>
+													<th>{{__('AccSubs')}}</th>
+													<th>{{__('AccBF')}}</th>
+													<th>{{__('AccIns')}}</th>
+													<!-- <th>{{__('DueSubs')}}</th> -->
+												</tr>
+											</thead>
+											<tbody>
+												@foreach($memberhistory as $history)
+												<tr style="color:{{$history->font_color}}">
+													<td>{{$slno}}</td>
+													<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }} @if($history->arrear_status==1) <span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>@endif</td>
+													<td>{{ $history->SUBSCRIPTION_AMOUNT }}</td>
+													<td>{{ $history->BF_AMOUNT }}</td>
+													<td>{{ $history->INSURANCE_AMOUNT }}</td>
+													<td>{{ $history->TOTAL_MONTHS }}</td>
+													<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
+													<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
+													<td>{{ $history->TOTALMONTHSPAID }}</td>
+													<td>{{ $history->TOTALMONTHSDUE }}</td>
+													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
+													<td>{{ $history->ACCSUBSCRIPTION }}</td>
+													<td>{{ $history->ACCBF }}</td>
+													<td>{{ $history->ACCINSURANCE }}</td>
+													<!-- <td style="background: #f2f2f2;">{{ $history->SUBSCRIPTIONDUE }}</td> -->
+													
+												</tr> 
+												@php
+													$slno++;
+												@endphp
+												@endforeach
+												@if(count($memberhistory)==0)
+													<tr>
+														<td colspan="13">NO DATA AVAILABLE</td>
+													</tr> 
+												@endif
+											</tbody>
+										</table>
+					               </div>
+					            </li>
+					            @else
+					            <li>
+					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}</div>
+					               <div class="collapsible-body">
+					                  	 <table id="page-current-history{{$year->years}}" class="display ">
+											<thead>
+												<tr>
+													<th>{{__('S.No')}}</th>
+													<th>{{__('History Date')}}</th>
+													<th>{{__('Subs.Paid')}}</th>
+													<th>{{__('BF Paid')}}</th>
+													<th>{{__('Ins.Paid')}}</th>
+													<th>{{__('Month.Paid')}}</th>
+													<th>{{__('LastPaymentDate')}}</th>
+													<th>{{__('Advance')}}</th>
+													<th>{{__('Tot.Mon.Paid')}}</th>
+													<th>{{__('Tot.Mon.Due')}}</th>
+													<th>{{__('Total')}}</th>
+													<th>{{__('AccSubs')}}</th>
+													<th>{{__('AccBF')}}</th>
+													<th>{{__('AccIns')}}</th>
+													<!-- <th>{{__('DueSubs')}}</th> -->
+												</tr>
+											</thead>
+											<tbody>
+												@foreach($memberhistory as $history)
+												<tr style="color:{{$history->font_color}}">
+													<td>{{$slno}}</td>
+													<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }} @if($history->arrear_status==1) <span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>@endif</td>
+													<td>{{ $history->SUBSCRIPTION_AMOUNT }}</td>
+													<td>{{ $history->BF_AMOUNT }}</td>
+													<td>{{ $history->INSURANCE_AMOUNT }}</td>
+													<td>{{ $history->TOTAL_MONTHS }}</td>
+													<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
+													<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
+													<td>{{ $history->TOTALMONTHSPAID }}</td>
+													<td>{{ $history->TOTALMONTHSDUE }}</td>
+													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
+													<td>{{ $history->ACCSUBSCRIPTION }}</td>
+													<td>{{ $history->ACCBF }}</td>
+													<td>{{ $history->ACCINSURANCE }}</td>
+													<!-- <td style="background: #f2f2f2;">{{ $history->SUBSCRIPTIONDUE }}</td> -->
+													
+												</tr> 
+												@php
+													$slno++;
+												@endphp
+												@endforeach
+												@if(count($memberhistory)==0)
+													<tr>
+														<td colspan="13">NO DATA AVAILABLE</td>
+													</tr> 
+												@endif
+											</tbody>
+										</table>
+					               </div>
+					            </li>
+					            @endif
+					            @endforeach
+					         </ul>
+					        @endif
+					    
+						<div class="card hide">
 							@php
 								$slno=1;
 							@endphp
@@ -263,78 +389,78 @@ $("#subcomp_sidebar_a_id").addClass('active');
 
 //Data table Ajax call
 $(function() {
-	$(window).scroll(function() {
-		//alert($(document).height());
-		console.log('doc-height'+$(document).height());
-		console.log('top'+$(window).scrollTop());
-		console.log('window-height'+$(window).height());
-		if($(window).scrollTop() + $(window).height() > $(document).height() - 10 && $("#resourcefree").val()==1) {
-		//if($(window).scrollTop() + $(window).height() > $("#page-current-history").height()) {
-		//if($(window).scrollTop() == $(document).height() - $(window).height()) {
-			loader.showLoader();
-			$("#resourcefree").val(0);
-			var active_tab_id = $( "ul.tabs" ).find( "a.active" ).attr('id');
-			if(active_tab_id=='history1'){
-				var lastoffset = $("#historyoffset").val();
-				var limit = "{{$data['data_limit']}}";
-				var memberid = "{{$data['member_id']}}";
-				$("#historyoffset").val(parseInt(lastoffset)+parseInt(limit));
-				var reflect_table = 'page-current-history';
-				var reflect_serial_text = 'totalhistory';
-				var load_type = 1;
-				var totalhistory = parseInt($("#totalhistory").val());
-			}else{
-				var lastoffset = $("#previoushistoryoffset").val();
-				var limit = "{{$data['data_limit']}}";
-				$("#previoushistoryoffset").val(parseInt(lastoffset)+parseInt(limit));
-				var memberid = "{{$data['old_member_id']}}";
-				var reflect_table = 'page-previous-history';
-				var load_type = 0;
-				var totalhistory = parseInt($("#previoustotalhistory").val());
-				var reflect_serial_text = 'previoustotalhistory';
-			}
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url : "{{ URL::to('/en/get-members-history') }}?offset="+lastoffset+"&member_id="+memberid+"&load_type="+load_type,
-				success:function(result){
-					if(result)
-					{
-						res = result.member_history;
+	// $(window).scroll(function() {
+	// 	//alert($(document).height());
+	// 	console.log('doc-height'+$(document).height());
+	// 	console.log('top'+$(window).scrollTop());
+	// 	console.log('window-height'+$(window).height());
+	// 	if($(window).scrollTop() + $(window).height() > $(document).height() - 10 && $("#resourcefree").val()==1) {
+	// 	//if($(window).scrollTop() + $(window).height() > $("#page-current-history").height()) {
+	// 	//if($(window).scrollTop() == $(document).height() - $(window).height()) {
+	// 		loader.showLoader();
+	// 		$("#resourcefree").val(0);
+	// 		var active_tab_id = $( "ul.tabs" ).find( "a.active" ).attr('id');
+	// 		if(active_tab_id=='history1'){
+	// 			var lastoffset = $("#historyoffset").val();
+	// 			var limit = "{{$data['data_limit']}}";
+	// 			var memberid = "{{$data['member_id']}}";
+	// 			$("#historyoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 			var reflect_table = 'page-current-history';
+	// 			var reflect_serial_text = 'totalhistory';
+	// 			var load_type = 1;
+	// 			var totalhistory = parseInt($("#totalhistory").val());
+	// 		}else{
+	// 			var lastoffset = $("#previoushistoryoffset").val();
+	// 			var limit = "{{$data['data_limit']}}";
+	// 			$("#previoushistoryoffset").val(parseInt(lastoffset)+parseInt(limit));
+	// 			var memberid = "{{$data['old_member_id']}}";
+	// 			var reflect_table = 'page-previous-history';
+	// 			var load_type = 0;
+	// 			var totalhistory = parseInt($("#previoustotalhistory").val());
+	// 			var reflect_serial_text = 'previoustotalhistory';
+	// 		}
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			dataType: "json",
+	// 			url : "{{ URL::to('/en/get-members-history') }}?offset="+lastoffset+"&member_id="+memberid+"&load_type="+load_type,
+	// 			success:function(result){
+	// 				if(result)
+	// 				{
+	// 					res = result.member_history;
 						
-						$.each(res,function(key,entry){
-							var arrear_lbl = '';
-							if(entry.arrear_status==1) {
-								arrear_lbl = '<span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>';
-							}
-							var table_row = "<tr style='color:"+entry.font_color+";'><td>"+totalhistory+"</td>";
-								table_row += "<td>"+entry.StatusMonth+" "+arrear_lbl+"</td>";
-								table_row += "<td>"+entry.SUBSCRIPTION_AMOUNT+"</td>";
-								table_row += "<td>"+entry.BF_AMOUNT+"</td>";
-								table_row += "<td>"+entry.INSURANCE_AMOUNT+"</td>";
-								table_row += "<td>"+entry.TOTAL_MONTHS+"</td>";
-								table_row += "<td>"+entry.LASTPAYMENTDATE+"</td>";
-								table_row += "<td>"+entry.TOTALMONTHSPAID+"</td>";
-								table_row += "<td>"+entry.TOTALMONTHSDUE+"</td>";
-								table_row += "<td>"+entry.total+"</td>";
-								table_row += "<td>"+entry.ACCSUBSCRIPTION+"</td>";
-								table_row += "<td>"+entry.ACCBF+"</td>";
-								table_row += "<td>"+entry.ACCINSURANCE+"</td></tr>";
-								//table_row += "<td style='background: #f2f2f2;'>"+entry.SUBSCRIPTIONDUE+"</td></tr>";
-								$('#'+reflect_table+' tbody').append(table_row);
-							totalhistory+=1;
-						});
-						$("#"+reflect_serial_text).val(totalhistory);
-						loader.hideLoader();
-						$("#resourcefree").val(1);
-					}else{
+	// 					$.each(res,function(key,entry){
+	// 						var arrear_lbl = '';
+	// 						if(entry.arrear_status==1) {
+	// 							arrear_lbl = '<span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>';
+	// 						}
+	// 						var table_row = "<tr style='color:"+entry.font_color+";'><td>"+totalhistory+"</td>";
+	// 							table_row += "<td>"+entry.StatusMonth+" "+arrear_lbl+"</td>";
+	// 							table_row += "<td>"+entry.SUBSCRIPTION_AMOUNT+"</td>";
+	// 							table_row += "<td>"+entry.BF_AMOUNT+"</td>";
+	// 							table_row += "<td>"+entry.INSURANCE_AMOUNT+"</td>";
+	// 							table_row += "<td>"+entry.TOTAL_MONTHS+"</td>";
+	// 							table_row += "<td>"+entry.LASTPAYMENTDATE+"</td>";
+	// 							table_row += "<td>"+entry.TOTALMONTHSPAID+"</td>";
+	// 							table_row += "<td>"+entry.TOTALMONTHSDUE+"</td>";
+	// 							table_row += "<td>"+entry.total+"</td>";
+	// 							table_row += "<td>"+entry.ACCSUBSCRIPTION+"</td>";
+	// 							table_row += "<td>"+entry.ACCBF+"</td>";
+	// 							table_row += "<td>"+entry.ACCINSURANCE+"</td></tr>";
+	// 							//table_row += "<td style='background: #f2f2f2;'>"+entry.SUBSCRIPTIONDUE+"</td></tr>";
+	// 							$('#'+reflect_table+' tbody').append(table_row);
+	// 						totalhistory+=1;
+	// 					});
+	// 					$("#"+reflect_serial_text).val(totalhistory);
+	// 					loader.hideLoader();
+	// 					$("#resourcefree").val(1);
+	// 				}else{
 						
-					}
-				}
-			});
-		}
-		// alert('ok');
-	});	   
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// 	// alert('ok');
+	// });	   
 });
 
 

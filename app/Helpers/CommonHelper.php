@@ -3559,4 +3559,16 @@ class CommonHelper
         //dd($m_data);
         return $m_data;
      }
+
+    public static function getMonthendHistory($memberid,$year){
+        return DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+                                         'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE')
+                                         //->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
+                                         ->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
+                                         ->where('ms.MEMBER_CODE','=',$memberid)
+                                         ->where(DB::raw('YEAR(ms.StatusMonth)'),'=',$year)
+                                         ->OrderBy('ms.StatusMonth','asc')
+                                         ->OrderBy('ms.arrear_status','asc')
+                                         ->get();
+    }
 }
