@@ -1073,13 +1073,15 @@
                                                         </div>
                                                         <div class="col s12 m9 " style="display:@php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'block' : 'none'; @endphp" id="member_old_div">
                                                             <span> 
-														<input type="text" value="{{$old_membercode}}" id="old_mumber_number" name="old_mumber_number">
+                                                                 <label for="old_mumber_number">{{__('Old Member Number') }}</label>
+														<input type="text" value="{{$old_membercode}}" id="old_mumber_number" placeholder="Old Member Number" name="old_mumber_number">
+
 														</span>
                                                         </div>
                                                         @else
                                                         <input type="checkbox" id="rejoined" class="hide" @php echo $values->old_member_number!="" ? 'checked' : ''; @endphp/>
                                                         </br>
-                                                        @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'Old Number: '.$old_membercode : ''; @endphp @endif
+                                                        @php echo $values->old_member_number!="" && $values->old_member_number!=Null ? 'Old Member Number: '.$old_membercode : ''; @endphp @endif
                                                         <input type="text" name="old_member_id" value="{{$values->old_member_number}}" id="old_member_id" class=" hide">
                                                     </div>
                                                     @php
