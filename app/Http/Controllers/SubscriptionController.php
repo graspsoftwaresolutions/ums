@@ -194,6 +194,7 @@ class SubscriptionController extends CommonController
         $monthname = $datearr[0];
         $year = $datearr[1];
         $full_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $exists = 0;
         
         if($company_auto_id!=''){
             $status_all = Status::where('status',1)->get();
@@ -207,6 +208,16 @@ class SubscriptionController extends CommonController
                                     ->where('id','=',$company_auto_id)
                                     ->pluck('mc.banktype')
                                     ->first();
+            if($user_role=='union' && $banktype==1){
+                $exists = 1;
+                $upmessage = 'Data already uploaded for this bank by bank';
+            }
+           // dd($user_role);
+            if($user_role=='company' && $banktype===0){
+                $exists = 1;
+               // dd($exists);
+                $upmessage = 'Data already uploaded for this bank by Union';
+            }
             $approval_data = [];
             $total_members_count = 0;
             $total_members_amount = 0;
@@ -256,9 +267,9 @@ class SubscriptionController extends CommonController
 			$total_members_count += $sundry_count;
             $total_members_amount += $sundry_amount;
 
-            if($banktype==1){
+            if($exists==1){
                 $resstatus=2;
-                $message = 'Data already uploaded for this bank by bank';
+                $message = $upmessage;
             }else{
                 $resstatus=1;
                 $message = 'Data already uploaded for this bank';
