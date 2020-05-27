@@ -151,7 +151,9 @@ class MemberController extends CommonController
 
 				if($member_email==''){
 					$membername_nospace = strtolower(str_replace(' ', '', $member_name));
-					$member_email = $membername_nospace.'_'.$member_number.'@gmail.com';
+
+					$randomno = $member_number==0 ? date('ymds') : $member_number;
+					$member_email = $membername_nospace.'_'.$randomno.'@gmail.com';
 				}
 
 				$member_role = Role::where('slug', 'member')->first();
