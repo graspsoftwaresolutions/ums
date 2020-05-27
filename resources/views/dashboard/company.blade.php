@@ -203,7 +203,7 @@
                                 //alert('test');
                                 $("#sub_company").val('').trigger('change');
                                 swal({
-                                    title: 'Subscription for this bank already uploaded by bank',
+                                    title: result.message,
                                     icon: 'error'
                                 });
                             }
@@ -339,6 +339,7 @@
             $('#subscribe_formValidate').trigger('submit');
 
         });
+       getDataStatus();
     </script>
    
  @endsection

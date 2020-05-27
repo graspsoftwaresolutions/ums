@@ -12,62 +12,73 @@
 		<tr>
 			<td width="100%" colspan="3">
 				<table width="100%">
-					<td width="1%" style="padding: 2px;padding-right: 8px;">
-						<img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;" alt="Membership logo" height="90">
-					</td>
-					<td width="79%" style="padding: 2px;">
-						<span class="report-address" style="font-weight: bold;font-size:18px;">NATIONAL UNION OF BANK EMPLOYEES</span>
-				
-						<p style="padding-top: 0px;margin-top: 5px;">ANNUAL BENEVOLENT FUND STATEMENT OF ACCOUNT</p>
-					</td>
-					<td width="20%" style="padding: 2px;">
-						<br>
-						<br>
-						<p style="margin-bottom: 10px;margin-top: 0;"><span class="bold">DATE JOINED</span>: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
-						<span class="bold">PAID TILL</span>: {{  date('d/M/Y',strtotime($data['to_date'])) }}
-					</td>
+					<tr>
+						<td width="1%" style="padding: 2px;padding-right: 8px;">
+							<img src="{{ asset('public/assets/images/logo/'.$logo) }}" style="vertical-align: middle;" alt="Membership logo" height="90">
+						</td>
+						<td width="79%" style="padding: 2px;">
+							<span class="report-address" style="font-weight: bold;font-size:18px;">NATIONAL UNION OF BANK EMPLOYEES</span>
+					
+							<p style="padding-top: 0px;margin-top: 5px;">ANNUAL BENEVOLENT FUND STATEMENT OF ACCOUNT</p>
+						</td>
+						<td width="20%" style="padding: 2px;">
+							<br>
+							<br>
+							<p style="margin-bottom: 10px;margin-top: 0;"><span class="bold">DATE JOINED</span>: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
+							<span class="bold">PAID TILL</span>: {{  date('d/M/Y',strtotime($data['to_date'])) }}
+						</td>
+					</tr>
+					@php
+						$memberaddr = CommonHelper::getBranchAddress($member->branch_id);
+					@endphp
+					<tr>
+						<td colspan="2">
+							<table>
+								<tr>
+									<td width="6%" style="vertical-align: top;font-weight: bold;">BRANCH:</td>
+									<td width="95%">
+										 {{ $member->branch_name }}
+											@if($memberaddr->address_one!="") , {{ $memberaddr->address_one }} @endif
+											@if($memberaddr->address_two!="") , {{ $memberaddr->address_two }} @endif
+											@if($memberaddr->city_name!="") , {{ $memberaddr->city_name }} @endif
+											@if($memberaddr->postal_code!="") - {{ $memberaddr->postal_code }} @endif
+										
+									</td>
+								</tr>
+								<tr>
+									<td ><b>BANK</b>:</td>
+									<td>
+										{{ $member->company_name }}
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td style="margin: 0;padding: 2px;">
+							@if($user_role!='member')
+								<p><b class="bold">BRANCH CODE</b>: {{ $member->branch_shortcode }}</p>
+								<p><b class="bold">BANK CODE</b>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $member->short_code }}</p>
+							@endif
+						</td>
+					</tr>
 				</table>
 				
 				
 			</td>
 			
 		</tr>
-		@php
-			$memberaddr = CommonHelper::getBranchAddress($member->branch_id);
-		@endphp
-		<tr class="statement-address">
+		
+		<!-- <tr class="statement-address">
 			<td width="50%" style="padding-top: 0px;">
-				<table>
-					<tr>
-						<td width="6%" style="vertical-align: top;font-weight: bold;">BRANCH:</td>
-						<td width="95%">
-							 {{ $member->branch_name }}
-								@if($memberaddr->address_one!="") , {{ $memberaddr->address_one }} @endif
-								@if($memberaddr->address_two!="") , {{ $memberaddr->address_two }} @endif
-								@if($memberaddr->city_name!="") , {{ $memberaddr->city_name }} @endif
-								@if($memberaddr->postal_code!="") - {{ $memberaddr->postal_code }} @endif
-							
-						</td>
-					</tr>
-					<tr>
-						<td ><b>BANK</b>:</td>
-						<td>
-							{{ $member->company_name }}
-						</td>
-					</tr>
-				</table>
+				
 				
 			</td>
 			<td width="30%" style="padding-top: 0px;">
-				@if($user_role!='member')
-				<p><b class="bold">BRANCH CODE</b>: {{ $member->branch_shortcode }}</p>
-				<p><b class="bold">BANK CODE</b>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $member->short_code }}</p>
-				@endif
+				
 			</td>
 			<td width="10%" style="text-align:center;padding-top: 0px;">
 				
 			</td>
-		</tr>
+		</tr> -->
 	</table>
 </div>
 <table id="page-length-option" class="display table2excel" style="margin: 10px;width: 99% !important;">

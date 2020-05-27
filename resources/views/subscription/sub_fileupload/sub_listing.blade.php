@@ -674,7 +674,7 @@
                                 //alert('test');
                                 $("#sub_company").val('').trigger('change');
                                 swal({
-                                    title: 'Subscription for this bank already uploaded by bank',
+                                    title: result.message,
                                     icon: 'error'
                                 });
                             }
@@ -842,6 +842,8 @@
         $("#subscriptions_sidebars_id").addClass('active');
         $("#subscription_sidebar_li_id").addClass('active');
         $("#subscription_sidebar_a_id").addClass('active');
+
+        $("#sub_company").trigger('change');
 
         function printDiv() {
 

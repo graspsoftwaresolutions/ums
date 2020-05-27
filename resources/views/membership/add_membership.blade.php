@@ -1182,7 +1182,7 @@
 			 $("#dob").val(suggestion.dob);
 			 $("#doe").val(suggestion.doe);
 			 //$("#doj").val(suggestion.doj);
-			 $("#email").val(suggestion.email);
+			 //$("#email").val(suggestion.email);
 			 $("#employee_id").val(suggestion.employee_id);
 			 //$("#old_mumber_number").val(suggestion.gender);
 			 $("#levy").val(suggestion.levy).trigger("change");
