@@ -433,26 +433,47 @@ class MemberController extends CommonController
 				
 			}
 
-			if($request->hasfile('attachmentone'))
-			{
+			$serialnumber = $request->input('serialnumber');
+			if( isset($serialnumber)){
+				$attach_count = count($request->input('serialnumber'));
 				$sno = 0;
-				$membernumber = DB::table('membership')->where('id', $member_id)->pluck('member_number')->first();
-				foreach($request->file('attachmentone') as $file)
-				{
-					$filenameWithExt = $file->getClientOriginalExtension();
-					$inputfilenames = $membernumber.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
-					$file = $file->storeAs('member', $inputfilenames ,'local');
-					$data = [
-								'member_id' => $member_id,
-								'file_name' => $inputfilenames,
-					];
-					//dd($data);
-					DB::table('membership_attachments')->insert($data);
-					$sno++;
-		
-				}
+				for($j=0;$j<$attach_count;$j++){
+					$attachno = $request->input('serialnumber')[$j];
+					
+					if($request->hasfile('attachmentone'.$attachno))
+					{
+						
+						$membernumber = DB::table('membership')->where('id', $member_id)->pluck('member_number')->first();
+						foreach($request->file('attachmentone'.$attachno) as $file)
+						{
+							//print_r($attachno);
+						
+							$filenameWithExt = $file->getClientOriginalExtension();
+							$filetitle = $request->input('attachmentname'.$attachno);
+							
+							$memberstr = $membernumber==0 ? strtotime(date('Ymdhis')) : $membernumber;
+							
+							$inputfilenames = $memberstr.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
+							
+							$file = $file->storeAs('member', $inputfilenames ,'local');
+							
+							$data = [
+										'member_id' => $member_id,
+										'title' => $filetitle,
+										'file_name' => $inputfilenames,
+							];
+							//dd($data);
+							//dd($data);
+							DB::table('membership_attachments')->insert($data);
+							$sno++;
+				
+						}
 
+					}
+				}
 			}
+
+			
 
 
 			$check_fee_auto_id = $request->input('fee_auto_id');
@@ -1265,23 +1286,43 @@ class MemberController extends CommonController
 		];
 		DB::table('membership')->where('id', $auto_id)->update($user_data);
 
-
-		if($request->hasfile('attachmentone'))
-		{
+		$serialnumber = $request->input('serialnumber');
+		if( isset($serialnumber)){
+			$attach_count = count($request->input('serialnumber'));
 			$sno = 0;
-			$membernumber = DB::table('membership')->where('id', $auto_id)->pluck('member_number')->first();
-		    foreach($request->file('attachmentone') as $file)
-		   	{
-				$filenameWithExt = $file->getClientOriginalExtension();
-				$inputfilenames = $membernumber.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
-				$file = $file->storeAs('member', $inputfilenames ,'local');
-				$data = [
-							'member_id' => $auto_id,
-							'file_name' => $inputfilenames,
-				];
-				//dd($data);
-				DB::table('membership_attachments')->insert($data);
-				$sno++;
+			for($j=0;$j<$attach_count;$j++){
+				$attachno = $request->input('serialnumber')[$j];
+				
+				if($request->hasfile('attachmentone'.$attachno))
+				{
+					
+					$membernumber = DB::table('membership')->where('id', $auto_id)->pluck('member_number')->first();
+					foreach($request->file('attachmentone'.$attachno) as $file)
+					{
+						//print_r($attachno);
+					
+						$filenameWithExt = $file->getClientOriginalExtension();
+						$filetitle = $request->input('attachmentname'.$attachno);
+						
+						$memberstr = $membernumber==0 ? strtotime(date('Ymdhis')) : $membernumber;
+						
+						$inputfilenames = $memberstr.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
+						
+						$file = $file->storeAs('member', $inputfilenames ,'local');
+						
+						$data = [
+									'member_id' => $auto_id,
+									'title' => $filetitle,
+									'file_name' => $inputfilenames,
+						];
+						//dd($data);
+						//dd($data);
+						DB::table('membership_attachments')->insert($data);
+						$sno++;
+			
+					}
+
+				}
 			}
 			if($sno!=0){
 				$user_dataone = [
@@ -1290,8 +1331,35 @@ class MemberController extends CommonController
 				];
 				DB::table('membership')->where('id', $auto_id)->update($user_dataone);
 			}
-
 		}
+
+
+		// if($request->hasfile('attachmentone'))
+		// {
+		// 	$sno = 0;
+		// 	$membernumber = DB::table('membership')->where('id', $auto_id)->pluck('member_number')->first();
+		//     foreach($request->file('attachmentone') as $file)
+		//    	{
+		// 		$filenameWithExt = $file->getClientOriginalExtension();
+		// 		$inputfilenames = $membernumber.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
+		// 		$file = $file->storeAs('member', $inputfilenames ,'local');
+		// 		$data = [
+		// 					'member_id' => $auto_id,
+		// 					'file_name' => $inputfilenames,
+		// 		];
+		// 		//dd($data);
+		// 		DB::table('membership_attachments')->insert($data);
+		// 		$sno++;
+		// 	}
+		// 	if($sno!=0){
+		// 		$user_dataone = [
+		// 			'approval_status' => 'Pending',
+		// 			'approval_reason' => '',
+		// 		];
+		// 		DB::table('membership')->where('id', $auto_id)->update($user_dataone);
+		// 	}
+
+		// }
 
 		$redirect_url = app()->getLocale().'/membership';
 		return redirect($redirect_url)->with('message','Member Details Updated Succesfully');

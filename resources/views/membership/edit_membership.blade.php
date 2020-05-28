@@ -1379,7 +1379,7 @@
 
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col s12 m4 hide">
+                                                    <!-- <div class="col s12 m4 hide">
                                                          <div id="">
                                                             <div class=" ">
                                                                 <br>
@@ -1392,15 +1392,17 @@
                                                     </div>
                                                     <div class="col s12 m6 hide">
                                                         <input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
-                                                    </div>
+                                                    </div> -->
+                                                     <input type="button" class="btn btn-sm purple hide" name="addattach" id="addattach" value="Add Attachment" />
                                                     @php
                                                         $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
                                                         //dd($getfiles);
                                                     @endphp
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m8">
                                                          <table>
                                                             <thead>
                                                                 <tr>
+                                                                    <th>Particular</th>
                                                                     <th>File</th>
                                                                     @if($check_unionbranch==1)
                                                                     <th>Action</th>
@@ -1410,6 +1412,7 @@
                                                             <tbody>
                                                                 @foreach($getfiles as $file)
                                                                 <tr>
+                                                                    <td>{{$file->title}}</td>
                                                                     <td>{{$file->file_name}} &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
                                                                     @if($check_unionbranch==1)
                                                                     <td>Delete</td>
@@ -2865,6 +2868,15 @@
             $("#remarksdiv").addClass('hide');
         }
     }
+    $('#addattach').click(function(){
+        var attachmentcount = $("#attachmentcount").val();
+        var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" readonly value="'+attachmentcount+'" /><input id="attachmentname_'+attachmentcount+'" name="attachmentname'+attachmentcount+'" type="text" /></td>';
+        attachrow += '<td><input type="file" id="attachmentone_'+attachmentcount+'" name="attachmentone'+attachmentcount+'[]" multiple="" class="" accept="" style="width: 500px;" /></td>';
+        attachrow += '<td><button type="button" data-id="'+attachmentcount+'" class="delete_attachment waves-light btn">Delete</button></td></tr>';
+        $('#attachmentarea').append(attachrow);
+        attachmentcount = parseInt(1)+parseInt(attachmentcount);
+        $("#attachmentcount").val(attachmentcount);
+    });
 </script>
 @include('membership.member_common_script') 
 @endsection

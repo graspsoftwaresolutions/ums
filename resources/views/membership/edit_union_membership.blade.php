@@ -503,7 +503,7 @@
                                                     @php } @endphp
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="row">
-                                                    <div class="col s12 m4">
+                                                   <!--  <div class="col s12 m4">
                                                          <div id="">
                                                             <div class=" ">
                                                                 <br>
@@ -516,22 +516,26 @@
                                                     </div>
                                                     <div class="col s12 m6 hide">
                                                         <input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
-                                                    </div>
+                                                    </div> -->
                                                     @php
                                                         $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
                                                         //dd($getfiles);
                                                     @endphp
-                                                    <div class="col s12 m6">
+                                                    <input type="button" class="btn btn-sm purple " name="addattach" id="addattach" value="Add Attachment" />
+                                                    <div class="col s12 m8">
+                                                        <input type="text" name="attachmentcount" readonly id="attachmentcount" value="0" />
                                                          <table id="filetable">
                                                             <thead>
                                                                 <tr>
+                                                                    <th>Particular</th>
                                                                     <th>File</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody id="attachmentarea">
                                                                 @foreach($getfiles as $file)
                                                                 <tr id="del_{{ $file->id }}">
+                                                                    <td>{{$file->title}}</td>
                                                                     <td>{{$file->file_name}}  &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
                                                                     <td>
                                                                         <a href="#" onclick="return DeleteImage('{{ $file->id }}')">
@@ -942,6 +946,25 @@
         }
         
     }
+    $(document.body).on('click', '.delete_attachment' ,function(){
+        if(confirm('Are you sure you want to delete?')){
+            var attach_id = $(this).data('id');
+            var parrent = $(this).parents("tr");
+            parrent.remove(); 
+        }else{
+            return false;
+        }
+        
+    });
+    $('#addattach').click(function(){
+        var attachmentcount = $("#attachmentcount").val();
+        var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly value="'+attachmentcount+'" /><input id="attachmentname_'+attachmentcount+'" name="attachmentname'+attachmentcount+'" type="text" /></td>';
+        attachrow += '<td><input type="file" id="attachmentone_'+attachmentcount+'" name="attachmentone'+attachmentcount+'[]" multiple="" class="" accept="" style="width: 500px;" /></td>';
+        attachrow += '<td><button type="button" data-id="'+attachmentcount+'" class="delete_attachment waves-light btn">Delete</button></td></tr>';
+        $('#attachmentarea').append(attachrow);
+        attachmentcount = parseInt(1)+parseInt(attachmentcount);
+        $("#attachmentcount").val(attachmentcount);
+    });
 </script>
 @include('membership.member_common_script') 
 @endsection

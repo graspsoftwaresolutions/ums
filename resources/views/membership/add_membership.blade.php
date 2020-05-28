@@ -438,13 +438,15 @@
 									                                        <div class="file-path-wrapper hide">
 									                                            <input class="file-path validate" type="text">
 									                                        </div>
-									                                        <input type="button" class="btn btn-sm" name="saveattach" id="saveattach" value="Save Attachment" />
+									                                       
 									                                    </div>
 																	</div>
 																	<div class="col s12 m6 hide">
 																		<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
 																	</div>
+																	 <input type="button" class="btn btn-sm purple" name="addattach" id="addattach" value="Add Attachment" />
 																	<div class="col s12 m8">
+																		 <input type="text" name="attachmentcount" class="hide" readonly id="attachmentcount" value="0" />
 																		 <table>
 																		 	<thead>
 																		 		<tr>
@@ -453,8 +455,12 @@
 																		 			<th>Action</th>
 																		 		</tr>
 																		 	</thead>
-																		 	<tbody>
-																		 		
+																		 	<tbody id="attachmentarea">
+																		 		<!-- <tr>
+																		 			<td><input id="attachmentname" name="attachmentname" type="text"/></td>
+																		 			<td><input type="file" id="attachmentone" name="attachmentone[]" multiple="" class="" accept="" style="width: 500px;"></td>
+																		 			<td><button type="button" data-id="1" class="delete_attachment waves-light btn">Delete</button></td>
+																		 		</tr> -->
 																		 	</tbody>
 																		 	
 																		 </table>
@@ -1254,10 +1260,24 @@
     		$("#remarks").attr('required',false);
     	}
     }
-    $('#saveattach').click(function(){
-	    var clone = $("#attachmentone").clone();
-	    clone.attr('id', 'attachmentone1');
-	    $('#filestd').html(clone);
+    $(document.body).on('click', '.delete_attachment' ,function(){
+		if(confirm('Are you sure you want to delete?')){
+			var attach_id = $(this).data('id');
+			var parrent = $(this).parents("tr");
+			parrent.remove(); 
+		}else{
+			return false;
+		}
+		
+	});
+    $('#addattach').click(function(){
+    	var attachmentcount = $("#attachmentcount").val();
+	    var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly value="'+attachmentcount+'" /><input id="attachmentname_'+attachmentcount+'" name="attachmentname'+attachmentcount+'" type="text" /></td>';
+		attachrow += '<td><input type="file" id="attachmentone_'+attachmentcount+'" name="attachmentone'+attachmentcount+'[]" multiple="" class="" accept="" style="width: 500px;" /></td>';
+		attachrow += '<td><button type="button" data-id="'+attachmentcount+'" class="delete_attachment waves-light btn">Delete</button></td></tr>';
+		$('#attachmentarea').append(attachrow);
+		attachmentcount = parseInt(1)+parseInt(attachmentcount);
+		$("#attachmentcount").val(attachmentcount);
 	});
  //    $('#state_id').change(function(e, data){
 	//    var StateId = $(this).val();

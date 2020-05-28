@@ -27,12 +27,12 @@
 							<table>
 								<tr>
 									<td width="52%"><b>DATE JOINED</b></td>
-									<td width="1%">:</td>
+									<td width="1%"><b> :</b></td>
 									<td><b> {{ date('d/M/Y',strtotime($member->doj)) }}</b></td>
 								</tr>
 								<tr>
 									<td><b>PAID TILL</b></td>
-									<td>:</td>
+									<td><b> :</b></td>
 									<td><b> {{  date('d/M/Y',strtotime($data['to_date'])) }}</b></td>
 								</tr>
 							</table>
@@ -70,12 +70,12 @@
 							<table>
 								<tr>
 									<td width="52%"><b>BRANCH CODE</b></td>
-									<td width="1%">:</td>
+									<td width="1%"><b>:</b></td>
 									<td><b> {{ $member->branch_shortcode }}</b></td>
 								</tr>
 								<tr>
 									<td><b>BANK CODE</b></td>
-									<td width="1%">:</td>
+									<td width="1%"><b>:</b></td>
 									<td><b> {{ $member->short_code }}</b></td>
 								</tr>
 							</table>
