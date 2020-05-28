@@ -429,37 +429,36 @@
 																</div>
 																<div class="clearfix" ></div>
 																<div class="row">
-																	<div class="col s12 m4">
-																		 <div id="">
+																	<div class="col s12 m6 hide">
+																		<div id="">
 									                                        <div class=" ">
 									                                         	<br>
-									                                            <input type="file" name="attachmentone[]" multiple="" class="" accept="" style="width: 500px;">
+									                                            <input type="file" id="attachmentone" name="attachmentone[]" multiple="" class="" accept="" style="width: 500px;">
 									                                        </div>
 									                                        <div class="file-path-wrapper hide">
 									                                            <input class="file-path validate" type="text">
 									                                        </div>
+									                                        <input type="button" class="btn btn-sm" name="saveattach" id="saveattach" value="Save Attachment" />
 									                                    </div>
 																	</div>
 																	<div class="col s12 m6 hide">
 																		<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
 																	</div>
-																	<!-- <div class="col s12 m6">
+																	<div class="col s12 m8">
 																		 <table>
 																		 	<thead>
 																		 		<tr>
+																		 			<th>Particular</th>
 																		 			<th>File</th>
 																		 			<th>Action</th>
 																		 		</tr>
 																		 	</thead>
 																		 	<tbody>
-																		 		<tr>
-																			 		<td></td>
-																			 		<td></td>
-																			 	</tr>
+																		 		
 																		 	</tbody>
 																		 	
 																		 </table>
-																	</div> -->
+																	</div>
 																</div>
 																<div class="row">
 																	<div class="input-field inline">
@@ -1255,6 +1254,11 @@
     		$("#remarks").attr('required',false);
     	}
     }
+    $('#saveattach').click(function(){
+	    var clone = $("#attachmentone").clone();
+	    clone.attr('id', 'attachmentone1');
+	    $('#filestd').html(clone);
+	});
  //    $('#state_id').change(function(e, data){
 	//    var StateId = $(this).val();
 	  

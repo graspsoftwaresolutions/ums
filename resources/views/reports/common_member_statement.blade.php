@@ -24,8 +24,19 @@
 						<td width="20%" style="padding: 2px;">
 							<br>
 							<br>
-							<p style="margin-bottom: 10px;margin-top: 0;"><span class="bold">DATE JOINED</span>: {{ date('d/M/Y',strtotime($member->doj)) }}</p>
-							<span class="bold">PAID TILL</span>: {{  date('d/M/Y',strtotime($data['to_date'])) }}
+							<table>
+								<tr>
+									<td width="52%"><b>DATE JOINED</b></td>
+									<td width="1%">:</td>
+									<td><b> {{ date('d/M/Y',strtotime($member->doj)) }}</b></td>
+								</tr>
+								<tr>
+									<td><b>PAID TILL</b></td>
+									<td>:</td>
+									<td><b> {{  date('d/M/Y',strtotime($data['to_date'])) }}</b></td>
+								</tr>
+							</table>
+							
 						</td>
 					</tr>
 					@php
@@ -35,8 +46,9 @@
 						<td colspan="2">
 							<table>
 								<tr>
-									<td width="6%" style="vertical-align: top;font-weight: bold;">BRANCH:</td>
-									<td width="95%">
+									<td width="5%" style="vertical-align: top;font-weight: bold;">BRANCH</td>
+									<td>:</td>
+									<td width="94%">
 										 {{ $member->branch_name }}
 											@if($memberaddr->address_one!="") , {{ $memberaddr->address_one }} @endif
 											@if($memberaddr->address_two!="") , {{ $memberaddr->address_two }} @endif
@@ -46,17 +58,29 @@
 									</td>
 								</tr>
 								<tr>
-									<td ><b>BANK</b>:</td>
+									<td ><b>BANK</b></td>
+									<td>:</td>
 									<td>
 										{{ $member->company_name }}
 									</td>
 								</tr>
 							</table>
 						</td>
-						<td style="margin: 0;padding: 2px;">
+						<td style="padding: 2px;">
+							<table>
+								<tr>
+									<td width="52%"><b>BRANCH CODE</b></td>
+									<td width="1%">:</td>
+									<td><b> {{ $member->branch_shortcode }}</b></td>
+								</tr>
+								<tr>
+									<td><b>BANK CODE</b></td>
+									<td width="1%">:</td>
+									<td><b> {{ $member->short_code }}</b></td>
+								</tr>
+							</table>
 							@if($user_role!='member')
-								<p><b class="bold">BRANCH CODE</b>: {{ $member->branch_shortcode }}</p>
-								<p><b class="bold">BANK CODE</b>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ $member->short_code }}</p>
+								
 							@endif
 						</td>
 					</tr>
