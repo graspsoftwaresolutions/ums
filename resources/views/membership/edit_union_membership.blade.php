@@ -521,14 +521,15 @@
                                                         $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
                                                         //dd($getfiles);
                                                     @endphp
-                                                    <input type="button" class="btn btn-sm purple " name="addattach" id="addattach" value="Add Attachment" />
-                                                    <div class="col s12 m8">
-                                                        <input type="text" name="attachmentcount" readonly id="attachmentcount" value="0" />
+                                                    <div class="col s12 m12">
+                                                        <br>
+                                                         <input type="button" class="btn btn-sm purple " name="addattach" id="addattach" value="Add Attachment" />
+                                                        <input type="text" name="attachmentcount" class="hide" readonly id="attachmentcount" value="0" />
                                                          <table id="filetable">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Particular</th>
-                                                                    <th>File</th>
+                                                                    <th width="42%">Particular</th>
+                                                                    <th width="42%">File</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>

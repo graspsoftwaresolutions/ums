@@ -445,13 +445,13 @@
 																		<input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
 																	</div>
 																	 <input type="button" class="btn btn-sm purple" name="addattach" id="addattach" value="Add Attachment" />
-																	<div class="col s12 m8">
+																	<div class="col s12 m12">
 																		 <input type="text" name="attachmentcount" class="hide" readonly id="attachmentcount" value="0" />
 																		 <table>
 																		 	<thead>
 																		 		<tr>
-																		 			<th>Particular</th>
-																		 			<th>File</th>
+																		 			<th width="42%">Particular</th>
+																		 			<th width="42%">File</th>
 																		 			<th>Action</th>
 																		 		</tr>
 																		 	</thead>
@@ -1204,6 +1204,7 @@
 			 $("#tdf").val(suggestion.tdf).trigger("change");
 			 $("#tdf_amount").val(suggestion.tdf_amount);
 			 $('#dob').trigger('change');
+			 $("#new_ic").trigger('blur');
         },
         showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',

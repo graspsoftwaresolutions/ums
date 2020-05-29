@@ -1398,12 +1398,12 @@
                                                         $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
                                                         //dd($getfiles);
                                                     @endphp
-                                                    <div class="col s12 m8">
+                                                    <div class="col s12 m12">
                                                          <table>
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Particular</th>
-                                                                    <th>File</th>
+                                                                    <th width="42%">Particular</th>
+                                                                    <th width="42%">File</th>
                                                                     @if($check_unionbranch==1)
                                                                     <th>Action</th>
                                                                     @endif
