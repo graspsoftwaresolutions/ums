@@ -72,7 +72,7 @@
 
     $hidemember='';
     if($user_role=='member'){
-        $hidemember='hidemember';
+        $hidemember='hide';
     }
 @endphp
 <div id="">
@@ -1088,7 +1088,7 @@
                                                         $newdesignation = CommonHelper::getNewDesignationList();
                                                     @endphp
                                                     
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                         <div class="row">
                                                             <div class="col s12 m6">
                                                                 <label>{{__('Designation') }}</label>
@@ -1205,12 +1205,12 @@
                                                         <div class="errorTxt"></div>
                                                     </div>
                                                     <div class="clearfix" style="clear:both"></div>
-                                                    <div class="col s12 m6">
+                                                    <div class="col s12 m6 {{ $hidemember }}">
                                                     	<div class="row">
                                                             @php
                                                                $basicsalary = CommonHelper::getBasicSalary($values->mid,date('Y-m-d',strtotime($values->last_update))); 
                                                             @endphp
-	                                                    	<div class="input-field col s12 m3 {{ $hidemember }}">
+	                                                    	<div class="input-field col s12 m3">
 		                                                        <label for="basicsalary" class="force-active">Basic Salary</label>
 		                                                        <input id="basicsalary" name="basicsalary" value="{{$basicsalary=='' ? $values->salary : $basicsalary}}" readonly="" type="text" data-error=".errorTxt11">
                                                                 <input id="salary" name="salary" class="hide" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
@@ -1369,6 +1369,7 @@
                                                             <span style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">{{ $status_val }}</span>
                                                         </p>
                                                         @endif
+                                                        <br>
                                                     </div>
                                                     @php } @endphp
                                                     <div class="clearfix" style="clear:both"></div>
@@ -1393,30 +1394,35 @@
                                                     <div class="col s12 m6 hide">
                                                         <input type="text" id="attachedone" name="attachedone" class="inline-box" style="width: 500px;" >
                                                     </div> -->
-                                                     <input type="button" class="btn btn-sm purple hide" name="addattach" id="addattach" value="Add Attachment" />
+                                                     <input type="button" class="btn btn-sm purple " name="addattach" id="addattach" value="Add Attachment" />
+                                                    <input type="text" name="attachmentcount" class="hide" readonly id="attachmentcount" value="0" />
                                                     @php
                                                         $getfiles = CommonHelper::getMemberAttachaments($member_autoid);
                                                         //dd($getfiles);
                                                     @endphp
                                                     <div class="col s12 m12">
-                                                         <table>
+                                                         <table id="filetable">
                                                             <thead>
                                                                 <tr>
                                                                     <th width="42%">Particular</th>
                                                                     <th width="42%">File</th>
-                                                                    @if($check_unionbranch==1)
+                                                                   
                                                                     <th>Action</th>
-                                                                    @endif
+                                                                    
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody id="attachmentarea">
                                                                 @foreach($getfiles as $file)
-                                                                <tr>
+                                                                <tr id="del_{{ $file->id }}">
                                                                     <td>{{$file->title}}</td>
                                                                     <td>{{$file->file_name}} &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
-                                                                    @if($check_unionbranch==1)
-                                                                    <td>Delete</td>
-                                                                    @endif
+                                                                   
+                                                                    <td>
+                                                                        <a href="#" onclick="return DeleteImage('{{ $file->id }}')">
+                                                                             Delete
+                                                                        </a>
+                                                                    </td>
+                                                                    
                                                                 </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -2868,9 +2874,39 @@
             $("#remarksdiv").addClass('hide');
         }
     }
+    function DeleteImage(fileid){
+        if (confirm('Are you sure you want to delete?')){
+            $.ajax({
+                type:"GET",
+                dataType:"json",
+                url:"{{URL::to(app()->getLocale().'/delete_member_file') }}?fileid="+fileid,
+                success:function(res){
+                    if(res){
+                        alert('File deleted successfully');
+                        $('table#filetable tr#del_'+fileid).remove();
+                    }else{
+                        alert('Failed to delete');
+                    }
+                }
+            });
+        }else{
+            return false;
+        }
+        
+    }
+    $(document.body).on('click', '.delete_attachment' ,function(){
+        if(confirm('Are you sure you want to delete?')){
+            var attach_id = $(this).data('id');
+            var parrent = $(this).parents("tr");
+            parrent.remove(); 
+        }else{
+            return false;
+        }
+        
+    });
     $('#addattach').click(function(){
         var attachmentcount = $("#attachmentcount").val();
-        var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" readonly value="'+attachmentcount+'" /><input id="attachmentname_'+attachmentcount+'" name="attachmentname'+attachmentcount+'" type="text" /></td>';
+        var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly value="'+attachmentcount+'" /><input id="attachmentname_'+attachmentcount+'" name="attachmentname'+attachmentcount+'" type="text" /></td>';
         attachrow += '<td><input type="file" id="attachmentone_'+attachmentcount+'" name="attachmentone'+attachmentcount+'[]" multiple="" class="" accept="" style="width: 500px;" /></td>';
         attachrow += '<td><button type="button" data-id="'+attachmentcount+'" class="delete_attachment waves-light btn">Delete</button></td></tr>';
         $('#attachmentarea').append(attachrow);

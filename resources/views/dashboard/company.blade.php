@@ -72,7 +72,7 @@
                         <div id="file-upload-div" class="input-field  file-field " style="border: 1px solid #9e9e9e;margin: 0;padding: 0;border-radius: 6px; color: #fff;">
                             <div class="btn " style="float: right;height: 3rem;line-height: 3rem; background: none;color: #fff;margin: 0;">
                                 <span>File Upload</span>
-                                <input type="file" name="file"  class="form-control btn" accept=".xls,.xlsx">
+                                <input type="file" id="file" name="file"  class="form-control btn" accept=".xls,.xlsx">
                             </div>
                             <div class="file-path-wrapper ">
                                 <input class="file-path validate" type="text" style="border:none;box-shadow: none;height: 2rem;margin-top: 10px;color: #fff;">
@@ -339,7 +339,11 @@
             $('#subscribe_formValidate').trigger('submit');
 
         });
-       getDataStatus();
+        $(document).on('click', '#file', function() {
+            getDataStatus();
+
+        });
+       //
     </script>
    
  @endsection
