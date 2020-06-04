@@ -3571,4 +3571,26 @@ class CommonHelper
                                          ->OrderBy('ms.arrear_status','asc')
                                          ->get();
     }
+    public static function getCountryState($countryid){
+        $res = DB::table('country as c')
+                ->where('c.id','=',$countryid)
+                ->pluck('country_name')
+                ->first();
+       // $membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
+        return $res;
+    }
+
+     public static function getstateusedcount($stateid){
+        $City_membership =  DB::table('membership as m')->where('m.state_id','=',$stateid)->count();
+        $City_member_gua =  DB::table('member_guardian as mg')->where('mg.state_id','=',$stateid)->count();
+        $City_member_nomi =  DB::table('member_nominees as mn')->where('mn.state_id','=',$stateid)->count();
+        $City_company_bran =  DB::table('company_branch as cb')->where('cb.state_id','=',$stateid)->count();
+        $City_union_bran =  DB::table('union_branch as ub')->where('ub.state_id','=',$stateid)->count();
+        if($City_membership > 0 || $City_member_gua > 0 || $City_member_nomi > 0 || $City_company_bran  > 0 || $City_union_bran > 0)
+        {
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }

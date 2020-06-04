@@ -1433,4 +1433,11 @@ public function companyDestroy($lang,$id)
         $data['city_view'] = City::where('status','=','1')->get();
         return view('master.city.empty_city_list',compact('data',$data));
     }
+    public function EmptystateList()
+    {
+        //$data['country_view'] = Country::where('status','=','1')->get();
+        $data['state_view'] = State::where('status','=','1')->get();
+       // $data['city_view'] = City::where('status','=','1')->get();
+        return view('master.state.empty_state_list',compact('data',$data));
+    }
 }

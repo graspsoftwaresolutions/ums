@@ -120,6 +120,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//City Details 
 	Route::get('city','MasterController@cityList')->name('master.city');
 	Route::get('cityclear','MasterController@EmptycityList')->name('master.citytemp');
+	Route::get('stateclear','MasterController@EmptystateList')->name('master.statetemp');
+
 	Route::post('ajax_city_list','AjaxController@ajax_city_list');
 	Route::post('city_save','MasterController@citySave')->name('master.savecity');
 	Route::post('city_nameexists','AjaxController@checkCityNameExists');
