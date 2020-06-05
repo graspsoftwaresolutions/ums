@@ -3569,6 +3569,7 @@ class CommonHelper
                                          ->where(DB::raw('YEAR(ms.StatusMonth)'),'=',$year)
                                          ->OrderBy('ms.StatusMonth','asc')
                                          ->OrderBy('ms.arrear_status','asc')
+                                        // ->dump()
                                          ->get();
     }
     public static function getCountryState($countryid){

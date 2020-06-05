@@ -295,7 +295,77 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 					@if( $data['old_member_id']!='')
 					<div id="previous_history" class="col s12">
-						<div class="card">
+						@if(isset($data['previous_member_years']))
+					         <ul class="collapsible collapsible-accordion">
+					            @foreach($data['previous_member_years'] as $year)
+					            @php
+					            	$prememberhistory = CommonHelper::getMonthendHistory($data['old_member_id'],$year->years);
+					            	$slno=1;
+					            	//dd($prememberhistory);
+					            @endphp
+					            
+					            <li>
+					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}</div>
+					               <div class="collapsible-body">
+					                  	 <table id="page-current-history{{$year->years}}" class="display ">
+											<thead>
+												<tr>
+													<th>{{__('S.No')}}</th>
+													<th>{{__('History Date')}}</th>
+													<th>{{__('Subs.Paid')}}</th>
+													<th>{{__('BF Paid')}}</th>
+													<th>{{__('Ins.Paid')}}</th>
+													<th>{{__('Month.Paid')}}</th>
+													<th>{{__('LastPaymentDate')}}</th>
+													<th>{{__('Advance')}}</th>
+													<th>{{__('Tot.Mon.Paid')}}</th>
+													<th>{{__('Tot.Mon.Due')}}</th>
+													<th>{{__('Total')}}</th>
+													<th>{{__('AccSubs')}}</th>
+													<th>{{__('AccBF')}}</th>
+													<th>{{__('AccIns')}}</th>
+													<!-- <th>{{__('DueSubs')}}</th> -->
+												</tr>
+											</thead>
+											<tbody>
+												@foreach($prememberhistory as $history)
+												<tr style="color:{{$history->font_color}}">
+													<td>{{$slno}}</td>
+													<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }} @if($history->arrear_status==1) <span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>@endif</td>
+													<td>{{ $history->SUBSCRIPTION_AMOUNT }}</td>
+													<td>{{ $history->BF_AMOUNT }}</td>
+													<td>{{ $history->INSURANCE_AMOUNT }}</td>
+													<td>{{ $history->TOTAL_MONTHS }}</td>
+													<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
+													<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
+													<td>{{ $history->TOTALMONTHSPAID }}</td>
+													<td>{{ $history->TOTALMONTHSDUE }}</td>
+													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
+													<td>{{ $history->ACCSUBSCRIPTION }}</td>
+													<td>{{ $history->ACCBF }}</td>
+													<td>{{ $history->ACCINSURANCE }}</td>
+													<!-- <td style="background: #f2f2f2;">{{ $history->SUBSCRIPTIONDUE }}</td> -->
+													
+												</tr> 
+												@php
+													$slno++;
+												@endphp
+												@endforeach
+												@if(count($prememberhistory)==0)
+													<tr>
+														<td colspan="13">NO DATA AVAILABLE</td>
+													</tr> 
+												@endif
+											</tbody>
+										</table>
+					               </div>
+					            </li>
+					            @endforeach
+					         </ul>
+					        @endif
+
+
+						<div class="card hide">
 							@php
 								$slno1=1;
 							@endphp
