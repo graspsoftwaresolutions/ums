@@ -146,6 +146,15 @@ class MemberController extends CommonController
 						$member_number = $request->input('member_number');
 					}
 				}
+
+				if($request->input('old_member_id')!=''){
+					$old_member_idone = $request->input('old_member_id');
+					$olduserdata = DB::table('membership')->select('user_id','email')->where('id','=',$old_member_idone)->first();
+					$olduserid = $olduserdata->user_id;
+					$oldemail = $olduserdata->email.'old';
+					$updatem = DB::table('membership')->where('id','=',$old_member_idone)->update(['email' => $oldemail]);
+					$updateu = DB::table('users')->where('id','=',$olduserid)->update(['email' => $oldemail]);
+				}
 				
 				
 
@@ -1137,13 +1146,25 @@ class MemberController extends CommonController
 	public function checkMemberemailExists(Request $request){
 		//return $request->all();
 		$email =  $request->input('email');
-        $db_autoid = $request->input('db_autoid');
-		if($db_autoid=='' || $db_autoid==null)
-        {
-			return $memberexists = $this->membermailExists($email);
+		$db_autoid = $request->input('db_autoid');
+		$old_member_id = $request->input('old_member_id');
+		if($old_member_id!=''){
+			$useremail_existss = Membership::where('email','=',$email)->where('id','!=',$old_member_id)->count(); 
+			if($useremail_existss>0){
+				return "false";
+			}else{
+				return "true";
+			}
+			//return 1;
 		}else{
-			return $memberexists = $this->membermailExists($email,$db_autoid);
+			if($db_autoid=='' || $db_autoid==null)
+			{
+				return $memberexists = $this->membermailExists($email);
+			}else{
+				return $memberexists = $this->membermailExists($email,$db_autoid);
+			}
 		}
+		
 		//return Response::json($return_status);
 	}
 
