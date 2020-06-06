@@ -179,7 +179,7 @@
 																</div>
 																<div class="input-field col s12 m6">
 																	<label for="email" class="force-active">{{__('Email') }} </label>
-																	<input id="email" name="email" value="{{ old('email') }}" type="email" data-error=".errorTxt6">
+																	<input id="email" name="email" value="{{ old('email') }}" @if(empty($auth_user)) required @endif type="email" data-error=".errorTxt6">
 																	<div class="errorTxt6"></div>
 																</div>
 																<div class="clearfix" ></div>
