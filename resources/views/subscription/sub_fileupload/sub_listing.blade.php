@@ -139,6 +139,7 @@
                                     <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
                                 </div>
                             </div>
+                            @include('includes.messages')
                         </div>
                     </div>
                 </div>

@@ -53,6 +53,7 @@ use PDF;
 use Artisan;
 use Facades\App\Repository\CacheMembers;
 use DateTime;
+use App\Imports\SubsheetImport;
 
 
 
@@ -162,6 +163,15 @@ class SubscriptionController extends CommonController
                     $data['sub_company'] = $request->sub_company;
                 
                     $file = $request->file('file')->storeAs('subscription', $file_name.'.xlsx'  ,'local');
+
+                    $subsdata = (new SubsheetImport)->toArray('storage/app/subscription/'.$file_name.'.xlsx');
+                    $firstrow = $subsdata[0][0];
+                    if($firstrow[0]!='ID' || $firstrow[1]!='NRIC' || $firstrow[3]!='Amount'){
+                        return  redirect('en/subscription')->with('error', 'Wrong excel sheet');
+                    }
+
+
+
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
                     //return back()->with('message', 'File Uploaded Successfully');
