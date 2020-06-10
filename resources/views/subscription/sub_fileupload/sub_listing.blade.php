@@ -213,7 +213,7 @@
                                         <div id="file-upload-div" class="input-field  file-field col m12 s12">
                                             <div class="btn ">
                                                 <span>File</span>
-                                                <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
+                                                <input type="file" name="file" id="file" class="form-control btn" accept=".xls,.xlsx">
                                             </div>
                                             <div class="file-path-wrapper ">
                                                 <input class="file-path validate" type="text">
@@ -844,7 +844,10 @@
         $("#subscription_sidebar_li_id").addClass('active');
         $("#subscription_sidebar_a_id").addClass('active');
 
-        $("#sub_company").trigger('change');
+         $(document).on('click', '#file', function() {
+            getDataStatus();
+
+        });
 
         function printDiv() {
 
