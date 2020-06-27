@@ -277,13 +277,19 @@ class SubscriptionController extends CommonController
 			$total_members_count += $sundry_count;
             $total_members_amount += $sundry_amount;
 
-            if($exists==1){
-                $resstatus=2;
-                $message = $upmessage;
+            if($total_members_count==0){
+                $resstatus=0;
+                $message = '';
             }else{
-                $resstatus=1;
-                $message = 'Data already uploaded for this bank';
+                 if($exists==1){
+                    $resstatus=2;
+                    $message = $upmessage;
+                }else{
+                    $resstatus=1;
+                    $message = 'Data already uploaded for this bank';
+                }
             }
+           
             $data =['status' => $resstatus, 'status_data' => $status_data, 'approval_data' => $approval_data, 'sundry_amount' => number_format($sundry_amount,2,".",","), 'sundry_count' => $sundry_count, 'total_members_amount' => number_format($total_members_amount,2,".",","), 'total_members_count' => $total_members_count, 'total_match_members_count' => $total_match_members_count, 'total_match_approval_members_count' => $total_match_approval_members_count, 'total_match_pending_members_count' => $total_match_pending_members_count, 'company_auto_id' => $company_auto_id, 'month_year_number' => strtotime('01-'.$monthname.'-'.$year),'message'  => $message];
         }else{
             $data =['status' =>0, 'status_data' => [], 'approval_data' => [] ,'message'  => 'No data found'];
