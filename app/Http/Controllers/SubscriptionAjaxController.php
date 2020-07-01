@@ -106,7 +106,8 @@ class SubscriptionAjaxController extends CommonController
         ->leftjoin('membership as m','m.id','=','mon_sub_member.MemberCode')
         ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
         ->leftjoin('race as r','r.id','=','m.race_id')
-        ->leftjoin('designation as d','d.id','=','m.designation_id');
+        ->leftjoin('designation as d','d.id','=','m.designation_id')
+        ->where('mon_sub.Date','!=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'));
 
         if($race_id!="")
         {

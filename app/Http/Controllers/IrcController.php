@@ -32,7 +32,7 @@ class IrcController extends CommonController
 		$get_roles = Auth::user()->roles;
 		$user_role = $get_roles[0]->slug;
 
-		if($user_role=='irc-confirmation'){
+		if($user_role=='irc-confirmation' || $user_role=='irc-confirmation-officials'){
 			$data['reason_view'] = Reason::where('status','=','1')->get();
 			return view('irc.irc')->with('data',$data);
 		}else{
@@ -186,18 +186,62 @@ class IrcController extends CommonController
 		$userid = Auth::user()->id;
 		$get_roles = Auth::user()->roles;
 		$user_role = $get_roles[0]->slug;
-		$membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
-		$c_head = DB::table('membership as m')->select('m.id')
-							->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-							->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-							->where('m.id','=',$membercode)
-							->where('u.is_head','=',1)
-							//->dump()
-							->count();
+		//$membercode = DB::table('irc_account as irc')->where('user_id','=',$userid)->pluck('MemberCode')->first();
+		// $c_head = DB::table('membership as m')->select('m.id')
+		// 					->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+		// 					->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+		// 					->where('m.id','=',$membercode)
+		// 					->where('u.is_head','=',1)
+		// 					//->dump()
+		// 					->count();
 		//dd(2);
 		$searchkey = $request->input('searchkey');
 		$search = $request->input('query');
-		$union_branch_id = $request->input('union_branch_id');
+		$unionbranchid = $request->input('union_branch_id');
+
+		$unionbranchname = DB::table('union_branch as ub')
+			->where('ub.id','=',$unionbranchid)
+			->pluck('union_branch')->first();  
+	
+			//return $unionbranchname;
+	
+	
+		$union_no = $unionbranchid;
+		if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
+			$unionbranchids = DB::table('union_branch as ub')
+					->where(function($query) use ($union_no){
+						$query->where('ub.union_branch', '=',"SEREMBAN")
+							->orWhere('ub.union_branch', '=',"JB");
+					})
+				->pluck('ub.id')->toArray();  
+		}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+			$unionbranchids = DB::table('union_branch as ub')
+			->where(function($query) use ($union_no){
+				$query->where('ub.union_branch', '=',"PENANG")
+					->orWhere('ub.union_branch', '=',"KEDAH");
+			})
+			->pluck('ub.id')->toArray();  
+		}else if($unionbranchname=='IPOH'){
+			$unionbranchids = DB::table('union_branch as ub')
+			->where('ub.union_branch','=','IPOH')
+			->pluck('ub.id')->toArray();  
+		}else if($unionbranchname=='KELANTAN'){
+			$unionbranchids = DB::table('union_branch as ub')
+			->where('ub.union_branch','=','KELANTAN')
+			->pluck('ub.id')->toArray();  
+		}else{
+			//return $union_no;
+			$unionbranchids = DB::table('union_branch as ub')
+			->select('ub.id')
+			->where(function($query) use ($union_no){
+				$query->where('ub.union_branch', '=',"KL")
+					->orWhere('ub.union_branch', '=',"KELANG")
+					->orWhere('ub.union_branch', '=',"PAHANG");
+			})
+			->pluck('ub.id')->toArray();
+			//->first();  
+		}
+
 		$ircsuggestions = DB::table('irc_account as irc')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','irc.MemberCode')
 							->leftjoin('membership as m','irc.MemberCode','=','m.id')
 							->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
@@ -209,9 +253,9 @@ class IrcController extends CommonController
 									->orWhere('m.old_ic', 'LIKE',"{$search}%");
 							})
 							->where('m.status_id','!=',4);
-		if($c_head!=1){
-			$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$union_branch_id);
-		}					
+		//if($c_head!=1){
+			//$ircsuggestions = $ircsuggestions->whereIn('cb.union_branch_id',$unionbranchids);
+		//}					
 	
 		$res['suggestions'] = $ircsuggestions->limit(25)
 								->get(); 
@@ -252,7 +296,7 @@ class IrcController extends CommonController
 		$totalqry = DB::table('irc_confirmation as i')
 					 ->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
 					 ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  ;
-		if($user_role=='irc-branch-committee'){
+		if($user_role=='irc-branch-committee' || $user_role=='irc-branch-committee-officials'){
 			$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
 			->pluck('union_branch_id')->first();  
 
@@ -309,7 +353,9 @@ class IrcController extends CommonController
 			}else{
 				 $totalqry = $totalqry->where('i.irc_status','=',1);
 			}
-			$totalqry = $totalqry->whereIn('cb.union_branch_id',$unionbranchids);
+			if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee'){
+				$totalqry = $totalqry->whereIn('cb.union_branch_id',$unionbranchids);
+			}
 			// if($c_head!=1){
 			// 	$totalqry = $totalqry->where('cb.union_branch_id','=',$unionbranchid);
 			// }
@@ -400,7 +446,9 @@ class IrcController extends CommonController
 				// }
 				 //$totalqry = $totalqry->where('i.status','=','0');
 			}
-			$totalqry = $totalqry->whereIn('cb.union_branch_id',$unionbranchids);
+			if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee'){
+				$totalqry = $totalqry->whereIn('cb.union_branch_id',$unionbranchids);
+			}
 		}
 		
 		
@@ -408,7 +456,7 @@ class IrcController extends CommonController
 						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id','m.new_ic','m.old_ic','m.employee_id')
 						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
 						->leftjoin('company_branch as cb','m.branch_id','=','cb.id');
-		if($user_role=='irc-branch-committee'){
+		if($user_role=='irc-branch-committee' || $user_role=='irc-branch-committee-officials'){
 			if($statusfilter!=''){
 				if($statusfilter==0){
 					  $commonselect = $commonselect->where('i.irc_status','=',1)
@@ -453,8 +501,9 @@ class IrcController extends CommonController
 			// 	$commonselect = $commonselect->where('cb.union_branch_id','=',$unionbranchid);
 			// }
 		}
-
-		$commonselect = $commonselect->whereIn('cb.union_branch_id',$unionbranchids);
+		if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee'){
+			$commonselect = $commonselect->whereIn('cb.union_branch_id',$unionbranchids);
+		}
 		
 		$totalData = $totalqry->count();
         $totalFiltered = $totalData;
@@ -977,7 +1026,7 @@ class IrcController extends CommonController
 			//  print_r($request->all());
 			//  die;
 
-			if($user_role=='irc-confirmation')
+			if($user_role=='irc-confirmation' || $user_role=='irc-confirmation-officials')
 			{		
 				$saveIrc = DB::table('irc_confirmation')
                 ->where('id', $request->input('ircid'))
@@ -987,7 +1036,7 @@ class IrcController extends CommonController
 				//$saveIrc = $this->Irc->saveIrcdata($data);
 				
 			}
-			else if($user_role=='irc-branch-committee')
+			else if($user_role=='irc-branch-committee' || $user_role=='irc-branch-committee-officials')
 			{
 				$updatedata = [];
 				$committieverificationboxone = $request->input('committieverificationboxone');
@@ -1077,85 +1126,106 @@ class IrcController extends CommonController
 		$userid = Auth::user()->id;
 		$get_roles = Auth::user()->roles;
 		$user_role = $get_roles[0]->slug;
-		if($user_role == 'irc-confirmation'){
-			$memberid = DB::table('irc_account as irc')->where('user_id','=',$userid)
-			->pluck('MemberCode')->first();  
-			$unionbranchid = DB::table('membership as m')
-				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
-				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();  
+		if($user_role == 'irc-confirmation-officials'){
+			$searchkey = $request->input('searchkey');
+			$search = $request->input('query');
+			$ircsuggestions = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','m.gender') ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
+								->where(function($query) use ($search){
+									$query->orWhere('m.member_number', 'LIKE',"{$search}%")
+										->orWhere('m.name', 'LIKE',"{$search}%")
+										->orWhere('m.old_ic', 'LIKE',"{$search}%")
+										->orWhere('m.new_ic', 'LIKE',"{$search}%");
+								})->limit(25)
+								//->where('m.id','!=',$memberid)
+								->where('status_id','!=',4);   
+			// if($c_head!=1){
+			// 	$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
+			// }else{
+			//$ircsuggestions = $ircsuggestions->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
+			$res['suggestions'] = $ircsuggestions->get();
 		}else{
-			$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$userid)
-			->pluck('union_branch_id')->first();  
-		}
-
-		$unionbranchname = DB::table('union_branch as ub')
-		->where('ub.id','=',$unionbranchid)
-		->pluck('union_branch')->first();  
-
-		//return $unionbranchname;
-
-
-		$union_no = $unionbranchid;
-		if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
-			$unionbranchids = DB::table('union_branch as ub')
-					->where(function($query) use ($union_no){
-						$query->where('ub.union_branch', '=',"SEREMBAN")
-							->orWhere('ub.union_branch', '=',"JB");
-					})
+			if($user_role == 'irc-confirmation'){
+				$memberid = DB::table('irc_account as irc')->where('user_id','=',$userid)
+				->pluck('MemberCode')->first();  
+				$unionbranchid = DB::table('membership as m')
+					->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+					->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();  
+			}else{
+				$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$userid)
+				->pluck('union_branch_id')->first();  
+			}
+	
+			$unionbranchname = DB::table('union_branch as ub')
+			->where('ub.id','=',$unionbranchid)
+			->pluck('union_branch')->first();  
+	
+			//return $unionbranchname;
+	
+	
+			$union_no = $unionbranchid;
+			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
+				$unionbranchids = DB::table('union_branch as ub')
+						->where(function($query) use ($union_no){
+							$query->where('ub.union_branch', '=',"SEREMBAN")
+								->orWhere('ub.union_branch', '=',"JB");
+						})
+					->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"PENANG")
+						->orWhere('ub.union_branch', '=',"KEDAH");
+				})
 				->pluck('ub.id')->toArray();  
-		}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
-			$unionbranchids = DB::table('union_branch as ub')
-			->where(function($query) use ($union_no){
-				$query->where('ub.union_branch', '=',"PENANG")
-					->orWhere('ub.union_branch', '=',"KEDAH");
-			})
-			->pluck('ub.id')->toArray();  
-		}else if($unionbranchname=='IPOH'){
-			$unionbranchids = DB::table('union_branch as ub')
-			->where('ub.union_branch','=','IPOH')
-			->pluck('ub.id')->toArray();  
-		}else if($unionbranchname=='KELANTAN'){
-			$unionbranchids = DB::table('union_branch as ub')
-			->where('ub.union_branch','=','KELANTAN')
-			->pluck('ub.id')->toArray();  
-		}else{
-			//return $union_no;
-			$unionbranchids = DB::table('union_branch as ub')
-			->select('ub.id')
-			->where(function($query) use ($union_no){
-				$query->where('ub.union_branch', '=',"KL")
-					->orWhere('ub.union_branch', '=',"KELANG")
-					->orWhere('ub.union_branch', '=',"PAHANG");
-			})
-			->pluck('ub.id')->toArray();
-			//->first();  
+			}else if($unionbranchname=='IPOH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','IPOH')
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='KELANTAN'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','KELANTAN')
+				->pluck('ub.id')->toArray();  
+			}else{
+				//return $union_no;
+				$unionbranchids = DB::table('union_branch as ub')
+				->select('ub.id')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"KL")
+						->orWhere('ub.union_branch', '=',"KELANG")
+						->orWhere('ub.union_branch', '=',"PAHANG");
+				})
+				->pluck('ub.id')->toArray();
+				//->first();  
+			}
+			//return $unionbranchids;
+	
+			$c_head = DB::table('union_branch as ub')->select('ub.id')
+								->where('ub.id','=',$unionbranchid)
+								->where('ub.is_head','=',1)
+								//->dump()
+								->count();
+			
+	
+			$searchkey = $request->input('searchkey');
+			$search = $request->input('query');
+			$ircsuggestions = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','m.gender') ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
+								->where(function($query) use ($search){
+									$query->orWhere('m.member_number', 'LIKE',"{$search}%")
+										->orWhere('m.name', 'LIKE',"{$search}%")
+										->orWhere('m.old_ic', 'LIKE',"{$search}%")
+										->orWhere('m.new_ic', 'LIKE',"{$search}%");
+								})->limit(25)
+								->where('m.id','!=',$memberid)
+								->where('status_id','!=',4);   
+			// if($c_head!=1){
+			// 	$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
+			// }else{
+			$ircsuggestions = $ircsuggestions->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
+			$res['suggestions'] = $ircsuggestions->get();
 		}
-		//return $unionbranchids;
-
-		$c_head = DB::table('union_branch as ub')->select('ub.id')
-							->where('ub.id','=',$unionbranchid)
-							->where('ub.is_head','=',1)
-							//->dump()
-							->count();
 		
-
-	    $searchkey = $request->input('searchkey');
-        $search = $request->input('query');
-        $ircsuggestions = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number','m.gender') ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
-                            ->where(function($query) use ($search){
-                                $query->orWhere('m.member_number', 'LIKE',"{$search}%")
-                                    ->orWhere('m.name', 'LIKE',"{$search}%")
-									->orWhere('m.old_ic', 'LIKE',"{$search}%")
-									->orWhere('m.new_ic', 'LIKE',"{$search}%");
-							})->limit(25)
-							->where('m.id','!=',$memberid)
-                            ->where('status_id','!=',4);   
-		// if($c_head!=1){
-		// 	$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
-		// }else{
-		$ircsuggestions = $ircsuggestions->whereIn('cb.union_branch_id',$unionbranchids);
-		//}
-		$res['suggestions'] = $ircsuggestions->get();
          return response()->json($res);
 	}
 

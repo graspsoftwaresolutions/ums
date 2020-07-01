@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(EntryRolesSeeder::class);
         //$this->call(UnionGroupsTableSeeder::class);
         //$this->call(IncrementTypesTableDataSeeder::class);
-        $this->call(DesignationNewSeeder::class);
+        //$this->call(DesignationNewSeeder::class);
+        $this->call(IrcOfficialsSeeder::class);
     }
 }

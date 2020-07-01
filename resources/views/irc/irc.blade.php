@@ -194,15 +194,15 @@
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
 					<input id="irc_member_no" name="ircmember" class="common-input"
-						type="text" required data-error=".errorTxt8" readonly="" value="{{ $confirmdata->member_number }}">
-						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{ $confirmdata->mid }}">
+						type="text" required data-error=".errorTxt8" @if(!empty($confirmdata)) readonly="" value="{{ $confirmdata->member_number }}" @else  value="" @endif >
+						<input type="hidden" name="ircmembershipno" id="irc_member_code" @if(!empty($confirmdata)) value="{{ $confirmdata->mid }}" @else value="" @endif >
 					<div class="errorTxt8"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
 					<input id="irc_name"  readonly name="ircname" class="common-input"
-						type="text" value="{{ $confirmdata->membername }}" data-error=".errorTxt9">
+						type="text" value="{{ !empty($confirmdata) ? $confirmdata->membername : '' }}" data-error=".errorTxt9">
 					<div class="errorTxt9"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
@@ -221,7 +221,7 @@
 					<div class="col s12 m3">
 						<p>
 							<label>
-							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Secretary">
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" value="Secretary">
 							<span>{{__('Secretary') }}</span>
 							</label>
 						</p>
@@ -234,32 +234,45 @@
 							</label>
 						</p>
 					</div>
+					@if($user_role =='irc-confirmation-officials')
+					<div class="col s12 m3">
+						&nbsp;
+					</div>
+					<div class="col s12 m3">
+						<p>
+							<label>
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Officials">
+							<span>{{__('Officials') }}</span>
+							</label>
+						</p>
+					</div>
+					@endif
 					<div class="errorTxt10"></div>
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
 					<input id="irc_bank" readonly  name="ircbank" class="common-input"
-						type="text" value="{{ $confirmdata->bankname }}" data-error=".errorTxt1">
+						type="text" value="{{ !empty($confirmdata) ? $confirmdata->bankname : '' }}" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="bank_address"
 						class="common-label force-active">{{__('Bank Branch Address') }}</label>
-					<input id="bank_address" readonly  value="{{ $confirmdata->address_one }}" name="ircbankaddress" class="common-input"
+					<input id="bank_address" readonly  value="{{ !empty($confirmdata) ? $confirmdata->address_one : '' }}" name="ircbankaddress" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="input-field col s6">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
-					<input id="irctelephoneno" readonly name="irctelephoneno" value="{{ $confirmdata->phone }}" class="common-input"
+					<input id="irctelephoneno" readonly name="irctelephoneno" value="{{ !empty($confirmdata) ? $confirmdata->phone : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
 				<div class="input-field col s6">
 					<label for="ircmobileno"
 						class="common-label force-active">{{__('Mobile') }}</label>
-					<input id="ircmobileno" readonly  name="ircmobileno" value="{{ $confirmdata->mobile }}" class="common-input"
+					<input id="ircmobileno" readonly  name="ircmobileno" value="{{ !empty($confirmdata) ? $confirmdata->mobile : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="input-field col s6">
@@ -1172,7 +1185,7 @@
 				
 					</div>
 			  </div>
-			  <div class="card @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
+			  <div class="card @php if($user_role =='irc-confirmation' || $user_role =='irc-confirmation-officials') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
 			  <div class="row padding-left-20">
 					<div class="col s12 m12" style="line-height: 5px;">
@@ -1440,39 +1453,39 @@ $('.datepicker').datepicker({
 	format: 'dd/mm/yyyy'
 });
 //IRC Member Details 
-// $("#irc_member_no").devbridgeAutocomplete({
-// 	//lookup: countries,
-// 	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
-// 	type:'GET',
-// 	params: { 
-// 		union_branch_id:  function(){ return $("#union_branch_id").val();  },
-// 	},
-// 	//callback just to show it's working
-// 	onSelect: function (suggestion) {
-// 			$("#irc_member_no").val(suggestion.member_number);	
-// 			$.ajax({
-// 				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
-//                 type: "GET",
-// 				dataType: "json",
-// 				success: function(res) {
-// 					$('#irc_name').val(res.membername);
-// 					$('#irc_bank').val(res.bankname);
-// 					$('#irc_member_code').val(res.mid);
-// 					$('#bank_address').val(res.address_one);
-// 					$('#irctelephoneno').val(res.phone);
-// 					$('#ircmobileno').val(res.mobile);
-// 				}
-// 			});
+$("#irc_member_no").devbridgeAutocomplete({
+	//lookup: countries,
+	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
+	type:'GET',
+	params: { 
+		union_branch_id:  function(){ return $("#union_branch_id").val();  },
+	},
+	//callback just to show it's working
+	onSelect: function (suggestion) {
+			$("#irc_member_no").val(suggestion.member_number);	
+			$.ajax({
+				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
+                type: "GET",
+				dataType: "json",
+				success: function(res) {
+					$('#irc_name').val(res.membername);
+					$('#irc_bank').val(res.bankname);
+					$('#irc_member_code').val(res.mid);
+					$('#bank_address').val(res.address_one);
+					$('#irctelephoneno').val(res.phone);
+					$('#ircmobileno').val(res.mobile);
+				}
+			});
 
-// 	},
-// 	showNoSuggestionNotice: true,
-// 	noSuggestionNotice: 'Sorry, no matching results',
-// 	onSearchComplete: function (query, suggestions) {
-// 		if(!suggestions.length){
-// 			//$("#irc_member_no").val('');
-// 		}
-// 	}
-// });
+	},
+	showNoSuggestionNotice: true,
+	noSuggestionNotice: 'Sorry, no matching results',
+	onSearchComplete: function (query, suggestions) {
+		if(!suggestions.length){
+			//$("#irc_member_no").val('');
+		}
+	}
+});
 $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
 	$("#irc_member_no").val('');
 });

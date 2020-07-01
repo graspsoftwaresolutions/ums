@@ -196,7 +196,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	<div class=" col s12 ">
 	  <div class="container"> 
 	 
-		 <div class="card @php if($user_role =='irc-branch-committee') echo 'branch'; @endphp">
+		 <div class="card @php if($user_role =='irc-branch-committee' || $user_role =='irc-branch-committee-officials') echo 'branch'; @endphp">
 		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 				<div class="input-field col s6">
@@ -246,6 +246,19 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</label>
 						</p>
 					</div>
+
+					<div class="col s12 m3">
+						&nbsp;
+					</div>
+					<div class="col s12 m3">
+						<p>
+							<label>
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $dataresigneddata->ircposition == 'Officials' ? 'checked' : '' }} value="Officials">
+							<span>{{__('Officials') }}</span>
+							</label>
+						</p>
+					</div>
+					
 				</div>
 				<div class="input-field col s6">
 					<label for="irc_bank"
@@ -1342,7 +1355,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div> -->
 					</div>
 			  </div>
-			  <div class="card branchconfirmarea @php if($user_role =='irc-confirmation') echo 'branch'; @endphp">
+			  <div class="card branchconfirmarea @php if($user_role =='irc-confirmation' || $user_role =='irc-confirmation-officials') echo 'branch'; @endphp">
 			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
 
 				@php

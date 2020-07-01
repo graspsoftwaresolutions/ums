@@ -317,9 +317,13 @@ function showeditForm(userid) {
                 $('#membername').val(result.membership.member_number);
                 $('#unionbrancharea').addClass('hide');
                 $('#memberarea').removeClass('hide');
-            }else{
+            }else if(result.irc_type=='irc-branch-committee'){
                 $('#unionbranchname').val(result.unionbranch);
                 $('#unionbrancharea').removeClass('hide');
+                $('#memberarea').addClass('hide');
+            }else{
+               // $('#unionbranchname').val(result.unionbranch);
+                $('#unionbrancharea').addClass('hide');
                 $('#memberarea').addClass('hide');
             }
            

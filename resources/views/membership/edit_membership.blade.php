@@ -155,11 +155,25 @@
                                                                 </label>
                                                             </p>
                                                         </div>
+                                                        @if(!empty($irc_data) && $irc_data->ircposition == 'Officials')
+                                                        <div class="col s12 m3">
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class="col s12 m3">
+                                                            <p>
+                                                                <label>
+                                                                <input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $irc_data->ircposition == 'Officials' ? 'checked' : '' }} value="Officials">
+                                                                <span>{{__('Officials') }}</span>
+                                                                </label>
+                                                            </p>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                     <div class="input-field col s6">
                                                         <label for="irc_bank" class="common-label force-active">{{__('Bank') }}*</label>
                                                         <input id="irc_bank" name="irc_bank" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbank : '' }}" type="text">
                                                     </div>
+                                                    <div class="clearfix" style="clear:both"></div>
                                                     <div class="input-field col s6">
                                                         <label for="irc_bank_address" class="common-label force-active">{{__('Bank Address') }}*</label>
                                                         <input id="irc_bank_address" name="irc_bank_address" class="common-input" value="{{ !empty($irc_data) ? $irc_data->ircbankaddress : '' }}" type="text">

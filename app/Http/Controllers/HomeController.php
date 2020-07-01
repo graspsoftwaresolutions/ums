@@ -193,20 +193,7 @@ class HomeController extends Controller
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
 								->where('i.status','=',0)
 								->where('i.irc_status','=',0);
-								// ->where(function($query) use ($user_id){
-								// 	$query->orWhere('i.waspromoted','!=','1')
-								// 	  ->orWhere('i.beforepromotion','!=','1')
-								// 	  ->orWhere('i.attached','!=','1')
-								// 	  ->orWhere('i.herebyconfirm','!=','1')
-								// 	  ->orWhere('i.filledby','!=','1')
-								// 	  ->orWhere('i.nameofperson','!=','1')
-								// 	  ->orWhereNull('i.waspromoted')
-								// 	  ->orWhereNull('i.beforepromotion')
-								// 	  ->orWhereNull('i.attached')
-								// 	  ->orWhereNull('i.herebyconfirm')
-								// 	  ->orWhereNull('i.filledby')
-								// 	  ->orWhereNull('i.nameofperson');
-								// 	});
+							
 			// if($c_head!=1){
 			// 	$total_ircpending_qry = $total_ircpending_qry->where('cb.union_branch_id','=',$unionbranchid);
 			// }
@@ -229,12 +216,7 @@ class HomeController extends Controller
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 									->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  
-									// ->where('i.nameofperson','=','1')
-									// ->where('i.waspromoted','=','1')
-									// ->where('i.beforepromotion','=','1')
-									// ->where('i.attached','=','1')
-									// ->where('i.herebyconfirm','=','1')
-									// ->where('i.filledby','=','1')
+									
 									->where('i.status','=',0)
 									->where('i.irc_status','=',1);
 
@@ -243,6 +225,46 @@ class HomeController extends Controller
 			// 	$total_ircapp_qry = $total_ircapp_qry->where('cb.union_branch_id','=',$unionbranchid);
 			// }
 
+			$total_ircapp_count = $total_ircapp_qry->count();
+
+			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
+
+			
+			$data['total_irc_count'] = $irc_count;
+			$data['total_ircpending_count'] = $total_ircpending_count;
+			$data['total_ircapproval_count'] = $total_ircapp_count;
+			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
+		}else if($user_role=='irc-confirmation-officials'){
+
+			$total_ircpending_qry = DB::table('irc_confirmation as i')
+								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
+								->where('i.status','=',0)
+								->where('i.irc_status','=',0);
+								
+			//$total_ircpending_qry = $total_ircpending_qry->whereIn('cb.union_branch_id',$unionbranchids);
+
+			$total_ircpending_count = $total_ircpending_qry->count();
+								
+			$total_ircconfirm_qry = DB::table('irc_confirmation as i')
+								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')    
+								->where('i.status','=',1);
+
+			//$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			
+			$total_ircconfirm_count = $total_ircconfirm_qry->count();
+
+			
+			$total_ircapp_qry = DB::table('irc_confirmation as i')
+									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
+									->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  
+									
+									->where('i.status','=',0)
+									->where('i.irc_status','=',1);
+
+			//$total_ircapp_qry = $total_ircapp_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			
 			$total_ircapp_count = $total_ircapp_qry->count();
 
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
@@ -262,10 +284,6 @@ class HomeController extends Controller
 						->count();
 
 			$union_no = $unionbranchid;
-
-			// $unionbranchname = DB::table('union_branch as ub')
-			// ->where('ub.id','=',$unionbranchid)
-			// ->pluck('union_branch')->first();  
 
 			if($unionbranchid==1){
 				$unionbranchids = DB::table('union_branch as ub')
@@ -307,20 +325,7 @@ class HomeController extends Controller
 								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
 								->where('i.status','=',0)
 								->where('i.irc_status','=',0);
-								// ->where(function($query) use ($user_id){
-								// 	$query->orWhere('i.waspromoted','!=','1')
-								// 	  ->orWhere('i.beforepromotion','!=','1')
-								// 	  ->orWhere('i.attached','!=','1')
-								// 	  ->orWhere('i.herebyconfirm','!=','1')
-								// 	  ->orWhere('i.filledby','!=','1')
-								// 	  ->orWhere('i.nameofperson','!=','1')
-								// 	  ->orWhereNull('i.waspromoted')
-								// 	  ->orWhereNull('i.beforepromotion')
-								// 	  ->orWhereNull('i.attached')
-								// 	  ->orWhereNull('i.herebyconfirm')
-								// 	  ->orWhereNull('i.filledby')
-								// 	  ->orWhereNull('i.nameofperson');
-								// 	});
+								
 			//if($c_head!=1){
 				$total_ircpending_qry = $total_ircpending_qry->whereIn('cb.union_branch_id',$unionbranchids);
 			//}
@@ -339,12 +344,7 @@ class HomeController extends Controller
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
 									->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  
-									// ->where('i.nameofperson','=','1')
-									// ->where('i.waspromoted','=','1')
-									// ->where('i.beforepromotion','=','1')
-									// ->where('i.attached','=','1')
-									// ->where('i.herebyconfirm','=','1')
-									// ->where('i.filledby','=','1')
+								
 									->where('i.status','=',0)
 									->where('i.irc_status','=',1);
 			//if($c_head!=1){
@@ -359,21 +359,93 @@ class HomeController extends Controller
 			$data['total_ircpending_count'] = $total_ircpending_count;
 			$data['total_ircapproval_count'] = $total_ircapp_count;
 			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
-			// $total_ircpending_count = DB::table('irc_confirmation as i')
-			// 						->where('i.nameofperson','=','1')
-			// 						->where('i.waspromoted','=','1')
-			// 						->where('i.beforepromotion','=','1')
-			// 						->where('i.attached','=','1')
-			// 						->where('i.herebyconfirm','=','1')
-			// 						->where('i.filledby','=','1')
-			// 						->where('i.status','=',0)->count();
-			// $total_ircconfirm_count = DB::table('irc_confirmation as i')->where('i.status','=',1)->count();
-			// $irc_count = $total_ircpending_count+$total_ircconfirm_count;
 			
-			// $data['total_irc_count'] = $irc_count;
-			// $data['total_ircpending_count'] = $total_ircpending_count;
-			// $data['total_ircapproval_count'] = 0;
-			// $data['total_ircconfirm_count'] = $total_ircconfirm_count;
+		}else if($user_role=='irc-branch-committee-officials'){
+			// $unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
+			// ->pluck('union_branch_id')->first();  
+			// $c_head = DB::table('union_branch as ub')->select('ub.id')
+			// 			->where('ub.id','=',$unionbranchid)
+			// 			->where('ub.is_head','=',1)
+			// 			//->dump()
+			// 			->count();
+
+			// $union_no = $unionbranchid;
+
+			// if($unionbranchid==1){
+			// 	$unionbranchids = DB::table('union_branch as ub')
+			// 			->where(function($query) use ($union_no){
+			// 				$query->where('ub.union_branch', '=',"SEREMBAN")
+			// 					->orWhere('ub.union_branch', '=',"JB");
+			// 			})
+			// 		->pluck('ub.id')->toArray();  
+			// }else if($unionbranchid==2){
+			// 	$unionbranchids = DB::table('union_branch as ub')
+			// 	->where(function($query) use ($union_no){
+			// 		$query->where('ub.union_branch', '=',"PENANG")
+			// 			->orWhere('ub.union_branch', '=',"KEDAH");
+			// 	})
+			// 	->pluck('ub.id')->toArray();  
+			// }else if($unionbranchid==3){
+			// 	$unionbranchids = DB::table('union_branch as ub')
+			// 	->where('ub.union_branch','=','IPOH')
+			// 	->pluck('ub.id')->toArray();  
+			// }else if($unionbranchid==4){
+			// 	$unionbranchids = DB::table('union_branch as ub')
+			// 	->where('ub.union_branch','=','KELANTAN')
+			// 	->pluck('ub.id')->toArray();  
+			// }else{
+			// 	//return $union_no;
+			// 	$unionbranchids = DB::table('union_branch as ub')
+			// 	->select('ub.id')
+			// 	->where(function($query) use ($union_no){
+			// 		$query->where('ub.union_branch', '=',"KL")
+			// 			->orWhere('ub.union_branch', '=',"KELANG")
+			// 			->orWhere('ub.union_branch', '=',"PAHANG");
+			// 	})
+			// 	->pluck('ub.id')->toArray();
+			// 	//->first();  
+			// }
+
+			$total_ircpending_qry = DB::table('irc_confirmation as i')
+								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')     
+								->where('i.status','=',0)
+								->where('i.irc_status','=',0);
+								
+			//if($c_head!=1){
+				//$total_ircpending_qry = $total_ircpending_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
+			$total_ircpending_count = $total_ircpending_qry->count();
+								
+			$total_ircconfirm_qry = DB::table('irc_confirmation as i')
+								->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
+								->leftjoin('company_branch as cb','m.branch_id','=','cb.id')    
+								->where('i.status','=',1);
+			//if($c_head!=1){
+				//$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
+			$total_ircconfirm_count = $total_ircconfirm_qry->count();
+
+			
+			$total_ircapp_qry = DB::table('irc_confirmation as i')
+									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
+									->leftjoin('company_branch as cb','m.branch_id','=','cb.id')  
+								
+									->where('i.status','=',0)
+									->where('i.irc_status','=',1);
+			//if($c_head!=1){
+				//$total_ircapp_qry = $total_ircapp_qry->whereIn('cb.union_branch_id',$unionbranchids);
+			//}
+
+			$total_ircapp_count = $total_ircapp_qry->count();
+			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
+
+			
+			$data['total_irc_count'] = $irc_count;
+			$data['total_ircpending_count'] = $total_ircpending_count;
+			$data['total_ircapproval_count'] = $total_ircapp_count;
+			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
+			
 		}
         return view('home')->with('data',$data);
     }

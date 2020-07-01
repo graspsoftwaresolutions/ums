@@ -97,7 +97,9 @@
 												<select class="error browser-default selectpicker" id="account_type" name="account_type" data-error=".errorTxt5">
 													<option value="">{{__('Select Type') }}</option>
 													<option value="irc-confirmation">IRC Confirmation</option>
+													<option value="irc-confirmation-officials">IRC Confirmation Officials</option>
 													<option value="irc-branch-committee">IRC Branch Committee</option>
+													<option value="irc-branch-committee-officials">IRC Branch Committee Officials</option>
 												</select>
 												<label for="account_type" class="active">Account Type</label>
 												<div class="input-field">

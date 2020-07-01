@@ -48,7 +48,13 @@
 				@role('irc-confirmation')
 					@include('dashboard.irc_confirmation')
 				@endrole
+				@role('irc-confirmation-officials')
+					@include('dashboard.irc_confirmation')
+				@endrole
 				@role('irc-branch-committee')
+					@include('dashboard.irc_branch_commitee')
+				@endrole
+				@role('irc-branch-committee-officials')
 					@include('dashboard.irc_branch_commitee')
 				@endrole
 				@include('layouts.right-sidebar')
