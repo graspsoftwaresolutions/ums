@@ -134,7 +134,7 @@
                                                         <div class="col s12 m3">
                                                             <p>
                                                                 <label>
-                                                                    <input class="validate" required="" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Chairman' ? 'checked' : '' }} >
+                                                                    <input class="validate" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Chairman' ? 'checked' : '' }} >
                                                                     <span>{{__('Chairman') }}</span>
                                                                 </label>
                                                             </p>
@@ -142,7 +142,7 @@
                                                         <div class="col s12 m3">
                                                             <p>
                                                                 <label>
-                                                                    <input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Secretary' ? 'checked' : '' }} >
+                                                                    <input class="validate" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Secretary' ? 'checked' : '' }} >
                                                                     <span>{{__('Secretary') }}</span>
                                                                 </label>
                                                             </p>
@@ -150,7 +150,7 @@
                                                         <div class="col s12 m3">
                                                             <p>
                                                                 <label>
-                                                                    <input class="validate" readonly required="" aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Commitee-Member' ? 'checked' : '' }} >
+                                                                    <input class="validate" readonly aria-required="true" id="irc_position" name="irc_position" type="radio" {{ !empty($irc_data) && $irc_data->ircposition=='Commitee-Member' ? 'checked' : '' }} >
                                                                     <span>{{__('Commitee Member') }}</span>
                                                                 </label>
                                                             </p>
@@ -162,7 +162,7 @@
                                                         <div class="col s12 m3">
                                                             <p>
                                                                 <label>
-                                                                <input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $irc_data->ircposition == 'Officials' ? 'checked' : '' }} value="Officials">
+                                                                <input class="validate" readonly aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $irc_data->ircposition == 'Officials' ? 'checked' : '' }} value="Officials">
                                                                 <span>{{__('Officials') }}</span>
                                                                 </label>
                                                             </p>

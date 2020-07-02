@@ -559,7 +559,7 @@ class IrcController extends CommonController
         {
             foreach ($irclist as $irc)
             {
-				if($user_role!='irc-branch-committee'){
+				if($user_role!='irc-branch-committee' && $user_role!='irc-branch-committee-officials'){
 					$check_count = DB::table('irc_confirmation as irc')
 								->where('irc.irc_status','=',1)
 							  //->where('irc.status','=','0')
@@ -570,7 +570,7 @@ class IrcController extends CommonController
 					}else{
 						$nestedData['status'] = 'Pending';
 					}
-					
+					//dd($check_count);
 				}else{
 					$nestedData['status'] = $irc->status_name;
 				}
@@ -1090,9 +1090,16 @@ class IrcController extends CommonController
 						  ->update(['status'=>'1']);
 		}
 		else{
-			if($ircmembershipno=='' || $resigned_member==''){
-				return redirect(app()->getLocale().'/irc_list')->with('error', 'Please choose member');
+			if($user_role=='irc-confirmation'){
+				if($ircmembershipno=='' || $resigned_member==''){
+					return redirect(app()->getLocale().'/irc_list')->with('error', 'Please choose member');
+				}
+			}else{
+				if($resigned_member==''){
+					return redirect(app()->getLocale().'/irc_list')->with('error', 'Please choose member');
+				}
 			}
+			
 			$check_irc = DB::table('irc_confirmation as irc')
 						->where('irc.resignedmemberno','=',$resigned_member)
 						->count();

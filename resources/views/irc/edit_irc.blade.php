@@ -199,6 +199,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		 <div class="card @php if($user_role =='irc-branch-committee' || $user_role =='irc-branch-committee-officials') echo 'branch'; @endphp">
 		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
+			  	@if($user_role !='irc-confirmation-officials')
 				<div class="input-field col s6">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership No') }}*</label>
@@ -210,6 +211,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<input type="hidden" name="ircmembershipno" id="irc_member_code" value="{{$dataresigneddata->ircmembershipno}}">
 					<div class="errorTxt1"></div>
 				</div>
+				@else
+				<input type="hidden" name="ircmembershipno" id="irc_member_code" value="" >
+				@endif
 				<div class="input-field col s6">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>

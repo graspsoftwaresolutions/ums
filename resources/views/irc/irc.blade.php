@@ -190,6 +190,7 @@
 		 		//dd($confirmdata);
 		 	@endphp
 			  <div class="row">
+			  	@if($user_role !='irc-confirmation-officials')
 				<div class="input-field col s6">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
@@ -198,11 +199,14 @@
 						<input type="hidden" name="ircmembershipno" id="irc_member_code" @if(!empty($confirmdata)) value="{{ $confirmdata->mid }}" @else value="" @endif >
 					<div class="errorTxt8"></div>
 				</div>
+				@else
+				<input type="hidden" name="ircmembershipno" id="irc_member_code" value="" >
+				@endif
 				<div class="input-field col s6">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
-					<input id="irc_name"  readonly name="ircname" class="common-input"
-						type="text" value="{{ !empty($confirmdata) ? $confirmdata->membername : '' }}" data-error=".errorTxt9">
+					<input id="irc_name" @if($user_role !='irc-confirmation-officials') readonly value="{{ !empty($confirmdata) ? $confirmdata->membername : '' }}" @else value="{{ Auth::user()->name }}"  @endif name="ircname" class="common-input"
+						type="text"  data-error=".errorTxt9">
 					<div class="errorTxt9"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
