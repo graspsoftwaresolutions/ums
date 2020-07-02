@@ -1055,6 +1055,7 @@ class IrcController extends CommonController
 				$updatedata['committieremark'] = $committieremark;
 				$updatedata['committiename'] = $request->input('committiename');
 				$updatedata['committieverifyname'] = $request->input('committieverifyname');
+				$updatedata['committie_official_name'] = $request->input('committie_official_name');
 				$updatedata['branchcommitteeName'] = $branchcommitteeName;
 				$updatedata['branchcommitteeZone'] = $branchcommitteeZone;
 				$updatedata['committiecode'] = $committiecode;

@@ -939,6 +939,14 @@
                                                                     
                                                                 
                                                             </div>
+                                                            <div class="col s12 m12" style="margin-left: 25px;">
+                                                                @if($irc_details->committie_official_name!='')
+                                                                    <span>Official</span>
+                                                                    <div class="input-field inline">
+                                                                        <input type="text"  name="committie_official_name" id="committie_official_name" value="{{$irc_details->committie_official_name}}" placeholder="" class="inline-box " style="width: 500px;"/>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
                                                        </div>
                                                         <div class="row">
                                                            

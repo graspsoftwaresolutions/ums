@@ -1451,6 +1451,16 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							
 						
 					</div>
+					<div class="col s12 m12" style="margin-left: 25px;">
+						@if($user_role == 'irc-branch-committee-officials')
+							<span>Official</span>
+							<div class="input-field inline">
+								<input type="text" 	name="committie_official_name" id="committie_official_name" value="{{$irc_details->committie_official_name}}" placeholder="" class="inline-box " style="width: 500px;"/>
+							</div>
+						@else
+							<input type="text" 	name="committie_official_name" id="committie_official_name" value="{{$irc_details->committie_official_name}}" placeholder="" class="inline-box hide" style="width: 500px;"/>
+						@endif
+					</div>
 			   </div>
 			   <div class="row">
 			    	<div class="col s12 m12">
