@@ -529,6 +529,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_save_advance','SubscriptionController@saveAdvanceApprove')->name('advance_approve.save');
 
 	Route::get('subscription-variation-pdf','SubscriptionController@variationAllPDF')->name('subscription.pdf');
+
+	Route::get('subscription_add','SubscriptionController@SubsAdditional')->name('subscription.sub_additional');
+
+	Route::post('subscribe_entry','SubscriptionController@subscribeEntry')->name('subscription.entry');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

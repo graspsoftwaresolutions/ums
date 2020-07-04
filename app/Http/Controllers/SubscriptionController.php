@@ -4424,4 +4424,105 @@ class SubscriptionController extends CommonController
         return $pdf->download('subscription-variation.pdf'); 
     
 	}
+
+    public function SubsAdditional(){
+         $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+       
+
+        
+        $data['member_stat'] = '';
+
+        //isset($data['member_stat']) ? $data['member_stat'] : "";       
+        return view('subscription.sub_fileupload.sub_additional')->with('data', $data);
+    }
+
+    public function subscribeEntry(Request $request){
+        $defdaultLang = app()->getLocale();
+        $datearr = explode("/",$request->entry_date);  
+        $monthname = $datearr[0];
+        $year = $datearr[1];
+        $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+        $sub_company = $request->sub_company;
+        $member_code = $request->member_code;
+        $sub_member_amount = $request->sub_member_amount;
+
+        $subscription_qry = MonthlySubscription::where('Date','=',$form_date);
+        $subscription_count = $subscription_qry->count();
+        if($subscription_count>0){
+            $subscription_month = $subscription_qry->get();
+            $month_auto_id = $subscription_month[0]->id;
+        }else{
+            $subscription_month = new MonthlySubscription();
+            $subscription_month->Date = $form_date;
+            $subscription_month->created_by = Auth::user()->id;
+            $subscription_month->created_on = date('Y-m-d');
+            $subscription_month->save();
+            $month_auto_id =  $subscription_month->id;
+        }
+
+        $subscription_company_qry = MonthlySubscriptionCompany::where('MonthlySubscriptionId','=',$month_auto_id)->where('CompanyCode',$sub_company);
+        $subscription_company_count = $subscription_company_qry->count();
+        if($subscription_company_count>0){
+            $subscription_company =$subscription_company_qry->get();
+            $company_auto_id = $subscription_company[0]->id;
+           
+        }else{
+            $subscription_company = new MonthlySubscriptionCompany();
+            $subscription_company->MonthlySubscriptionId = $month_auto_id;
+            $subscription_company->CompanyCode = $sub_company;
+           
+            $subscription_company->created_by = Auth::user()->id;
+            $subscription_company->created_on = date('Y-m-d');
+            $subscription_company->save();
+    
+            $company_auto_id =  $subscription_company->id;
+        }
+
+        if($member_code!='' && $sub_company!='' && $sub_member_amount!=''){
+            $subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)
+                                                ->where('MemberCode',$member_code);
+            $subscription_member_count = $subscription_member_qry->count();
+            if($subscription_member_count>0){
+                $subscription_member_res = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)
+                ->where('MemberCode',$member_code)->get();
+                $company_member_id = $subscription_member_res[0]->id;
+                $subscription_member = MonthlySubscriptionMember::find($company_member_id);
+            }else{
+                $subscription_member = new MonthlySubscriptionMember();
+                $subscription_member->MonthlySubscriptionCompanyId = $company_auto_id;
+            }
+
+            $memberdata = Membership::find($member_code);
+            $subscription_member->NRIC = $memberdata->new_ic=='' ? $memberdata->old_ic : $memberdata->new_ic;
+            $subscription_member->Name = trim($memberdata->name);
+            $subscription_member->Amount = $sub_member_amount;
+            $subscription_member->StatusId = $memberdata->status_id;
+            $subscription_member->update_status = 0;
+            $subscription_member->additional_member = 1;
+            $subscription_member->MemberCode = null;
+            $subscription_member->created_by = Auth::user()->id;
+            $subscription_member->created_on = date('Y-m-d');
+            $subscription_member->save();
+
+            $enc_id = Crypt::encrypt($company_auto_id); 
+            return redirect(URL::to('/'.app()->getLocale().'/scan-subscription/'.$enc_id))->with('message', 'Subscription Inserted Successfully');
+
+
+            //  $subscription_member->NRIC = $memberdata->new_ic=='' ? $memberdata->old_ic : $memberdata->new_ic;
+            // $subscription_member->Name = trim($memberdata->name);
+            // $subscription_member->Amount = $sub_member_amount;
+            // $subscription_member->StatusId = $memberdata->status_id;
+            // $subscription_member->update_status = 1;
+            // $subscription_member->MemberCode = $member_code;
+            // $subscription_member->created_by = Auth::user()->id;
+            // $subscription_member->created_on = date('Y-m-d');
+            // $subscription_member->save();
+
+        }else{
+             return redirect($defdaultLang.'/subscription_add')->with('error','Please fill all fields');
+        }
+
+    }
 }

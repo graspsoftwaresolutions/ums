@@ -89,6 +89,8 @@
               @if($user_role=='union' || $user_role=='union-branch' || $user_role=='company' || $user_role=='company-branch')
               <li id="subscription_sidebar_li_id" class=""><a id="subscription_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Entry') }}</span></a></li>
 
+              <li id="subadd_sidebar_li_id" class=""><a id="subadd_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_additional',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Additional') }}</span></a></li>
+
               @if($user_role=='union')
               <li id="subscomp_sidebar_li_id" class=""><a id="subcomp_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.sub_fileupload.sub_company',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Bank[Union]') }}</span></a></li>
               @endif

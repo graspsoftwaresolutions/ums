@@ -30,9 +30,10 @@
 				
 			</tr>
 			<tr class="">
-				<th style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('TOTAL MEMBERS')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('AMOUNT(RM)')}}</th>
+				<th width="25%" style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
+				<th width="25%" style="border: 1px solid #988989 !important;">{{__('TOTAL MEMBERS')}}</th>
+				<th width="25%" style="border: 1px solid #988989 !important;">{{__('AMOUNT(RM)')}}</th>
+				<th style=""></th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">
@@ -44,6 +45,10 @@
 			@foreach($data['head_company_view'] as $company)
 				@php
 					$company_data = CommonHelper::getMontendcompanySummary($company['company_list'],$data['month_year_full']);
+					$totmembers = CommonHelper::getTotalMembersSummary($company['company_list'],$data['month_year_full']);
+					$addmembers = CommonHelper::getTotalAddMembersSummary($company['company_list'],$data['month_year_full']);
+					$struckoffmembers = CommonHelper::getStruckoffMembersSummary($company['company_list'],$data['month_year_full']);
+					$resignedmembers = CommonHelper::getResignedMembersSummary($company['company_list'],$data['month_year_full']);
 					//dd($company_data);
 				@endphp
 				@if($company_data->total_members>0)
@@ -51,6 +56,34 @@
 					<td style="border: 1px solid #988989 !important;">{{$company['companycode']}}</td>
 					<td style="border: 1px solid #988989 !important;">{{ $company_data->total_members }}</td>
 					<td style="border: 1px solid #988989 !important;">{{ number_format($data['total_ins']*$company_data->total_members,2,".",",") }}</td>
+					<td style="">
+						@if($addmembers!=0 || $struckoffmembers!=0 || $resignedmembers!=0)
+						@php
+							echo "Subs";
+							if($addmembers!=''){
+								echo "+ Additional Member";
+							}
+							if($struckoffmembers!=''){
+								echo "- Struckoff";
+							}
+							if($resignedmembers!=''){
+								echo "- Resigned";
+							}
+							echo "(".$totmembers;
+							if($addmembers!=''){
+								echo "+".$addmembers;
+							}
+							if($struckoffmembers!=''){
+								echo "-".$struckoffmembers;
+							}
+							if($resignedmembers!=''){
+								echo "-".$resignedmembers;
+							}
+							echo ')';
+						@endphp
+							
+						@endif
+					</td>
 				</tr> 
 				@php
 					$totalamt += $data['total_ins']*$company_data->total_members;
@@ -63,12 +96,15 @@
 				<td style="border: 1px solid #988989 !important;"> Grand Total </td>
 				<td style="border: 1px solid #988989 !important;">{{ $totalmembers }}</td>
 				<td style="border: 1px solid #988989 !important;">{{ number_format($totalamt,2,".",",") }}</td>
+				<td style=""></td>
 			</tr> 
 			<tr style="font-weight:bold;font-size:16px;">
 				<td colspan="3" style="border: 1px solid #988989 !important;text-align:right;padding-right:0px;">FACILITATION FEES FOR THE MONTH OF {{$data['month_year_read']}}</td>
+				<td></td>
 			</tr>
 			<tr style="font-weight:bold;font-size:16px;">
 				<td colspan="3" style="border: 1px solid #988989 !important;text-align:right">5% : {{ number_format((($totalamt*5)/100),2,".",",") }}</td>
+				<td></td>
 			</tr>
 		</tbody>
 		

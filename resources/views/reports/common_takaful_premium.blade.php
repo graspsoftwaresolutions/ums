@@ -51,10 +51,10 @@
 			<tr class="">
 				<th style="border: 1px solid #988989 !important;">{{__('SNO')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('BRANCH')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('NAME')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('MEMBERID')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('MSHIP')}}</th>
+				<!-- <th style="border: 1px solid #988989 !important;">{{__('BRANCH')}}</th> -->
 				<th style="border: 1px solid #988989 !important;">{{__('NRIC')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('NAME')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('INSURANCE AMOUNT(RM)')}}</th>
 			</tr>
 		</thead>
@@ -63,10 +63,10 @@
 				<tr>
 					<td style="border: 1px solid #988989 !important;">{{$sno}}</td>
 					<td style="border: 1px solid #988989 !important;">{{$member->companycode}}</td>
-					<td style="border: 1px solid #988989 !important;">{{$member->branch_name}}</td>
-					<td style="border: 1px solid #988989 !important;">{{$member->name}}</td>
 					<td style="border: 1px solid #988989 !important;">{{$member->member_number}}</td>
+					<!-- <td style="border: 1px solid #988989 !important;">{{$member->branch_name}}</td> -->
 					<td style="border: 1px solid #988989 !important;">{{$member->new_ic}}</td>
+					<td style="border: 1px solid #988989 !important;">{{$member->name}}</td>
 					<td style="border: 1px solid #988989 !important;">{{ number_format($data['total_ins'],2,".",",") }}</td>
 				</tr> 
 				@php
@@ -76,11 +76,11 @@
 				
 			@endforeach
 				<tr style="font-weight:bold;">
-					<td style="border: 1px solid #988989 !important;" colspan="6" > Total Amount</td>
+					<td style="border: 1px solid #988989 !important;" colspan="5" > Total Amount</td>
 					<td style="border: 1px solid #988989 !important;">{{ number_format($totalamt,2,".",",") }}</td>
 				</tr> 
 				<tr style="font-weight:bold;">
-					<td style="border: 1px solid #988989 !important;" colspan="6" > Total Members</td>
+					<td style="border: 1px solid #988989 !important;" colspan="5" > Total Members</td>
 					<td style="border: 1px solid #988989 !important;">{{ $sno-1 }}</td>
 				</tr> 
 		</tbody>
