@@ -533,6 +533,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('subscription_add','SubscriptionController@SubsAdditional')->name('subscription.sub_additional');
 
 	Route::post('subscribe_entry','SubscriptionController@subscribeEntry')->name('subscription.entry');
+
+	Route::get('add_resignation','MembershipController@AddResignation')->name('resignation.add');
+
+	Route::post('resignation_save','MembershipController@SendIrc')->name('member.savemembership');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
@@ -607,3 +611,5 @@ Route::get('get-member-irclist-values','IrcController@getMembersListValues');
 
 
 Route::get('update_password','MemberController@UpdateMemberPassword');
+
+Route::get('get-all-member-list','MembershipController@getAllmemberslist');

@@ -49,11 +49,11 @@
 		<div class="col s12 m6 l3">
 			<div class="card animate fadeLeft">
 				<div class="card-content cyan white-text">
-				   <p class="card-stats-title"><i class="material-icons"></i> {{__('Pending branch Committie') }}</p>
+				   <p class="card-stats-title"><i class="material-icons"></i> {{__('Pending Branch Committie') }}</p>
 				   <h4 class="card-stats-number white-text">{{ $data['total_ircapproval_count'] }}</h4>
 				</div>
 				<div class="card-action cyan darken-1">
-				   <div id="clients-bar" class="center-align"> </div>
+				   <div id="clients-bar" class="center-align"> &nbsp; </div>
 				</div>
 			</div>
 		</div>
@@ -65,10 +65,24 @@
 				   <h4 class="card-stats-number white-text">{{ $data['total_ircconfirm_count'] }}</h4>
 				</div>
 				<div class="card-action green">
-				   <div id="profit-tristate" class="center-align"></div>
+				   <div id="profit-tristate" class="center-align"> &nbsp;</div>
 				</div>
 			</div>
 		</div>
+		<div class="col s12 m6 l3">
+        <a style="color:white" href="{{url(app()->getLocale().'/membership')}}">
+         <div class="card animate fadeLeft">
+            <div class="card-content red accent-2 white-text">
+               <p class="card-stats-title"><i class="material-icons"></i>{{__('Waiting for IRC Confirmations') }}</p>
+               <h4 class="card-stats-number white-text">0</h4>
+              
+            </div>
+            <div class="card-action red">
+               <div id="sales-compositebar" class="center-align">{{__('Members List') }}</div>
+            </div>
+         </div>
+         </a>
+      </div>
 		<div class="dash-tab-clearfix"/>
 		
    </div>

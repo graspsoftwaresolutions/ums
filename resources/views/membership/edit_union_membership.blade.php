@@ -119,7 +119,7 @@
                                                         </select>
                                                         <div class="errorTxt1"></div>
                                                     </div>
-                                                    <div class="col s12 m6 hide">
+                                                    <div class="col s12 m6 @if($values->member_number==0) hide @endif">
                                                         <label for="member_number" class="force-active">Member Number *</label>
                                                         <input id="member_number" name="member_number" value="{{$values->member_number}}" readonly type="text" data-error=".errorTxt29">
                                                         <div class="errorTxt29"></div>
@@ -434,8 +434,12 @@
                                                             <div class="errorTxt15"></div>
                                                         </div>
                                                     </div>
+                                                    @if($values->member_number!=0)
+                                                    <div class="clearfix" style="clear:both"></div>
+                                                    @endif
                                                     @if($branch_hide=='hide')
                                                     <div class=" col s12 m6 ">
+                                                       
                                                         <label>Branch Name*</label>
                                                         </br>
                                                         <p style="margin-top:10px;font-weight:bold;">
@@ -500,7 +504,40 @@
                                                         </p>
                                                         @endif
                                                     </div>
+                                                    @if($values->send_irc_request==1 && $values->status_id!=4)
+                                                    @php
+                                                        $ircstatus = CommonHelper::getIrcConfirmationStatus($values->mid);
+                                                    @endphp
+                                                    <div class="col s12 m6 ">
+                                                        <label>IRC Status*</label>
+                                                        @if($ircstatus==null)
+                                                        <p style="margin-top:10px;">
+                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class="red padding-1 medium-small">
+                                                                IRC confirmations sent for this member
+                                                            </span>
+                                                        </p>
+                                                        @else
+                                                        @if($ircstatus->status==0 && $ircstatus->irc_status==1)
+                                                         <p style="margin-top:10px;">
+                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class="orange padding-1 medium-small">
+                                                                IRC confirmation has been Confirmed, waiting for branch committee verification
+                                                            </span>
+                                                         </p>
+                                                         @endif
+                                                         @if($ircstatus->status==1)
+                                                         <p style="margin-top:10px;">
+                                                            <span style="color: rgba(255, 255, 255, 0.901961);" class="green padding-1 medium-small">
+                                                                IRC Branch Committee Verified, waiting for approval of resignation from HQ 
+                                                            </span>
+                                                        </p>
+                                                        @endif
+                                                        @endif
+                                                       
+                                                    </div>
+                                                    @endif
                                                     @php } @endphp
+
+                                                    
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="row">
                                                    <!--  <div class="col s12 m4">
@@ -555,7 +592,7 @@
                                         
                                         <!-- <h3>Additional Details</h3> -->
                                        
-                                            <div class="row "">
+                                            <div class="row ">
                                                
                                                 @php if($values->is_request_approved==0 && ($check_union==1 || $check_unionbranch==1)){ @endphp
                                                     <br>

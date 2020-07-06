@@ -3702,4 +3702,14 @@ class CommonHelper
             return 0;
         }
     }
+
+    public static function getIrcConfirmationStatus($memberid){
+        $irc = DB::table('irc_confirmation as irc')
+                  ->select('irc_status','status')
+                   ->where('irc.resignedmemberno','=',$memberid)
+                   //->pluck('irc_status','status')
+                   ->first();
+                  // dd($irc);
+        return $irc;
+    }
 }

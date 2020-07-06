@@ -95,7 +95,27 @@ text{
          </div>
          </a>
       </div>
+       <div class="dash-tab-clearfix"/>
+      
+    <div class="dash-tab-clearfix"/>
+      <div class="col s12 m6 l3 hide">
+        <a style="color:white" href="{{ route('resignation.add', app()->getLocale())  }}">
+         <div class="card animate fadeRight">
+            <div class="card-content green lighten-1 white-text">
+               <p class="card-stats-title"><i class="material-icons"></i>{{__('New Resignation') }}</p>
+              <!--  <h4 class="card-stats-number white-text"></h4> -->
+            </div>
+            <div class="card-action green hide">
+               <div id="invoice-line" class="center-align"> {{__('Company Branches List') }}</div>
+            </div>
+         </div>
+         </a>
+      </div>
+      <div class="dash-tab-clearfix"/>
    </div>
+</div>
+<div class="row">
+  
 </div>
 <!--card stats end-->
  <!-- Current balance & total transactions cards-->

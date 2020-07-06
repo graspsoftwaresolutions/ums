@@ -1230,6 +1230,7 @@ class IrcController extends CommonController
 			// 	$ircsuggestions = $ircsuggestions->where('cb.union_branch_id','=',$unionbranchid);
 			// }else{
 			$ircsuggestions = $ircsuggestions->whereIn('cb.union_branch_id',$unionbranchids);
+			$ircsuggestions = $ircsuggestions->where('m.send_irc_request',1);
 			//}
 			$res['suggestions'] = $ircsuggestions->get();
 		}

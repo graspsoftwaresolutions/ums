@@ -2561,7 +2561,7 @@ class MembershipController extends Controller
                                         'membership.country_id','membership.state_id','membership.city_id','membership.address_one','membership.address_two','membership.address_three','membership.race_id','membership.old_ic','membership.new_ic',
                                         'membership.dob','membership.doj','membership.doe','membership.postal_code','membership.salary','membership.status_id','branch_id','membership.password','membership.user_type','membership.status','country.id','country.country_name','country.status','state.id','state.state_name','state.status',
                                         'city.id','city.city_name','city.status','company_branch.id','company_branch.branch_name','company_branch.status','designation.id','designation.designation_name','designation.status','race.id','race.race_name','race.status','persontitle.id','persontitle.person_title','persontitle.status','membership.old_member_number','membership.employee_id','membership.is_request_approved',
-                                        'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount','membership.current_salary','membership.last_update','membership.approval_status','membership.approval_reason','membership.designation_new_id','membership.designation_others','membership.approved_by')
+                                        'membership.levy','membership.levy_amount','membership.tdf','membership.tdf_amount','membership.current_salary','membership.last_update','membership.approval_status','membership.approval_reason','membership.designation_new_id','membership.designation_others','membership.approved_by','membership.send_irc_request')
                                 ->leftjoin('country','membership.country_id','=','country.id')
                                 ->leftjoin('state','membership.state_id','=','state.id')
                                 ->leftjoin('city','membership.city_id','=','city.id')
@@ -2620,6 +2620,65 @@ class MembershipController extends Controller
         }
         echo 1;
        
+    }
+
+    public function AddResignation(Request $request, $lang){
+        $data = [];
+        return view('membership.add_resignation')->with('data',$data);  
+    }
+
+    public function getAllmemberslist(Request $request){
+        $searchkey = $request->input('serachkey');
+        $search = $request->input('query');
+
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id; 
+
+        if($user_role=='union-branch'){
+            $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+        }else{
+            $union_branch_id = '';
+        }
+        
+
+        //DB::enableQueryLog();
+        $suggestions = DB::table('membership as m')->select(DB::raw('CONCAT(m.name, " - ", m.member_number) AS value'),'m.id as number','m.branch_id as branch_id','m.member_number as member_code','c.company_name','cb.branch_name','p.person_title','m.name','m.send_irc_request')
+                            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')  
+                            ->leftjoin('company as c','c.id','=','cb.company_id')      
+                            ->leftjoin('persontitle as p','p.id','=','m.member_title_id')      
+                            ->where(function($query) use ($search){
+                                $query->orWhere('m.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('m.new_ic', 'LIKE',"{$search}")
+                                    ->orWhere('m.old_ic', 'LIKE',"{$search}")
+                                    ->orWhere('m.employee_id', 'LIKE',"{$search}")
+                                    ->orWhere('m.name', 'LIKE',"%{$search}%");
+                            });
+        if($union_branch_id!=''){
+           $suggestions =  $suggestions->where('cb.union_branch_id', '=',$union_branch_id);
+        }
+
+        $res['suggestions'] = $suggestions->where('m.status_id', '!=',4)->limit(25)
+                            ->get();        
+        //$queries = DB::getQueryLog();
+                            //  dd($queries);
+         return response()->json($res);
+    }
+
+    public function SendIrc(Request $request, $lang){
+        //return $request->all();
+        $member_code = $request->input('member_code');
+        $redirect_url = app()->getLocale().'/add_resignation';
+        if($member_code!=''){
+            $user_dataone = [
+                'send_irc_request' => 1,
+            ];
+            DB::table('membership')->where('id', $member_code)->update($user_dataone);
+            
+            return redirect($redirect_url)->with('message','IRC Confirmations sent Succesfully');
+        }else{
+            return redirect($redirect_url)->with('message','Please pick a member');
+        }
     }
 }
 
