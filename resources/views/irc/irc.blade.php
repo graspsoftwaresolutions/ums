@@ -316,7 +316,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1"/>
-						          		<span>BF Applicant’s Name is</span>
+						          		<span>1. BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_nameone" style="width: 500px;" name="person_nameone" class="inline-box" readonly>
@@ -326,7 +326,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="retiredboxone" id="retiredboxone"  value="1"/>
-						          		<span><span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+						          		<span>2. <span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  value="{{ date('d/m/Y') }}" class="datepicker-custom inline-box"/>
@@ -342,7 +342,7 @@
 									
 										<label>
 											<input type="checkbox" class="common-checkbox" name="messengerboxone" id="messengerboxone"  value="1"/>
-											<span><span class="gender"></span> was a </span>
+											<span>3. <span class="gender"></span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerone" name="messengerone" class="browser-default">
@@ -364,7 +364,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="attachedboxone" id="attachedboxone"  value="1"/>
-						          		<span>Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
+						          		<span>4. Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
 										<div class="row">
@@ -391,7 +391,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="jobtakenboxone" id="jobtakenboxone"  value="1"/>
-						          		<span>Member’s job functions have been taken over by</span>
+						          		<span>5. Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="jobtakenbyone" id="jobtakenbyone" placeholder="" class="inline-box" style="width: 500px;"/>
@@ -405,7 +405,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
-						          		<span>Member’s position has not been filled up by another  </span>
+						          		<span>6. Member’s position has not been filled up by another  </span>
 						            </label> 
 									<div class="input-field inline">
 										<select id="posfilledbytypeone" name="posfilledbytypeone" onchange="return showAutocomplete(this.value,'posfillarea')" class="browser-default">
@@ -431,7 +431,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is </span>
+						          		<span>7. REPLACEMENT Staff Grade is </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="replacestafftypeone" name="replacestafftypeone" class="browser-default">
@@ -454,7 +454,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="appcontactboxone" onclick="return MakeRequired('appcontactboxone',1)" id="appcontactboxone"  value="1"/>
-						          		<span>Applicant Contact</span>
+						          		<span>8. Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontactone" id="appcontactone" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -498,7 +498,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="memberdemisedboxtwo" id="memberdemisedboxtwo"  value="1"/>
-						          		<span>Member DEMISED on</span>
+						          		<span>1. Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" class="datepicker-custom inline-box" id="memberdemisedtwo" value="{{ date('d/m/Y') }}" name="memberdemisedtwo" >
@@ -512,7 +512,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="nameofpersonboxtwo" id="nameofpersonboxtwo"  value="1"/>
-						          		<span>Name of Member’s next of kin is</span>
+						          		<span>2. Name of Member’s next of kin is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" class="inline-box" style="width: 500px;" name="nameofpersontwo" id="nameofpersontwo" placeholder="" />
@@ -523,7 +523,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="relationshipboxtwo" id="relationshipboxtwo"  value="1"/>
-						          		<span>Relationship is</span>
+						          		<span>3. Relationship is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="relationshiptwo" id="relationshiptwo" placeholder="" class="inline-box" style="width: 300px;"/>
@@ -535,11 +535,11 @@
 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m1 ">
+								<div class="col s12 m2 ">
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" name="applicantboxtwo" id="applicantboxtwo"  value="1"/>
-										<span>Applicant</span>
+										<span>4. Applicant</span>
 										</label> 
 									</p>	
 								</div>
@@ -566,7 +566,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="jobtakenboxtwo" id="jobtakenboxtwo"  value="1"/>
-						          		<span>Member’s job functions have been taken over by</span>
+						          		<span>5. Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="jobtakenbytwo" id="jobtakenbytwo" placeholder="" class="inline-box" style="width: 400px;"/>
@@ -580,7 +580,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
-						          		<span>Member’s position has not been filled up by another </span>
+						          		<span>6. Member’s position has not been filled up by another </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="posfilledbytypetwo" name="posfilledbytypetwo" onchange="return showAutocomplete(this.value,'posfillareatwo')" class="browser-default">
@@ -607,7 +607,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is </span>
+						          		<span>7. REPLACEMENT Staff Grade is </span>
 						            </label> 
 						             <div class="input-field inline">
 										<select id="replacestafftypetwo" name="replacestafftypetwo" class="browser-default">
@@ -631,7 +631,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" id="appcontactboxtwo"  onclick="return MakeRequired('appcontactboxtwo',2)" value="1"/>
-						          		<span>Next of Kin’s Contact</span>
+						          		<span>8. Next of Kin’s Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontacttwo" id="appcontacttwo" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -677,7 +677,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
-						          		<span>BF Applicant’s Name:</span>
+						          		<span>1. BF Applicant’s Name:</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namethree" name="person_namethree" class="inline-box" style="width: 560px;" readonly>
@@ -692,7 +692,7 @@
 									
 										<label>
 										<input type="checkbox" class="common-checkbox" name="messengerboxthree" id="messengerboxthree"  value="1"/>
-										<span><span class="gender"></span> was a </span>
+										<span>2. <span class="gender"></span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerthree" name="messengerthree" class="browser-default">
@@ -711,7 +711,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="promotedboxthree" id="promotedboxthree"  value="1"/>
-						          		<span><span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
+						          		<span>3. <span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="promotedthree" name="promotedthree" class="inline-box" style="width: 300px;" required="">
@@ -731,7 +731,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="attachedboxthree" id="attachedboxthree"  value="1"/>
-						          		<span>Attached is <span class="genderone"></span> Job Description (compulsory)</span>
+						          		<span>4. Attached is <span class="genderone"></span> Job Description (compulsory)</span>
 						            </label> 
 
 									<div class="input-field inline">
@@ -759,7 +759,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
-						          		<span><span class="gender"></span> promoted and transfer to new place</span>
+						          		<span>5. <span class="gender"></span> Promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="transfertoplacethree" id="transfertoplacethree" class="inline-box" style="width: 500px;" >
@@ -774,14 +774,18 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-									<span>Member is still in the same </span>
+									<span>6. Member is still in the same </span>
 									</label> 
 									<div class="input-field inline">
-										<select id="samebranchtype" name="samebranchtype" class="browser-default">
+										<select id="samebranchtype" name="samebranchtype" onchange="return ChangePromoted(this.value)" class="browser-default">
 										    <option value="" disabled selected>Choose your option</option>
 										    <option>Branch</option>
 										    <option>Department</option>
+										    <option>Others</option>
 										</select>
+									</div>
+									<div id="samebranchothersdiv" class="input-field inline hide" style="">
+										<input type="text" name="samebranchothers" id="samebranchothers" class="inline-box" style="width: 500px;margin-top: 20px !important;" >
 									</div>
 									performing the same job functions
 								</div>
@@ -791,7 +795,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="jobtakenboxthree" id="jobtakenboxthree"  value="1"/>
-						          		<span>Member’s job functions have been taken over by</span>
+						          		<span>7. Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="jobtakenbythree" id="jobtakenbythree" placeholder="" class="inline-box" style="width: 500px;"/>
@@ -805,7 +809,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
-						          		<span>Member’s position has not been filled up by another </span>
+						          		<span>8. Member’s position has not been filled up by another </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="posfilledbytypethree" name="posfilledbytypethree" onchange="return showAutocomplete(this.value,'posfillareathree')" class="browser-default">
@@ -833,7 +837,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is </span>
+						          		<span>9. REPLACEMENT Staff Grade is </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="replacestafftypethree" name="replacestafftypethree" class="browser-default">
@@ -856,7 +860,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="appcontactboxthree" id="appcontactboxthree" onclick="return MakeRequired('appcontactboxthree',3)"  value="1"/>
-						          		<span>Applicant Contact</span>
+						          		<span>10. Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontactthree" id="appcontactthree" placeholder=""  class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -902,7 +906,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="personnameboxfour" id="personnameboxfour"  value="1"/>
-						          		<span>BF Applicant’s Name is</span>
+						          		<span>1. BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namefour" class="inline-box" style="width: 560px;" name="person_namefour" readonly>
@@ -912,7 +916,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-						          		<span><span class="gender"></span>  </span>
+						          		<span>2. <span class="gender"></span>  </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="resigntypefour" name="resigntypefour" class="browser-default">
@@ -936,7 +940,7 @@
 									
 										<label>
 											<input type="checkbox" class="common-checkbox" name="messengerboxfour" id="messengerboxfour"  value="1"/>
-											<span><span class="gender"></span> was a </span>
+											<span>3. <span class="gender"></span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerfour" name="messengerfour" class="browser-default">
@@ -959,7 +963,7 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="attachedboxfour" id="attachedboxfour"  value="1"/>
-									<span>Attached is <span class="genderone"></span> </span>
+									<span>4. Attached is <span class="genderone"></span> </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="attachfourtype" name="attachfourtype" class="browser-default">
@@ -999,7 +1003,7 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="jobtakenboxfour" id="jobtakenboxfour"  value="1"/>
-									<span>Member’s job functions have been taken over by</span>
+									<span>5. Member’s job functions have been taken over by</span>
 									</label> 
 									
 									<div class="input-field inline">
@@ -1014,7 +1018,7 @@
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
-									<span>Member’s position has not been filled up by another </span>
+									<span>6. Member’s position has not been filled up by another </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="posfilledbytypefour" name="posfilledbytypefour" onchange="return showAutocomplete(this.value,'posfillareafour')" class="browser-default">
@@ -1043,7 +1047,7 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
-									<span>REPLACEMENT Staff Grade is </span>
+									<span>7. REPLACEMENT Staff Grade is </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="replacestafftypefour" name="replacestafftypefour" class="browser-default">
@@ -1065,7 +1069,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="appcontactboxfour" id="appcontactboxfour" onclick="return MakeRequired('appcontactboxfour',4)"  value="1"/>
-						          		<span>Applicant Contact</span>
+						          		<span>8. Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontactfour" id="appcontactfour" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -1110,7 +1114,7 @@
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" name="expelledboxfive" id="expelledboxfive"  value="1"/>
-									<span>Member was 
+									<span>1. Member was 
 									</label> 
 
 									<div class="input-field inline">
@@ -1134,7 +1138,7 @@
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" name="samejobboxfive" id="samejobboxfive"  value="1"/>
-										<span>Member’s is still performing the same job functions</span>
+										<span>2. Member’s is still performing the same job functions</span>
 										</label> 
 									</p>	
 
@@ -1146,7 +1150,7 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-									<span>Member is still in the same </span>
+									<span>3. Member is still in the same </span>
 									</label> 
 									
 									<div class="input-field inline">
@@ -1164,7 +1168,7 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
-									<span>Member </span>
+									<span>4. Member </span>
 									</label> 
 									
 									<div class="input-field inline">
@@ -1644,6 +1648,14 @@ function MakeRequired(refid,refno){
 
 	}
 	
+}
+
+function ChangePromoted(provalue){
+	if(provalue=='Others'){
+		$("#samebranchothersdiv").removeClass('hide');
+	}else{
+		$("#samebranchothersdiv").addClass('hide');
+	}
 }
 
 </script>

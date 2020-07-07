@@ -800,6 +800,7 @@ class IrcController extends CommonController
 			$posfilledbyboxthree = $request->input('posfilledbyboxthree');
 			$replacestaffboxthree = $request->input('replacestaffboxthree');
 			$appcontactboxthree = $request->input('appcontactboxthree');
+			$samebranchothers = $request->input('samebranchothers');
 
 			if(isset($messengerboxthree)){
 				$messengerbox = 1;
@@ -857,6 +858,7 @@ class IrcController extends CommonController
 			$insertdata['messengertype'] = $messengertype;
 			$insertdata['replacestafftype'] = $replacestafftype;
 			$insertdata['samebranchtype'] = $samebranchtype;
+			$insertdata['samebranchothers'] = $samebranchothers;
 
 			if($messengerbox == 1 && $jobtakenbox == 1 && $posfilledbybox == 1 && $replacestaffbox == 1 && $appcontactbox == 1 && $samebranchbox == 1 && $attachedbox == 1 && $insertdata['promotedboxthree'] == 1 && $insertdata['transfertoplaceboxthree'] == 1 && $insertdata['nameofperson'] == 1){
 				$ircstatus = 1;
@@ -1337,5 +1339,9 @@ class IrcController extends CommonController
 		// $queries = DB::getQueryLog();
 		// dd($queries);
 		
+	}
+
+	public function IrcWaiters(Request $request,$lang){
+		return view('irc.waiters_list');
 	}
 }

@@ -156,7 +156,9 @@
         <li class="bold"><a id="irc_account_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.list',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('IRC Account') }}</span></a>
         @endif
       @endif
-      
+      @if($user_role=='irc-confirmation')
+       <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_waiters',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('Waited IRC List') }}</span></a>
+      @endif
       @if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee' || $user_role=='irc-confirmation-officials' || $user_role=='irc-branch-committee-officials')
       @if($user_role=='irc-confirmation' || $user_role=='irc-confirmation-officials')
 		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>

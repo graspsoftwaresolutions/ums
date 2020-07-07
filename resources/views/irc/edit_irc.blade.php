@@ -361,7 +361,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="personnameboxone" id="personnameboxone"  value="1" @if($irc_details->nameofperson ==1) checked @endif />
-						          		<span>BF Applicant’s Name is</span>
+						          		<span>1. BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_nameone" name="person_nameone" style="width: 500px;" class="inline-box" readonly value="{{$dataresigneddata->resignedmembername}}">
@@ -371,7 +371,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="retiredboxone" id="retiredboxone"  @if($irc_details->retiredbox ==1) checked @endif value="1"/>
-						          		<span><span class="gender">{{ $genderlable }}</span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+						          		<span>2. <span class="gender">{{ $genderlable }}</span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  class="datepicker-custom inline-box" value="{{$dataresigneddata->gradewef}}" />
@@ -387,7 +387,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 										<label>
 										<input type="checkbox" class="common-checkbox" name="messengerboxone" @if($irc_details->messengerbox ==1) checked @endif id="messengerboxone"  value="1"/>
-										<span><span class="gender">{{ $genderlable }}</span> was a 
+										<span>3. <span class="gender">{{ $genderlable }}</span> was a 
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerone" name="messengerone" class="browser-default">
@@ -411,7 +411,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="attachedboxone" @if($irc_details->attachedbox ==1) checked @endif id="attachedboxone"  value="1"/>
-						          		<span>Attached is <span class="genderone">{{ $genderlableone }}</span> RETIREMENT Letter (compulsory)</span>
+						          		<span>4. Attached is <span class="genderone">{{ $genderlableone }}</span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
 						            <div class="input-field inline">
 										<div class="row">
@@ -445,7 +445,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->jobtakenbox ==1) checked @endif name="jobtakenboxone" id="jobtakenboxone"  value="1"/>
-						          		<span>Member’s job functions have been taken over by</span>
+						          		<span>5. Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="jobtakenbyone" id="jobtakenbyone" placeholder="" value="{{$irc_details->jobtakenby}}" class="inline-box" style="width: 500px;"/>
@@ -459,7 +459,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxone" id="posfilledbyboxone"  value="1"/>
-						          		<span>Member’s position has not been filled up by another </span>
+						          		<span>6. Member’s position has not been filled up by another </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="posfilledbytypeone" name="posfilledbytypeone" onchange="return showAutocomplete(this.value,'posfillarea')" class="browser-default">
@@ -486,7 +486,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif  name="replacestaffboxone" id="replacestaffboxone"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is </span>
+						          		<span>7. REPLACEMENT Staff Grade is </span>
 						            </label>
 						            <div class="input-field inline">
 										<select id="replacestafftypeone" name="replacestafftypeone" class="browser-default">
@@ -510,7 +510,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxone" onclick="return MakeRequired('appcontactboxone',1)"  value="1"/>
-						          		<span>Applicant Contact</span>
+						          		<span>8. Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontactone" id="appcontactone" value="{{$irc_details->appcontact}}" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -554,7 +554,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="memberdemisedboxtwo" id="memberdemisedboxtwo" @if($irc_details->demised_onboxtwo ==1) checked @endif value="1"/>
-						          		<span>Member DEMISED on</span>
+						          		<span>1. Member DEMISED on</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="memberdemisedtwo" class="datepicker-custom inline-box" value="{{$irc_details->demised_ontwo}}" name="memberdemisedtwo" >
@@ -568,7 +568,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->member_nameboxtwo ==1) checked @endif name="nameofpersonboxtwo" id="nameofpersonboxtwo"  value="1"/>
-						          		<span>Name of Member’s next of kin is</span>
+						          		<span>2. Name of Member’s next of kin is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="nameofpersontwo" id="nameofpersontwo" placeholder="" value="{{$irc_details->member_nametwo}}" class="inline-box" style="width: 500px;"/>
@@ -579,7 +579,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->relationshipboxtwo ==1) checked @endif name="relationshipboxtwo" id="relationshipboxtwo"  value="1"/>
-						          		<span>Relationship is</span>
+						          		<span>3. Relationship is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="relationshiptwo" value="{{$irc_details->relationshiptwo}}" id="relationshiptwo" placeholder="" class="inline-box" style="width: 300px;"/>
@@ -591,11 +591,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 
 
 							<div class="row padding-left-20">
-								<div class="col s12 m1 ">
+								<div class="col s12 m2 ">
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->applicantboxtwo ==1) checked @endif name="applicantboxtwo" id="applicantboxtwo"  value="1"/>
-										<span>Applicant</span>
+										<span>4. Applicant</span>
 										</label> 
 									</p>	
 								</div>
@@ -622,7 +622,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="jobtakenboxtwo" @if($irc_details->jobtakenbox ==1) checked @endif id="jobtakenboxtwo"  value="1"/>
-						          		<span>Member’s job functions have been taken over by</span>
+						          		<span>5. Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="jobtakenbytwo" id="jobtakenbytwo" value="{{$irc_details->jobtakenby}}" placeholder="" class="inline-box" style="width: 400px;"/>
@@ -636,7 +636,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxtwo" id="posfilledbyboxtwo"  value="1"/>
-						          		<span>Member’s position has not been filled up by another </span>
+						          		<span>6. Member’s position has not been filled up by another </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="posfilledbytypetwo" name="posfilledbytypetwo" onchange="return showAutocomplete(this.value,'posfillareatwo')" class="browser-default">
@@ -663,7 +663,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxtwo" id="replacestaffboxtwo"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is </span>
+						          		<span>7. REPLACEMENT Staff Grade is </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="replacestafftypetwo" name="replacestafftypetwo" class="browser-default">
@@ -688,7 +688,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="appcontactboxtwo" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxone" id="appcontactboxtwo" onclick="return MakeRequired('appcontactboxtwo',2)"  value="1"/>
-						          		<span>Next of Kin’s Contact</span>
+						          		<span>8. Next of Kin’s Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontacttwo" value="{{$irc_details->appcontact}}" id="appcontacttwo" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -734,7 +734,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="nameofpersonboxthree" id="nameofpersonboxthree"  value="1"/>
-						          		<span>BF Applicant’s Name:</span>
+						          		<span>1. BF Applicant’s Name:</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namethree" name="person_namethree" readonly value="{{$dataresigneddata->resignedmembername}}" class="inline-box" style="width: 560px;">
@@ -749,7 +749,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxthree" id="messengerboxthree"  value="1"/>
-										<span><span class="gender">{{ $genderlable }}</span> was a </span>
+										<span>2. <span class="gender">{{ $genderlable }}</span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerthree" name="messengerthree" class="browser-default">
@@ -769,7 +769,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="promotedboxthree" @if($irc_details->promotedboxthree ==1) checked @endif id="promotedboxthree"  value="1"/>
-						          		<span><span class="gender">{{ $genderlable }}</span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
+						          		<span>3. <span class="gender">{{ $genderlable }}</span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) required @endif class="inline-box" style="width: 300px;" >
@@ -789,7 +789,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxthree" id="attachedboxthree"  value="1"/>
-						          		<span>Attached is <span class="genderone">{{ $genderlableone }}</span> Job Description (compulsory)</span>
+						          		<span>4. Attached is <span class="genderone">{{ $genderlableone }}</span> Job Description (compulsory)</span>
 						            </label> 
 						            <div class="input-field inline">
 										<div class="row">
@@ -823,7 +823,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->transfertoplaceboxthree ==1) checked @endif name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
-						          		<span><span class="gender">{{ $genderlable }}</span> promoted and transfer to new place</span>
+						          		<span>5. <span class="gender">{{ $genderlable }}</span> Promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="transfertoplacethree" value="{{$irc_details->transfertoplacethree}}" id="transfertoplacethree" class="inline-box" style="width: 500px;" >
@@ -838,14 +838,18 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxthree" id="samebranchboxthree"  value="1"/>
-									<span>Member is still in the same </span>
+									<span>6. Member is still in the same </span>
 									</label> 
 									<div class="input-field inline">
-										<select id="samebranchtype" name="samebranchtype" class="browser-default">
+										<select id="samebranchtype" name="samebranchtype" onchange="return ChangePromoted(this.value)" class="browser-default">
 										    <option value="" disabled selected>Choose your option</option>
 										    <option @if($irc_details->samebranchtype =='Branch') selected @endif >Branch</option>
 										    <option @if($irc_details->samebranchtype =='Department') selected @endif >Department</option>
+										    <option @if($irc_details->samebranchtype =='Others') selected @endif >Others</option>
 										</select>
+									</div>
+									<div id="samebranchothersdiv" class="input-field inline @if($irc_details->samebranchtype !='Others') hide @endif" style="">
+										<input type="text" name="samebranchothers" id="samebranchothers" value="{{ $irc_details->samebranchothers }}" class="inline-box" style="width: 500px;margin-top: 20px !important;" >
 									</div>
 									performing the same job functions
 										
@@ -856,7 +860,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="jobtakenboxthree" @if($irc_details->jobtakenbox ==1) checked @endif id="jobtakenboxthree"  value="1"/>
-						          		<span>Member’s job functions have been taken over by</span>
+						          		<span>7. Member’s job functions have been taken over by</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="jobtakenbythree" value="{{$irc_details->jobtakenby}}" id="jobtakenbythree" placeholder="" class="inline-box" style="width: 500px;"/>
@@ -870,7 +874,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxthree" id="posfilledbyboxthree"  value="1"/>
-						          		<span>Member’s position has not been filled up by another </span>
+						          		<span>8. Member’s position has not been filled up by another </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="posfilledbytypethree" name="posfilledbytypethree" onchange="return showAutocomplete(this.value,'posfillareathree')" class="browser-default">
@@ -898,7 +902,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxthree" id="replacestaffboxthree"  value="1"/>
-						          		<span>REPLACEMENT Staff Grade is </span>
+						          		<span>9. REPLACEMENT Staff Grade is </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="replacestafftypethree" name="replacestafftypethree" class="browser-default">
@@ -922,7 +926,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxthree" id="appcontactboxthree" onclick="return MakeRequired('appcontactboxthree',3)"  value="1"/>
-						          		<span>Applicant Contact</span>
+						          		<span>10. Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontactthree" value="{{$irc_details->appcontact}}" id="appcontactthree" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -968,7 +972,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->nameofperson ==1) checked @endif name="personnameboxfour" id="personnameboxfour"  value="1"/>
-						          		<span>BF Applicant’s Name is</span>
+						          		<span>1. BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="person_namefour" name="person_namefour" readonly value="{{$dataresigneddata->resignedmembername}}" class="inline-box" style="width: 560px;">
@@ -978,7 +982,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->resignedonboxfour ==1) checked @endif name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-						          		<span><span class="gender">{{ $genderlable }}</span> </span>
+						          		<span>2. <span class="gender">{{ $genderlable }}</span> </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="resigntypefour" name="resigntypefour" class="browser-default">
@@ -1002,7 +1006,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->messengerbox ==1) checked @endif name="messengerboxfour" id="messengerboxfour"  value="1"/>
-										<span><span class="gender">{{ $genderlable }}</span> was a </span>
+										<span>3. <span class="gender">{{ $genderlable }}</span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerfour" name="messengerfour" class="browser-default">
@@ -1026,7 +1030,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxfour" id="attachedboxfour"  value="1"/>
-									<span>Attached is <span class="genderone">{{ $genderlableone }}</span> </span>
+									<span>4. Attached is <span class="genderone">{{ $genderlableone }}</span> </span>
 									</label> 
 									
 									<div class="input-field inline">
@@ -1074,7 +1078,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->jobtakenbox ==1) checked @endif name="jobtakenboxfour" id="jobtakenboxfour"  value="1"/>
-									<span>Member’s job functions have been taken over by</span>
+									<span>5. Member’s job functions have been taken over by</span>
 									</label> 
 									
 									<div class="input-field inline">
@@ -1089,7 +1093,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->posfilledbybox ==1) checked @endif name="posfilledbyboxfour" id="posfilledbyboxfour"  value="1"/>
-									<span>Member’s position has not been filled up by another </span>
+									<span>6. Member’s position has not been filled up by another </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="posfilledbytypefour" name="posfilledbytypefour" onchange="return showAutocomplete(this.value,'posfillareafour')" class="browser-default">
@@ -1117,7 +1121,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->replacestaffbox ==1) checked @endif name="replacestaffboxfour" id="replacestaffboxfour"  value="1"/>
-									<span>REPLACEMENT Staff Grade is  </span>
+									<span>7. REPLACEMENT Staff Grade is  </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="replacestafftypefour" name="replacestafftypefour" class="browser-default">
@@ -1140,7 +1144,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->appcontactbox ==1) checked @endif name="appcontactboxfour" id="appcontactboxfour" onclick="return MakeRequired('appcontactboxfour',4)"  value="1"/>
-						          		<span>Applicant Contact</span>
+						          		<span>8. Applicant Contact</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="appcontactfour" value="{{$irc_details->appcontact}}" id="appcontactfour" placeholder="" class="inline-box allow_contactnumbers" style="width: 250px;"/>
@@ -1185,7 +1189,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->expelledboxfive ==1) checked @endif name="expelledboxfive" id="expelledboxfive"  value="1"/>
-									<span>Member was 
+									<span>1. Member was 
 									</label> 
 
 									<div class="input-field inline">
@@ -1210,7 +1214,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									<p>
 										<label>
 										<input type="checkbox" class="common-checkbox" @if($irc_details->samejobboxfive ==1) checked @endif name="samejobboxfive" id="samejobboxfive"  value="1"/>
-										<span>Member’s is still performing the same job functions.</span>
+										<span>2. Member’s is still performing the same job functions.</span>
 										</label> 
 									</p>	
 
@@ -1222,7 +1226,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->samebranchbox ==1) checked @endif name="samebranchboxfive" id="samebranchboxfive"  value="1"/>
-									<span>Member is still in the same </span>
+									<span>3. Member is still in the same </span>
 									</label> 
 
 									<div class="input-field inline">
@@ -1241,7 +1245,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" @if($irc_details->memberstoppedboxfive ==1) checked @endif name="memberstoppedboxfive" id="memberstoppedboxfive"  value="1"/>
-									<span>Member </span>
+									<span>4. Member </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="stoppedtypefive" name="stoppedtypefive" class="browser-default">
@@ -1945,6 +1949,15 @@ function MakeRequired(refid,refno){
 
 	}
 	
+}
+
+
+function ChangePromoted(provalue){
+	if(provalue=='Others'){
+		$("#samebranchothersdiv").removeClass('hide');
+	}else{
+		$("#samebranchothersdiv").addClass('hide');
+	}
 }
 
 

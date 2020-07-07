@@ -537,6 +537,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('add_resignation','MembershipController@AddResignation')->name('resignation.add');
 
 	Route::post('resignation_save','MembershipController@SendIrc')->name('member.savemembership');
+
+	Route::get('irc_waiters','IrcController@IrcWaiters')->name('irc.irc_waiters');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
