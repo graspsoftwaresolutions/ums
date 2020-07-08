@@ -46,6 +46,7 @@
 				@php
 					$company_data = CommonHelper::getMontendcompanySummary($company['company_list'],$data['month_year_full']);
 					$totmembers = CommonHelper::getTotalMembersSummary($company['company_list'],$data['month_year_full']);
+					$newmembers = CommonHelper::getTotalNewMembersSummary($company['company_list'],$data['month_year_full']);
 					$addmembers = CommonHelper::getTotalAddMembersSummary($company['company_list'],$data['month_year_full']);
 					$struckoffmembers = CommonHelper::getStruckoffMembersSummary($company['company_list'],$data['month_year_full']);
 					$resignedmembers = CommonHelper::getResignedMembersSummary($company['company_list'],$data['month_year_full']);

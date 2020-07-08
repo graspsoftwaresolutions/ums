@@ -201,10 +201,9 @@
 			<tr class="">
 				<th style="border : 1px solid #988989;">SNO</th>
 				<th style="border : 1px solid #988989;">BANK</th>
-				<th style="border : 1px solid #988989;">BRANCH</th>
-				<th style="border : 1px solid #988989;">NAME</th>
-				<th style="border : 1px solid #988989;">MEMBERID</th>
+				<th style="border : 1px solid #988989;">MSHIP</th>
 				<th style="border : 1px solid #988989;">NRIC</th>
+				<th style="border : 1px solid #988989;">NAME</th>
 				<th style="border : 1px solid #988989;">INSURANCE AMOUNT(RM)</th>
 			</tr>
 		</thead>
@@ -217,10 +216,10 @@
 					<tr>
 						<td style="border : 1px solid #988989;">{{$sno}}</td>
 						<td style="border : 1px solid #988989;">{{$member->companycode}}</td>
-						<td style="border : 1px solid #988989;">{{$member->branch_name}}</td>
-						<td style="border : 1px solid #988989;">{{$member->name}}</td>
+						<!-- <td style="border : 1px solid #988989;">{{$member->branch_name}}</td> -->
 						<td style="border : 1px solid #988989;">{{$member->member_number}}</td>
 						<td style="border : 1px solid #988989;">{{$member->new_ic}}</td>
+						<td style="border : 1px solid #988989;">{{$member->name}}</td>
 						<td style="border : 1px solid #988989;">{{ number_format($data['total_ins'],2,".",",") }}</td>
 					</tr> 
 					@php
@@ -229,11 +228,11 @@
 					@endphp
 			@endforeach
 									<tr style="font-weight:bold;">
-				<td style="border : 1px solid #988989;" colspan="6"> Total Amount</td>
+				<td style="border : 1px solid #988989;" colspan="5"> Total Amount</td>
 				<td style="border : 1px solid #988989;">{{ number_format($totalamt,2,".",",") }}</td>
 			</tr> 
 			<tr style="font-weight:bold;">
-				<td style="border : 1px solid #988989;" colspan="6"> Total Members</td>
+				<td style="border : 1px solid #988989;" colspan="5"> Total Members</td>
 				<td style="border : 1px solid #988989;">{{ $sno-1 }}</td>
 			</tr> 
 		</tbody>

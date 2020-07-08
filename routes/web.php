@@ -250,6 +250,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('list_irc_account','IrcController@ListIrcAccount')->name('irc.list');
 	Route::post('save-user-account','IrcController@SaveUserAccount')->name('irc.add-irc-account');
 	Route::post('ajax_irc_users_list','IrcController@ajax_irc_users_list')->name('irc.ajaxuserslist');
+	Route::post('ajax_irc_waiters_list','IrcController@ajax_irc_waiters_list')->name('irc.ajaxwaiterslist');
 	Route::get('irc_list','IrcController@listIrc')->name('irc.irc_list');
 	Route::post('ajax_irc_list','IrcController@ajax_irc_list')->name('ajax.irc_list');
 	Route::get('edit-irc/{parameter}','IrcController@editIrc')->name('edit.irc');
@@ -615,3 +616,5 @@ Route::get('get-member-irclist-values','IrcController@getMembersListValues');
 Route::get('update_password','MemberController@UpdateMemberPassword');
 
 Route::get('get-all-member-list','MembershipController@getAllmemberslist');
+
+Route::get('/test-irc', 'IrcController@TestIRC');

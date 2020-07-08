@@ -70,11 +70,12 @@
                                             <table id="page-length-option" class="display">
                                                 <thead>
                                                     <tr>
+                                                        <th>{{__('M/ID') }}</th>
                                                         <th>{{__('Name') }}</th>
-                                                        <th>{{__('Email') }}</th>
-                                                        <th>{{__('MemberCode') }}</th>
-                                                        <th>{{__('Type') }}</th>
-                                                        <th style="text-align:center;"> {{__('Action') }}</th>
+                                                        <th>{{__('ICNO') }}</th>
+                                                        <th>{{__('Bank Name') }}</th>
+                                                        <th>{{__('Branch') }}</th>
+                                                        <!-- <th style="text-align:center;"> {{__('Action') }}</th> -->
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -246,7 +247,7 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{ url(app()->getLocale().'/ajax_irc_users_list') }}",
+            "url": "{{ url(app()->getLocale().'/ajax_irc_waiters_list') }}",
             "dataType": "json",
             "type": "POST",
             "data": {
@@ -260,20 +261,23 @@ $(function() {
            },
         },
         "columns": [{
+                "data": "member_number"
+            },
+            {
                 "data": "name"
             },
-            {
-                "data": "email"
+			{
+                "data": "icno"
             },
 			{
-                "data": "MemberCode"
-            },
-			{
-                "data": "account_type"
+                "data": "company_name"
             },
             {
-                "data": "options"
-            }
+                "data": "branch_name"
+            },
+            // {
+            //     "data": "options"
+            // }
         ]
 
     });

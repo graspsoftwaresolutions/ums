@@ -1344,4 +1344,175 @@ class IrcController extends CommonController
 	public function IrcWaiters(Request $request,$lang){
 		return view('irc.waiters_list');
 	}
+
+	public function ajax_irc_waiters_list(Request $request){
+		$user_id = Auth::user()->id;
+		$get_roles = Auth::user()->roles;
+		$user_role = $get_roles[0]->slug;
+
+		$columns = array(
+            0 => 'm.member_number',
+            1 => 'm.name',
+            2 => 'm.new_ic',
+            3 => 'c.company_name',
+            4 => 'cb.branch_name',
+            5 => 'm.id',
+        );
+
+		$unionbranchids = [];
+        if($user_role=='irc-confirmation'){
+        	$memberid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
+			->pluck('MemberCode')->first();  
+			$unionbranchid = DB::table('membership as m')
+				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();
+
+			$union_no = $unionbranchid;
+
+			$unionbranchname = DB::table('union_branch as ub')
+			->where('ub.id','=',$unionbranchid)
+			->pluck('union_branch')->first();  
+
+			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
+				$unionbranchids = DB::table('union_branch as ub')
+						->where(function($query) use ($union_no){
+							$query->where('ub.union_branch', '=',"SEREMBAN")
+								->orWhere('ub.union_branch', '=',"JB");
+						})
+					->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"PENANG")
+						->orWhere('ub.union_branch', '=',"KEDAH");
+				})
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='IPOH'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','IPOH')
+				->pluck('ub.id')->toArray();  
+			}else if($unionbranchname=='KELANTAN'){
+				$unionbranchids = DB::table('union_branch as ub')
+				->where('ub.union_branch','=','KELANTAN')
+				->pluck('ub.id')->toArray();  
+			}else{
+				//return $union_no;
+				$unionbranchids = DB::table('union_branch as ub')
+				->select('ub.id')
+				->where(function($query) use ($union_no){
+					$query->where('ub.union_branch', '=',"KL")
+						->orWhere('ub.union_branch', '=',"KELANG")
+						->orWhere('ub.union_branch', '=',"PAHANG");
+				})
+				->pluck('ub.id')->toArray();
+				//->first();  
+			}
+        }
+
+		$totalDataqry = DB::table('membership as m')
+					 ->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+					 ->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+			if($user_role=='irc-confirmation'){
+				$totalDataqry = $totalDataqry->whereIn('cb.union_branch_id',$unionbranchids);
+			}
+			$totalData = $totalDataqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
+					 ->count();
+
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+            if( $limit == -1){
+				$usersqry =  DB::table('membership as m')->select('m.id','m.name','m.member_number','c.company_name','cb.branch_name','m.new_ic as icno')
+							->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+							->leftjoin('company as c', 'c.id', '=', 'cb.company_id')
+							->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+				if($user_role=='irc-confirmation'){
+					$usersqry = $usersqry->whereIn('cb.union_branch_id',$unionbranchids);
+				}
+				$users = $usersqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
+							->orderBy($order,$dir)
+							->get()->toArray();
+            }else{
+				$usersqry =  DB::table('membership as m')->select('m.id','m.name','m.member_number','c.company_name','cb.branch_name','m.new_ic as icno')
+							->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+							->leftjoin('company as c', 'c.id', '=', 'cb.company_id')
+							->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+				if($user_role=='irc-confirmation'){
+					$usersqry = $usersqry->whereIn('cb.union_branch_id',$unionbranchids);
+				}
+				$users = $usersqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
+							->offset($start)
+							->limit($limit)
+							->orderBy($order,$dir)
+							->get()->toArray();
+            }
+        
+        }
+        else {
+        $search = $request->input('search.value'); 
+        if( $limit == -1){
+            $usersqry =  DB::table('membership as m')->select('m.id','m.name','m.member_number','c.company_name','cb.branch_name','m.new_ic as icno')
+							->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+							->leftjoin('company as c', 'c.id', '=', 'cb.company_id')
+							->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+				if($user_role=='irc-confirmation'){
+					$usersqry = $usersqry->whereIn('cb.union_branch_id',$unionbranchids);
+				}
+				$users = $usersqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
+							->where('m.id','LIKE',"%{$search}%")
+	                        ->orWhere('m.name', 'LIKE',"%{$search}%")
+	                        ->orWhere('m.email', 'LIKE',"%{$search}%")
+	                        ->orderBy($order,$dir)
+	                        ->get()->toArray();
+        }else{
+            $usersqry =  DB::table('membership as m')->select('m.id','m.name','m.member_number','c.company_name','cb.branch_name','m.new_ic as icno')
+							->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+							->leftjoin('company as c', 'c.id', '=', 'cb.company_id')
+							->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+				if($user_role=='irc-confirmation'){
+					$usersqry = $usersqry->whereIn('cb.union_branch_id',$unionbranchids);
+				}
+				$users = $usersqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
+							->where('m.id','LIKE',"%{$search}%")
+	                        ->orWhere('m.name', 'LIKE',"%{$search}%")
+	                        ->orWhere('m.email', 'LIKE',"%{$search}%")
+	                        ->offset($start)
+	                        ->limit($limit)
+	                        ->orderBy($order,$dir)
+	                        ->get()->toArray();
+        }
+        	$totalFilterqry =  DB::table('membership as m')->select('m.id','m.name','m.member_number','c.company_name','cb.branch_name','m.new_ic as icno')
+							->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+							->leftjoin('company as c', 'c.id', '=', 'cb.company_id')
+							->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+				if($user_role=='irc-confirmation'){
+					$totalFilterqry = $totalFilterqry->whereIn('cb.union_branch_id',$unionbranchids);
+				}
+				$totalFiltered = $totalFilterqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')->where('m.id','LIKE',"%{$search}%")
+	                        ->orWhere('m.name', 'LIKE',"%{$search}%")
+	                        ->orWhere('m.email', 'LIKE',"%{$search}%")
+                   			 ->count();
+        }
+        $data = $this->CommonAjaxReturnold($users, 0, 'master.destroy', 0);
+    
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+	}
+
+	public function TestIRC(){
+		return view('emails.irc');
+	}
 }
