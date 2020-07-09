@@ -800,8 +800,9 @@ class CommonHelper
             $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.union_branch_id="'.$union_branch_id.'") AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company'){
-            $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
-            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$company_id.'") AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
+            $scompany_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
+            $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.StatusId="'.$status_id.'" AND sc.CompanyCode in (select company_id from `company_branch` as `cb` where cb.company_id="'.$scompany_id.'") AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$monthyear.'" AND m.MonthlySubscriptionCompanyId = "'.$company_id.'"'));
+           
             $members_count = $members_qry[0]->count;
         }else if($user_role=='company-branch'){
             $branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id')->first();
@@ -2204,10 +2205,11 @@ class CommonHelper
                     ->select(DB::raw("count(mm.id) as total_members"))
                     ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
                     ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
-                    //->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                    ->leftjoin('membership as m','m.id','=','mm.MemberCode')
                     //->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     //->leftjoin('company as com','com.id','=','sc.CompanyCode')
                     ->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+                    ->where('ms.Date','!=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
                     ->where(function ($query) {
                         $query->where('mm.StatusId', '=', 1)
                               ->orWhere('mm.StatusId', '=', 2)
@@ -2234,10 +2236,11 @@ class CommonHelper
                     ->select(DB::raw("count(mm.id) as total_members"))
                     ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
                     ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
-                    //->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                    ->leftjoin('membership as m','m.id','=','mm.MemberCode')
                     //->leftjoin('company_branch as c','c.id','=','m.branch_id')
                     //->leftjoin('company as com','com.id','=','sc.CompanyCode')
                     ->where(DB::raw('DATE_FORMAT(ms.Date, "%m-%Y")'), '=', $monthno.'-'.$yearno)
+                    ->where('ms.Date','=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
                     ->where(function ($query) {
                         $query->where('mm.StatusId', '=', 1)
                               ->orWhere('mm.StatusId', '=', 2)
@@ -2246,7 +2249,7 @@ class CommonHelper
                     })
                     ->whereIn('sc.CompanyCode', $companies)
                     //->where('mm.approval_status', '=', 1)
-                    ->whereNotNull('mm.additional_member')
+                    ->whereNull('mm.additional_member')
                     //->where('mm.additional_member', '=', 1)
                     ->where('mm.update_status', '=', 1)
                     ->first();

@@ -47,6 +47,7 @@
 					$company_data = CommonHelper::getMontendcompanySummary($company['company_list'],$data['month_year_full']);
 					$totmembers = CommonHelper::getTotalMembersSummary($company['company_list'],$data['month_year_full']);
 					$newmembers = CommonHelper::getTotalNewMembersSummary($company['company_list'],$data['month_year_full']);
+					//dd($newmembers);
 					$addmembers = CommonHelper::getTotalAddMembersSummary($company['company_list'],$data['month_year_full']);
 					$struckoffmembers = CommonHelper::getStruckoffMembersSummary($company['company_list'],$data['month_year_full']);
 					$resignedmembers = CommonHelper::getResignedMembersSummary($company['company_list'],$data['month_year_full']);
@@ -58,26 +59,31 @@
 					<td style="border: 1px solid #988989 !important;">{{ $company_data->total_members }}</td>
 					<td style="border: 1px solid #988989 !important;">{{ number_format($data['total_ins']*$company_data->total_members,2,".",",") }}</td>
 					<td style="">
-						@if($addmembers!=0 || $struckoffmembers!=0 || $resignedmembers!=0)
+						@if($newmembers!=0 || $addmembers!=0 || $struckoffmembers!=0 || $resignedmembers!=0)
 						@php
 							echo "Subs";
-							if($addmembers!=''){
+							if($newmembers!=0){
+								echo "+ New Members";
+							}if($addmembers!=0){
 								echo "+ Additional Member";
 							}
-							if($struckoffmembers!=''){
+							if($struckoffmembers!=0){
 								echo "- Struckoff";
 							}
-							if($resignedmembers!=''){
+							if($resignedmembers!=0){
 								echo "- Resigned";
 							}
 							echo "(".$totmembers;
-							if($addmembers!=''){
+							if($newmembers!=0){
+								echo "+".$newmembers;
+							}
+							if($addmembers!=0){
 								echo "+".$addmembers;
 							}
-							if($struckoffmembers!=''){
+							if($struckoffmembers!=0){
 								echo "-".$struckoffmembers;
 							}
-							if($resignedmembers!=''){
+							if($resignedmembers!=0){
 								echo "-".$resignedmembers;
 							}
 							echo ')';

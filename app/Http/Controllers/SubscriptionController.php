@@ -200,6 +200,7 @@ class SubscriptionController extends CommonController
 
         $company_auto_id = '';
         $company_auto_id = $this->getCommonStatus($entry_date,$sub_company);
+        //dd($company_auto_id);
         $datearr = explode("/",$entry_date);  
         $monthname = $datearr[0];
         $year = $datearr[1];
@@ -241,11 +242,13 @@ class SubscriptionController extends CommonController
                 }else{
                     $members_count = CommonHelper::statusSubsMembersNotDOJCompanyCount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
                     $members_amount = CommonHelper::statusMembersNotDojCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
+                    //print_r($company_auto_id);
                 }
 				
                 
                 $status_data['count'][$value->id] = $members_count;
                 $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
+                //dd($members_count.'-'.$value->id);
 				$total_members_count += $members_count;
 				$total_members_amount += $members_amount;
             }
@@ -278,6 +281,7 @@ class SubscriptionController extends CommonController
             $total_members_amount += $sundry_amount;
 
             if($total_members_count==0){
+
                 $resstatus=0;
                 $message = '';
             }else{
