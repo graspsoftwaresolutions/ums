@@ -16,7 +16,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td align="left" valign="middle" width="350">
-                                                       Irc Completed members list
+                                                       IRC Completed members list
                                                     </td>
                                                     <td width="30"></td>
                                                     <td align="right" valign="middle" width="255">
@@ -33,96 +33,38 @@
 
                                 <tr>
                                     <td bgcolor="#ffffff" width="640">
+                                        <p style="margin-left: 28px;">IRC completed lists for resignation</p>
                                         <table border="0" cellpadding="0" cellspacing="0" width="640">
                                             <tbody>
                                                 <tr>
                                                     <td width="30"></td>
                                                     <td width="580">
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="580">
-                                                            <tbody>
-                                                                
+                                                        <table  border="1" cellpadding="6" style="border-collapse: collapse; width : 100%;" width="100%">
+                                                            <tr>
+                                                                <td style="">M/ID</td>
+                                                                <td style="">Full Name</td>
+                                                                <td style="">ICNO</td>
+                                                                <td style="">Bank Name</td>
+                                                                <td style="">Branch</td>
+                                                                <td >Status</td>
+                                                            </tr>
+                                                            @php
+                                                                $irclist = CommonHelper::getIrcMailList();
+                                                            @endphp
+                                                            @foreach($irclist as $irc)
                                                                 <tr>
-                                                                    <td width="580">
-                                                                       
-                                                                        <div style="font-size:13px;line-height:18px;color:#444444;margin-top:0px;font-family:Arial,Helvetica,Geneva,sans-serif" align="left">
-                                                                            <p style="text-align:justify;margin-top:8px;margin-bottom:0px">The customer has been customized the new itineray details.Kindly check!!
-                                                                            </p>
-                                                                        </div>
-                                                                    </td>
+                                                                    <td>{{ $irc->member_number }}</td>
+                                                                    <td>{{ $irc->resignedmembername }}</td>
+                                                                    <td>{{ $irc->icno }}</td>
+                                                                    <td>{{ $irc->bankname }}</td>
+                                                                    <td>{{ $irc->branchname }}</td>
+                                                                    <td>{{ $irc->status_name }}</td>
                                                                 </tr>
-                                                                <tr><td height="10" width="580"></td></tr>
-
-                                                                <tr><td height="10" width="580"></td></tr>
-                                                                
-                                                            </tbody>
+                                                            @endforeach
                                                         </table>
                                                        
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="580">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td width="580">
-                                                                        <div>
-                                                                            
-                                                                            </a>
-                                                                           
-                                                                            <p style="font-size:10px;color:rgb(130,130,130)">This e-mail may contain confidential and/or privileged information. If you are not the intended recipient (or have received this e-mail in error) please notify the sender immediately and destroy this e-mail. Any unauthorized copying, disclosure or distribution of the material in this e-mail is strictly forbidden and could be a crime.</p>
-                                                                                                                                                    </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr><td height="10" width="580"></td></tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="580">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td width="580">
-                                                                        <div style="color:#777777;padding-top:16px;padding-bottom:18px;border-top:1px solid #eaeaea;text-align:center">
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td width="580">
-                                                                        <div style="font-size:13px;color:rgb(68,68,68);margin-top:0px;margin-bottom:8px;font-family:Arial,Helvetica,Geneva,sans-serif" align="left">
-                                                                            <table>
-                                                                                <tbody>
-                                                                                <tr>
-                                                                                    <td>No of persons</td>
-                                                                                    <td>:  infants</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>Place </td>
-                                                                                    <td>: 
-                                                                                   
-                                                                                </td>
-                                                                                <tr>
-                                                                                    <td>Total Amount</td>
-                                                                                    <td>: </td>
-                                                                                </tr>
-                                                                                </tr>
-                                                                            </tbody></table>
-
-                                                                            <table border="0" cellpadding="0" cellspacing="0" width="580">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td width="580">
-                                                                                            <div>
-                                                                                            <a href="http://www.lastminute.com/" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.lastminute.com/&amp;source=gmail&amp;ust=1578391881259000&amp;usg=AFQjCNFBFGVlS1YVG2-1E0NKXDaWbdW12Q">
-                                                                                                    Tours and Travels
-                                                                                                </a>
-                                                                                            
-                                                                                                <p style="font-size:10px;color:rgb(130,130,130)">This e-mail may contain confidential and/or privileged information. If you are not the intended recipient (or have received this e-mail in error) please notify the sender immediately and destroy this e-mail. Any unauthorized copying, disclosure or distribution of the material in this e-mail is strictly forbidden and could be a crime.</p>
-                                                                                                                                                                        </div>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr><td height="10" width="580"></td></tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr><td height="10" width="580"></td></tr>
-                                                            </tbody>
-                                                        </table>
+                                                       
+                                                        
                                                         
                                                     </td>
                                                     <td width="30"></td>
@@ -137,5 +79,6 @@
                 </tr>
             </tbody>
         </table>
+        
 </body>
 </html>

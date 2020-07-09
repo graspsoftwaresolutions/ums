@@ -3745,4 +3745,18 @@ class CommonHelper
                   // dd($irc);
         return $irc;
     }
+
+    public static function getIrcMailList(){
+         $irc = DB::table('irc_confirmation as irc')
+                   ->select('irc.resignedmembername','m.member_number','irc.resignedmembericno as icno','irc.resignedmemberbankname as bankname','irc.resignedmemberbranchname as branchname','s.status_name')
+                   ->leftjoin('membership as m','m.id','=','irc.resignedmemberno')
+                   ->leftjoin('status as s','s.id','=','m.status_id')
+                   ->where('irc.irc_status','=',1)
+                   ->where('irc.status','=',1)
+                   ->where('irc.mail_status','=',0)
+                   //->pluck('irc_status','status')
+                   ->get();
+                  // dd($irc);
+        return $irc;
+    }
 }

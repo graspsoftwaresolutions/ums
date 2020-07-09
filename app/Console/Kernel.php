@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('irc:command')->everyMinute();
+        $schedule->command('irc:command')->daily();
         // $schedule->command('inspire')
         //          ->hourly();
     }

@@ -47,14 +47,33 @@ class IrcCommand extends Command
         //      'password' => $randompassone,
         //      'site_url' => URL::to("/"),
         //     );
-        $cc_mail = CommonHelper::getCCTestMail();
-        $union_email = 'murugan.bizsoft@gmail.com';
-        $status = Mail::to($union_email)->cc([$cc_mail])->send(new SendIRCMailable());
-        
-        if( count(Mail::failures()) > 0 ) {
+        $irccount =  DB::table('irc_confirmation as irc')
+                   ->select('irc.resignedmembername','m.member_number','irc.resignedmembericno as icno','irc.resignedmemberbankname as bankname','irc.resignedmemberbranchname as branchname','s.status_name')
+                   ->leftjoin('membership as m','m.id','=','irc.resignedmemberno')
+                   ->leftjoin('status as s','s.id','=','m.status_id')
+                   ->where('irc.irc_status','=',1)
+                   ->where('irc.status','=',1)
+                   ->where('irc.mail_status','=',0)->count();
 
+        if($irccount>0){
+            $cc_mail = CommonHelper::getCCTestMail();
+            $union_email = 'murugan.bizsoft@gmail.com';
+            $status = Mail::to($union_email)->cc([$cc_mail])->send(new SendIRCMailable());
+            
+            if( count(Mail::failures()) == 0 ) {
+                DB::table('irc_confirmation as irc')
+                       ->select('irc.resignedmembername','m.member_number','irc.resignedmembericno as icno','irc.resignedmemberbankname as bankname','irc.resignedmemberbranchname as branchname','s.status_name')
+                       ->leftjoin('membership as m','m.id','=','irc.resignedmemberno')
+                       ->leftjoin('status as s','s.id','=','m.status_id')
+                       ->where('irc.irc_status','=',1)
+                       ->where('irc.status','=',1)
+                       ->where('irc.mail_status','=',0)->update(['mail_status' => 1]);
+            }
+            //$userscount = DB::table('users')->where('id','>', 1000)->count();
+            $this->info('Mail sent successfully!');
+        }else{
+            $this->info('No ircs to send mail!');
         }
-        //$userscount = DB::table('users')->where('id','>', 1000)->count();
-        $this->info('All inactive users are deleted successfully!');
+       
     }
 }
