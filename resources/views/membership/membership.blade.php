@@ -200,7 +200,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
 											<label>{{__('Gender') }}</label>
 											<select name="gender" id="gender" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Gender') }}</option>
@@ -211,7 +211,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
 											<label>{{__('Race') }}</label>
 											<select name="race_id" id="race_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Race') }}</option>
@@ -239,7 +239,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
 											<label>{{__('Country') }}</label>
 											<select name="country_id" id="country_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Country') }}</option>
@@ -253,7 +253,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
 											<label>{{__('State') }}</label>
 											<select name="state_id" id="state_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select State') }}</option>
@@ -263,7 +263,7 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3">
+										<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
 											<label>{{__('City') }}</label>
 											<select name="city_id" id="city_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select City') }}</option>
@@ -294,13 +294,16 @@ span.dtr-title::after {
 									<table id="page-length-option" class="display" width="100%">
 										<thead>
 											<tr>
-												<th width="20%" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
+												<th width="@if($user_role !='union-branch') 20% @else 5% @endif" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
 												<th width="5%">{{__('Mem/ID') }}</th>
 												<th width="5%">{{__('Mem/Name') }}</th>
+												@if($user_role !='union-branch')
 												<th width="5%">{{__('Type')}} </th>
 												<th width="5%">{{__('M/F')}}</th>
+												@endif
 												<th width="5%">{{__('Bank Code') }}</th>
 												<th width="7%">{{__('Branch Name') }}</th>
+												@if($user_role !='union-branch')
 												<th width="5%">{{__('Levy') }}</th>
 												<th width="5%">{{__('Levy Amount') }}</th>
 												<th width="10%">{{__('TDF') }}</th>
@@ -312,6 +315,7 @@ span.dtr-title::after {
 												<th width="5%">{{__('NRIC New') }}</th>
 												<th width="5%">{{__('Mobile') }}</th>
 												<th width="5%">{{__('Race Short Code') }}</th>
+												@endif
 												<!-- <th>{{__('Union Branch Name') }}</th> -->
 												<th width="3%">{{__('Status') }}</th>
 												
@@ -366,6 +370,7 @@ $(function () {
 	    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	  }
 	});
+@if($user_role !='union-branch')
  var dataTable = $('#page-length-option').DataTable({
 	"responsive": true,
 	"order": [[ 0, "desc" ]],
@@ -507,6 +512,113 @@ $(function () {
 		}
 	} */
 });
+@else
+	var dataTable = $('#page-length-option').DataTable({
+	"responsive": true,
+	"order": [[ 0, "desc" ]],
+	//"searching": false,
+	"lengthMenu": [
+		[10, 25, 50, 100, 3000],
+		[10, 25, 50, 100, 'All']
+	],
+	dom: 'lBfrtip', 
+        buttons: [
+		   {
+			   extend: 'pdf',
+			   footer: true,
+			   exportOptions: {
+					columns: []
+				},
+                title : 'Members List', 
+                text: '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'pdf'
+		   },
+		   {
+			   extend: 'excel',
+			   footer: false,
+			   exportOptions: {
+					columns: []
+				},
+				title : 'Members List',
+                text:    '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'excel'
+		   },
+			{
+			   extend: 'print',
+			   footer: false,
+			   exportOptions: {
+					columns: []
+				},
+				title : 'Members List',
+                text:   '<i class="fa fa-files-o"></i>',
+                titleAttr: 'print'
+		   }  
+		],
+	"processing": true,
+	"serverSide": true,
+	"ajax": {
+		"url": "{{ url(app()->getLocale().'/ajax_members_list/'.$data['member_type']) }}?status={{$data['member_status']}}",
+		"dataType": "json",
+		"type": "POST",
+		'data': function(data){
+		  var unionbranch_id = $('#unionbranch_id').val();
+		  var company_id      = $('#company_id').val();
+		  var branch_id = $('#branch_id').val();
+		  var gender = $('#gender').val();
+		  var race_id = $('#race_id').val();
+		  var status_id = $('#status_id').val();
+		  var country_id = $('#country_id').val();
+		  var state_id = $('#state_id').val();
+		  var city_id = $('#city_id').val();
+		  
+		  //console.log(datefilter);
+		 
+		  data.unionbranch_id = unionbranch_id;
+		  data.company_id = company_id;
+		  data.branch_id = branch_id;
+		  data.gender = gender;
+		  data.race_id = race_id;
+		  data.status_id = status_id;
+		  data.country_id = country_id;
+		  data.state_id = state_id;
+		  data.city_id = city_id;
+		  data._token = "{{csrf_token()}}";
+	   },
+	   "error": function (jqXHR, textStatus, errorThrown) {
+            if(jqXHR.status==419){
+            	alert('Your session has expired, please login again');
+            	window.location.href = base_url;
+            }
+       },
+	},
+	"columns": [
+		{"data": "options"},
+		{"data" : "member_number"},
+		{"data": "name"},
+		
+		{"data" : "short_code"},
+		{"data": "branch_name"},
+		{"data": "status"}
+		
+	],
+	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+		
+		$('td', nRow).css('color', aData.font_color );
+	},
+	"columnDefs": [
+            {
+                "render": function ( data, type, row ) {
+                    return '<span class="testspan" style="color:'+row.font_color+'">'+data+'</span>' ;
+                },
+            },
+            { "visible": true,  "targets": '_all' }
+        ],
+	"drawCallback": function(settings) {
+		loader.hideLoader();
+	},
+
+});
+@endif
 /* $('#page-length-option tbody').on('click', 'ul.dtr-details', function () {
         var tr = $(this).closest('tr');
         var row = table.row( tr );

@@ -56,7 +56,7 @@
                 <th style="border : 1px solid #988989;">{{__('G')}}</th>
                
                 <th style="border : 1px solid #988989;">{{__('DOJ')}}</th>
-                <th style="border : 1px solid #988989;">ADVANCE MON / SUBS</th>
+                <th style="border : 1px solid #988989;">ADVANCE MON</th>
                 <th style="border : 1px solid #988989;">ADVANCE AMOUNT</th>
                 <!-- <th style="border : 1px solid #988989;">{{__('STATUS')}}</th> -->
 			</tr>

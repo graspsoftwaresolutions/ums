@@ -4529,4 +4529,62 @@ class SubscriptionController extends CommonController
         }
 
     }
+
+    public function advanceEdit($lang,$encid)
+    {
+        $id = Crypt::decrypt($encid);
+        //$data['data'] = [];
+         $data['data'] =  DB::table('advance_payments as ap')->select('ap.no_of_months','m.id as memberid','c.id as companyid','cb.id as companybranchid','s.id as statusid','ap.id as advanceid','m.new_ic','m.old_ic','ap.from_date','ap.advance_amount','cb.branch_name','c.company_name','s.status_name','m.member_number','m.name as membername','s.font_color','ap.advance_date')
+        ->leftjoin('membership as m','ap.member_id','=','m.id')
+        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        ->leftjoin('company as c','cb.company_id','=','c.id')
+        ->leftjoin('status as s','m.status_id','=','s.id')
+        ->where('ap.id','=',$id)->first();
+
+        // $data['records'] = DB::table('arrear_entry_records')->where('arrear_id','=',$id)->get();
+
+        return view('subscription.edit_advance')->with('data',$data);
+    }
+
+    public function AdvanceUpdate(Request $request)
+    {
+        $request->validate([
+            'nric'=>'required',
+            'from_date'=>'required',
+        ],
+        [
+            'nric.required'=>'please enter NRIC',
+            'from_date.required'=>'please choose date',
+        ]);
+
+        //$to_date_str = $request->input('to_date');
+        $from_date_str = $request->input('from_date');
+        //$to_date = explode("/",$to_date_str);
+        $from_date = explode("/",$from_date_str);
+      
+        //$to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
+        $from_entry_month = date('Y-m-d',strtotime($from_date[1].'-'.$from_date[0].'-'.'01'));
+
+         
+        $advancedata['advance_date'] = $request->input('advance_date');
+        $advancedata['member_id'] = $request->input('membercode');
+        $advancedata['from_date'] = $from_entry_month;
+        $advancedata['to_date'] = $from_entry_month;
+        $advancedata['no_of_months'] = $request->input('no_of_months');
+        $advancedata['advance_amount'] = $request->input('advance_amount');
+        $advancedata['balance_amount'] = $request->input('advance_amount');
+        $advancedata['updated_by'] = Auth::user()->id;
+        $defdaultLang = app()->getLocale();
+
+        $saveAdvanceEntry = DB::table('advance_payments')->where('id','=',$request->input('advanceid'))->update($advancedata);
+        
+        if($saveAdvanceEntry == true)
+        {
+            //$arrearid = $saveArrearEntry->id;
+            //$enc_arrearid = Crypt::encrypt($arrearid);
+            return redirect($defdaultLang.'/sub-advanceentry')->with('message','Entry Updated Succesfully');
+        }else{
+            return redirect($defdaultLang.'/subs-advance')->with('message','Failed to update Advance');
+        }
+    }
 }

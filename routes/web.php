@@ -434,6 +434,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update_subs_bulk_rows','SubscriptionController@saveArrearBulkRows')->name('subscription.upbulkarrearrows');
 
 	Route::get('editbulkarrearrecords/{parameter}','SubscriptionController@arrearRecordBulkEdit')->name('subscription.editbulkarrearrecords');
+	Route::get('editadvance/{parameter}','SubscriptionController@advanceEdit')->name('subscription.editadvance');
 
 	Route::get('export-excel-takaful','ReportsController@exportExcelTakaful')->name('takaful.excel');
 	Route::get('export-excel-members','ReportsController@exportExcelMembers')->name('members.excel');
@@ -516,6 +517,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get_months_number','SubscriptionController@GetMonthsDifference')->name('months.difference');
 
 	Route::post('subscription-saveAdvance','SubscriptionController@AdvanceEntrySave')->name('subscription.saveAdvance');
+	Route::post('subscription-updateAdvance','SubscriptionController@AdvanceUpdate')->name('subscription.updateAdvance');
 
 	Route::get('sub-advanceentry','SubscriptionController@advanceentryList')->name('subscription.advanceentry');
 	Route::post('ajax_advance_list','SubscriptionAjaxController@ajax_advance_list');

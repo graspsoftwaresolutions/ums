@@ -1655,11 +1655,15 @@ class SubscriptionAjaxController extends CommonController
                // $edit = route('subscription.editbulkarrearrecords', [app()->getLocale(),$enc_id]);
                 //$edit = route('subscription.editarrearrecords', [app()->getLocale(),$enc_id]);
 
-                $edit = '';
+                $edit = route('subscription.editadvance', [app()->getLocale(),$enc_id]);
+                //$edit = '';
                 
-                $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                // $actions ="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger hide' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                $actions = '';
 
-                $actions .="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                if($arrear->paid_amount==0){
+                    $actions .="<a style='float: left;' id='$edit' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
+                }
 
                 $actions .="<a style='float: left; margin-left: 10px;' id='$edit' title='Pay' onclick='return PaySubscription($arrear->advanceid)' class='modal-trigger' href='#'><i class='material-icons' style='color:#ff4081'>payment</i></a>";
 
