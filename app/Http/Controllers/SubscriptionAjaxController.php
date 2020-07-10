@@ -1544,7 +1544,7 @@ class SubscriptionAjaxController extends CommonController
             $sl++ => 'cb.company_id', 
             $sl++ => 'm.branch_id',
             $sl++ => 'ap.from_date',
-            $sl++ => 'ap.to_date',
+            //$sl++ => 'ap.to_date',
             $sl++ => 'ap.advance_amount',
             $sl++ => 'ap.no_of_months',
             $sl++ => 'm.status_id',
@@ -1638,7 +1638,7 @@ class SubscriptionAjaxController extends CommonController
                 $nestedData['company_id'] = $arrear->company_name;
                 $nestedData['branch_id'] = $arrear->branch_name;
                 $nestedData['from_date'] = date('d/M/ Y',strtotime($arrear->from_date));
-                $nestedData['to_date'] = date('d/M/ Y',strtotime($arrear->to_date));
+                //$nestedData['to_date'] = date('d/M/ Y',strtotime($arrear->to_date));
                 $nestedData['advance_amount'] = $arrear->advance_amount;
                 $nestedData['no_of_months'] = $arrear->no_of_months;
                 $nestedData['status_id'] = $arrear->status_name;

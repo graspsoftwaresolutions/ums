@@ -8,7 +8,7 @@
 				<td colspan="2" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -18,7 +18,7 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="6" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">ADVANCE REPORT</span>
 				</td>
@@ -33,7 +33,7 @@
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
 				</td>
-				<td colspan="6" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="5" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -57,7 +57,6 @@
                
                 <th style="border : 1px solid #988989;">{{__('DOJ')}}</th>
                 <th style="border : 1px solid #988989;">ADVANCE MON / SUBS</th>
-                <th style="border : 1px solid #988989;">ADVANCE AMOUNT</th>
                 <!-- <th style="border : 1px solid #988989;">{{__('STATUS')}}</th> -->
 			</tr>
 		</thead>
@@ -93,21 +92,10 @@
                     
                     <td style="border : 1px solid #988989;vertical-align: top;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
                     <td style="border : 1px solid #988989;vertical-align: top;"> 
-                    	@php
-                    		$scount = count($advance);
-                    		$lastsubsamt = 0;
-                    	@endphp
-                    	@foreach($advance as $key => $alists)
-                    		{{ date('M-Y',strtotime($alists->StatusMonth)) }} {{ $scount-1 != $key ? ',' : '' }} 
-                    		@php
-                    			if($scount-1 == $key){
-                    				$advanceats = CommonHelper::getAdvanceAmount($memberid,$alists->StatusMonth);
-                    				$lastsubsamt = $advanceats->SUBSCRIPTION_AMOUNT+$advanceats->BF_AMOUNT+$advanceats->INSURANCE_AMOUNT;
-                    			}
-                    		@endphp
+                    	@foreach($advance as $alists)
+                    		{{ date('M-Y',strtotime($alists->StatusMonth)) }} / {{ $alists->TOTALSUBCRP_AMOUNT+$alists->TOTALBF_AMOUNT+$alists->TOTALINSURANCE_AMOUNT }} <br>
                     	@endforeach
                     </td>
-                     <td style="border : 1px solid #988989;vertical-align: top;">{{ $lastsubsamt }}</td>
                    <!--  <td style="border : 1px solid #988989;">{{ $member->status_name[0] }}</td>	 -->
                 </tr> 
 				@php

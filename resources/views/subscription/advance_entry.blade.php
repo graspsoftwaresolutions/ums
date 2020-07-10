@@ -129,24 +129,25 @@
       </div>
       <div class="col s12 m6">
         <label
-          class="common-label  force-active">{{__('From Date') }}*</label>
+          class="common-label  force-active">{{__('Advance Date') }}*</label>
         <input id="from_date"  type="text" required class="datepicker-custom" name="from_date">
-        <div class="errorTxt5"></div>
-      </div>
-      <div class="col s12 m6">
-        <label
-          class="common-label  force-active">{{__('To Date') }}*</label>
-        <input id="to_date"  type="text" required class="datepicker-custom" name="to_date">
         <div class="errorTxt5"></div>
       </div>
       <div class="col s12 m6">
         <label
           class="common-label  force-active">{{__('No of Months') }}</label>
         <input id="no_of_months" class="common-input"
-          name="no_of_months" type="text" readonly="" data-error=".errorTxt7">
+          name="no_of_months" required type="number" min="1" data-error=".errorTxt7">
         <div class="errorTxt7"></div>
         <div class="clearfix" style="clear:both"></div>
       </div>
+     <!--  <div class="col s12 m6">
+        <label
+          class="common-label  force-active">{{__('To Date') }}*</label>
+        <input id="to_date"  type="text" readonly="" class="datepicker-custom" name="to_date">
+        <div class="errorTxt5"></div>
+      </div> -->
+      
       <div class="col s12 m6">
         <div class="row">
           
@@ -300,30 +301,30 @@ $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
         changeYear: true,
         MonthFormat: 'M/yy',
         OnAfterChooseMonth: function() {
-            getMonthsNumber();
+           // getToMonths();
         }
     });
     $('.ui-button').removeClass("ui-state-disabled");
     //$('.datepicker-custom').MonthPicker({ Button: false,dateFormat: 'M/yy' });
 
 });
- function getMonthsNumber(){
-    var from_date = $("#from_date").val();
-    var to_date = $("#to_date").val();
-    if (from_date != "" && to_date != "") {
-      var url = "{{ url(app()->getLocale().'/get_months_number') }}" + '?from_date=' + from_date + '&to_date='+to_date;
-      $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function(result) {
-          $("#no_of_months").val(result);
-        }
-      });
-    }else{
-       $("#no_of_months").val(0);
-    }
- }
+ // function getToMonths(){
+ //    var from_date = $("#from_date").val();
+ //    var no_of_months = $("#no_of_months").val();
+ //    if (from_date != "" && no_of_months != "") {
+ //      var url = "{{ url(app()->getLocale().'/get_tomonths_number') }}" + '?from_date=' + from_date + '&no_of_months='+no_of_months;
+ //      $.ajax({
+ //        url: url,
+ //        type: "GET",
+ //        dataType: "json",
+ //        success: function(result) {
+ //          $("#no_of_months").val(result);
+ //        }
+ //      });
+ //    }else{
+ //       $("#no_of_months").val(0);
+ //    }
+ // }
 // $("#addadvance_formValidate").on("submit", function(evt) {
 //    var arrear_date = $("#arrear_date").val();
 //    var datestatus = ValidateDate(arrear_date);

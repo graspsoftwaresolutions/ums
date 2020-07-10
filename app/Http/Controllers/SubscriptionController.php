@@ -4067,19 +4067,19 @@ class SubscriptionController extends CommonController
             'from_date.required'=>'please choose date',
         ]);
 
-        $to_date_str = $request->input('to_date');
+        //$to_date_str = $request->input('to_date');
         $from_date_str = $request->input('from_date');
-        $to_date = explode("/",$to_date_str);
+        //$to_date = explode("/",$to_date_str);
         $from_date = explode("/",$from_date_str);
       
-        $to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
+        //$to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
         $from_entry_month = date('Y-m-d',strtotime($from_date[1].'-'.$from_date[0].'-'.'01'));
 
          
         $advancedata['advance_date'] = $request->input('advance_date');
         $advancedata['member_id'] = $request->input('membercode');
         $advancedata['from_date'] = $from_entry_month;
-        $advancedata['to_date'] = $to_entry_month;
+        $advancedata['to_date'] = $from_entry_month;
         $advancedata['no_of_months'] = $request->input('no_of_months');
         $advancedata['advance_amount'] = $request->input('advance_amount');
         $advancedata['balance_amount'] = $request->input('advance_amount');

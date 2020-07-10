@@ -94,8 +94,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th>{{__('MemberName') }}</th>
                                                       <th>{{__('Company') }}</th>
                                                       <th>{{__('Branch') }}</th>
-                                                      <th>{{__('From_date') }}</th>
-                                                      <th>{{__('To_date') }}</th>
+                                                      <th>{{__('Advance_date') }}</th>
+                                                      <!-- <th>{{__('To_date') }}</th> -->
                                                       <th>{{__('Amount') }}</th>
                                                       <th>{{__('No of Months') }}</th>
                                                       <th>{{__('Paid Amount') }}</th>
@@ -140,7 +140,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
            <p>
             Amount: <span id="view_paid" class="bold"></span>
             </br>
-            Months: <span id="view_months" class="bold"></span>
+            Month(No of months): <span id="view_months" class="bold"></span>(<span id="no_of_monthsid" class="bold"></span>)
            </p>
         </div>
       </div>
@@ -274,7 +274,7 @@ $(function () {
                 {"data": "company_id"},
                 {"data": "branch_id"},
                 {"data": "from_date"},
-                {"data": "to_date"},
+                // {"data": "to_date"},
 				        {"data": "advance_amount"},
                 {"data": "no_of_months"},
                 {"data": "paid_amount"},
@@ -322,7 +322,8 @@ function PaySubscription(advanceid){
           $("#view_member_name").text(result.name);
           $("#view_mno").text(result.member_number);
           $("#view_paid").text(result.advance_amount);
-          $("#view_months").text(result.from_date+' to '+result.to_date);
+          $("#view_months").text(result.from_date);
+          $("#no_of_monthsid").text(result.no_of_months);
           $("#member_autoid").val(result.member_id);
           $("#advance_autoid").val(result.advanceid);
         }
