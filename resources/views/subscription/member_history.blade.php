@@ -128,7 +128,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<th>{{__('Ins.Paid')}}</th>
 													<th>{{__('Month.Paid')}}</th>
 													<th>{{__('LastPaymentDate')}}</th>
-													<th>{{__('Advance')}}</th>
+													<th>{{__('PendingAdvance') }}<br>{{ '(Tot.Mon.Paid)' }}</th>
 													<th>{{__('Tot.Mon.Paid')}}</th>
 													<th>{{__('Tot.Mon.Due')}}</th>
 													<th>{{__('Total')}}</th>

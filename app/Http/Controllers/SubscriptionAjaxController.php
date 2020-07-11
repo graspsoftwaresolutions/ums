@@ -1691,7 +1691,7 @@ class SubscriptionAjaxController extends CommonController
         $advanceid = $request->input('advanceid');
 
         $advanceres = DB::table('advance_payments as ap')
-                        ->select('ap.id as advanceid','ap.member_id','ap.advance_date','ap.from_date','ap.to_date','ap.no_of_months','ap.advance_amount','m.name','m.member_number')
+                        ->select('ap.id as advanceid','ap.member_id','ap.advance_date','ap.from_date','ap.to_date','ap.no_of_months','ap.advance_amount','m.name','m.member_number','ap.balance_amount')
                         ->leftjoin('membership as m','ap.member_id','=','m.id')
                         ->where('ap.id','=',$advanceid)
                         ->first();

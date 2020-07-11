@@ -155,6 +155,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
             <div class="col m2">
               <label for="subscriptionamt">{{__('Subscription') }}*</label>
               <input type="text" class="allow_decimal" onkeyup="return CalculateTotal()" name="subscriptionamt" id="subscriptionamt" required="" value="" />
+              <input type="text" class="allow_decimal hide" readonly="" name="balanceamt" id="balanceamt" value="" />
             </div>
             <div class="col m2">
               <label for="bfamt">{{__('BF') }}*</label>
@@ -172,7 +173,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     </div>
     <div class="modal-footer">
       <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-      <button type="submit" class="btn waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+      <button type="submit" class="btn waves-light submitApproval" >Submit</button>
     </div>
      </form>
 </div>
@@ -326,6 +327,7 @@ function PaySubscription(advanceid){
           $("#no_of_monthsid").text(result.no_of_months);
           $("#member_autoid").val(result.member_id);
           $("#advance_autoid").val(result.advanceid);
+          $("#balanceamt").val(result.balance_amount);
         }
        
         $("#modal-approval").modal('open');
@@ -361,8 +363,19 @@ function PaySubscription(advanceid){
     subscriptionamt = subscriptionamt=='' ? 0 : subscriptionamt;
     bfamt = bfamt=='' ? 0 : bfamt;
     insamt = insamt=='' ? 0 : insamt;
-    totalamt = parseFloat(subscriptionamt) + parseFloat(bfamt) + parseFloat(insamt);
+    totalamt = (parseFloat(subscriptionamt) + parseFloat(bfamt) + parseFloat(insamt)).toFixed(2);
     $("#totalamt").val(totalamt);
   }
+  $("#approvalformValidate").on("submit", function(evt) {
+
+     var totalamt = $("#totalamt").val();
+     var balanceamt = $("#balanceamt").val();
+     if(balanceamt >= totalamt){
+        return true;
+     }else{
+        alert("Please enter lesser amount than balance amount");
+        return false;
+     }
+  });
 </script>
 @endsection
