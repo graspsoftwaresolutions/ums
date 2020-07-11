@@ -96,18 +96,27 @@
                     	@php
                     		$scount = count($advance);
                     		$lastsubsamt = 0;
+                    		$totalAmt = 0;
                     	@endphp
                     	@foreach($advance as $key => $alists)
                     		{{ date('M-Y',strtotime($alists->StatusMonth)) }} {{ $scount-1 != $key ? ',' : '' }} 
                     		@php
                     			if($scount-1 == $key){
                     				$advanceats = CommonHelper::getAdvanceAmount($memberid,$alists->StatusMonth);
-                    				$lastsubsamt = $advanceats->SUBSCRIPTION_AMOUNT+$advanceats->BF_AMOUNT+$advanceats->INSURANCE_AMOUNT;
+                    				if($advanceats==null){
+                    					$advanceone = CommonHelper::getAdvanceNextAmount($memberid,$alists->StatusMonth);
+                    					$lastsubsamt = $advanceone->SUBSCRIPTION_AMOUNT+$advanceone->BF_AMOUNT+$advanceone->INSURANCE_AMOUNT;
+                    				}else{
+                    					$lastsubsamt = $advanceats->SUBSCRIPTION_AMOUNT+$advanceats->BF_AMOUNT+$advanceats->INSURANCE_AMOUNT;
+                    				}
+                    				$dues = CommonHelper::getCurrentDues($memberid);
+                    				$totalAmt = $dues>=0 ? 0 : abs($dues)*$lastsubsamt;
                     			}
                     		@endphp
                     	@endforeach
+                    	
                     </td>
-                     <td style="border : 1px solid #988989;vertical-align: top;">{{ $lastsubsamt }}</td>
+                     <td style="border : 1px solid #988989;vertical-align: top;">{{ $totalAmt }}</td>
                    <!--  <td style="border : 1px solid #988989;">{{ $member->status_name[0] }}</td>	 -->
                 </tr> 
 				@php

@@ -3778,4 +3778,34 @@ class CommonHelper
            // dd($memberid);
         return $amount;
     }
+
+    public static function getAdvanceNextAmount($memberid,$subsmonth){
+        $amount = DB::table('membermonthendstatus as mm')
+            ->select('mm.SUBSCRIPTION_AMOUNT','mm.BF_AMOUNT','mm.INSURANCE_AMOUNT')
+            ->where('mm.MEMBER_CODE', $memberid)
+            ->where('mm.StatusMonth','>' ,$subsmonth)
+           // ->where()
+            ->where(function ($query) {
+                $query->where('mm.TOTAL_MONTHS','=',1)
+                      ->orWhere('mm.TOTAL_MONTHS', '=', 0);
+            })
+            //->where('mm.TOTALMONTHSDUE','<',0)
+            ->orderBy('mm.StatusMonth', 'asc')
+            //->pluck('mm.SUBSCRIPTION_AMOUNT','mm.BF_AMOUNT','mm.INSURANCE_AMOUNT')
+            ->first();
+           // dd($amount);
+           // dd($memberid);
+        return $amount;
+    }
+
+    public static function getCurrentDues($memberid){
+        $dues = DB::table('membermonthendstatus as mm')
+            ->select('mm.TOTALMONTHSDUE')
+            ->where('mm.MEMBER_CODE', $memberid)
+            ->orderBy('mm.StatusMonth', 'desc')
+            ->pluck('mm.TOTALMONTHSDUE')
+            ->first();
+
+        return $dues;
+    }
 }
