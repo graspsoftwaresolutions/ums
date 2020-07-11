@@ -114,7 +114,7 @@
 								<div class="errorTxt23"></div>
 							</div>
 						</div>
-						<div class="col s12 m6 l3 hide">
+						<div class="col s12 m6 l3 ">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
@@ -316,8 +316,8 @@ $("#branch_status_sidebar_a_id").addClass('active');
 		var branch_id = $("#branch_id").val();
 		var member_auto_id = $("#member_auto_id").val();
 		var unionbranch_id = $("#unionbranch_id").val();
-		if(unionbranch_id!="" || company_id!="" || branch_id!=""){
-			var searchfilters = '&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&unionbranch_id='+unionbranch_id;
+		if(unionbranch_id!="" || company_id!="" || branch_id!="" || member_auto_id!=""){
+			var searchfilters = '&company_id='+company_id+'&branch_id='+branch_id+'&member_auto_id='+member_auto_id+'&unionbranch_id='+unionbranch_id+'&member_auto_id='+member_auto_id;
 			
 			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-advance-filter-report') }}?offset=0"+searchfilters,);
