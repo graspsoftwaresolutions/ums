@@ -50,10 +50,10 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0">{{__('IRC Confirmation List') }}</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0"> @if($data['irc_status']=="0"){{ 'IRC Pending List' }}  @else {{ 'IRC Confirmation List' }} @endif</h5>
 										<ol class="breadcrumbs mb-0">
 										<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
-											<li class="breadcrumb-item active"><a href="#">{{__('IRC Confirmation') }}</a>
+											<li class="breadcrumb-item active"><a href="#">@if($data['irc_status']=="0"){{ 'IRC Pending List' }}  @else {{ 'IRC Confirmation List' }} @endif</a>
 											</li>
 											
 										</ol>
