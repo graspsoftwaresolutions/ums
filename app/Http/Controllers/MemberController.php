@@ -1277,7 +1277,7 @@ class MemberController extends CommonController
 	public function UpdateMemberPassword(Request $request){
 		ini_set('memory_limit', -1);
 		ini_set('max_execution_time', '1000');
-		$members = DB::table('membership')->select('id','user_id','new_ic','old_ic','employee_id')->limit(10000)->offset(0)->get();
+		$members = DB::table('membership')->select('id','user_id','new_ic','old_ic','employee_id')->limit(20000)->offset(10000)->get();
 		foreach ($members as $key => $value) {
 			$encpassword = '';
 			if($value->new_ic!=''){
@@ -1384,5 +1384,253 @@ class MemberController extends CommonController
 
 		$redirect_url = app()->getLocale().'/membership';
 		return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
+	}
+
+	public function MemberUpdate(Request $request){
+		$auto_id = $request->input('auto_id');
+		$member_title = $request->input('member_title');
+		$name = $request->input('name');
+		$gender = $request->input('gender');
+		$mobile = $request->input('mobile');
+		$email = $request->input('email');
+		$fm_date = explode("/",$request->input('dob')); 
+		//return $request->input('dob');     						
+		$dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
+		$dob = date('Y-m-d', strtotime($dob1));
+		//return $dob;        	
+		$m_dob = $dob;
+
+		$mont_count = DB::table('temp_membership')->where('member_id', '=', $auto_id)->delete();
+		$mont_count = DB::table('temp_member_nominees')->where('member_id', '=', $auto_id)->delete();
+		$mont_count = DB::table('temp_member_guardian')->where('member_id', '=', $auto_id)->delete();
+
+		$user_data = [
+			'member_id' => $auto_id,
+			'member_title_id' => $member_title,
+			'name' => $name,
+			'gender' => $gender,
+			'mobile' => $mobile,
+			'email' => $email,
+			'dob' => $dob,
+		];
+		DB::table('temp_membership')->insert($user_data);
+
+		$check_nominee_auto_id = $request->input('nominee_auto_id');
+		if( isset($check_nominee_auto_id)){
+			$nominee_count = count($request->input('nominee_auto_id'));
+			for($j =0; $j<$nominee_count; $j++){
+				$nominee = [];
+				$nominee_auto_id = $request->input('nominee_auto_id')[$j];
+				$nominee_name = $request->input('nominee_name_value')[$j];
+				$nominee_age = $request->input('nominee_age_value')[$j];
+				$nominee_dob = $request->input('nominee_dob_value')[$j];
+				$nominee_gender = $request->input('nominee_gender_value')[$j];
+				$nominee_relation = $request->input('nominee_relation_value')[$j];
+				$nominee_nricn = $request->input('nominee_nricn_value')[$j];
+				$nominee_nrico = $request->input('nominee_nrico_value')[$j];
+				$nominee_address_one = $request->input('nominee_addressone_value')[$j];
+				$nominee_address_two = $request->input('nominee_addresstwo_value')[$j];
+				$nominee_address_three = $request->input('nominee_addressthree_value')[$j];
+				$nominee_country = $request->input('nominee_country_value')[$j];
+				$nominee_state = $request->input('nominee_state_value')[$j];
+				$nominee_city = $request->input('nominee_city_value')[$j];
+				$nominee_postalcode = $request->input('nominee_postalcode_value')[$j];
+				$nominee_mobile = $request->input('nominee_mobile_value')[$j];
+				$nominee_phone = $request->input('nominee_phone_value')[$j];
+
+				$nominee_nrico=isset($nominee_nrico) ? $nominee_nrico: '';
+			
+
+				$nominee['member_id'] = $auto_id;
+				$nominee['relation_id'] = $nominee_relation;
+				$nominee['nominee_name'] = $nominee_name;
+				$nominee['country_id'] = $nominee_country;
+				$nominee['state_id'] = $nominee_state;
+				$nominee['postal_code'] = $nominee_postalcode;
+				$nominee['city_id'] = $nominee_city;
+				$nominee['address_one'] = $nominee_address_one;
+				$nominee['address_two'] = $nominee_address_two;
+				$nominee['address_three'] = $nominee_address_three;
+				$nominee['gender'] = $nominee_gender;
+				$nominee['nric_n'] = $nominee_nricn;
+				$nominee['nric_o'] = $nominee_nrico;
+				$nominee['mobile'] = $nominee_mobile;
+				$nominee['phone'] = $nominee_phone;
+				
+				if($nominee_dob!=""){
+					$fmmm_date = explode("/",$nominee_dob);           							
+					$dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+					$dob = date('Y-m-d', strtotime($dob1));
+					$nominee['dob'] =  $dob;
+                }
+                DB::table('temp_member_nominees')->insert($nominee);
+				//$nominee->save();
+			}
+		}
+
+		$g_nric_o=$request->input('nric_o_guardian');
+		$g_nric_o=isset($g_nric_o) ? $g_nric_o: '';
+
+		$guardian['member_id'] = $auto_id;
+		$guardian['guardian_name'] = $request->input('guardian_name');
+		$guardian['gender'] = $request->input('guardian_sex');
+		$guardian['relationship_id'] = $request->input('g_relationship_id');
+		$guardian['nric_n'] = $request->input('nric_n_guardian');
+		$guardian['nric_o'] = $g_nric_o;
+		$guardian['address_one'] = $request->input('guardian_address_one');
+		$guardian['country_id'] = $request->input('guardian_country_id');
+		$guardian['state_id'] = $request->input('guardian_state_id');
+		$guardian['city_id'] = $request->input('guardian_city_id');
+		$guardian['address_two'] = $request->input('guardian_address_two');
+		$guardian['postal_code'] = $request->input('guardian_postal_code');
+		$guardian['address_three'] = $request->input('guardian_address_three');
+		$guardian['mobile'] = $request->input('guardian_mobile');
+		$guardian['phone'] = $request->input('guardian_phone');
+
+		$guardian_dob  = $request->input('gaurdian_dob');
+
+		if($guardian_dob!=""){
+			$fmmm_date = explode("/",$guardian_dob);
+			$dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+			$dob = date('Y-m-d', strtotime($dob1));
+			$guardian['dob'] =  $dob;
+		}
+		DB::table('temp_member_guardian')->insert($guardian);
+
+		$redirect_url = app()->getLocale().'/edit-membership-profile';
+
+		return redirect($redirect_url)->with('message','Member details sent for approval');
+	}
+
+	public function VerifyMemberUpdate(Request $request){
+		//return $request->all();
+		$auto_id = $request->input('auto_id');
+		$member_title = $request->input('member_title');
+		$name = $request->input('name');
+		$gender = $request->input('gender');
+		$mobile = $request->input('mobile');
+		$email = $request->input('email');
+		$m_approval_status = $request->input('m_approval_status');
+		$fm_date = explode("/",$request->input('dob')); 
+		//return $request->input('dob');     						
+		$dob1 = $fm_date[2]."-".$fm_date[1]."-".$fm_date[0];
+		$dob = date('Y-m-d', strtotime($dob1));
+		//return $dob;        	
+		$m_dob = $dob;
+
+		if($m_approval_status =='Confirmation'){
+			//$mont_count = DB::table('temp_membership')->where('member_id', '=', $auto_id)->delete();
+			$mont_count = DB::table('member_nominees')->where('member_id', '=', $auto_id)->delete();
+			$mont_count = DB::table('member_guardian')->where('member_id', '=', $auto_id)->delete();
+
+			$user_data = [
+				'member_title_id' => $member_title,
+				'name' => $name,
+				'gender' => $gender,
+				'mobile' => $mobile,
+				'email' => $email,
+				'dob' => $dob,
+			];
+			DB::table('membership')->where('id', '=', $auto_id)->update($user_data);
+
+			$check_nominee_auto_id = $request->input('nominee_auto_id');
+			if( isset($check_nominee_auto_id)){
+				$nominee_count = count($request->input('nominee_auto_id'));
+				for($j =0; $j<$nominee_count; $j++){
+					$nominee = [];
+					$nominee_auto_id = $request->input('nominee_auto_id')[$j];
+					$nominee_name = $request->input('nominee_name_value')[$j];
+					$nominee_age = $request->input('nominee_age_value')[$j];
+					$nominee_dob = $request->input('nominee_dob_value')[$j];
+					$nominee_gender = $request->input('nominee_gender_value')[$j];
+					$nominee_relation = $request->input('nominee_relation_value')[$j];
+					$nominee_nricn = $request->input('nominee_nricn_value')[$j];
+					$nominee_nrico = $request->input('nominee_nrico_value')[$j];
+					$nominee_address_one = $request->input('nominee_addressone_value')[$j];
+					$nominee_address_two = $request->input('nominee_addresstwo_value')[$j];
+					$nominee_address_three = $request->input('nominee_addressthree_value')[$j];
+					$nominee_country = $request->input('nominee_country_value')[$j];
+					$nominee_state = $request->input('nominee_state_value')[$j];
+					$nominee_city = $request->input('nominee_city_value')[$j];
+					$nominee_postalcode = $request->input('nominee_postalcode_value')[$j];
+					$nominee_mobile = $request->input('nominee_mobile_value')[$j];
+					$nominee_phone = $request->input('nominee_phone_value')[$j];
+
+					$nominee_nrico=isset($nominee_nrico) ? $nominee_nrico: '';
+				
+
+					$nominee['member_id'] = $auto_id;
+					$nominee['relation_id'] = $nominee_relation;
+					$nominee['nominee_name'] = $nominee_name;
+					$nominee['country_id'] = $nominee_country;
+					$nominee['state_id'] = $nominee_state;
+					$nominee['postal_code'] = $nominee_postalcode;
+					$nominee['city_id'] = $nominee_city;
+					$nominee['address_one'] = $nominee_address_one;
+					$nominee['address_two'] = $nominee_address_two;
+					$nominee['address_three'] = $nominee_address_three;
+					$nominee['gender'] = $nominee_gender;
+					$nominee['nric_n'] = $nominee_nricn;
+					$nominee['nric_o'] = $nominee_nrico;
+					$nominee['mobile'] = $nominee_mobile;
+					$nominee['phone'] = $nominee_phone;
+					
+					if($nominee_dob!=""){
+						$fmmm_date = explode("/",$nominee_dob);           							
+						$dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+						$dob = date('Y-m-d', strtotime($dob1));
+						$nominee['dob'] =  $dob;
+	                }
+	                DB::table('member_nominees')->insert($nominee);
+					//$nominee->save();
+				}
+			}
+
+			$g_nric_o=$request->input('nric_o_guardian');
+			$g_nric_o=isset($g_nric_o) ? $g_nric_o: '';
+
+			$guardian['member_id'] = $auto_id;
+			$guardian['guardian_name'] = $request->input('guardian_name');
+			$guardian['gender'] = $request->input('guardian_sex');
+			$guardian['relationship_id'] = $request->input('g_relationship_id');
+			$guardian['nric_n'] = $request->input('nric_n_guardian');
+			$guardian['nric_o'] = $g_nric_o;
+			$guardian['address_one'] = $request->input('guardian_address_one');
+			$guardian['country_id'] = $request->input('guardian_country_id');
+			$guardian['state_id'] = $request->input('guardian_state_id');
+			$guardian['city_id'] = $request->input('guardian_city_id');
+			$guardian['address_two'] = $request->input('guardian_address_two');
+			$guardian['postal_code'] = $request->input('guardian_postal_code');
+			$guardian['address_three'] = $request->input('guardian_address_three');
+			$guardian['mobile'] = $request->input('guardian_mobile');
+			$guardian['phone'] = $request->input('guardian_phone');
+
+			$guardian_dob  = $request->input('gaurdian_dob');
+
+			if($guardian_dob!=""){
+				$fmmm_date = explode("/",$guardian_dob);
+				$dob1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+				$dob = date('Y-m-d', strtotime($dob1));
+				$guardian['dob'] =  $dob;
+			}
+			DB::table('member_guardian')->insert($guardian);
+
+			$redirect_url = app()->getLocale().'/verifymembership';
+
+			$mont_count = DB::table('temp_membership')->where('member_id', '=', $auto_id)->delete();
+			$mont_count = DB::table('temp_member_nominees')->where('member_id', '=', $auto_id)->delete();
+			$mont_count = DB::table('temp_member_guardian')->where('member_id', '=', $auto_id)->delete();
+
+			return redirect($redirect_url)->with('message','Member details approved');
+		}else{
+			$redirect_url = app()->getLocale().'/verifymembership';
+			$mont_up = DB::table('temp_membership')->where('member_id', '=', $auto_id)->update(['updated_by' => 1]);
+
+			return redirect($redirect_url)->with('message','Member details rejected');
+		}
+
+		
+
+		
 	}
 }

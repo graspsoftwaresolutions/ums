@@ -260,6 +260,7 @@
                         </td>
                         <td>
                             <input type="text" name="subscription_amount[]" id="subscription_amount_{{ $slno }}" value="{{ $rows->TOTALSUBCRP_AMOUNT }}" class="subscription_amount allow_decimal" />
+                            <input type="text" name="entrymode[]" id="entrymode_{{ $slno }}" readonly="" value="{{ $rows->ENTRYMODE }}" class="entrymode hide" />
                         </td>
                         <td>
                           <input type="text" name="bf_amount[]" id="bf_amount_{{ $slno }}" value="{{ $rows->TOTALBF_AMOUNT }}" class="bf_amount allow_decimal" />

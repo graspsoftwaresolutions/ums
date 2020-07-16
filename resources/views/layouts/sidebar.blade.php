@@ -67,6 +67,8 @@
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>
             @if($user_role=='union')
+            <li class="bold"><a id="vmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('verify.membership',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('Verify Member Details') }}</span></a>
+            </li>
              <li class="bold"><a id="sal_updatelist_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.list',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation List') }}</span></a>
             </li>
             @endif

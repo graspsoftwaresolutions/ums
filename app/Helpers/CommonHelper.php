@@ -3052,7 +3052,7 @@ class CommonHelper
 
      public static function getMonthendsByJoinDate($memberid,$months,$date){
         $records =  DB::table('membermonthendstatus')
-                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','Id as autoid','TOTAL_MONTHS','TOTALMONTHSPAID')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','Id as autoid','TOTAL_MONTHS','TOTALMONTHSPAID','ENTRYMODE')
                         ->where('MEMBER_CODE', '=' ,$memberid)
                         ->where('StatusMonth', '>' ,$date)
                         ->OrderBy('StatusMonth','asc')
@@ -3063,7 +3063,7 @@ class CommonHelper
 	
      public static function getMonthendsOnJoinDate($memberid,$months,$date){
         $records =  DB::table('membermonthendstatus')
-                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','TOTAL_MONTHS','TOTALMONTHSPAID')
+                        ->select('SUBSCRIPTIONDUE','BFDUE','INSURANCEDUE','TOTALMONTHSDUE','StatusMonth','TOTALSUBCRP_AMOUNT','TOTALBF_AMOUNT','TOTALINSURANCE_AMOUNT','TOTAL_MONTHS','TOTALMONTHSPAID','ENTRYMODE')
                         ->where('MEMBER_CODE', '=' ,$memberid)
                         ->where('StatusMonth', '=' ,$date)
                         ->OrderBy('StatusMonth','asc')
@@ -3703,7 +3703,7 @@ class CommonHelper
 
     public static function getMonthendHistory($memberid,$year){
         return DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
-                                         'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE')
+                                         'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','s.font_color','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE','ms.advance_amt','ms.advance_balamt','ms.advance_totalmonths')
                                          //->leftjoin('membership as m', 'm.id' ,'=','ms.MEMBER_CODE')
                                          ->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
                                          ->where('ms.MEMBER_CODE','=',$memberid)
@@ -3807,5 +3807,62 @@ class CommonHelper
             ->first();
 
         return $dues;
+    }
+
+    public static function getAdvanceAmt($memberid,$statusmonth){
+        $dues = DB::table('advance_payments as ap')
+            ->select('ap.advance_amount')
+            ->where('ap.member_id', $memberid)
+            ->where('ap.from_date', $statusmonth)
+            ->pluck('ap.advance_amount')
+            ->first();
+
+        return $dues;
+    }
+
+    public static function getAdvanceID($memberid,$statusmonth){
+        $dues = DB::table('advance_payments as ap')
+            ->select('ap.id')
+            ->where('ap.member_id', $memberid)
+            ->where('ap.from_date', $statusmonth)
+            ->pluck('ap.id')
+            ->first();
+
+        return $dues;
+    }
+
+    public static function getCurrentAdvanceAmt($advanceid,$memberid,$statusmonth){
+        $dues = DB::table('advance_payments_history as ap')
+             ->select(DB::raw('sum(ap.advance_amount) as amount'))
+           // ->select('ap.advance_amount')
+            ->where('ap.member_id', $memberid)
+            ->where('ap.advance_id', $advanceid)
+            ->where('ap.pay_date','<=' , $statusmonth)
+            ->pluck('amount')
+            ->first();
+
+        return $dues;
+    }
+
+    public static function getCurrentAdvanceCount($advanceid,$memberid,$statusmonth){
+        $dues = DB::table('advance_payments_history as ap')
+             ->select(DB::raw('count(ap.id) as total'))
+           // ->select('ap.advance_amount')
+            ->where('ap.member_id', $memberid)
+            ->where('ap.advance_id', $advanceid)
+            ->where('ap.pay_date','<=' , $statusmonth)
+            ->pluck('total')
+            ->first();
+
+        return $dues;
+    }
+
+    public static function getTempMemberCount($memberid){
+         $temp_count = DB::table('temp_membership as m')->select('m.id')
+                         ->where('m.member_id', $memberid)
+                         ->whereNull('m.updated_by')
+                         ->count();
+
+        return $temp_count;
     }
 }

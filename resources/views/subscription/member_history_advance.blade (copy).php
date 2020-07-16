@@ -128,7 +128,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<th>{{__('Ins.Paid')}}</th>
 													<th>{{__('Month.Paid')}}</th>
 													<th>{{__('LastPaymentDate')}}</th>
-													<th>{{__('Advance') }}<br>{{ '(Tot.Mon.Paid)' }}</th>
+													<th>{{__('PendingAdvance') }}<br>{{ '(Tot.Mon.Paid)' }}</th>
 													<th>{{__('Tot.Mon.Paid')}}</th>
 													<th>{{__('Tot.Mon.Due')}}</th>
 													<th>{{__('Total')}}</th>
@@ -140,6 +140,22 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											</thead>
 											<tbody>
 												@foreach($memberhistory as $history)
+													@php
+														//dd($history);
+														$advanceamts = CommonHelper::getAdvanceAmt($data['member_id'],$history->StatusMonth);
+														if($advanceamts!=''){
+															$advanceamt = $advanceamts;
+															$advanceid = CommonHelper::getAdvanceID($data['member_id'],$history->StatusMonth);
+														}else{
+															if($lastadvance>0){
+																$advanceamt = $lastadvance;
+															}else{
+																$advanceamt = 0;
+															}
+															
+														}
+
+													@endphp
 												<tr style="color:{{$history->font_color}}">
 													<td>{{$slno}}</td>
 													<td>{{ date('M/ Y',strtotime($history->StatusMonth)) }} @if($history->arrear_status==1) <span style="background-color: #5d3fa0;color: #fff;padding: 2px;border-radius: 5%;">Arrear</span>@endif</td>
@@ -148,7 +164,27 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<td>{{ $history->INSURANCE_AMOUNT }}</td>
 													<td>{{ $history->TOTAL_MONTHS }}</td>
 													<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
-													<td>{{ $history->advance_balamt }} @if($history->ENTRYMODE=='AD' && $history->TOTAL_MONTHS==1)({{ $history->advance_totalmonths }}) @endif</td>
+													<td>
+														
+														@if($history->ENTRYMODE=='AD')
+														 @php
+															$Cadvance = CommonHelper::getCurrentAdvanceAmt($advanceid, $data['member_id'], $history->StatusMonth);
+														 @endphp
+														@endif
+
+														@if(isset($Cadvance))
+															@if($Cadvance!='')
+																@php
+																	$Countadvance = CommonHelper::getCurrentAdvanceCount($advanceid, $data['member_id'], $history->StatusMonth);
+																@endphp
+																{{ $advanceamt-$Cadvance }}({{ $Countadvance }})
+															@else
+																{{ $advanceamt }}
+															@endif
+														@else
+															{{ $advanceamt }}
+														@endif
+													</td>
 													<td>{{ $history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->TOTALMONTHSDUE }}</td>
 													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
@@ -160,6 +196,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												</tr> 
 												@php
 													$slno++;
+													$lastadvance = $advanceamt;
 												@endphp
 												@endforeach
 												@if(count($memberhistory)==0)
@@ -185,7 +222,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<th>{{__('Ins.Paid')}}</th>
 													<th>{{__('Month.Paid')}}</th>
 													<th>{{__('LastPaymentDate')}}</th>
-													<th>{{__('Advance')}}<br>{{ '(Tot.Mon.Paid)' }}</th>
+													<th>{{__('Advance')}}</th>
 													<th>{{__('Tot.Mon.Paid')}}</th>
 													<th>{{__('Tot.Mon.Due')}}</th>
 													<th>{{__('Total')}}</th>
@@ -205,7 +242,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<td>{{ $history->INSURANCE_AMOUNT }}</td>
 													<td>{{ $history->TOTAL_MONTHS }}</td>
 													<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
-													<td>{{ $history->advance_balamt }} @if($history->ENTRYMODE=='AD' && $history->TOTAL_MONTHS==1)({{ $history->advance_totalmonths }}) @endif</td>
+													<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
 													<td>{{ $history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->TOTALMONTHSDUE }}</td>
 													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
@@ -236,7 +273,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<div class="card hide">
 							@php
 								$slno=1;
-								
 							@endphp
 							<table id="page-current-history" class="display ">
 								<thead>
@@ -268,7 +304,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 										<td>{{ $history->INSURANCE_AMOUNT }}</td>
 										<td>{{ $history->TOTAL_MONTHS }}</td>
 										<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
-										<td>{{  $history->advance_balamt }}({{ $history->advance_totalmonths }})</td>
+										<td>{{ $history->ENTRYMODE=='AD' ? 1 : '' }}</td>
 										<td>{{ $history->TOTALMONTHSPAID }}</td>
 										<td>{{ $history->TOTALMONTHSDUE }}</td>
 										<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>

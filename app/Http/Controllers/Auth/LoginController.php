@@ -82,7 +82,8 @@ class LoginController extends Controller
             }
             
           } 
+          //return 1;
           // if unsuccessful, then redirect back to the login with the form data
-          return redirect()->back()->withInput($request->only('email', 'remember'));
+          return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['Username password mismatch']);
     }
 }

@@ -103,7 +103,13 @@
 									@php 
 										$member_autoid = $values->mid; 
 									@endphp
-                                    <form class="formValidate" id="wizard2" method="post" enctype="multipart/form-data" action="{{ url(app()->getLocale().'/membership_save') }}">
+                                    <form class="formValidate" id="wizard2" method="post" enctype="multipart/form-data"
+                                    @if($user_role=='member')
+                                        action="{{ url(app()->getLocale().'/m_membership_save') }}"
+                                    @else
+                                        action="{{ url(app()->getLocale().'/membership_save') }}"
+                                    @endif
+                                     >
                                         @csrf 
 										@if($irc_status==1) 
 											@php 
@@ -1337,6 +1343,25 @@
                                                             <div class="errorTxt15"></div>
                                                         </div>
                                                     </div>
+                                                    @endif
+
+                                                    @if($user_role=='member')
+                                                        @php
+                                                            $temp_count = CommonHelper::getTempMemberCount($values->mid);
+                                                        @endphp
+                                                         <div class=" col s12 m6 @if($temp_count!=1) hide @endif">
+                                                           
+                                                            </br>
+                                                            <div class="card-alert-nonclose card orange">
+                                                                <div class="card-content white-text">
+                                                                  <p>WARNING : Updated member details are waiting for approval</p>
+                                                                </div>
+                                                                <button type="button" class="" data-dismiss="" aria-label="Close">
+                                                                  <a class="btn waves-effect waves-light right" style="margin-top: -3px;" target="_blank" href="{{ route('approve.editmembership', [app()->getLocale(),Crypt::encrypt($values->mid)]) }}">{{__('Updated Details') }}</a>
+                                                                </button>
+                                                            </div>
+                                                            
+                                                        </div>
                                                     @endif
                                                      
                                                     <div class="col s12 m6 {{ $hidemember }}">

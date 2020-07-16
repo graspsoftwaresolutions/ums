@@ -199,7 +199,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('member_emailexists','MemberController@checkMemberemailExists');
 	Route::post('member_newicexists','MemberController@checkMemberNewicExists');
 
+	Route::get('membership-verify/{parameter}','MembershipController@VerifyMember')->name('approve.editmembership');
+
+	Route::get('verifymembership','MembershipController@VerifyList')->name('verify.membership');
+
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
+	Route::post('ajax_verifymembers_list/{parameter}','MembershipController@AjaxVerifymembersList')->name('verify.ajax_verifymembers_list');
 	//subscription
 	Route::get('subscription','SubscriptionController@index')->name('subscription.sub_fileupload');
 	Route::get('subscription-submember/{parameter}','SubscriptionController@submember')->name('subscription.submember');
@@ -527,6 +532,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('membership-union-edit/{parameter}','MembershipController@editMember')->name('union.editmembership');
 	Route::post('u_membership_save','MemberController@MemberSave')->name('member.saveumembership');
+	Route::post('m_membership_save','MemberController@MemberUpdate')->name('member.updatemembership');
+	Route::post('v_membership_save','MemberController@VerifyMemberUpdate')->name('verify.updatemembership');
 
 	Route::get('delete_member_file','MembershipController@DeleteFile')->name('file.delete');
 	Route::post('ajax_save_advance','SubscriptionController@saveAdvanceApprove')->name('advance_approve.save');

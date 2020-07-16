@@ -368,8 +368,10 @@ function PaySubscription(advanceid){
   }
   $("#approvalformValidate").on("submit", function(evt) {
 
-     var totalamt = $("#totalamt").val();
-     var balanceamt = $("#balanceamt").val();
+     var totalamt = parseFloat($("#totalamt").val());
+     var balanceamt = parseFloat($("#balanceamt").val());
+     //console.log(balanceamt);
+     //console.log(totalamt);
      if(balanceamt >= totalamt){
         return true;
      }else{
