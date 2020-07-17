@@ -718,7 +718,8 @@
                             $(".clear-approval").html(0);
                             $(".monthly-company-approval-status").attr('data-href', '');
                             $(".monthly-company-sub-status").attr('data-href', '');
-
+                            $("#company_member_status_count_total").html(0);
+                            $("#company_member_status_amount_total").html(0);
                             //$("#bankname-listing").addClass('hide');
                         }
                     }

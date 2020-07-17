@@ -358,6 +358,7 @@ function CalculateTotal(){
   total_pay += parseFloat($('#total_subscription_amount').val());
   total_pay += parseFloat($('#total_bf_amount').val());
   total_pay += parseFloat($('#total_insurance_amount').val());
+  total_pay = total_pay.toFixed(2);
   if(total_pay>arrearamt){
     alert("Total Amount is higher than Entered arear amount, Please enter correct amount");
   }

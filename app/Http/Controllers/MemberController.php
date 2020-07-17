@@ -1173,11 +1173,11 @@ class MemberController extends CommonController
 		$new_ic =  $request->input('new_ic');
         $db_autoid = $request->input('db_autoid');
 		$old_db_autoid = $request->input('old_db_autoid');
-		if(!empty($autoid))
+		if(!empty($db_autoid))
         {
             $usernewic_exists = Membership::where([
                 ['new_ic','=',$new_ic],
-                ['id','!=',$autoid]
+                ['id','!=',$db_autoid]
                 ])->count(); 
         }
         else
