@@ -151,7 +151,7 @@
 <body>
 	<div class="" style="text-align: center">
 		@php 
-			$searchfilters = '&month_year='.$data['month_year'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&unionbranch_id='.$data['unionbranch_id'];
+			$searchfilters = '&from_month_year='.$data['from_month_year'].'&to_month_year='.$data['to_month_year'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&unionbranch_id='.$data['unionbranch_id'];
 		@endphp
 		<table width="100%">
 			<tr>

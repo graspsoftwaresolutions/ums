@@ -337,11 +337,11 @@ class CacheMonthEnd
 	}
 	
 	//statistics report
-	public function getMonthEndCompaniesByDate($datestring){
-		$key = "getMonthEndCompaniesByDate.{$datestring}";
+	public function getMonthEndCompaniesByDate($fromfulldate,$tofulldate){
+		$key = "getMonthEndCompaniesByDate.f.{$fromfulldate}.t.{$tofulldate}";
 		$cacheKey = $this->getCacheKey($key);
 		
-		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($fromfulldate,$tofulldate)
 		{
 			//  $members = DB::table('membermonthendstatus as ms')
 			// 			->select('c.branch_shortcode','c.branch_name','c.id as branchid')
@@ -355,7 +355,7 @@ class CacheMonthEnd
 			// 					->groupBY('ms.BRANCH_CODE')
 			// 					->get();
 
-			$members = DB::select(DB::raw('SELECT c.branch_shortcode,comp.short_code as companycode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE FROM `membermonthendstatus` AS `ms` LEFT JOIN `company_branch` AS `c` ON `c`.`id` = `ms`.`BRANCH_CODE` LEFT JOIN `company` AS `comp` ON `comp`.`id` = `ms`.`BANK_CODE` LEFT JOIN `membership` AS `m` ON `m`.`id` = `ms`.`MEMBER_CODE` WHERE ms.StatusMonth = "'.$datestring.'" AND (`ms`.`STATUS_CODE` = 1 or `ms`.`STATUS_CODE`=2) group by ms.BRANCH_CODE,`ms`.`STATUS_CODE`,m.race_id,m.gender'));
+			$members = DB::select(DB::raw('SELECT c.branch_shortcode,comp.short_code as companycode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE FROM `membermonthendstatus` AS `ms` LEFT JOIN `company_branch` AS `c` ON `c`.`id` = `ms`.`BRANCH_CODE` LEFT JOIN `company` AS `comp` ON `comp`.`id` = `ms`.`BANK_CODE` LEFT JOIN `membership` AS `m` ON `m`.`id` = `ms`.`MEMBER_CODE` WHERE ms.StatusMonth >= "'.$fromfulldate.'" AND ms.StatusMonth <= "'.$tofulldate.'" AND (`ms`.`STATUS_CODE` = 1 or `ms`.`STATUS_CODE`=2) group by ms.BRANCH_CODE,`ms`.`STATUS_CODE`,m.race_id,m.gender'));
 		    	
 			return $members;
 		});
@@ -363,11 +363,11 @@ class CacheMonthEnd
 
 	}
 
-	public function getMonthEndStatisticsFilter($datestring,$union,$company,$branch){
-		$key = "getMonthEndStatisticsFilter.{$datestring}.u.{$union}.c.{$company}.b.{$branch}";
+	public function getMonthEndStatisticsFilter($fromfulldate,$tofulldate,$union,$company,$branch){
+		$key = "getMonthEndStatisticsFilter.f.{$fromfulldate}.t.{$tofulldate}.u.{$union}.c.{$company}.b.{$branch}";
 		$cacheKey = $this->getCacheKey($key);
 		
-		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union,$company,$branch)
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($fromfulldate,$tofulldate,$union,$company,$branch)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
 			 			->select(DB::raw("c.branch_shortcode,comp.short_code as companycode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE"))
@@ -378,7 +378,8 @@ class CacheMonthEnd
 							$query->where('ms.STATUS_CODE', '=', 1)
 								  ->orWhere('ms.STATUS_CODE', '=', 2);
 						})
-						->where('ms.StatusMonth', '=', $datestring);
+						->where('ms.StatusMonth', '>=', $fromfulldate)
+						->where('ms.StatusMonth', '<=', $tofulldate);
 			if($branch!=""){
 				$members = $members->where('ms.BRANCH_CODE','=',$branch);
 			}
@@ -392,6 +393,7 @@ class CacheMonthEnd
 								->groupBY('ms.STATUS_CODE')
 								->groupBY('m.race_id')
 								->groupBY('m.gender')
+								//->groupBY('m.id')
 								//->dump()
 								->get();
 		    	
@@ -400,6 +402,44 @@ class CacheMonthEnd
 		
 
 	}
+
+	// public function getMonthEndStatisticsFilter($datestring,$union,$company,$branch){
+	// 	$key = "getMonthEndStatisticsFilter.{$datestring}.u.{$union}.c.{$company}.b.{$branch}";
+	// 	$cacheKey = $this->getCacheKey($key);
+		
+	// 	return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union,$company,$branch)
+	// 	{
+	// 		 $members = DB::table('membermonthendstatus as ms')
+	// 		 			->select(DB::raw("c.branch_shortcode,comp.short_code as companycode, c.branch_name, c.id as branchid, count(*) as count,`m`.`race_id`,`m`.`gender`,ms.STATUS_CODE"))
+	// 					->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
+	// 					->leftjoin('company_branch as c','c.id','=','ms.BRANCH_CODE')
+	// 					->leftjoin('company as comp','comp.id','=','ms.BANK_CODE')
+	// 					->where(function ($query) {
+	// 						$query->where('ms.STATUS_CODE', '=', 1)
+	// 							  ->orWhere('ms.STATUS_CODE', '=', 2);
+	// 					})
+	// 					->where('ms.StatusMonth', '=', $datestring);
+	// 		if($branch!=""){
+	// 			$members = $members->where('ms.BRANCH_CODE','=',$branch);
+	// 		}
+	// 		if($company!=""){
+	// 			$members = $members->where('ms.BANK_CODE','=',$company);
+	// 		}
+	// 		if($union!=""){
+	// 			$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);
+	// 		}
+	// 		$members = $members->groupBY('ms.BRANCH_CODE')
+	// 							->groupBY('ms.STATUS_CODE')
+	// 							->groupBY('m.race_id')
+	// 							->groupBY('m.gender')
+	// 							//->dump()
+	// 							->get();
+		    	
+	// 		return $members;
+	// 	});
+		
+
+	// }
 
 	public function getMontendcompanyGroup($companies,$datestring){
 		$company_str_List ='';

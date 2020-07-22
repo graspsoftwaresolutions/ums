@@ -1462,7 +1462,7 @@ class CommonHelper
         return $male_count;
     }
 
-    public static function group_all_gender_race_count($total_data,$branchid,$month_year){
+    public static function group_all_gender_race_count($total_data,$branchid,$from_month_year,$to_month_year){
        //dd($total_data);
         $total_count = 0;
         $form_branch = array();

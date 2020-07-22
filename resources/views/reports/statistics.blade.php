@@ -78,15 +78,19 @@
 					@csrf  
 					<div id="hidesearch" class="row">    
 					<div class="row">    
-						<div class="col s12 m6 l3">
-							<label for="month_year">{{__('Month')}}</label>
-							<input id="month_year" type="text" class="validate datepicker-custom" value="{{$data['month_year']}}" name="month_year">
+						<div class="col s12 m6 l2">
+							<label for="from_month_year">{{__('From Month')}}</label>
+							<input id="from_month_year" type="text" class="validate datepicker-custom" value="{{$data['from_month_year']}}" name="from_month_year">
+						</div>
+						<div class="col s12 m6 l2">
+							<label for="to_month_year">{{__('To Month')}}</label>
+							<input id="to_month_year" type="text" class="validate datepicker-custom" value="{{$data['to_month_year']}}" name="to_month_year">
 						</div>
 						@php 
 						if($user_role =='union')
 						{
 						@endphp
-						<div class="col s12 m6 l3">
+						<div class="col s12 m6 l2">
 							<label>{{__('Union Branch Name') }}</label>
 							<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option  value="">{{__('Select Union Branch') }}</option>
@@ -311,14 +315,15 @@ $("#member_statistic_sidebar_a_id").addClass('active');
 		
 		event.preventDefault();
 		$("#search").attr('disabled',true);
-		var month_year = $("#month_year").val();
+		var from_month_year = $("#from_month_year").val();
+		var to_month_year = $("#to_month_year").val();
 		var company_id = $("#company_id").val();
 		var branch_id = $("#branch_id").val();
 		var unionbranch_id = $('#unionbranch_id').val();
 		
 		$('#page-length-option tbody').empty();
-		if(month_year!=""){
-			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&unionbranch_id='+unionbranch_id;
+		if(from_month_year!="" && to_month_year!=""){
+			var searchfilters = '&from_month_year='+from_month_year+'&to_month_year='+to_month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&unionbranch_id='+unionbranch_id;
 			//loader.showLoader();
 			//$("#memberoffset").val("{{$data['data_limit']}}"); 
 			$("#myframe,#myframe_union").contents().find("html").css('opacity',0);

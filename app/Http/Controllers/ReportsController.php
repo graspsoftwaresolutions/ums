@@ -141,7 +141,9 @@ class ReportsController extends Controller
                 }
                 $members = $members->where(DB::raw('month(ms.`Date`)'),'=',date('m'));
                 $members = $members->where(DB::raw('year(ms.`Date`)'),'=',date('Y'));
-                $members = $members->orderBy('m.member_number','asc');
+                
+                $members = $members->orderBy('com.company_name','asc');
+                $members = $members->orderBy('m.name','asc');
             $members = $members->get();
        
         // $members = DB::table('company_branch as c')->select('s.status_name','c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name')
@@ -231,7 +233,8 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
                }
-               $members = $members->orderBy('m.member_number','asc');
+               $members = $members->orderBy('com.company_name','asc');
+               $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
 
@@ -315,7 +318,8 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
                }
-               $members = $members->orderBy('m.member_number','asc');
+               $members = $members->orderBy('com.company_name','asc');
+                $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
 
@@ -1321,7 +1325,8 @@ class ReportsController extends Controller
 		$monthno = date('m');
 		$yearno = date('Y');
         
-		$data['month_year'] = date('M/Y');
+		$data['from_month_year'] = date('M/Y');
+        $data['to_month_year'] = date('M/Y');
 		$data['unionbranch_id'] = '';
 		$data['company'] = '' ;
 		$data['branch_id'] = '';
@@ -1337,9 +1342,10 @@ class ReportsController extends Controller
 		$monthno = date('m');
 		$yearno = date('Y');
 
-        $members = CacheMonthEnd::getMonthEndCompaniesByDate(date('Y-m-01'));
+        $members = CacheMonthEnd::getMonthEndCompaniesByDate(date('Y-m-01'),date('Y-m-01'));
        
-		$data['month_year'] = date('Y-m-01');
+		$data['from_month_year'] = date('Y-m-01');
+        $data['to_month_year'] = date('Y-m-01');
 		$data['unionbranch_id'] = '';
 		$data['company_id'] = '' ;
         $data['branch_id'] = '';
@@ -1353,36 +1359,46 @@ class ReportsController extends Controller
     public function statisticsReportMore($lang,Request $request)
     {
         $offset = $request->input('offset');
-        $month_year = $request->input('month_year');
+        $from_month_year = $request->input('from_month_year');
+        $to_month_year = $request->input('to_month_year');
         $company_id = $request->input('company_id');
         $branch_id = $request->input('branch_id');
         $unionbranch_id = $request->input('unionbranch_id');
         $monthno = '';
         $yearno = '';
-        if($month_year!=""){
-          $fmmm_date = explode("/",$month_year);
-          $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-          $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-          $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        if($from_month_year!="" && $to_month_year!=""){
+          $fmmm_date = explode("/",$from_month_year);
+          $frommonthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $fromyearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          $fromfulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+
+          $too_date = explode("/",$to_month_year);
+          $tomonthno = date('m',strtotime('01-'.$too_date[0].$too_date[1]));
+          $toyearno = date('Y',strtotime('01-'.$too_date[0].$too_date[1]));
+          $tofulldate = date('Y-m-01',strtotime('01-'.$too_date[0].'-'.$too_date[1]));
         }else{
-			$monthno = date('m');
-            $yearno = date('Y');
-            $fulldate = date('Y-m-01');
+			$frommonthno = date('m');
+            $fromyearno = date('Y');
+            $fromfulldate = date('Y-m-01');
+
+            $tomonthno = date('m');
+            $toyearno = date('Y');
+            $tofulldate = date('Y-m-01');
         }
-        $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-        $datefilter = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        //$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
+        //$datefilter = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         
         if($branch_id!="" || $company_id!= '' || $unionbranch_id!= ''){
             
             if($branch_id!=""){
-                $members = CacheMonthEnd::getMonthEndStatisticsFilter($datefilter,'','',$branch_id);
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($fromfulldate,$tofulldate,'','',$branch_id);
                 
             }elseif($company_id!= ''){
-                $members = CacheMonthEnd::getMonthEndStatisticsFilter($datefilter,'',$company_id,'');
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($fromfulldate,$tofulldate,'',$company_id,'');
                 //$members = $members->where('ms.BANK_CODE','=',$company_id);
             }
             elseif($unionbranch_id!= ''){
-                $members = CacheMonthEnd::getMonthEndStatisticsFilter($datefilter,$unionbranch_id,'','');
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($fromfulldate,$tofulldate,$unionbranch_id,'','');
                 //$members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
             }
         }else{
@@ -1399,15 +1415,19 @@ class ReportsController extends Controller
             //         ->groupBY('m.race_id')
             //         ->groupBY('m.gender')
             //         ->get();
-            $members = CacheMonthEnd::getMonthEndCompaniesByDate($datefilter);
+            $members = CacheMonthEnd::getMonthEndCompaniesByDate($fromfulldate,$tofulldate);
+            //dd('hi');
         }
+
+        //dd($members);
        
         $data['member_count'] =   $members;
         
 		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
-		$data['month_year'] = $fulldate;
+		$data['from_month_year'] = $fromfulldate;
+        $data['to_month_year'] = $tofulldate;
 		$data['unionbranch_id'] = $unionbranch_id;
 		$data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
@@ -3718,7 +3738,8 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
                }
-               $members = $members->orderBy('m.member_number','asc');
+                $members = $members->orderBy('com.company_name','asc');
+                $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
 
@@ -3801,7 +3822,8 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
                }
-               $members = $members->orderBy('m.member_number','asc');
+                $members = $members->orderBy('com.company_name','asc');
+                $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
 
