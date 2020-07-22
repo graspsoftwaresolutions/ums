@@ -1416,7 +1416,7 @@ class ReportsController extends Controller
             //         ->groupBY('m.gender')
             //         ->get();
             $members = CacheMonthEnd::getMonthEndCompaniesByDate($fromfulldate,$tofulldate);
-            //dd('hi');
+            //dd($members);
         }
 
         //dd($members);
@@ -1440,37 +1440,48 @@ class ReportsController extends Controller
 
     public function exportPdfStatistics($lang,Request $request){
         $offset = $request->input('offset');
-        $month_year = $request->input('month_year');
+        
+        $from_month_year = $request->input('from_month_year');
+        $to_month_year = $request->input('to_month_year');
+
         $company_id = $request->input('company_id');
         $branch_id = $request->input('branch_id');
         $unionbranch_id = $request->input('unionbranch_id');
         $monthno = '';
         $yearno = '';
         
-        if($month_year!=""){
-         // $fmmm_date = explode("/",$month_year);
-          $monthno = date('m',strtotime($month_year));
-          $yearno = date('Y',strtotime($month_year));
-          $fulldate = date('Y-m-01',strtotime($month_year));
+        if($from_month_year!="" && $to_month_year!=""){
           
+          $fromfulldate = $from_month_year;
+
+          $tofulldate = $to_month_year;
+
+        }else{
+            $frommonthno = date('m');
+            $fromyearno = date('Y');
+            $fromfulldate = date('Y-m-01');
+
+            $tomonthno = date('m');
+            $toyearno = date('Y');
+            $tofulldate = date('Y-m-01');
         }
 
         if($branch_id!="" || $company_id!= '' || $unionbranch_id!= ''){
             
             if($branch_id!=""){
-                $members = CacheMonthEnd::getMonthEndStatisticsFilter($month_year,'','',$branch_id);
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($fromfulldate,$tofulldate,'','',$branch_id);
                 
             }elseif($company_id!= ''){
-                $members = CacheMonthEnd::getMonthEndStatisticsFilter($month_year,'',$company_id,'');
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($fromfulldate,$tofulldate,'',$company_id,'');
                 //$members = $members->where('ms.BANK_CODE','=',$company_id);
             }
             elseif($unionbranch_id!= ''){
-                $members = CacheMonthEnd::getMonthEndStatisticsFilter($month_year,$unionbranch_id,'','');
+                $members = CacheMonthEnd::getMonthEndStatisticsFilter($fromfulldate,$tofulldate,$unionbranch_id,'','');
                 //$members = $members->where('ms.NUBE_BRANCH_CODE','=',$unionbranch_id);
             }
         }else{
            
-            $members = CacheMonthEnd::getMonthEndCompaniesByDate($month_year);
+            $members = CacheMonthEnd::getMonthEndCompaniesByDate($fromfulldate,$tofulldate);
         }
        
         $data['member_count'] =   $members;
@@ -1478,7 +1489,8 @@ class ReportsController extends Controller
 		//$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 		$data['race_view'] = DB::table('race')->where('status','=','1')->get();
         //$data['company_view'] = DB::table('company')->where('status','=','1')->get();  
-		$data['month_year'] = $fulldate;
+		$data['from_month_year'] = $fromfulldate;
+        $data['to_month_year'] = $tofulldate;
 		$data['unionbranch_id'] = $unionbranch_id;
 		$data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
@@ -2607,7 +2619,7 @@ class ReportsController extends Controller
 	public function statisticUnionReportFilter($lang,Request $request)
     {
         $offset = $request->input('offset');
-        $month_year = $request->input('month_year');
+        $month_year = $request->input('from_month_year');
         $company_id = $request->input('company_id');
         $branch_id = $request->input('branch_id');
         $unionbranch_id = $request->input('unionbranch_id');
