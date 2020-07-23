@@ -3865,4 +3865,55 @@ class CommonHelper
 
         return $temp_count;
     }
+
+    public static function getPgmMembers($month_year,$company_id,$branch_id,$unionbranch_id,$status_id){
+        //dd($month_year);
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+          
+          $fulldate = $month_year;
+        }
+         $members = DB::table('mon_sub_member as mm')->select('m.name', 'm.member_number','m.gender','com.company_name','m.doj','m.employee_id',DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic')
+        ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),DB::raw('IF(`m`.`tdf`="Not Applicable","N/A",`m`.`tdf`) as tdf'),'m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `cb`.`branch_shortcode` ) AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'mp.last_paid_date','m.salary','mm.Amount','s.status_name  as status_name')
+               ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+               ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+               ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+               ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+               ->leftjoin('company as com','com.id','=','cb.company_id')
+               ->leftjoin('status as s','s.id','=','mm.StatusId')
+               ->leftjoin('designation as d','m.designation_id','=','d.id')
+               ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
+
+               if($status_id!=''){
+                    $members = $members->where('mm.StatusId','=',$status_id);
+               }else{
+                    $members = $members->where('mm.StatusId','<=',2);
+               }
+              
+                $members = $members->where(DB::raw('ms.`Date`'),'=',$fulldate);
+                if($company_id!=""){
+                    $members = $members->where('mc.CompanyCode','=',$company_id);
+                }
+                if($unionbranch_id!=''){
+                     $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                     $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+                }
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }
+               //  if($member_auto_id!=""){
+               //      $members = $members->where('m.id','=',$member_auto_id);
+               //  }
+               //  if($from_member_no!="" && $to_member_no!=""){
+               //      $members = $members->where('m.member_number','>=',$from_member_no);
+               //      $members = $members->where('m.member_number','<=',$to_member_no);
+               // }
+               //$members = $members->groupBy('com.id');
+               $members = $members->orderBy('com.company_name','asc');
+               $members = $members->orderBy('m.name','asc');
+            $members = $members->get();
+        return $members;
+    }
 }

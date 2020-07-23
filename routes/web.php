@@ -317,6 +317,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	//reports.membersnewactive
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');
 	Route::get('membersnewactive/{parameter}','ReportsController@membersNewActiveReport')->name('reports.membersnewactive');
+
+	Route::get('get-pgm-members-report','ReportsController@membersPgmReport')->name('reports.pgmmembers');
 	
 	Route::get('get-membersstatus-more-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
@@ -329,6 +331,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-members-history','SubscriptionAjaxController@membershistoryMore')->name('subscription.history');
 	
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
+	Route::get('pgmmember_report','ReportsController@PgmMemberReport')->name('reports.pgm');
 	Route::get('reports.resignmembernew','ReportsController@resignNewMemberReport')->name('reports.resignmembernew');
 	Route::get('get-new-resignedmembers-report','ReportsController@membersResignReportMore')->name('get-new-resignedmembers-report');
 	
@@ -443,6 +446,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('export-excel-takaful','ReportsController@exportExcelTakaful')->name('takaful.excel');
 	Route::get('export-excel-members','ReportsController@exportExcelMembers')->name('members.excel');
+
+	Route::get('export-excel-pgmmembers','ReportsController@exportExcelPGMMembers')->name('pgmmembers.excel');
 
 	Route::get('variancemembers-list','SubscriptionController@VarianceMembersList')->name('variation.list');
 
