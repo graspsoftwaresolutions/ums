@@ -2073,14 +2073,14 @@ class CommonHelper
 					->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
 					->leftjoin('membership as m','m.id','=','mm.MemberCode')
 					->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-					->leftjoin('company as c','cb.company_id','=','c.id')
+					->leftjoin('company as c','mc.CompanyCode','=','c.id')
 					->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
 					->where(DB::raw('month(ms.Date)'),'=',$month)
 					->where(DB::raw('year(ms.Date)'),'=',$year);
 		if($type==1){
 			$query = $query->where('cb.union_branch_id','=',$type_id);
 		}else if($type==2){
-			$query = $query->where('cb.company_id','=',$type_id);
+			$query = $query->where('mc.CompanyCode','=',$type_id);
 		}
 		else{
 			$query = $query->where('m.branch_id','=',$type_id);

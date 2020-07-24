@@ -2083,7 +2083,7 @@ class SubscriptionController extends CommonController
                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                 ->leftjoin('membership as m','m.id','=','mm.MemberCode')
                 ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-                ->leftjoin('company as c','cb.company_id','=','c.id')
+                ->leftjoin('company as c','mc.CompanyCode','=','c.id')
                 ->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
                 ->where('ms.Date', '=', $data['month_year_full'])
                 ->where('mm.update_status', '=', 1)
@@ -2138,7 +2138,7 @@ class SubscriptionController extends CommonController
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                         ->leftjoin('membership as m','m.id','=','mm.MemberCode')
                         ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-                        ->leftjoin('company as c','cb.company_id','=','c.id')
+                        ->leftjoin('company as c','mc.CompanyCode','=','c.id')
                         //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
                         ->where('ms.Date', '=', $data['month_year_full'])
                         ->where('mm.update_status', '=', 1)
@@ -2156,7 +2156,7 @@ class SubscriptionController extends CommonController
 			$data['company_view']=[];
 			$data['head_company_view']=[];
 		}
-		
+		//dd(0);
 		//$data['company_list'] = DB::table('company')->where('status','=','1')->get();
 		/* $data['company_view'] = DB::table("membermonthendstatus as mm")->select('mm.BANK_CODE as company_id','c.company_name as company_name')
                                 ->leftjoin('company as c','mm.BANK_CODE','=','c.id')

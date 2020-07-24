@@ -272,12 +272,12 @@
 											<td style="width:10%">{{ $last_paid_count }}</td>
 										</tr> 
 										@php
-											if($current_count-$last_month_count!=0){
+											//if($current_count-$last_month_count!=0){
 												$totalno21 += $current_count;
 												$totalno22 += $last_month_count;
 												$totalno24 += $current_unpaid_count;
 												$totalno25 += $last_paid_count;
-											}
+											//}
 										@endphp
 										
 								@endforeach
@@ -313,13 +313,16 @@
 									$totalno13=0;
 									$totalno14=0;
 									$totalno15=0;
-									//dd($data['head_company_view']);
+									
 								@endphp
 								@foreach($data['head_company_view'] as $company)
 									@php
 										$company_id = $company["id"];
+
 										$company_data = CommonHelper::getMontendcompanyVariation($company['company_list'],$data['month_year_full']);
 										$last_company_data = CommonHelper::getMontendcompanyVariation($company['company_list'],$data['last_month_year']);
+										//print_r($company['company_name']);
+										//dd($last_company_data);
 										$current_count = $company_data->total_members;
 										$last_month_count = $last_company_data->total_members;
 										$last_paid_count = CommonHelper::getGroupLastMonthlyPaidCount($company['company_list'],$data['month_year_full']);
@@ -336,13 +339,13 @@
 										<td style="width:10%">{{ $last_paid_count }}</td>
 									</tr> 
 									@php
-										if($current_count-$last_month_count!=0){
+										//if($current_count-$last_month_count!=0){
 											$totalno11 += $current_count;
 											$totalno12 += $last_month_count;
 											$totalno13 += $current_count-$last_month_count;
 											$totalno14 += $current_unpaid_count;
 											$totalno15 += $last_paid_count;
-										}
+										//}
 										
 									@endphp
 									@endif	
@@ -400,13 +403,13 @@
 											<td style="width:10%">{{ $last_paid_count }}</td>
 										</tr> 
 										@php
-											if($current_count-$last_month_count!=0){
+											//if($current_count-$last_month_count!=0){
 												$totalno1 += $current_count;
 												$totalno2 += $last_month_count;
 												$totalno3 += 0;
 												$totalno4 += $current_unpaid_count;
 												$totalno5 += $last_paid_count;
-											}
+											//}
 											
 										@endphp
 								@endforeach
