@@ -9,7 +9,7 @@
 	$pgm_members = CommonHelper::getPgmMembers($data['month_year'],$member->companyid,$data['branch_id'],$data['unionbranch_id'],$data['status_id']);
 	$totalmembers += count($pgm_members);
 @endphp
-@if(count($pgm_members)>0)
+
 <table id="page-length-option" class="display table2excel" width="100%">
 		<thead>
 			<tr class="">
@@ -114,6 +114,6 @@
 	</table>
 	
 	<div class="pagebreak"> </div>
-	@endif
+	
 @endforeach
 <p>Oveall Total Member's Count : {{ $totalmembers }}</p>

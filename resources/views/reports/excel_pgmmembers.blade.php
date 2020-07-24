@@ -178,7 +178,7 @@
 	$totalmembers += count($pgm_members);
 	
 @endphp
-@if(count($pgm_members)>0)
+
 <table id="page-length-option{{$totalmembers}}" class="display page-length-option table2excel" width="100%">
 		<thead>
 			<tr class="">
@@ -281,7 +281,7 @@
 		
 	</table>
 	
-	@endif
+
 @endforeach
 <p>Oveall Total Member's Count : {{ $totalmembers }}</p>
 

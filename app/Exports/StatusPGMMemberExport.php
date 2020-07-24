@@ -68,7 +68,7 @@ class StatusPGMMemberExport implements FromView
                ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
                ->leftjoin('membership as m','mm.MemberCode','=','m.id')
                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
-               ->leftjoin('company as com','com.id','=','cb.company_id');
+               ->leftjoin('company as com','com.id','=','mc.CompanyCode');
                //->leftjoin('status as s','s.id','=','mm.StatusId')
                //->leftjoin('designation as d','m.designation_id','=','d.id')
               // ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
