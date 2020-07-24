@@ -158,25 +158,21 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="2" rowspan="1" style="text-align:right">
 				<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
 				<td colspan="3" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					
+					<p>&nbsp;</p>
+					<p style="margin-top: 40px;">
+						NUBE RETIREMENT INSURANCE SCHEME
+					</p>
 				</td>
-				<td colspan="2" rowspan="2">	
+				<td colspan="1" rowspan="1">	
 					
 				</td>
 			</tr>
-			<tr class="">
-				
-				<td colspan="3" style="text-align:center;padding:10px;font-weight: bold;">
-				
-					<span style="margin-top:0;">NUBE RETIREMENT INSURANCE SCHEME</span>
-				</td>
-				
-			</tr>
+			
 			<tr class="" style="font-weight: bold;">
 			
 				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
@@ -188,9 +184,10 @@
 					@endif
 									</td>
 				<td colspan="3" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
-				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
 					@if($data['unionbranch_id']!='')
 						<p>
 						Branch Code : {{ $data['unionbranch_id'] }}
@@ -199,12 +196,12 @@
 									</td>
 			</tr>
 			<tr class="">
-				<th style="border : 1px solid #988989;">SNO</th>
-				<th style="border : 1px solid #988989;">BANK</th>
-				<th style="border : 1px solid #988989;">MSHIP</th>
-				<th style="border : 1px solid #988989;">NRIC</th>
-				<th style="border : 1px solid #988989;">NAME</th>
-				<th style="border : 1px solid #988989;">INSURANCE AMOUNT(RM)</th>
+				<th style="border : 1px solid #988989;width: 8px;">SNO</th>
+				<th style="border : 1px solid #988989;width: 16px;">BANK</th>
+				<th style="border : 1px solid #988989;width: 20px;">MSHIP</th>
+				<th style="border : 1px solid #988989;width: 30px;">NRIC</th>
+				<th style="border : 1px solid #988989;width: 70px;">NAME</th>
+				<th style="border : 1px solid #988989;width: 25px;">INSURANCE AMOUNT(RM)</th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">

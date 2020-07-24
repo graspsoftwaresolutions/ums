@@ -160,6 +160,8 @@ class CacheMonthEnd
 					})
 					//->where('mm.approval_status', '=', 1)
 					->where('mm.update_status', '=', 1)
+					->orderBy('com.company_name','asc')
+					->orderBy('m.name','asc')
 					->get();
 
 			// $members_view = DB::table($this->membermonthendstatus_table.' as ms')
@@ -236,7 +238,8 @@ class CacheMonthEnd
 				$members_view = $members_view->where('m.id','=',$memberid);
 			}
 				
-			$members_view = $members_view->get();
+			$members_view = $members_view->orderBy('com.company_name','asc')
+					->orderBy('m.name','asc')->get();
 		    	
 			return $members_view;
 		});
@@ -269,7 +272,8 @@ class CacheMonthEnd
 							  ->orWhere('mm.StatusId', '=', 2);
 					})
 					//->where('mm.approval_status', '=', 1)
-					->where('mm.update_status', '=', 1)
+					->where('mm.update_status', '=', 1)->orderBy('com.company_name','asc')
+					->orderBy('m.name','asc')
 					->get();
 			// $members_view = DB::table($this->membermonthendstatus_table.' as ms')
 			// 	         ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`INSURANCE_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
@@ -302,6 +306,7 @@ class CacheMonthEnd
 								  ->orWhere('ms.STATUS_CODE', '=', 2);
 						})
 						->groupBY('ms.BANK_CODE')
+						->orderBy('com.company_name','asc')
 						//->dump()
 						->get();
 		    	
@@ -328,6 +333,7 @@ class CacheMonthEnd
 								  ->orWhere('ms.STATUS_CODE', '=', 2);
 						})
 						->groupBY('ms.BANK_CODE')
+						->orderBy('com.company_name','asc')
 						//->dump()
 						->get();
 		    	

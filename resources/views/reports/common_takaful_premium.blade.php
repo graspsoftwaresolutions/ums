@@ -16,7 +16,7 @@
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
-				<td colspan="2" rowspan="2">	
+				<td colspan="1" rowspan="2">	
 					</br>
 				</td>
 			</tr>
@@ -40,7 +40,7 @@
 				<td colspan="3" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
-				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
 					
 					<!-- @if($data['unionbranch_id']!='')
 						<br>

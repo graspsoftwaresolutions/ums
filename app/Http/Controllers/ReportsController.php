@@ -2314,7 +2314,8 @@ class ReportsController extends Controller
                   $members = $members->where('m.id','=',$member_auto_id);
               }
               
-          $members = $members->get();
+          $members = $members->orderBy('com.company_name','asc')
+                    ->orderBy('m.name','asc')->get();
         }else{
             $members = CacheMonthEnd::getPremiumMonthEndByDate(date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1])));
         }
