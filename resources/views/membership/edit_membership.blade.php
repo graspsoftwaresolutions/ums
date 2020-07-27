@@ -2796,6 +2796,20 @@
 	$(document).on('submit','form#fee_new_form',function(){
 		$("#new_fee_id").val("");
 	});
+    @if($check_entry==1)
+        $('#doj').change(function(){
+           var doj = $('#doj').val();
+           var auto_id = $('#auto_id').val();
+           $.ajax({
+                type:"GET",
+                dataType:"json",
+                url:"{{URL::to('/check-member-date') }}?auto_id="+auto_id+"&doj="+doj,
+                success:function(res){
+                  
+                }
+            });
+        });
+    @else
 	$('#resign_date,#doj').change(function(){
 
 	   var resign_date = $('#resign_date').val();
@@ -2828,6 +2842,7 @@
 	   }
 		
 	});
+    @endif
 	$('#resign_reason').change(function(){
 		getBfAmount();
 	});

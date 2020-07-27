@@ -3916,4 +3916,24 @@ class CommonHelper
             $members = $members->get();
         return $members;
     }
+
+    public static function getSubscriptionNewMembers($month_year){
+        $members_qry = DB::select(DB::raw('select count(m.id) as count,sum(m.Amount) as amount from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where `sm`.`Date` = DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$month_year.'"'));
+        //$members_count = $members_qry[0]->count;
+        return $members_qry;
+    }
+
+    public static function getSubscriptionStatusMembers($month_year,$status_id){
+        $members_qry = DB::select(DB::raw('select count(m.id) as count,sum(m.Amount) as amount from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.StatusId="'.$status_id.'" AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$month_year.'"'));
+        //$members_count = $members_qry[0]->count;
+        return $members_qry;
+    }
+
+    public static function getResignMembersCount($month_year){
+        $res = DB::table('resignation')->where(DB::raw('DATE_FORMAT(resignation_date, "%Y-%m-01")'),'=',$month_year)
+        //->pluck('designation_name')
+        ->count();
+        
+        return $res;
+    }
 }

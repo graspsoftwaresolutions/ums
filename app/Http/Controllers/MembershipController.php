@@ -3267,6 +3267,24 @@ class MembershipController extends Controller
         return view('membership.approve_membership')->with('data',$data); 
 
     }
+
+    public function CheckMemberDate(Request $request)
+    {
+         $doj_one = $request->input('doj');
+         $member_id = $request->input('auto_id');
+         $doj = explode("/",$doj_one);
+         $doj_month = date('Y-m-01', strtotime($doj[2]."-".$doj[1]."-".$doj[0]));
+
+         $membercount = DB::table('membership')->where(DB::raw('month(doj)'),'=',$doj[1])->where(DB::raw('year(doj)'),'=',$doj[2])->where('id','=',$member_id)->count();
+        
+         if($membercount==1){
+            $data = ['status' => 1];
+         }else{
+            $membercount = DB::table('membermonthendstatus')->where('StatusMonth','=',$doj_month)->where('TOTAL_MONTHS','=',1)->where('id','=',$member_id)->count();
+            $data = ['status' => 0,'message' => ''];
+         }
+         echo json_encode($data);
+    }
 }
 
 

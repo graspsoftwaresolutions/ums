@@ -458,7 +458,7 @@ $("#addarrear_formValidate").on("submit", function(evt) {
 function AddNewHistory(){
   var totalno = parseInt($("#totalno").val());
   var history = '<tr><td> <input type="text" name="month_auto_id[]" id="month_auto_id_'+totalno+'" class="hide" value=""/><input type="text" name="entry_date[]" id="entry_date_'+totalno+'" value="" readonly class="datepicker-custom entry_date valid" aria-invalid="false"><input id="total_months" type="text" class="validate hide" readonly="" value="0" name="total_months[]"/></td>';
-  history += '<td><input type="text" name="subscription_amount[]" id="subscription_amount_'+totalno+'" value="" class="subscription_amount allow_decimal"></td>';
+  history += '<td><input type="text" name="subscription_amount[]" id="subscription_amount_'+totalno+'" value="" class="subscription_amount allow_decimal"><input type="text" name="entrymode[]" id="entrymode_'+totalno+'" readonly="" value="S" class="entrymode hide" /></td>';
   history += '<td><input type="text" name="bf_amount[]" id="bf_amount_6" value="" class="bf_amount allow_decimal valid" aria-invalid="false"></td>';
   history += '<td><input type="text" name="insurance_amount[]" id="insurance_amount_'+totalno+'" value="" class="insurance_amount allow_decimal"></td></tr>'
   $("#member_history").append(history);

@@ -26,7 +26,7 @@
 			<tr class="" style="font-weight: bold;">
 				<td></td>
 				<td colspan="{{ (count($data['race_view'])*4)+6 }}" align="center" style="text-align:center;vertical-align:top;">
-					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
+					{{ date('01 M Y',strtotime($data['from_month_year'])) }} - {{ date('t M Y',strtotime($data['to_month_year'])) }}
 					</br>
 				</td>
 				<td colspan="1"></td>
@@ -73,7 +73,7 @@
 			$total_male_count = 0;
 			$total_female_count = 0; 
 			$total_grandtotal = 0;
-			$month_year = $data['month_year'];
+			$month_year = $data['from_month_year'];
 			$uniques = array();
 			foreach ($data['member_count'] as $obj) {
 			    $uniques[$obj->branchid] = $obj;
@@ -91,7 +91,7 @@
 					@endphp
 				</td>
 			    @php
-					$month_year = $data['month_year'];
+					$month_year = $data['from_month_year'];
 					$subtotal1 = 0;
 					$subtotal2 = 0;
 					$subtotaldefaulter2 = 0;

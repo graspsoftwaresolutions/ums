@@ -319,6 +319,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membersnewactive/{parameter}','ReportsController@membersNewActiveReport')->name('reports.membersnewactive');
 
 	Route::get('get-pgm-members-report','ReportsController@membersPgmReport')->name('reports.pgmmembers');
+
+	Route::get('get-monthly-summary-report','ReportsController@monthlySummaryReport')->name('summary.monthly');
 	
 	Route::get('get-membersstatus-more-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
@@ -332,6 +334,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
 	Route::get('pgmmember_report','ReportsController@PgmMemberReport')->name('reports.pgm');
+	Route::get('summary_report','ReportsController@SummaryReport')->name('reports.summary');
+
+
 	Route::get('reports.resignmembernew','ReportsController@resignNewMemberReport')->name('reports.resignmembernew');
 	Route::get('get-new-resignedmembers-report','ReportsController@membersResignReportMore')->name('get-new-resignedmembers-report');
 	
@@ -576,6 +581,8 @@ Route::get('get-age','CommonController@getAge');
 Route::get('get-serviceyear','MembershipController@ServiceYear');
 Route::get('get-fee-options','CommonController@getFeesList');
 Route::get('get-bf-amount','MembershipController@getBFAmount');
+
+Route::get('check-member-date','MembershipController@CheckMemberDate');
 
 // commom member functions
 Route::post('add-nominee','MemberController@addNominee');

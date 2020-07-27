@@ -608,14 +608,14 @@ class CacheMonthEnd
 	// 	});
 	// }
 	
-	public function getMonthEndUnionByDate($datestring){
-		$key = "getMonthEndUnionByDate.{$datestring}";
+	public function getMonthEndUnionByDate($fromfulldate,$tofulldate){
+		$key = "getMonthEndUnionByDate.f.{$fromfulldate}.t.{$tofulldate}";
 		$cacheKey = $this->getCacheKey($key);
 		
-		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring)
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($fromfulldate,$tofulldate)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
-						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid',DB::raw("count(*) as count"),'m.race_id','m.gender','ms.STATUS_CODE')
+						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid',DB::raw("count(DISTINCT m.id) as count"),'m.race_id','m.gender','ms.STATUS_CODE')
 						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						//->leftjoin('company_branch as cb','c.id','=','ms.BRANCH_CODE')
 						->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
@@ -623,32 +623,35 @@ class CacheMonthEnd
 							$query->where('ms.STATUS_CODE', '=', 1)
 								  ->orWhere('ms.STATUS_CODE', '=', 2);
 						})
-						->where('ms.StatusMonth', '=', $datestring)
+						->where('ms.StatusMonth', '>=', $fromfulldate)
+						->where('ms.StatusMonth', '<=', $tofulldate)
 								->groupBY('ms.NUBE_BRANCH_CODE')
 								->groupBY('ms.STATUS_CODE')
 								->groupBY('m.race_id')
 								->groupBY('m.gender')
+								//->dump()
 								->get();
 		    	
 			return $members;
 		});
 	}
 	
-	public function getMonthEndUnionStatisticsFilter($datestring,$union){
-		$key = "getMonthEndUnionStatisticsFilter.{$datestring}.u.{$union}";
+	public function getMonthEndUnionStatisticsFilter($fromfulldate,$tofulldate,$union){
+		$key = "getMonthEndUnionStatisticsFilter.f.{$fromfulldate}.t.{$tofulldate}.u.{$union}";
 		$cacheKey = $this->getCacheKey($key);
 		
-		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($datestring,$union)
+		return Cache::remember($cacheKey,Carbon::now()->addMinutes(5), function() use($fromfulldate,$tofulldate,$union)
 		{
 			 $members = DB::table('membermonthendstatus as ms')
-						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid',DB::raw("count(*) as count"),'m.race_id','m.gender','ms.STATUS_CODE')
+						->select('u.union_branch as branch_name','ms.NUBE_BRANCH_CODE as branchid',DB::raw("count(DISTINCT m.id) as count"),'m.race_id','m.gender','ms.STATUS_CODE')
 						->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
 						->leftjoin('union_branch as u','u.id','=','ms.NUBE_BRANCH_CODE')
 						->where(function ($query) {
 							$query->where('ms.STATUS_CODE', '=', 1)
 								  ->orWhere('ms.STATUS_CODE', '=', 2);
 						})
-						->where('ms.StatusMonth', '=', $datestring);
+						->where('ms.StatusMonth', '>=', $fromfulldate)
+						->where('ms.StatusMonth', '<=', $tofulldate);
 			
 			if($union!=""){
 				$members = $members->where('ms.NUBE_BRANCH_CODE','=',$union);

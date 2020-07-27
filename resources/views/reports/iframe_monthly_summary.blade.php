@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<script src="{{ asset('public/assets/js/jquery-1.12.4.min.js') }}" type="text/javascript"></script>
 	<link href="{{ asset('public/assets/material-font.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vendors.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/flag-icon.min.css') }}">
 	<!-- <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/vertical-modern-menu.css') }}"> -->
-	<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}">
+	 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/materialize.css') }}"> 
+	<title>{{$data['month_year']}}</title>
 	<style>
 		/* Styles go here */
 		
@@ -28,7 +30,7 @@
 		  position: fixed;
 		  bottom: 0;
 		  width: 100%;
-		  border-top: 1px solid black; /* for demo */
+		  //border-top: 1px solid black; /* for demo */
 		  background: #fff; /* for demo */
 		  color:#000;
 		}
@@ -63,11 +65,6 @@
 			.export-button{
 				display:none !important;
 			}
-
-			.page-header,.page-table-header-space1 {
-			  background: #fff; /* for demo */
-			  color:#000;
-			}
 			.page-header, .page-header-space {
 			  height: 70px;
 			  z-index:999;
@@ -93,33 +90,39 @@
 			    color: rgba(0, 0, 0, .87);
 			    font-size: 12px;
 			}
-
+			.nric_no{
+				width:10% !important;
+			}
 			
+			.report-address{
+				font-weight:bold;
+				font-size:14px;
+			}
 			
 		}
 		@media not print {
+			table {
+			    display: table;
+			    width: 100%;
+			    border-spacing: 0;
+			    border-collapse: none;
+			}
 			.page-table-header-space {
 			  width: 100%;
 			  position: fixed;
 			  top:101px;
-			  z-index:999;
-                background: #343d9f; /* for demo */
-				  color:#fff;
-			}
-			
-			.page-table-header-space1 {
-			  width: 100%;
-			  position: fixed;
-			  top:160px;
+			  margin-bottom:20px;
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
-              margin-top: -26px;
-              
+			  font-size: 14px;
 			}
 			.tbody-area{
-				top:182px;
+				top:140px;
 				position: absolute;
+			}
+			.nric_no{
+				width:150px !important;
 			}
 		}
 		td, th {
@@ -127,7 +130,7 @@
 			padding: 7px 5px;
 			text-align: left;
 			vertical-align: middle;
-			border-radius: 2px;
+			//border-radius: 2px;
 		}
 		.btn, .btn-large, .btn-small, .btn-flat {
 			line-height: 36px;
@@ -143,8 +146,6 @@
 		.tbody-area{
 			color:#000;
 		}
-		
-		
 	</style>
 	<script type="text/javascript">
 		
@@ -154,18 +155,18 @@
 <body>
 	<div class="" style="text-align: center">
 		<table width="100%">
-			@php 
-				$searchfilters = '&from_month_year='.$data['from_month_year'].'&to_month_year='.$data['to_month_year'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&unionbranch_id='.$data['unionbranch_id'];
-			@endphp
 			<tr>
+				@php 
+					$searchfilters = '&month_year='.$data['month_year'].'&company_id='.$data['company_id'].'&branch_id='.$data['branch_id'].'&unionbranch_id='.$data['unionbranch_id'];
+				@endphp
 				<td width="20%"></td>
 				<td width="10%"></td>
 				<td width="50%" style="text-align:center;">
 					
 				</td>
 				<td width="20%">	
-					<a href="#" class="export-button btn btn-sm exportToExcel" style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="{{ url(app()->getLocale().'/export-pdf-statistics-union?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="#" class="export-button btn btn-sm exportToExcel hide" style="background:#227849;"><i class="material-icons">explicit</i></a>
+					<a href="{{ url(app()->getLocale().'/export-pdf-branch-status?offset=0'.$searchfilters) }}" class="export-button btn btn-sm hide" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>
@@ -174,25 +175,27 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-    @include('reports.common_statistics_union')
-  	
-	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
+    @include('reports.common_monthly_summary')
+	
+	<input type="text" name="memberoffset" id="memberoffset" class="hide" value=""></input>
 </body>
 <script>
-	var excelfilenames="Union Statistics Report";
+	var excelfilenames="Monthly Summary Report";
 </script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-<!-- <script src="{{ asset('public/assets/js/xlsx.core.min.js') }}" type="text/javascript"></script> -->
-
+<script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jspdf.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/jspdf_plugin_autotable.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/es6-promise.auto.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('public/assets/js/html2canvas.min.js') }}" type="text/javascript"></script>
 <!--<![endif]-->
+<script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
-	$(document).ready( function() { 
-		$("html").css('opacity',1);
-    });
 	$(".exportToExcel").click(function(e){
 		$("#page-length-option").table2excel();
 	});
+
 </script>
 
 </html>
