@@ -20,7 +20,7 @@
 				
 				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }} MONTH SUMMARY REPORT</span>
+					<span style="margin-top:0;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }} SUMMARY REPORT</span>
 				</td>
 				
 			</tr>
@@ -35,8 +35,8 @@
 						<thead>
 							<tr class="">
 								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>
-								<th style="border : 1px solid #988989;">{{__('COUNT')}}</th>
-				                <th style="border : 1px solid #988989;">{{__('AMOUNT')}}</th>
+								<th style="border : 1px solid #988989;text-align: center;" width="7%">{{__('COUNT')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="7%">{{__('AMOUNT')}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -54,34 +54,39 @@
 								//dd($newmembers);
 							@endphp
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">Total no of new members</td>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ $newmembers->count }}</th>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ round($newmembers->amount,2) }}</th>
+								<td style="border : 1px solid #988989;font-weight:bold;">New Members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers->count }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ number_format(round($newmembers->amount,2),2,".","") }}</th>
 							</tr>
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">Total no of active members</td>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ $activemembers->count }}</th>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ round($activemembers->amount,2) }}</th>
+								<td style="border : 1px solid #988989;font-weight:bold;">Resigned Members From NUBE HQ</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resigncount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">--</th>
 							</tr>
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">Total no of defaulter members</td>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ $defaultermembers->count }}</th>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ round($defaultermembers->amount,2) }}</th>
+								<td style="border : 1px solid #988989;font-weight:bold;">Active Members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $activemembers->count }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ number_format(round($activemembers->amount,2),2,".","") }}</th>
 							</tr>
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">Total no of struckoff members</td>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ $struckoffmembers->count }}</th>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ round($struckoffmembers->amount,2) }}</th>
+								<td style="border : 1px solid #988989;font-weight:bold;">Defaulter Members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaultermembers->count }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ number_format(round($defaultermembers->amount,2),2,".","") }}</th>
 							</tr>
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">Total no of resigned members</td>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ $resignedmembers->count }}</th>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ round($resignedmembers->amount,2) }}</th>
+								<td style="border : 1px solid #988989;font-weight:bold;">Struckoff Members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoffmembers->count }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ number_format(round($struckoffmembers->amount,2),2,".","") }}</th>
 							</tr>
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">Total no of members</td>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ $totalcount }}</th>
-								<th style="border : 1px solid #988989;font-weight:bold;">{{ round($totalamount,2) }}</th>
+								<td style="border : 1px solid #988989;font-weight:bold;">Resigned Members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resignedmembers->count }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ number_format(round($resignedmembers->amount,2),2,".","") }}</th>
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Total Members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totalcount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ number_format(round($totalamount,2),2,".","") }}</th>
 							</tr>
 						</tbody>
 						
@@ -97,4 +102,4 @@
 		</tbody>
 		
 	</table>
-	<p style="margin-left: 10px;font-weight:bold;">Total no of resigned members in {{ strtoupper(date('M Y',strtotime($data['month_year']))) }} : {{ $resigncount }}</p>
+	

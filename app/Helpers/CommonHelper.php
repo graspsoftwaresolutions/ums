@@ -3930,7 +3930,7 @@ class CommonHelper
     }
 
     public static function getResignMembersCount($month_year){
-        $res = DB::table('resignation')->where(DB::raw('DATE_FORMAT(resignation_date, "%Y-%m-01")'),'=',$month_year)
+        $res = DB::table('resignation')->where(DB::raw('DATE_FORMAT(voucher_date, "%Y-%m-01")'),'=',$month_year)
         //->pluck('designation_name')
         ->count();
         
