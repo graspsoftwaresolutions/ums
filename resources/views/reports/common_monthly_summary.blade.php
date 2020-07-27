@@ -30,8 +30,8 @@
 		</thead>
 		<tbody class="" width="100%">
 			<tr>
-				<td colspan="10">
-					<table>
+				<td colspan="10" style="">
+					<table style="width: 90% !important;margin: 0 5%;">
 						<thead>
 							<tr class="">
 								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>

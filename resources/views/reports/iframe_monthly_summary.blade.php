@@ -53,15 +53,14 @@
 		
 		@media print {
 			@page {
-				size: landscape; 
-				margin: 3mm;
+				margin: 1cm;
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body {margin: 1cm 1.5cm;}
 			.export-button{
 				display:none !important;
 			}
