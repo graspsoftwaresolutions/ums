@@ -97,4 +97,4 @@
 		</tbody>
 		
 	</table>
-	<p style="margin-left: 10px;font-weight:bold;">Total no of resigned members {{ strtoupper(date('M Y',strtotime($data['month_year']))) }} month : {{ $resigncount }}</p>
+	<p style="margin-left: 10px;font-weight:bold;">Total no of resigned members in {{ strtoupper(date('M Y',strtotime($data['month_year']))) }} : {{ $resigncount }}</p>
