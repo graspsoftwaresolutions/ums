@@ -381,7 +381,19 @@ class MemberController extends CommonController
 			$fmmm_date = explode("/",$request->input('doj'));           							
 			$doj1 = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
 			$doj = date('Y-m-d', strtotime($doj1));
-			$member['doj'] = $doj;
+
+			if($auto_id!=''){
+				$doj_change = $request->input('doj_change');
+				if($doj_change==1){
+					//$member['doj'] = $doj;
+					$member['temp_doj'] = $doj;
+				}else{
+					$member['doj'] = $doj;
+				}
+				
+			}else{
+				$member['doj'] = $doj;
+			}
 			
 			$member['old_ic'] = $request->input('old_ic');
 			$member['new_ic'] = $request->input('new_ic');
@@ -662,7 +674,8 @@ class MemberController extends CommonController
 								})       
 							->get();
 				$update_history = 0;
-				if(count($feedata)==2 && $memberdata->is_request_approved==1 && $memberdata->status_id<=2){
+				$doj_change = $request->input('doj_change');
+				if(count($feedata)==2 && $memberdata->is_request_approved==1 && $memberdata->status_id<=2 && $doj_change==0){
 					
 					//return 1;
 					if($memberdata->salary>0){

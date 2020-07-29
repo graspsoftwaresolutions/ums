@@ -2633,8 +2633,10 @@ class CommonHelper
     }
 
     public static function getTotalInsCount($memberid){
-        $countrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
-                        ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->count();
+        $countrecord =  DB::table('membermonthendstatus as ms')->select(DB::raw('sum(ms.TOTAL_MONTHS) as count'))->where('ms.MEMBER_CODE', '=' ,$memberid)
+                        ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->pluck('count')->first();
+        // $countrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
+        //                 ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->count();
         return $countrecord;
 	}
 	

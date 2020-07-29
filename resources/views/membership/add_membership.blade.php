@@ -343,6 +343,7 @@
 																
 																<div class="input-field col s12 m6">
 																	<input type="text" class="datepicker" id="doj" value="{{ old('doj') }}" name="doj" data-error=".errorTxt18">
+																	<input type="text" class="hide" id="doj_change" value="0" name="doj_change"/>
 																	<label for="doj" class="force-active">{{__('Date Joined') }}*</label>
 																	<div class="errorTxt18"></div>
 																</div>

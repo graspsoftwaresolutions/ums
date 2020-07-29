@@ -1229,6 +1229,7 @@
                                                     
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <input type="text" class="datepicker" id="doj" value="{{ date('d/m/Y',strtotime($values->doj)) }}" name="doj">
+                                                        <input type="text" class="hide" id="doj_change" value="0" name="doj_change"/>
                                                         <label for="doj" class="force-active">Date Joined</label>
                                                         <div class="errorTxt"></div>
                                                     </div>
@@ -2805,7 +2806,11 @@
                 dataType:"json",
                 url:"{{URL::to('/check-member-date') }}?auto_id="+auto_id+"&doj="+doj,
                 success:function(res){
-                  
+                  //console.log(res);
+                  if(res.status==0){
+                    $('#doj_change').val(1);
+                    alert(res.message);
+                  }
                 }
             });
         });

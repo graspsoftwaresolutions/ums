@@ -3280,10 +3280,51 @@ class MembershipController extends Controller
          if($membercount==1){
             $data = ['status' => 1];
          }else{
-            $membercount = DB::table('membermonthendstatus')->where('StatusMonth','=',$doj_month)->where('TOTAL_MONTHS','=',1)->where('id','=',$member_id)->count();
-            $data = ['status' => 0,'message' => ''];
+            $olddoj_month = DB::table('membership')->select(DB::raw("DATE_FORMAT(doj,'%Y-%m-01') as olddoj_month"))->where('id','=',$member_id)->pluck('olddoj_month')->first();
+
+            $monthendcount = DB::table('membermonthendstatus')->where('StatusMonth','=',$olddoj_month)->where('TOTAL_MONTHS','=',1)->where('MEMBER_CODE','=',$member_id)->count();
+            $subscount = DB::table("mon_sub_member as mm")->select('mc.CompanyCode as company_id','c.company_name as company_name')
+                                ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+                                ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+                                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                                ->where('ms.Date', '=', $olddoj_month)
+                                ->where('mm.MemberCode', '=', $member_id)
+                                ->count();
+            if($subscount==1 || $monthendcount==1){
+                $data = ['status' => 0,'message' => 'History already created for this member, it will send for verification to HQ','monthend' => $monthendcount, 'subs' => $subscount];
+            }else{
+                $data = ['status' => 1];
+            }
+            
          }
          echo json_encode($data);
+    }
+
+     public function DojList(Request $request, $lang){
+
+        $data['member_type'] = 1;
+        $data['membership_view'] = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.temp_doj','m.new_ic','c.branch_name','com.company_name','com.short_code','m.old_ic','m.new_ic','s.status_name')
+                                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                    ->leftjoin('company as com','com.id','=','c.company_id')
+                                    ->leftjoin('status as s','s.id','=','m.status_id')
+                                    ->whereNotNull('m.temp_doj')->get();
+        //dd($data['membership_view']);
+        return view('membership.dojmembership')->with('data',$data); 
+    }
+
+    public function Dojchanged(Request $request, $lang){
+        $memberid = $request->input('memberid');
+
+        $membership_view = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.temp_doj','m.new_ic','c.branch_name','com.company_name','com.short_code','m.old_ic','m.new_ic','s.status_name')
+                                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                    ->leftjoin('company as com','com.id','=','c.company_id')
+                                    ->leftjoin('status as s','s.id','=','m.status_id')
+                                    ->where('m.id','=',$memberid)->first();
+        echo json_encode($membership_view);
+    }
+
+    public function saveDojApprove(Request $request, $lang){
+        return $request->all();
     }
 }
 

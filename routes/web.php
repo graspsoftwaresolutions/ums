@@ -202,6 +202,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership-verify/{parameter}','MembershipController@VerifyMember')->name('approve.editmembership');
 
 	Route::get('verifymembership','MembershipController@VerifyList')->name('verify.membership');
+	Route::get('dojmembership','MembershipController@DojList')->name('verify.doj');
 
 	Route::post('ajax_members_list/{parameter}','MembershipController@AjaxmembersList')->name('master.ajaxmemberslist');
 	Route::post('ajax_verifymembers_list/{parameter}','MembershipController@AjaxVerifymembersList')->name('verify.ajax_verifymembers_list');
@@ -547,6 +548,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('delete_member_file','MembershipController@DeleteFile')->name('file.delete');
 	Route::post('ajax_save_advance','SubscriptionController@saveAdvanceApprove')->name('advance_approve.save');
+	Route::post('ajax_save_doj','MembershipController@saveDojApprove')->name('doj_approve.save');
 
 	Route::get('subscription-variation-pdf','SubscriptionController@variationAllPDF')->name('subscription.pdf');
 
@@ -559,6 +561,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('resignation_save','MembershipController@SendIrc')->name('member.savemembership');
 
 	Route::get('irc_waiters','IrcController@IrcWaiters')->name('irc.irc_waiters');
+
+	Route::get('get-dojchanged-list','MembershipController@Dojchanged')->name('member.dojchanged');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
