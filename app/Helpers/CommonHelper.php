@@ -2637,6 +2637,8 @@ class CommonHelper
                         ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->pluck('count')->first();
         // $countrecord =  DB::table('membermonthendstatus as ms')->where('ms.MEMBER_CODE', '=' ,$memberid)
         //                 ->where('ms.TOTALINSURANCE_AMOUNT','!=',0)->count();
+        $countrecord = $countrecord==null ? 0 : $countrecord;
+        //dd($countrecord);
         return $countrecord;
 	}
 	
@@ -2647,7 +2649,7 @@ class CommonHelper
 	}
 	
 	public static function getInsuranceData($memberid){
-		$members_pay = DB::select(DB::raw("SELECT count(*) as count,TOTALINSURANCE_AMOUNT FROM `membermonthendstatus` where TOTALINSURANCE_AMOUNT!=0 and MEMBER_CODE=$memberid"));
+		$members_pay = DB::select(DB::raw("SELECT sum(TOTAL_MONTHS) as count,TOTALINSURANCE_AMOUNT FROM `membermonthendstatus` where TOTALINSURANCE_AMOUNT!=0 and MEMBER_CODE=$memberid"));
 		return $members_pay;
 	}
 
@@ -3539,7 +3541,7 @@ class CommonHelper
     public static function getMonthendPaidMonths($memberid){
         $data = DB::table('membermonthendstatus as ms')
                 ->select('ms.StatusMonth')
-                ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','=',1)->where('ms.TOTALINSURANCE_AMOUNT','!=',0)
+                ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.TOTAL_MONTHS','!=',0)->where('ms.TOTALINSURANCE_AMOUNT','!=',0)
                 ->orderBy('ms.StatusMonth','asc')
                 ->pluck('ms.StatusMonth');
        

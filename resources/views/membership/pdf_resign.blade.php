@@ -146,9 +146,9 @@
 					@if($reasonname=='RETIRED' || $reasonname=='DECEASED')
 						@php
 							$months = CommonHelper::getMonthendPaidMonths($member_data->id);
-							//dd($months);
+							//dd($data);
 						@endphp
-						INSURANCE [ {{date('M Y',strtotime($months[0]))}} - {{ date('M Y',strtotime($months[count($months)-1]))}} ]( {{count($months)}} Months )
+						INSURANCE [ {{date('M Y',strtotime($months[0]))}} - {{ date('M Y',strtotime($months[count($months)-1]))}} ]( {{$data->count}} Months )
 					@else
 						INSURANCE AMOUNT @if($data->count!=0)(RM {{ 3 }} x  {{$data->count}} )@endif
 					@endif
