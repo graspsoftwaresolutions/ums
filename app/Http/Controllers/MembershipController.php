@@ -28,6 +28,15 @@ use Auth;
 use Carbon\Carbon;
 use PDF;
 
+use Facades\App\Repository\CacheMembers;
+use App\Model\MonthlySubscription;
+use App\Model\MonthlySubscriptionCompany;
+use App\Model\MonthlySubscriptionMember;
+use App\Model\MonSubCompanyAttach;
+use App\Model\MonthlySubMemberMatch;
+use Log;
+use Illuminate\Support\Facades\Input;
+
 
 class MembershipController extends Controller
 {
@@ -38,6 +47,7 @@ class MembershipController extends Controller
 		//$this->middleware('role:union|union-branch|company|company-branch');
         $this->Membership = new Membership;
         $this->MemberGuardian = new MemberGuardian;       
+        $this->membermonthendstatus_table = "membermonthendstatus";
     }
     public function index(Request $request)
     {
@@ -3324,7 +3334,313 @@ class MembershipController extends Controller
     }
 
     public function saveDojApprove(Request $request, $lang){
-        return $request->all();
+        $member_autoid = $request->input('member_autoid');
+        $fromdoj = $request->input('fromdoj');
+        $todoj = $request->input('todoj');
+        $acceptstatus = $request->input('acceptstatus');
+
+        $todoj_month = date('Y-m-01',strtotime($todoj));
+        if($acceptstatus==1){
+            $up_data = ['doj' => $todoj, 'temp_doj' => null];
+            $upstatus = DB::table('membership')->where('id', '=', $member_autoid)->where('temp_doj', '=', $todoj)->update($up_data);
+
+            $monthendcount = DB::table('membermonthendstatus')->where('StatusMonth','<',$todoj_month)->where('MEMBER_CODE','=',$member_autoid)->delete();
+            $subsmemberids = DB::table('mon_sub_member as sm')
+                            ->leftjoin('mon_sub_company as sc','sc.id','=','sm.MonthlySubscriptionCompanyId')
+                            ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+                            ->where('ms.Date','<',$todoj_month)->where('MemberCode','=',$member_autoid)->pluck('sm.id');
+
+            $subsdel = DB::table('mon_sub_member_match as sm')->whereIn('mon_sub_member_id',$subsmemberids)->delete();
+            $subsdel = DB::table('mon_sub_member as sm')->whereIn('id',$subsmemberids)->delete();
+
+            $feedata = DB::table('member_fee as mf')
+                            ->select('f.fee_shortcode','mf.fee_amount as fee_amount')
+                            ->leftjoin('fee as f','f.id','=','mf.fee_id')
+                            ->where('mf.member_id','=',$member_autoid)
+                            ->where(function($query) use ($member_autoid){
+                                    $query->orWhere('f.fee_shortcode','=','INS')
+                                        ->orWhere('f.fee_shortcode','=','BF');
+                                })       
+                            ->get();
+
+            $update_history = 1;
+            $memberdata = Membership::find($member_autoid);
+            $subsamount = CommonHelper::getsubscription_bysalary($memberdata->salary);
+            $branch_data = CacheMembers::getbranchbyBranchid($memberdata->branch_id);
+            $bf_amt = 0;
+            $ins_amt = 0;
+            foreach ($feedata as $key => $value) {
+                if($value->fee_shortcode=='BF'){
+                    $bf_amt = $value->fee_amount;
+                }
+                elseif($value->fee_shortcode=='INS'){
+                    $ins_amt = $value->fee_amount;
+                }
+            }
+            $doj = $memberdata->doj;
+            $subs_month = date('Y-m-01',strtotime($doj));
+            $mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_autoid)->count();
+            
+            $monthend_data = [
+                                    'StatusMonth' => $subs_month, 
+                                    'MEMBER_CODE' => $member_autoid,
+                                    'SUBSCRIPTION_AMOUNT' => $subsamount,
+                                    'BF_AMOUNT' => $bf_amt,
+                                    'LASTPAYMENTDATE' => $subs_month,
+                                    'TOTALSUBCRP_AMOUNT' => $subsamount,
+                                    'TOTALBF_AMOUNT' => $bf_amt,
+                                    'TOTAL_MONTHS' => 1,
+                                    'BANK_CODE' => $branch_data->company_id,
+                                    'NUBE_BRANCH_CODE' => $branch_data->union_branch_id,
+                                    'BRANCH_CODE' => $memberdata->branch_id,
+                                    'MEMBERTYPE_CODE' => $memberdata->designation_id,
+                                    //'ENTRYMODE' => 0,
+                                    //'DEFAULTINGMONTHS' => 0,
+                                    'TOTALMONTHSDUE' => 0,
+                                    'TOTALMONTHSPAID' => 1,
+                                    'SUBSCRIPTIONDUE' => 0,
+                                    'BFDUE' => 0,
+                                    'ACCSUBSCRIPTION' => $subsamount,
+                                    'ACCBF' => $bf_amt,
+                                    'ACCBENEFIT' => $bf_amt,
+                                    //'CURRENT_YDTBF' => 0,
+                                    //'CURRENT_YDTSUBSCRIPTION' => 0,
+                                    'STATUS_CODE' => $memberdata->status_id,
+                                    'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                                    'ENTRY_DATE' => date('Y-m-d'),
+                                    'ENTRY_TIME' => date('h:i:s'),
+                                    'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                                    'INSURANCE_AMOUNT' => $ins_amt,
+                                    'TOTALINSURANCE_AMOUNT' => $ins_amt,
+                                    'TOTALMONTHSCONTRIBUTION' => 1,
+                                    'INSURANCEDUE' => 0,
+                                    'ACCINSURANCE' => $ins_amt,
+                                    //'CURRENT_YDTINSURANCE' => 0,
+                                ];
+                
+            if($mont_count>0){
+                DB::table($this->membermonthendstatus_table)->where('StatusMonth', $subs_month)->where('MEMBER_CODE', $member_autoid)->update($monthend_data);
+            }else{
+                DB::table($this->membermonthendstatus_table)->insert($monthend_data);
+            }
+
+            $subscription_qry = MonthlySubscription::where('Date','=',$subs_month);
+            $subscription_count = $subscription_qry->count();
+            if($subscription_count>0){
+                $subscription_month = $subscription_qry->get();
+                $month_auto_id = $subscription_month[0]->id;
+            }else{
+                $subscription_month = new MonthlySubscription();
+                $subscription_month->Date = $subs_month;
+                $subscription_month->created_by = Auth::user()->id;
+                $subscription_month->created_on = date('Y-m-d');
+                $subscription_month->save();
+                $month_auto_id =  $subscription_month->id;
+            }
+            
+            $subscription_company_qry = MonthlySubscriptionCompany::where('MonthlySubscriptionId','=',$month_auto_id)->where('CompanyCode',$branch_data->company_id);
+            $subscription_company_count = $subscription_company_qry->count();
+            if($subscription_company_count>0){
+                $subscription_company =$subscription_company_qry->get();
+                $company_auto_id = $subscription_company[0]->id;
+            }else{
+                $subscription_company = new MonthlySubscriptionCompany();
+                $subscription_company->MonthlySubscriptionId = $month_auto_id;
+                $subscription_company->CompanyCode = $branch_data->company_id;
+                $subscription_company->created_by = Auth::user()->id;
+                $subscription_company->created_on = date('Y-m-d');
+                $subscription_company->save();
+        
+                $company_auto_id =  $subscription_company->id;
+            }
+
+            $nric_no = $memberdata->new_ic;
+            if($nric_no==''){
+                $nric_no = $memberdata->old_ic;
+            }
+            if($nric_no==''){
+                $nric_no = $memberdata->employee_id;
+            }
+            if($nric_no!='' && $nric_no!=Null){
+                $subscription_member_qry = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)
+                                    ->where('MemberCode',$member_autoid);
+                $subscription_member_count = $subscription_member_qry->count();
+
+                if($subscription_member_count>0){
+                    $subscription_member_res = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)
+                    ->where('MemberCode',$member_autoid)->get();
+                    $company_member_id = $subscription_member_res[0]->id;
+                    $subscription_member = MonthlySubscriptionMember::find($company_member_id);
+                }else{
+                    $subscription_member = new MonthlySubscriptionMember();
+                    $subscription_member->MonthlySubscriptionCompanyId = $company_auto_id;
+                }
+                $subscription_member->NRIC = $nric_no;
+                $subscription_member->Name = $memberdata->name;
+                $subscription_member->Amount = $subsamount+$bf_amt+$ins_amt;
+                $subscription_member->StatusId = $memberdata->status_id;
+                $subscription_member->update_status = 1;
+                $subscription_member->MemberCode = $member_autoid;
+                $subscription_member->created_by = Auth::user()->id;
+                $subscription_member->created_on = date('Y-m-d');
+                $subscription_member->approval_status =1;
+                $subscription_member->save();
+                
+                $subMemberMatch = new MonthlySubMemberMatch();
+                $subMemberMatch->mon_sub_member_id = $subscription_member->id;
+                $subMemberMatch->created_by = Auth::user()->id;
+                $subMemberMatch->created_on = date('Y-m-d');
+                $subMemberMatch->match_id = 1;
+                $subMemberMatch->approval_status =1;
+                $subMemberMatch->save();
+            }
+
+        //}
+        $payment_data = [
+           
+            'last_paid_date' => $subs_month, 
+            'member_id' => $member_autoid,
+            'due_amount' => 0,
+            'totpaid_months' => 1,
+            'ins_monthly_amount' => $ins_amt,
+            'sub_monthly_amount' => $subsamount,
+            'bf_monthly_amount' => $bf_amt,
+            'accbf_amount' => $bf_amt,
+            'accsub_amount' => $subsamount,
+            'accins_amount' => $ins_amt, 
+            'created_by' => Auth::user()->id,
+            'created_at' => date('Y-m-d'),
+        ];
+
+          $member_pay_count = DB::table('member_payments')->where('member_id', '=', $member_autoid)->count();
+            
+            if($member_pay_count==0){
+                DB::table('member_payments')->insert($payment_data);
+            }
+
+            if($update_history==1){
+                    
+                //update below history
+                $last_mont_record = DB::table($this->membermonthendstatus_table." as ms")
+                ->select('ms.StatusMonth','ms.LASTPAYMENTDATE','ms.ACCBF','ms.ACCSUBSCRIPTION','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.TOTALMONTHSPAID','ms.ACCINSURANCE','ms.TOTALMONTHSDUE','ms.SUBSCRIPTIONDUE','ms.TOTALMONTHSCONTRIBUTION','ms.INSURANCEDUE','ms.BFDUE','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
+                ->where('StatusMonth', '<', $subs_month)->where('MEMBER_CODE', '=', $member_autoid)
+                ->orderBY('StatusMonth','desc')
+                ->limit(1)
+                ->first();
+
+                $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
+                ->select('ms.StatusMonth','ms.Id','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT','ms.INSURANCE_AMOUNT','ms.TOTAL_MONTHS')
+                ->where('StatusMonth', '>=', $subs_month)->where('MEMBER_CODE', '=', $member_autoid)
+                ->orderBY('StatusMonth','asc')
+                ->get();
+
+                $last_ACCINSURANCE = !empty($last_mont_record) ? $last_mont_record->ACCINSURANCE : 0;
+                $last_ACCSUBSCRIPTION = !empty($last_mont_record) ? $last_mont_record->ACCSUBSCRIPTION : 0;
+                $last_ACCBF = !empty($last_mont_record) ? $last_mont_record->ACCBF : 0;
+                $last_SUBSCRIPTIONDUE = !empty($last_mont_record) ? $last_mont_record->SUBSCRIPTIONDUE : 0;
+                $last_BFDUE = !empty($last_mont_record) ? $last_mont_record->BFDUE : 0;
+                $last_INSURANCEDUE = !empty($last_mont_record) ? $last_mont_record->INSURANCEDUE : 0;
+                $last_TOTALMONTHSDUE = !empty($last_mont_record) ? $last_mont_record->TOTALMONTHSDUE : 0;
+                $last_TOTALMONTHSPAID = !empty($last_mont_record) ? $last_mont_record->TOTALMONTHSPAID : 0;
+                $last_TOTALMONTHSCONTRIBUTION = !empty($last_mont_record) ? $last_mont_record->TOTALMONTHSCONTRIBUTION : 0;
+                $last_paid_date = !empty($last_mont_record) ? $last_mont_record->LASTPAYMENTDATE : $subs_month;
+                
+                foreach($below_mont_records as $monthend){
+                    $m_subs_amt = $monthend->SUBSCRIPTION_AMOUNT;
+                    $m_bf_amt = $monthend->BF_AMOUNT;
+                    $m_ins_amt = $monthend->INSURANCE_AMOUNT;
+                    $m_total_months = $monthend->TOTAL_MONTHS;
+
+                    if($m_total_months==1){
+                        $new_ACCINSURANCE = $last_ACCINSURANCE+$m_ins_amt;
+                        $new_ACCSUBSCRIPTION = $last_ACCSUBSCRIPTION+$m_subs_amt;
+                        $new_ACCBF = $last_ACCBF+$m_bf_amt;
+                        $new_SUBSCRIPTIONDUE = $last_SUBSCRIPTIONDUE;
+                        $new_BFDUE = $last_BFDUE;
+                        $new_INSURANCEDUE = $last_INSURANCEDUE;
+                        $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE;
+                        $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID+1;
+                        $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION+1;
+                        $last_paid_date = $monthend->StatusMonth;
+                    }else{
+                        $new_ACCINSURANCE = $last_ACCINSURANCE;
+                        $new_ACCSUBSCRIPTION = $last_ACCSUBSCRIPTION;
+                        $new_ACCBF = $last_ACCBF;
+                        $new_SUBSCRIPTIONDUE = $last_SUBSCRIPTIONDUE+$m_subs_amt;
+                        $new_BFDUE = $last_BFDUE+$m_bf_amt;
+                        $new_INSURANCEDUE = $last_INSURANCEDUE+$m_ins_amt;
+                        $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE+1;
+                        $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID;
+                        $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION;
+                        
+                        $last_paid_date = DB::table($this->membermonthendstatus_table." as ms")
+                        ->select('ms.LASTPAYMENTDATE')
+                        ->where('StatusMonth', '<', $monthend->StatusMonth)->where('MEMBER_CODE', '=', $member_autoid)
+                        ->orderBY('StatusMonth','desc')
+                        ->limit(1)
+                        ->pluck('ms.LASTPAYMENTDATE')
+                        ->first();
+                    }
+                
+                    
+                    $monthend_datas = [
+                                'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
+                                'TOTALMONTHSPAID' => $new_TOTALMONTHSPAID,
+                                'SUBSCRIPTIONDUE' => $new_SUBSCRIPTIONDUE,
+                                'BFDUE' => $new_BFDUE,
+                                'INSURANCEDUE' => $new_INSURANCEDUE,
+                                'ACCSUBSCRIPTION' => $new_ACCSUBSCRIPTION,
+                                'ACCBF' => $new_ACCBF,
+                                'ACCINSURANCE' => $new_ACCINSURANCE,
+                                'TOTALMONTHSCONTRIBUTION' => $new_TOTALMONTHSCONTRIBUTION,
+                                'LASTPAYMENTDATE' => $last_paid_date,
+                            ];
+                    $m_upstatus = DB::table('membermonthendstatus')->where('Id', '=', $monthend->Id)->update($monthend_datas);
+
+                    $last_ACCINSURANCE = $new_ACCINSURANCE;
+                    $last_ACCSUBSCRIPTION = $new_ACCSUBSCRIPTION;
+                    $last_ACCBF = $new_ACCBF;
+                    $last_SUBSCRIPTIONDUE = $new_SUBSCRIPTIONDUE;
+                    $last_BFDUE = $new_BFDUE;
+                    $last_INSURANCEDUE = $new_INSURANCEDUE;
+                    $last_TOTALMONTHSDUE = $new_TOTALMONTHSDUE;
+                    $last_TOTALMONTHSPAID = $new_TOTALMONTHSPAID;
+                    $last_TOTALMONTHSCONTRIBUTION = $new_TOTALMONTHSCONTRIBUTION;
+                }
+
+                $payment_data = [
+                     
+                        'last_paid_date' => $last_paid_date,
+                        'totpaid_months' => $last_TOTALMONTHSPAID,
+                        'totcontribution_months' => $last_TOTALMONTHSCONTRIBUTION,
+                        'totdue_months' => $last_TOTALMONTHSDUE,
+                        'accbf_amount' => $last_ACCBF,
+                        'accsub_amount' => $last_ACCSUBSCRIPTION,
+                        'accins_amount' => $last_ACCINSURANCE,
+                        'duebf_amount' =>  $last_BFDUE,
+                        'dueins_amount' => $last_INSURANCEDUE,
+                        'duesub_amount' =>  $last_SUBSCRIPTIONDUE,
+                        'updated_by' => Auth::user()->id,
+                    ];
+                    DB::table('member_payments')->where('member_id', $member_autoid)->update($payment_data);
+                if($last_TOTALMONTHSDUE<=3){
+                    $m_status = 1;
+                    DB::table('membership')->where('id', $member_autoid)->update(['status_id' => $m_status]);
+                }else if($last_TOTALMONTHSDUE<=13){
+                    $m_status = 2;
+                    DB::table('membership')->where('id', $member_autoid)->update(['status_id' => $m_status]);
+                }
+            }
+            $redirect_url = app()->getLocale().'/membership';
+            return redirect($redirect_url)->with('message','Member DOJ Approved');
+        }else{
+            $redirect_url = app()->getLocale().'/dojmembership';
+            $up_data = ['temp_doj' => null];
+            $upstatus = DB::table('membership')->where('id', '=', $member_autoid)->where('temp_doj', '=', $todoj)->update($up_data);
+            
+            return redirect($redirect_url)->with('message','Member DOJ rejected');
+        }
+
     }
 }
 

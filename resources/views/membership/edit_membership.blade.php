@@ -2798,7 +2798,7 @@
 		$("#new_fee_id").val("");
 	});
     @if($check_entry==1)
-        $('#doj').change(function(){
+        $('#doj').blur(function(){
            var doj = $('#doj').val();
            var auto_id = $('#auto_id').val();
            $.ajax({

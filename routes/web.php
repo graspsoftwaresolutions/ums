@@ -304,6 +304,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-new-morehalfshare-report','ReportsController@halfshareFiltereportLoadmore')->name('reports.halfsharefilter');
 	Route::get('get-new-halfshare-report','ReportsController@halfshareFiltereport')->name('reports.halfsharefilters');
 
+	Route::get('halfshare_unionreport','ReportsController@halfshareUnionReport')->name('union.halfshare'); 
+	Route::get('newhalfshare_unionreport','ReportsController@newhalfshareUnionReport')->name('union.halfsharenew');
+
+
 	Route::get('get-new-halfsharefilter-report','ReportsController@newHalfshareReportfilter')->name('reports.newhalfsharefilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 
@@ -335,6 +339,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('resignmember_report','ReportsController@resignMemberReport')->name('reports.resignmembers');
 	Route::get('pgmmember_report','ReportsController@PgmMemberReport')->name('reports.pgm');
+	Route::get('pgmallmember_report','ReportsController@PgmAllMemberReport')->name('reports.allpgm');
 	Route::get('summary_report','ReportsController@SummaryReport')->name('reports.summary');
 
 

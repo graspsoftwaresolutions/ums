@@ -4394,6 +4394,17 @@ class ReportsController extends Controller
         return view('reports.pgm_members')->with('data',$data);  
     }
 
+     public function PgmAllMemberReport(Request $request, $lang)
+    {
+       
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+
+        $data['member_view'] = [];
+
+        return view('reports.pgm_allmembers')->with('data',$data);  
+    }
+
     public function membersPgmReport(Request $request,$lang)
     {
        
@@ -4525,6 +4536,72 @@ class ReportsController extends Controller
         $data['member_view'] = [];
 
         return view('reports.iframe_monthly_summary')->with('data',$data);
+    }
+
+    public function halfshareUnionReport(Request $request, $lang)
+    {
+    
+        $data['half_share'] = [];
+        $data['date'] = date('M/Y');
+        $data['bf_amount']=$this->bf_amount;
+        $data['ins_amount']=$this->ins_amount;
+        $data['total_ins']=$this->bf_amount+$this->ins_amount;
+        
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+
+        return view('reports.unionhalfshare')->with('data',$data);
+     
+    }
+
+    public function newhalfshareUnionReport($lang,Request $request)
+    {
+        $month_year = $request->input('month_year');
+        $unionbranch_id = $request->input('unionbranch_id');
+        if($unionbranch_id!=null){
+            $unionbranch_name = '';
+            $monthno = '';
+            $yearno = '';
+            $fulldate = date('Y-m-01');
+            if($month_year!=""){
+              $fmmm_date = explode("/",$month_year);
+              $monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+              $yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+              $fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+            }
+
+            $data['month_year'] = $fulldate;
+
+            //return $request->all();
+            $half_s = DB::table('mon_sub_member as mm')->select(DB::raw('count(mm.id) as count'), DB::raw('sum(mm.Amount) as subamt'),'ms.Date as statusmonth','cb.union_branch_id','c.company_name')
+                ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+                ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                //->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('month(ms.Date)'),'=',$monthno)  
+                ->where(DB::raw('year(ms.Date)'),'=',$yearno)
+                ->where(DB::raw('ms.Date'),'<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+                ->where('cb.union_branch_id','=',$unionbranch_id)
+                ->where(function ($query) {
+                    $query->where('mm.StatusId', '=', 1)
+                        ->orWhere('mm.StatusId', '=', 2);
+                })
+            ->groupBy('sc.CompanyCode')
+            ->get();          
+             $data['half_share'] = $half_s;
+             $data['unionbranch_id'] = $unionbranch_id;
+             $data['date'] = $fulldate;
+
+             $data['bf_amount']=$this->bf_amount;
+             $data['ins_amount']=$this->ins_amount;
+             $data['total_ins']=$this->bf_amount+$this->ins_amount;
+             $data['offset']=0;
+             $data['data_limit']= '';
+             return view('reports.iframe_unionhalfshare')->with('data',$data); 
+        }
+
+        
     }
 
 }

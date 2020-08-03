@@ -69,6 +69,8 @@
             @if($user_role=='union')
             <li class="bold"><a id="vmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('verify.membership',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('Verify Member Details') }}</span></a>
             </li>
+            <li class="bold"><a id="dojmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('verify.doj',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Verify DOJ') }}</span></a>
+            </li>
              <li class="bold"><a id="sal_updatelist_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.list',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation List') }}</span></a>
             </li>
             @endif
@@ -209,6 +211,7 @@
               @endforeach
               <li id="member_status4_sidebar_li_id" class=""><a id="member_status4_sidebar_a_id" class="collapsible-body" href="{{ route('reports.resignmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Resigned Members</span></a></li>
               <li id="member_pgm_sidebar_li_id" class=""><a id="member_pgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.pgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>PGM Members</span></a></li>
+             <li id="member_allpgm_sidebar_li_id" class=""><a id="member_allpgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.allpgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>PGM Status Members</span></a></li>
               @if($user_role=='union')
               <li id="summary_sidebar_li_id" class=""><a id="summary_sidebar_a_id" class="collapsible-body" href="{{ route('reports.summary',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Monthly Summary</span></a></li>
               @endif
@@ -221,6 +224,7 @@
               
               <li id="takaful_report_sidebar_li_id" class=""><a id="takaful_report_sidebar_a_id" class="collapsible-body" href="{{ route('reports.takaful',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Takaful Report</span></a></li>
 			   <li id="member_statistic_sidebar_li_id" class=""><a id="member_statistic_sidebar_a_id" class="collapsible-body" href="{{ route('reports.statistics',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Statistics Report') }}</span></a></li>
+              <li id="halfshare_sidebar_li_id" class=""><a id="halfshare_sidebar_a_id" class="collapsible-body" href="{{ route('union.halfshare',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Half Share') }}</span></a></li>
               <li id="member_halfshare_sidebar_li_id" class=""><a id="member_halfshare_sidebar_a_id" class="collapsible-body" href="{{ route('reports.halfshare',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Financial Half Share') }}</span></a></li>
               <li id="variation_bank_sidebar_li_id" class=""><a id="variation_bank_sidebar_a_id" class="collapsible-body" href="{{ route('reports.variation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variation By Bank') }}</span></a></li>
               <li id="subscription_bank_sidebar_li_id" class=""><a id="subscription_bank_sidebar_a_id" class="collapsible-body" href="{{ route('reports.subscription',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription By Bank') }}</span></a></li>

@@ -25,7 +25,8 @@
 			<tr class="" style="font-weight: bold;">
 			
 				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">
-				
+					</br>
+					UNION BRANCH : {{ CommonHelper::getUnionBranchName($data['unionbranch_id']) }}
 				</td>
 				<td colspan="6" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;font-weight: bold;">
 					NATIONAL UNION BANK OF EMPLOYEES
@@ -37,7 +38,7 @@
 				</td>
 			</tr>
 			<tr class="" >
-				<th style="border: 1px solid #988989 !important;">{{__('UNION BRANCH NAME')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('BANK NAME')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('TOTAL')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('BF')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('INS')}}</th>
@@ -79,7 +80,7 @@
                 $bl_amt += $balamtgn;
                 @endphp
                     <tr>
-                        <td style="border: 1px solid #988989 !important;">{{ $hlfshre->union_branch }}</td>
+                        <td style="border: 1px solid #988989 !important;">{{ $hlfshre->company_name }}</td>
                         <td style="border: 1px solid #988989 !important;">{{ round($totall,2) }}</td>
                         <td style="border: 1px solid #988989 !important;">{{ round($bf_amount,2) }}</td>
                         <td style="border: 1px solid #988989 !important;">{{ round($ins_amount,2) }}</td>
