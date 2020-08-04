@@ -122,7 +122,7 @@ class StatusPGMMemberExport implements FromView
         $data['data_limit']='';
  
          $dataarr = ['data' => $data ];
-       return view('reports.excel_pgmmembers')->with('data',$data);  
+       return view('reports.excel_tgmmembers')->with('data',$data);  
         // return view('exports.invoices', [
         //     'invoices' => MonthlySubscription::all()
         // ]);

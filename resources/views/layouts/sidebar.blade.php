@@ -210,8 +210,8 @@
               @endif
               @endforeach
               <li id="member_status4_sidebar_li_id" class=""><a id="member_status4_sidebar_a_id" class="collapsible-body" href="{{ route('reports.resignmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Resigned Members</span></a></li>
-              <li id="member_pgm_sidebar_li_id" class=""><a id="member_pgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.pgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>PGM Members</span></a></li>
-             <li id="member_allpgm_sidebar_li_id" class=""><a id="member_allpgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.allpgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>PGM Status Members</span></a></li>
+              <li id="member_pgm_sidebar_li_id" class=""><a id="member_pgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.pgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>TGM Members</span></a></li>
+             <li id="member_allpgm_sidebar_li_id" class="hide"><a id="member_allpgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.allpgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>PGM Status Members</span></a></li>
               @if($user_role=='union')
               <li id="summary_sidebar_li_id" class=""><a id="summary_sidebar_a_id" class="collapsible-body" href="{{ route('reports.summary',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Monthly Summary</span></a></li>
               @endif

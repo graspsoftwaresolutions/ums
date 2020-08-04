@@ -175,6 +175,7 @@
 @foreach($data['member_view'] as $member)
 @php
 	$pgm_members = CommonHelper::getPgmMembers($data['month_year'],$member->companyid,$data['branch_id'],$data['unionbranch_id'],$data['status_id']);
+	$companyname = CommonHelper::getCompanyName($member->companyid);
 	$totalmembers += count($pgm_members);
 	
 @endphp
@@ -183,10 +184,10 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="3" rowspan="2" style="text-align:right">
 					<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="8" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -196,23 +197,26 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
-				
-					<span style="margin-top:0;">PGM MEMBERS REPORT</span>
+				<td colspan="7" align="center" style="text-align:center !important;padding:10px;vertical-align:top;margin-left: 100px;">
+					<center><span style="text-align:center;font-weight: bold;font-size:28px;">TGM MEMBERS REPORT</span></center>
 				</td>
 				
 			</tr>
 			<tr class="" style="font-weight: bold;">
 			
-				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
+				<td colspan="3" style="border-bottom: 1px solid #988989 !important;height: 45px;">
 					To Branch Hons. Secretary
 					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
 						<p>
 						Branch Name : {{ $data['unionbranch_name'] }}
 					</p>
+						
 					@endif
+					<p>
+						Bank Name : {{ $companyname }}
+					</p>
 				</td>
-				<td colspan="8" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -226,21 +230,21 @@
 			</tr>
 				
 			<tr class="" style="" width="100%">
-				<th style="border: 1px solid #988989 !important; " align="center">SNO</th>
-				<th style="border: 1px solid #988989 !important; " >{{__('M/NO')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('MEMBER NAME')}}</th>
+				<th style="border: 1px solid #988989 !important; " width="6%" align="center">SNO</th>
+				<th style="border: 1px solid #988989 !important; " width="9%" >{{__('M/NO')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="36%">{{__('MEMBER NAME')}}</th>
                
-                <th style="border: 1px solid #988989 !important; " align="center">{{__('NRIC')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('GENDER')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('BANK')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('BANK BRANCH')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('TYPE')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="15%" align="center">{{__('NRIC')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="9%">{{__('GENDER')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="11%">{{__('BANK')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="30%">{{__('BANK BRANCH')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="6%">{{__('TYPE')}}</th>
                 
-                <th style="border: 1px solid #988989 !important; ">{{__('DOJ')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('LEVY')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('TDF')}}</th>
-                <th style="border: 1px solid #988989 !important;">STATUS</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('LAST PAID DATE')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="13%">{{__('DOJ')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="7%">{{__('LEVY')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="7%">{{__('TDF')}}</th>
+                <th style="border: 1px solid #988989 !important;" width="15%">STATUS</th>
+                <th style="border: 1px solid #988989 !important; " width="17%">{{__('LAST PAID DATE')}}</th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">
@@ -264,7 +268,14 @@
                     <td style="border: 1px solid #988989 !important;">{{ $pgmmember->levy }}</td>	
                     <td style="border: 1px solid #988989 !important;">{{ $pgmmember->tdf }}</td>	
                     <td style="border: 1px solid #988989 !important;">{{  $pgmmember->status_name }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $pgmmember->last_paid_date }}</td>
+                    @php
+                    	if(strtotime($data['month_year'])>strtotime($pgmmember->last_paid_date)){
+                    		$last_paid_date = $data['month_year'];
+                 	    }else{
+                 	    	$last_paid_date = $pgmmember->last_paid_date;
+                 		}
+                    @endphp
+                    <td style="border: 1px solid #988989 !important;">{{ $last_paid_date!='' ? date('M/Y',strtotime($last_paid_date)) : '' }}</td>
 					
 					
 				</tr> 

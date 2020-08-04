@@ -7,6 +7,7 @@
 @foreach($data['member_view'] as $member)
 @php
 	$pgm_members = CommonHelper::getPgmMembers($data['month_year'],$member->companyid,$data['branch_id'],$data['unionbranch_id'],$data['status_id']);
+	$companyname = CommonHelper::getCompanyName($member->companyid);
 	$totalmembers += count($pgm_members);
 @endphp
 
@@ -14,14 +15,14 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="3" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
 				<td colspan="8" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
-				<td colspan="3" rowspan="2">	
+				<td colspan="2" rowspan="2">	
 					</br>
 				</td>
 			</tr>
@@ -29,23 +30,27 @@
 				
 				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">PGM MEMBERS REPORT</span>
+					<span style="margin-top:0;">TGM MEMBERS REPORT</span>
 				</td>
 				
 			</tr>
 			<tr class="" style="font-weight: bold;">
 			
-				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
+				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">
 					To Branch Hons. Secretary
 					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
 						<br>
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
+					<br>
+						Bank Name : {{ $companyname }}
+					
 				</td>
 				<td colspan="8" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
+					<br>
 				</td>
-				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
 					
 					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
 						<br>
@@ -95,7 +100,14 @@
                     <td style="border: 1px solid #988989 !important;">{{ $pgmmember->levy }}</td>	
                     <td style="border: 1px solid #988989 !important;">{{ $pgmmember->tdf }}</td>	
                     <td style="border: 1px solid #988989 !important;">{{  $pgmmember->status_name }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $pgmmember->last_paid_date }}</td>
+                    @php
+                    	if(strtotime($data['month_year'])>strtotime($pgmmember->last_paid_date)){
+                    		$last_paid_date = $data['month_year'];
+                 	    }else{
+                 	    	$last_paid_date = $pgmmember->last_paid_date;
+                 		}
+                    @endphp
+                    <td style="border: 1px solid #988989 !important;">{{ $last_paid_date!='' ? date('M/Y',strtotime($last_paid_date)) : '' }}</td>
 					
 					
 				</tr> 

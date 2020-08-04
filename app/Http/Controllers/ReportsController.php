@@ -4391,7 +4391,7 @@ class ReportsController extends Controller
 
         $data['member_view'] = [];
 
-        return view('reports.pgm_members')->with('data',$data);  
+        return view('reports.tgm_members')->with('data',$data);  
     }
 
      public function PgmAllMemberReport(Request $request, $lang)
@@ -4484,7 +4484,7 @@ class ReportsController extends Controller
         $data['to_member_no']=$to_member_no;
         $data['status_id']=$status_id;
         
-       return view('reports.iframe_pgmmembers')->with('data',$data);
+       return view('reports.iframe_tgmmembers')->with('data',$data);
     }
 
     public function exportExcelPGMMembers($lang,Request $request){

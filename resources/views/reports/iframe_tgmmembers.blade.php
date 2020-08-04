@@ -191,7 +191,7 @@
 	<!-- <div class="page-footer">
     I'm The Footer
   </div>-->
-  	@include('reports.common_pgmmembers')
+  	@include('reports.common_tgmmembers')
 	
 </body>
 <script src="{{ asset('public/excel/jquery-ui.min.js') }}"></script>
