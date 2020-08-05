@@ -3974,8 +3974,8 @@ class CommonHelper
         $memberqry = DB::table('resignation as r')->select('r.id')
                     ->leftjoin('membership as m','r.member_code','=','m.id')
                     ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
-                    ->where('r.resignation_date','>=',$from_date)
-                    ->where('r.resignation_date','<=',$to_date);
+                    ->where('r.voucher_date','>=',$from_date)
+                    ->where('r.voucher_date','<=',$to_date);
          
         if($number==1){
             $memberqry = $memberqry->where('r.reason_code', 2);
