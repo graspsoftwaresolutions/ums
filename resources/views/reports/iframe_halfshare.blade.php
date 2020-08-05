@@ -146,7 +146,9 @@
 			color:#000;
 		}
 		
-		
+		@media print {
+		    .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+		}
 	</style>
 	<script type="text/javascript">
 		

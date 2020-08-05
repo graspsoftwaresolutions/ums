@@ -1903,6 +1903,7 @@ class ReportsController extends Controller
                     ->orWhere('mm.StatusId', '=', 2);
             })
         ->groupBy('cb.union_branch_id')
+        ->orderBy('ub.union_branch','asc')
         ->get();          
          $data['half_share'] = $half_s;
          $data['date'] = date('Y-m-01');
@@ -1945,6 +1946,7 @@ class ReportsController extends Controller
                     ->orWhere('mm.StatusId', '=', 2);
             })
         ->groupBy('cb.union_branch_id')
+        ->orderBy('ub.union_branch','asc')
         ->get();  
 	// 	$half_s = DB::table('membermonthendstatus as mend')->select(DB::raw('sum(mend.totalbf_amount) as bfamount'),
 	// 	DB::raw('sum(mend.totalinsurance_amount) as insamt'), DB::raw('sum(mend.totalsubcrp_amount) as subamt'),

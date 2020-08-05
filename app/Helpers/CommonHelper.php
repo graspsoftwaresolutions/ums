@@ -3572,7 +3572,7 @@ class CommonHelper
     }
 
     public static function getUnionListAll(){
-        return $results = DB::table('union_branch')->where('status','=','1')->get();
+        return $results = DB::table('union_branch')->where('status','=','1')->orderBy('union_branch','asc')->get();
     }
     public static function getHeadCompanyListAll(){
         return $results = Company::where('status',1)->where('head_of_company','=','0')->get();
@@ -3992,5 +3992,26 @@ class CommonHelper
         $membercount = $memberqry->count();
 
         return $membercount;
+    }
+
+    public static function getUnionBranchHalfshare($unionid, $date){
+        $half_s = DB::table('mon_sub_member as mm')->select(DB::raw('count(mm.id) as count'), DB::raw('sum(mm.Amount) as subamt'),'ms.Date as statusmonth','cb.union_branch_id','c.company_name')
+                ->leftjoin('mon_sub_company as sc','sc.id','=','mm.MonthlySubscriptionCompanyId')
+                ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+                ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+                ->leftjoin('company as c','c.id','=','sc.CompanyCode')
+                ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                //->leftjoin('union_branch as ub','ub.id','=','cb.union_branch_id')  
+                ->where(DB::raw('ms.Date'),'=',$date)  
+                //->where(DB::raw('year(ms.Date)'),'=',$yearno)
+                ->where(DB::raw('ms.Date'),'<>',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+                ->where('cb.union_branch_id','=',$unionid)
+                ->where(function ($query) {
+                    $query->where('mm.StatusId', '=', 1)
+                        ->orWhere('mm.StatusId', '=', 2);
+                })
+            ->groupBy('sc.CompanyCode')
+            ->get();  
+        return $half_s;
     }
 }
