@@ -3940,4 +3940,57 @@ class CommonHelper
         
         return $res;
     }
+
+    public static function getYearlybasedCount($year,$number){
+        $from_date = date('Y-m-d',strtotime(date('01-04-'.($year-1))));
+        $to_date = date('Y-m-d',strtotime(date('t-03-'.($year))));
+        
+        $memberqry = DB::table('membership as m')->select('m.id')
+                    ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                    ->where('m.doj','>=',$from_date)
+                    ->where('m.doj','<=',$to_date);
+         
+        if($number==1){
+            $memberqry = $memberqry->whereIn('cb.union_branch_id', [8,3]);
+        }else if($number==2){
+            $memberqry = $memberqry->whereIn('cb.union_branch_id', [1]);
+        }
+        else if($number==3){
+            $memberqry = $memberqry->whereIn('cb.union_branch_id', [5,6,7]);
+        }else if($number==4){
+            $memberqry = $memberqry->whereIn('cb.union_branch_id', [2,9]);
+        }else{
+            $memberqry = $memberqry->whereIn('cb.union_branch_id', [4]);
+        }
+        $membercount = $memberqry->count();
+
+        return $membercount;
+    }
+
+    public static function getResignYearlybasedCount($year,$number){
+        $from_date = date('Y-m-d',strtotime(date('01-04-'.($year-1))));
+        $to_date = date('Y-m-d',strtotime(date('t-03-'.($year))));
+        
+        $memberqry = DB::table('resignation as r')->select('r.id')
+                    ->leftjoin('membership as m','r.member_code','=','m.id')
+                    ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                    ->where('r.resignation_date','>=',$from_date)
+                    ->where('r.resignation_date','<=',$to_date);
+         
+        if($number==1){
+            $memberqry = $memberqry->where('r.reason_code', 2);
+        }else if($number==2){
+            $memberqry = $memberqry->whereIn('r.reason_code', [4,8]);
+        }
+        else if($number==3){
+            $memberqry = $memberqry->where('r.reason_code', 5);
+        }else if($number==4){
+            $memberqry = $memberqry->where('r.reason_code', 7);
+        }else{
+            $memberqry = $memberqry->whereNotIn('r.reason_code', [2,4,5,7,8]);
+        }
+        $membercount = $memberqry->count();
+
+        return $membercount;
+    }
 }

@@ -326,6 +326,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-pgm-members-report','ReportsController@membersPgmReport')->name('reports.pgmmembers');
 
 	Route::get('get-monthly-summary-report','ReportsController@monthlySummaryReport')->name('summary.monthly');
+	Route::get('get-yearly-summary-report','ReportsController@yearlySummaryReport')->name('summary.yearly');
 	
 	Route::get('get-membersstatus-more-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
@@ -341,6 +342,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('pgmmember_report','ReportsController@PgmMemberReport')->name('reports.pgm');
 	Route::get('pgmallmember_report','ReportsController@PgmAllMemberReport')->name('reports.allpgm');
 	Route::get('summary_report','ReportsController@SummaryReport')->name('reports.summary');
+
+	Route::get('yearly_member_report','ReportsController@YearlyMemberReport')->name('reports.yearly');
 
 
 	Route::get('reports.resignmembernew','ReportsController@resignNewMemberReport')->name('reports.resignmembernew');
@@ -649,3 +652,10 @@ Route::get('update_password','MemberController@UpdateMemberPassword');
 Route::get('get-all-member-list','MembershipController@getAllmemberslist');
 
 Route::get('/test-irc', 'IrcController@TestIRC');
+
+
+// Display All User In Table
+Route::get('user-list', 'HomeController@userList')->name('user-list');
+
+// Export User Table Data In Excel With Set Header
+Route::get('user-export/{parameter}', 'HomeController@exportUserData')->name('user-export');

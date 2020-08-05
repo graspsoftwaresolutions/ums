@@ -214,6 +214,7 @@
              <li id="member_allpgm_sidebar_li_id" class="hide"><a id="member_allpgm_sidebar_a_id" class="collapsible-body" href="{{ route('reports.allpgm',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>PGM Status Members</span></a></li>
               @if($user_role=='union')
               <li id="summary_sidebar_li_id" class=""><a id="summary_sidebar_a_id" class="collapsible-body" href="{{ route('reports.summary',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Monthly Summary</span></a></li>
+              <li id="yearly_sidebar_li_id" class=""><a id="syearly_sidebar_a_id" class="collapsible-body" href="{{ route('reports.yearly',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Yearly Based</span></a></li>
               @endif
                @if($user_role=='union' || $user_role=='union-branch')
               <li id="member_transfers_sidebar_li_id" class=""><a id="member_transfers_sidebar_a_id" class="collapsible-body" href="{{ route('reports.transfers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Member Transfers</span></a></li>
