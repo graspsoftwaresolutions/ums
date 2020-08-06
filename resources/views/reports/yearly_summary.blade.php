@@ -206,8 +206,8 @@
 @section('footerSecondSection')
 <script>
 $("#reports_sidebars_id").addClass('active');
-$("#summary_sidebar_li_id").addClass('active');
-$("#summary_sidebar_a_id").addClass('active');
+$("#yearly_sidebar_li_id").addClass('active');
+$("#yearly_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		 $('.datepicker-custom').MonthPicker({ 
