@@ -112,6 +112,84 @@
 		</tbody>
 		
 	</table>
+	<br>
+	@php
+		$struckoffmembers = CommonHelper::getStatusMembers($data['month_year'],3);
+		$slno=1;
+	@endphp
+	@if(count($struckoffmembers)>0)
+	<table>
+		<thead>
+			<tr>
+				<th colspan="7" align="center" style="text-align: center;font-weight: bold;">STRUCKOFF MEMBERS</th>
+			</tr>
+			<tr>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">SNO</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">M/NO</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">MEMBER NAME</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">NRIC</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">BANK</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">BANK BRANCH</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">AMOUNT</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach($struckoffmembers as $struckoff)
+			<tr>
+				<td style="border : 1px solid #988989;">{{ $slno }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->member_number }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->name }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->NRIC }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->companycode }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->branch_name }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->Amount }}</td>
+			</tr>
+			@php
+				$slno++;
+			@endphp
+			@endforeach
+		</tbody>
+	</table>
+	@endif
+	<br>
+	@php
+		$resignmembers = CommonHelper::getStatusMembers($data['month_year'],4);
+		$slno=1;
+	@endphp
+	@if(count($resignmembers)>0)
+	<table>
+		<thead>
+			<tr>
+				<th colspan="7" align="center" style="text-align: center;font-weight: bold;">RESIGNED MEMBERS</th>
+			</tr>
+			<tr>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">SNO</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">M/NO</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">MEMBER NAME</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">NRIC</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">BANK</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">BANK BRANCH</th>
+				<th style="border: 1px solid #988989 !important;font-weight: bold;">AMOUNT</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach($resignmembers as $struckoff)
+			<tr>
+				<td style="border : 1px solid #988989;">{{ $slno }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->member_number }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->name }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->NRIC }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->companycode }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->branch_name }}</td>
+				<td style="border : 1px solid #988989;">{{ $struckoff->Amount }}</td>
+			</tr>
+			@php
+				$slno++;
+			@endphp
+			@endforeach
+		</tbody>
+	</table>
+	@endif
 	<div class="pagebreak"> </div>
 	@foreach($unionlist as $union)
 		@php
