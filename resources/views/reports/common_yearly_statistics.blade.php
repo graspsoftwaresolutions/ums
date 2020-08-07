@@ -1,0 +1,158 @@
+@php 
+	$logo = CommonHelper::getLogo(); 
+@endphp
+<table id="page-length-option" class="display" width="100%">
+		<thead>
+			<tr class="">
+				
+				<td colspan="2" rowspan="2" style="text-align:right">
+					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
+				</td>
+				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					
+				</td>
+				<td colspan="3" rowspan="2">	
+					</br>
+				</td>
+			</tr>
+			<tr class="">
+				
+				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;"> STATISTICS FOR {{$data['from_year']}}-{{$data['to_year']}}</span>
+				</td>
+				
+			</tr>
+			
+			
+			
+		</thead>
+		<tbody class="" width="100%">
+			<tr>
+				<td colspan="10" style="">
+					<table style="width: 90% !important;margin: 0 5%;">
+						<thead>
+							<tr class="">
+								<th style="border : 1px solid #988989;" colspan="2" align="center">DESCRIPTION</th>
+								<th style="border : 1px solid #988989;text-align: center;" width="80px;">{{__('MARCH 2017')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="220px;" >APRIL 2017 - </br>MARCH 2018</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="220px;" >APRIL 2018 - </br>MARCH 2019</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="220px;" >APRIL 2019 - </br>MARCH 2020</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="220px;" >APRIL 2017 - </br>MARCH 2020</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+							@foreach($data['unionbranch_view'] as $value)
+							@php
+								$activecount = CommonHelper::getYearStatuscount('2017-03-01',1,$value->id);
+								$defaultercount = CommonHelper::getYearStatuscount('2017-03-01',2,$value->id);
+								$struckoffcount = CommonHelper::getYearStatuscount('2017-03-01',3,$value->id);
+								$active_defaultercount = $activecount+$defaultercount;
+
+								$newmembercount = CommonHelper::getYearNewMembercount('2017-04-01','2018-03-31',$value->id);
+								$newmembercount1 = CommonHelper::getYearNewMembercount('2018-04-01','2019-03-31',$value->id);
+								$newmembercount2 = CommonHelper::getYearNewMembercount('2019-04-01','2020-03-31',$value->id);
+								$totnewmembercount = $newmembercount+$newmembercount1+$newmembercount2;
+
+								$resignmembercount = CommonHelper::getResignedMembercount('2017-04-01','2018-03-31',$value->id);
+								$resignmembercount1 = CommonHelper::getResignedMembercount('2018-04-01','2019-03-31',$value->id);
+								$resignmembercount2 = CommonHelper::getResignedMembercount('2019-04-01','2020-03-31',$value->id);
+								$totresignmembercount = $resignmembercount+$resignmembercount1+$resignmembercount2;
+
+								$activecount1 = CommonHelper::getYearStatuscount('2018-03-01',1,$value->id);
+								$defaultercount1 = CommonHelper::getYearStatuscount('2018-03-01',2,$value->id);
+								//$struckoffcount1 = CommonHelper::getYearStatuscount('2018-03-01',3,$value->id);
+								$active_defaultercount1 = $activecount1+$defaultercount1;
+
+								$activecount2 = CommonHelper::getYearStatuscount('2019-03-01',1,$value->id);
+								$defaultercount2 = CommonHelper::getYearStatuscount('2019-03-01',2,$value->id);
+								//$struckoffcount2 = CommonHelper::getYearStatuscount('2019-03-01',3,$value->id);
+								$active_defaultercount2 = $activecount2+$defaultercount2;
+
+								$activecount3 = CommonHelper::getYearStatuscount('2020-03-01',1,$value->id);
+								$defaultercount3 = CommonHelper::getYearStatuscount('2020-03-01',2,$value->id);
+								//$struckoffcount3 = CommonHelper::getYearStatuscount('2020-03-01',3,$value->id);
+								$active_defaultercount3 = $activecount3+$defaultercount3;
+
+								$totactivecount = $activecount+$activecount1+$activecount2+$activecount3;
+								$totdefaultercount = $defaultercount+$defaultercount1+$defaultercount2+$defaultercount3;
+								$totactive_defaultercount = $active_defaultercount+$active_defaultercount1+$active_defaultercount2+$active_defaultercount3;
+
+								$totalunionmembers1 = CommonHelper::getTotalUnionMembers('2018-03-31',$value->id);
+								$totalunionmembers2 = CommonHelper::getTotalUnionMembers('2019-03-31',$value->id);
+								$totalunionmembers3 = CommonHelper::getTotalUnionMembers('2020-03-31',$value->id);
+
+								$struckoffcount1 = $totalunionmembers1-$active_defaultercount1-$resignmembercount;
+								$struckoffcount2 = $totalunionmembers2-$active_defaultercount2-$resignmembercount1;
+								$struckoffcount3 = $totalunionmembers3-$active_defaultercount3-$resignmembercount2;
+
+								$totstruckoffcount = $struckoffcount1+$struckoffcount2+$struckoffcount3;
+							@endphp
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;" rowspan="6">[{{$value->union_branch}}]</td>
+								<td style="border : 1px solid #988989;font-weight:bold;" width="250px;">New members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ '--' }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembercount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembercount1 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembercount2 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totnewmembercount }}</th>
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Active members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $activecount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $activecount1 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $activecount2 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $activecount3 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totactivecount }}</th>
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Defaulter members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaultercount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaultercount1 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaultercount2 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaultercount3 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totdefaultercount }}</th>
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Active & Defaulter members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $active_defaultercount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $active_defaultercount1 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $active_defaultercount2 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $active_defaultercount3 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totactive_defaultercount }}</th>
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Struckoff members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoffcount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoffcount1 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoffcount2 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoffcount3 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totstruckoffcount }}</th>
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Resigned members</td>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ '--' }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resignmembercount }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resignmembercount1 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resignmembercount2 }}</th>
+								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $totresignmembercount
+								 }}</th>
+							</tr>
+							@endforeach
+						</tbody>
+						
+					</table>
+
+				</td>
+				
+			</tr> 
+            <!-- <tr>
+				<td colspan="10" style="border : 1px solid #988989;font-weight:bold;">Total ACTIVE Member's Count : 0</td>
+				
+			</tr>  -->
+		</tbody>
+		
+	</table>
+	

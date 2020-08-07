@@ -4014,4 +4014,52 @@ class CommonHelper
             ->get();  
         return $half_s;
     }
+
+    public static function getYearStatuscount($statusmonth,$status,$union){
+        $count = DB::table('membermonthendstatus as mm')
+            ->select('mm.SUBSCRIPTION_AMOUNT')
+            ->where('mm.StatusMonth', '=',  $statusmonth)
+            ->where('mm.STATUS_CODE', '=' ,$status)
+            ->where('mm.NUBE_BRANCH_CODE', '=' ,$union)
+            ->count();
+            //dd($count);
+        return $count;
+    }
+
+    public static function getYearNewMembercount($fromdate,$todate,$union){
+        $count = DB::table('membership as m')
+            ->select('m.id')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->where('m.doj', '>=', $fromdate)
+            ->where('m.doj', '<=', $todate)
+            ->where('cb.union_branch_id', '=' ,$union)
+            ->count();
+           // dd($count);
+        return $count;
+    }
+
+
+    public static function getResignedMembercount($fromdate,$todate,$union){
+        $count = DB::table('resignation as r')->select('r.id')
+                    ->leftjoin('membership as m','r.member_code','=','m.id')
+                    ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+                    ->where('r.resignation_date','>=',$fromdate)
+                    ->where('r.resignation_date','<=',$todate)
+                    ->where('cb.union_branch_id', '=' ,$union)
+                    ->count();
+           // dd($count);
+        return $count;
+    }
+
+     public static function getTotalUnionMembers($date,$unionid){
+        $count = DB::table('membership as m')
+            ->select('m.id')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->where('m.doj', '<=', $date)
+            ->where('cb.union_branch_id', '=' ,$unionid)
+            ->where('m.status_id', '>=' ,1)
+            ->count();
+           // dd($count);
+        return $count;
+    }
 }

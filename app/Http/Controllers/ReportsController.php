@@ -4628,5 +4628,30 @@ class ReportsController extends Controller
         return view('reports.iframe_yearly_summary')->with('data',$data);
     }
 
+    public function YearlyStatisticsReport(Request $request, $lang)
+    {      
+        $data['unionbranch_view'] = [];
+        //$data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
+
+        $data['from_year'] = date('Y')-3;
+        $data['to_year'] = date('Y');
+      
+        return view('reports.yearly_statistics')->with('data',$data);  
+    }
+
+    public function YearlyStatisticsFilter($lang,Request $request){
+        $from_year = $request->input('from_year');
+        $to_year = $request->input('to_year');
+
+        $unionbranch_name = '';
+    
+
+        $data['from_year'] = $from_year;
+        $data['to_year'] = $to_year;
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+
+        return view('reports.iframe_yearly_statistics')->with('data',$data);
+    }
+
 }
 
