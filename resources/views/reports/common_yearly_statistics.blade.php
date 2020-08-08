@@ -76,19 +76,27 @@
 								//$struckoffcount3 = CommonHelper::getYearStatuscount('2020-03-01',3,$value->id);
 								$active_defaultercount3 = $activecount3+$defaultercount3;
 
-								$totactivecount = $activecount+$activecount1+$activecount2+$activecount3;
-								$totdefaultercount = $defaultercount+$defaultercount1+$defaultercount2+$defaultercount3;
-								$totactive_defaultercount = $active_defaultercount+$active_defaultercount1+$active_defaultercount2+$active_defaultercount3;
+								$totactivecount = $activecount+($activecount1-$activecount)+($activecount2-$activecount1)+($activecount3-$activecount2);
+								$totdefaultercount = $defaultercount+($defaultercount1-$defaultercount)+($defaultercount2-$defaultercount1)+($defaultercount3-$defaultercount2);
+								$totactive_defaultercount = $active_defaultercount+($active_defaultercount1-$active_defaultercount)+($active_defaultercount2-$active_defaultercount1)+($active_defaultercount3-$active_defaultercount2);
 
-								$totalunionmembers1 = CommonHelper::getTotalUnionMembers('2018-03-31',$value->id);
-								$totalunionmembers2 = CommonHelper::getTotalUnionMembers('2019-03-31',$value->id);
-								$totalunionmembers3 = CommonHelper::getTotalUnionMembers('2020-03-31',$value->id);
+								//$totalunionmembers1 = CommonHelper::getTotalUnionMembers('2018-03-31',$value->id);
+								//$totalunionmembers2 = CommonHelper::getTotalUnionMembers('2019-03-31',$value->id);
+								//$totalunionmembers3 = CommonHelper::getTotalUnionMembers('2020-03-31',$value->id);
 
-								$struckoffcount1 = $totalunionmembers1-$active_defaultercount1-$resignmembercount;
-								$struckoffcount2 = $totalunionmembers2-$active_defaultercount2-$resignmembercount1;
-								$struckoffcount3 = $totalunionmembers3-$active_defaultercount3-$resignmembercount2;
+								$totactivetodefaulter = $active_defaultercount+$struckoffcount;
 
-								$totstruckoffcount = $struckoffcount1+$struckoffcount2+$struckoffcount3;
+								$struckoffcount1 = $totactivetodefaulter+$newmembercount-$resignmembercount-$active_defaultercount1;
+
+								$totactivetodefaulter1 = $active_defaultercount1+$struckoffcount1;
+
+								$struckoffcount2 = $totactivetodefaulter1+$newmembercount1-$resignmembercount1-$active_defaultercount2;
+								
+								$totactivetodefaulter2 = $active_defaultercount2+$struckoffcount2;
+
+								$struckoffcount3 = $totactivetodefaulter2+$newmembercount2-$resignmembercount2-$active_defaultercount3;
+
+								$totstruckoffcount = $struckoffcount+($struckoffcount1-$struckoffcount)+($struckoffcount2-$struckoffcount1)+($struckoffcount3-$struckoffcount2);
 							@endphp
 							<tr>
 								<td style="border : 1px solid #988989;font-weight:bold;" rowspan="6">[{{$value->union_branch}}]</td>
