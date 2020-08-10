@@ -780,13 +780,13 @@ class ReportsController extends Controller
               if($branch_id!=""){
                   $members = $members->where('m.branch_id','=',$branch_id);
               }else{
-                 if($unionbranch_id!=''){
+                if($unionbranch_id!=''){
                     $members = $members->where('c.union_branch_id','=',$unionbranch_id);
                     $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
                 }
-                  if($company_id!=""){
-                      $members = $members->where('c.company_id','=',$company_id);
-                  }
+                if($company_id!=""){
+                    $members = $members->where('c.company_id','=',$company_id);
+                }
               }
               if($from_member_no!="" && $to_member_no!=""){
                     $members = $members->where('m.member_number','>=',$from_member_no);

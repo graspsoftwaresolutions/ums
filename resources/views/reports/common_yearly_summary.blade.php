@@ -52,7 +52,7 @@
 								$totnewmembers4 = 0;
 								$totnewmembers5 = 0;
 							@endphp
-							@for($ty=$data['from_year']; $ty<=$data['to_year']; $ty++)
+							@for($ty=$data['from_year']+1; $ty<=$data['to_year']; $ty++)
 							@php
 								$newmembers1 = CommonHelper::getYearlybasedCount($ty,1);
 								$newmembers2 = CommonHelper::getYearlybasedCount($ty,2);
@@ -68,7 +68,7 @@
 								$totnewmembers5 += $newmembers5;
 							@endphp
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $ty }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;">{{$ty-1}}-{{ $ty }}</td>
 								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers1 }}</th>
 								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers2 }}</th>
 								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers3 }}</th>
@@ -142,7 +142,7 @@
 								$totnewmembers4 = 0;
 								$totnewmembers5 = 0;
 							@endphp
-							@for($ty=$data['from_year']; $ty<=$data['to_year']; $ty++)
+							@for($ty=$data['from_year']+1; $ty<=$data['to_year']; $ty++)
 							@php
 								$newmembers1 = CommonHelper::getResignYearlybasedCount($ty,1);
 								$newmembers2 = CommonHelper::getResignYearlybasedCount($ty,2);
@@ -158,7 +158,7 @@
 								$totnewmembers5 += $newmembers5;
 							@endphp
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $ty }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;">{{$ty-1}}-{{ $ty }}</td>
 								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers1 }}</th>
 								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers2 }}</th>
 								<th style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $newmembers3 }}</th>
