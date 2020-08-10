@@ -4078,4 +4078,108 @@ class CommonHelper
                //->leftjoin('status as s','s.id','=','mm.StatusId')
         return $members;
     }
+    public static function getUnionGroupStatusCount($statusmonth,$status,$unionbranchid){
+       if($unionbranchid!=''){
+            if($unionbranchid==1){
+                $unionbranchids = DB::table('union_branch as ub')
+                    ->where(function($query) use ($unionbranchid){
+                        $query->where('ub.union_branch', '=',"SEREMBAN")
+                            ->orWhere('ub.union_branch', '=',"JB");
+                    })
+                ->pluck('ub.id')->toArray();  
+        }else if($unionbranchid==2){
+            $unionbranchids = DB::table('union_branch as ub')
+            ->where(function($query) use ($unionbranchid){
+                $query->where('ub.union_branch', '=',"PENANG")
+                    ->orWhere('ub.union_branch', '=',"KEDAH");
+            })
+            ->pluck('ub.id')->toArray();  
+        }else if($unionbranchid==3){
+            $unionbranchids = DB::table('union_branch as ub')
+            ->where('ub.union_branch','=','IPOH')
+            ->pluck('ub.id')->toArray();  
+        }else if($unionbranchid==4){
+            $unionbranchids = DB::table('union_branch as ub')
+            ->where('ub.union_branch','=','KELANTAN')
+            ->pluck('ub.id')->toArray();  
+        }else{
+            //return $union_no;
+            $unionbranchids = DB::table('union_branch as ub')
+            ->select('ub.id')
+            ->where(function($query) use ($unionbranchid){
+                $query->where('ub.union_branch', '=',"KL")
+                    ->orWhere('ub.union_branch', '=',"KELANG")
+                    ->orWhere('ub.union_branch', '=',"PAHANG");
+            })
+            ->pluck('ub.id')->toArray();
+            //->first();  
+        }
+
+        $count = DB::table('membermonthendstatus as mm')
+            ->select('mm.SUBSCRIPTION_AMOUNT')
+            ->where('mm.StatusMonth', '=',  $statusmonth)
+            ->where('mm.STATUS_CODE', '=' ,$status)
+            ->whereIn('mm.NUBE_BRANCH_CODE' ,$unionbranchids)
+            ->count();
+       }else{
+            $count = DB::table('membermonthendstatus as mm')
+            ->select('mm.SUBSCRIPTION_AMOUNT')
+            ->where('mm.StatusMonth', '=',  $statusmonth)
+            ->where('mm.STATUS_CODE', '=' ,$status)
+            //->whereIn('mm.NUBE_BRANCH_CODE' ,$unionbranchids)
+            ->count();
+       }
+       
+            //dd($count);
+        return $count;
+    }
+
+    public static function getUnionNewMembersCount($fromdate,$todate,$unionbranchid){
+        
+        if($unionbranchid==1){
+                $unionbranchids = DB::table('union_branch as ub')
+                    ->where(function($query) use ($unionbranchid){
+                        $query->where('ub.union_branch', '=',"SEREMBAN")
+                            ->orWhere('ub.union_branch', '=',"JB");
+                    })
+                ->pluck('ub.id')->toArray();  
+        }else if($unionbranchid==2){
+            $unionbranchids = DB::table('union_branch as ub')
+            ->where(function($query) use ($unionbranchid){
+                $query->where('ub.union_branch', '=',"PENANG")
+                    ->orWhere('ub.union_branch', '=',"KEDAH");
+            })
+            ->pluck('ub.id')->toArray();  
+        }else if($unionbranchid==3){
+            $unionbranchids = DB::table('union_branch as ub')
+            ->where('ub.union_branch','=','IPOH')
+            ->pluck('ub.id')->toArray();  
+        }else if($unionbranchid==4){
+            $unionbranchids = DB::table('union_branch as ub')
+            ->where('ub.union_branch','=','KELANTAN')
+            ->pluck('ub.id')->toArray();  
+        }else{
+            //return $union_no;
+            $unionbranchids = DB::table('union_branch as ub')
+            ->select('ub.id')
+            ->where(function($query) use ($unionbranchid){
+                $query->where('ub.union_branch', '=',"KL")
+                    ->orWhere('ub.union_branch', '=',"KELANG")
+                    ->orWhere('ub.union_branch', '=',"PAHANG");
+            })
+            ->pluck('ub.id')->toArray();
+            //->first();  
+        }
+
+         $count = DB::table('membership as m')
+            ->select('m.id')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->where('m.doj', '>=', $fromdate)
+            ->where('m.doj', '<=', $todate)
+            ->whereIn('cb.union_branch_id' ,$unionbranchids)
+            ->count();
+           // dd($count);
+        return $count;
+
+    }
 }
