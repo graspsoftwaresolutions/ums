@@ -35,16 +35,16 @@
 						$allactivecount = CommonHelper::getUnionGroupStatusCount('2020-03-01',1,'');
 						$alldefaulercount = CommonHelper::getUnionGroupStatusCount('2020-03-01',2,'');
 					@endphp
-					<p class="title-left" style="">TOTAL IN BENEFIT MEMBERS : {{ $allactivecount }}, NOT IN BENEFIT : {{ $alldefaulercount }} </p>
+					<p class="title-left" style="text-align:center;">TOTAL IN BENEFIT MEMBERS : {{ $allactivecount }}, NOT IN BENEFIT : {{ $alldefaulercount }} </p>
 					<table style="width: 90% !important;margin: 0 5%;">
 						<thead>
 							<tr class="">
-								<th style="border : 1px solid #988989;" align="center">UNION BRANCH NAME</th>
+								<th style="border-top : 1px solid #988989;border-left: 1px solid #988989 !important;border-right: 1px solid #988989 !important;" align="center">UNION BRANCH NAME</th>
 								<th style="border : 1px solid #988989;text-align: center;" colspan="2" >IN BENEFIT</th>
 				                <th style="border : 1px solid #988989;text-align: center;" colspan="2" >NOT IN BENEFIT</th>
 							</tr>
 							<tr>
-								<th style="border : 1px solid #988989;font-weight:bold;" ></th>
+								<th style="border-bottom : 1px solid #988989;border-left: 1px solid #988989 !important;border-right: 1px solid #988989 !important;font-weight:bold;" ></th>
 								<th style="border : 1px solid #988989;font-weight:bold;" >2014-2017</th>
 								<th style="border : 1px solid #988989;font-weight:bold;">2017-2020</th>
 								<th style="border : 1px solid #988989;font-weight:bold;" >2014-2017</th>
