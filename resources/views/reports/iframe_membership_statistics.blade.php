@@ -99,7 +99,9 @@
 				font-weight:bold;
 				font-size:14px;
 			}
-			
+			.title-left{
+				margin-left: 40px !important;
+			}
 		}
 		@media not print {
 			table {
@@ -125,6 +127,9 @@
 			.nric_no{
 				width:150px !important;
 			}
+			.title-left{
+				margin-left: 85px;
+			}
 		}
 		td, th {
 			display: table-cell;
@@ -147,6 +152,7 @@
 		.tbody-area{
 			color:#000;
 		}
+		
 	</style>
 	<script type="text/javascript">
 		

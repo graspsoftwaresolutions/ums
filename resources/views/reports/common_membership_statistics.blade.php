@@ -35,7 +35,7 @@
 						$allactivecount = CommonHelper::getUnionGroupStatusCount('2020-03-01',1,'');
 						$alldefaulercount = CommonHelper::getUnionGroupStatusCount('2020-03-01',2,'');
 					@endphp
-					<p style="margin-left: 85px;">TOTAL IN BENEFIT MEMBERS : {{ $allactivecount }}, NOT IN BENEFIT : {{ $alldefaulercount }} </p>
+					<p class="title-left" style="">TOTAL IN BENEFIT MEMBERS : {{ $allactivecount }}, NOT IN BENEFIT : {{ $alldefaulercount }} </p>
 					<table style="width: 90% !important;margin: 0 5%;">
 						<thead>
 							<tr class="">
