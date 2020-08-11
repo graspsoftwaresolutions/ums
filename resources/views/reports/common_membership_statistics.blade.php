@@ -72,25 +72,25 @@
 								$totaldefaulter1 += $sdefaulercount;
 							@endphp
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $value->group_name }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{$activecount}}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $sactivecount }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $defaulercount }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $sdefaulercount }} </td>
+								<td style="border : 1px solid #988989;" >{{ $value->group_name=='KELANTAN TERENGGANU' ? 'KELANTAN' : $value->group_name }}</td>
+								<td style="border : 1px solid #988989;" >{{$activecount}}</td>
+								<td style="border : 1px solid #988989;">{{ $sactivecount }}</td>
+								<td style="border : 1px solid #988989;" >{{ $defaulercount }}</td>
+								<td style="border : 1px solid #988989;">{{ $sdefaulercount }} </td>
 							</tr>
 							
 							@endforeach
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;" >TOTAL</td>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $totalactive }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $totalactive1 }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $totaldefaulter }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $totaldefaulter1 }} </td>
+								<td style="border : 1px solid #988989;" >TOTAL</td>
+								<td style="border : 1px solid #988989;" >{{ $totalactive }}</td>
+								<td style="border : 1px solid #988989;">{{ $totalactive1 }}</td>
+								<td style="border : 1px solid #988989;" >{{ $totaldefaulter }}</td>
+								<td style="border : 1px solid #988989;">{{ $totaldefaulter1 }} </td>
 							</tr>
 						</tbody>
 						
 					</table>
-					<p style="margin-left: 85px;">NEW MEMBERS </p>
+					<!-- <p style="margin-left: 85px;">NEW MEMBERS </p>
 					<table style="width: 90% !important;margin: 0 5%;">
 						<thead>
 							<tr class="">
@@ -113,20 +113,20 @@
 								$totalnewmembers1 += $newmemberscount1;
 							@endphp
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $value->group_name }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $newmemberscount }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $newmemberscount1 }}</td>
+								<td style="border : 1px solid #988989;" >{{ $value->group_name=='KELANTAN TERENGGANU' ? 'KELANTAN' : $value->group_name }}</td>
+								<td style="border : 1px solid #988989;" >{{ $newmemberscount }}</td>
+								<td style="border : 1px solid #988989;">{{ $newmemberscount1 }}</td>
 							</tr>
 							
 							@endforeach
 							<tr>
-								<td style="border : 1px solid #988989;font-weight:bold;" >TOTAL</td>
-								<td style="border : 1px solid #988989;font-weight:bold;" >{{ $totalnewmembers }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;">{{ $totalnewmembers1 }}</td>
+								<td style="border : 1px solid #988989;" >TOTAL</td>
+								<td style="border : 1px solid #988989;" >{{ $totalnewmembers }}</td>
+								<td style="border : 1px solid #988989;">{{ $totalnewmembers1 }}</td>
 							</tr>
 						</tbody>
 						
-					</table>
+					</table> -->
 				</td>
 				
 			</tr> 

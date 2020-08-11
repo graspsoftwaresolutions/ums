@@ -144,8 +144,8 @@
 @section('footerSecondSection')
 <script>
 $("#reports_sidebars_id").addClass('active');
-$("#member_statistic_sidebar_li_id").addClass('active');
-$("#member_statistic_sidebar_a_id").addClass('active');
+$("#membership_statistic_sidebar_li_id").addClass('active');
+$("#membership_statistic_sidebar_a_id").addClass('active');
 
 	$(document).ready(function(){
 		 $('.datepicker-custom').MonthPicker({ 
