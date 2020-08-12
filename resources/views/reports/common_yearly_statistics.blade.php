@@ -28,7 +28,7 @@
 			
 			
 		</thead>
-		<tbody class="" width="100%">
+		<tbody>
 			<tr>
 				<td colspan="10" style="">
 					<table style="width: 90% !important;margin: 0 5%;">
