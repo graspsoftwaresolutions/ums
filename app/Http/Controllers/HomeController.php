@@ -16,6 +16,9 @@ use App\Model\Irc;
 use App\User;
 use DB;
 
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class HomeController extends Controller
 {
     /**
@@ -477,4 +480,8 @@ class HomeController extends Controller
         $user->save();
         return redirect()->back()->with("success","Password changed successfully !");
     }
+	
+	public function userList(){
+		return Excel::download(new UsersExport, 'users.xlsx');
+	}
 }
