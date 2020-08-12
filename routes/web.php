@@ -469,6 +469,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('export-excel-pgmmembers','ReportsController@exportExcelPGMMembers')->name('pgmmembers.excel');
 
+	Route::get('export-excel-membership-statistics','ReportsController@exportExcelStatisticsMembers')->name('statistics.excel');
+
 	Route::get('variancemembers-list','SubscriptionController@VarianceMembersList')->name('variation.list');
 
 	Route::get('new-member-history/{parameter}','MonthEndController@memberallHistory')->name('monthend.addhistory');
