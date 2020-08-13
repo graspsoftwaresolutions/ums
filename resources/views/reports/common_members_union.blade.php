@@ -48,8 +48,8 @@
 			</tr>
 			<tr class="">
 				<th style="border : 1px solid #988989;" align="center">SNO</th>
-				<th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
                 <th style="border : 1px solid #988989;">{{__('MEMBER NAME')}}</th>
+				<th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
                
                 <th style="border : 1px solid #988989;">{{__('GENDER')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK')}}</th>
@@ -60,7 +60,7 @@
                 <th style="border : 1px solid #988989;">{{__('DOJ')}}</th>
                 <th style="border: 1px solid #988989 !important;">AMOUNT</th>
        
-                <th style="border : 1px solid #988989;">{{__('LAST PAID DATE')}}</th>
+                <th style="border : 1px solid #988989;" width="8%">{{__('LAST PAID DATE')}}</th>
 
 			</tr>
 		</thead>
@@ -75,8 +75,8 @@
 				@endphp
                 <tr>
 					<td style="border : 1px solid #988989;">{{ $sno }}</td>
-					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->name }}</td>
+					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
                    
                     <td style="border : 1px solid #988989;">{{ $member->gender }}</td>
                     <td style="border : 1px solid #988989;"> {{ $member->companycode }}</td>

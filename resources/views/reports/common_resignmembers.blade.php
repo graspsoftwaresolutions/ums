@@ -55,9 +55,9 @@
                 <th style="border: 1px solid #988989 !important;">{{__('BCH')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('BANK BRANCH')}}</th>
-                <th style="border: 1px solid #988989 !important;">{{__('CONTRIBUTION')}}</th>
-                <th style="border: 1px solid #988989 !important;">{{__('BENEFIT')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('INSURANCE')}}</th>
+                <th style="border: 1px solid #988989 !important;">{{__('CONT')}}</th>
+                <th style="border: 1px solid #988989 !important;">{{__('BEN')}}</th>
+				<th style="border: 1px solid #988989 !important;">{{__('INS')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('TOTAL')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('PAYMODE')}}</th>
                 <th style="border: 1px solid #988989 !important;">{{__('DATE')}}</th>
@@ -153,7 +153,11 @@
 						</tbody>
 					</table>
 				</td>
-				
+				<td colspan="2" style="border: none !important;">
+					CON - CONTRIBUTION <br>
+					BEN - BENEFIT <br>
+					INS - INSURANCE <br>
+				</td>
 				
 				
 			</tr> 

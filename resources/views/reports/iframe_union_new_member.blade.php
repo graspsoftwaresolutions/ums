@@ -59,7 +59,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body { margin: 0.8cm ; } 
 			.export-button{
 				display:none !important;
 			}
@@ -90,7 +90,7 @@
 			    font-size: 12px;
 			}
 			.nric_no{
-				width:10% !important;
+				width:5% !important;
 			}
 			
 			.report-address{
@@ -125,7 +125,7 @@
 				//position: absolute;
 			}
 			.nric_no{
-				width:150px !important;
+				width:130px !important;
 			}
 			.page-header-area{
 				display: none;

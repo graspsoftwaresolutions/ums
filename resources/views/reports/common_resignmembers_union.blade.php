@@ -48,8 +48,8 @@
 				
 			<tr class="" style="" width="100%">
 				<th style="border : 1px solid #988989;" align="center">S.NO</th>
-				<th style="border : 1px solid #988989;"  align="center">M/NO</th>
 				<th style="border : 1px solid #988989;" align="center">MEMBER NAME</th>
+				<th style="border : 1px solid #988989;"  align="center">M/NO</th>
 				<th  style="border : 1px solid #988989;" align="center">GENDER</th>
 				<th  style="border : 1px solid #988989;" align="center">BANK</th>
 				<th  style="border : 1px solid #988989;" align="center">BRANCH</th>
@@ -66,9 +66,9 @@
 			@endphp
 			@foreach($data['member_view'] as $member)
 				<tr >
-					<td style=" border : 1px solid #988989;">{{ $sno }}</td>
-					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
+					<td style=" border : 1px solid #988989;" width="2%">{{ $sno }}</td>
 					<td style="border : 1px solid #988989;">{{ $member->name }}</td>
+					<td style="border : 1px solid #988989;" width="4%">{{ $member->member_number }}</td>
 					<td style="border : 1px solid #988989;">{{ $member->gender }}</td>
 					<td style="border : 1px solid #988989;" >{{ $member->companycode }}</td>
 					<td  style="border : 1px solid #988989;">{{ $member->unioncode }}</td>

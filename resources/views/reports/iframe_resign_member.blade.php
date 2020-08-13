@@ -60,7 +60,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body { margin-right: 0.5cm ;margin-left: 0.5cm ; }
 			.export-button{
 				display:none !important;
 			}
@@ -79,7 +79,7 @@
 			}
 
 			#page-length-option td, #page-length-option th {
-			  border: 1px solid #ddd !important;
+			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
 			html {
@@ -87,7 +87,7 @@
 			    font-weight: normal;
 			    line-height: 1; 
 			    color: rgba(0, 0, 0, .87);
-			    font-size: 12px;
+			    font-size: 11px;
 			}
 			.nric_no{
 				width:10% !important;
@@ -95,7 +95,7 @@
 			
 			.report-address{
 				font-weight:bold;
-				font-size:14px;
+				font-size:13px;
 			}
 			
 		}
@@ -114,14 +114,14 @@
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
-			  font-size: 14px;
+			  font-size: 13px;
 			}
 			.tbody-area{
 				top:137px;
 				position: absolute;
 			}
 			.nric_no{
-				width:150px !important;
+				width:120px !important;
 			}
 		}
 		td, th {

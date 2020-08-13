@@ -49,8 +49,8 @@
 				
 			<tr class="" style="" width="100%">
 				<th style="border: 1px solid #988989 !important; " align="center">SNO</th>
-				<th style="border: 1px solid #988989 !important; " >{{__('M/NO')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('MEMBER NAME')}}</th>
+				<th style="border: 1px solid #988989 !important; " >{{__('M/NO')}}</th>
                
                 <th style="border: 1px solid #988989 !important; " align="center">{{__('NRIC')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('GENDER')}}</th>
@@ -62,7 +62,7 @@
                 <th style="border: 1px solid #988989 !important; ">{{__('LEVY')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('TDF')}}</th>
                 <th style="border: 1px solid #988989 !important;">AMOUNT</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('LAST PAID DATE')}}</th>
+                <th style="border: 1px solid #988989 !important; " width="8%">{{__('LAST PAID')}}<br>DATE</th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">
@@ -79,8 +79,8 @@
 				@endphp
 				<tr >
 					<td style="border: 1px solid #988989 !important; ">{{ $sno }}</td>
-					<td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
+					<td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->ic=='' ? $member->employee_id : $member->ic }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->gender }}</td>
                     <td style="border: 1px solid #988989 !important;"> {{ $member->companycode }}</td>

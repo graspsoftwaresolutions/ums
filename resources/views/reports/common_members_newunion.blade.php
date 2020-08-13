@@ -56,16 +56,16 @@
 			</tr>
 				
 			<tr class="" style="" width="100%">
-				<th style="border : 1px solid #988989;" align="center">S.NO</th>
-				<th style="border : 1px solid #988989;"  align="center">M/NO</th>
+				<th style="border : 1px solid #988989;" align="center" width="2%">S.NO</th>
 				<th style="border : 1px solid #988989;" align="center">MEMBER NAME</th>
+				<th style="border : 1px solid #988989;"  align="center" width="3%">M/NO</th>
 				<th  style="border : 1px solid #988989;" align="center">GENDER</th>
 				<th  style="border : 1px solid #988989;" align="center">BANK</th>
 				<th  style="border : 1px solid #988989;" align="center">UNION BRANCH</th>
-				<th  style="border : 1px solid #988989;" align="center">BANK </br>BRANCH</th>
-				<th  style="border : 1px solid #988989;" align="center">TYPE</th>
+				<th  style="border : 1px solid #988989;" align="center">BANK BRANCH</th>
+				<th  style="border : 1px solid #988989;" align="center" width="2%">TYPE</th>
 				<th style="border : 1px solid #988989;" align="center">DOJ</th>
-				<th style="border: 1px solid #988989 !important;">AMOUNT</th>
+				<th style="border: 1px solid #988989 !important;" width="3%">AMOUNT</th>
 				<th  style="border : 1px solid #988989;" align="center">LAST PAID </br> DATE</th>
 			</tr>
 		</thead>
@@ -80,8 +80,8 @@
 				@endphp
 				<tr >
 					<td style=" border : 1px solid #988989;">{{ $sno }}</td>
-					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
 					<td style="border : 1px solid #988989;">{{ $member->name }}</td>
+					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
 					<td style="border : 1px solid #988989;">{{ $member->gender }}</td>
 					<td style="border : 1px solid #988989;" >{{ $member->companycode }}</td>
 					<td  style="border : 1px solid #988989;">{{ $member->union_branchname }}</td>
