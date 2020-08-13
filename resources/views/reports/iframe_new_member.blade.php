@@ -92,7 +92,7 @@
 			    font-size: 12px;
 			}
 			.nric_no{
-				width:10% !important;
+				width:4% !important;
 			}
 			
 			.report-address{
@@ -127,7 +127,7 @@
 				//position: absolute;
 			}
 			.nric_no{
-				width:150px !important;
+				width:123px !important;
 			}
 			.page-header-area{
 				display: none;

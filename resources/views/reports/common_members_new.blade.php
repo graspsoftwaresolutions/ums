@@ -60,7 +60,7 @@
 				<th style="border: 1px solid #988989 !important;" width="2%">S.NO</th>
 				<th style="border: 1px solid #988989 !important;">MEMBER NAME</th>
 				<th style="border: 1px solid #988989 !important;" width="2%">M/NO</th>
-				<th style="border: 1px solid #988989 !important;" class="nric_no">NRIC</th>
+				<th style="border: 1px solid #988989 !important;" width="3%" class="nric_no">NRIC</th>
 				<th  style="border: 1px solid #988989 !important;">GENDER</th>
 				<th  style="border: 1px solid #988989 !important;">BANK</th>
 				<th  style="border: 1px solid #988989 !important;">BANK BRANCH</th>
@@ -91,7 +91,7 @@
 					<td class="nric_no" style="border: 1px solid #988989 !important;">{{ $member->ic=='' ? $member->employee_id : $member->ic }}</td>
 					<td style="border: 1px solid #988989 !important;">{{ $member->gender }}</td>
 					<td style="border: 1px solid #988989 !important;" >{{ $member->companycode }}</td>
-					<td  style="border: 1px solid #988989 !important;">{{ $member->branch_name }}</td>
+					<td  style="border: 1px solid #988989 !important;" width="18%">{{ $member->branch_name }}</td>
 					<td style="border: 1px solid #988989 !important;">{{ isset($member) ? $member->designation_name : ""}}</td>
 					<td style="border: 1px solid #988989 !important;">{{ date('d/M/Y',strtotime($member->doj))}}</td>
 					
