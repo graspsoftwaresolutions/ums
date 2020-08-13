@@ -57,9 +57,9 @@
 			</tr>
 				
 			<tr class="" style="" width="100%">
-				<th style="border: 1px solid #988989 !important;">S.NO</th>
+				<th style="border: 1px solid #988989 !important;" width="2%">S.NO</th>
 				<th style="border: 1px solid #988989 !important;">MEMBER NAME</th>
-				<th style="border: 1px solid #988989 !important;">M/NO</th>
+				<th style="border: 1px solid #988989 !important;" width="2%">M/NO</th>
 				<th style="border: 1px solid #988989 !important;" class="nric_no">NRIC</th>
 				<th  style="border: 1px solid #988989 !important;">GENDER</th>
 				<th  style="border: 1px solid #988989 !important;">BANK</th>
