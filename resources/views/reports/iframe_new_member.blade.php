@@ -54,13 +54,14 @@
 			@page {
 				size: landscape; 
 				margin: 3mm;
+
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body {margin: 0.8cm ;}
 			.export-button{
 				display:none !important;
 			}
