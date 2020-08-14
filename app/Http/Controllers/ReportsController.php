@@ -1127,11 +1127,13 @@ class ReportsController extends Controller
                 if($join_type==1){
                     $members = $members->where('m.old_member_number','=',NULL);
                 }else{
-                if($join_type==2){
-                    $members = $members->where('m.designation_id','=',2);
-                }else{
-                    $members = $members->where('m.designation_id','=',3);
-                }
+                    if($join_type==3){
+                        $members = $members->where('m.designation_id','=',3);
+                        $members = $members->where('m.old_member_number','!=',NULL);
+                    }else{
+                        $members = $members->where('m.designation_id','!=',3);
+                        $members = $members->where('m.old_member_number','!=',NULL);
+                    }
                 }
              }
               
