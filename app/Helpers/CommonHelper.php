@@ -4295,9 +4295,23 @@ class CommonHelper
         $todate = date('Y-m-t',strtotime($date));
         $count = DB::table('resignation as r')->select('r.id')
                     ->leftjoin('membership as m','r.member_code','=','m.id')
-                    ->where('r.voucher_date','>=',$fromdate)
                     ->where('r.voucher_date','<=',$todate)
+                    ->where('m.status_id','=',4)
                     ->count();
+           // dd($count);
+        return $count;
+    }
+
+    public static function getTotalMemberscount($date){
+         $fromdate = $date;
+         $todate = date('Y-m-t',strtotime($date));
+          $count = DB::table('membership as m')
+            ->select('m.id')
+            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+           // ->where('m.doj', '>=', $fromdate)
+            ->where('m.doj', '<=', $todate)
+            //->whereIn('cb.union_branch_id' ,$unionbranchids)
+            ->count();
            // dd($count);
         return $count;
     }

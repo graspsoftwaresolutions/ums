@@ -151,7 +151,19 @@
 								$last_resigned = CommonHelper::getResignedMemberscount($lastmonth);
 								$resign_diff = $current_resigned-$last_resigned;
 
+								$current_total = CommonHelper::getTotalMemberscount($data['month_year']);
+								$last_total = CommonHelper::getTotalMemberscount($lastmonth);
+
+								$last_struckoff = $last_total-($last_active+$last_defauler+$last_resigned);
+								$current_struckoff = $current_total-($current_active+$current_defauler+$current_resigned);
+								$struckoff_diff = $current_struckoff-$last_struckoff;
+
+								$total_diff = $current_total-$last_total;
+
 								$resigned_unpaid = CommonHelper::getLastPaidCurrentUnpaidCount($data['month_year'],4);
+								$struckoff_unpaid = CommonHelper::getLastPaidCurrentUnpaidCount($data['month_year'],3);
+
+								$total_unpaid = $active_unpaid+$defaulter_unpaid+$struckoff_unpaid+$resigned_unpaid;
 							@endphp
 							<tr>
 								<td style="border : 1px solid #988989;font-weight:bold;">Active Members</td>
@@ -169,10 +181,10 @@
 							</tr>
 							<tr>
 								<td style="border : 1px solid #988989;font-weight:bold;">Struckoff Members</td>
-								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>
-								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>	
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $last_struckoff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $current_struckoff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoff_diff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $struckoff_unpaid }}</td>	
 							</tr>
 							<tr>
 								<td style="border : 1px solid #988989;font-weight:bold;">Resigned Members</td>
@@ -180,6 +192,13 @@
 								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $current_resigned }}</td>
 								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resign_diff }}</td>
 								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resigned_unpaid }}</td>	
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Total</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $last_total }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $current_total }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $total_diff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $total_unpaid }}</td>	
 							</tr>
 							
 						</tbody>
