@@ -102,4 +102,98 @@
 		</tbody>
 		
 	</table>
+	<br>
+	<table id="page-length-option" class="display" width="100%">
+		<thead>
+			
+			<tr class="">
+				
+				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
+				
+					<span style="margin-top:0;">OVERALL SUMMARY REPORT</span>
+				</td>
+				
+			</tr>
+			
+			
+			
+		</thead>
+		<tbody class="" width="100%">
+			<tr>
+				<td colspan="10" style="">
+					<table style="width: 90% !important;margin: 0 5%;">
+						<thead>
+							<tr class="">
+								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>
+								<th style="border : 1px solid #988989;text-align: center;" width="10%">{{ date('M Y',strtotime($data['month_year'].' -1 Month')) }}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="10%">{{ date('M Y',strtotime($data['month_year'])) }}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="10%">Difference</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="10%">Unpaid</th>
+							</tr>
+						</thead>
+						<tbody>
+							@php
+								$current_active = CommonHelper::getMonthendStatuscount($data['month_year'],1);
+								$current_defauler = CommonHelper::getMonthendStatuscount($data['month_year'],2);
+
+								$lastmonth = date('Y-m-01',strtotime($data['month_year'].' -1 Month'));
+
+								$last_active = CommonHelper::getMonthendStatuscount($lastmonth,1);
+								$last_defauler = CommonHelper::getMonthendStatuscount($lastmonth,2);
+
+								$active_diff = $current_active-$last_active;
+								$defaulter_diff = $current_defauler-$last_defauler;
+
+								$active_unpaid = CommonHelper::getLastPaidCurrentUnpaidCount($data['month_year'],1);
+								$defaulter_unpaid = CommonHelper::getLastPaidCurrentUnpaidCount($data['month_year'],2);
+
+								$current_resigned = CommonHelper::getResignedMemberscount($data['month_year']);
+								$last_resigned = CommonHelper::getResignedMemberscount($lastmonth);
+								$resign_diff = $current_resigned-$last_resigned;
+
+								$resigned_unpaid = CommonHelper::getLastPaidCurrentUnpaidCount($data['month_year'],4);
+							@endphp
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Active Members</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $last_active }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $current_active }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $active_diff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $active_unpaid }}</td>	
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Defaulter Members</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $last_defauler }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $current_defauler }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaulter_diff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $defaulter_unpaid }}</td>	
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Struckoff Members</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ 0 }}</td>	
+							</tr>
+							<tr>
+								<td style="border : 1px solid #988989;font-weight:bold;">Resigned Members</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $last_resigned }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $current_resigned }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resign_diff }}</td>
+								<td style="border : 1px solid #988989;font-weight:bold;text-align: right;">{{ $resigned_unpaid }}</td>	
+							</tr>
+							
+						</tbody>
+						
+					</table>
+
+				</td>
+				
+			</tr> 
+            <!-- <tr>
+				<td colspan="10" style="border : 1px solid #988989;font-weight:bold;">Total ACTIVE Member's Count : 0</td>
+				
+			</tr>  -->
+		</tbody>
+		
+	</table>
 	
