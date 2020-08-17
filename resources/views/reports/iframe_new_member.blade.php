@@ -41,27 +41,43 @@
 		  background: #fff; /* for demo */
 		  color:#000;
 		}
+
+		 table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
 		
 		.page {
 		  page-break-after: always;
 		}
-		
+
 		@page {
-		  margin: 3mm
+		  //margin: 1cm;
+		}
+		@page:first {
+			  /* No margin on the first page. */
+			  //margin-top: 0.7cm !important;
 		}
 		
+		
 		@media print {
+			 table { page-break-after:auto }
+			  tr    { page-break-inside:avoid; page-break-after:auto }
+			  td    { page-break-inside:avoid; page-break-after:auto }
+			  thead { display:table-header-group }
+			  tfoot { display:table-footer-group }
 			@page {
 				size: landscape; 
-				margin: 3mm;
-
+				//margin-left: 1.1cm;
+				//margin-right: 1.1cm;
 			}
-		    thead {display: table-header-group;} 
-		    tfoot {display: table-footer-group;}
+
+			body { margin-right: 0.2cm ; }
+		
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0.8cm ;}
+		   
 			.export-button{
 				display:none !important;
 			}
