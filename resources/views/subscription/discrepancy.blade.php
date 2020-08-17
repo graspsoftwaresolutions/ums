@@ -253,7 +253,7 @@
 						<h4 class="card-title">Subscription Discrepancy
 						<button id="submit-upload" style="margin-left: 50px; " class="btn waves-effect waves-light purple lightrn-1 form-download-btn center" type="submit">{{__('Update Salary') }}</button>
 						<div class="right">
-							<a id="printdiscrepancy" class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
+							<a id="printdiscrepancy" class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/discrepancy-print?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
 						</div>
 						</h4>
@@ -301,79 +301,48 @@
 	@endphp
 	<input name="disgroupby" id="disgroupby" type="text" class="hide" value="{{ $data['groupby'] }}" />
 	<input type="text" name="disentry_date" id="disentry_date" value="{{ $data['month_year'] }}" class="hide" />
-	@foreach($memberslist as $company)
-	
 	@php
 		if($data['groupby']==1){
-			$typeidref = $company->union_branchid;
-		}elseif($data['groupby']==2){
-			$typeidref = $company->company_id;
-		}else{
-			$typeidref = $company->branch_id;
+			if($data['unionbranch_id']!=''){
+				foreach($unionbranchlist as $union){
+					if($union->id==$data['unionbranch_id']){
+						$membertypelist[] = $union;
+					}
+				}
+			}else{
+				$membertypelist = $unionbranchlist;
+			}
 		}
+		else if($data['groupby']==2){
+			if($data['sub_company']!=''){
+				foreach($companylist as $cmp){
+					if($cmp->id==$data['sub_company']){
+						$membertypelist[] = $cmp;
+					}
+				}
+			}else{
+				$membertypelist = $companylist;
+			}
+			
+		}
+		else{
+			$membertypelist = $data['branch_view'];
+		}
+		
 	@endphp
 	
-	<div id="companyheading_{{ $typeidref }}" class="row tablesall">
-		<br>
-		<div class="col m2" style="font-weight: bold;">
-			@if($data['groupby']==1)
-				{{ $company->union_branch_name }}
-			@elseif($data['groupby']==2)
-				{{ $company->company_name }}
-			@else
-				{{ $company->company_name }} - {{ $company->branch_name }}
-			@endif
-		</div>
-		<div class="col m2">
-			<input type="text" name="disrefid[]" id="disrefid" value="{{ $typeidref }}" class="hide" />
-			<select name="inctype_{{ $typeidref }}" id="inctype_{{ $typeidref }}" onchange="return HideOthers{{ $typeidref }}(this.value)" class="browser-default valid" aria-invalid="false">
-                <option value="">Select</option>
-                @foreach($data['inctypes'] as $type)
-                	<option value="{{$type->id}}">{{$type->type_name}}</option>
-                @endforeach
-            </select>
-		</div>
-		<div id="othersdiv_{{ $typeidref }}" class="col m2 hide">
-			<input type="text" name="others_{{ $typeidref }}" id="others" value="" class="" />
-		</div>
-	</div>
-	<table id="page-length-option-{{ $typeidref }}" class="display tablesall" width="100%">
-		<thead>
-			
-			<tr class="title-area" >
-				
-
-				
-			</tr>
-			<tr class="table-title">
-				<th><p style="margin-left: 10px; "><label><input class="checkall_{{ $typeidref }}" id="checkAll_{{ $typeidref }}" type="checkbox" /> <span>Check All</span> </label> </p></th>
-				<th>{{__('M.No')}}</th>
-				<th>{{__('Member Name')}}</th>
-				<th>{{__('Joining')}}</th>
-				<th>{{__('Last Paid')}}</th>
-				<th>{{__('Subs')}}</th>
-				@if($data['variationtype']==6)
-				<th>{{ date('M Y',strtotime($data['month_year_full'].' -5 Month')) }}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'].' -4 Month')) }}</th>
-				@endif
-				<th>{{ date('M Y',strtotime($data['month_year_full'].' -3 Month')) }}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'].' -2 Month')) }}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
-				<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
-				<th class="hide">Remarks</th>
-				
-			</tr>
-		</thead>
-		<tbody class="tbody-area">
+		@foreach($membertypelist as $type)
 			@php
-				if($data['groupby']==1){
-					$typeid = $company->union_branchid;
-				}elseif($data['groupby']==2){
-					$typeid = $company->company_id;
+				if($data['groupby']==3){
+					$typeidref = $type->branch_id;
+					$typeid = $type->branch_id;
 				}else{
-					$typeid = $company->branch_id;
+					$typeidref = $type->id;
+					$typeid = $type->id;
 				}
-				$company_members = CommonHelper::getCompanyMembers($typeid,$data['month_year_full'],$data['groupby']);
+				
+				$companymembers = CommonHelper::getSubscriptionBankMembers($data['groupby'], $typeidref,$data['month_year_first'],$data['month_year_full']);
+				//dd(count($companymembers));
 				$count=1;
 				$total_fifth_new=0;
 				$total_fourth_new=0;
@@ -412,458 +381,530 @@
 				$no_diff_second=0;
 				$no_diff_last=0;
 				$no_diff_this=0;
+				//dd($companymembers);
 			@endphp
-			@foreach($company_members as $member)
-			@php
-				//dd($member);
-				$salary = $member->salary==Null ? 0 : $member->salary;
+			@if(count($companymembers)>0)
+			<div id="companyheading_{{ $typeidref }}" class="row tablesall">
+				<br>
 
+				<div class="col m2" style="font-weight: bold;">
+					@if($data['groupby']==1)
+						{{ $type->union_branch }}
+					@elseif($data['groupby']==2)
+						{{ $type->company_name }}
+					@else
+						{{ $type->company_name }} - {{ $type->branch_name }}
+					@endif
+				</div>
+				<div class="col m2">
+					<input type="text" name="disrefid[]" id="disrefid" value="{{ $typeidref }}" class="hide" />
+					<select name="inctype_{{ $typeidref }}" id="inctype_{{ $typeidref }}" onchange="return HideOthers{{ $typeidref }}(this.value)" class="browser-default valid" aria-invalid="false">
+		                <option value="">Select</option>
+		                @foreach($data['inctypes'] as $type)
+		                	<option value="{{$type->id}}">{{$type->type_name}}</option>
+		                @endforeach
+		            </select>
+				</div>
+				<div id="othersdiv_{{ $typeidref }}" class="col m2 hide">
+					<input type="text" name="others_{{ $typeidref }}" id="others" value="" class="" />
+				</div>
+			</div>
+			<table id="page-length-option-{{ $typeidref }}" class="display tablesall" width="100%">
+				<thead>
+					
+					<tr class="title-area" >
+						
 
+						
+					</tr>
+					<tr class="table-title">
+						<th><p style="margin-left: 10px; "><label><input class="checkall_{{ $typeidref }}" id="checkAll_{{ $typeidref }}" type="checkbox" /> <span>Check All</span> </label> </p></th>
+						<th>{{__('M.No')}}</th>
+						<th>{{__('Member Name')}}</th>
+						<th>{{__('Joining')}}</th>
+						<th>{{__('Last Paid')}}</th>
+						<th>{{__('Subs')}}</th>
+						@if($data['variationtype']==6)
+						<th>{{ date('M Y',strtotime($data['month_year_full'].' -5 Month')) }}</th>
+						<th>{{ date('M Y',strtotime($data['month_year_full'].' -4 Month')) }}</th>
+						@endif
+						<th>{{ date('M Y',strtotime($data['month_year_full'].' -3 Month')) }}</th>
+						<th>{{ date('M Y',strtotime($data['month_year_full'].' -2 Month')) }}</th>
+						<th>{{ date('M Y',strtotime($data['month_year_full'].' -1 Month')) }}</th>
+						<th>{{ date('M Y',strtotime($data['month_year_full'])) }}</th>
+						<th class="hide">Remarks</th>
+						
+					</tr>
+				</thead>
+				<tbody class="tbody-area">
+					@foreach($companymembers as $member)
+					@php
+						$lastpaiddate = CommonHelper::getLastPaidDate($member->member_id);
+						$salary = $member->salary==Null ? 0 : $member->salary;
 				
-				$bf_amt = 3;
-				$ins_amt = 7;
-				
+						$bf_amt = 3;
+						$ins_amt = 7;
+						
 
-				$doj_str = date('Y-m-01',strtotime($member->doj));
-				$fifth_str = date('Y-m-01',strtotime($data['month_year_full'].' -5 Month'));
-				$fourth_str = date('Y-m-01',strtotime($data['month_year_full'].' -4 Month'));
-				$third_str = date('Y-m-01',strtotime($data['month_year_full'].' -3 Month'));
-				$second_str = date('Y-m-01',strtotime($data['month_year_full'].' -2 Month'));
-				$last_str = date('Y-m-01',strtotime($data['month_year_full'].' -1 Month'));
-				$this_str = date('Y-m-01',strtotime($data['month_year_full']));
+						$doj_str = date('Y-m-01',strtotime($member->doj));
+						$fifth_str = date('Y-m-01',strtotime($data['month_year_full'].' -5 Month'));
+						$fourth_str = date('Y-m-01',strtotime($data['month_year_full'].' -4 Month'));
+						$third_str = date('Y-m-01',strtotime($data['month_year_full'].' -3 Month'));
+						$second_str = date('Y-m-01',strtotime($data['month_year_full'].' -2 Month'));
+						$last_str = date('Y-m-01',strtotime($data['month_year_full'].' -1 Month'));
+						$this_str = date('Y-m-01',strtotime($data['month_year_full']));
 
-				if($data['variationtype']==6){
-					$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$fifth_str);
-				}else{
-					$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$third_str);
+						//print_r($member);
 
-				}
-				$subremarks = '';
-				$addonsalary = 0;
-				if($data['types'] != ''){
-					$displaymember = 0;
-				}else{
-					$displaymember = 1;
-				}
-				
-				if(!empty($updated_salary)){
-					//dd($updated_salary);
-					$newbasicsal = $salary;
-					foreach($updated_salary as $key => $upsalary){
-
-						if($upsalary->date==$this_str){
-							if($upsalary->increment_type_id==4){
-								$addonsalary -= $upsalary->additional_amt;
-							}else{
-								$addonsalary += $upsalary->additional_amt;
-							}
-
-							$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
-							if($key!=0){
-								$subremarks .= ', ';
-							}
-							if($key==0){
-								$newbasicsal = $upsalary->basic_salary;
-							}
-							if($data['types'] != '' && $data['types'] == $upsalary->increment_type_id){
-								$displaymember = 1;
-							}
-							$subremarks .= $inctype;
+						if($data['variationtype']==6){
+							$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$fifth_str);
 						}else{
-							if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
-								if($upsalary->increment_type_id==4){
-									$addonsalary -= $upsalary->additional_amt;
+							$updated_salary = CommonHelper::getIncrementValue($member->member_id,$this_str,$third_str);
+
+						}
+						$subremarks = '';
+						$addonsalary = 0;
+						if($data['types'] != ''){
+							$displaymember = 0;
+						}else{
+							$displaymember = 1;
+						}
+						
+						if(!empty($updated_salary)){
+							//dd($updated_salary);
+							$newbasicsal = $salary;
+							foreach($updated_salary as $key => $upsalary){
+
+								if($upsalary->date==$this_str){
+									if($upsalary->increment_type_id==4){
+										$addonsalary -= $upsalary->additional_amt;
+									}else{
+										$addonsalary += $upsalary->additional_amt;
+									}
+
+									$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
+									if($key!=0){
+										$subremarks .= ', ';
+									}
+									if($key==0){
+										$newbasicsal = $upsalary->basic_salary;
+									}
+									if($data['types'] != '' && $data['types'] == $upsalary->increment_type_id){
+										$displaymember = 1;
+									}
+									$subremarks .= $inctype;
 								}else{
-									$addonsalary += $upsalary->additional_amt;
+									if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
+										if($upsalary->increment_type_id==4){
+											$addonsalary -= $upsalary->additional_amt;
+										}else{
+											$addonsalary += $upsalary->additional_amt;
+										}
+
+										$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
+										if($key!=0){
+											$subremarks .= ', ';
+										}
+										if($key==0){
+											$newbasicsal = $upsalary->basic_salary;
+										}
+										if($data['types'] != '' && $data['types'] == $upsalary->increment_type_id){
+											$displaymember = 1;
+										}
+										$subremarks .= $inctype;
+									}
 								}
-
-								$inctype = CommonHelper::getIncrementTypeName($upsalary->increment_type_id);
-								if($key!=0){
-									$subremarks .= ', ';
-								}
-								if($key==0){
-									$newbasicsal = $upsalary->basic_salary;
-								}
-								if($data['types'] != '' && $data['types'] == $upsalary->increment_type_id){
-									$displaymember = 1;
-								}
-								$subremarks .= $inctype;
+								
 							}
-						}
-						
-					}
-					$newsalary = $newbasicsal+$addonsalary;
+							$newsalary = $newbasicsal+$addonsalary;
 
-					$total_subs = ($newsalary*1)/100;
-					$payable_subs = $total_subs;
+							$total_subs = ($newsalary*1)/100;
+							$payable_subs = $total_subs;
 
-					//$payable_subs = number_format($total_subs,2,".","");
+							//$payable_subs = number_format($total_subs,2,".","");
 
-				}else{
-					$total_subs = ($salary*1)/100;
-					$payable_subs = $total_subs;
-				}
-
-				
-
-				if($data['variationtype']==6){
-					$fifth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')));
-					$fourth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -4 Month')));
-				}
-				
-
-				$third_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -3 Month')));
-				$second_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -2 Month')));
-				$last_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -1 Month')));
-				$this_paid = $member->SUBSCRIPTION_AMOUNT;
-				if($this_paid==Null || $this_paid==0){
-					$this_paid = '*';
-				}
-				if($data['variationtype']==6){
-					$fifth_paid_status = $fifth_amt;
-					$fourth_paid_status = $fourth_amt;
-				}
-				$third_paid_status = $third_amt;
-				$second_paid_status = $second_amt;
-				$last_paid_status = $last_amt;
-
-				$variedamt = 0;
-
-
-				if($data['variationtype']==6){
-					//print_r($fifth_str);
-					//print_r($doj_str);
-					if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){
-						$variedamt = 1;
-						if($this_str==$doj_str)
-						{
-							$variedamt = 0;
-						}
-						elseif($last_str==$doj_str)
-						{
-							if($last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-							
-						}elseif($second_str==$doj_str){
-							if($second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-							
-						}elseif($third_str==$doj_str){
-							if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-						}elseif($fourth_str==$doj_str){
-							if($fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-						}elseif($fifth_str==$doj_str){
-							if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-						}
-						
-					}
-				}else{
-					if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){	
-						$variedamt = 1;
-						
-						if($this_str==$doj_str)
-						{
-							$variedamt = 0;
-						}
-						elseif($last_str==$doj_str)
-						{
-							if($last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-							
-						}elseif($second_str==$doj_str){
-							if($second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-							
-						}elseif($third_str==$doj_str){
-							if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
-							{
-								$variedamt = 0;
-							}else{
-								$variedamt = 1;
-							}
-						}
-					}
-				}
-
-				if($variedamt && $displaymember==1){
-				if($data['variationtype']==6){
-					if($fifth_amt=='*'){
-						$fifth_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')), $member->doj)>0 ? 'N' : '*';
-						if($fifth_paid_status=='N'){
-							$total_fifth_new++;
 						}else{
-							$total_fifth_unpaid++;
+							$total_subs = ($salary*1)/100;
+							$payable_subs = $total_subs;
 						}
-					}else{
-						$total_fifth_diff = $payable_subs-$fifth_amt;
-						if($total_fifth_diff>0){
-							$total_fifth_dec++;
+						if($data['variationtype']==6){
+							$fifth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')));
+							$fourth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -4 Month')));
 						}
-						if($total_fifth_diff<0){
-							$total_fifth_inc++;
+						
+
+						$third_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -3 Month')));
+						//dd($third_amt);
+						$second_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -2 Month')));
+						$last_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -1 Month')));
+						$this_paid = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id,$data['month_year_full']);
+						if($this_paid==Null || $this_paid==0){
+							$this_paid = '*';
 						}
-					}
-					if($fourth_amt=='*'){
-						$fourth_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -4 Month')), $member->doj)>0 ? 'N' : '*';
-						if($fourth_paid_status=='N'){
-							$total_fourth_new++;
+						if($data['variationtype']==6){
+							$fifth_paid_status = $fifth_amt;
+							$fourth_paid_status = $fourth_amt;
+						}
+						$third_paid_status = $third_amt;
+						$second_paid_status = $second_amt;
+						$last_paid_status = $last_amt;
+
+						$variedamt = 0;
+
+						if($data['variationtype']==6){
+							//print_r($fifth_str);
+							//print_r($doj_str);
+							if($fifth_amt!=$payable_subs || $fourth_amt!=$payable_subs || $third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){
+								$variedamt = 1;
+								if($this_str==$doj_str)
+								{
+									$variedamt = 0;
+								}
+								elseif($last_str==$doj_str)
+								{
+									if($last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+									
+								}elseif($second_str==$doj_str){
+									if($second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+									
+								}elseif($third_str==$doj_str){
+									if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+								}elseif($fourth_str==$doj_str){
+									if($fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+								}elseif($fifth_str==$doj_str){
+									if($fifth_paid_status==$fourth_paid_status && $fourth_paid_status==$third_paid_status && $third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+								}
+								
+							}
 						}else{
-							$total_fourth_unpaid++;
+
+							if($third_amt!=$payable_subs || $second_amt!=$payable_subs || $last_amt!=$payable_subs || $this_paid!=$payable_subs){	
+								$variedamt = 1;
+								
+								if($this_str==$doj_str)
+								{
+									$variedamt = 0;
+								}
+								elseif($last_str==$doj_str)
+								{
+									if($last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+									
+								}elseif($second_str==$doj_str){
+									if($second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+									
+								}elseif($third_str==$doj_str){
+								//dd($third_amt);
+									if($third_paid_status==$second_paid_status && $second_paid_status==$last_paid_status && $last_paid_status==$this_paid)
+									{
+										$variedamt = 0;
+									}else{
+										$variedamt = 1;
+									}
+								}
+							}
 						}
-					}else{
-						$total_fourth_diff = $payable_subs-$fourth_amt;
-						if($total_fourth_diff>0){
-							$total_fouth_dec++;
+					if($variedamt && $displaymember==1){
+						if($data['variationtype']==6){
+							if($fifth_amt=='*'){
+								$fifth_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')), $member->doj)>0 ? 'N' : '*';
+								if($fifth_paid_status=='N'){
+									$total_fifth_new++;
+								}else{
+									$total_fifth_unpaid++;
+								}
+							}else{
+								$total_fifth_diff = $payable_subs-$fifth_amt;
+								if($total_fifth_diff>0){
+									$total_fifth_dec++;
+								}
+								if($total_fifth_diff<0){
+									$total_fifth_inc++;
+								}
+							}
+							if($fourth_amt=='*'){
+								$fourth_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -4 Month')), $member->doj)>0 ? 'N' : '*';
+								if($fourth_paid_status=='N'){
+									$total_fourth_new++;
+								}else{
+									$total_fourth_unpaid++;
+								}
+							}else{
+								$total_fourth_diff = $payable_subs-$fourth_amt;
+								if($total_fourth_diff>0){
+									$total_fouth_dec++;
+								}
+								if($total_fourth_diff<0){
+									$total_fouth_inc++;
+								}
+							}
 						}
-						if($total_fourth_diff<0){
-							$total_fouth_inc++;
+						if($third_amt=='*'){
+							$third_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -3 Month')), $member->doj)>0 ? 'N' : '*';
+							if($third_paid_status=='N'){
+								$total_third_new++;
+							}else{
+								$total_third_unpaid++;
+							}
+						}else{
+							$total_third_diff = $payable_subs-$third_amt;
+							if($total_third_diff>0){
+								$total_third_dec++;
+							}
+							if($total_third_diff<0){
+								$total_third_inc++;
+							}
 						}
-					}
-				}
-				if($third_amt=='*'){
-					$third_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -3 Month')), $member->doj)>0 ? 'N' : '*';
-					if($third_paid_status=='N'){
-						$total_third_new++;
-					}else{
-						$total_third_unpaid++;
-					}
-				}else{
-					$total_third_diff = $payable_subs-$third_amt;
-					if($total_third_diff>0){
-						$total_third_dec++;
-					}
-					if($total_third_diff<0){
-						$total_third_inc++;
-					}
-				}
-				if($second_amt=='*'){
-					$second_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -2 Month')), $member->doj)>0 ? 'N' : '*';
-					if($second_paid_status=='N'){
-						$total_second_new++;
-					}else{
-						$total_second_unpaid++;
-					}
-				}else{
-					$total_second_diff = $payable_subs-$second_amt;
-					if($total_second_diff>0){
-						$total_second_dec++;
-					}
-					if($total_second_diff<0){
-						$total_second_inc++;
-					}
-				}
-				if($last_amt=='*'){
-					$last_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -1 Month')), $member->doj)>0 ? 'N' : '*';
-					if($last_paid_status=='N'){
-						$total_last_new++;
-					}else{
-						$total_last_unpaid++;
-					}
-				}else{
-					$total_last_diff = $payable_subs-$last_amt;
-					if($total_last_diff>0){
-						$total_last_dec++;
-					}
-					if($total_last_diff<0){
-						$total_last_inc++;
-					}
-				}
+						if($second_amt=='*'){
+							$second_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -2 Month')), $member->doj)>0 ? 'N' : '*';
+							if($second_paid_status=='N'){
+								$total_second_new++;
+							}else{
+								$total_second_unpaid++;
+							}
+						}else{
+							$total_second_diff = $payable_subs-$second_amt;
+							if($total_second_diff>0){
+								$total_second_dec++;
+							}
+							if($total_second_diff<0){
+								$total_second_inc++;
+							}
+						}
+						if($last_amt=='*'){
+							$last_paid_status = CommonHelper::getMonthDifference(date('Y-m-d',strtotime($data['month_year_full'].' -1 Month')), $member->doj)>0 ? 'N' : '*';
+							if($last_paid_status=='N'){
+								$total_last_new++;
+							}else{
+								$total_last_unpaid++;
+							}
+						}else{
+							$total_last_diff = $payable_subs-$last_amt;
+							if($total_last_diff>0){
+								$total_last_dec++;
+							}
+							if($total_last_diff<0){
+								$total_last_inc++;
+							}
+						}
+						
+						if($this_paid=='*'){
+							$total_this_unpaid++;
+						}else{
+							$total_this_diff = $payable_subs-$this_paid;
+							if($total_this_diff>0){
+								$total_this_dec++;
+							}
+							if($total_this_diff<0){
+								$total_this_inc++;
+							}
+						}
+						
+						if($member->STATUS_CODE==4){
+							$total_resigned++;
+						}
+					@endphp
+					<tr style="font-weight:bold;">
+						<td><p style="margin-left: 10px; "><label><input name="memberids_{{ $typeidref }}[]" class="checkboxes_{{ $typeidref }}" value="{{ $member->member_id }}" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p></td>
+						<td>{{ $member->member_number }}</td>
+						<td>{{ $member->name }}</td>
+						<td>{{ date('M Y',strtotime($member->doj)) }}</td>
+						<td>{{ date('M Y',strtotime($lastpaiddate)) }}</td>
+						<td>{{ $payable_subs }}</td>
+						@if($data['variationtype']==6)
+						<td>
+							@php
+								if(is_numeric($fifth_paid_status)){
+									if($total_fifth_diff!=0 ){
+										$fifth_disp= $total_fifth_diff<0 ? '+'.number_format(abs($total_fifth_diff),2,".","") : '-'.number_format(abs($total_fifth_diff),2,".","");
+										echo $fifth_disp;
+										if($data['DisplaySubscription']==1){
+											echo '('. $fifth_paid_status .')';
+										}
+										
+									}else{
+										echo '-';
+									}
+								}else{
+									echo $fifth_paid_status;
+								}
+								
+							@endphp
+								
+							
+						</td>
+						<td>
+							@php
+								if(is_numeric($fourth_paid_status)){
+									if($total_fourth_diff!=0 ){
+										$fourth_disp= $total_fourth_diff<0 ? '+'.number_format(abs($total_fourth_diff),2,".","") : '-'.number_format(abs($total_fourth_diff),2,".","");
+										echo $fourth_disp;
+										if($data['DisplaySubscription']==1){
+											echo '('. $fourth_paid_status .')';
+										}
+									}else{
+										echo '-';
+									}
+								}else{
+									echo $fourth_paid_status;
+								}
+							@endphp
+								
+							
+						</td>
+						@endif
+						<td>@php
+								if(is_numeric($third_paid_status)){
+									if($total_third_diff!=0 ){
+										$third_disp= $total_third_diff<0 ? '+'.number_format(abs($total_third_diff),2,".","") : '-'.number_format(abs($total_third_diff),2,".","");
+										echo $third_disp;
+										if($data['DisplaySubscription']==1){
+											echo '('. $third_paid_status .')';
+										}
+									}else{
+										echo '-';
+									}
+								}else{
+									echo $third_paid_status;
+								}
+							@endphp
+								
+							
+						</td>
+						<td>@php
+								if(is_numeric($second_paid_status)){
+									if($total_second_diff!=0 ){
+										$second_disp= $total_second_diff<0 ? '+'.number_format(abs($total_second_diff),2,".","") : '-'.number_format(abs($total_second_diff),2,".","");
+										echo $second_disp;
+										if($data['DisplaySubscription']==1){
+											echo '('. $second_paid_status .')';
+										}
+									}else{
+										echo '-';
+									}
+								}else{
+									echo $second_paid_status;
+								}
+							@endphp
+							
+							
+						</td>
+						<td>@php
+								if(is_numeric($last_paid_status)){
+									if($total_last_diff!=0 ){
+										$last_disp= $total_last_diff<0 ? '+'.number_format(abs($total_last_diff),2,".","") : '-'.number_format(abs($total_last_diff),2,".","");
+										echo $last_disp;
+										if($data['DisplaySubscription']==1){
+											echo '('. $last_paid_status .')';
+										}
+									}else{
+										echo '-';
+									}
+								}else{
+									echo $last_paid_status;
+								}
+							@endphp
+														
+						</td>
+						
+						<td><input type="text" name="thissubs_{{ $member->member_id }}" class="hide" value="{{ $this_paid }}" />
+							@php
+								if(is_numeric($this_paid)){
+									if($total_this_diff!=0 ){
+										$this_disp= $total_this_diff<0 ? '+'.number_format(abs($total_this_diff),2,".","") : '-'.number_format(abs($total_this_diff),2,".","");
+										echo $this_disp;
+										if($data['DisplaySubscription']==1){
+											echo '('. $this_paid .')';
+										}
+									}else{
+										echo '-';
+									}
+								}else{
+									echo $this_paid;
+								}
+							@endphp
+							
+						</td>
+						<td  class="hide">{{ $subremarks }}</td>
+						
+					</tr>
+					@php
+						$count++;
+						}else{
+							$no_diff++;
+						}
+					@endphp
+					@endforeach
+				</tbody>
+				<br>
 				
-				if($this_paid=='*'){
-					$total_this_unpaid++;
-				}else{
-					$total_this_diff = $payable_subs-$this_paid;
-					if($total_this_diff>0){
-						$total_this_dec++;
+			</table>
+				<script type="text/javascript">
+					$("#checkAll_{{ $typeidref }}").click(function(){
+			            $('.checkboxes_{{ $typeidref }}').not(this).prop('checked', this.checked);
+			        });
+			        $(document).on('click', '.checkboxes_{{ $typeidref }}', function() {
+			            $('#checkAll_{{ $typeidref }}').prop('checked', false);
+			        });
+			        function HideOthers{{ $typeidref }}(getval){
+			        	if(getval==5){
+			        		$("#othersdiv_{{ $typeidref }}").removeClass('hide');
+			        	}else{
+			        		$("#othersdiv_{{ $typeidref }}").addClass('hide');
+			        	}
+			        	
+			        }
+				</script>
+				@if($count==1)
+				<style type="text/css">
+					#page-length-option-{{ $typeidref }}{
+						display: none;
 					}
-					if($total_this_diff<0){
-						$total_this_inc++;
+					#companyheading_{{ $typeidref }}{
+						display: none;
 					}
-				}
-				
-				if($member->STATUS_CODE==4){
-					$total_resigned++;
-				}
-				$lastpaydate = CommonHelper::getLastPayDate($member->member_id, $member->pay_date);
-				$lastpaydate = $lastpaydate!='' ? date('M Y',strtotime($lastpaydate)) : '';
-			@endphp
-			<tr style="font-weight:bold;">
-				<td><p style="margin-left: 10px; "><label><input name="memberids_{{ $typeidref }}[]" class="checkboxes_{{ $typeidref }}" value="{{ $member->member_id }}" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p></td>
-				<td>{{ $member->member_number }}</td>
-				<td>{{ $member->name }}</td>
-				<td>{{ date('M Y',strtotime($member->doj)) }}</td>
-				<td>{{ date('M Y',strtotime($data['month_year_full'])) }}</td>
-				<td>{{ $payable_subs }}</td>
-				@if($data['variationtype']==6)
-				<td>{{ $fifth_paid_status }}
-					@if($data['DisplaySubscription']==1)
-						@php
-						if($total_fifth_diff!=0){
-							$fifth_disp= $total_fifth_diff<0 ? '+'.abs($total_fifth_diff) : '-'.abs($total_fifth_diff);
-							echo ' ('.$fifth_disp.')';
-						}
-						@endphp
-					@endif
-				</td>
-				<td>{{ $fourth_paid_status }}
-					@if($data['DisplaySubscription']==1)
-						@php
-						if($total_fourth_diff!=0){
-							$fourth_disp= $total_fourth_diff<0 ? '+'.abs($total_fourth_diff) : '-'.abs($total_fourth_diff);
-							echo ' ('.$fourth_disp.')';
-						}
-						@endphp
-					@endif
-				</td>
+					
+				</style>
 				@endif
-				<td>{{ $third_paid_status }}
-					@if($data['DisplaySubscription']==1)
-						@php
-						if($total_third_diff!=0 ){
-							$third_disp= $total_third_diff<0 ? '+'.abs($total_third_diff) : '-'.abs($total_third_diff);
-							echo ' ('.$third_disp.')';
-						}
-						@endphp
-					@endif
-				</td>
-				<td>{{ $second_paid_status }}
-					@if($data['DisplaySubscription']==1)
-						@php
-						if($total_second_diff!=0){
-							$second_disp= $total_second_diff<0 ? '+'.abs($total_second_diff) : '-'.abs($total_second_diff);
-							echo ' ('.$second_disp.')';
-						}
-						@endphp
-					@endif
-				</td>
-				<td>{{ $last_paid_status }}
-					@if($data['DisplaySubscription']==1)
-						@php
-						if($total_last_diff!=0){
-							$last_disp= $total_last_diff<0 ? '+'.abs($total_last_diff) : '-'.abs($total_last_diff);
-							echo ' ('.$last_disp.')';
-						}
-						@endphp
-					@endif
-				</td>
-				
-				<td>{{ $this_paid }}<input type="text" name="thissubs_{{ $member->member_id }}" class="hide" value="{{ $this_paid }}" />
-					@if($data['DisplaySubscription']==1)
-						@php
-						if($total_this_diff!=0){
-							$this_disp= $total_this_diff<0 ? '+'.abs($total_this_diff) : '-'.abs($total_this_diff);
-							echo ' ('.$this_disp.')';
-						}
-						@endphp
-					@endif
-				</td>
-				<td  class="hide">{{ $subremarks }}</td>
-				
-			</tr>
-			@php
-					$count++;
-				}else{
-					$no_diff++;
-				}
-			@endphp
-			@endforeach
-			
-			
-		</tbody>
-		<br>
-		
-	</table>
-	<script type="text/javascript">
-		$("#checkAll_{{ $typeidref }}").click(function(){
-            $('.checkboxes_{{ $typeidref }}').not(this).prop('checked', this.checked);
-        });
-        $(document).on('click', '.checkboxes_{{ $typeidref }}', function() {
-            $('#checkAll_{{ $typeidref }}').prop('checked', false);
-        });
-        function HideOthers{{ $typeidref }}(getval){
-        	if(getval==5){
-        		$("#othersdiv_{{ $typeidref }}").removeClass('hide');
-        	}else{
-        		$("#othersdiv_{{ $typeidref }}").addClass('hide');
-        	}
-        	
-        }
-	</script>
-	@if($count==1)
-	<style type="text/css">
-		#page-length-option-{{ $typeidref }}{
-			display: none;
-		}
-		#companyheading_{{ $typeidref }}{
-			display: none;
-		}
-		
-	</style>
-	@endif
-	@php
-		$overall_total_fifth_new+=$total_fifth_new;
-		$overall_total_fourth_new+=$total_fourth_new;
-		$overall_total_third_new+=$total_third_new;
-		$overall_total_second_new+=$total_second_new;
-		$overall_total_last_new+=$total_last_new;
-		$overall_total_this_new+=0;
-		
-		$overall_total_resigned+=$total_resigned;
-		$overall_total_fifth_unpaid+=$total_fifth_unpaid;
-		$overall_total_fourth_unpaid+=$total_fourth_unpaid;
-		$overall_total_third_unpaid+=$total_third_unpaid;
-		$overall_total_second_unpaid+=$total_second_unpaid;
-		$overall_total_last_unpaid+=$total_last_unpaid;
-		$overall_total_this_unpaid+=$total_this_unpaid;
-		
-		$overall_total_fifth_inc+=$total_fifth_inc;
-		$overall_total_fouth_inc+=$total_fouth_inc;
-		$overall_total_third_inc+=$total_third_inc;
-		$overall_total_second_inc+=$total_second_inc;
-		$overall_total_last_inc+=$total_last_inc;
-		$overall_total_this_inc+=$total_this_inc;
-		
-		$overall_total_fifth_dec+=$total_fifth_dec;
-		$overall_total_fouth_dec+=$total_fouth_dec;
-		$overall_total_third_dec+=$total_third_dec;
-		$overall_total_second_dec+=$total_second_dec;
-		$overall_total_last_dec+=$total_last_dec;
-		$overall_total_this_dec+=$total_this_dec;
-		$overall_no_diff+=$no_diff;
-	@endphp
-	@endforeach
-	</br>
+			@endif
+		@endforeach
+	
+
+				</br>
 	
 					</div> 
 				</div> 
