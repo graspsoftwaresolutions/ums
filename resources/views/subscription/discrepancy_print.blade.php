@@ -49,7 +49,7 @@
 			}
 			.report-address{
 				font-weight:bold;
-				font-size:14px;
+				font-size:11px;
 			}
 		}
 		@media print {
@@ -57,15 +57,15 @@
 		}
 		html { overflow: visible }
 		html {
-			    font-size: 12px;
+			    font-size: 9px;
 			}
 		.title-area{
 			font-weight: bold;
-			font-size:16px;
+			font-size:13px;
 		}
 		.table-title{
 			font-weight: bold;
-			font-size:14px;
+			font-size:11px;
 		}
 		
 	</style>
@@ -657,7 +657,7 @@
 							echo $this_paid;
 						}
 					@endphp
-					
+
 				</td>
 				<td>{{ $subremarks }}</td>
 				
