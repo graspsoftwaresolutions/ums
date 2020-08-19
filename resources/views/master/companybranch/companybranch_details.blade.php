@@ -51,7 +51,10 @@
                                     </h4>
                                     @php
                                     if(isset($data['branch_view'])){
-                                    $row = $data['branch_view'][0];
+                                        $row = $data['branch_view'][0];
+                                        $addpage = 0;
+                                    }else{
+                                        $addpage = 1;
                                     }
                                     @endphp
                                     <div id="view-validations">
@@ -63,7 +66,7 @@
                                             <div class="row" style="margin-bottom:0;">
                                                 <div class="input-field col s12 m6">
                                                     <select class="error browser-default common-select selectpicker"
-                                                        id="company_id" name="company_id" data-error=".errorTxt1"
+                                                        id="company_id" @if($addpage==1) onchange="return getBranchCode(this.value)" @endif name="company_id" data-error=".errorTxt1"
                                                         style="height: 4rem;">
                                                         <option value="" disabled="" selected="">
                                                             {{__('Select company') }}</option>
@@ -247,8 +250,8 @@
                                                 <div class="input-field col s12 m6">
                                                     <label for="branch_shortcode" class="common-label">{{__('Short Code') }}
                                                         *</label>
-                                                    <input id="branch_shortcode" name="branch_shortcode" class="common-input"
-                                                        value="@isset($row){{$row->branch_shortcode}}@endisset" type="text"
+                                                    <input id="branch_shortcode" name="branch_shortcode" class="common-input allow_decimal"
+                                                        value="@isset($row){{$row->branch_shortcode}}@endisset" placeholder="" type="text"
                                                         data-error=".errorTxt16">
                                                     <div class="errorTxt16"></div>
                                                 </div>
@@ -476,5 +479,29 @@ $(document).on('submit','form#branchformValidate',function(){
     $("#form-save-btn").prop('disabled',true);
     loader.showLoader();
 });
+function getBranchCode(companyid){
+   
+    $.ajax({
+        type: "GET",
+        //dataType: "json",
+        url: "{{ URL::to('/get-branch-count') }}?company_id=" + companyid,
+        success: function(res) {
+          
+            if (res) {
+                $('#branch_shortcode').val(res);
+            } else {
+                $('#branch_shortcode').val('0001');
+            }
+        }
+    });
+}
+$(document).on('input', '.allow_decimal', function(){
+   var self = $(this);
+   self.val(self.val().replace(/[^0-9\.]/g, ''));
+   if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+   {
+     evt.preventDefault();
+   }
+ });
 </script>
 @endsection

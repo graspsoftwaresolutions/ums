@@ -1440,4 +1440,12 @@ public function companyDestroy($lang,$id)
        // $data['city_view'] = City::where('status','=','1')->get();
         return view('master.state.empty_state_list',compact('data',$data));
     }
+
+    public function getTotalBranchCount(Request $request){
+        $company_id = $request->input('company_id');
+        $count = DB::table('company_branch')->select(DB::raw('Max(CAST(branch_shortcode as SIGNED)) as a'))->where('company_id','=',$company_id)->pluck('a')->first();
+        $count = $count=='' ? 1 : $count+1;
+        $newcode = str_pad($count,4,"0",STR_PAD_LEFT);
+        return $newcode;
+    }
 }

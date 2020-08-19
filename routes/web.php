@@ -660,6 +660,7 @@ Route::get('get-member-irclist-values','IrcController@getMembersListValues');
 Route::get('update_password','MemberController@UpdateMemberPassword');
 
 Route::get('get-all-member-list','MembershipController@getAllmemberslist');
+Route::get('get-branch-count','MasterController@getTotalBranchCount');
 
 Route::get('/test-irc', 'IrcController@TestIRC');
 
