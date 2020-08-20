@@ -38,8 +38,8 @@
 			</tr>
 			<tr class="" >
 				<th style="border : 1px solid #988989;">{{__('BANK NAME')}}</th>
-				<th style="border : 1px solid #988989;">{{__('# CURRENT')}}</th>
-				<th style="border : 1px solid #988989;">{{__('# PREVIOUS')}}</th>
+				<th style="border : 1px solid #988989;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }}</th>
+				<th style="border : 1px solid #988989;">{{ strtoupper(date('M Y',strtotime($data['last_month_year']))) }}</th>
 				<th style="border : 1px solid #988989;">{{__('DIFFERENT')}}</th>
 				<th style="border : 1px solid #988989;">{{__('UNPAID')}}</th>
 				<th style="border : 1px solid #988989;">{{__('PAID')}}</th>

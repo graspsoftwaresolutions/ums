@@ -78,6 +78,13 @@
 			foreach ($data['member_count'] as $obj) {
 			    $uniques[$obj->branchid] = $obj;
 			}
+			foreach($data['race_view'] as $race){
+				$raceid = $race->id;
+				$total_benifit_m_race{$raceid} = 0;
+				$total_benifit_f_race{$raceid} = 0;
+				$total_nonbenifit_m_race{$raceid} = 0;
+				$total_nonbenifit_f_race{$raceid} = 0;
+			}
 
 		@endphp
         @foreach($uniques as $values)
@@ -107,6 +114,7 @@
 					$race_id = $race->id;
 					
 					$male_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,1,'Male');
+					$total_benifit_m_race{$race_id} += $male_count;
 					
 				@endphp
 					<td style="border: 1px solid #988989 !important;">{{$male_count}}</td>
@@ -121,7 +129,7 @@
 					$race_id = $value->id;
 					//dd($male_count);
 						$female_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,1,'Female');
-						
+						$total_benifit_f_race{$race_id} += $female_count;
 					@endphp
 				<td style="border: 1px solid #988989 !important;">{{$female_count}}</td>
 					@php
@@ -137,7 +145,7 @@
 				@foreach($data['race_view'] as $value)
 				@php $race_id = $value->id;
 					$maledefaulter_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,2,'Male');
-					
+					$total_nonbenifit_m_race{$race_id} += $maledefaulter_count;
 				@endphp
 					<td style="border: 1px solid #988989 !important;">{{$maledefaulter_count}}</td>
 				@php
@@ -148,7 +156,7 @@
 				@foreach($data['race_view'] as $value)
 				@php $race_id = $value->id;
 					$femaledefaulter_count = CommonHelper::get_group_union_gender_race_count($over_all_count,$race_id,2,'Female');
-					
+					$total_nonbenifit_f_race{$race_id} += $femaledefaulter_count;
 				@endphp
 					<td style="border: 1px solid #988989 !important;">{{$femaledefaulter_count}}</td>
 					@php
@@ -169,32 +177,49 @@
 				<td style='border: 1px solid #988989 !important;'>
 					Total
 				</td>
-			   
+			    @php
+			    	$total_benifit_m = 0;
+			    	$total_benifit_f = 0;
+			    	$total_nonbenifit_m = 0;
+			    	$total_nonbenifit_f = 0;
+			    @endphp
 				@foreach($data['race_view'] as $race)
 				
-					<td style="border: 1px solid #988989 !important;"></td>
+					<td style="border: 1px solid #988989 !important;">{{ $total_benifit_m_race{$race->id} }}</td>
+					 @php
+				    	$total_benifit_m += $total_benifit_m_race{$race->id};
+				    @endphp
 			
 				@endforeach
-				<td style="border: 1px solid #988989 !important;"> </td>
-				@foreach($data['race_view'] as $value)
+				<td style="border: 1px solid #988989 !important;"> {{ $total_benifit_m }}</td>
+				@foreach($data['race_view'] as $race)
 				
-				<td style="border: 1px solid #988989 !important;"></td>
+				<td style="border: 1px solid #988989 !important;">{{ $total_benifit_f_race{$race->id} }}</td>
+					@php
+				    	$total_benifit_f += $total_benifit_f_race{$race->id};
+				    @endphp
 					
 				@endforeach
 				
-				<td style="border: 1px solid #988989 !important;"></td>
-				<td style="border: 1px solid #988989 !important;"></td>
-				@foreach($data['race_view'] as $value)
+				<td style="border: 1px solid #988989 !important;">{{ $total_benifit_f }}</td>
+				<td style="border: 1px solid #988989 !important;">{{ $total_benifit_m+$total_benifit_f }}</td>
+				@foreach($data['race_view'] as $race)
 				
-					<td style="border: 1px solid #988989 !important;"></td>
+					<td style="border: 1px solid #988989 !important;">{{ $total_nonbenifit_m_race{$race->id} }}</td>
+					@php
+				    	$total_nonbenifit_m += $total_nonbenifit_m_race{$race->id};
+				    @endphp
 			
 				@endforeach
-				<td style="border: 1px solid #988989 !important;"> </td>
-				@foreach($data['race_view'] as $value)
-					<td style="border: 1px solid #988989 !important;"></td>
+				<td style="border: 1px solid #988989 !important;"> {{ $total_nonbenifit_m }} </td>
+				@foreach($data['race_view'] as $race)
+					<td style="border: 1px solid #988989 !important;">{{ $total_nonbenifit_f_race{$race->id} }}</td>
+					@php
+				    	$total_nonbenifit_f += $total_nonbenifit_f_race{$race->id};
+				    @endphp
 				@endforeach
-				<td style="border: 1px solid #988989 !important;"></td>
-				<td style="border: 1px solid #988989 !important;"></td>
+				<td style="border: 1px solid #988989 !important;">{{ $total_nonbenifit_f }}</td>
+				<td style="border: 1px solid #988989 !important;">{{ $total_nonbenifit_m+$total_nonbenifit_f }}</td>
 				<td style="border: 1px solid #988989 !important;">{{$total_grandtotal}}</td>
             </tr> 
 		</tbody>

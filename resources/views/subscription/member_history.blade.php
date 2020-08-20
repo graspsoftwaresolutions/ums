@@ -116,7 +116,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					            @endphp
 					            @if($year->years==date('Y'))
 					            <li class="active">
-					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}</div>
+					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}} ({{count($memberhistory)}})</div>
 					               <div class="collapsible-body">
 					                  <table id="page-current-history{{$year->years}}" class="display ">
 											<thead>
@@ -173,7 +173,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					            </li>
 					            @else
 					            <li>
-					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}</div>
+					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}({{count($memberhistory)}})</div>
 					               <div class="collapsible-body">
 					                  	 <table id="page-current-history{{$year->years}}" class="display ">
 											<thead>
@@ -306,7 +306,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					            @endphp
 					            
 					            <li>
-					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}</div>
+					               <div class="collapsible-header"><i class="material-icons">perm_contact_calendar</i> {{$year->years}}({{count($prememberhistory)}})</div>
 					               <div class="collapsible-body">
 					                  	 <table id="page-current-history{{$year->years}}" class="display ">
 											<thead>
