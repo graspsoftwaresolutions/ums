@@ -44,13 +44,13 @@
 		}
 		
 		@page {
-		  margin: 3mm
+		  margin: 7mm
 		}
 		
 		@media print {
 			@page {
 				size: landscape; 
-				margin: 3mm;
+				//margin: 3mm;
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
@@ -101,7 +101,7 @@
 			  background: #343d9f; /* for demo */
 			  z-index:999;
 			  color:#fff;
-			  font-size: 14px;
+			  font-size: 11px;
 			}
 			.tbody-area{
 				top:140px;
@@ -145,7 +145,7 @@
 		    font-weight: normal;
 		    line-height: 1; 
 		    color: rgba(0, 0, 0, .87);
-		    font-size: 12px;
+		    font-size: 9px;
 		}
 		.nric_no{
 			width:10% !important;
@@ -153,7 +153,7 @@
 		
 		.report-address{
 			font-weight:bold;
-			font-size:14px;
+			font-size:11px;
 		}
 
 		

@@ -34,6 +34,7 @@
 					@endif
 				</td>
 				<td colspan="10" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					@if(isset($addbreak)) <br> @endif
 					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	

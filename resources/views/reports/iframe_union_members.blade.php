@@ -183,7 +183,7 @@
 	<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
 </body>
 <script>
-	var excelfilenames="Resign Members report";
+	var excelfilenames="Union Members report";
 </script>
 <script src="{{ asset('public/assets/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('public/assets/js/FileSaver.min.js') }}" type="text/javascript"></script>
