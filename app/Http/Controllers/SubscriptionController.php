@@ -3661,7 +3661,7 @@ class SubscriptionController extends CommonController
 		//$data['memberids']=$memberids;
         $data['company_view']=[];
         $data['branch_view']=[];
-        $data['sub_company'] = '';
+        $data['sub_company'] = 1;
         $data['unionbranch_id'] = '';
 	
 		return view('subscription.discrepancy')->with('data', $data);
