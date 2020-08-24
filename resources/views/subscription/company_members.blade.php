@@ -262,14 +262,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<tr>
 														<td>{{ $key+1 }} </td>
 														<td>{{ $stat->status_name }}</td>
-														<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersCompanyCount($stat->id, $user_role, $user_id,$company_id,$cond_date) }}</td>
-														<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersCompanyAmount($stat->id, $user_role, $user_id,$company_id,$cond_date), 0) }} </td>
+														<td id="member_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsMembersNotDOJCompanyCount($stat->id, $user_role, $user_id,$company_id,$cond_date) }}</td>
+														<td id="member_status_amount_{{ $stat->id }}">{{ round(CommonHelper::statusMembersNotDojCompanyAmount($stat->id, $user_role, $user_id,$company_id,$cond_date), 0) }} </td>
 													</tr>
 												@endforeach
 												<tr>
 													<td>{{ count($data['member_stat'])+1 }} </td>
 													<td>SUNDRY CREDITORS</td>
-													<td id="company_member_status_count_sundry">{{ CommonHelper::statusSubsCompanyMatchCount(2, $user_role, $user_id,$company_id,$cond_date) }}</td>
+													<td id="company_member_status_count_sundry">{{ CommonHelper::statusSubsCompanyMatchNotDojCount(2, $user_role, $user_id,$company_id,$cond_date) }}</td>
 													<td id="company_member_status_amount_sundry">{{ round(CommonHelper::statusSubsCompanyMatchAmount(2, $user_role, $user_id,$company_id,$cond_date), 0) }}</td>
 												</tr>
 											</thead>
@@ -293,7 +293,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<tr>
 												<td>{{ $key+1 }} </td>
 												<td>{{ $stat->match_name }}</td>
-												<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsCompanyMatchCount($stat->id, $user_role, $user_id,$company_id,$cond_date) }}</td>
+												<td id="approval_status_count_{{ $stat->id }}">{{ CommonHelper::statusSubsCompanyMatchNotDojCount($stat->id, $user_role, $user_id,$company_id,$cond_date) }}</td>
 											</tr>
 											@endforeach
 										</table>

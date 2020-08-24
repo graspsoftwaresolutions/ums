@@ -4491,6 +4491,92 @@ class ReportsController extends Controller
        return view('reports.iframe_tgmmembers')->with('data',$data);
     }
 
+    public function exportPdfTGMMembers($lang,Request $request){
+        
+        $month_year = $request->input('month_year');
+        $company_id = $request->input('company_id');
+        $branch_id = $request->input('branch_id');
+        $member_auto_id = $request->input('member_auto_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+        $from_member_no = $request->input('from_member_no');
+        $to_member_no = $request->input('to_member_no');
+        $status_id = $request->input('status_id');
+        
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+            $fulldate = $month_year;
+         // $fmmm_date = explode("/",$month_year);
+          //$monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          //$yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+          //$fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
+        }
+
+        $members = DB::table('mon_sub_member as mm')->select('com.id  as companyid')
+               ->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
+               ->leftjoin('mon_sub as ms','ms.id','=','mc.MonthlySubscriptionId')
+               ->leftjoin('membership as m','mm.MemberCode','=','m.id')
+               ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+               ->leftjoin('company as com','com.id','=','mc.CompanyCode');
+               //->leftjoin('status as s','s.id','=','mm.StatusId')
+               //->leftjoin('designation as d','m.designation_id','=','d.id')
+              // ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
+
+               if($status_id!=''){
+                    $members = $members->where('mm.StatusId','=',$status_id);
+               }else{
+                    $members = $members->where('mm.StatusId','<=',2);
+               }
+              
+                if($monthno!="" && $yearno!=""){
+                  $members = $members->where(DB::raw('month(ms.`Date`)'),'=',$monthno);
+                  $members = $members->where(DB::raw('year(ms.`Date`)'),'=',$yearno);
+                }
+                if($branch_id!=""){
+                    $members = $members->where('m.branch_id','=',$branch_id);
+                }else{
+                    if($unionbranch_id!=''){
+                         $members = $members->where('cb.union_branch_id','=',$unionbranch_id);
+                         $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+                    }
+                    if($company_id!=""){
+                        $members = $members->where('mc.CompanyCode','=',$company_id);
+                    }
+                }
+                if($member_auto_id!=""){
+                    $members = $members->where('m.id','=',$member_auto_id);
+                }
+                if($from_member_no!="" && $to_member_no!=""){
+                    $members = $members->where('m.member_number','>=',$from_member_no);
+                    $members = $members->where('m.member_number','<=',$to_member_no);
+               }
+               $members = $members->groupBy('com.id');
+               $members = $members->orderBy('com.company_name','asc');
+              // $members = $members->orderBy('m.name','asc');
+            $members = $members->get();
+
+
+        $data['member_view'] = $members;
+        $data['month_year'] = $fulldate;
+
+        $data['company_id'] = $company_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name;
+        $data['branch_id'] = $branch_id;
+        $data['member_auto_id'] = $member_auto_id;
+        $data['from_member_no']=$from_member_no;
+        $data['to_member_no']=$to_member_no;
+        $data['status_id']=$status_id;
+ 
+         $dataarr = ['data' => $data ];
+ 
+         $pdf = PDF::loadView('reports.pdf_tgmmembers', $dataarr)->setPaper('a4', 'landscape'); 
+         return $pdf->download('tgmmembers_report.pdf');
+         //return view('reports.pdf_members_new')->with('data',$data);  
+     }
+
     public function exportExcelPGMMembers($lang,Request $request){
         $status_id = $request->input('status_id');
         $statusname = 'status';
