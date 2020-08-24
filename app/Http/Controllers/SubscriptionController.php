@@ -858,7 +858,15 @@ class SubscriptionController extends CommonController
 										   
        $data['company_subscription_list'] = isset($data['company_subscription_list']) ? $data['company_subscription_list'] : [];      
       // dd($data['company_subscription_list']);
-       $data['tot_count'] = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->count();
+
+       $tot_count = DB::table('mon_sub_member as sm')->select('sm.id as mid')
+        ->leftjoin('mon_sub_company as sc', 'sc.id' ,'=','sm.MonthlySubscriptionCompanyId')
+        ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
+        ->leftjoin('membership as m','m.id','=','sm.MemberCode')
+        ->where('ms.Date','!=',DB::raw('DATE_FORMAT(m.doj, "%Y-%m-01")'))
+        ->where('sc.id','=',$company_auto_id)->count();
+
+       $data['tot_count'] = $tot_count;
        $data['non_updated_rows'] = MonthlySubscriptionMember::where('MonthlySubscriptionCompanyId','=',$company_auto_id)->where('update_status','=',0)->count();
        $data['designation_view'] = Designation::where('status','=','1')->get();  
        $data['race_view'] = Race::where('status','=','1')->get();

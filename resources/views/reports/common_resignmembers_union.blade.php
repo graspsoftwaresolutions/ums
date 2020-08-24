@@ -9,17 +9,17 @@
 				<td colspan="2" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
-				<td colspan="3" rowspan="2">	
+				<td colspan="2" rowspan="2">	
 					</br>
 				</td>
 			</tr>
 			<tr class="">
 				
-				<td colspan="7" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="6" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">UNION BRANCH MEMBER REPORT</span>
 				</td>
@@ -34,10 +34,10 @@
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
 				</td>
-				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="6" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
 				</td>
-				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
 					
 					@if($data['unionbranch_id']!='')
 						<br>
@@ -85,7 +85,7 @@
 				@endphp
 			@endforeach
 			<tr>
-				<td colspan="12" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td colspan="10" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		
