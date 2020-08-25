@@ -31,6 +31,7 @@ class UpdateMemberStatus implements ShouldQueue
      */
     public function __construct($company_auto_id)
     {
+
         $this->sub_company_id = $company_auto_id;
         $companydata =  DB::table('mon_sub_company as sc')->where('id', '=',$company_auto_id)->first();
         $company_id = $companydata->CompanyCode;
@@ -39,6 +40,7 @@ class UpdateMemberStatus implements ShouldQueue
         $this->company_id = $company_id;
         $subs_date =  DB::table('mon_sub as s')->where('id', '=',$MonthlySubscriptionId)->pluck('Date')->first();
         $this->subs_date = $subs_date;
+
     }
 
     /**
@@ -51,6 +53,7 @@ class UpdateMemberStatus implements ShouldQueue
         $company_auto_id = $this->sub_company_id;
         $app_from_date = strtotime('2019-06-01');
         $file_upload_date = strtotime($this->subs_date);
+
         if($app_from_date<=$file_upload_date){
              //Log::useFiles(storage_path().'/logs/status-updates.log');
             Log::channel('customlog')->info('status updates started for company id: '.$company_auto_id);
@@ -71,6 +74,7 @@ class UpdateMemberStatus implements ShouldQueue
                 if($last_pay_date!='' && $last_pay_date!='0000-00-00'){
                     $to = Carbon::createFromFormat('Y-m-d H:s:i', $last_pay_date.' 3:30:34');
                     $from = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
+
                     $strlastpaid = strtotime($last_pay_date);
                     $diff_in_months = 0;
                     if($strlastpaid<$file_upload_date){
@@ -78,8 +82,12 @@ class UpdateMemberStatus implements ShouldQueue
                     }
 
                     $member_doj = CacheMembers::getDojbyMemberCode($member->id);
-                    $to_one = Carbon::createFromFormat('Y-m-01 H:s:i', $member_doj.' 3:30:34');
+                    $member_doj_first = date('Y-m-01',strtotime($member_doj));
+                    
+                    $to_one = Carbon::createFromFormat('Y-m-01 H:s:i', $member_doj_first.' 3:30:34');
+                   // dd($member_doj_first);
                     $from_one = Carbon::createFromFormat('Y-m-d H:s:i', $upload_date.' 3:30:34');
+
 
                     $strdoj = strtotime($member_doj);
                    
