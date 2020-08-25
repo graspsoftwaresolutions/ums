@@ -1899,7 +1899,7 @@ class SubscriptionController extends CommonController
 			$member_id = $sub_member->MemberCode;
 			$cur_date = DB::table("mon_sub_company as mc")->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')->where('mc.id','=',$sub_company_id)->pluck('Date')->first();
 			//$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
-			$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->count();
+			$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $cur_date)->where('MEMBER_CODE', '=', $member_id)->where('arrear_status','!=',1)->count();
             $memberdata =DB::table("membership")->where('id','=',$member_id)->first();
             //$member_doj = $memberdata->doj;
 			// $total_subs_obj = DB::table('mon_sub_member')->select(DB::raw('IFNULL(sum("Amount"),0) as amount'))
@@ -1988,7 +1988,7 @@ class SubscriptionController extends CommonController
 
 			if($mont_count>0){
                
-                $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->update($monthend_data);
+                $statuss = DB::table($this->membermonthendstatus_table)->where('StatusMonth', $cur_date)->where('MEMBER_CODE', $member_id)->where('arrear_status','!=',1)->update($monthend_data);
                 //$queries = DB::getQueryLog();
                // dd($statuss);
 			}else{
@@ -3669,7 +3669,7 @@ class SubscriptionController extends CommonController
 		//$data['memberids']=$memberids;
         $data['company_view']=[];
         $data['branch_view']=[];
-        $data['sub_company'] = '';
+        $data['sub_company'] = 1;
         $data['unionbranch_id'] = '';
 	
 		return view('subscription.discrepancy')->with('data', $data);
