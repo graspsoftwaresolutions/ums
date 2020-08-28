@@ -239,7 +239,7 @@
 			@foreach($company_members as $member)
 			@php
 				//dd($member);
-				$lastpaiddate = CommonHelper::getLastPaidDate($member->member_id);
+				//$lastpaiddate = CommonHelper::getLastPaidDate($member->member_id);
 				$salary = $member->salary==Null ? 0 : $member->salary;
 
 
@@ -543,15 +543,41 @@
 				if($member->STATUS_CODE==4){
 					$total_resigned++;
 				}
-				$lastpaydate = CommonHelper::getLastPayDate($member->member_id, $member->pay_date);
-				$lastpaydate = $lastpaydate!='' ? date('M Y',strtotime($lastpaydate)) : '';
+				if($data['variation']==6){
+					if($this_paid!='*'){
+						$lastpaiddate = $data['month_year_full'];
+					}else if($last_amt!='*'){
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
+					}else if($second_amt!='*'){
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
+					}else if($third_amt!='*'){
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
+					}else if($fourth_amt!='*'){
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -4 Month'));
+					}else{
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -5 Month'));
+					}
+				
+				}else{
+					if($this_paid!='*'){
+						$lastpaiddate = $data['month_year_full'];
+					}else if($last_amt!='*'){
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
+					}else if($second_amt!='*'){
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
+					}else{
+						$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
+					}
+				}
+				//$lastpaydate = CommonHelper::getLastPayDate($member->member_id, $member->pay_date);
+				//$lastpaydate = $lastpaydate!='' ? date('M Y',strtotime($lastpaydate)) : '';
 			@endphp
 			<tr style="font-weight:bold;">
 				<td>{{$count}}</td>
 				<td>{{ $member->member_number }}</td>
 				<td>{{ $member->name }}</td>
 				<td>{{ date('M Y',strtotime($member->doj)) }}</td>
-				<td>{{ date('M Y',strtotime($data['month_year_full'])) }}</td>
+				<td>{{ date('M Y',strtotime($lastpaiddate)) }}</td>
 				<td>{{ $payable_subs }}</td>
 				@if($data['variation']==6)
 				<td>

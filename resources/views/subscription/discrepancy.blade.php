@@ -439,7 +439,7 @@
 				<tbody class="tbody-area">
 					@foreach($companymembers as $member)
 					@php
-						$lastpaiddate = CommonHelper::getLastPaidDate($member->member_id);
+						//$lastpaiddate = CommonHelper::getLastPaidDate($member->member_id);
 						$salary = $member->salary==Null ? 0 : $member->salary;
 				
 						$bf_amt = 3;
@@ -736,6 +736,32 @@
 						
 						if($member->STATUS_CODE==4){
 							$total_resigned++;
+						}
+						if($data['variationtype']==6){
+							if($this_paid!='*'){
+								$lastpaiddate = $data['month_year_full'];
+							}else if($last_amt!='*'){
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
+							}else if($second_amt!='*'){
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
+							}else if($third_amt!='*'){
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
+							}else if($fourth_amt!='*'){
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -4 Month'));
+							}else{
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -5 Month'));
+							}
+						
+						}else{
+							if($this_paid!='*'){
+								$lastpaiddate = $data['month_year_full'];
+							}else if($last_amt!='*'){
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
+							}else if($second_amt!='*'){
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
+							}else{
+								$lastpaiddate = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
+							}
 						}
 					@endphp
 					<tr style="font-weight:bold;">
