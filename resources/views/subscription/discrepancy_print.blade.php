@@ -131,6 +131,13 @@
 	$overall_total_last_dec=0;
 	$overall_total_this_dec=0;
 	$overall_no_diff=0;
+	
+	$overall_no_diff_fifth=0;
+	$overall_no_diff_fourth=0;
+	$overall_no_diff_third=0;
+	$overall_no_diff_second=0;
+	$overall_no_diff_last=0;
+	$overall_no_diff_this=0;
 	//dd($memberslist);
 	@endphp
 	
@@ -559,6 +566,7 @@
 								
 							}else{
 								echo '-';
+								$no_diff_fifth++;
 							}
 						}else{
 							echo $fifth_paid_status;
@@ -578,6 +586,7 @@
 								}
 							}else{
 								echo '-';
+								$no_diff_fourth++;
 							}
 						}else{
 							echo $fourth_paid_status;
@@ -597,6 +606,7 @@
 								}
 							}else{
 								echo '-';
+								$no_diff_third++;
 							}
 						}else{
 							echo $third_paid_status;
@@ -615,6 +625,7 @@
 								}
 							}else{
 								echo '-';
+								$no_diff_second++;
 							}
 						}else{
 							echo $second_paid_status;
@@ -633,6 +644,7 @@
 								}
 							}else{
 								echo '-';
+								$no_diff_last++;
 							}
 						}else{
 							echo $last_paid_status;
@@ -652,6 +664,7 @@
 								}
 							}else{
 								echo '-';
+								$no_diff_this++;
 							}
 						}else{
 							echo $this_paid;
@@ -707,13 +720,13 @@
 			<tr class="table-title">
 				<td colspan="6" style="text-align:right;">No Difference</td>
 				@if($data['variation']==6)
-				<td>{{$no_diff}}</td>
-				<td>{{$no_diff}}</td>
+				<td>{{$no_diff_fifth}}</td>
+				<td>{{$no_diff_fourth}}</td>
 				@endif
-				<td>{{$no_diff}}</td>
-				<td>{{$no_diff}}</td>
-				<td>{{$no_diff}}</td>
-				<td>{{$no_diff}}</td>
+				<td>{{$no_diff_third}}</td>
+				<td>{{$no_diff_second}}</td>
+				<td>{{$no_diff_last}}</td>
+				<td>{{$no_diff_this}}</td>
 				<td></td>
 				
 			</tr>
@@ -781,6 +794,13 @@
 		$overall_total_last_dec+=$total_last_dec;
 		$overall_total_this_dec+=$total_this_dec;
 		$overall_no_diff+=$no_diff;
+
+		$overall_no_diff_this+=$no_diff_this;
+		$overall_no_diff_last+=$no_diff_last;
+		$overall_no_diff_second+=$no_diff_second;
+		$overall_no_diff_third+=$no_diff_third;
+		$overall_no_diff_fourth+=$no_diff_fourth;
+		$overall_no_diff_fifth+=$no_diff_fifth;
 	@endphp
 	@endforeach
 	</br>
@@ -844,14 +864,13 @@
 			<tr style="font-weight:bold;">
 				<td colspan="6" style="text-align:right;">No Difference</td>
 				@if($data['variation']==6)
-				<td>{{$overall_no_diff}}</td>
-				<td>{{$overall_no_diff}}</td>
+				<td>{{$overall_no_diff_fifth}}</td>
+				<td>{{$overall_no_diff_fourth}}</td>
 				@endif
-				<td>{{$overall_no_diff}}</td>
-				<td>{{$overall_no_diff}}</td>
-				<td>{{$overall_no_diff}}</td>
-				
-				<td>{{$overall_no_diff}}</td>
+				<td>{{$overall_no_diff_third}}</td>
+				<td>{{$overall_no_diff_second}}</td>
+				<td>{{$overall_no_diff_last}}</td>
+				<td>{{$overall_no_diff_this}}</td>
 				
 			</tr>
 			<!--tr style="font-weight:bold;">

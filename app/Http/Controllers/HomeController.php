@@ -15,6 +15,7 @@ use App\Model\Status;
 use App\Model\Irc;
 use App\User;
 use DB;
+use App\Jobs\UpdateMemberStatus;
 
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -482,6 +483,14 @@ class HomeController extends Controller
     }
 	
 	public function userList(){
-		return Excel::download(new UsersExport, 'users.xlsx');
+		$data = [ 'branch_id' => 1, 'union_id' => 1];
+		return Excel::download(new UsersExport($data), 'users.xlsx');
 	}
+	public function UpdateMemberStatus(Request $request){
+        $company_auto_id = 326;
+        //Artisan::call('queue:work --tries=1 --timeout=10000');
+        UpdateMemberStatus::dispatch($company_auto_id);
+        Artisan::call('queue:work --tries=1 --timeout=20000');
+        echo 1;
+    }
 }

@@ -14,6 +14,14 @@ use PHPExcel_Worksheet_Drawing;
 
 class UsersExport implements ShouldAutoSize, WithEvents
 {
+    protected $request_data;
+
+    public function __construct($requestinfo)
+    {   //dd($requestinfo);
+         $this->branch_id = $requestinfo['branch_id'];
+         $this->union_id = $requestinfo['union_id'];
+    }
+
     public function collection()
     {
         return User::where('id','<=',5)->get();
@@ -56,6 +64,11 @@ class UsersExport implements ShouldAutoSize, WithEvents
                 $drawing->setWidth(50);
                 $drawing->setHeight(50);
 
+                //$colWidth = $drawing->getColumnDimension('C')->getWidth();
+                
+                $drawing->setOffsetX('250');
+                //$drawing->setOffsetY(0);
+
                 $drawing->setCoordinates('A1');
 
                 $drawing->setWorksheet($event->sheet->getDelegate());
@@ -72,7 +85,15 @@ class UsersExport implements ShouldAutoSize, WithEvents
                 $event->sheet->getDelegate()->mergeCells('D1:M1');
                 $event->sheet->getDelegate()->mergeCells('D2:M2');
                 $event->sheet->getDelegate()->mergeCells('A1:C2');
+                $event->sheet->getColumnDimension('A')->setAutoSize(true);
+                $event->sheet->getColumnDimension('B')->setAutoSize(true);
                 $event->sheet->getColumnDimension('C')->setAutoSize(true);
+                $event->sheet->getColumnDimension('D')->setAutoSize(true);
+                $event->sheet->getColumnDimension('E')->setAutoSize(true);
+                $event->sheet->getColumnDimension('F')->setAutoSize(true);
+                $event->sheet->getColumnDimension('G')->setAutoSize(true);
+                $event->sheet->getColumnDimension('H')->setAutoSize(true);
+                $event->sheet->getColumnDimension('I')->setAutoSize(true);
 ;
 
                 $styleArray3 = array(
@@ -84,6 +105,19 @@ class UsersExport implements ShouldAutoSize, WithEvents
                 $event->sheet->getDelegate()->getStyle('A1:M3')->applyFromArray($styleArray3);
 
                 $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
+                $rowno = 4;
+                $datarow = 0;
+                if($this->branch_id==1){
+                    $event->sheet->setCellValue('A'.$rowno, 'Bank: AFFN');
+                    $rowno = $rowno+1;
+                    $datarow++;
+                }
+
+                if($this->union_id==1){
+                    $event->sheet->setCellValue('A'.$rowno, 'Union: IPOH');
+                    $rowno = $rowno+1;
+                    $datarow++;
+                }
 
                 $headerdata = [
                     'SNO',
@@ -95,17 +129,19 @@ class UsersExport implements ShouldAutoSize, WithEvents
                     'DOJ',
                 ];
 
-                $event->sheet->getDelegate()->fromArray($headerdata, null, 'A4', true);
+                $event->sheet->getDelegate()->fromArray($headerdata, null, 'A'.$rowno, true);
+                $rowno = $rowno+1;
 
-
-                $userdata = Membership::where('id','>=',5000)->where('id','<=',5100)->get();
-                $row = 'A5';
-                $rowno = 5;
+                $userdata = Membership::where('id','>=',5000)->where('id','<=',5030)->get();
+                
+                $slno = 1;
                 foreach ($userdata as $key => $value) {
-                    $data = [ $rowno-4,$value->member_number,$value->name,$value->new_ic,$value->old_ic];
+                    
+                    $data = [ $slno,$value->member_number,$value->name,$value->new_ic,$value->old_ic];
                     $row = 'A'.($rowno);
                     $event->sheet->getDelegate()->fromArray($data, null, $row, true);
                     $rowno++;
+                    $slno++;
                 }
 
                 
