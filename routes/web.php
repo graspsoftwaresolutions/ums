@@ -426,6 +426,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('export-pdf-subscription-bank','ReportsController@exportPdfSubscriptionBank')->name('variationbank.pdf');
 	Route::get('export-pdf-due','ReportsController@exportPdfDue')->name('due.pdf');
 
+	Route::get('export-pdf-monthly-summary','ReportsController@exportPdfMonthlySummary')->name('monthsummary.pdf');
+	Route::get('export-pdf-yearly-summary','ReportsController@exportPdfYearlySummary')->name('yearsummary.pdf');
+	Route::get('export-pdf-yearly-statistics','ReportsController@exportPdfYearlyStatistics')->name('yearstatistics.pdf');
+
 	Route::get('sub-arrearupdate/{parameter}','SubscriptionController@UpdateArrear')->name('subs.arrearview');
 	Route::post('update_subscription_rows','SubscriptionController@saveArrearRows')->name('subscription.udatearrearrows');
 	Route::get('editarrearrecords/{parameter}','SubscriptionController@arrearRecordEdit')->name('subscription.editarrearrecords');
@@ -671,3 +675,4 @@ Route::get('user-list', 'HomeController@userList')->name('user-list');
 
 // Export User Table Data In Excel With Set Header
 Route::get('user-export/{parameter}', 'HomeController@exportUserData')->name('user-export');
+Route::get('change-memberstatus','HomeController@UpdateMemberStatus');

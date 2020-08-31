@@ -4785,5 +4785,65 @@ class ReportsController extends Controller
         
     }
 
+    public function exportPdfMonthlySummary($lang,Request $request){
+
+        $month_year = $request->input('month_year');
+
+        $unionbranch_name = '';
+        $monthno = '';
+        $yearno = '';
+        $fulldate = date('Y-m-01');
+        if($month_year!=""){
+          
+          $fulldate = $month_year;
+        }
+
+        $data['month_year'] = $fulldate;
+        $data['company_id'] = '';
+        $data['branch_id'] = '';
+        $data['unionbranch_id'] = '';
+        $data['member_view'] = [];
+
+        $dataarr = ['data' => $data ];
+ 
+        $pdf = PDF::loadView('reports.pdf_monthly_summary', $dataarr)->setPaper('a4', 'portrait'); 
+        return $pdf->download('monthly_summary_report.pdf');
+    }
+
+    public function exportPdfYearlySummary($lang,Request $request){
+
+        $from_year = $request->input('from_year');
+        $to_year = $request->input('to_year');
+
+        $unionbranch_name = '';
+    
+
+        $data['from_year'] = $from_year;
+        $data['to_year'] = $to_year;
+
+        $dataarr = ['data' => $data ];
+ 
+        $pdf = PDF::loadView('reports.pdf_yearly_summary', $dataarr)->setPaper('a4', 'portrait'); 
+        return $pdf->download('yearly_summary_report.pdf');
+    }
+
+    public function exportPdfYearlyStatistics($lang,Request $request){
+
+        $from_year = $request->input('from_year');
+        $to_year = $request->input('to_year');
+
+        $unionbranch_name = '';
+    
+
+        $data['from_year'] = $from_year;
+        $data['to_year'] = $to_year;
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+
+        $dataarr = ['data' => $data ];
+ 
+        $pdf = PDF::loadView('reports.pdf_yearly_statistics', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('yearly_statistics_report.pdf');
+    }
+
 }
 

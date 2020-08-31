@@ -62,7 +62,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0cm ;}
+		    body {margin: 0.2cm 0.5cm ;}
 			.export-button{
 				display:none !important;
 			}
@@ -82,7 +82,7 @@
 
 			#page-length-option td, #page-length-option th {
 			  //border: 1px solid #ddd !important;
-			  padding: 5px;
+			  padding: 7px 8px;
 			}
 			html {
 			    font-family: 'Muli', sans-serif;
@@ -147,6 +147,12 @@
 		.tbody-area{
 			color:#000;
 		}
+		table tr.page-break{
+		  page-break-after:always !important;
+		} 
+		table.page-break{
+		  page-break-after:always !important;
+		}
 	</style>
 	<script type="text/javascript">
 		
@@ -159,6 +165,7 @@
 			<tr>
 				@php 
 					$searchfilters = '&from_year='.$data['from_year'].'&to_year='.$data['to_year'];
+					$setwidth=1;
 				@endphp
 				<td width="20%"></td>
 				<td width="10%"></td>
@@ -167,7 +174,7 @@
 				</td>
 				<td width="20%">	
 					<a href="#" class="export-button btn btn-sm exportToExcel " style="background:#227849;"><i class="material-icons">explicit</i></a>
-					<a href="{{ url(app()->getLocale().'/export-pdf-branch-status?offset=0'.$searchfilters) }}" class="export-button btn btn-sm hide" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
+					<a href="{{ url(app()->getLocale().'/export-pdf-yearly-statistics?offset=0'.$searchfilters) }}" class="export-button btn btn-sm " style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>
 				</td>
 			</tr>

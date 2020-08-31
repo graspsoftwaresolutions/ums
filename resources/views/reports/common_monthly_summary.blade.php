@@ -20,7 +20,9 @@
 				
 				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }} SUMMARY REPORT</span>
+					<p style="margin-top:0;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }} SUMMARY REPORT</p>
+					
+					</br>
 				</td>
 				
 			</tr>
@@ -31,7 +33,8 @@
 		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
-					<table style="width: 90% !important;margin: 0 5%;">
+					</br>
+					<table class="pdf-align" style="width: 90%;margin: 0 5%;">
 						<thead>
 							<tr class="">
 								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>
@@ -121,7 +124,7 @@
 		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
-					<table style="width: 90% !important;margin: 0 5%;">
+					<table class="pdf-align" style="width: 90% ;margin: 0 5%;">
 						<thead>
 							<tr class="">
 								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>

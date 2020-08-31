@@ -31,16 +31,16 @@
 		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
-					<table style="width: 90% !important;margin: 0 5%;">
+					<table class="pdf-align" style="width: 90% ;margin: 0 5%;">
 						<thead>
 							<tr class="">
-								<th style="border : 1px solid #988989;" width="150px;" align="center">YEAR</th>
-								<th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('PKP')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('IPOH')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('KLSP')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('SMJ')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('KELANTAN')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="250px;" >{{__('NEW MEMBERS RECRUITED')}}</th>
+								<th style="border : 1px solid #988989;" @if(isset($setwidth)) width="150px;" @endif align="center">YEAR</th>
+								<th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('PKP')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('IPOH')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('KLSP')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('SMJ')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('KELANTAN')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="250px;" @endif >{{__('NEW MEMBERS RECRUITED')}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -121,16 +121,16 @@
 		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
-					<table style="width: 90% !important;margin: 0 5%;">
+					<table class="pdf-align" style="width: 90% ;margin: 0 5%;">
 						<thead>
 							<tr class="">
-								<th style="border : 1px solid #988989;" width="150px;" align="center">YEAR</th>
-								<th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('PROMOTED')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('RESIGNED')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('RETIRED')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('VSS')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="100px;" >{{__('OTHERS')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="250px;" >{{__('TOTAL')}}</th>
+								<th style="border : 1px solid #988989;" @if(isset($setwidth)) width="150px;" @endif align="center">YEAR</th>
+								<th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('PROMOTED')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('RESIGNED')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('RETIRED')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('VSS')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="100px;" @endif >{{__('OTHERS')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" @if(isset($setwidth)) width="250px;" @endif >{{__('TOTAL')}}</th>
 							</tr>
 						</thead>
 						<tbody>
