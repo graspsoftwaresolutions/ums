@@ -75,7 +75,7 @@
             </li>
             @endif
 
-              <!-- <li id="sal_updates_sidebar_li_id" class=""><a id="sal_updates_sidebar_a_id" class="collapsible-body hide" href="{{ route('salary.upload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Update Salary') }}</span></a></li> -->
+             
             
           @endif
            @if($user_role=='data-entry')
@@ -113,6 +113,7 @@
           @if($user_role=='union' || $user_role=='union-branch')
 			     <li id="subvariation_sidebar_li_id" class=""><a id="subvariation_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.month',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Variation') }}</span></a></li>
            <li id="subvariationdis_sidebar_li_id" class=""><a id="subvariationdis_sidebar_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.discrepancy',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Subscription Discrepancy') }}</span></a></li>
+           <li id="subupsalary_sidebar_li_id" class=""><a id="subupsalary_sidebar_a_id" class="collapsible-body " href="{{ route('upload.salary',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Upload Salary') }}</span></a></li>
 			     <li id="subsarrear_sidebar_li_id" class=""><a id="subarrear_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.arrearentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Arrear Entry') }}</span></a></li>
            <li id="subsadvance_sidebar_li_id" class=""><a id="subsadvance_sidebar_a_id" class="collapsible-body " href="{{ route('subscription.advanceentry',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Advance Payment') }}</span></a></li>
           @endif

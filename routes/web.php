@@ -514,6 +514,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get_bankmembers','MembershipController@getBankMembersList')->name('bank.members');
 	Route::post('upload_salary','MembershipController@saveSalary')->name('salary.save');
 
+	Route::get('subssalary_upload','SubscriptionController@SubsSalaryUpload')->name('upload.salary');
+	Route::get('salary-download','SubscriptionController@downloadSalary')->name('salary.download');
+
+
 	Route::get('get_memberssalaries','MembershipController@getBankMembersSalaries')->name('bank.salaries');
 	Route::get('get-salary-list-inc','MembershipController@getMembersIncrements')->name('salary.increments');
 
@@ -546,6 +550,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get_salarymembers','MembershipController@getSalaryMembersList')->name('salary.members');
 
 	Route::post('update_salary','MembershipController@updateSalary')->name('salary.update');
+	Route::post('subssalary_update','SubscriptionController@SubsSalaryUpdate')->name('subssalary.update');
 	//Route::get('export-excel-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
 
 	Route::get('advance-report','ReportsController@AdvanceReport')->name('reports.advance');
