@@ -55,6 +55,8 @@ use Facades\App\Repository\CacheMembers;
 use DateTime;
 use App\Imports\SubsheetImport;
 
+use App\Exports\DiscrepancyExport;
+
 
 
 class SubscriptionController extends CommonController
@@ -3869,6 +3871,13 @@ class SubscriptionController extends CommonController
             //dd($pdf);
         }
     }
+
+    public function DiscrepancyExcel($lang, Request $request){ // discrepancy excel
+        $s = new DiscrepancyExport($request->all());
+       
+        $file_name = 'discrepancy_report';
+        return Excel::download($s, $file_name.'.xlsx');
+    }
     
     public function DiscripancyUpdate(Request $request, $lang)
     {
@@ -4929,13 +4938,14 @@ class SubscriptionController extends CommonController
         $data['inctypes'] = DB::table('increment_types')->get();
         return view('subscription.salary_fileupload')->with('data', $data);
     }
-    public function downloadSalary($lang){
-        return response()->download(storage_path("app/subscription/salary.xlsx"));
+    public function downloadSalaryFile($lang){
+        return "app/subscription/salary2.xlsx";
+        //return response()->download(storage_path("app/subscription/salary2.xlsx"));
     }
 
     public function SubsSalaryUpdate($lang, Request $request){
         ini_set('memory_limit', -1);
-        ini_set('max_execution_time', '3000');
+        ini_set('max_execution_time', '5000');
          $rules = array(
                         'file' => 'required|mimes:xls,xlsx',
                     );
@@ -4972,20 +4982,73 @@ class SubscriptionController extends CommonController
                          $subsdata = (new SubsheetImport)->toArray('storage/app/salary/'.$file_name.'.xlsx');
                          $firstrow = $subsdata[0][0];
                         
-                        if($firstrow[0]!='Sno' || $firstrow[1]!='MemberID' || $firstrow[2]!='Name' || $firstrow[3]!='NRIC' || $firstrow[4]!='Amount'){
+                        if($firstrow[0]!='Sno' || $firstrow[1]!='MemberID' || $firstrow[2]!='Name' || $firstrow[3]!='Variation Amount'){
                             return  redirect('en/subscription')->with('error', 'Wrong excel sheet');
                         }
                         $firstsheet = $subsdata[0];
-                        //dd($subsdata[0]);
+                        //dd($firstsheet);
                         //echo '<pre>';
                         for ($i=1; $i < count($firstsheet); $i++) { 
                             if($firstsheet[$i][1]!=''){
                                 $memberno = $firstsheet[$i][1];
                                 $membername = $firstsheet[$i][2];
-                                $memberic = $firstsheet[$i][3];
-                                $subsamt = $firstsheet[$i][4];
+                                $memberic = '';
+                                $varianceamt = $firstsheet[$i][3];
+                                //$subsamt = $firstsheet[$i][4];
 
                                 $memberid = DB::table('membership as m')->select('m.id')->where('m.member_number', '=', $memberno)->pluck('m.id')->first();
+                                $salary = DB::table('membership as m')->select('m.salary')->where('m.member_number', '=', $memberno)->pluck('m.salary')->first();
+
+                                $updated_salary = CommonHelper::getIncrementValue($memberid,$form_date,$form_date);
+                                
+                                $addonsalary = 0;
+                               
+                                
+                                if(!empty($updated_salary)){
+                                    //dd($updated_salary);
+                                    $newbasicsal = $salary;
+                                    foreach($updated_salary as $key => $upsalary){
+
+                                        if($upsalary->date==$form_date){
+                                            if($upsalary->increment_type_id==4){
+                                                $addonsalary -= $upsalary->additional_amt;
+                                            }else{
+                                                $addonsalary += $upsalary->additional_amt;
+                                            }
+                                        
+                                            if($key==0){
+                                                $newbasicsal = $upsalary->basic_salary;
+                                            }
+                                            
+                                        }else{
+                                            if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
+                                                if($upsalary->increment_type_id==4){
+                                                    $addonsalary -= $upsalary->additional_amt;
+                                                }else{
+                                                    $addonsalary += $upsalary->additional_amt;
+                                                }
+
+                                                if($key==0){
+                                                    $newbasicsal = $upsalary->basic_salary;
+                                                }
+                                               
+                                            }
+                                        }
+                                        
+                                    }
+                                    $newsalary = $newbasicsal+$addonsalary;
+
+                                    $total_subs = ($newsalary*1)/100;
+                                    $payable_subs = $total_subs;
+
+                                    //$payable_subs = number_format($total_subs,2,".","");
+
+                                }else{
+                                    $total_subs = ($salary*1)/100;
+                                    $payable_subs = $total_subs;
+                                }
+
+                                $subsamt = $payable_subs+$varianceamt;
                                 
                                 if($subsamt!=''){
                                     $subssal = $subsamt*100;

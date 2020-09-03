@@ -515,7 +515,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('upload_salary','MembershipController@saveSalary')->name('salary.save');
 
 	Route::get('subssalary_upload','SubscriptionController@SubsSalaryUpload')->name('upload.salary');
-	Route::get('salary-download','SubscriptionController@downloadSalary')->name('salary.download');
+	Route::get('salary-download','SubscriptionController@downloadSalaryFile')->name('salary.download');
 
 
 	Route::get('get_memberssalaries','MembershipController@getBankMembersSalaries')->name('bank.salaries');
@@ -526,6 +526,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update_discrepancy','SubscriptionController@DiscripancyUpdate')->name('discrepancy.update');
 
 	Route::get('discrepancy-print','SubscriptionController@DiscrepancyPrint')->name('discrepancy.print');
+	Route::get('discrepancy-excel','SubscriptionController@DiscrepancyExcel')->name('discrepancy.excel');
 
 	Route::get('clean-state','MembershipController@ListStateMembers')->name('cleaning.state');
 	Route::post('clean-state','MembershipController@UpdateStateCity')->name('state.cleaning');

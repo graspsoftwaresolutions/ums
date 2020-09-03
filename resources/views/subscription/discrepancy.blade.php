@@ -255,6 +255,8 @@
 						<div class="right">
 							<a id="printdiscrepancy" class="btn waves-effect waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/discrepancy-print?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-effect waves-light hide" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=') }}"style="padding-right:10px;">{{__('PDF')}}</a>
+
+							<a id="exceldiscrepancy" class="btn waves-effect waves-light cyan orange " href="{{ URL::to(app()->getLocale().'/discrepancy-excel?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Excel')}}</a>
 						</div>
 						</h4>
 					</div>

@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="col s2 m6 l6 ">
                                     
-                                    <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('salary.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
+                                    <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ asset('storage/app/subscription/salary.xlsx') }}">{{__('Download Sample')}}</a>
                                 </div>
                             </div>
                             @include('includes.messages')
