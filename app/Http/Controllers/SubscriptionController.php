@@ -3958,6 +3958,7 @@ class SubscriptionController extends CommonController
                                         $insertdata['additional_amt'] = $additional_amt;
                                         $insertdata['summary'] = $others;
                                         $insertdata['created_by'] = Auth::user()->id;
+                                        $insertdata['created_at'] = date('Y-m-d h:i:s');
 
                                         $savesal = DB::table('salary_updations')->insert($insertdata);
 
@@ -4002,6 +4003,7 @@ class SubscriptionController extends CommonController
                                         $insertdata['additional_amt'] = $dec_amt;
                                         $insertdata['summary'] = $others;
                                         $insertdata['created_by'] = Auth::user()->id;
+                                        $insertdata['created_at'] = date('Y-m-d h:i:s');
 
                                         $savesal = DB::table('salary_updations')->insert($insertdata);
                                         //dd($savesal);
@@ -4033,6 +4035,7 @@ class SubscriptionController extends CommonController
                                         $insertdata['additional_amt'] = $additional_amt;
                                         $insertdata['summary'] = $others;
                                         $insertdata['created_by'] = Auth::user()->id;
+                                        $insertdata['created_at'] = date('Y-m-d h:i:s');
 
                                         $savesal = DB::table('salary_updations')->insert($insertdata);
                                         
@@ -5098,6 +5101,7 @@ class SubscriptionController extends CommonController
                                                 $insertdata['additional_amt'] = $additional_amt;
                                                 $insertdata['summary'] = $others;
                                                 $insertdata['created_by'] = Auth::user()->id;
+                                                $insertdata['created_at'] = date('Y-m-d h:i:s');
 
                                                 $savesal = DB::table('salary_updations')->insert($insertdata);
 
@@ -5142,6 +5146,7 @@ class SubscriptionController extends CommonController
                                                 $insertdata['additional_amt'] = $dec_amt;
                                                 $insertdata['summary'] = $others;
                                                 $insertdata['created_by'] = Auth::user()->id;
+                                                $insertdata['created_at'] = date('Y-m-d h:i:s');
 
                                                 $savesal = DB::table('salary_updations')->insert($insertdata);
                                                 //dd($savesal);
@@ -5173,6 +5178,7 @@ class SubscriptionController extends CommonController
                                                 $insertdata['additional_amt'] = $additional_amt;
                                                 $insertdata['summary'] = $others;
                                                 $insertdata['created_by'] = Auth::user()->id;
+                                                $insertdata['created_at'] = date('Y-m-d h:i:s');
 
                                                 $savesal = DB::table('salary_updations')->insert($insertdata);
                                                 
