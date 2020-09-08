@@ -101,9 +101,7 @@ class SubscriptionController extends CommonController
 
         // }else if($user_role=='company-branch'){
 
-        // }
-
-        
+        // }        
         
         $data['member_stat'] = $status_all;
         $data['approval_status'] = DB::table('mon_sub_match_table as mt')
@@ -122,7 +120,6 @@ class SubscriptionController extends CommonController
        
         $data = [];
         //$data['company_list'] = $company_list;
-       
         
         return view('subscription.sub_company_list')->with('data', $data);
     }
@@ -372,7 +369,6 @@ class SubscriptionController extends CommonController
 				$memberdata = [];
 			   
 			    $subscription_new_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.new_ic)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
-			
 				
 				/* $new_nric_exists=0;
                 if (in_array($nric, $arr_new_ic))
@@ -446,7 +442,6 @@ class SubscriptionController extends CommonController
                 }else{
                     $subMemberMatch->save();
                 }
-               
               
                 $upstatus=1;
                 if($up_sub_member ==1){
@@ -699,7 +694,6 @@ class SubscriptionController extends CommonController
 						
 					}
                 }
-
                
                 if( $upstatus==1){
                     $updata = ['update_status' => 1,'approval_status' => $approval_status];
@@ -1155,7 +1149,6 @@ class SubscriptionController extends CommonController
     //Arrear 
     public function arrearentryIndex()
     {
-        
         return view('subscription.arrear_entry');
     }
     public function arrearentryAdd()
@@ -1443,7 +1436,6 @@ class SubscriptionController extends CommonController
                     $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID;
                     $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION;
                 }
-              
                 
                 $monthend_datas = [
                             'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
@@ -1497,7 +1489,6 @@ class SubscriptionController extends CommonController
                 ];
                 $arrear_upstatus = DB::table('arrear_entry')->where('id', '=', $arrear_id)->update($arrear_data);
             }
-           
             
         }
 
@@ -1698,10 +1689,8 @@ class SubscriptionController extends CommonController
 
            $total_members_data = DB::select(DB::raw('SELECT member.id FROM `mon_sub_member_match` as mm left join `mon_sub_member` as m on m.id=mm.mon_sub_member_id left join mon_sub_company as sc on sc.id=m.MonthlySubscriptionCompanyId left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join company as c on `c`.`id` = `sc`.`CompanyCode` left join status as s on `s`.`id` = `m`.`StatusId`  WHERE mm.match_id="'.$approval_status.'" '.$cond.' AND `sm`.`Date`="'.$defaultdate.'" AND `c`.`id` IN ('.$company_str_List.') AND ( m.approval_status = 0 OR m.approval_status  IS NULL )'));
            
-
            $count_members_data =count($total_members_data);
 		  
-		   
            $data['member'] = $members_data;
            $data['status_type'] = 2;
            $data['status'] = $approval_status;
@@ -2431,7 +2420,6 @@ class SubscriptionController extends CommonController
 
             }
             
-
             $enc_id = Crypt::encrypt($sub_data->MonthlySubscriptionCompanyId); 
             return redirect(URL::to('/'.app()->getLocale().'/scan-subscription/'.$enc_id))->with('message', 'Subscription updated Successfully');
         }
@@ -2534,8 +2522,6 @@ class SubscriptionController extends CommonController
                 DB::table($this->membermonthendstatus_table)->insert($monthend_data);
             }
         }
-        
-         
 
             $subscription_amount = $request->input('subscription_amount');
             
@@ -2718,7 +2704,6 @@ class SubscriptionController extends CommonController
                         ->pluck('ms.LASTPAYMENTDATE')
                         ->first();
                     }
-                
                     
                     $monthend_datas = [
                                 'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
@@ -2770,7 +2755,6 @@ class SubscriptionController extends CommonController
                 }
                 
             }
-       
         
         Log::channel('historychangelog')->info('-----------------------------');
         Log::channel('historychangelog')->info('member id= '.$member_id.'&member_number='.$memberdata->member_number.'&name='.$memberdata->name);
@@ -2783,8 +2767,6 @@ class SubscriptionController extends CommonController
         }else{
             return redirect($lang.'/clean-membership')->with('message','History Updated Successfully!!');
         }
-        
-
        
     }
 
@@ -2793,7 +2775,6 @@ class SubscriptionController extends CommonController
         $user_id = Auth::user()->id;
         $member_id = Membership::where('user_id','=',$user_id)->first();
         $id = $member_id->id;
-
                                             
         $data['to_date'] = date('Y-m-01');
         $data['member_id'] = $id;
@@ -3058,7 +3039,6 @@ class SubscriptionController extends CommonController
                     $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID;
                     $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION;
                 }
-              
                 
                 $monthend_datas = [
                             'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
@@ -3133,9 +3113,7 @@ class SubscriptionController extends CommonController
             
         }
 
-
         return redirect($lang.'/sub-arrearentry')->with('message','Arrear Entry Updated Successfully!!');
-
        
     }
 
@@ -3271,9 +3249,7 @@ class SubscriptionController extends CommonController
     {
         $company_auto_id = Crypt::decrypt($id);
         $data['company_auto_id'] = $company_auto_id;
-        $status_all = Status::where('status','=',1)->get();  
-
-       
+        $status_all = Status::where('status','=',1)->get();         
 
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
@@ -3342,12 +3318,6 @@ class SubscriptionController extends CommonController
 
             $data['matched_amount'] = $matchedamt-$misbankamt;
             //return $data['matched_amount'] ;
-
-            
-
-            //dd($members_amt);
-
-            
 
             if($user_role=='company'){
                 $company_id = DB::table('company_branch as cb')->select('cb.company_id')
@@ -3960,6 +3930,7 @@ class SubscriptionController extends CommonController
                             }
 
                             $newincsalary = $salary;
+                            $newsalary = 0;
 
                             if($inctype<=3){
 
@@ -4068,6 +4039,7 @@ class SubscriptionController extends CommonController
                                     }
                                 //}
                             }
+                            //print_r($memberid);
                             if($newincsalary==$newsalary){
                                 DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary, 'last_update' => $form_datefull]);
                             }else{
@@ -4945,7 +4917,7 @@ class SubscriptionController extends CommonController
 
     public function SubsSalaryUpdate($lang, Request $request){
         ini_set('memory_limit', -1);
-        ini_set('max_execution_time', '5000');
+        ini_set('max_execution_time', '8000');
          $rules = array(
                         'file' => 'required|mimes:xls,xlsx',
                     );
