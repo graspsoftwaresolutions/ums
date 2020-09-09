@@ -15,6 +15,7 @@ use App\Model\Status;
 use App\Model\Irc;
 use App\User;
 use DB;
+use Artisan;
 use App\Jobs\UpdateMemberStatus;
 
 use App\Exports\UsersExport;
@@ -487,7 +488,7 @@ class HomeController extends Controller
 		return Excel::download(new UsersExport($data), 'users.xlsx');
 	}
 	public function UpdateMemberStatus(Request $request){
-        $company_auto_id = 326;
+        $company_auto_id = 403;
         //Artisan::call('queue:work --tries=1 --timeout=10000');
         UpdateMemberStatus::dispatch($company_auto_id);
         Artisan::call('queue:work --tries=1 --timeout=20000');
