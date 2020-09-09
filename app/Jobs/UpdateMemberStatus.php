@@ -13,6 +13,7 @@ use Log;
 use Facades\App\Repository\CacheMembers;
 use Carbon\Carbon;
 use App\Model\Membership;
+use App\Helpers\CommonHelper;
 
 
 
@@ -78,7 +79,8 @@ class UpdateMemberStatus implements ShouldQueue
                     $strlastpaid = strtotime($last_pay_date);
                     $diff_in_months = 0;
                     if($strlastpaid<$file_upload_date){
-                        $diff_in_months = $to->diffInMonths($from);
+                       // $diff_in_months = $to->diffInMonths($from);
+						$diff_in_months = CommonHelper::GetMonthsNewCount($last_pay_date,$upload_date);
                     }
 
                     $member_doj = CacheMembers::getDojbyMemberCode($member->id);
@@ -94,7 +96,8 @@ class UpdateMemberStatus implements ShouldQueue
                     
                     $diff_in_months_one = 0;
                     if($strdoj<$file_upload_date){
-                        $diff_in_months_one = $to_one->diffInMonths($from_one);
+                       // $diff_in_months_one = $to_one->diffInMonths($from_one);
+						$diff_in_months_one = CommonHelper::GetMonthsNewCount($member_doj_first,$upload_date);
                     }
                     
                     //if($member->id==25439){
@@ -119,7 +122,8 @@ class UpdateMemberStatus implements ShouldQueue
                         $savedata = Membership::where('id',$member->id)->where('status_id','!=',3)->update($updata);
 
                         $last_month = date('Y-m-01',strtotime($upload_date.' -1 Month'));
-                        $statuss = DB::table('membermonthendstatus')->where('StatusMonth', '>=', $last_month)->where('MEMBER_CODE', $member->id)->where('TOTALMONTHSDUE','>=',13)->update(['STATUS_CODE'=>3]);
+                        $statuss = DB::table('membermonthendstatus')->where('StatusMonth', '>', $last_month)->where('MEMBER_CODE', $member->id)->where('TOTALMONTHSDUE','>=',13)->update(['STATUS_CODE'=>3]);
+						DB::table('membermonthendstatus')->where('StatusMonth', '=', $upload_date)->where('MEMBER_CODE', $member->id)->where('TOTAL_MONTHS', 0)->where('TOTALMONTHSDUE','>=',13)->delete();
 
                     }
                 }
