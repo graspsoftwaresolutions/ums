@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use App\Exports\takafulMemberExport;
 use App\Exports\StatusMemberExport;
 use App\Exports\StatusPGMMemberExport;
+use App\Exports\HalfshareExport;
 
 class ReportsController extends Controller
 {
@@ -74,9 +75,7 @@ class ReportsController extends Controller
         $data['status_id']=$status_id;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        
-
-       
+               
         // $members = DB::table('company_branch as c')->select('s.status_name','c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name')
         //         ->join('membership as m','c.id','=','m.branch_id')
         //         ->leftjoin('company as com','com.id','=','c.company_id')
@@ -407,7 +406,6 @@ class ReportsController extends Controller
         $user_id = Auth::user()->id; 
         $union_branch_id ='';
         $unionbranch_name='';
-       
         
         $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbf as contribution','rs.insuranceamount as insuranceamount',DB::raw("ifnull(rs.`accbenefit`,0) AS benifit"),DB::raw("ifnull(rs.`amount`,0) AS total"),'rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
@@ -723,7 +721,6 @@ class ReportsController extends Controller
            $members = $members->orderBy('m.member_number','asc');
               
           $members = $members->get();
-        //echo json_encode($members);
         $data['member_view'] = $members;
         $data['from_date'] = $fromdate;
         $data['to_date'] = $todate;
@@ -819,7 +816,6 @@ class ReportsController extends Controller
         return $pdf->download('resign_union_members_report.pdf');
     }
 
-
     // public function membersResignReportLoadMore($lang,Request $request){
     //     //echo "hii";die;
     //     $offset = $request->input('offset');
@@ -860,7 +856,6 @@ class ReportsController extends Controller
     //           if($resign_reason!=""){
     //             $members = $members->where('rs.reason_code','=',$resign_reason);
     //           }
-             
               
     //       $members = $members->get();
     //     //echo json_encode($members);
@@ -916,8 +911,7 @@ class ReportsController extends Controller
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $yearno = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         }
-		//return $monthno;
-		//return $yearno;
+		
 		$data['data_limit']=$this->limit;
 		$company_view = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
@@ -964,7 +958,6 @@ class ReportsController extends Controller
         $yearno = '';
         $fulldate = date('Y-m-01');
         if($month_year!=""){
-         // $fmmm_date = explode("/",$month_year);
           $monthno = date('m',strtotime($month_year));
           $yearno = date('Y',strtotime($month_year));
           $fulldate = date('Y-m-01',strtotime($month_year));
@@ -989,9 +982,6 @@ class ReportsController extends Controller
         $data['company_id']= $company_id;
         $data['offset']='';
 
-        //return view('reports.pdf_variation_bank')->with('data',$data);
-       
-
         $dataarr = ['data' => $data ];
 
         $pdf = PDF::loadView('reports.pdf_variation_bank', $dataarr)->setPaper('a4', 'landscape'); 
@@ -1015,11 +1005,6 @@ class ReportsController extends Controller
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
         $unionbranch_name = '';
-        // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
-        // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
-        // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
-        // $total_fee = $entry_fee+$ins_fee;
         
         $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
         ,'m.gender'
@@ -1062,13 +1047,7 @@ class ReportsController extends Controller
         $data['from_member_no']='';
         $data['to_member_no']='';
         $data['offset']=0;
-        //$request->session()->regenerate();
-        //print_r($request->session()->get('members-new-result'));
-        //$request->session()->push('members-new-result', $data);
-        //Session::put('members-new-result', $data);
-        //dd($request->session()->get('members-new-result'));
-        //dd($data);
-        //dd($request->session()->get('members-new-result'));
+        
         return view('reports.iframe_new_member')->with('data',$data);  
     }
     public function membersNewReportMore(Request $request){
@@ -1087,12 +1066,7 @@ class ReportsController extends Controller
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name = '';
-        // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
-
-        // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
-        // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
-        // $total_fee = $entry_fee+$ins_fee;
+       
           $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
           ,'m.gender'
           ,'com.company_name'
@@ -1120,9 +1094,7 @@ class ReportsController extends Controller
                       $members = $members->where('c.company_id','=',$company_id);
                   }
               }
-            //   if($join_type==2){
-            //     $members = $members->where('m.old_member_number','!=',NULL);
-            //   }
+            
              if($join_type!=''){
                 if($join_type==1){
                     $members = $members->where('m.old_member_number','=',NULL);
@@ -1186,12 +1158,7 @@ class ReportsController extends Controller
         $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
         $unionbranch_name = '';
-        // $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
-
-        // $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
-        // $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
-        // $ins_fee = $ins_fee=='' ? 0 : $ins_fee;
-        // $total_fee = $entry_fee+$ins_fee;
+        
           $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
           ,'m.gender'
           ,'com.company_name'
@@ -1219,9 +1186,7 @@ class ReportsController extends Controller
                       $members = $members->where('c.company_id','=',$company_id);
                   }
               }
-            //   if($join_type==2){
-            //     $members = $members->where('m.old_member_number','!=',NULL);
-            //   }
+            
             if($join_type!=""){
               if($join_type==1){
                 $members = $members->where('m.old_member_number','=',NULL);
@@ -1354,7 +1319,6 @@ class ReportsController extends Controller
         $data['branch_id'] = '';
         $data['data_limit'] = '';
         $data['member_count'] =  $members; 
-		      
 		
         return view('reports.iframe_statistics')->with('data',$data); 
     }
@@ -1388,9 +1352,7 @@ class ReportsController extends Controller
             $toyearno = date('Y');
             $tofulldate = date('Y-m-01');
         }
-        //$monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-        //$datefilter = date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-        
+               
         if($branch_id!="" || $company_id!= '' || $unionbranch_id!= ''){
             
             if($branch_id!=""){
@@ -1421,8 +1383,6 @@ class ReportsController extends Controller
             $members = CacheMonthEnd::getMonthEndCompaniesByDate($fromfulldate,$tofulldate);
             //dd($members);
         }
-
-        //dd($members);
        
         $data['member_count'] =   $members;
         
@@ -1969,6 +1929,13 @@ class ReportsController extends Controller
 
     }
 
+    public function exportExcelHalfshare($lang,Request $request){
+        $s = new HalfshareExport($request->all());
+       
+        $file_name = 'halfshare_members';
+        return Excel::download($s, $file_name.'.xlsx');
+    }
+
     public function exportPdfHalfShare($lang,Request $request){
         $offset = $request->input('offset');
         $month_year = $request->input('month_year');
@@ -1998,7 +1965,6 @@ class ReportsController extends Controller
         })
         ->groupBy('cb.union_branch_id')
         ->get();  
-       
        
         $data['half_share'] = $half_s;
         $data['offset']=0;
@@ -2237,18 +2203,7 @@ class ReportsController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
        
         $members = CacheMonthEnd::getPremiumMonthEndByDate(date('Y-m-01'));
-        // $members = DB::table($this->membermonthendstatus_table.' as ms')
-        //         ->select('c.id as cid','m.name','m.id as id','m.branch_id as branch_id', 'm.member_number','com.company_name','m.old_ic','m.new_ic','c.branch_name as branch_name','com.short_code as companycode','ms.SUBSCRIPTION_AMOUNT','ms.BF_AMOUNT',DB::raw("ifnull(ms.`SUBSCRIPTION_AMOUNT`+ms.`BF_AMOUNT`,0) AS total"))
-        //         ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
-        //         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
-        //         ->leftjoin('company as com','com.id','=','c.company_id');
-      
-        // $members = $members->where(DB::raw('month(m.`doj`)'),'=',date('m'));
-        // $members = $members->where(DB::raw('year(m.`doj`)'),'=',date('Y'));
-                  
-		// $members = $members->get();
-		
-		//dd($members);
+        
         $data['member_view'] = $members;
         $data['month_year'] = date('Y-m-01');
         $data['unionbranch_name'] = ''; 
@@ -2514,7 +2469,6 @@ class ReportsController extends Controller
             }
             $data['head_company_view'][$mkey]['company_list'] = $res_company;
             //$company_str_List ='';
-           
         }
        
         $data['month_year']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
@@ -2589,7 +2543,6 @@ class ReportsController extends Controller
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['month_year_full']=$fulldate;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
-       
 
         $dataarr = ['data' => $data ];
 
@@ -2607,10 +2560,7 @@ class ReportsController extends Controller
 		$yearno = date('Y');
 
         $members = CacheMonthEnd::getMonthEndUnionByDate(date('Y-m-01'),date('Y-m-01'));
-       // dd( $members);
-		
-		//dd($members);
-       
+             
 		$data['from_month_year'] = date('Y-m-01');
         $data['to_month_year'] = date('Y-m-01');
 		$data['unionbranch_id'] = '';
@@ -2827,9 +2777,6 @@ class ReportsController extends Controller
             $members = CacheMonthEnd::getMonthEndDueFilter($month_year,$company_id,$unionbranch_id);
         }
 
-        //return view('reports.pdf_variation_bank')->with('data',$data);
-       
-
         //$dataarr = ['data' => $data ];
         $data['month_year'] = $month_year;
         $data['member_view'] = $members;
@@ -2958,12 +2905,7 @@ class ReportsController extends Controller
             }
             }
          }
-        // if($join_type==2){
-        //     $members = $members->where('m.old_member_number','!=',NULL);
-        // }
-        // if($join_type==1){
-        //     $members = $members->where('m.old_member_number','=',NULL);
-        // }
+        
         if($member_auto_id!=""){
             $members = $members->where('m.id','=',$member_auto_id);
         }
@@ -3047,12 +2989,7 @@ class ReportsController extends Controller
             }
             }
          }
-        // if($join_type==2){
-        //     $members = $members->where('m.old_member_number','!=',NULL);
-        // }
-        // if($join_type==1){
-        //     $members = $members->where('m.old_member_number','=',NULL);
-        // }
+        
         if($member_auto_id!=""){
             $members = $members->where('m.id','=',$member_auto_id);
         }
@@ -3078,12 +3015,7 @@ class ReportsController extends Controller
         $data['from_member_no']=$from_member_no;
         $data['to_member_no']=$to_member_no;
         $data['offset']=$offset;
-        // return $request->all();
-        //  $data = $request->session()->get('unionmembers-new-result');
-        // if($data==null){
-        //     return 'Please press search to get pdf';
-        // }
- 
+        
          $dataarr = ['data' => $data ];
  
          $pdf = PDF::loadView('reports.pdf_members_union_new', $dataarr)->setPaper('a4', 'landscape'); 
@@ -3383,8 +3315,6 @@ class ReportsController extends Controller
         $data['hq_amount'] = $this->hq_amount;
         $data['bf_amount'] = $this->bf_amount;
 
-        //$request->session()->put('advance-new-result', $data);
-
         return view('reports.iframe_advice_new')->with('data',$data);  
     }
 
@@ -3583,7 +3513,6 @@ class ReportsController extends Controller
         $data['member_auto_id'] = '';
         $data['date_type'] = '';
         $data['month_year'] = $fulldate;
-        
 
         return view('reports.iframe_branch_status')->with('data',$data);  
     }
@@ -3640,7 +3569,6 @@ class ReportsController extends Controller
                     $members = $members->where('m.id','=',$member_auto_id);
                 }
             $members = $members->get();
-       
        
         $data['member_view'] = $members;
         $data['company_id'] = $company_id;
@@ -3948,7 +3876,6 @@ class ReportsController extends Controller
                 $duehistory = array_reverse($duehistory);
             }
            
-           // dd($duehistory);
             $duemonth='';
             $slno = 0;
             $last_month ='';
@@ -4024,7 +3951,6 @@ class ReportsController extends Controller
                 
                 // //dd($newstring);
                 
-                
                 $last_month = $cur_month;
                 $slno++;
             }
@@ -4050,16 +3976,7 @@ class ReportsController extends Controller
     }
 
     public function exportTakafulExcel(Request $request){
-        // Excel::create('Filename', function($excel) {
-
-        //     $excel->sheet('Sheetname', function($sheet) {
         
-        //         // Sheet manipulation
-        
-        //     });
-        
-        // })->export('xls');
-      //  return Excel::download(new takafulMemberExport, 'users.xlsx');
         $s = new takafulMemberExport($request->all());
        
         $file_name = 'takaful_members';
@@ -4112,7 +4029,6 @@ class ReportsController extends Controller
         ->where('h.transfer_date', '>=',"{$fromdate}")->where('h.transfer_date', '<=',"{$todate}")
         ->get();
        
-       
         $data['member_view'] = $members;
         $data['from_date']=$fromdate;
         $data['to_date']=$todate;
@@ -4140,7 +4056,6 @@ class ReportsController extends Controller
         ->where('h.transfer_date', '>=',"{$fromdate}")->where('h.transfer_date', '<=',"{$todate}")
         ->get();
        
-       
         $data['member_view'] = $members;
         $data['from_date']=$fromdate;
         $data['to_date']=$todate;
@@ -4162,7 +4077,6 @@ class ReportsController extends Controller
        ->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id')
        ->where('h.transfer_date', '>=',"{$fromdate}")->where('h.transfer_date', '<=',"{$todate}")
        ->get();
-      
       
        $data['member_view'] = $members;
        $data['from_date']=$fromdate;
@@ -4202,10 +4116,6 @@ class ReportsController extends Controller
                 ->leftjoin('company as com','com.id','=','cb.company_id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id');
-                // ->where(function($query) use ($branch_id){
-                //     $query->orWhere('m.status_id','=',1)
-                //         ->orWhere('m.status_id', '=',2);
-                // });
                
                 if($branch_id!=""){
                     $members = $members->where('m.branch_id','=',$branch_id);
@@ -4363,8 +4273,6 @@ class ReportsController extends Controller
         }
         $members = $members->pluck('memberid');
 
-      
-
         $membersone = DB::table('membermonthendstatus as mm')->select('mm.MEMBER_CODE as memberid')
         ->leftjoin('membership as m','mm.MEMBER_CODE','=','m.id')
         ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
@@ -4373,17 +4281,13 @@ class ReportsController extends Controller
         ->where('mm.TOTAL_MONTHS','>',1)
         ->where('mm.TOTALMONTHSDUE','<',0);
         $membersone = $membersone->groupBY('mm.MEMBER_CODE')->get();
-
-       
        
         $data['member_view'] = $membersone;
         $data['company_id'] = $company_id;
         $data['unionbranch_id'] = $unionbranch_id;
         $data['branch_id'] = $branch_id;
         $data['unionbranch_name'] = $unionbranch_name;
-        $data['member_auto_id'] = '';
-       
-        
+        $data['member_auto_id'] = '';        
 
         return view('reports.iframe_advance')->with('data',$data);  
     }
@@ -4508,10 +4412,6 @@ class ReportsController extends Controller
         $fulldate = date('Y-m-01');
         if($month_year!=""){
             $fulldate = $month_year;
-         // $fmmm_date = explode("/",$month_year);
-          //$monthno = date('m',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-          //$yearno = date('Y',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
-          //$fulldate = date('Y-m-01',strtotime('01-'.$fmmm_date[0].$fmmm_date[1]));
         }
 
         $members = DB::table('mon_sub_member as mm')->select('com.id  as companyid')
@@ -4816,7 +4716,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;

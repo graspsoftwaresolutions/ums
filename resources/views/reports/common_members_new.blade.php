@@ -59,17 +59,17 @@
 			<tr class="" style="" width="100%">
 				<th style="border: 1px solid #988989 !important;" width="2%">S.NO</th>
 				<th style="border: 1px solid #988989 !important;">MEMBER NAME</th>
-				<th style="border: 1px solid #988989 !important;" width="2%">M/NO</th>
-				<th style="border: 1px solid #988989 !important;" width="3%" class="nric_no">NRIC</th>
-				<th  style="border: 1px solid #988989 !important;">GENDER</th>
-				<th  style="border: 1px solid #988989 !important;">BANK</th>
+				<th style="border: 1px solid #988989 !important;" width="3%">M/NO</th>
+				<th style="border: 1px solid #988989 !important;" width="4%" class="nric_no">NRIC</th>
+				<th  style="border: 1px solid #988989 !important;" width="4%">GENDER</th>
+				<th  style="border: 1px solid #988989 !important;" width="5%">BANK</th>
 				<th  style="border: 1px solid #988989 !important;">BANK BRANCH</th>
-				<th  style="border: 1px solid #988989 !important;">TYPE</th>
-				<th style="border: 1px solid #988989 !important;">DOJ</th>
-				<th  style="border: 1px solid #988989 !important;">LEVY</th>
-				<th style="border: 1px solid #988989 !important;">TDF</th>
-				<th style="border: 1px solid #988989 !important;">AMOUNT</th>
-				<th  style="border: 1px solid #988989 !important;">LAST PAID DATE</th>
+				<th  style="border: 1px solid #988989 !important;" width="3%">TYPE</th>
+				<th style="border: 1px solid #988989 !important;" width="9%">DOJ</th>
+				<th  style="border: 1px solid #988989 !important;" width="3%">LEVY</th>
+				<th style="border: 1px solid #988989 !important;" width="3%">TDF</th>
+				<th style="border: 1px solid #988989 !important;" width="4%">AMOUNT</th>
+				<th  style="border: 1px solid #988989 !important;" width="9%">LAST PAID DATE</th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">

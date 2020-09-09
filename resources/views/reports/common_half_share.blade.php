@@ -1,17 +1,26 @@
-@php $logo = CommonHelper::getLogo(); @endphp
+@php 
+	$logo = CommonHelper::getLogo();
+	if(!isset($data['nobreak'])){
+		$imgurl = asset('public/assets/images/logo/'.$logo);
+	}else{
+		$imgurl = public_path('/assets/images/logo/logo.png');
+	}	
+@endphp
 	<table id="page-length-option" class="display" width="100%">
 		<thead>
 			<tr class="">
 				
 				<td colspan="1" rowspan="2" style="text-align:right">
-					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
+					<img src="{{ $imgurl }}" height="50" />
 				</td>
 				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
-				<td colspan="1" rowspan="2">	
+				<td colspan="1" rowspan="2">
+					@if(!isset($data['nobreak']))	
 					</br>
+					@endif
 				</td>
 			</tr>
 			<tr class="">
@@ -29,7 +38,9 @@
 				</td>
 				<td colspan="6" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;font-weight: bold;">
 					NATIONAL UNION BANK OF EMPLOYEES
+					@if(!isset($data['nobreak']))	
 					</br>
+					@endif
 					SUMMARY REMITTANCE MONTH : {{ strtoupper(date('M Y',strtotime($data['month_year']))) }} 
 				</td>
 				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
@@ -112,7 +123,9 @@
 		</tbody>
 		
 	</table>
-	<br>
+	@if(!isset($data['nobreak']))	
+	</br>
+	@endif
 	@php
 		$struckoffmembers = CommonHelper::getStatusMembers($data['month_year'],3);
 		$slno=1;
@@ -151,7 +164,9 @@
 		</tbody>
 	</table>
 	@endif
-	<br>
+	@if(!isset($data['nobreak']))	
+	</br>
+	@endif
 	@php
 		$resignmembers = CommonHelper::getStatusMembers($data['month_year'],4);
 		$slno=1;
@@ -194,22 +209,27 @@
 	@foreach($unionlist as $union)
 		@php
 			$data_half_share = CommonHelper::getUnionBranchHalfshare($union->id,$data['month_year']);
-
+			$unionno = '';
+			if(isset($data['nobreak'])){
+				$unionno = $union->id;
+			}
 		@endphp
 		@if(count($data_half_share)>0)
-		<table id="page-length-option" class="display" width="100%">
+		<table id="page-length-option{{$unionno}}" class="display" width="100%">
 		<thead>
 			<tr class="">
 				
 				<td colspan="1" rowspan="2" style="text-align:right">
-					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
+					<img src="{{ $imgurl }}" height="50" />
 				</td>
 				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
 				<td colspan="1" rowspan="2">	
+					@if(!isset($data['nobreak']))	
 					</br>
+					@endif
 				</td>
 			</tr>
 			<tr class="">
@@ -223,12 +243,16 @@
 			<tr class="" style="font-weight: bold;">
 			
 				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">
+					@if(!isset($data['nobreak']))	
 					</br>
+					@endif
 					UNION BRANCH : {{ CommonHelper::getUnionBranchName($union->id) }}
 				</td>
 				<td colspan="6" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;font-weight: bold;">
 					NATIONAL UNION BANK OF EMPLOYEES
+					@if(!isset($data['nobreak']))	
 					</br>
+					@endif
 					SUMMARY REMITTANCE MONTH : {{ strtoupper(date('M Y',strtotime($data['month_year']))) }} 
 				</td>
 				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
