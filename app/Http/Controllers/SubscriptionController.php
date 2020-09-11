@@ -5206,4 +5206,13 @@ class SubscriptionController extends CommonController
                 }
             }
     }
+
+     public function LatestSubsSalaryUpload(){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $data = [];
+        $data['inctypes'] = DB::table('increment_types')->get();
+        return view('subscription.latsalary_fileupload')->with('data', $data);
+    }
 }

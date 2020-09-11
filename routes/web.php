@@ -517,6 +517,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('upload_salary','MembershipController@saveSalary')->name('salary.save');
 
 	Route::get('subssalary_upload','SubscriptionController@SubsSalaryUpload')->name('upload.salary');
+	Route::get('latestsalary_upload','SubscriptionController@LatestSubsSalaryUpload')->name('latestupload.salary');
 	Route::get('salary-download','SubscriptionController@downloadSalaryFile')->name('salary.download');
 
 
@@ -554,6 +555,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::post('update_salary','MembershipController@updateSalary')->name('salary.update');
 	Route::post('subssalary_update','SubscriptionController@SubsSalaryUpdate')->name('subssalary.update');
+	Route::post('latestsalary_update','SubscriptionAjaxController@LatestSubsSalaryUpdate')->name('latestsubssalary.update');
 	//Route::get('export-excel-designation','ReportsController@exportPdfDesignation')->name('designation.pdf');
 
 	Route::get('advance-report','ReportsController@AdvanceReport')->name('reports.advance');

@@ -47,6 +47,7 @@ use Auth;
 use Artisan;
 use App\Jobs\UpdateMemberStatus;
 use Log;
+use App\Imports\SubsheetImport;
 
 
 
@@ -1697,5 +1698,84 @@ class SubscriptionAjaxController extends CommonController
                         ->first();
 
         echo json_encode($advanceres);
+    }
+
+    public function LatestSubsSalaryUpdate($lang, Request $request){
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', '8000');
+         $rules = array(
+                    'file' => 'required|mimes:xls,xlsx',
+                );
+        $validator = Validator::make(Input::all(), $rules);
+        if($validator->fails())
+        {
+            //return 1;
+            return back()->withErrors($validator);
+        }
+        else
+        {
+            $inctype = $request->input('types');
+            $salcount = 1; 
+            if($inctype!=null){
+                if(Input::hasFile('file')){
+                    $data['entry_date'] = $request->entry_date;
+                    $entry_date = $request->entry_date;
+
+                    $datearr = explode("/",$entry_date);  
+                    $monthname = $datearr[0];
+                    $year = $datearr[1];
+                    $full_date = date('Ymdhis',strtotime('01-'.$monthname.'-'.$year));
+
+                    $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+                    $form_datefull = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year)).' '.date('h:i:s');
+                    $others = '';
+                    
+
+                    $file_name = 'salary_'.$full_date;
+                   // $data['sub_company'] = $request->sub_company;
+                
+                    $file = $request->file('file')->storeAs('salary', $file_name.'.xlsx'  ,'local');
+
+                     $subsdata = (new SubsheetImport)->toArray('storage/app/salary/'.$file_name.'.xlsx');
+                     $firstrow = $subsdata[0][0];
+                    
+                    if($firstrow[0]!='Sno' || $firstrow[1]!='MemberID' || $firstrow[2]!='Name' || $firstrow[3]!='Variation Amount'){
+                        return  redirect('en/subscription')->with('error', 'Wrong excel sheet');
+                    }
+                    $firstsheet = $subsdata[0];
+                    $bulkedata = [];
+                    for ($i=1; $i < count($firstsheet); $i++) { 
+                        if($firstsheet[$i][1]!=''){
+                            $memberno = $firstsheet[$i][1];
+                            $membername = $firstsheet[$i][2];
+                            $memberic = '';
+                            $varianceamt = $firstsheet[$i][3];
+
+                            $insertdata = [];
+                            $insertdata['member_number'] = $memberno;
+                            $insertdata['date'] = $form_datefull;
+                            $insertdata['increment_type_id'] = $inctype;
+                            $insertdata['name'] = $membername;
+                            $insertdata['amount'] = $varianceamt;
+                            $insertdata['status'] = 0;
+                            $insertdata['created_by'] = Auth::user()->id;
+                            $insertdata['created_at'] = date('Y-m-d h:i:s');
+
+                            $bulkedata[] = $insertdata;
+
+                            //$savesal = DB::table('salary_updation_temp')->insert($insertdata);
+                        }
+                    }
+                    $savesal = DB::table('salary_updation_temp')->insert($bulkedata);
+                    //dd($bulkedata);
+                    return redirect($lang.'/latestsalary_upload')->with('message','Salary file uploaded successfully');
+
+                }else{
+                    return redirect($lang.'/latestsalary_upload')->with('message','please select file');
+                }
+            }else{
+                return redirect($lang.'/latestsalary_upload')->with('message','please select increment type');
+            }
+        }
     }
 }
