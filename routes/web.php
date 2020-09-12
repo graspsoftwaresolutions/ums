@@ -217,6 +217,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_submember_list','SubscriptionAjaxController@ajax_submember_list');
 	Route::get('scan-subscription/{parameter}','SubscriptionController@viewScanSubscriptions')->name('subscription.viewscan');
 	Route::get('process-scanning','SubscriptionController@scanSubscriptions')->name('subscription.scan');
+	Route::get('salary-scanning','SubscriptionAjaxController@scanSalary')->name('salary.scan');
 	Route::get('sub-company-members/{parameter}','SubscriptionController@companyMembers')->name('subscription.members');
 	Route::get('pending-members-details/{parameter}','SubscriptionController@pendingMembers')->name('subscription.pendingmembers');
 	Route::get('subscription-download','SubscriptionController@downloadSubscription')->name('subscription.download');
@@ -518,6 +519,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('subssalary_upload','SubscriptionController@SubsSalaryUpload')->name('upload.salary');
 	Route::get('latestsalary_upload','SubscriptionController@LatestSubsSalaryUpload')->name('latestupload.salary');
+
+	Route::get('latestsalary_process','SubscriptionAjaxController@LatestSubsSalaryProcess')->name('latestprocess.salary');
 	Route::get('salary-download','SubscriptionController@downloadSalaryFile')->name('salary.download');
 
 

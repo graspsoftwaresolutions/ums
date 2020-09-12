@@ -1768,7 +1768,7 @@ class SubscriptionAjaxController extends CommonController
                     }
                     $savesal = DB::table('salary_updation_temp')->insert($bulkedata);
                     //dd($bulkedata);
-                    return redirect($lang.'/latestsalary_upload')->with('message','Salary file uploaded successfully');
+                    return redirect($lang.'/latestsalary_process?date='.strtotime($form_datefull).'&inctype='.$inctype)->with('message','Salary file uploaded successfully');
 
                 }else{
                     return redirect($lang.'/latestsalary_upload')->with('message','please select file');
@@ -1777,5 +1777,286 @@ class SubscriptionAjaxController extends CommonController
                 return redirect($lang.'/latestsalary_upload')->with('message','please select increment type');
             }
         }
+    }
+
+    public function LatestSubsSalaryProcess(Request $request,$lang){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $data = [];
+        
+        $date = $request->input('date');
+        $inctype = $request->input('inctype');
+        $updatedate = date('Y-m-01',$date);
+
+        $memberrowcount = DB::table('salary_updation_temp')->where('date','=',$updatedate)->where('increment_type_id','=',$inctype)->count();
+
+        $data['row_count'] = $memberrowcount;
+        $data['month_year'] = $updatedate;
+        $data['inctype'] = $inctype;
+        $data['monthstring'] = $date;
+
+        if($data['row_count']==0){
+            return redirect($lang.'/latestsalary_upload')->with('message','Finished scanning');
+        }
+
+        return view('subscription.scan-salary')->with('data',$data);
+    }
+
+    public function scanSalary(Request $request,$lang){
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', '3000');
+
+        $date = $request->input('monthstring');
+        $inctype = $request->input('inctype');
+        $updatedate = date('Y-m-01',$date);
+        $limit = $request->input('limit');
+
+        $form_date = date('Y-m-d',$date);
+        $form_datefull = date('Y-m-d',$date).' '.date('h:i:s');
+        $others = '';
+
+        $return_data = ['status' => 0 ,'message' => ''];
+        if($updatedate!=""){
+            $salary_data = DB::table('salary_updation_temp')->where('date','=',$updatedate)->where('increment_type_id','=',$inctype)->limit($limit)->get();
+            foreach($salary_data as $salary){
+                $salaryid = $salary->id;
+                $memberno = $salary->member_number;
+                $membername = $salary->name;
+                $memberic = '';
+                $varianceamt = $salary->amount;
+
+                $memberid = DB::table('membership as m')->select('m.id')->where('m.member_number', '=', $memberno)->pluck('m.id')->first();
+                $salary = DB::table('membership as m')->select('m.salary')->where('m.member_number', '=', $memberno)->pluck('m.salary')->first();
+
+                $updated_salary = CommonHelper::getIncrementValue($memberid,$form_date,$form_date);
+                
+                $addonsalary = 0;
+               
+                
+                if(!empty($updated_salary)){
+                    //dd($updated_salary);
+                    $newbasicsal = $salary;
+                    foreach($updated_salary as $key => $upsalary){
+
+                        if($upsalary->date==$form_date){
+                            if($upsalary->increment_type_id==4){
+                                $addonsalary -= $upsalary->additional_amt;
+                            }else{
+                                $addonsalary += $upsalary->additional_amt;
+                            }
+                        
+                            if($key==0){
+                                $newbasicsal = $upsalary->basic_salary;
+                            }
+                            
+                        }else{
+                            if($upsalary->increment_type_id==1 || $upsalary->increment_type_id==4){
+                                if($upsalary->increment_type_id==4){
+                                    $addonsalary -= $upsalary->additional_amt;
+                                }else{
+                                    $addonsalary += $upsalary->additional_amt;
+                                }
+
+                                if($key==0){
+                                    $newbasicsal = $upsalary->basic_salary;
+                                }
+                               
+                            }
+                        }
+                        
+                    }
+                    $newsalary = $newbasicsal+$addonsalary;
+
+                    $total_subs = ($newsalary*1)/100;
+                    $payable_subs = $total_subs;
+
+                    //$payable_subs = number_format($total_subs,2,".","");
+
+                }else{
+                    $total_subs = ($salary*1)/100;
+                    $payable_subs = $total_subs;
+                }
+
+                $subsamt = $payable_subs+$varianceamt;
+                
+                if($subsamt!=''){
+                    $subssal = $subsamt*100;
+                    if($inctype!=''){
+                        $lastupdate = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                       // ->where('s.date','<',$form_date)
+                        ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
+                        ->orderBy('s.date','desc')
+                        ->pluck(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d") as date'))->first();
+                        
+
+                        $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
+                                            ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
+                                            ->orderBy('s.date','desc')
+                                            ->pluck('s.basic_salary')->first();
+                        
+                        $basicsalry = DB::table('salary_updations as s')
+                                            ->select("s.additional_amt as additions","s.increment_type_id")
+                                            ->where('s.member_id','=',$memberid)
+                                            ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$lastupdate)
+                                            ->where(function($query) use ($lastupdate){
+                                                $query->Where('s.increment_type_id','=',1)
+                                                    ->orWhere('s.increment_type_id','=',4);
+                                            })->get();
+
+                        $companyid = DB::table('membership as m')
+                                            ->select('c.company_id')
+                                            ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                                            ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
+                        if($lastupdate!=''){
+                            $lastsalary = $lastsalary=='' ? 0 : $lastsalary;
+                            if(count($basicsalry)>0){
+                                //return $basicsalry;
+                                if($basicsalry[0]->increment_type_id==1){
+                                    $salary = $lastsalary+$basicsalry[0]->additions;
+                                }else{
+                                    $salary = $lastsalary-$basicsalry[0]->additions;
+                                }
+                            }else{
+                                $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+                            }
+                          
+                            //return $salary;
+                        }else{
+                            $salary = DB::table('membership as m')->select('m.salary')->where('m.id', '=', $memberid)->pluck('m.salary')->first();
+
+                        }
+                    }
+
+                    $newincsalary = $salary;
+
+                    if($inctype<=3){
+
+                        $additional_amt = $subssal-$salary;
+
+                        if($additional_amt>0){
+                          
+                            $newsalary = $subssal;
+
+                            $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
+                            ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
+                            ->where('increment_type_id','=',$inctype)
+                            ->count();
+
+                            if($salcount==0){
+                                $insertdata = [];
+                                $insertdata['member_id'] = $memberid;
+                                $insertdata['date'] = $form_datefull;
+                                $insertdata['company_id'] = $companyid;
+                                $insertdata['increment_type_id'] = $inctype;
+                                $insertdata['amount_type'] = 1;
+                                $insertdata['basic_salary'] = $salary;
+                                $insertdata['value'] = $additional_amt;
+                                $insertdata['updated_salary'] = $newsalary;
+                                $insertdata['additional_amt'] = $additional_amt;
+                                $insertdata['summary'] = $others;
+                                $insertdata['created_by'] = Auth::user()->id;
+                                $insertdata['created_at'] = date('Y-m-d h:i:s');
+
+                                $savesal = DB::table('salary_updations')->insert($insertdata);
+
+                                if($inctype==1){
+                                    $newincsalary = $newsalary;
+                                }
+                                
+                            }
+                        }
+
+                    }else if($inctype==4){
+                       
+                        $dec_amt = $salary-$subssal;
+                        
+                      
+                        if($dec_amt>0){
+                            
+                            
+                            $newsalary = $subssal;
+
+                            $newincsalary = $newsalary;
+
+                            
+
+                            $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
+                            ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
+                            ->where('increment_type_id','=',$inctype)
+                            ->count();
+
+                           // return $salcount;
+
+                            if($salcount==0){
+                                $insertdata = [];
+                                $insertdata['member_id'] = $memberid;
+                                $insertdata['date'] = $form_datefull;
+                                $insertdata['company_id'] = $companyid;
+                                $insertdata['increment_type_id'] = $inctype;
+                                $insertdata['amount_type'] = 1;
+                                $insertdata['basic_salary'] = $salary;
+                                $insertdata['value'] = $dec_amt;
+                                $insertdata['updated_salary'] = $newsalary;
+                                $insertdata['additional_amt'] = $dec_amt;
+                                $insertdata['summary'] = $others;
+                                $insertdata['created_by'] = Auth::user()->id;
+                                $insertdata['created_at'] = date('Y-m-d h:i:s');
+
+                                $savesal = DB::table('salary_updations')->insert($insertdata);
+                                //dd($savesal);
+                                
+                            }
+                        }
+
+                    }else{
+                        $additional_amt = $subssal-$salary;
+                        //if($additional_amt>0){
+                          
+                            $newsalary = $subssal;
+
+                            $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
+                            ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
+                            ->where('increment_type_id','=',$inctype)
+                            ->count();
+
+                            if($salcount==0){
+                                $insertdata = [];
+                                $insertdata['member_id'] = $memberid;
+                                $insertdata['date'] = $form_datefull;
+                                $insertdata['company_id'] = $companyid;
+                                $insertdata['increment_type_id'] = $inctype;
+                                $insertdata['amount_type'] = 1;
+                                $insertdata['basic_salary'] = $salary;
+                                $insertdata['value'] = $additional_amt;
+                                $insertdata['updated_salary'] = $newsalary;
+                                $insertdata['additional_amt'] = $additional_amt;
+                                $insertdata['summary'] = $others;
+                                $insertdata['created_by'] = Auth::user()->id;
+                                $insertdata['created_at'] = date('Y-m-d h:i:s');
+
+                                $savesal = DB::table('salary_updations')->insert($insertdata);
+                                
+                            }
+                        //}
+                    }
+                    if($salcount==0){
+                        if($newincsalary==$newsalary){
+                            DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary, 'last_update' => $form_datefull]);
+                        }else{
+                            DB::table('membership')->where('id','=',$memberid)->update(['current_salary' => $newincsalary]);
+                        }
+                    }
+                }
+                DB::table('salary_updation_temp')->where('id','=',$salaryid)->delete();
+            }
+
+            $return_data = ['status' => 1 ,'message' => 'salary updated successfully, Redirecting to upload page...',
+            'redirect_url' =>  URL::to('/'.app()->getLocale().'/latestsalary_upload/')];
+
+        }else{
+            $return_data = ['status' => 0 ,'message' => 'Invalid data'];
+        }
+        echo json_encode($return_data);
     }
 }
