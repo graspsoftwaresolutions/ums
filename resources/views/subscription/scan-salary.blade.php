@@ -101,7 +101,7 @@
 										      
 										    </div>
 										</div>
-										<div class="col s6">
+										<div class="col s6 hide">
 											
   
 											<table width="100%">	
@@ -140,7 +140,7 @@
 											</table>
 
 										</div>
-										<div class="col s6">
+										<div class="col s6 hide">
 											@if($data['row_count']>0)
 											<table width="100%">	
 												<thead>
@@ -198,7 +198,7 @@
 
 		if(row_count>0){
 			setTimeout(function(){
-			 // jQuery( '.loading-overlay' ).show();
+			 jQuery( '.loading-overlay' ).show();
 			  ScanSalary(monthstring,inctype,0);
 			}, 1500);
 		}else{

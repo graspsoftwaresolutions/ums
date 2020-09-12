@@ -60,7 +60,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body {margin: 1 cm;}
 			.export-button{
 				display:none !important;
 			}
