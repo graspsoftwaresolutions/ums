@@ -3169,7 +3169,7 @@ class CommonHelper
        $members = $membersqry->pluck('sm.MemberCode');
       // dd($members);
 
-        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id')
+        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id','c.company_name','cb.branch_name')
                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                         ->leftjoin('membership as m','m.id','=','mm.MemberCode')
@@ -3238,7 +3238,7 @@ class CommonHelper
        $members = $membersqry->pluck('sm.MemberCode');
        // /dd($members);
 
-        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id')
+        $subscription_qry = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE','mm.NRIC as ic','mm.id as sub_member_id','c.company_name','cb.branch_name')
                         ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
                         ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                         ->leftjoin('membership as m','m.id','=','mm.MemberCode')

@@ -154,8 +154,10 @@
                                 <thead>
                                     <tr>
 										<th width="5%">{{__('S.No') }}</th>
-                                        <th width="35%">{{__('Member Name') }}</th>
-                                        <th width="15%">{{__('Member Number') }}</th>
+                                        <th width="25%">{{__('Member Name') }}</th>
+                                        <th width="10%">{{__('Member Number') }}</th>
+                                        <th width="15%">{{__('Bank') }}</th>
+                                        <th width="15%">{{__('Bank Branch') }}</th>
                                         <th width="10%">{{__('Joining') }}</th>
                                         <th>{{ date('M Y',strtotime($data['date'].' -1 Month')) }}</th>
                                         <th>{{ date('M Y',strtotime($data['date'])) }}</th>
@@ -175,6 +177,8 @@
 											<td>{{$slno}}</td>
 											<td>{{ $company->name }}</td>
 											<td>{{ $company->member_number }}</td>
+											<td>{{ $company->company_name }}</td>
+											<td>{{ $company->branch_name }}</td>
 											<td>{{ $company->doj }}</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td>0</td>
@@ -190,6 +194,8 @@
 											<td>{{$slno}}</td>
 											<td>{{ $company->name }}</td>
 											<td>{{ $company->member_number }}</td>
+											<td>{{ $company->company_name }}</td>
+											<td>{{ $company->branch_name }}</td>
 											<td>{{ $company->doj }}</td>
 											<td>0</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
@@ -255,7 +261,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-pdf-o"></i>',
 						   footer: true,
 						   exportOptions: {
-								columns: [0,1,2,3,4,5]
+								columns: [0,1,2,3,4,5,6,7]
 			                },
 			                titleAttr: 'pdf',
 							title : 'Dues List'
@@ -265,7 +271,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-excel-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4,5]
+								columns: [0,1,2,3,4,5,6,7]
 							},
 			                title : 'Dues List',
 			                titleAttr: 'excel',
@@ -275,7 +281,7 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-files-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4,5]
+								columns: [0,1,2,3,4,5,6,7]
 							},
 			                title : 'Dues List',
 			                titleAttr: 'print',
