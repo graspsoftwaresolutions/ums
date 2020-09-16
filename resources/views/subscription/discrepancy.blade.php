@@ -330,9 +330,8 @@
 		else{
 			$membertypelist = $data['branch_view'];
 		}
-		
+		echo '<pre>';
 	@endphp
-	
 		@foreach($membertypelist as $type)
 			@php
 				if($data['groupby']==3){
@@ -344,7 +343,24 @@
 				}
 				
 				$companymembers = CommonHelper::getSubscriptionBankMembers($data['groupby'], $typeidref,$data['month_year_first'],$data['month_year_full']);
-				//dd(count($companymembers));
+				print_r($companymembers);
+			@endphp
+		@endforeach
+		@php
+		dd('end');
+		@endphp
+		@foreach($membertypelist as $type)
+			@php
+				if($data['groupby']==3){
+					$typeidref = $type->branch_id;
+					$typeid = $type->branch_id;
+				}else{
+					$typeidref = $type->id;
+					$typeid = $type->id;
+				}
+				
+				$companymembers = CommonHelper::getSubscriptionBankMembers($data['groupby'], $typeidref,$data['month_year_first'],$data['month_year_full']);
+				dd(count($companymembers));
 				$count=1;
 				$total_fifth_new=0;
 				$total_fourth_new=0;
@@ -530,21 +546,21 @@
 							$payable_subs = $total_subs;
 						}
 						if($data['variationtype']==6){
-							$fifthmonth = date('Y-m-d',strtotime($data['month_year_full'].' -5 Month'));
-							$forthmonth = date('Y-m-d',strtotime($data['month_year_full'].' -4 Month'));
+							//$fifthmonth = date('Y-m-d',strtotime($data['month_year_full'].' -5 Month'));
+							//$forthmonth = date('Y-m-d',strtotime($data['month_year_full'].' -4 Month'));
 							
-							$fifth_amt = $member->pay_date == $fifthmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $fifthmonth);
-							$fourth_amt = $member->pay_date == $forthmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $forthmonth);
+							$fifth_amt = $member->pay_date == $fifth_str ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $fifth_str);
+							$fourth_amt = $member->pay_date == $fourth_str ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $fourth_str);
 						}
 						
-						$thirdmonth = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
-						$secondmonth = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
-						$lastmonth = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
+						//$thirdmonth = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
+						//$secondmonth = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
+						//$lastmonth = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
 
-						$third_amt = $member->pay_date == $thirdmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $thirdmonth);
+						$third_amt = $member->pay_date == $third_str ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $third_str);
 						//dd($third_amt);
-						$second_amt = $member->pay_date == $secondmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $secondmonth);
-						$last_amt = $member->pay_date == $lastmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $lastmonth);
+						$second_amt = $member->pay_date == $second_str ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $second_str);
+						$last_amt = $member->pay_date == $last_str ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $last_str);
 						$this_paid = $member->pay_date == $data['month_year_full'] ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id,$data['month_year_full']);
 						if($this_paid==Null || $this_paid==0){
 							$this_paid = '*';
