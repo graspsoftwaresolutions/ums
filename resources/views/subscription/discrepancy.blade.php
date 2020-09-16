@@ -330,8 +330,9 @@
 		else{
 			$membertypelist = $data['branch_view'];
 		}
-		echo '<pre>';
+		
 	@endphp
+	
 		@foreach($membertypelist as $type)
 			@php
 				if($data['groupby']==3){
@@ -343,24 +344,7 @@
 				}
 				
 				$companymembers = CommonHelper::getSubscriptionBankMembers($data['groupby'], $typeidref,$data['month_year_first'],$data['month_year_full']);
-				print_r($companymembers);
-			@endphp
-		@endforeach
-		@php
-		dd('end');
-		@endphp
-		@foreach($membertypelist as $type)
-			@php
-				if($data['groupby']==3){
-					$typeidref = $type->branch_id;
-					$typeid = $type->branch_id;
-				}else{
-					$typeidref = $type->id;
-					$typeid = $type->id;
-				}
-				
-				$companymembers = CommonHelper::getSubscriptionBankMembers($data['groupby'], $typeidref,$data['month_year_first'],$data['month_year_full']);
-				dd(count($companymembers));
+				//dd(count($companymembers));
 				$count=1;
 				$total_fifth_new=0;
 				$total_fourth_new=0;
