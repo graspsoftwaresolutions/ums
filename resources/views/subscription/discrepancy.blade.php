@@ -530,16 +530,22 @@
 							$payable_subs = $total_subs;
 						}
 						if($data['variationtype']==6){
-							$fifth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -5 Month')));
-							$fourth_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -4 Month')));
+							$fifthmonth = date('Y-m-d',strtotime($data['month_year_full'].' -5 Month'));
+							$forthmonth = date('Y-m-d',strtotime($data['month_year_full'].' -4 Month'));
+							
+							$fifth_amt = $member->pay_date == $fifthmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $fifthmonth);
+							$fourth_amt = $member->pay_date == $forthmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $forthmonth);
 						}
 						
+						$thirdmonth = date('Y-m-d',strtotime($data['month_year_full'].' -3 Month'));
+						$secondmonth = date('Y-m-d',strtotime($data['month_year_full'].' -2 Month'));
+						$lastmonth = date('Y-m-d',strtotime($data['month_year_full'].' -1 Month'));
 
-						$third_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -3 Month')));
+						$third_amt = $member->pay_date == $thirdmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $thirdmonth);
 						//dd($third_amt);
-						$second_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -2 Month')));
-						$last_amt = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, date('Y-m-d',strtotime($data['month_year_full'].' -1 Month')));
-						$this_paid = CommonHelper::getCompanyPaidSubs($typeid, $member->member_id,$data['month_year_full']);
+						$second_amt = $member->pay_date == $secondmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $secondmonth);
+						$last_amt = $member->pay_date == $lastmonth ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id, $lastmonth);
+						$this_paid = $member->pay_date == $data['month_year_full'] ? $member->SUBSCRIPTION_AMOUNT : CommonHelper::getCompanyPaidSubs($typeid, $member->member_id,$data['month_year_full']);
 						if($this_paid==Null || $this_paid==0){
 							$this_paid = '*';
 						}
@@ -768,7 +774,7 @@
 					@endphp
 					<tr style="font-weight:bold;">
 						<td><p style="margin-left: 10px; "><label><input name="memberids_{{ $typeidref }}[]" class="checkboxes_{{ $typeidref }}" value="{{ $member->member_id }}" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p></td>
-						<td>{{ $member->member_number }}</td>
+						<td>{{ $member->member_number }}/{{$member->pay_date}}/{{$member->SUBSCRIPTION_AMOUNT}}</td>
 						<td>{{ $member->name }}</td>
 						<td>{{ date('M Y',strtotime($member->doj)) }}</td>
 						<td>{{ date('M Y',strtotime($lastpaiddate)) }}</td>

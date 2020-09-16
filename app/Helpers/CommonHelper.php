@@ -4184,53 +4184,54 @@ class CommonHelper
     }
 
     public static function getSubscriptionBankMembers($typeid,$referenceid,$fromdate,$todate){
-        if($typeid==1){
-             $memberids = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
-                        ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-                        ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-                        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
-                        ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-                        //->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                        //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-                        ->where('ms.Date', '>=', $fromdate)
-                        ->where('ms.Date', '<=', $todate)
-                        ->where('cb.union_branch_id', '=', $referenceid)
-                        ->where('mm.update_status', '=', 1)
-                        ->where('mm.StatusId', '<=', 2)
-                        ->where('mm.MemberCode', '!=', Null)
-                        ->groupBY('mm.MemberCode')->get();
-        }else if($typeid==2){
-            $memberids = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
-                        ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-                        ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-                        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
-                        //->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-                        //->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                        //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-                        ->where('ms.Date', '>=', $fromdate)
-                        ->where('ms.Date', '<=', $todate)
-                        ->where('mc.CompanyCode', '=', $referenceid)
-                        ->where('mm.update_status', '=', 1)
-                        ->where('mm.StatusId', '<=', 2)
-                        ->where('mm.MemberCode', '!=', Null)
-                        ->groupBY('mm.MemberCode')->get();
+        $memberids = CacheMonthEnd::getSubscriptionBankMembers($typeid,$referenceid,$fromdate,$todate);
+        // if($typeid==1){
+        //      $memberids = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+        //                 ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+        //                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+        //                 ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+        //                 ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        //                 //->leftjoin('company as c','mc.CompanyCode','=','c.id')
+        //                 //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+        //                 ->where('ms.Date', '>=', $fromdate)
+        //                 ->where('ms.Date', '<=', $todate)
+        //                 ->where('cb.union_branch_id', '=', $referenceid)
+        //                 ->where('mm.update_status', '=', 1)
+        //                 ->where('mm.StatusId', '<=', 2)
+        //                 ->where('mm.MemberCode', '!=', Null)
+        //                 ->groupBY('mm.MemberCode')->get();
+        // }else if($typeid==2){
+        //     $memberids = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+        //                 ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+        //                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+        //                 ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+        //                 //->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        //                 //->leftjoin('company as c','mc.CompanyCode','=','c.id')
+        //                 //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+        //                 ->where('ms.Date', '>=', $fromdate)
+        //                 ->where('ms.Date', '<=', $todate)
+        //                 ->where('mc.CompanyCode', '=', $referenceid)
+        //                 ->where('mm.update_status', '=', 1)
+        //                 ->where('mm.StatusId', '<=', 2)
+        //                 ->where('mm.MemberCode', '!=', Null)
+        //                 ->groupBY('mm.MemberCode')->get();
 
-        }else{
-            $memberids = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
-                        ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-                        ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-                        ->leftjoin('membership as m','m.id','=','mm.MemberCode')
-                        //->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
-                        //->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                        //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
-                        ->where('ms.Date', '>=', $fromdate)
-                        ->where('ms.Date', '<=', $todate)
-                        ->where('m.branch_id', '=', $referenceid)
-                        ->where('mm.update_status', '=', 1)
-                        ->where('mm.StatusId', '<=', 2)
-                        ->where('mm.MemberCode', '!=', Null)
-                        ->groupBY('mm.MemberCode')->get();
-        }
+        // }else{
+        //     $memberids = DB::table("mon_sub_member as mm")->select('m.member_number as member_number','m.name as name','m.doj as doj','ms.Date as pay_date','mm.Amount as SUBSCRIPTION_AMOUNT','m.salary as salary','m.id as member_id','m.status_id as STATUS_CODE')
+        //                 ->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+        //                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+        //                 ->leftjoin('membership as m','m.id','=','mm.MemberCode')
+        //                 //->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+        //                 //->leftjoin('company as c','mc.CompanyCode','=','c.id')
+        //                 //->leftjoin('union_branch as u','cb.union_branch_id','=','u.id')
+        //                 ->where('ms.Date', '>=', $fromdate)
+        //                 ->where('ms.Date', '<=', $todate)
+        //                 ->where('m.branch_id', '=', $referenceid)
+        //                 ->where('mm.update_status', '=', 1)
+        //                 ->where('mm.StatusId', '<=', 2)
+        //                 ->where('mm.MemberCode', '!=', Null)
+        //                 ->groupBY('mm.MemberCode')->get();
+        // }
        
         return $memberids;
     }
