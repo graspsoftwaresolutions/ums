@@ -774,7 +774,7 @@
 					@endphp
 					<tr style="font-weight:bold;">
 						<td><p style="margin-left: 10px; "><label><input name="memberids_{{ $typeidref }}[]" class="checkboxes_{{ $typeidref }}" value="{{ $member->member_id }}" type="checkbox"> <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </label> </p></td>
-						<td>{{ $member->member_number }}/{{$member->pay_date}}/{{$member->SUBSCRIPTION_AMOUNT}}</td>
+						<td>{{ $member->member_number }}</td>
 						<td>{{ $member->name }}</td>
 						<td>{{ date('M Y',strtotime($member->doj)) }}</td>
 						<td>{{ date('M Y',strtotime($lastpaiddate)) }}</td>
