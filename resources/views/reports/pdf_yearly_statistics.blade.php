@@ -40,7 +40,7 @@
 		}
 		
 		.page {
-		  page-break-after: always;
+		  //page-break-after: always;
 		}
 		
 		@page {
@@ -145,7 +145,7 @@
 		    font-weight: normal;
 		    line-height: 1; 
 		    color: rgba(0, 0, 0, .87);
-		    font-size: 12px;
+		    font-size: 11.5px;
 		}
 		.nric_no{
 			width:10% !important;
@@ -160,10 +160,10 @@
 			width: 100% !important
 		}
 		table tr.page-break{
-		  page-break-after:always !important;
+		 // page-break-after:always !important;
 		} 
 		table.page-break{
-		  page-break-after:always !important;
+		  //page-break-after:always !important;
 		}
 
 		
