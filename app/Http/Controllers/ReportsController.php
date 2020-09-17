@@ -20,6 +20,7 @@ use App\Exports\takafulMemberExport;
 use App\Exports\StatusMemberExport;
 use App\Exports\StatusPGMMemberExport;
 use App\Exports\HalfshareExport;
+use App\Exports\MembershipStatisticsExport;
 
 class ReportsController extends Controller
 {
@@ -4666,21 +4667,11 @@ class ReportsController extends Controller
     }
 
     public function exportExcelStatisticsMembers($lang,Request $request){
-        $status_id = $request->input('status_id');
-        $statusname = 'status';
-        if($status_id==1){
-            $statusname = 'active';
-        }
-        else if($status_id==2){
-            $statusname = 'defaulter';
-        }
-        else {
-            $statusname = 'active_defaulter';
-        }
+        
         //return $request->all();
-        $s = new StatusPGMMemberExport($request->all());
+        $s = new MembershipStatisticsExport($request->all());
        //return $s;
-        $file_name = $statusname.'_members';
+        $file_name = 'statistics_members';
         return Excel::download($s, $file_name.'.xlsx');
         
     }
