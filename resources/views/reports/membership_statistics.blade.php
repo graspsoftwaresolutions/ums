@@ -54,7 +54,7 @@
 					<div class="row">    
 						<div class="col s12 m6 l3">
 							<label for="from_year">{{__('From Year')}}</label>
-							<select name="from_year" id="from_year" class="error browser-default selectpicker" data-error=".errorTxt22" >
+							<select name="from_year" id="from_year" disabled="" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Year') }}</option>
 								@for($y=date('Y'); $y>=2000; $y--)
 								<option @if($y==$data['from_year']-3) selected @endif value="{{ $y }}">{{ $y }}</option>
@@ -63,12 +63,16 @@
 						</div>
 						<div class="col s12 m6 l3">
 							<label for="to_year">{{__('To Year')}}</label>
-							<select name="to_year" id="to_year" class="error browser-default selectpicker" data-error=".errorTxt22" >
+							<select name="to_year" id="to_year" disabled="" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Year') }}</option>
 								@for($ty=date('Y'); $ty>=2000; $ty--)
 								<option @if($ty==$data['to_year']) selected @endif value="{{ $ty }}">{{ $ty }}</option>
 								@endfor
 							</select>
+						</div>
+						<div class="col s12 m2 l2">
+							<br>
+							<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
 						</div>
 						<div class="clearfix"/>
 						@php 
@@ -91,12 +95,12 @@
 						}
 						@endphp
 						
-						<div class="row hide">
-							<div class="input-field col s6 right">
+						<div class="row ">
+							<div class="input-field col s6 right hide">
 								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
 							</div>
 							<div class="input-field col s6 right-align">
-								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+								
 							</div>
 						</div>
 					</div>
@@ -108,7 +112,7 @@
 </div> 
 <div class="row">
 	<div class="col s12">
-		<iframe src="{{ url(app()->getLocale().'/get-membership-statistics-report') }}?from_year={{$data['from_year']}}&to_year={{$data['to_year']}}" id="myframe" height="450px" width="100%"></iframe>
+		<iframe src="{{ url(app()->getLocale().'/empty_report') }}?from_year={{$data['from_year']}}&to_year={{$data['to_year']}}" id="myframe" height="450px" width="100%"></iframe>
 		
 	</div>
 
@@ -217,13 +221,15 @@ $("#membership_statistic_sidebar_a_id").addClass('active');
 		$("#search").attr('disabled',true);
 		var from_year = $("#from_year").val();
 		var to_year = $("#to_year").val();
+		from_year = 2014;
+		to_year = 2020;
 		
 		$('#page-length-option tbody').empty();
 		if(from_year!="" && to_year!=""){
 			var searchfilters = '&from_year='+from_year+'&to_year='+to_year;
 			//loader.showLoader();
 			$("#myframe").contents().find("html").css('opacity',0);
-			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-yearly-statistics-report') }}?offset=0"+searchfilters,);
+			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-membership-statistics-report') }}?offset=0"+searchfilters,);
 			//$('#page-length-option tbody').empty();
 			 //loader.showLoader();
 		
@@ -235,12 +241,12 @@ $("#membership_statistic_sidebar_a_id").addClass('active');
 	});
 
 	$('#clear').click(function(){
-	$('#month_year').val("");	
-	$('#company_id').val("");
-	$('#branch_id').val("");
-	$('#member_search').val("");
-	$(".selectpicker").val('').trigger("change"); 
-});
+		$('#month_year').val("");	
+		$('#company_id').val("");
+		$('#branch_id').val("");
+		$('#member_search').val("");
+		$(".selectpicker").val('').trigger("change"); 
+	});
 
 </script>
 @endsection

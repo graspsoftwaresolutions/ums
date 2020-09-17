@@ -471,7 +471,7 @@
 						}else{
 							$displaymember = 1;
 						}
-						
+						//dd($data['inctypes']);
 						if(!empty($updated_salary)){
 							//dd($updated_salary);
 							$newbasicsal = $salary;
