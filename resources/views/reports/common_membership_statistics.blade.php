@@ -20,7 +20,7 @@
 				
 				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;"> STATISTICS FOR {{$data['from_year']-3}}-{{$data['to_year']}}</span>
+					<span style="margin-top:0;"> STATISTICS FOR {{$data['from_year']}}-{{$data['to_year']}}</span>
 				</td>
 				
 			</tr>
