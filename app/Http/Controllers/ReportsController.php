@@ -2532,7 +2532,6 @@ class ReportsController extends Controller
            
         }
 
-
         $data['month_year']=$fulldate;
         $data['company_id']=$company_id;
         $data['branch_id']=$branch_id;
@@ -2606,7 +2605,6 @@ class ReportsController extends Controller
         }
         
         if($unionbranch_id!= ''){
-            
            $members = CacheMonthEnd::getMonthEndUnionStatisticsFilter($fromfulldate,$tofulldate,$unionbranch_id);
         }else{
             $members = CacheMonthEnd::getMonthEndUnionByDate($fromfulldate,$tofulldate);
@@ -3244,7 +3242,6 @@ class ReportsController extends Controller
         $data['member_view'] = $members;
         $data['from_date'] = date('Y-m-01');
         $data['to_date'] = date('Y-m-t');
-        
        
         $data['member_auto_id'] = '';
         $data['date_type'] = 2;
@@ -3381,7 +3378,6 @@ class ReportsController extends Controller
         $data['hq_amount'] = $this->hq_amount;
         $data['bf_amount'] = $this->bf_amount;
 
-
         $dataarr = ['data' => $data ];
 
         $pdf = PDF::loadView('reports.pdf_advice_new', $dataarr)->setPaper('a4', 'landscape'); 
@@ -3438,7 +3434,6 @@ class ReportsController extends Controller
                 $members = $members->where(DB::raw('month(ms.`Date`)'),'=',date('m'));
                 $members = $members->where(DB::raw('year(ms.`Date`)'),'=',date('Y'));
             $members = $members->get();
-       
        
         $data['member_view'] = $members;
         $data['month_year'] = date('Y-m-01');
@@ -3504,7 +3499,6 @@ class ReportsController extends Controller
                     $members = $members->where('m.id','=',$member_auto_id);
                 }
             $members = $members->get();
-       
        
         $data['member_view'] = $members;
         $data['company_id'] = $company_id;
@@ -3630,7 +3624,6 @@ class ReportsController extends Controller
                 $members = $members->orderBy('m.member_number','asc');
             $members = $members->get();
        
-       
         $data['member_view'] = $members;
         $data['month_year'] = date('Y-m-01');
         //$data['from_date'] = date('Y-m-01');
@@ -3713,7 +3706,6 @@ class ReportsController extends Controller
                 $members = $members->orderBy('com.company_name','asc');
                 $members = $members->orderBy('m.name','asc');
             $members = $members->get();
-
 
         $data['member_view'] = $members;
         $data['month_year'] = $fulldate;
@@ -3798,7 +3790,6 @@ class ReportsController extends Controller
                 $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
-
         $data['member_view'] = $members;
         $data['month_year'] = $fulldate;
         $data['company_id'] = $company_id; 
@@ -3830,10 +3821,8 @@ class ReportsController extends Controller
         $member_id = $request->input('member_auto_id');
       
         $to_date = $request->input('to_date');
-
         
-        $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
-        
+        $todate = CommonHelper::ConvertdatetoDBFormat($to_date);        
 
         if($member_id!="" && $to_date!=""){
             $data['data_limit']=$this->limit;
