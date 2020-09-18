@@ -196,7 +196,7 @@
 			
 			<tr class="">
 				
-				<td colspan="4" style="text-align:center;padding:10px;">
+				<td colspan="4" style="text-align:center;padding:10px;border-bottom : 1px solid #988989;">
 				
 					<span style="margin-top:0;"> TOTAL IN BENEFIT MEMBERS : {{ $allactivecount }}, NOT IN BENEFIT : {{ $alldefaulercount }}</span>
 				</td>
@@ -204,8 +204,10 @@
 			</tr>
 			<tr class="">
 				<th style="border-top : 1px solid #988989;border-left: 1px solid #988989 !important;border-right: 1px solid #988989 !important;font-weight:bold;" align="center">UNION BRANCH NAME</th>
-				<th style="border : 1px solid #988989;text-align: center;font-weight:bold;" colspan="2" >IN BENEFIT</th>
-                <th style="border : 1px solid #988989;text-align: center;font-weight:bold;" colspan="2" >NOT IN BENEFIT</th>
+				<th style="border-top : 1px solid #988989;border-left: 1px solid #988989 !important;border-bottom: 1px solid #988989 !important;text-align: right;font-weight:bold;" colspan="1" >IN BENEFIT</th>
+				<th style="border-right : 1px solid #988989 !important;border-top : 1px solid #988989 !important;text-align: center;font-weight:bold;" colspan="1" >&nbsp;</th>
+                <th style="border-top : 1px solid #988989;border-left: 1px solid #988989 !important;border-bottom: 1px solid #988989 !important;text-align: right;font-weight:bold;" colspan="1" >NOT IN BENEFIT</th>
+				<th style="border-right : 1px solid #988989 !important;border-top : 1px solid #988989 !important;text-align: center;font-weight:bold;" colspan="1" >&nbsp;</th>
 			</tr>
 			<tr>
 				<th style="border-bottom : 1px solid #988989;border-left: 1px solid #988989 !important;border-right: 1px solid #988989 !important;width: 30px;" ></th>

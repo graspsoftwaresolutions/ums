@@ -4667,7 +4667,17 @@ class ReportsController extends Controller
     }
 
     public function exportExcelStatisticsMembers($lang,Request $request){
-        
+       /*  $from_year = $request->input('from_year');
+        $to_year = $request->input('to_year');
+
+        $unionbranch_name = '';
+    
+
+        $data['from_year'] = $from_year;
+        $data['to_year'] = $to_year;
+        $data['unionbranch_view'] = DB::table('union_groups')->get();
+
+        return view('reports.membership_statistics_excel')->with('data',$data); */
         //return $request->all();
         $s = new MembershipStatisticsExport($request->all());
        //return $s;
