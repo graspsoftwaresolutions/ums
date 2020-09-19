@@ -4675,6 +4675,23 @@ class ReportsController extends Controller
         
     }
 
+    public function exportPdfStatisticsMembers($lang,Request $request){
+        $from_year = $request->input('from_year');
+        $to_year = $request->input('to_year');
+
+        $unionbranch_name = '';
+    
+
+        $data['from_year'] = $from_year;
+        $data['to_year'] = $to_year;
+        $data['unionbranch_view'] = DB::table('union_groups')->get();
+
+        $dataarr = ['data' => $data ];
+
+        $pdf = PDF::loadView('reports.pdf_membership_statistics', $dataarr)->setPaper('a4', 'landscape'); 
+        return $pdf->download('pdf_membership_statistics_report.pdf');
+    }
+
     public function exportPdfMonthlySummary($lang,Request $request){
 
         $month_year = $request->input('month_year');

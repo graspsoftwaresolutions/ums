@@ -46,7 +46,13 @@
 			</tr>
 		</thead>
 		<tbody class="" width="100%">
-		
+			@php
+				$totalno21=0;
+				$totalno22=0;
+				$totalno23=0;
+				$totalno24=0;
+				$totalno25=0;
+			@endphp
             @foreach($data['company_view'] as $company)
                     @php
                         $current_count = CommonHelper::getMonthlyPaidCount($company->cid,$data['month_year']);
@@ -63,7 +69,23 @@
                         <td style="border : 1px solid #988989;">{{ $current_unpaid_count }}</td>
                         <td style="border : 1px solid #988989;">{{ $last_paid_count }}</td>
                     </tr> 
+                    @php
+					
+						$totalno21 += $current_count;
+						$totalno22 += $last_month_count;
+						$totalno24 += $current_unpaid_count;
+						$totalno25 += $last_paid_count;
+						
+					@endphp
             @endforeach
+             <tr class="" >
+                    <td style="border : 1px solid #988989;">TOTAL</td>
+                    <td style="border : 1px solid #988989;">{{ $totalno21 }}</td>
+                    <td style="border : 1px solid #988989;">{{ $totalno22 }}</td>
+                    <td style="border : 1px solid #988989;">--</td>
+                    <td style="border : 1px solid #988989;">{{ $totalno24 }}</td>
+                    <td style="border : 1px solid #988989;">{{ $totalno25 }}</td>
+                </tr> 
 		</tbody>
 		
 	</table>

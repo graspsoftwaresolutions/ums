@@ -250,7 +250,7 @@
                                                 <div class="input-field col s12 m6">
                                                     <label for="branch_shortcode" class="common-label">{{__('Short Code') }}
                                                         *</label>
-                                                    <input id="branch_shortcode" name="branch_shortcode" class="common-input allow_decimal"
+                                                    <input id="branch_shortcode" readonly="" name="branch_shortcode" class="common-input allow_decimal"
                                                         value="@isset($row){{$row->branch_shortcode}}@endisset" placeholder="" type="text"
                                                         data-error=".errorTxt16">
                                                     <div class="errorTxt16"></div>
