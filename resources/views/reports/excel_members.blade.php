@@ -155,6 +155,10 @@
 			font-weight:bold;
 			font-size:14px;
 		}
+		
+		 p span { 
+            display: block; 
+        } 
 
 		
 		
@@ -175,36 +179,35 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="3" rowspan="1" style="text-align:right">
 					<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="8" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					<br/>
+					{{$status_name}} MEMBERS REPORT
 					
 				</td>
-				<td colspan="3" rowspan="2">	
+				<td colspan="3" rowspan="1">	
 					
 				</td>
 			</tr>
-			<tr class="">
-				
-				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
-				
-					<span style="margin-top:0;">{{$status_name}} MEMBERS REPORT</span>
-				</td>
-				
-			</tr>
+			
 			<tr class="" style="font-weight: bold;">
 			
-				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
-					To Branch Hons. Secretary
+				<td colspan="3" style="border-bottom: 1px solid #988989 !important;" height="40">
+					
+					<p>
+						To Branch Hons. Secretary <br/>
+					
 					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
-						<p>
+						
 							Branch Name : {{ $data['unionbranch_name'] }}
-						</p>
+						
 					@endif
+					</p>
 				</td>
-				<td colspan="8" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -220,19 +223,19 @@
 			<tr class="" style="" width="100%">
 				<th style="border: 1px solid #988989 !important; " align="center">SNO</th>
 				<th style="border: 1px solid #988989 !important; " >{{__('M/NO')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('MEMBER NAME')}}</th>
+                <th style="border: 1px solid #988989 !important;  width:47px;">{{__('MEMBER NAME')}}</th>
                
-                <th style="border: 1px solid #988989 !important; " align="center">{{__('NRIC')}}</th>
+                <th style="border: 1px solid #988989 !important; width:20px;" align="center">{{__('NRIC')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('GENDER')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('BANK')}}</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('BANK BRANCH')}}</th>
+                <th style="border: 1px solid #988989 !important; width:20px; ">{{__('BANK')}}</th>
+                <th style="border: 1px solid #988989 !important; width:35px; ">{{__('BANK BRANCH')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('TYPE')}}</th>
                 
-                <th style="border: 1px solid #988989 !important; ">{{__('DOJ')}}</th>
+                <th style="border: 1px solid #988989 !important; width:12px; ">{{__('DOJ')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('LEVY')}}</th>
                 <th style="border: 1px solid #988989 !important; ">{{__('TDF')}}</th>
                  <th style="border: 1px solid #988989 !important;">AMOUNT</th>
-                <th style="border: 1px solid #988989 !important; ">{{__('LAST PAID DATE')}}</th>
+                <th style="border: 1px solid #988989 !important; width:20px; ">{{__('LAST PAID DATE')}}</th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">
