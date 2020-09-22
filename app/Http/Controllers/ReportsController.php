@@ -22,6 +22,7 @@ use App\Exports\StatusPGMMemberExport;
 use App\Exports\HalfshareExport;
 use App\Exports\MembershipStatisticsExport;
 use App\Exports\StatusUnionMemberExport;
+use App\Exports\ResignMembersExport;
 
 class ReportsController extends Controller
 {
@@ -526,6 +527,16 @@ class ReportsController extends Controller
         $data['data_limit'] = '';
         //$data['join_type'] = '';
         return view('reports.iframe_resign_member')->with('data',$data);     
+    }
+
+    public function exportExcelResignMembers($lang,Request $request){
+       
+        //return $request->all();
+        $s = new ResignMembersExport($request->all());
+       
+        $file_name = 'resign_members';
+        return Excel::download($s, $file_name.'.xlsx');
+        
     }
 
     public function exportPdfResignMembers($lang,Request $request){
