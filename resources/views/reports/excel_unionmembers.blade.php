@@ -182,10 +182,10 @@
 				<td colspan="3" rowspan="1" style="text-align:right">
 					<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					<br/>
-					{{$status_name}} MEMBERS REPORT
+					UNION {{$status_name}} MEMBERS REPORT
 					
 				</td>
 				<td colspan="3" rowspan="1">	
@@ -207,7 +207,7 @@
 					@endif
 					</p>
 				</td>
-				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td colspan="5" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -221,58 +221,54 @@
 			</tr>
 				
 			<tr class="" style="" width="100%">
-				<th style="border: 1px solid #988989 !important; font-weight:bold;" align="center">SNO</th>
-				<th style="border: 1px solid #988989 !important;font-weight:bold; " >{{__('M/NO')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold;  width:47px;">{{__('MEMBER NAME')}}</th>
+				<th style="border : 1px solid #988989;font-weight:bold;" align="center">SNO</th>
+                <th style="border : 1px solid #988989;font-weight:bold;width:47px;">{{__('MEMBER NAME')}}</th>
+				<th style="border : 1px solid #988989;font-weight:bold;">{{__('M/NO')}}</th>
                
-                <th style="border: 1px solid #988989 !important;font-weight:bold; width:20px;" align="center">{{__('NRIC')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; ">{{__('GENDER')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; width:20px; ">{{__('BANK')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; width:35px; ">{{__('BANK BRANCH')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; ">{{__('TYPE')}}</th>
+                <th style="border : 1px solid #988989;font-weight:bold;">{{__('GENDER')}}</th>
+                <th style="border : 1px solid #988989;font-weight:bold;width:20px;">{{__('BANK')}}</th>
+                <th style="border : 1px solid #988989;font-weight:bold;width:20px;">{{__('UNION BRANCH')}}</th>
+                <th style="border : 1px solid #988989;font-weight:bold;width:35px;">{{__('BANK BRANCH')}}</th>
+                <th style="border : 1px solid #988989;font-weight:bold;">{{__('TYPE')}}</th>
                 
-                <th style="border: 1px solid #988989 !important;font-weight:bold; width:12px; ">{{__('DOJ')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; ">{{__('LEVY')}}</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; ">{{__('TDF')}}</th>
-                 <th style="border: 1px solid #988989 !important;font-weight:bold;width:10px;">AMOUNT</th>
-                <th style="border: 1px solid #988989 !important;font-weight:bold; width:20px; ">{{__('LAST PAID DATE')}}</th>
+                <th style="border : 1px solid #988989;font-weight:bold;width:12px;">{{__('DOJ')}}</th>
+                <th style="border: 1px solid #988989 !important;font-weight:bold;width:10px;">AMOUNT</th>
+       
+                <th style="border : 1px solid #988989;font-weight:bold;width:20px;" >{{__('LAST PAID DATE')}}</th>
+
 			</tr>
 		</thead>
 		<tbody class="" width="100%">
 			@php
 				$totalmembers = 0;
 				$sno = 1;
-				
 			@endphp
-			
-			
-			@foreach($data['member_view'] as $member)
-				<tr >
-					<td style="border: 1px solid #988989 !important; ">{{ $sno }}</td>
-					<td style="border: 1px solid #988989 !important;">{{ $member->member_number }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->name }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->ic=='' ? $member->employee_id : $member->ic }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->gender }}</td>
-                    <td style="border: 1px solid #988989 !important;"> {{ $member->companycode }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->branch_name }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->designation_name }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->levy }}</td>	
-                    <td style="border: 1px solid #988989 !important;">{{ $member->tdf }}</td>	
+            @foreach($data['member_view'] as $member)
+            	@php
+					//$total_subs = $member->salary=='' ? 0 : ($member->salary*1)/100;
+				@endphp
+                <tr>
+					<td style="border : 1px solid #988989;">{{ $sno }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->name }}</td>
+					<td style="border : 1px solid #988989;">{{ $member->member_number }}</td>
+                   
+                    <td style="border : 1px solid #988989;">{{ $member->gender }}</td>
+                    <td style="border : 1px solid #988989;"> {{ $member->companycode }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->union_branch }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->designation_name }}</td>
+                    <td style="border : 1px solid #988989;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
                     <td style="border: 1px solid #988989 !important;">{{ $member->Amount }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->last_paid_date }}</td>
-					
-					
-				</tr> 
-				
+                  
+                    <td style="border : 1px solid #988989;">{{ $member->last_paid_date }}</td>	
+                </tr> 
 				@php
 					$sno++;
 				@endphp
-			@endforeach
-			<!-- //@if(!empty($data['member_view']))
-			//@endif -->
+            @endforeach
 			<tr>
-				<td colspan="13" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td colspan="11" style="border : 1px solid #988989;">Total Member's Count : {{ $sno-1 }}</td>
+				
 			</tr> 
 		</tbody>
 		

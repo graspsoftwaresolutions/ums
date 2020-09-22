@@ -471,6 +471,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('export-excel-takaful','ReportsController@exportExcelTakaful')->name('takaful.excel');
 	Route::get('export-excel-members','ReportsController@exportExcelMembers')->name('members.excel');
+	Route::get('export-excel-unionmembers','ReportsController@exportExcelUnionMembers')->name('unionmembers.excel');
 
 	Route::get('export-excel-pgmmembers','ReportsController@exportExcelPGMMembers')->name('pgmmembers.excel');
 	Route::get('export-pdf-tgmmembers','ReportsController@exportPdfTGMMembers')->name('tgmmembers.pdf');

@@ -21,6 +21,7 @@ use App\Exports\StatusMemberExport;
 use App\Exports\StatusPGMMemberExport;
 use App\Exports\HalfshareExport;
 use App\Exports\MembershipStatisticsExport;
+use App\Exports\StatusUnionMemberExport;
 
 class ReportsController extends Controller
 {
@@ -556,6 +557,7 @@ class ReportsController extends Controller
                 ->leftjoin('state as st','st.id','=','m.state_id')
                 ->leftjoin('city as cit','cit.id','=','m.city_id')
                 ->leftjoin('race as r','r.id','=','m.race_id');
+                
                if($fromdate!="" && $todate!="" && $date_type==1){
                   $members = $members->where(DB::raw('date(rs.`resignation_date`)'),'>=',$fromdate);
                   $members = $members->where(DB::raw('date(rs.`resignation_date`)'),'<=',$todate);
@@ -3989,6 +3991,26 @@ class ReportsController extends Controller
         $s = new StatusMemberExport($request->all());
        
         $file_name = $statusname.'_members';
+        return Excel::download($s, $file_name.'.xlsx');
+        
+    }
+
+    public function exportExcelUnionMembers($lang,Request $request){
+        $status_id = $request->input('status_id');
+        $statusname = 'status';
+        if($status_id==1){
+            $statusname = 'active';
+        }
+        else if($status_id==2){
+            $statusname = 'defaulter';
+        }
+        else if($status_id==3){
+            $statusname = 'struckoff';
+        }
+        //return $request->all();
+        $s = new StatusUnionMemberExport($request->all());
+       
+        $file_name = $statusname.'_union_members';
         return Excel::download($s, $file_name.'.xlsx');
         
     }
