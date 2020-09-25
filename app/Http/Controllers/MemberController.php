@@ -828,28 +828,32 @@ class MemberController extends CommonController
 					];
 					// /return $payment_data;
 				}else{
+					$newdojstr = strtotime('2020-01-01');
 					$subs_month = date('Y-m-01',strtotime($doj));
-					$member_subs_id = DB::table("mon_sub_member as mm")->select('mm.id as msid')
-					->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
-					->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
-					->where('ms.Date', '=', $subs_month)
-					->where('mm.MemberCode', '=', $member_id)
-					->pluck('msid')->first();
+					$dojstr = strtotime($subs_month);
+					if($dojstr>$newdojstr){
+						$member_subs_id = DB::table("mon_sub_member as mm")->select('mm.id as msid')
+						->leftjoin('mon_sub_company as mc','mm.MonthlySubscriptionCompanyId','=','mc.id')
+						->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
+						->where('ms.Date', '=', $subs_month)
+						->where('mm.MemberCode', '=', $member_id)
+						->pluck('msid')->first();
 
-					if($member_subs_id!=''){
-						$mont_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $member_subs_id)->delete();
-						$mont_count = DB::table('mon_sub_member')->where('id', '=', $member_subs_id)->delete();
+						if($member_subs_id!=''){
+							$mont_count = DB::table('mon_sub_member_match')->where('mon_sub_member_id', '=', $member_subs_id)->delete();
+							$mont_count = DB::table('mon_sub_member')->where('id', '=', $member_subs_id)->delete();
+						}
+
+						$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_id)->delete();
+						$payment_data = [
+							'entrance_fee' => $ent_amt,
+							'hq_fee' => $hq_amt,
+							'member_id' => $member_id,
+							'due_amount' => 0,
+							'created_by' => Auth::user()->id,
+							'created_at' => date('Y-m-d'),
+						];
 					}
-
-					$mont_count = DB::table($this->membermonthendstatus_table)->where('StatusMonth', '=', $subs_month)->where('MEMBER_CODE', '=', $member_id)->delete();
-					$payment_data = [
-						'entrance_fee' => $ent_amt,
-						'hq_fee' => $hq_amt,
-						'member_id' => $member_id,
-						'due_amount' => 0,
-						'created_by' => Auth::user()->id,
-						'created_at' => date('Y-m-d'),
-					];
 				}
 			}else{
 				$memberdata = Membership::find($member_id);
