@@ -2581,7 +2581,6 @@ class ReportsController extends Controller
         $data['branch_id'] = '';
         $data['data_limit'] = '';
         $data['member_count'] =  $members; 
-		      
 		//dd($data['member_count']);
         return view('reports.iframe_union_statistics')->with('data',$data); 
     }

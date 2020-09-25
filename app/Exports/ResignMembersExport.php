@@ -158,6 +158,16 @@ class ResignMembersExport implements FromView
 						'bold'  => true,
 					)
 				));
+				$event->sheet->styleCells(
+                    'A7:H7',
+                    [
+                        'borders' => [
+                            'allBorders' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            ],
+                        ]
+                    ]
+                );
             },
         ];
     }
