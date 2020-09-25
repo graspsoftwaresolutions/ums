@@ -20,8 +20,10 @@ use DB;
 use Facades\App\Repository\CacheMonthEnd;
 use App\Model\Fee;
 use App\Helpers\CommonHelper;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class ResignMembersExport implements FromView
+class ResignMembersExport implements FromView, WithEvents,WithColumnFormatting
 {
     protected $request_data;
     /**
@@ -157,18 +159,33 @@ class ResignMembersExport implements FromView
 					'font' => array(
 						'bold'  => true,
 					)
-				));
-				$event->sheet->styleCells(
-                    'A7:H7',
-                    [
-                        'borders' => [
-                            'allBorders' => [
-                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                            ],
-                        ]
-                    ]
+                ));
+                $styleArray3 = array(
+                    'alignment' => array(
+                            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                        )
                 );
+               // $event->sheet->getDelegate()->getStyle('A1:M3')->applyFromArray($styleArray3);
+               $styleArray = [
+                            'borders' => [
+                                'outline' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    'color' => ['argb' => '988989'],
+                                ]
+                            ]
+                        ];
+                $event->sheet->getDelegate()->getStyle('A15:Q15')->applyFromArray($styleArray);
+               // $event->sheet->setColumnFormat(array(
+                  //  'D' => \PHPExcel_Style_NumberFormat::FORMAT_TEXT
+               /// ));
             },
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'D' => '0',
         ];
     }
 
