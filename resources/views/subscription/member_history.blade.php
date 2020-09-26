@@ -204,7 +204,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<td>{{ $history->BF_AMOUNT }}</td>
 													<td>{{ $history->INSURANCE_AMOUNT }}</td>
 													<td>{{ $history->TOTAL_MONTHS }}</td>
-													<td>{{ date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
+													<td>{{ $history->LASTPAYMENTDATE=='0000-00-00' ? '--' : date('M/ Y',strtotime($history->LASTPAYMENTDATE)) }}</td>
 													<td>{{ $history->advance_balamt }} @if($history->ENTRYMODE=='AD' && $history->TOTAL_MONTHS==1)({{ $history->advance_totalmonths }}) @endif</td>
 													<td>{{ $history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->TOTALMONTHSDUE }}</td>
