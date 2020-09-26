@@ -185,6 +185,7 @@ class StatusMemberExport implements FromView,WithColumnFormatting
     {
         return [
             'D' => '0',
+            'L' => '0.00',
         ];
     }
 }

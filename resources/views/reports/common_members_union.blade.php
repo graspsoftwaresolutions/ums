@@ -85,7 +85,7 @@
                     <td style="border : 1px solid #988989;">{{ $member->branch_name }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->designation_name }}</td>
                     <td style="border : 1px solid #988989;">{{ date('d/M/Y',strtotime($member->doj)) }}</td>
-                    <td style="border: 1px solid #988989 !important;">{{ $member->Amount }}</td>
+                    <td style="border: 1px solid #988989 !important;">{{ number_format($member->Amount,2,".",",") }}</td>
                   
                     <td style="border : 1px solid #988989;">{{ $member->last_paid_date }}</td>	
                 </tr> 

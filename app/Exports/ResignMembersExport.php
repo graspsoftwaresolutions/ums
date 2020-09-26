@@ -186,6 +186,13 @@ class ResignMembersExport implements FromView, WithEvents,WithColumnFormatting
     {
         return [
             'D' => '0',
+			'J' => '0.00',
+			'K' => '0.00',
+			'L' => '0.00',
+			'M' => '0.00',
+			'G' => '@',
+			'A' => '@',
+			'P' => '@',
         ];
     }
 

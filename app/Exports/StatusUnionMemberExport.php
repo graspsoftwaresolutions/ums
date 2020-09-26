@@ -19,8 +19,10 @@ use Maatwebsite\Excel\Concerns\FromView;
 use DB;
 use Facades\App\Repository\CacheMonthEnd;
 use App\Model\Fee;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class StatusUnionMemberExport implements FromView
+class StatusUnionMemberExport implements FromView,WithColumnFormatting
 {
     protected $request_data;
     /**
@@ -177,6 +179,12 @@ class StatusUnionMemberExport implements FromView
 					)
 				));
             },
+        ];
+    }
+	public function columnFormats(): array
+    {
+        return [
+            'J' => '0.00',
         ];
     }
 }
