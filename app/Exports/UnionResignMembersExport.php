@@ -153,12 +153,12 @@ class UnionResignMembersExport implements FromView, WithEvents,WithColumnFormatt
         return [
             AfterSheet::class    => function(AfterSheet $event) {
                 $cellRange = 'A3:F3'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->
+                /* $event->sheet->getDelegate()->getStyle($cellRange)->
 				applyFromArray(array(
 					'font' => array(
 						'bold'  => true,
 					)
-                ));
+                )); */
                 $styleArray3 = array(
                     'alignment' => array(
                             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -173,7 +173,7 @@ class UnionResignMembersExport implements FromView, WithEvents,WithColumnFormatt
                                 ]
                             ]
                         ];
-                $event->sheet->getDelegate()->getStyle('A15:Q15')->applyFromArray($styleArray);
+               // $event->sheet->getDelegate()->getStyle('A15:Q15')->applyFromArray($styleArray);
                // $event->sheet->setColumnFormat(array(
                   //  'D' => \PHPExcel_Style_NumberFormat::FORMAT_TEXT
                /// ));
@@ -184,14 +184,8 @@ class UnionResignMembersExport implements FromView, WithEvents,WithColumnFormatt
     public function columnFormats(): array
     {
         return [
-            'D' => '0',
-			'J' => '0.00',
-			'K' => '0.00',
-			'L' => '0.00',
-			'M' => '0.00',
-			'G' => '@',
-			'A' => '@',
-			'P' => '@',
+            
+			'F' => '@',
         ];
     }
 }

@@ -26,6 +26,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 class ResignMembersExport implements FromView, WithEvents,WithColumnFormatting
 {
     protected $request_data;
+    protected $member_count;
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -107,6 +108,8 @@ class ResignMembersExport implements FromView, WithEvents,WithColumnFormatting
         $data['to_member_no']=$to_member_no;
         $data['resign_reason'] = $resign_reason;
         $data['data_limit'] = '';
+		
+		$this->member_count = count($members);
 
         $dataarr = ['data' => $data ];
         return view('reports.excel_resignmembers')->with('data',$data);  
@@ -174,7 +177,7 @@ class ResignMembersExport implements FromView, WithEvents,WithColumnFormatting
                                 ]
                             ]
                         ];
-                $event->sheet->getDelegate()->getStyle('A15:Q15')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A'.($this->member_count+4).':Q'.($this->member_count+4))->applyFromArray($styleArray);
                // $event->sheet->setColumnFormat(array(
                   //  'D' => \PHPExcel_Style_NumberFormat::FORMAT_TEXT
                /// ));
