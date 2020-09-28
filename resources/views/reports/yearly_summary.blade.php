@@ -323,6 +323,7 @@ $("#yearly_sidebar_a_id").addClass('active');
 		var to_year = $("#to_year").val();
 		if(from_year!="" && to_year!=''){
 			var searchfilters = '&from_year='+from_year+'&to_year='+to_year;
+			$("#myframe").contents().find("html").css('opacity',0);
 			
 			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-yearly-summary-report') }}?offset=0"+searchfilters,);

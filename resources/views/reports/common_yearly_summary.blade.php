@@ -5,10 +5,11 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="1" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
+					<br/>
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -18,9 +19,9 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="6" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;"> NEW MEMBERSHIP RECRUITED FOR THE TERM {{$data['from_year']}}-{{$data['to_year']}}</span>
+					</br>
 				</td>
 				
 			</tr>
@@ -31,6 +32,8 @@
 		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
+					<center> <p style="margin-top:0;text-align: center;font-weight: bold;">NEW MEMBERSHIP RECRUITED FOR THE TERM {{$data['from_year']}}-{{$data['to_year']}}</p></center>
+					</br>
 					<table class="pdf-align" style="width: 90% ;margin: 0 5%;">
 						<thead>
 							<tr class="">
@@ -94,33 +97,12 @@
 				</td>
 				
 			</tr> 
-            <!-- <tr>
-				<td colspan="10" style="border : 1px solid #988989;font-weight:bold;">Total ACTIVE Member's Count : 0</td>
-				
-			</tr>  -->
-		</tbody>
-		
-	</table>
-	<br>
-	<br>
-	<table id="page-length-option" class="display" width="100%">
-		<thead>
-		
-			<tr class="">
-				
-				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
-				
-					<span style="margin-top:0;"> MEMBERSHIP RESIGNATION FROM {{$data['from_year']}}-{{$data['to_year']}}</span>
-				</td>
-				
-			</tr>
-			
-			
-			
-		</thead>
-		<tbody class="" width="100%">
-			<tr>
+           <tr>
 				<td colspan="10" style="">
+					<br/>
+					<br/>
+					<center style="font-weight: bold;"> <p style="margin-top:0;text-align: center;font-weight: bold;">MEMBERSHIP RESIGNATION FROM {{$data['from_year']}}-{{$data['to_year']}}</p></center>
+
 					<table class="pdf-align" style="width: 90% ;margin: 0 5%;">
 						<thead>
 							<tr class="">
@@ -180,14 +162,9 @@
 						</tbody>
 						
 					</table>
-
 				</td>
 				
 			</tr> 
-            <!-- <tr>
-				<td colspan="10" style="border : 1px solid #988989;font-weight:bold;">Total ACTIVE Member's Count : 0</td>
-				
-			</tr>  -->
 		</tbody>
 		
 	</table>

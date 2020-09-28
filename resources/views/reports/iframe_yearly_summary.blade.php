@@ -192,9 +192,12 @@
 <script type="text/javascript" src="{{ asset('public/assets/js/tableExport.js') }}"></script>
 <script src="{{ asset('public/excel/jquery.table2excel.js') }}"></script>
 <script>
-	$(".exportToExcel").click(function(e){
-		$("#page-length-option").table2excel();
-	});
+	$(document).ready( function() { 
+		$("html").css('opacity',1);
+		$(".exportToExcel").click(function(e){
+			$("#page-length-option").table2excel();
+		});
+	}); 
 
 </script>
 
