@@ -184,37 +184,34 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="3" rowspan="2" style="text-align:right">
+				<td colspan="3" rowspan="1" style="text-align:right">
 					<img src="{{ public_path('/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
 				<td colspan="7" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					
+					<br/>
+					TGM MEMBERS REPORT
 				</td>
-				<td colspan="3" rowspan="2">	
+				<td colspan="3" rowspan="1">	
 					
 				</td>
 			</tr>
-			<tr class="">
-				
-				<td colspan="7" align="center" style="text-align:center !important;padding:10px;vertical-align:top;margin-left: 100px;">
-					<center><span style="text-align:center;font-weight: bold;font-size:28px;">TGM MEMBERS REPORT</span></center>
-				</td>
-				
-			</tr>
+			
 			<tr class="" style="font-weight: bold;">
 			
-				<td colspan="3" style="border-bottom: 1px solid #988989 !important;height: 45px;">
-					To Branch Hons. Secretary
-					@if($data['unionbranch_id']!='' && $data['branch_id']=='')
-						<p>
-						Branch Name : {{ $data['unionbranch_name'] }}
-					</p>
-						
-					@endif
+				<td colspan="3" style="border-bottom: 1px solid #988989 !important;height: 50px;">
 					<p>
+						To Branch Hons. Secretary <br/>
+					
+						@if($data['unionbranch_id']!='' && $data['branch_id']=='')
+							
+								Branch Name : {{ $data['unionbranch_name'] }}
+							
+						@endif
+						<br/>
 						Bank Name : {{ $companyname }}
 					</p>
+				
 				</td>
 				<td colspan="7" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
@@ -230,21 +227,21 @@
 			</tr>
 				
 			<tr class="" style="" width="100%">
-				<th style="border: 1px solid #988989 !important; " width="6%" align="center">SNO</th>
-				<th style="border: 1px solid #988989 !important; " width="9%" >{{__('M/NO')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="36%">{{__('MEMBER NAME')}}</th>
+				<th style="border: 1px solid #988989 !important; " align="center">SNO</th>
+				<th style="border: 1px solid #988989 !important; " >{{__('M/NO')}}</th>
+                <th style="border: 1px solid #988989 !important; width:47px; ">{{__('MEMBER NAME')}}</th>
                
-                <th style="border: 1px solid #988989 !important; " width="15%" align="center">{{__('NRIC')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="9%">{{__('GENDER')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="11%">{{__('BANK')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="30%">{{__('BANK BRANCH')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="6%">{{__('TYPE')}}</th>
+                <th style="border: 1px solid #988989 !important; width:20px; " align="center">{{__('NRIC')}}</th>
+                <th style="border: 1px solid #988989 !important;width:10px; " >{{__('GENDER')}}</th>
+                <th style="border: 1px solid #988989 !important;width:20px; " >{{__('BANK')}}</th>
+                <th style="border: 1px solid #988989 !important;width:35px; " >{{__('BANK BRANCH')}}</th>
+                <th style="border: 1px solid #988989 !important;width:10px; " >{{__('TYPE')}}</th>
                 
-                <th style="border: 1px solid #988989 !important; " width="13%">{{__('DOJ')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="7%">{{__('LEVY')}}</th>
-                <th style="border: 1px solid #988989 !important; " width="7%">{{__('TDF')}}</th>
-                <th style="border: 1px solid #988989 !important;" width="15%">STATUS</th>
-                <th style="border: 1px solid #988989 !important; " width="17%">{{__('LAST PAID DATE')}}</th>
+                <th style="border: 1px solid #988989 !important; width:12px; ">{{__('DOJ')}}</th>
+                <th style="border: 1px solid #988989 !important; width:10px; ">{{__('LEVY')}}</th>
+                <th style="border: 1px solid #988989 !important; width:10px; " >{{__('TDF')}}</th>
+                <th style="border: 1px solid #988989 !important; width:15px;" >STATUS</th>
+                <th style="border: 1px solid #988989 !important; width:20px; " >{{__('LAST PAID DATE')}}</th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">

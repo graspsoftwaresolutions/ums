@@ -19,8 +19,10 @@ use Maatwebsite\Excel\Concerns\FromView;
 use DB;
 use Facades\App\Repository\CacheMonthEnd;
 use App\Model\Fee;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class StatusPGMMemberExport implements FromView
+class StatusPGMMemberExport implements FromView,WithColumnFormatting
 {
     protected $request_data;
     /**
@@ -178,6 +180,13 @@ class StatusPGMMemberExport implements FromView
 					)
 				));
             },
+        ];
+    }
+	public function columnFormats(): array
+    {
+        return [
+            
+			'D' => '0',
         ];
     }
 }

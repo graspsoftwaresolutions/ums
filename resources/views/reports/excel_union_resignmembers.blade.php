@@ -226,7 +226,7 @@
 				<th  style="border : 1px solid #988989;font-weight:bold; width:20px;" align="center">BANK</th>
 				<th  style="border : 1px solid #988989;font-weight:bold; width:15px;" align="center">BRANCH</th>
 				<th  style="border : 1px solid #988989;font-weight:bold; width:35px;" align="center">BANK BRANCH</th>
-				<th  style="border : 1px solid #988989;font-weight:bold; width:10px;" align="center">TYPE</th>
+				<th  style="border : 1px solid #988989;font-weight:bold; width:15px;" align="center">TYPE</th>
 				<th style="border : 1px solid #988989;font-weight:bold; width:12px;" align="center">DOJ</th>
 				<th  style="border : 1px solid #988989;font-weight:bold; width:20px;" align="center">LAST PAID DATE</th>
 
