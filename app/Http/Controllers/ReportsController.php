@@ -4013,7 +4013,6 @@ class ReportsController extends Controller
        
         $file_name = $statusname.'_members';
         return Excel::download($s, $file_name.'.xlsx');
-        
     }
 
     public function exportExcelUnionMembers($lang,Request $request){
@@ -4033,7 +4032,6 @@ class ReportsController extends Controller
        
         $file_name = $statusname.'_union_members';
         return Excel::download($s, $file_name.'.xlsx');
-        
     }
 
     public function MemberTransferReport(Request $request, $lang){
@@ -4042,7 +4040,6 @@ class ReportsController extends Controller
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         return view('reports.member_transfers')->with('data',$data);  
-
     }
 
     public function TransferReport(Request $request,$lang){

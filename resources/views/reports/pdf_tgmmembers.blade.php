@@ -156,7 +156,7 @@
 			font-size:11px;
 		}
 
-		
+		.pagebreak { page-break-before: always; } /* page-break-after works, as well */
 		
 	</style>
 	<script type="text/javascript">
