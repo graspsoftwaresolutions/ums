@@ -318,6 +318,7 @@ $("#summary_sidebar_a_id").addClass('active');
 		var unionbranch_id = $("#unionbranch_id").val();
 		if(month_year!=""){
 			var searchfilters = '&month_year='+month_year+'&company_id='+company_id+'&branch_id='+branch_id+'&unionbranch_id='+unionbranch_id;
+			$("#myframe").contents().find("html").css('opacity',0);
 			
 			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/get-monthly-summary-report') }}?offset=0"+searchfilters,);

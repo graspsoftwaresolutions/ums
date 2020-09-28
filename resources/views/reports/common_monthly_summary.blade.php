@@ -5,11 +5,12 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="1" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
-					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+				<td colspan="6" style="text-align:center;padding:10px;vertical-align:top;">
+					<br/>
+					<span style="text-align:center;font-weight: bold;font-size:16px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
 				<td colspan="3" rowspan="2">	
@@ -18,9 +19,9 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="6" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<p style="margin-top:0;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }} SUMMARY REPORT</p>
+					
 					
 					</br>
 				</td>
@@ -33,13 +34,14 @@
 		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
+					<center> <p style="margin-top:0;text-align: center;font-weight: bold;">{{ strtoupper(date('M Y',strtotime($data['month_year']))) }} SUMMARY REPORT</p></center>
 					</br>
 					<table class="pdf-align" style="width: 90%;margin: 0 5%;">
 						<thead>
 							<tr class="">
 								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>
-								<th style="border : 1px solid #988989;text-align: center;" width="7%">{{__('COUNT')}}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="7%">{{__('AMOUNT')}}</th>
+								<th style="border : 1px solid #988989;text-align: center;" width="12%">{{__('COUNT')}}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="12%">{{__('AMOUNT')}}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -98,40 +100,20 @@
 				</td>
 				
 			</tr> 
-            <!-- <tr>
-				<td colspan="10" style="border : 1px solid #988989;font-weight:bold;">Total ACTIVE Member's Count : 0</td>
-				
-			</tr>  -->
-		</tbody>
-		
-	</table>
-	<br>
-	<table id="page-length-option" class="display" width="100%">
-		<thead>
-			
-			<tr class="">
-				
-				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
-				
-					<span style="margin-top:0;">OVERALL SUMMARY REPORT</span>
-				</td>
-				
-			</tr>
-			
-			
-			
-		</thead>
-		<tbody class="" width="100%">
 			<tr>
 				<td colspan="10" style="">
+					<br/>
+					<br/>
+					<center style="font-weight: bold;"> <p style="margin-top:0;text-align: center;font-weight: bold;">OVERALL SUMMARY REPORT</p></center>
+					
 					<table class="pdf-align" style="width: 90% ;margin: 0 5%;">
 						<thead>
 							<tr class="">
 								<th style="border : 1px solid #988989;" align="center">DESCRIPTION</th>
-								<th style="border : 1px solid #988989;text-align: center;" width="10%">{{ date('M Y',strtotime($data['month_year'].' -1 Month')) }}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="10%">{{ date('M Y',strtotime($data['month_year'])) }}</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="10%">Difference</th>
-				                <th style="border : 1px solid #988989;text-align: center;" width="10%">Unpaid</th>
+								<th style="border : 1px solid #988989;text-align: center;" width="12%">{{ date('M Y',strtotime($data['month_year'].' -1 Month')) }}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="12%">{{ date('M Y',strtotime($data['month_year'])) }}</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="12%">Difference</th>
+				                <th style="border : 1px solid #988989;text-align: center;" width="12%">Unpaid</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -207,15 +189,12 @@
 						</tbody>
 						
 					</table>
-
 				</td>
 				
 			</tr> 
-            <!-- <tr>
-				<td colspan="10" style="border : 1px solid #988989;font-weight:bold;">Total ACTIVE Member's Count : 0</td>
-				
-			</tr>  -->
+            
 		</tbody>
 		
 	</table>
+	
 	
