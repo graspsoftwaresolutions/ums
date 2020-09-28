@@ -23,6 +23,7 @@ use App\Exports\HalfshareExport;
 use App\Exports\MembershipStatisticsExport;
 use App\Exports\StatusUnionMemberExport;
 use App\Exports\ResignMembersExport;
+use App\Exports\UnionResignMembersExport;
 
 class ReportsController extends Controller
 {
@@ -535,6 +536,16 @@ class ReportsController extends Controller
         $s = new ResignMembersExport($request->all());
        
         $file_name = 'resign_members';
+        return Excel::download($s, $file_name.'.xlsx');
+        
+    }
+
+    public function exportExcelUnionResignMembers($lang,Request $request){
+       
+        //return $request->all();
+        $s = new UnionResignMembersExport($request->all());
+       
+        $file_name = 'union_resign_members';
         return Excel::download($s, $file_name.'.xlsx');
         
     }
