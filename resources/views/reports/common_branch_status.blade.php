@@ -5,14 +5,18 @@
 		<thead>
 			<tr class="">
 				
-				<td colspan="2" rowspan="2" style="text-align:right">
+				<td colspan="3" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
 				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
-					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
+					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,
+					@if(!isset($isprint))
+					<br/>
+					@endif
+					PENINSULAR MALAYSIA</span>
 					
 				</td>
-				<td colspan="3" rowspan="2">	
+				<td colspan="2" rowspan="2">	
 					</br>
 				</td>
 			</tr>
@@ -26,7 +30,7 @@
 			</tr>
 			<tr class="" style="font-weight: bold;">
 			
-				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
+				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">
 					To Branch Hons. Secretary
 					@if($data['unionbranch_id']!='')
 						<br>
@@ -34,9 +38,12 @@
 					@endif
 				</td>
 				<td colspan="5" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					@if(!isset($isprint))
+					<br/>
+					@endif
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
-				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
 					
 					@if($data['unionbranch_id']!='')
 						<br>
@@ -48,7 +55,7 @@
 			<tr class="">
 				<th style="border : 1px solid #988989;" align="center">SNO</th>
 				<th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
-                <th style="border : 1px solid #988989;">{{__('MEMBER NAME')}}</th>
+                <th style="border : 1px solid #988989;width: 25%;">{{__('MEMBER NAME')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK/BR.')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK BRANCH')}}</th>
               

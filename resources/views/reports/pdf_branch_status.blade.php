@@ -46,6 +46,7 @@
 		@page {
 		  margin: 3mm
 		}
+		body {margin: 0.2cm;}
 		
 		@media print {
 			@page {
@@ -145,7 +146,7 @@
 		    font-weight: normal;
 		    line-height: 1; 
 		    color: rgba(0, 0, 0, .87);
-		    font-size: 12px;
+		    font-size: 10px;
 		}
 		.nric_no{
 			width:10% !important;
