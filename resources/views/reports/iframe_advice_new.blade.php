@@ -47,20 +47,20 @@
 		}
 		
 		@page {
-		  margin: 3mm
+		  //margin: 3mm
 		}
 		
 		@media print {
 			@page {
 				size: landscape; 
-				margin: 3mm;
+				//margin: 3mm;
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
 		    button {display: none;}
 		   
-		    body {margin: 1 cm;}
+		    body { margin-right: 0.2cm ; }
 			.export-button{
 				display:none !important;
 			}
@@ -178,7 +178,7 @@
 					
 				</td>
 				<td width="20%" style="text-align:right;">	
-					<a href="#" class="exportToExcel export-button btn btn-sm"><i class="material-icons">explicit</i></a>
+					<a href="#" class="exportToExcel export-button btn btn-sm" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="#" class="export-button btn btn-sm" style="display:none;" style="background:#227849;"><i class="material-icons">explicit</i></a>
 					<a href="{{ url(app()->getLocale().'/export-pdf-advice-new?offset=0'.$searchfilters) }}" class="export-button btn btn-sm" style="background:#ff0000;"><i class="material-icons">picture_as_pdf</i></a>
 					<a href="#" class="export-button btn btn-sm" style="background:#ccc;" onClick="window.print()"><i class="material-icons">print</i></a>

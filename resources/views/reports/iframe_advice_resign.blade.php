@@ -48,20 +48,20 @@
 		}
 		
 		@page {
-		  margin: 3mm
+		  //margin: 3mm
 		}
 		
 		@media print {
 			@page {
 				size: landscape; 
-				margin: 3mm;
+				//margin: 3mm;
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body { margin-right: 0.2cm ; }
 			.export-button{
 				display:none !important;
 			}

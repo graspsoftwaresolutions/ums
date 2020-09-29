@@ -119,21 +119,26 @@
 		<tr>
 			<td colspan="8"></td>
 			<td colspan="5" style="text-align: center;margin-top: 100px;vertical-align:top;font-weight:bold;" align="center">
+				<br/><br/>
 				Your Fraternally,
+				<br/>
+				<br/>
 			</td>
 		</tr>
 	
 		<tr>
-			<td colspan="13" rowspan="2"></td>
+			<td colspan="13" rowspan="2">&nbsp;</td>
 		</tr> 
 		<tr>
-			<td colspan="13"></td>
+			<td colspan="13">&nbsp;</td>
 		</tr> 
 		<tr>
-			<td colspan="8"></td>
+			<td colspan="8">&nbsp;</td>
 			<td colspan="5" style="margin-top: 100px;text-align: center;font-weight:bold;border-top: 1px solid black !important;" align="center">
+				<br/>
+				<br/>
 				Hons. General Secretary
-				</br>
+				<br/>
 				NUBE H.Q
 			</td>
 		</tr>

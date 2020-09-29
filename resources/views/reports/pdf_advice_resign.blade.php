@@ -46,6 +46,7 @@
 		@page {
 		  margin: 3mm
 		}
+		body {margin: 0.2cm;}
 		
 		@media print {
 			@page {
@@ -57,7 +58,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body {margin: 0.2cm;}
 			.export-button{
 				display:none !important;
 			}

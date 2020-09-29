@@ -1133,7 +1133,6 @@ class ReportsController extends Controller
                     }
                 }
              }
-              
 
               if($member_auto_id!=""){
                   $members = $members->where('m.id','=',$member_auto_id);
@@ -2157,7 +2156,6 @@ class ReportsController extends Controller
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']='';
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
-       
 
         $dataarr = ['data' => $data ];
 
@@ -2217,8 +2215,6 @@ class ReportsController extends Controller
        
 
         // $dataarr = ['data' => $data ];
-
-       
 
         // $pdf = PDF::loadView('reports.pdf_takaful', $dataarr)->setPaper('a4', 'landscape'); 
         // return $pdf->download('pdf_takaful_report.pdf');
@@ -4409,7 +4405,6 @@ class ReportsController extends Controller
               // $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
-
         $data['member_view'] = $members;
         $data['month_year'] = $fulldate;
 
@@ -4486,7 +4481,6 @@ class ReportsController extends Controller
                $members = $members->orderBy('com.company_name','asc');
               // $members = $members->orderBy('m.name','asc');
             $members = $members->get();
-
 
         $data['member_view'] = $members;
         $data['month_year'] = $fulldate;
@@ -4662,7 +4656,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;

@@ -42,7 +42,7 @@
 		.page {
 		  page-break-after: always;
 		}
-		
+		body {margin-left: 0.2cm;}
 		@page {
 		  margin: 3mm
 		}
@@ -57,7 +57,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    
 			.export-button{
 				display:none !important;
 			}
