@@ -46,6 +46,7 @@
 		@page {
 		  margin: 3mm
 		}
+		 body {margin: 0.3cm;}
 		
 		@media print {
 			@page {
@@ -165,7 +166,9 @@
 </head>
 
 <body>
-	
+	@php
+		$isprint=1;
+	@endphp
 	@include('reports.common_takaful_summary')
 	
 </body>

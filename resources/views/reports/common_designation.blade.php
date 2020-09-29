@@ -12,7 +12,7 @@
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
-				<td colspan="3" rowspan="2">	
+				<td colspan="2" rowspan="2">	
 					</br>
 				</td>
 			</tr>
@@ -29,17 +29,20 @@
 				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
 					To Branch Hons. Secretary
 					@if($data['unionbranch_id']!='')
-						<br>
+						<br/>
 						Branch Name : {{ $data['unionbranch_name'] }}
 					@endif
 				</td>
 				<td colspan="5" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+					@if(!isset($isprint))
+					<br/>
+					@endif
 					{{ CommonHelper::get_designation_name($data['designation']) }} 
 				</td>
-				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">	
 					
 					@if($data['unionbranch_id']!='')
-						<br>
+						<br/>
 						Branch Code : {{ $data['unionbranch_id'] }}
 					@endif
 				</td>
@@ -48,13 +51,13 @@
 			<tr class="">
 				<th style="border : 1px solid #988989;" align="center">SNO</th>
 				<th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
-                <th style="border : 1px solid #988989;">{{__('MEMBER NAME')}}</th>
-                <th style="border : 1px solid #988989;">{{__('BANK')}}</th>
+                <th style="border : 1px solid #988989;" @if(!isset($isprint)) width="30%" @endif>{{__('MEMBER NAME')}}</th>
+                <th style="border : 1px solid #988989;" width="7%">{{__('BANK')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK BRANCH')}}</th>
               
-                <th style="border : 1px solid #988989;">{{__('NRIC')}}</th>
+                <th style="border : 1px solid #988989;" width="10%">{{__('NRIC')}}</th>
                 <!-- <th style="border : 1px solid #988989;">{{__('TYPE')}}</th> -->
-                <th style="border : 1px solid #988989;">{{__('G')}}</th>
+                <th style="border : 1px solid #988989;" width="4%">{{__('G')}}</th>
                
                 <th style="border : 1px solid #988989;">{{__('DOJ')}}</th>
                 <th style="border : 1px solid #988989;">{{__('STATUS')}}</th>
@@ -100,7 +103,7 @@
 				@endphp
             @endforeach
            <tr>
-				<td colspan="10" style="border : 1px solid #988989;;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td colspan="9" style="border : 1px solid #988989;;font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 				
 			</tr> 
 			<!--   <tr>

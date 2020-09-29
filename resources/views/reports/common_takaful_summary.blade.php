@@ -30,10 +30,10 @@
 				
 			</tr>
 			<tr class="">
-				<th width="25%" style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
-				<th width="25%" style="border: 1px solid #988989 !important;">{{__('TOTAL MEMBERS')}}</th>
-				<th width="25%" style="border: 1px solid #988989 !important;">{{__('AMOUNT(RM)')}}</th>
-				<th style=""></th>
+				<th @if(isset($isprint)) width="20%" @else width="25%" @endif style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
+				<th @if(isset($isprint)) width="20%" @else width="25%" @endif style="border: 1px solid #988989 !important;">{{__('TOTAL MEMBERS')}}</th>
+				<th @if(isset($isprint)) width="20%" @else width="25%" @endif style="border: 1px solid #988989 !important;">{{__('AMOUNT(RM)')}}</th>
+				<th @if(isset($isprint)) width="40%" @else @endif></th>
 			</tr>
 		</thead>
 		<tbody class="" width="100%">

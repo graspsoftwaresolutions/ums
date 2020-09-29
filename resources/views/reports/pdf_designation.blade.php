@@ -46,6 +46,8 @@
 		@page {
 		  margin: 3mm
 		}
+
+		body {margin-left: 0.2cm;}
 		
 		@media print {
 			@page {

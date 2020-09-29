@@ -381,7 +381,6 @@ class ReportsController extends Controller
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['reasondata'] = Reason::where('status','=',1)->get();
-       
         
         $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.accbenefit as contribution',DB::raw("ifnull(rs.`accbf`+rs.insuranceamount,0) AS benifit"),DB::raw("ifnull(rs.`accbf`+rs.`insuranceamount`+rs.`accbenefit`,0) AS total"),'rs.resignation_date')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
@@ -639,7 +638,6 @@ class ReportsController extends Controller
         $user_id = Auth::user()->id; 
         $union_branch_id ='';
         $unionbranch_name='';
-       
         
         $members = DB::table('resignation as rs')->select('c.id as cid','m.name','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.employee_id','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id',DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name','rs.resignation_date','rs.paymode','rs.voucher_date','reason.short_code as reason_code','rs.claimer_name','u.short_code as unioncode','mp.last_paid_date')
                     ->leftjoin('membership as m','m.id','=','rs.member_code')
@@ -921,7 +919,6 @@ class ReportsController extends Controller
         $data['member_view'] = $members;
         return view('reports.takaful')->with('data',$data);  
     }
-	
 	
 	
 	public function VariationFiltereport(Request $request, $lang)
@@ -2394,7 +2391,6 @@ class ReportsController extends Controller
         $data['data_limit']='';
         $data['offset']='';
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
-       
 
         $dataarr = ['data' => $data ];
 
@@ -2409,14 +2405,13 @@ class ReportsController extends Controller
                                                 $query->where('head_of_company', '=', '')
                                                     ->orWhere('head_of_company', '=', 0)
                                                         ->orWhereNull('head_of_company');
-                                            })->get();
+                                            })->orderBy('short_code','asc')->get();
         //dd($head_company_view);
         foreach($head_company_view as $mkey => $company){
             $companyid = $company->id;
             //$company_str_List ="'".$companyid."'";
             $company_ids = DB::table('company')->where('head_of_company','=',$companyid)->pluck('id')->toArray();
             $res_company = array_merge($company_ids, [$companyid]); 
-            
            
             foreach($company as $newkey => $newvalue){
                 $data['head_company_view'][$mkey][$newkey] = $newvalue;
@@ -2425,7 +2420,7 @@ class ReportsController extends Controller
             //$company_str_List ='';
            
         }
-       
+       //dd($data['head_company_view']);
         //$members = CacheMonthEnd::getSummaryMonthEndByDate(date('Y-m-01'));
         // $members = DB::table($this->membermonthendstatus_table.' as ms')
         //         ->select('com.company_name','com.short_code as companycode',DB::raw("ifnull(SUM(ms.SUBSCRIPTION_AMOUNT),0) as totalsum"),DB::raw("count(ms.id) as total_members"),DB::raw("ifnull(SUM(ms.`SUBSCRIPTION_AMOUNT`)+SUM(ms.`BF_AMOUNT`),0) AS totalsubs"))
@@ -2477,7 +2472,7 @@ class ReportsController extends Controller
                                                 $query->where('head_of_company', '=', '')
                                                          ->orWhere('head_of_company', '=', 0)
                                                         ->orWhereNull('head_of_company');
-                                            })->get();
+                                            })->orderBy('short_code','asc')->get();
 
         foreach($head_company_view as $mkey => $company){
             $companyid = $company->id;
@@ -2491,6 +2486,8 @@ class ReportsController extends Controller
             $data['head_company_view'][$mkey]['company_list'] = $res_company;
             //$company_str_List ='';
         }
+
+        //dd($data['head_company_view']);
        
         $data['month_year']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
         $data['company_id']=$company_id;
@@ -2536,7 +2533,7 @@ class ReportsController extends Controller
                                                 $query->where('head_of_company', '=', '')
                                                          ->orWhere('head_of_company', '=', 0)
                                                         ->orWhereNull('head_of_company');
-                                            })->get();
+                                            })->orderBy('short_code','asc')->get();
 
         foreach($head_company_view as $mkey => $company){
             $companyid = $company->id;
