@@ -42,6 +42,7 @@
 		.page {
 		  page-break-after: always;
 		}
+		body {margin: 0.1cm;}
 		
 		@page {
 		  margin: 3mm
@@ -155,7 +156,7 @@
 			font-weight:bold;
 			font-size:14px;
 		}
-
+		 .pagebreak { page-break-before: always; } /* page-break-after works, as well */
 		
 		
 	</style>

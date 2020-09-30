@@ -47,13 +47,13 @@
 		}
 		
 		@page {
-		  margin: 3mm
+		  //margin: 3mm
 		}
 		
 		@media print {
 			@page {
 				size: landscape; 
-				margin: 3mm;
+				//margin: 3mm;
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
