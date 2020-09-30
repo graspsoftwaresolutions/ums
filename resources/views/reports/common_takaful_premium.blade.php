@@ -53,8 +53,8 @@
 				<th style="border: 1px solid #988989 !important;">{{__('BANK')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('MSHIP')}}</th>
 				<!-- <th style="border: 1px solid #988989 !important;">{{__('BRANCH')}}</th> -->
-				<th style="border: 1px solid #988989 !important;">{{__('NRIC')}}</th>
-				<th style="border: 1px solid #988989 !important;">{{__('NAME')}}</th>
+				<th style="border: 1px solid #988989 !important;" width="15%">{{__('NRIC')}}</th>
+				<th style="border: 1px solid #988989 !important;" width="35%">{{__('NAME')}}</th>
 				<th style="border: 1px solid #988989 !important;">{{__('INSURANCE AMOUNT(RM)')}}</th>
 			</tr>
 		</thead>

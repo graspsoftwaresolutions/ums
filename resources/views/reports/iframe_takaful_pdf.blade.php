@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="http://localhost/ums/public/assets/css/flag-icon.min.css">
 	<!-- <link rel="stylesheet" type="text/css" href="http://localhost/ums/public/assets/css/vertical-modern-menu.css"> -->
 	 <link rel="stylesheet" type="text/css" href="http://localhost/ums/public/assets/css/materialize.css"> 
-	<title>2020-01-01</title>
+	<title>takaful</title>
 	<style>
 		/* Styles go here */
 		
@@ -163,10 +163,8 @@
 				</td>
 				<td colspan="3" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
-					<p>&nbsp;</p>
-					<p style="margin-top: 40px;">
-						NUBE RETIREMENT INSURANCE SCHEME
-					</p>
+					<br/>
+					NUBE RETIREMENT INSURANCE SCHEME
 				</td>
 				<td colspan="1" rowspan="1">	
 					
@@ -178,16 +176,16 @@
 				<td colspan="2" style="border-bottom: 1px solid #988989 !important;">
 					To Branch Hons. Secretary
 					@if($data['unionbranch_id']!='')
-						<p>
+						 <br/>
 							Branch Name : {{ $data['unionbranch_name'] }}
-						</p>
+						
 					@endif
 									</td>
 				<td colspan="3" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					
 					{{ date('01 M Y',strtotime($data['month_year'])) }} - {{ date('t M Y',strtotime($data['month_year'])) }}
 				</td>
-				<td colspan="1" style="border-bottom: 1px solid #988989 !important;">	
+				<td colspan="1" style="border-bottom: 1px solid #988989 !important;height: 50px;">	
 					@if($data['unionbranch_id']!='')
 						<p>
 						Branch Code : {{ $data['unionbranch_id'] }}

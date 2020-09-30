@@ -19,10 +19,13 @@ use Maatwebsite\Excel\Concerns\FromView;
 use DB;
 use Facades\App\Repository\CacheMonthEnd;
 use App\Model\Fee;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class takafulMemberExport implements FromView
+class takafulMemberExport implements FromView,WithEvents,WithColumnFormatting
 {
     protected $request_data;
+	protected $member_count;
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -86,6 +89,8 @@ class takafulMemberExport implements FromView
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']='';
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+		
+		$this->member_count = count($members);
        
 
         $dataarr = ['data' => $data ];
@@ -97,10 +102,11 @@ class takafulMemberExport implements FromView
 
     public function collection()
     {
+		return [];
         // return User::all();
         // dd(MonthlySubscription::all());
         // return collect(MonthlySubscription::all());
-        return MonthlySubscriptionMember::select('id','MonthlySubscriptionCompanyId','company_branch_id','Name','MemberCode','NRIC','Amount')->where('update_status','=',1)->limit(100)->get();
+       // return MonthlySubscriptionMember::select('id','MonthlySubscriptionCompanyId','company_branch_id','Name','MemberCode','NRIC','Amount')->where('update_status','=',1)->limit(100)->get();
     }
 
     public function drawings()
@@ -138,13 +144,31 @@ class takafulMemberExport implements FromView
         return [
             AfterSheet::class    => function(AfterSheet $event) {
                 $cellRange = 'A3:F3'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->
+               /* $event->sheet->getDelegate()->getStyle($cellRange)->
 				applyFromArray(array(
 					'font' => array(
 						'bold'  => true,
 					)
-				));
-            },
+				));*/
+				$styleArray = [
+                            'borders' => [
+                                'outline' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    'color' => ['argb' => '988989'],
+                                ]
+                            ]
+                        ];
+                $event->sheet->getDelegate()->getStyle('A'.($this->member_count+4).':F'.($this->member_count+4))->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A'.($this->member_count+5).':F'.($this->member_count+5))->applyFromArray($styleArray);
+            }, 
+        ];
+    }
+	
+	public function columnFormats(): array
+    {
+        return [
+            'D' => '0',
+            'F' => '0.00',
         ];
     }
 }

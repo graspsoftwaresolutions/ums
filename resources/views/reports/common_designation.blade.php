@@ -50,7 +50,7 @@
 			
 			<tr class="">
 				<th style="border : 1px solid #988989;" align="center">SNO</th>
-				<th style="border : 1px solid #988989;">{{__('M/NO')}}</th>
+				<th style="border : 1px solid #988989;" @if(!isset($isprint)) width="10%" @endif>{{__('M/NO')}}</th>
                 <th style="border : 1px solid #988989;" @if(!isset($isprint)) width="30%" @endif>{{__('MEMBER NAME')}}</th>
                 <th style="border : 1px solid #988989;" width="7%">{{__('BANK')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK BRANCH')}}</th>
