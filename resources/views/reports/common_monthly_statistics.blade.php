@@ -53,19 +53,31 @@
 				<tr>
 					<td style="border : 1px solid #988989;">Rejoined</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
-						<td style="border : 1px solid #988989;text-align: center;" >0</td>
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$rejoinedcount = CommonHelper::getMonthRejoinMembercount($month);
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $rejoinedcount }}</td>
 					@endfor
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Special grade</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
-						<td style="border : 1px solid #988989;text-align: center;" >0</td>
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$specialcount = CommonHelper::getMonthSpecialMembercount($month);
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $specialcount }}</td>
 					@endfor
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Active members(All)</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
-						<td style="border : 1px solid #988989;text-align: center;" >0</td>
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$specialcount = CommonHelper::getMonthTotalMembercount($month);
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $specialcount }}</td>
 					@endfor
 				</tr>
 				<tr>

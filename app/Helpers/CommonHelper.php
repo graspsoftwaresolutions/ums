@@ -4341,7 +4341,53 @@ class CommonHelper
             //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
             ->where('m.doj', '>=', $fromdate)
             ->where('m.doj', '<=', $todate)
+            //->where('m.designation_id', '!=' ,3)
+            ->whereNull('m.old_member_number')
+            ->count();
+           // dd($count);
+        return $count;
+    }
+
+    public static function getMonthRejoinMembercount($month){
+        $fromdate = date('Y-m-01', strtotime($month));
+        $todate = date('Y-m-t', strtotime($month));
+        $count = DB::table('membership as m')
+            ->select('m.id')
+            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->where('m.doj', '>=', $fromdate)
+            ->where('m.doj', '<=', $todate)
             ->where('m.designation_id', '!=' ,3)
+            ->whereNotNull('m.old_member_number')
+            ->count();
+           // dd($count);
+        return $count;
+    }
+
+    public static function getMonthSpecialMembercount($month){
+        $fromdate = date('Y-m-01', strtotime($month));
+        $todate = date('Y-m-t', strtotime($month));
+        $count = DB::table('membership as m')
+            ->select('m.id')
+            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->where('m.doj', '>=', $fromdate)
+            ->where('m.doj', '<=', $todate)
+            ->where('m.designation_id', '=' ,3)
+            ->whereNotNull('m.old_member_number')
+            ->count();
+           // dd($count);
+        return $count;
+    }
+
+    public static function getMonthTotalMembercount($month){
+        $fromdate = date('Y-m-01', strtotime($month));
+        $todate = date('Y-m-t', strtotime($month));
+        $count = DB::table('membership as m')
+            ->select('m.id')
+            //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->where('m.doj', '>=', $fromdate)
+            ->where('m.doj', '<=', $todate)
+            //->where('m.designation_id', '=' ,3)
+            //->whereNotNull('m.old_member_number')
             ->count();
            // dd($count);
         return $count;

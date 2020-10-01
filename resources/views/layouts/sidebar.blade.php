@@ -233,6 +233,9 @@
               <li id="membership_statistic_sidebar_li_id" class=""><a id="membership_statistic_sidebar_a_id" class="collapsible-body" href="{{ route('members.statistics',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('
               Membership Statistics') }}</span></a></li>
 
+              <li id="monthly_statistic_sidebar_li_id" class=""><a id="monthly_statistic_sidebar_a_id" class="collapsible-body" href="{{ route('monthly.statistics',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('
+              Monthly Statistics') }}</span></a></li>
+
               <li id="halfshare_sidebar_li_id" class=""><a id="halfshare_sidebar_a_id" class="collapsible-body" href="{{ route('union.halfshare',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Half Share') }}</span></a></li>
               <li id="member_halfshare_sidebar_li_id" class=""><a id="member_halfshare_sidebar_a_id" class="collapsible-body" href="{{ route('reports.halfshare',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Financial Half Share') }}</span></a></li>
               <li id="variation_bank_sidebar_li_id" class=""><a id="variation_bank_sidebar_a_id" class="collapsible-body" href="{{ route('reports.variation',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Variation By Bank') }}</span></a></li>
