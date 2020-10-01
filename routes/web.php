@@ -325,6 +325,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('membership_statistics_report','ReportsController@MembershipStatisticsReport')->name('members.statistics');
 	Route::get('get-membership-statistics-report','ReportsController@MembershipStatisticsFilter')->name('statistics.membership');
 
+	Route::get('monthly_statistics_report','ReportsController@MonthlyStatisticsReport')->name('monthly.statistics');
+	Route::get('get-monthly-statstics-report','ReportsController@MonthlyStatisticsFilter')->name('statistics.membership');
+
 	//Members Iframe Report 
 	//reports.membersnewactive
 	Route::get('member_report/{parameter}','ReportsController@membersReport')->name('reports.members');

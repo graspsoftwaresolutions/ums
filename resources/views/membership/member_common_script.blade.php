@@ -197,8 +197,12 @@
 @endphp
 <script>
 	$('#rejoined').click(function(){
-	$('#member_old_div').toggle();
-	var  oldMemberID = $('#old_mumber_number').val();
+		$('#member_old_div').toggle();
+		var  oldMemberID = $('#old_mumber_number').val();
+		if($('#rejoined').prop("checked") == false){
+			$('#old_mumber_number').val('');
+			$('#old_member_id').val('');
+		}
 	});
 
 	
