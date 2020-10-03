@@ -9,7 +9,7 @@
 				<td colspan="1" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="5" style="text-align:center;padding:10px;vertical-align:top;">
+				<td colspan="11" style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -19,11 +19,10 @@
 			</tr>
 			<tr class="">
 				
-				<td colspan="5" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="11" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<p style="margin-top:0;"> STATISTICS FOR {{ date('M Y',strtotime($data['from_month_year'])) }} - {{ date('M Y',strtotime($data['to_month_year'])) }}</p>
 					@if(!isset($setwidth))
-					</br>
 					</br>
 					</br>
 					@endif
@@ -75,27 +74,39 @@
 					@for($i=0; $i<$data['diff_month_count'];$i++)
 						@php
 							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
-							$specialcount = CommonHelper::getMonthTotalMembercount($month);
+							$activecount = CommonHelper::getMonthStatuscount($month,1);
 						@endphp
-						<td style="border : 1px solid #988989;text-align: center;" >{{ $specialcount }}</td>
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $activecount }}</td>
 					@endfor
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Defaulter members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
-						<td style="border : 1px solid #988989;text-align: center;" >0</td>
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$defaultercount = CommonHelper::getMonthStatuscount($month,2);
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $defaultercount }}</td>
 					@endfor
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Struckoff members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
-						<td style="border : 1px solid #988989;text-align: center;" >0</td>
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$struckoffcount = CommonHelper::getMonlthlyStruckoffMembercount($month);
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $struckoffcount }}</td>
 					@endfor
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Resigned members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
-						<td style="border : 1px solid #988989;text-align: center;" >0</td>
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$resignedcount = CommonHelper::getMonlthlyResignedMembercount($month);
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $resignedcount }}</td>
 					@endfor
 				</tr>			
 			
