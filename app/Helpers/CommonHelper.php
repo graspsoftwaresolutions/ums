@@ -4405,13 +4405,18 @@ class CommonHelper
         return $count;
     }
 
-    public static function getMonlthlyResignedMembercount($statusmonth){
+    public static function getMonlthlyResignedMembercount($statusmonth,$type){
         $fromdate = date('Y-m-01', strtotime($statusmonth));
         $todate = date('Y-m-t', strtotime($statusmonth));
+        if($type==1){
+            $columnname = 'r.resignation_date';
+        }else{
+            $columnname = 'r.voucher_date';
+        }
         $count = DB::table('resignation as r')->select('r.id')
                     ->leftjoin('membership as m','r.member_code','=','m.id')
-                    ->where('r.resignation_date','>=',$fromdate)
-                    ->where('r.resignation_date','<=',$todate)
+                    ->where($columnname,'>=',$fromdate)
+                    ->where($columnname,'<=',$todate)
                     ->count();
            // dd($count);
         return $count;

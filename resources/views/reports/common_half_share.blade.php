@@ -202,6 +202,15 @@
 				$slno++;
 			@endphp
 			@endforeach
+			<tr>
+					<td colspan="7">
+							@if(isset($breakexcel))
+								<br/>
+								<br/>
+								<br/>
+							@endif
+					</td>
+				</tr>
 		</tbody>
 	</table>
 	@endif
@@ -330,8 +339,17 @@
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($halfsubper,2) }}</td>
                         <td style="border: 1px solid #988989 !important;font-weight: bold;">{{ round($toh_hs,2) }}</td>
                 </tr>
-	
-			
+                @if(isset($breakexcel))
+				<tr>
+					<td colspan="8">
+							
+								<br/>
+								<br/>
+								<br/>
+							
+					</td>
+				</tr>
+				@endif
 		</tbody>
 		
 	</table>

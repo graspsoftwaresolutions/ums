@@ -166,7 +166,9 @@
 </head>
 
 <body>
-	
+	@php
+		$breakexcel = 1;
+	@endphp
 	@include('reports.common_half_share')
 	
 </body>
