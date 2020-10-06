@@ -32,11 +32,10 @@
 			<tr class="">
 				<th style="border : 1px solid #988989;" colspan="1" align="center">DESCRIPTION</th>
 				@for($i=0; $i<$data['diff_month_count'];$i++)
-				<th style="border : 1px solid #988989;text-align: center;" width="7%" >{{ date('m/y', strtotime('+'.($i).' months',strtotime($data['from_month_year']))) }}</th>
+				<th style="border : 1px solid #988989;text-align: center;" width="6%" >{{ date('m/y', strtotime('+'.($i).' months',strtotime($data['from_month_year']))) }}</th>
 				@endfor
 				<th style="border : 1px solid #988989;text-align: center;">Total</th> 
 			</tr>
-			
 			
 		</thead>
 		<tbody>

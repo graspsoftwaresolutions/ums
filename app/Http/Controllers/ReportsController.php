@@ -2547,7 +2547,6 @@ class ReportsController extends Controller
             }
             $data['head_company_view'][$mkey]['company_list'] = $res_company;
             //$company_str_List ='';
-           
         }
 
         $data['month_year']=$fulldate;
@@ -3836,9 +3835,7 @@ class ReportsController extends Controller
         //return $request->all();
 
         $member_id = $request->input('member_auto_id');
-      
-        $to_date = $request->input('to_date');
-        
+        $to_date = $request->input('to_date');        
         $todate = CommonHelper::ConvertdatetoDBFormat($to_date);        
 
         if($member_id!="" && $to_date!=""){
@@ -4552,7 +4549,6 @@ class ReportsController extends Controller
 
     public function halfshareUnionReport(Request $request, $lang)
     {
-    
         $data['half_share'] = [];
         $data['date'] = date('M/Y');
         $data['bf_amount']=$this->bf_amount;
@@ -4612,7 +4608,6 @@ class ReportsController extends Controller
              $data['data_limit']= '';
              return view('reports.iframe_unionhalfshare')->with('data',$data); 
         }
-
         
     }
 

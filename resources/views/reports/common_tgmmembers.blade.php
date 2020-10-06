@@ -3,9 +3,11 @@
 	$totalmembers = 0;
 	
 	$lastbankid = '';
+	$totalcount = count($data['member_view']);
 @endphp
 @foreach($data['member_view'] as $member)
 @php
+	
 	$pgm_members = CommonHelper::getPgmMembers($data['month_year'],$member->companyid,$data['branch_id'],$data['unionbranch_id'],$data['status_id']);
 	$companyname = CommonHelper::getCompanyName($member->companyid);
 	$totalmembers += count($pgm_members);
@@ -124,8 +126,9 @@
 		</tbody>
 		
 	</table>
-	
+	@if($data['member_view'][$totalcount-1]->companyid==$member->companyid)
+	<p>Oveall Total Member's Count : {{ $totalmembers }}</p>
+	@endif
 	<div class="pagebreak"> </div>
 	@endif
 @endforeach
-<p>Oveall Total Member's Count : {{ $totalmembers }}</p>
