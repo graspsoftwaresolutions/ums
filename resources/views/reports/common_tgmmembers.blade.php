@@ -129,6 +129,8 @@
 	@if($data['member_view'][$totalcount-1]->companyid==$member->companyid)
 	<p>Oveall Total Member's Count : {{ $totalmembers }}</p>
 	@endif
+	@if($data['member_view'][$totalcount-1]->companyid!=$member->companyid)
 	<div class="pagebreak"> </div>
+	@endif
 	@endif
 @endforeach
