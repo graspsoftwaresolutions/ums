@@ -4432,6 +4432,8 @@ class ReportsController extends Controller
         $fulldate = date('Y-m-01');
         if($month_year!=""){
             $fulldate = $month_year;
+			$monthno = date('m',strtotime($month_year));
+			$yearno = date('Y',strtotime($month_year));
         }
 
         $members = DB::table('mon_sub_member as mm')->select('com.id  as companyid')
