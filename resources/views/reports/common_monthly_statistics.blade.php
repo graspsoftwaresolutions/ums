@@ -47,6 +47,7 @@
 						$totalspecial = 0;
 						$totalactive = 0;
 						$totaldefaulter = 0;
+						$totaldefault = 0;
 						$totalstruckoff = 0;
 						$totalresigned = 0;
 						$totalresignedpay = 0;
@@ -98,7 +99,7 @@
 					<td style="border : 1px solid #988989;text-align: center;">--</td>
 				</tr>
 				<tr>
-					<td style="border : 1px solid #988989;">Defaulter members</td>
+					<td style="border : 1px solid #988989;">Defaulter members(All)</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
 						@php
 							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
@@ -108,6 +109,18 @@
 						<td style="border : 1px solid #988989;text-align: center;" >{{ $defaultercount }}</td>
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">--</td>
+				</tr>
+				<tr>
+					<td style="border : 1px solid #988989;">Defaulter members</td>
+					@for($i=0; $i<$data['diff_month_count'];$i++)
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$defaultcount = CommonHelper::getMonlthlyDefaulterMembercount($month);
+							$totaldefault += $defaultcount;
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $defaultcount }}</td>
+					@endfor
+					<td style="border : 1px solid #988989;text-align: center;">{{ $totaldefault }}</td>
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Struckoff members</td>
