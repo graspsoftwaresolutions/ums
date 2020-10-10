@@ -945,7 +945,7 @@ class ReportsController extends Controller
 		if($company_id!=""){
 			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
 		}
-        $company_list =  $company_view->get();
+        $company_list =  $company_view->orderBy('c.company_name','asc')->get();
         
 		/* foreach($company_list as $ckey => $company){
             foreach($company as $newkey => $newvalue){
@@ -1649,7 +1649,7 @@ class ReportsController extends Controller
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+                                ->where('ms.Date', '=', date('Y-m-01'))->orderBy('c.company_name','asc')->get();
         return view('reports.subscription')->with('data',$data);  
     }
     public function newSubscriptionReport(Request $request)
@@ -1659,7 +1659,7 @@ class ReportsController extends Controller
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
-                                ->where('ms.Date', '=', date('Y-m-01'))->get();
+                                ->where('ms.Date', '=', date('Y-m-01'))->orderBy('c.company_name','asc')->get();
 
         $data['month_year']=date('Y-m-01');
         $data['company_id']=''; 
@@ -1692,7 +1692,7 @@ class ReportsController extends Controller
 		if($company_id!=""){
 			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
 		}
-		$company_list =  $company_view->get();
+		$company_list =  $company_view->orderBy('c.company_name','asc')->get();
 		$dateformat = date('Y-m-01',strtotime('01-'.$monthno.'-'.$yearno));
 		// foreach($company_list as $ckey => $company){
         //     foreach($company as $newkey => $newvalue){
@@ -1749,7 +1749,7 @@ class ReportsController extends Controller
 		if($company_id!=""){
 			$company_view = $company_view->where('mc.CompanyCode','=',$company_id);
 		}
-		$company_list =  $company_view->get();
+		$company_list =  $company_view->orderBy('c.company_name','asc')->get();
 		
 		
         $data['company_view'] = $company_list;

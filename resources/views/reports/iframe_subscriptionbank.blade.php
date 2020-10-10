@@ -48,13 +48,13 @@
 		}
 		
 		@page {
-		  margin: 3mm
+		  //margin: 3mm
 		}
 		
 		@media print {
 			@page {
 				size: landscape; 
-				margin: 3mm;
+				//margin: 3mm;
 			}
 		    thead {display: table-header-group;} 
 		    tfoot {display: table-footer-group;}
@@ -80,7 +80,7 @@
 			}
 
 			#page-length-option td, #page-length-option th {
-			  border: 1px solid #ddd !important;
+			  //border: 1px solid #ddd !important;
 			  padding: 4px;
 			}
 			html {

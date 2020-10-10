@@ -42,7 +42,7 @@
 		.page {
 		  page-break-after: always;
 		}
-		
+		body {margin: 0.2cm;}
 		@page {
 		  margin: 3mm
 		}
