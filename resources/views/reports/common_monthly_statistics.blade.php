@@ -51,6 +51,7 @@
 						$totalstruckoff = 0;
 						$totalresigned = 0;
 						$totalresignedpay = 0;
+						$totalresigncount = 0;
 					@endphp
 					@for($i=0; $i<$data['diff_month_count'];$i++)
 						@php
@@ -110,18 +111,19 @@
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">--</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td style="border : 1px solid #988989;">Defaulter members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
 						@php
 							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
-							$defaultcount = CommonHelper::getMonlthlyDefaulterMembercount($month);
+							//$defaultcount = CommonHelper::getMonlthlyDefaulterMembercount($month);
+							$defaultcount = 0;
 							$totaldefault += $defaultcount;
 						@endphp
 						<td style="border : 1px solid #988989;text-align: center;" >{{ $defaultcount }}</td>
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totaldefault }}</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td style="border : 1px solid #988989;">Struckoff members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
@@ -133,6 +135,18 @@
 						<td style="border : 1px solid #988989;text-align: center;" >{{ $struckoffcount }}</td>
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totalstruckoff }}</td>
+				</tr>
+				<tr>
+					<td style="border : 1px solid #988989;">Active to resigned members</td>
+					@for($i=0; $i<$data['diff_month_count'];$i++)
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$resigncount = CommonHelper::getMonlthlyActiveToResigncount($month);
+							$totalresigncount += $resigncount;
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $resigncount }}</td>
+					@endfor
+					<td style="border : 1px solid #988989;text-align: center;">{{ $totalresigncount }}</td>
 				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Resigned members(Resigned Date)</td>
