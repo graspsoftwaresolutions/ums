@@ -4438,7 +4438,7 @@ class CommonHelper
 
            $status_code = DB::table('membership')->where('id','=',$memberid)->pluck('status_id')->first();
 
-           if($status_code>2){
+           if($status_code==3){
                 $currentcount = DB::table('membermonthendstatus as mm')
                 ->select('mm.SUBSCRIPTION_AMOUNT')
                 ->where('mm.StatusMonth', '=',  $statusmonth)
@@ -4549,9 +4549,9 @@ class CommonHelper
         $members = DB::table('membermonthendstatus as mm')
             ->select('mm.MEMBER_CODE')
             ->where('mm.StatusMonth', '=',  $lastmonth)
-            ->where('mm.STATUS_CODE', '=' ,1)
+            ->where('mm.STATUS_CODE', '=' ,2)
             ->where('mm.TOTALMONTHSDUE', '>=' ,2)
-            ->where('mm.TOTALMONTHSDUE', '<=' ,12)
+            //->where('mm.TOTALMONTHSDUE', '<=' ,12)
             ->groupBY('mm.MEMBER_CODE')
             ->get();
         foreach ($members as $key => $value) {
@@ -4571,7 +4571,7 @@ class CommonHelper
                 //dd($currentcount);
                 if($currentcount==0){
                     $totalcount++;
-                    //$membersdata[] = $value->MEMBER_CODE;
+                   // $membersdata[] = $value->MEMBER_CODE;
                 }
             }
 
@@ -4579,7 +4579,7 @@ class CommonHelper
          /*if($totalcount==1){
              dd($membersdata);
         } */
-        
+        //dd($membersdata);
         return $totalcount;
     }
 }
