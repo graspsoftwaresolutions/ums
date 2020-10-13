@@ -53,6 +53,8 @@
 						$totalresignedpay = 0;
 						$totalresigncount = 0;
 						$totalresigncount1 = 0;
+						$totalactivecount1 = 0;
+						$totalstruckoffcount1 = 0;
 					@endphp
 					@for($i=0; $i<$data['diff_month_count'];$i++)
 						@php
@@ -125,6 +127,30 @@
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totaldefault }}</td>
 				</tr> 
+				<tr>
+					<td style="border : 1px solid #988989;">Defaulter to Active members</td>
+					@for($i=0; $i<$data['diff_month_count'];$i++)
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$activecount1 = CommonHelper::getMonlthlyDefaultToActivecount($month);
+							$totalactivecount1 += $activecount1;
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $activecount1 }}</td>
+					@endfor
+					<td style="border : 1px solid #988989;text-align: center;">{{ $totalactivecount1 }}</td>
+				</tr>
+				<tr>
+					<td style="border : 1px solid #988989;">Struckoff to Active members</td>
+					@for($i=0; $i<$data['diff_month_count'];$i++)
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$struckoffcount1 = CommonHelper::getMonlthlyStruckoffToActivecount($month);
+							$totalstruckoffcount1 += $struckoffcount1;
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $struckoffcount1 }}</td>
+					@endfor
+					<td style="border : 1px solid #988989;text-align: center;">{{ $totalstruckoffcount1 }}</td>
+				</tr>
 				<tr>
 					<td style="border : 1px solid #988989;">Struckoff members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)

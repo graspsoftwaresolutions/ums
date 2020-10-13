@@ -4582,4 +4582,82 @@ class CommonHelper
         //dd($membersdata);
         return $totalcount;
     }
+
+    public  static function getMonlthlyDefaultToActivecount($statusmonth){
+        $lastmonth = date('Y-m-01', strtotime('-1 months',strtotime($statusmonth)));
+        $totalcount = 0;
+        $membersdata = [];
+        $members = DB::table('membermonthendstatus as mm')
+            ->select('mm.MEMBER_CODE')
+            ->where('mm.StatusMonth', '=',  $lastmonth)
+            ->where('mm.STATUS_CODE', '=' ,2)
+            //->where('mm.TOTALMONTHSDUE', '>=' ,2)
+            ->groupBY('mm.MEMBER_CODE')
+            ->get();
+        foreach ($members as $key => $value) {
+           $memberid = $value->MEMBER_CODE;
+
+           //$status_code = DB::table('membership')->where('id','=',$memberid)->pluck('status_id')->first();
+
+           //if($status_code==3){
+                $currentcount = DB::table('membermonthendstatus as mm')
+                ->select('mm.SUBSCRIPTION_AMOUNT')
+                ->where('mm.StatusMonth', '=',  $statusmonth)
+                ->where('mm.MEMBER_CODE', '=',  $memberid)
+                ->where('mm.STATUS_CODE', '=' ,1)
+                //->groupBY('mm.MEMBER_CODE')
+                ->count();
+                //dd($currentcount);
+                if($currentcount==1){
+                    $totalcount++;
+                    //$membersdata[] = $value->MEMBER_CODE;
+                }
+           //}
+
+        }
+        // if($totalcount==10){
+        //     dd($membersdata);
+        // }
+        
+        return $totalcount;
+    }
+
+    public  static function getMonlthlyStruckoffToActivecount($statusmonth){
+        $lastmonth = date('Y-m-01', strtotime('-1 months',strtotime($statusmonth)));
+        $totalcount = 0;
+        $membersdata = [];
+        $members = DB::table('membermonthendstatus as mm')
+            ->select('mm.MEMBER_CODE')
+            ->where('mm.StatusMonth', '=',  $lastmonth)
+            ->where('mm.STATUS_CODE', '=' ,3)
+            //->where('mm.TOTALMONTHSDUE', '>=' ,2)
+            ->groupBY('mm.MEMBER_CODE')
+            ->get();
+        foreach ($members as $key => $value) {
+           $memberid = $value->MEMBER_CODE;
+
+           //$status_code = DB::table('membership')->where('id','=',$memberid)->pluck('status_id')->first();
+
+           //if($status_code==3){
+                $currentcount = DB::table('membermonthendstatus as mm')
+                ->select('mm.SUBSCRIPTION_AMOUNT')
+                ->where('mm.StatusMonth', '=',  $statusmonth)
+                ->where('mm.MEMBER_CODE', '=',  $memberid)
+                ->where('mm.STATUS_CODE', '=' ,1)
+                //->groupBY('mm.MEMBER_CODE')
+                ->count();
+                //dd($currentcount);
+                if($currentcount==1){
+                    $totalcount++;
+                    //$membersdata[] = $value->MEMBER_CODE;
+                }
+           //}
+
+        }
+        // if($totalcount==10){
+        //     dd($membersdata);
+        // }
+        
+        return $totalcount;
+    }
 }
