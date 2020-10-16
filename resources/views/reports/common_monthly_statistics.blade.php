@@ -139,18 +139,19 @@
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totalactivecount1 }}</td>
 				</tr>
-				<tr>
+				<!--tr>
 					<td style="border : 1px solid #988989;">Struckoff to Active members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
 						@php
 							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
-							$struckoffcount1 = CommonHelper::getMonlthlyStruckoffToActivecount($month);
+							//$struckoffcount1 = CommonHelper::getMonlthlyStruckoffToActivecount($month);
+							$struckoffcount1 = 0;
 							$totalstruckoffcount1 += $struckoffcount1;
 						@endphp
 						<td style="border : 1px solid #988989;text-align: center;" >{{ $struckoffcount1 }}</td>
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totalstruckoffcount1 }}</td>
-				</tr>
+				</tr-->
 				<tr>
 					<td style="border : 1px solid #988989;">Struckoff members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)

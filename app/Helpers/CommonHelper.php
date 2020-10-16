@@ -4430,7 +4430,7 @@ class CommonHelper
             ->select('mm.MEMBER_CODE')
             ->where('mm.StatusMonth', '=',  $lastmonth)
             ->where('mm.STATUS_CODE', '=' ,2)
-            ->where('mm.TOTALMONTHSDUE', '>=' ,12)
+            //->where('mm.TOTALMONTHSDUE', '>=' ,12)
             ->groupBY('mm.MEMBER_CODE')
             ->get();
         foreach ($members as $key => $value) {
@@ -4469,8 +4469,8 @@ class CommonHelper
             ->select('mm.MEMBER_CODE')
             ->where('mm.StatusMonth', '=',  $lastmonth)
             ->where('mm.STATUS_CODE', '=' ,1)
-            ->where('mm.TOTALMONTHSDUE', '>=' ,2)
-            ->where('mm.TOTALMONTHSDUE', '<=' ,12)
+            //->where('mm.TOTALMONTHSDUE', '>=' ,2)
+           // ->where('mm.TOTALMONTHSDUE', '<=' ,12)
             ->groupBY('mm.MEMBER_CODE')
             ->get();
         foreach ($members as $key => $value) {
@@ -4494,9 +4494,14 @@ class CommonHelper
           // }
 
         }
-         //if($totalcount==91){
+        // if($totalcount==47){
+			// foreach($membersdata as $member){
+				// echo '<pre>';
+				/// print_r($member);
+			// }
+			// dd();
            //  dd($membersdata);
-       //  }
+        /// }
         
         return $totalcount;
     }
@@ -4509,8 +4514,8 @@ class CommonHelper
             ->select('mm.MEMBER_CODE')
             ->where('mm.StatusMonth', '=',  $lastmonth)
             ->where('mm.STATUS_CODE', '=' ,1)
-            ->where('mm.TOTALMONTHSDUE', '>=' ,2)
-            ->where('mm.TOTALMONTHSDUE', '<=' ,12)
+           // ->where('mm.TOTALMONTHSDUE', '>=' ,2)
+            //->where('mm.TOTALMONTHSDUE', '<=' ,12)
             ->groupBY('mm.MEMBER_CODE')
             ->get();
         foreach ($members as $key => $value) {
@@ -4608,16 +4613,16 @@ class CommonHelper
                 //->groupBY('mm.MEMBER_CODE')
                 ->count();
                 //dd($currentcount);
-                if($currentcount==1){
+                if($currentcount>=1){
                     $totalcount++;
                     //$membersdata[] = $value->MEMBER_CODE;
                 }
            //}
 
         }
-        // if($totalcount==10){
-        //     dd($membersdata);
-        // }
+       //  if($totalcount==2){
+           //  dd($membersdata);
+         //}
         
         return $totalcount;
     }
