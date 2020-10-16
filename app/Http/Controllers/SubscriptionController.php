@@ -1039,6 +1039,10 @@ class SubscriptionController extends CommonController
                     ->orderBY('StatusMonth','desc')
                     ->limit(1)
                     ->first();
+                   // dd($ad_mont_record);
+            if($ad_mont_record!=null){
+
+
             if($ad_mont_record->ENTRYMODE=='AD' && $ad_mont_record->TOTAL_MONTHS==1){
                 $totalamt = number_format($ad_mont_record->TOTALSUBCRP_AMOUNT+$ad_mont_record->TOTALBF_AMOUNT+$ad_mont_record->TOTALINSURANCE_AMOUNT,2);
                 $monthend_datas =  [
@@ -1060,6 +1064,7 @@ class SubscriptionController extends CommonController
                 $last_advance_balamt = $advance_data->advance_amount;
             }
             $m_upstatus = DB::table('membermonthendstatus')->where('Id', '=', $ad_mont_record->Id)->update($monthend_datas);
+            }
 
             $below_mont_records = DB::table($this->membermonthendstatus_table." as ms")
                     ->select('ms.StatusMonth','ms.Id','ms.TOTALSUBCRP_AMOUNT','ms.TOTALBF_AMOUNT','ms.TOTALINSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.advance_amt','ms.advance_totalmonths','ms.advance_balamt','ms.ENTRYMODE')
@@ -2476,6 +2481,7 @@ class SubscriptionController extends CommonController
                     'ACCSUBSCRIPTION' => $doj_subs,
                     'ACCBF' => $doj_bf,
                     'ACCINSURANCE' => $doj_ins,
+                    'STATUS_CODE' => 1,
                 ];
                 $upstatus = DB::table('membermonthendstatus')->where('MEMBER_CODE', '=', $member_id)->where('StatusMonth', '=', $from_date)->update($monthend_data);
             }else{
@@ -2508,11 +2514,11 @@ class SubscriptionController extends CommonController
                     'ACCBF' => $doj_bf,
                     'ACCINSURANCE' => $doj_ins,
                    
-                    'STATUS_CODE' => $memberdata->status_id,
-                    'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                    'STATUS_CODE' => 1,
+                    'RESIGNED' => 0,
                     'ENTRY_DATE' => date('Y-m-d'),
                     'ENTRY_TIME' => date('h:i:s'),
-                    'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                    'STRUCKOFF' => 0,
                     'INSURANCE_AMOUNT' => $doj_ins,
                     'TOTALINSURANCE_AMOUNT' => $doj_ins,
                     'TOTALMONTHSCONTRIBUTION' => 1,
@@ -2575,6 +2581,9 @@ class SubscriptionController extends CommonController
                                 // ->first();
                                 //print_r($last_subscription_res);
                                 //die;
+                                $updated_status = DB::table($this->membermonthendstatus_table)->select('STATUS_CODE')->where('StatusMonth', '<', $entry_status_month)->where('MEMBER_CODE', '=', $member_id)->orderBY('StatusMonth','desc')->limit(1)->first();
+                                //dd($updated_status);
+                                $updated_status = $updated_status->STATUS_CODE=='' ? $memberdata->status_id : $updated_status->STATUS_CODE;
                             $monthend_data = [
                                 'StatusMonth' => $entry_status_month, 
                                 'MEMBER_CODE' => $member_id,
@@ -2589,11 +2598,11 @@ class SubscriptionController extends CommonController
                                 'BRANCH_CODE' => $memberdata->branch_id,
                                 'MEMBERTYPE_CODE' => $memberdata->designation_id,
                                 'ENTRYMODE' => 'S',
-                                'STATUS_CODE' => $memberdata->status_id,
-                                'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+                                'STATUS_CODE' => $updated_status,
+                                'RESIGNED' => $updated_status==4 ? 1 : 0,
                                 'ENTRY_DATE' => date('Y-m-d'),
                                 'ENTRY_TIME' => date('h:i:s'),
-                                'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+                                'STRUCKOFF' => $updated_status==3 ? 1 : 0,
                                 'INSURANCE_AMOUNT' => $insurance_amount,
                                 'TOTALINSURANCE_AMOUNT' => $insurance_amount,
                             ];
