@@ -11,6 +11,8 @@
   //dd($edit_data->arrear_date);
   $monthsrecords = CommonHelper::getMonthendsByJoinDate($edit_data->memberid,100,date('Y-m-01',strtotime($edit_data->doj)));
   $dojrecord = CommonHelper::getMonthendsOnJoinDate($edit_data->memberid,100,date('Y-m-01',strtotime($edit_data->doj)));
+  $dojmonth = date('Y-m-01',strtotime($edit_data->doj));
+  $secondmonth = date("Y-m-01", strtotime("+1 month", strtotime($dojmonth)));
  // dd($dojrecord);
 @endphp
 <link href="{{ asset('public/assets/css/jquery-ui-month.min.css') }}" rel="stylesheet" type="text/css" />
@@ -172,8 +174,12 @@
                 $hide_doj_row = '';
                 if(count($monthsrecords)>0){
                   $below_first = $monthsrecords[0];
-                  if(($below_first->TOTALMONTHSDUE>1 || $below_first->TOTALMONTHSPAID>1) && empty($dojrecord)){
-                    $hide_doj_row = 'hide';
+                  if($secondmonth==$below_first->StatusMonth){
+
+                  }else{
+                    if(($below_first->TOTALMONTHSDUE>1 || $below_first->TOTALMONTHSPAID>1) && empty($dojrecord)){
+                      $hide_doj_row = 'hide';
+                    }
                   }
                 }
               @endphp
