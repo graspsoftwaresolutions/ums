@@ -61,7 +61,7 @@
 		   
 		    button {display: none;}
 		   
-		    body {margin: 0;}
+		    body {margin-right: 0.2mm;}
 			.export-button{
 				display:none !important;
 			}

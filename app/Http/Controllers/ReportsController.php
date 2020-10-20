@@ -2781,6 +2781,7 @@ class ReportsController extends Controller
         $month_year = $request->input('month_year');
         $company_id = $request->input('company_id');
         $unionbranch_id = $request->input('unionbranch_id');
+		$unionbranch_name ='';
        
         $monthno = '';
         $yearno = '';
