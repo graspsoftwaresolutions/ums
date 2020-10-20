@@ -1060,8 +1060,8 @@ class MonthEndController extends Controller
         $memberdata = DB::table('membership as m')->select('branch_id','designation_id','status_id','doj')->where('m.id','=',$memberid)->first();
         $doj = $memberdata->doj;
         $dojmonth = date('Y-m-01',strtotime($doj));
-        $delrow = DB::table('membermonthendstatus as ms')->select('ms.id as id') 
-               ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.StatusMonth','<',$dojmonth)
+        $delrow = DB::table('membermonthendstatus')->select('id') 
+               ->where('MEMBER_CODE', '=' ,$memberid)->where('StatusMonth','<',$dojmonth)
                ->delete();
 
         $firstrow = DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
