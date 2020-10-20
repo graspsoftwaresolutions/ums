@@ -2724,6 +2724,7 @@ class ReportsController extends Controller
         $data['member_view'] = $members;
         $data['month_year'] = date('Y-m-01');
         $data['unionbranch_id'] = '';
+        $data['unionbranch_name'] = '';
         $data['company_id'] = '';
         return view('reports.iframe_due')->with('data',$data);
     }
@@ -2735,6 +2736,7 @@ class ReportsController extends Controller
 		$monthno = date('d');
         $yearno = date('Y');
         $full_year = date('Y-m-01');
+        $unionbranch_name = '';
         if($month_year!=""){
           $fmmm_date = explode("/",$month_year);
           $monthno = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
@@ -2745,6 +2747,9 @@ class ReportsController extends Controller
             $members = CacheMonthEnd::getMonthEndDue($full_year);
         }else{
             $members = CacheMonthEnd::getMonthEndDueFilter($full_year,$company_id,$unionbranch_id);
+        }
+        if($unionbranch_id!=''){
+            $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
         }
         // $members = DB::table('membermonthendstatus as ms')->select(DB::raw('max(DATE_FORMAT(ms.LASTPAYMENTDATE,"%d/%m/%Y")) as LASTPAYMENTDATE'),'ms.MEMBER_CODE','ms.TOTALMONTHSDUE','m.name','m.member_number',DB::raw('if(m.new_ic is not null,m.new_ic,m.old_ic) as ic'),DB::raw("DATE_FORMAT(m.doj,'%d/%m/%Y') as doj"),'c.company_name','cb.branch_name as branch_name','u.union_branch as unionbranch')
         //     ->leftjoin('membership as m','m.id','=','ms.MEMBER_CODE')
@@ -2766,6 +2771,7 @@ class ReportsController extends Controller
         $data['month_year'] = $full_year;
         $data['member_view'] = $members;
         $data['unionbranch_id'] = $unionbranch_id;
+        $data['unionbranch_name'] = $unionbranch_name; 
         $data['company_id'] = $company_id;
         return view('reports.iframe_due')->with('data',$data);
     }
@@ -2791,10 +2797,14 @@ class ReportsController extends Controller
         }else{
             $members = CacheMonthEnd::getMonthEndDueFilter($month_year,$company_id,$unionbranch_id);
         }
+        if($unionbranch_id!=''){
+            $unionbranch_name = DB::table('union_branch')->where('id','=',$unionbranch_id)->pluck('union_branch')->first();
+        }
 
         //$dataarr = ['data' => $data ];
         $data['month_year'] = $month_year;
         $data['member_view'] = $members;
+        $data['unionbranch_name'] = $unionbranch_name; 
         $data['unionbranch_id'] = $unionbranch_id;
         $data['company_id'] = $company_id;
         $dataarr = ['data' => $data ];
