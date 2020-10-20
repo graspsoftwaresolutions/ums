@@ -1004,7 +1004,7 @@ class MonthEndController extends Controller
        // date('Y-m-d',strtotime($to_date));
         $data['from_date'] = date('Y-m-d',strtotime($from_date));
         $data['to_date'] = date('Y-m-d',strtotime($to_date));
-        $data['due_month'] = $due_month;
+        //$data['due_month'] = $due_month;
         $data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
