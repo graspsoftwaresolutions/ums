@@ -4665,4 +4665,18 @@ class CommonHelper
         
         return $totalcount;
     }
+
+    public static function getMonthendDataUptoDojCount($memberid,$date){
+        return DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+                                         'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE','ms.advance_amt','ms.advance_balamt','ms.advance_totalmonths')
+        ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.StatusMonth','<',$date)
+        ->count();
+    }
+
+    public static function getMonthendDataUptoDoj($memberid,$date){
+        return DB::table('membermonthendstatus as ms')->select('ms.id as id','ms.id as memberid','ms.StatusMonth',
+                                         'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE','ms.advance_amt','ms.advance_balamt','ms.advance_totalmonths')
+        ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.StatusMonth','<',$date)
+        ->get();
+    }
 }

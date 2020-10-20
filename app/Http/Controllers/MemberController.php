@@ -719,11 +719,11 @@ class MemberController extends CommonController
 												'ACCBENEFIT' => $bf_amt,
 												//'CURRENT_YDTBF' => 0,
 												//'CURRENT_YDTSUBSCRIPTION' => 0,
-												'STATUS_CODE' => $memberdata->status_id,
-												'RESIGNED' => $memberdata->status_id==4 ? 1 : 0,
+												'STATUS_CODE' => 1,
+												'RESIGNED' => 0,
 												'ENTRY_DATE' => date('Y-m-d'),
 												'ENTRY_TIME' => date('h:i:s'),
-												'STRUCKOFF' => $memberdata->status_id==3 ? 1 : 0,
+												'STRUCKOFF' => 0,
 												'INSURANCE_AMOUNT' => $ins_amt,
 												'TOTALINSURANCE_AMOUNT' => $ins_amt,
 												'TOTALMONTHSCONTRIBUTION' => 1,
@@ -792,7 +792,7 @@ class MemberController extends CommonController
 		                    $subscription_member->NRIC = $nric_no;
 		                    $subscription_member->Name = $memberdata->name;
 		                    $subscription_member->Amount = $subsamount+$bf_amt+$ins_amt;
-		                    $subscription_member->StatusId = $memberdata->status_id;
+		                    $subscription_member->StatusId = 1;
 		                    $subscription_member->update_status = 1;
 		                    $subscription_member->MemberCode = $member_id;
 		                    $subscription_member->created_by = Auth::user()->id;

@@ -18,7 +18,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('/', 'Auth\LoginController@custom_login');
 	Auth::routes();
 
-
 	// Masters
 	//users Form
 	Route::post('ajax_users_list','MasterController@ajax_users_list')->name('master.ajaxuserslist');
@@ -115,7 +114,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::delete('state-delete/{id}','MasterController@statedestroy')->name('master.statedestroy');
 	Route::post('state_nameexists','AjaxController@checkStateNameExists');
 	Route::get('state_detail','CommonController@stateDetail');
-	
 
 	//City Details 
 	Route::get('city','MasterController@cityList')->name('master.city');
@@ -181,8 +179,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('users','MasterController@users_list')->name('master.userslist');
 	Route::post('user_save','MasterController@userSave')->name('master.saveuser');
 	Route::delete('users/{id}','MasterController@user_destroy')->name('master.destroy');
-
-	
 	
 	Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changepassword');
 	Route::post('/changePassword','HomeController@ChangePassword')->name('changePassword');
@@ -340,8 +336,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('get-membersstatus-more-report','ReportsController@membersReportMore')->name('reports.moremembers');
 	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
-
-	
 	
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
 	
@@ -355,12 +349,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('yearly_member_report','ReportsController@YearlyMemberReport')->name('reports.yearly');
 
-
 	Route::get('reports.resignmembernew','ReportsController@resignNewMemberReport')->name('reports.resignmembernew');
 	Route::get('get-new-resignedmembers-report','ReportsController@membersResignReportMore')->name('get-new-resignedmembers-report');
 	
 	Route::get('get-resign-members-report','ReportsController@membersResignReportLoadMore')->name('get-new-resignedmembers-loadmoreport');
-	
 	
 	Route::get('subscription_variation','SubscriptionController@variation')->name('subscription.month');
 	Route::get('subscription-variation','SubscriptionController@variationAll')->name('subscription.all');
@@ -378,7 +370,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('update_subscription','SubscriptionController@saveSubscription')->name('subscription.update');
 	Route::get('get-new-members-print','MembershipController@MembersNewPrint')->name('reports.newmembersprint');
 	Route::get('get-new-members-back-print','MembershipController@MembersNewBackPrint')->name('reports.membersbackprint');
-
 
 	Route::get('due_report','ReportsController@DueReport')->name('reports.due');
 	Route::get('iframe_due_report','ReportsController@IframeDueReport')->name('reports.due_iframe');
@@ -440,6 +431,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('history-list','MonthEndController@ListMonthend')->name('history.list');
 	Route::get('history-update','MonthEndController@ListMonthend')->name('history.update');
+
+	Route::get('before-dojlist','MonthEndController@ListBeforeDojMonthend')->name('history.beforedoj');
+	Route::get('beforedoj-history/{parameter}','MonthEndController@ViewBeforeDojHistory')->name('beforedoj.viewlists');
+	Route::post('before-dojlist','MonthEndController@ListBeforeDojMonthendFilter')->name('monthend.beforedoj');
+
+	Route::delete('delete_beforedoj_history','MonthEndController@DeleteBeforeDOJ')->name('beforedoj.delete');
 
 	Route::post('ajax_history_list','MonthEndController@ajax_history_list');
 
