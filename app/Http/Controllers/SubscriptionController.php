@@ -2583,7 +2583,7 @@ class SubscriptionController extends CommonController
                                 //die;
                                 $updated_status = DB::table($this->membermonthendstatus_table)->select('STATUS_CODE')->where('StatusMonth', '<', $entry_status_month)->where('MEMBER_CODE', '=', $member_id)->orderBY('StatusMonth','desc')->limit(1)->first();
                                 //dd($updated_status);
-                                $updated_status = $updated_status->STATUS_CODE=='' ? $memberdata->status_id : $updated_status->STATUS_CODE;
+                                $updated_status = $updated_status=='' ? $memberdata->status_id : $updated_status->STATUS_CODE;
                             $monthend_data = [
                                 'StatusMonth' => $entry_status_month, 
                                 'MEMBER_CODE' => $member_id,

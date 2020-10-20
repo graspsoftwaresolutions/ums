@@ -1079,6 +1079,7 @@ class MonthEndController extends Controller
                                 'TOTALSUBCRP_AMOUNT' => 0,
                                 'TOTALBF_AMOUNT' => 0,
                                 'TOTAL_MONTHS' => 0,
+                                'TOTALMONTHSDUE' => 1,
                                 'BANK_CODE' => $branchdata->company_id,
                                 'NUBE_BRANCH_CODE' => $branchdata->union_branch_id,
                                 'BRANCH_CODE' => $memberdata->branch_id,
@@ -1091,6 +1092,11 @@ class MonthEndController extends Controller
                                 'STRUCKOFF' => 0,
                                 'INSURANCE_AMOUNT' => 0,
                                 'TOTALINSURANCE_AMOUNT' => 0,
+                                'ACCSUBSCRIPTION' =>  0,
+                                'ACCBF' => 0,
+                                'ACCINSURANCE' =>  0,
+                                'TOTALMONTHSPAID' =>  0,
+                                'TOTALMONTHSCONTRIBUTION' =>  0,
                             ];
             DB::table($this->membermonthendstatus_table)->insert($monthend_data);
 
