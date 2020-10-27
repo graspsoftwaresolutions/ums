@@ -153,7 +153,6 @@ class CommonController extends Controller
         return $data;
     }
 	
-	
 	//City Details 
     public function cityDetail(Request $request)
     {
@@ -162,7 +161,6 @@ class CommonController extends Controller
         $data = City::find($id);
         return $data;
     }
-	
 	
     //Relation Details Start
     

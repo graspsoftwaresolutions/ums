@@ -924,6 +924,7 @@ class SubscriptionController extends CommonController
         $data['last_month_record'] = DB::table($this->membermonthendstatus_table.' as ms')
                                             ->where('ms.MEMBER_CODE','=',$id)
                                             ->OrderBy('ms.StatusMonth','desc')
+                                            ->OrderBy('ms.arrear_status','desc')
 											->first();
 	
         $old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
@@ -1018,6 +1019,7 @@ class SubscriptionController extends CommonController
         $data['last_month_record'] = DB::table($this->membermonthendstatus_table.' as ms')
                                             ->where('ms.MEMBER_CODE','=',$id)
                                             ->OrderBy('ms.StatusMonth','desc')
+                                            ->OrderBy('ms.arrear_status','desc')
 											->first();
 	
         $old_member_id = Membership::where('id','=',$id)->pluck('old_member_number')->first();
@@ -1938,8 +1940,7 @@ class SubscriptionController extends CommonController
             $last_subscription_res = DB::table("member_payments as ms")->select('ms.last_paid_date as LASTPAYMENTDATE','ms.accins_amount as ACCINSURANCE','ms.accbf_amount as ACCBF','ms.accsub_amount as ACCSUBSCRIPTION','ms.sub_monthly_amount as SUBSCRIPTION_AMOUNT','ms.bf_monthly_amount as BF_AMOUNT','ms.totpaid_months as TOTALMONTHSPAID','ms.totdue_months as TOTALMONTHSDUE','ms.totcontribution_months as TOTALMONTHSCONTRIBUTION','ms.duesub_amount as SUBSCRIPTIONDUE','ms.dueins_amount as INSURANCEDUE')
                             ->where('ms.member_id','=',$member_id)
                             ->first();
-			$m_subs_amt = number_format($sub_member->Amount-($this->bf_amount+$this->ins_amount),2);
-		
+			$m_subs_amt = number_format($sub_member->Amount-($this->bf_amount+$this->ins_amount),2);		
 			
             $monthend_data = [
                                 'StatusMonth' => $cur_date, 
@@ -2653,8 +2654,6 @@ class SubscriptionController extends CommonController
                     ->get();
                 }
 
-                
-
                 $last_ACCINSURANCE = !empty($last_mont_record) ? $last_mont_record->ACCINSURANCE : 0;
                 $last_ACCSUBSCRIPTION = !empty($last_mont_record) ? $last_mont_record->ACCSUBSCRIPTION : 0;
                 $last_ACCBF = !empty($last_mont_record) ? $last_mont_record->ACCBF : 0;
@@ -2689,7 +2688,6 @@ class SubscriptionController extends CommonController
                         }else{
                             $new_TOTALMONTHSDUE = $last_TOTALMONTHSDUE;
                         }
-                        
                         
                         $new_TOTALMONTHSPAID = $last_TOTALMONTHSPAID+$m_total_months;
                         $new_TOTALMONTHSCONTRIBUTION = $last_TOTALMONTHSCONTRIBUTION+$m_total_months;
@@ -3669,9 +3667,7 @@ class SubscriptionController extends CommonController
         $datestring = strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01');
 		$data['month_year'] = date('M/Y',$datestring);
 		$data['month_year_full'] = date('Y-m-01',$datestring);
-        $data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));
-
-        
+        $data['last_month_year']= date('Y-m-01',strtotime($fm_date[1].'-'.$fm_date[0].'-'.'01 -1 Month'));       
 
         $data['month_year_first'] = date('Y-m-01',strtotime($data['month_year_full'].' -'.($variationtype-1).' months'));
 
@@ -3725,7 +3721,6 @@ class SubscriptionController extends CommonController
         $display_subs = $request->input('display_subs');
         $variation = $request->input('variation');
 
-        
         $data['sub_company'] = $request->input('sub_company');
         $data['unionbranch_id'] = $request->input('unionbranch_id');
         
@@ -3981,16 +3976,12 @@ class SubscriptionController extends CommonController
                             }else if($inctype==4){
                                
                                 $dec_amt = $salary-$subssal;
-                                
                               
                                 if($dec_amt>0){
                                     
-                                    
                                     $newsalary = $subssal;
 
-                                    $newincsalary = $newsalary;
-
-                                    
+                                    $newincsalary = $newsalary;                                    
 
                                     $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
                                     ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
@@ -4100,7 +4091,6 @@ class SubscriptionController extends CommonController
        
        // $members_data = DB::select(DB::raw('select member.name as member_name, member.member_number as member_number,m.Amount as Amount, member.new_ic as ic,"0" as due,s.status_name as status_name, `member`.`id` as memberid, m.id as sub_member_id,m.Name as up_member_name,m.NRIC as up_nric,m.approval_status from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND (m.StatusId>"2" OR m.MemberCode is null)'));
 
-
         $members_data = DB::select(DB::raw('SELECT member.name AS member_name, member.member_number AS member_number, m.Amount AS Amount, member.new_ic AS ic, "0" AS due, s.status_name AS status_name, `member`.`id` AS memberid, m.id AS sub_member_id, m.Name AS up_member_name, m.NRIC AS up_nric, m.approval_status FROM mon_sub_member_match as mm LEFT JOIN `mon_sub_member` AS `m` ON mm.mon_sub_member_id=m.id left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` left join membership as member on `member`.`id` = `m`.`MemberCode`  left join status as s on `s`.`id` = `m`.`StatusId`  where 1=1 '.$cond.' AND mm.match_id in (2,4,6,7)'));
 
         $data['subsdata'] = DB::table('mon_sub_company as sc')->select('s.Date','c.short_code','c.company_name','c.id as company_id')
@@ -4148,10 +4138,7 @@ class SubscriptionController extends CommonController
 
         $data['matched_amount'] = $matchedamt-$misbankamt;
 
-        //return $data['matched_amount'] ;
-
-        
-
+        //return $data['matched_amount'] ;        
 
         $data['members_count'] = DB::table('membership as m')
         ->leftjoin('company_branch as cb', 'cb.id' ,'=','m.branch_id')
@@ -4259,7 +4246,6 @@ class SubscriptionController extends CommonController
       
         //$to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
         $from_entry_month = date('Y-m-d',strtotime($from_date[1].'-'.$from_date[0].'-'.'01'));
-
          
         $advancedata['advance_date'] = $request->input('advance_date');
         $advancedata['member_id'] = $request->input('membercode');
@@ -4506,7 +4492,6 @@ class SubscriptionController extends CommonController
                         //     $new_advance_totalmonths = $last_advance_totalmonths;
                         //     $new_advance_balamt = $last_advance_balamt;
                         // }
-                      
                         
                         $monthend_datas = [
                                     'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
@@ -4686,7 +4671,6 @@ class SubscriptionController extends CommonController
 			$data['union_branch_view']=[];
 			$data['company_view']=[];
         }
-        
 	
         // $new['data'] = $data;
         // $new['data']['print'] = '0';
@@ -4701,8 +4685,6 @@ class SubscriptionController extends CommonController
          $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
-       
-
         
         $data['member_stat'] = '';
 
@@ -4781,7 +4763,6 @@ class SubscriptionController extends CommonController
             $enc_id = Crypt::encrypt($company_auto_id); 
             return redirect(URL::to('/'.app()->getLocale().'/scan-subscription/'.$enc_id))->with('message', 'Subscription Inserted Successfully');
 
-
             //  $subscription_member->NRIC = $memberdata->new_ic=='' ? $memberdata->old_ic : $memberdata->new_ic;
             // $subscription_member->Name = trim($memberdata->name);
             // $subscription_member->Amount = $sub_member_amount;
@@ -4832,7 +4813,6 @@ class SubscriptionController extends CommonController
       
         //$to_entry_month = date('Y-m-d',strtotime($to_date[1].'-'.$to_date[0].'-'.'01'));
         $from_entry_month = date('Y-m-d',strtotime($from_date[1].'-'.$from_date[0].'-'.'01'));
-
          
         $advancedata['advance_date'] = $request->input('advance_date');
         $advancedata['member_id'] = $request->input('membercode');
@@ -4986,7 +4966,6 @@ class SubscriptionController extends CommonController
                                 $updated_salary = CommonHelper::getIncrementValue($memberid,$form_date,$form_date);
                                 
                                 $addonsalary = 0;
-                               
                                 
                                 if(!empty($updated_salary)){
                                     //dd($updated_salary);
@@ -5042,7 +5021,6 @@ class SubscriptionController extends CommonController
                                         ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                         ->orderBy('s.date','desc')
                                         ->pluck(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d") as date'))->first();
-                                        
 
                                         $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
                                                             ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
@@ -5124,16 +5102,12 @@ class SubscriptionController extends CommonController
                                     }else if($inctype==4){
                                        
                                         $dec_amt = $salary-$subssal;
-                                        
                                       
                                         if($dec_amt>0){
-                                            
                                             
                                             $newsalary = $subssal;
 
                                             $newincsalary = $newsalary;
-
-                                            
 
                                             $salcount = DB::table('salary_updations as s')->where('member_id','=',$memberid)
                                             ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)

@@ -241,7 +241,6 @@ class ReportsController extends Controller
                $members = $members->orderBy('m.name','asc');
             $members = $members->get();
 
-
         $data['member_view'] = $members;
         $data['month_year'] = $fulldate;
 
@@ -325,7 +324,6 @@ class ReportsController extends Controller
                $members = $members->orderBy('com.company_name','asc');
                 $members = $members->orderBy('m.name','asc');
             $members = $members->get();
-
 
         $data['member_view'] = $members;
         $data['month_year'] = $fulldate;
@@ -1758,7 +1756,6 @@ class ReportsController extends Controller
         $data['company_id']=$company_id;
 
         //return view('reports.pdf_variation_bank')->with('data',$data);
-       
 
         $dataarr = ['data' => $data ];
 
@@ -2941,7 +2938,6 @@ class ReportsController extends Controller
         }
         $members = $members->orderBy('m.member_number','asc');
         $members = $members->get();
-
        
         $data['member_view'] = $members;
        // $data['data_limit']=$this->limit;
@@ -3025,7 +3021,6 @@ class ReportsController extends Controller
         }
         $members = $members->orderBy('m.member_number','asc');
         $members = $members->get();
-
        
         $data['member_view'] = $members;
        // $data['data_limit']=$this->limit;
@@ -3215,7 +3210,6 @@ class ReportsController extends Controller
         //return view('reports.iframe_advice_resign')->with('data',$data);  
 
         $dataarr = ['data' => $data ];
-
 
         $pdf = PDF::loadView('reports.pdf_advice_resign', $dataarr)->setPaper('a4', 'landscape'); 
         return $pdf->download('advice_resign_report.pdf');
@@ -4139,7 +4133,6 @@ class ReportsController extends Controller
         $branch_id = $request->input('branch_id');
         $unionbranch_id = $request->input('unionbranch_id');
         $unionbranch_name = '';
-      
 
         $members = DB::table('membership as m')->select('s.status_name','cb.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.gender','com.company_name','m.doj','m.old_ic','m.employee_id','m.new_ic','m.mobile','m.levy','m.levy_amount','m.tdf','m.tdf_amount',DB::raw('`com`.`short_code` AS companycode'),'cb.branch_name as branch_name',DB::raw('IF(`d`.`designation_name`="CLERICAL","C","N") AS designation_name'),'m.old_member_number')
                 //->leftjoin('mon_sub_company as mc','mc.id','=','mm.MonthlySubscriptionCompanyId')
@@ -4168,14 +4161,12 @@ class ReportsController extends Controller
                 }
             $members = $members->get();
        
-       
         $data['member_view'] = $members;
         $data['company_id'] = $company_id;
         $data['unionbranch_id'] = $unionbranch_id;
         $data['branch_id'] = $branch_id;
         $data['unionbranch_name'] = $unionbranch_name;
         $data['designation'] = $designation;
-        
 
         return view('reports.iframe_designation')->with('data',$data); 
     }
@@ -4220,7 +4211,6 @@ class ReportsController extends Controller
             $members = $members->where('m.designation_id','=',$designation);
        }
         $members = $members->get();
-
 
         $data['member_view'] = $members;
         $data['company_id'] = $company_id;
@@ -4638,7 +4628,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;
@@ -4685,7 +4674,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;
@@ -4699,7 +4687,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;
@@ -4719,7 +4706,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;
@@ -4778,7 +4764,6 @@ class ReportsController extends Controller
         $to_year = $request->input('to_year');
 
         $unionbranch_name = '';
-    
 
         $data['from_year'] = $from_year;
         $data['to_year'] = $to_year;
