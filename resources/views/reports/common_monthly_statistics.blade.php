@@ -72,24 +72,15 @@
 						@php
 							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
 							$rejoinedcount = CommonHelper::getMonthRejoinMembercount($month);
+							$specialcount = CommonHelper::getMonthSpecialMembercount($month);
+							$rejoinedcount = $rejoinedcount+$specialcount;
 							$totalrejoined += $rejoinedcount;
 						@endphp
 						<td style="border : 1px solid #988989;text-align: center;" >{{ $rejoinedcount }}</td>
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totalrejoined }}</td>
 				</tr>
-				<tr>
-					<td style="border : 1px solid #988989;">Special grade</td>
-					@for($i=0; $i<$data['diff_month_count'];$i++)
-						@php
-							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
-							$specialcount = CommonHelper::getMonthSpecialMembercount($month);
-							$totalspecial += $specialcount;
-						@endphp
-						<td style="border : 1px solid #988989;text-align: center;" >{{ $specialcount }}</td>
-					@endfor
-					<td style="border : 1px solid #988989;text-align: center;">{{ $totalspecial }}</td>
-				</tr>
+			
 				<tr>
 					<td style="border : 1px solid #988989;">Active members(All)</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
@@ -127,6 +118,30 @@
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totaldefault }}</td>
 				</tr> 
+				<tr>
+					<td style="border : 1px solid #988989;">Resigned members(Resigned Date)</td>
+					@for($i=0; $i<$data['diff_month_count'];$i++)
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$resignedcount = CommonHelper::getMonlthlyResignedMembercount($month,1);
+							$totalresigned += $resignedcount;
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $resignedcount }}</td>
+					@endfor
+					<td style="border : 1px solid #988989;text-align: center;">{{ $totalresigned }}</td>
+				</tr>	
+				<tr>
+					<td style="border : 1px solid #988989;">Resigned members(Payment Date)</td>
+					@for($i=0; $i<$data['diff_month_count'];$i++)
+						@php
+							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
+							$resignedcount = CommonHelper::getMonlthlyResignedMembercount($month,2);
+							$totalresignedpay += $resignedcount;
+						@endphp
+						<td style="border : 1px solid #988989;text-align: center;" >{{ $resignedcount }}</td>
+					@endfor
+					<td style="border : 1px solid #988989;text-align: center;">{{ $totalresignedpay }}</td>
+				</tr>		
 				<tr>
 					<td style="border : 1px solid #988989;">Defaulter to Active members</td>
 					@for($i=0; $i<$data['diff_month_count'];$i++)
@@ -188,30 +203,7 @@
 					@endfor
 					<td style="border : 1px solid #988989;text-align: center;">{{ $totalresigncount1 }}</td>
 				</tr>
-				<tr>
-					<td style="border : 1px solid #988989;">Resigned members(Resigned Date)</td>
-					@for($i=0; $i<$data['diff_month_count'];$i++)
-						@php
-							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
-							$resignedcount = CommonHelper::getMonlthlyResignedMembercount($month,1);
-							$totalresigned += $resignedcount;
-						@endphp
-						<td style="border : 1px solid #988989;text-align: center;" >{{ $resignedcount }}</td>
-					@endfor
-					<td style="border : 1px solid #988989;text-align: center;">{{ $totalresigned }}</td>
-				</tr>	
-				<tr>
-					<td style="border : 1px solid #988989;">Resigned members(Payment Date)</td>
-					@for($i=0; $i<$data['diff_month_count'];$i++)
-						@php
-							$month = date('Y-m-01', strtotime('+'.($i).' months',strtotime($data['from_month_year'])));
-							$resignedcount = CommonHelper::getMonlthlyResignedMembercount($month,2);
-							$totalresignedpay += $resignedcount;
-						@endphp
-						<td style="border : 1px solid #988989;text-align: center;" >{{ $resignedcount }}</td>
-					@endfor
-					<td style="border : 1px solid #988989;text-align: center;">{{ $totalresignedpay }}</td>
-				</tr>		
+				
 			
 		</tbody>
 		
