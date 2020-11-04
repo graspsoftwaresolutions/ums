@@ -353,6 +353,9 @@ class SubscriptionController extends CommonController
             ->pluck('mc.banktype')
             ->first();
 
+            $cur_date = CacheMembers::getDatebycompanyid($company_auto_id);
+            $cur_date_end = date('Y-m-t',strtotime($cur_date));
+
             $subscription_data = MonthlySubscriptionMember::select('id','NRIC as ICNO','NRIC as NRIC','Name','Amount','MonthlySubscriptionCompanyId')
                                                             ->where('MonthlySubscriptionCompanyId',$company_auto_id)
                                                             ->where('update_status','!=',1)
@@ -367,8 +370,10 @@ class SubscriptionController extends CommonController
 				$nric = $subscription->NRIC;
 				$approval_status=0;
 				$memberdata = [];
+
+
 			   
-			    $subscription_new_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.new_ic)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+			    $subscription_new_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.new_ic)"), '=',ltrim($nric, '0'))->where('m.doj','<=',$cur_date_end)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 				
 				/* $new_nric_exists=0;
                 if (in_array($nric, $arr_new_ic))
@@ -417,14 +422,14 @@ class SubscriptionController extends CommonController
                     $subMemberMatch->approval_status = 1;
 					$nric_matched = 1;
 				}else{
-					$subscription_old_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.old_ic)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+					$subscription_old_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.old_ic)"), '=',ltrim($nric, '0'))->where('m.doj','<=',$cur_date_end)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 					if(count($subscription_old_qry) > 0){
 						$up_sub_member =1;
 						$memberdata = $subscription_old_qry;
 						$subMemberMatch->match_id = 8;
 						//$nric_matched = 1;
 					}else{
-						$subscription_empid_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.employee_id)"), '=',ltrim($nric, '0'))->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
+						$subscription_empid_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.employee_id)"), '=',ltrim($nric, '0'))->where('m.doj','<=',$cur_date_end)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 						if(count($subscription_empid_qry) > 0){
                     
 							$up_sub_member =1;
@@ -510,7 +515,7 @@ class SubscriptionController extends CommonController
 						$insert_month_end = 0;
                     }
 					
-					$cur_date = CacheMembers::getDatebycompanyid($subscription->MonthlySubscriptionCompanyId);
+					
 					$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
 
                     $old_subscription_res = DB::table("mon_sub_member as mm")->select('mm.Amount')
@@ -1104,8 +1109,6 @@ class SubscriptionController extends CommonController
                 $m_upstatus = DB::table('membermonthendstatus')->where('Id', '=', $monthend->Id)->update($nmonthend_datas);
 
             }
-
-
             
         }
 
@@ -2124,7 +2127,6 @@ class SubscriptionController extends CommonController
 				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
 				$res_company = array_merge($company_ids, [$companyid]); 
 
-
 				foreach($company as $newkey => $newvalue){
 					$data['head_company_view'][$mkey][$newkey] = $newvalue;
 				}
@@ -2255,7 +2257,6 @@ class SubscriptionController extends CommonController
 				//$company_str_List ="'".$companyid."'";
 				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
 				$res_company = array_merge($company_ids, [$companyid]); 
-
 
 				foreach($company as $newkey => $newvalue){
 					$data['head_company_view'][$mkey][$newkey] = $newvalue;
@@ -2883,8 +2884,6 @@ class SubscriptionController extends CommonController
           
             if((($subs_amount!='' && $subs_amount!=0) || ($bf_amount!='' && $bf_amount!=0) || ($insurance_amount!='' && $insurance_amount!=0)) && $from_entry_month!='' && $to_entry_month!=''){
 
-                
-
                 $noofmonths = CommonHelper::GetMonthsCount($from_entry_month,$to_entry_month);
 
                 // $start = new DateTime($from_entry_month);
@@ -2909,7 +2908,6 @@ class SubscriptionController extends CommonController
 
             }
         }
-
 
         $monthend_data = [
             'arrear_status' => 1,
@@ -3116,7 +3114,6 @@ class SubscriptionController extends CommonController
                 ];
                 $arrear_upstatus = DB::table('arrear_entry')->where('id', '=', $arrear_id)->update($arrear_data);
             }
-           
             
         }
 
@@ -3158,7 +3155,6 @@ class SubscriptionController extends CommonController
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
         //$status_all = Status::where('status',1)->get();
-      
         
         $data['date'] = date('Y-m-01');
         $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
@@ -3193,7 +3189,6 @@ class SubscriptionController extends CommonController
 
         $data['company_name'] = $company_name; 
         $data['company_id'] = $company_id; 
-
         
         return view('subscription.invalid_subscription')->with('data', $data);
     } 
@@ -3211,7 +3206,6 @@ class SubscriptionController extends CommonController
         $data['date'] = date('Y-m-01',strtotime($full_date));
         $company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id')->first();
         $company_name = CommonHelper::getCompanyName($company_id);
-
 
         $company_ids = DB::table('company_branch as cb')
 							->leftjoin('company as c','cb.company_id','=','c.id')
@@ -3336,7 +3330,6 @@ class SubscriptionController extends CommonController
                 $company_id = $data['subsdata']->company_id;
             }
             $data['companyid'] = $company_id;
-           
 
             $data['members_count'] = DB::table('membership as m')
             ->leftjoin('company_branch as cb', 'cb.id' ,'=','m.branch_id')
@@ -3469,10 +3462,8 @@ class SubscriptionController extends CommonController
         $user_role = $get_roles[0]->slug;
       
         $data = [];
-     
          
         //$data['company_list'] = $company_list;
-       
         
         return view('subscription.subscription_company_list')->with('data', $data);
     }
@@ -3528,7 +3519,6 @@ class SubscriptionController extends CommonController
         $from = Carbon::createFromFormat('Y-m-d H:s:i',  date('Y-m-01',$fromdatestring).' '.date('H:i:s'));
         //$diff_in_months = $to->diffInMonths($from);
         $diff_in_months = 1;
-        
 
        // $from_date = explode("/",$from_date_str);
 		$data['to_month_year'] = $to_date_str;
@@ -3580,7 +3570,6 @@ class SubscriptionController extends CommonController
         $description = $request->input('vdescription');
         $reasonid = $request->input('vreasonid');
         $subs_date = $request->input('subs_date');
-        
 		
 		$member_status = '';
 		
@@ -4050,7 +4039,6 @@ class SubscriptionController extends CommonController
                             }
                             }
                             
-
                             // $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
                             //         ->where('date','=',$form_date)
                             //         ->where('increment_type_id','=',$inctype)
@@ -4640,7 +4628,6 @@ class SubscriptionController extends CommonController
 				$company_ids = DB::table('company')->where('head_of_company','=',$companyid)->orderBy('company_name','asc')->pluck('id')->toArray();
 				$res_company = array_merge($company_ids, [$companyid]); 
 
-
 				foreach($company as $newkey => $newvalue){
 					$data['head_company_view'][$mkey][$newkey] = $newvalue;
 				}
@@ -4936,7 +4923,6 @@ class SubscriptionController extends CommonController
                         $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
                         $form_datefull = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year)).' '.date('h:i:s');
                         $others = '';
-                        
 
                         $file_name = 'salary_'.$full_date;
                        // $data['sub_company'] = $request->sub_company;
