@@ -22,6 +22,9 @@
 		z-index:9999;
 	}
 }
+#card-stats .card-stats-title {
+    font-size: 12px;
+}
 
 </style>
 @endsection
@@ -82,11 +85,11 @@
 	      <div class="col s12 m6 l2">
 	      	<a style="color:white" href="{{ route('master.addmembership', app()->getLocale())  }}">
          <div class="card animate fadeRight">
-            <div class="card-content orange lighten-1 white-text">
-               <p class="card-stats-title"><i class="material-icons"></i>&nbsp;</p>
-               <h4 class="card-stats-number white-text">{{__('New Registration') }}</h4>
+            <div class="card-content pink lighten-1 white-text">
+               <p class="card-stats-title" style="font-size:16px;margin-top: 20px;margin-bottom: 25px;"><i class="material-icons"></i>{{__('New Registration') }}</p>
+               
             </div>
-            <div class="card-action orange ">
+            <div class="card-action pink ">
                <div id="profit-tristate" class="center-align">&nbsp; </div>
             </div>
          </div>
@@ -95,12 +98,11 @@
 	      </div>
 	       <div class="col s12 m6 l2">
         <a style="color:white" href="{{ route('resignation.add', app()->getLocale())  }}">
-	         <div class="card animate fadeRight" style="margin-top: 10px;">
-	            <div class="card-content green lighten-1 white-text">
-	               <p class="card-stats-title"><i class="material-icons"></i>&nbsp;</p>
-	               <h4 class="card-stats-number white-text">{{__('New Resignation') }}	</h4>
+	         <div class="card animate fadeRight" style="">
+	            <div class="card-content blue lighten-1 white-text">
+	               <p class="card-stats-title" style="font-size:16px;margin-top: 20px;margin-bottom: 25px;"><i class="material-icons"></i>{{__('New Resignation') }}</p>
 	            </div>
-	            <div class="card-action green ">
+	            <div class="card-action blue ">
 	               <div id="invoice-line" class="center-align">&nbsp;</div>
 	            </div>
 	         </div>
