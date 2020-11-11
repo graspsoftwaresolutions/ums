@@ -2756,10 +2756,10 @@ class SubscriptionController extends CommonController
                     DB::table('member_payments')->where('member_id', $member_id)->update($payment_data);
                 if($last_TOTALMONTHSDUE<=3){
                     $m_status = 1;
-                    DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
+                    DB::table('membership')->where('id', $member_id)->where('status_id', '<',4)->update(['status_id' => $m_status]);
                 }else if($last_TOTALMONTHSDUE<=13){
                     $m_status = 2;
-                    DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
+                    DB::table('membership')->where('id', $member_id)->where('status_id', '<',4)->update(['status_id' => $m_status]);
                 }
                 
             }
