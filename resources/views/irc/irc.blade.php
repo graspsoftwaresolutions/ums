@@ -61,6 +61,7 @@
 		$get_roles = Auth::user()->roles;
 		$user_role = $get_roles[0]->slug;	
 		}
+		//dd($data['irc_data']);
 	@endphp
 		<form class="formValidate" id="irc_formValidate" method="post"
 		action="{{ route('irc.saveIrc',app()->getLocale()) }}" enctype="multipart/form-data">
@@ -74,42 +75,42 @@
 				 <div class="input-field col s4">
 					<label for="member_number"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
-					<input id="member_number" name="member_number"  class="common-input"
+					<input id="member_number" name="member_number" value="{{ $data['member_id']!='' ? $data['irc_data']->member_number : '' }}" class="common-input"
 						type="text" required data-error=".errorTxt1" autocomplete="off">
-					<input type="hidden" name="resignedmemberno" id="memberid">
-					<input type="hidden" name="union_branch_id" id="union_branch_id">
+					<input type="hidden" name="resignedmemberno" value="{{ $data['member_id'] }}" id="memberid">
+					<input type="hidden" name="union_branch_id" value="{{ $data['member_id']!='' ? $data['irc_data']->union_branch_id : '' }}" id="union_branch_id">
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="member_type"
 						class="common-label force-active">{{__('Member Type') }}*</label>
-					<input id="member_type" name="member_type" readonly class="common-input"
+					<input id="member_type" name="member_type" value="{{ $data['member_id']!='' ? $data['irc_data']->membertype : '' }}" readonly class="common-input"
 						type="text" >
 				</div>
 				<div class="input-field col s4">
 					<label for="member_title"
 						class="common-label force-active">{{__('Member Title') }}*</label>
-					<input id="member_title" name="member_title" readonly class="common-input"
+					<input id="member_title" name="member_title" value="{{ $data['member_id']!='' ? $data['irc_data']->persontitle : '' }}" readonly class="common-input"
 						type="text">
 				</div>
 				 <div class="clearfix" style="clear:both"></div>
 				 <div class="input-field col s4">
 					<label for="member_name"
 						class="common-label force-active">{{__('Member Name') }}*</label>
-					<input id="member_name" name="resignedmembername" readonly class="common-input"
+					<input id="member_name" name="resignedmembername" value="{{ $data['member_id']!='' ? $data['irc_data']->membername : '' }}" readonly class="common-input"
 						type="text" >
 				</div>
 				<div class="input-field col s4">
 					<label for="bank_name"
 						class="common-label force-active">{{__('Bank') }}*</label>
-					<input id="bank_name" name="resignedmemberbankname" readonly class="common-input"
+					<input id="bank_name" name="resignedmemberbankname" value="{{ $data['member_id']!='' ? $data['irc_data']->company_name : '' }}" readonly class="common-input"
 						type="text" data-error=".errorTxt2">
 					<div class="errorTxt2"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="branch_name"
 						class="common-label force-active">{{__('Bank Branch') }}*</label>
-					<input id="branch_name" name="resignedmemberbranchname" readonly class="common-input"
+					<input id="branch_name" name="resignedmemberbranchname" value="{{ $data['member_id']!='' ? $data['irc_data']->branch_name : '' }}" readonly class="common-input"
 						type="text" data-error=".errorTxt3">
 					<div class="errorTxt3"></div>
 				</div>
@@ -118,11 +119,11 @@
 					<div class="row">
 						<div class="input-field col s12 m8">
 							<label for="dob" class="force-active">{{__('Date of Birth') }} *</label>
-							<input id="dob" readonly name="dob" data-reflectage="dob" class="datepicker-custom"  type="text"> 
+							<input id="dob" readonly name="dob" data-reflectage="dob" value="{{ $data['member_id']!='' ? $data['irc_data']->dob : '' }}" class="datepicker-custom"  type="text"> 
 						</div>
 						<div class="input-field col s12 m4">
 							<label for="member_age" class="force-active">{{__('Age') }}</label>
-							<input type="text" readonly id="member_age" >
+							<input type="text" value="{{ $data['member_id']!='' ? $data['irc_data']->age : '' }}" readonly id="member_age" >
 						</div>
 					</div>
 					<div class="errorTxt4"></div>
@@ -134,7 +135,7 @@
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate"   aria-required="true" id="femalegender" name="gender" type="radio" value="Female" disabled="disabled">
+							<input class="validate" @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'checked' : ''; } @endphp  aria-required="true" id="femalegender" name="gender" type="radio" value="Female" disabled="disabled">
 							<span>{{__('Female') }}</span>
 							</label> 
 						</p>						
@@ -142,7 +143,7 @@
 					<div class="col s12 m4">
 						<p>
 							<label>
-							<input class="validate"  aria-required="true" id="malegender" name="gender" type="radio"  value="Male" disabled="disabled">
+							<input class="validate" @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Male' ? 'checked' : ''; } @endphp  aria-required="true" id="malegender" name="gender" type="radio"  value="Male" disabled="disabled">
 							<span>{{__('Male') }}</span>
 							</label>
 						</p>
@@ -152,7 +153,7 @@
 				<div class="input-field col s4">
 					<label for="doj"
 						class="common-label force-active">{{__('DOJ') }}*</label>
-					<input id="doj" name="doj" readonly class="common-input"
+					<input id="doj" name="doj" value="{{ $data['member_id']!='' ? $data['irc_data']->doj : '' }}" readonly class="common-input"
 						type="text" data-error=".errorTxt6">
 					<div class="errorTxt6"></div>
 				</div>
@@ -160,20 +161,20 @@
 				<div class="input-field col s4">
 					<label for="race_name"
 						class="common-label force-active">{{__('Race') }}*</label>
-					<input id="race_name" readonly name="race_name" class="common-input"
+					<input id="race_name" value="{{ $data['member_id']!='' ? $data['irc_data']->race_name : '' }}" readonly name="race_name" class="common-input"
 						type="text" data-error=".errorTxt7">
 					<div class="errorTxt7"></div>
 				</div>
 				<div class="input-field col s4">
 					<label for="nric_n"
 						class="common-label force-active">{{__('NRIC-N') }}*</label>
-					<input id="nric_n" readonly name="resignedmembericno" class="common-input"
+					<input id="nric_n" value="{{ $data['member_id']!='' ? $data['irc_data']->nric : '' }}" readonly name="resignedmembericno" class="common-input"
 						type="text" >
 				</div>
 				<div class="input-field col s4">
 					<label for="remarks"
 						class="common-label force-active">{{__('Remarks') }}*</label>
-					<input id="remarks" name="remarks" class="common-input"
+					<input id="remarks" value="" name="remarks" class="common-input"
 						type="text" >
 				</div>
 			</div>
@@ -326,7 +327,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="retiredboxone" id="retiredboxone"  value="1"/>
-						          		<span>2. <span class="gender"></span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
+						          		<span>2. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span> <span style="text-decoration: underline;">RETIRED</span> w.e.f.</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" 	name="gradewefone" id="gradewefone" placeholder="grade w.e.f"  value="{{ date('d/m/Y') }}" class="datepicker-custom inline-box"/>
@@ -342,7 +343,7 @@
 									
 										<label>
 											<input type="checkbox" class="common-checkbox" name="messengerboxone" id="messengerboxone"  value="1"/>
-											<span>3. <span class="gender"></span> was a </span>
+											<span>3. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerone" name="messengerone" class="browser-default">
@@ -364,7 +365,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="attachedboxone" id="attachedboxone"  value="1"/>
-						          		<span>4. Attached is <span class="genderone"></span> RETIREMENT Letter (compulsory)</span>
+						          		<span>4. Attached is <span class="genderone"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'Her' : 'His'; } @endphp </span> RETIREMENT Letter (compulsory)</span>
 						            </label> 
 									<div class="input-field inline">
 										<div class="row">
@@ -692,7 +693,7 @@
 									
 										<label>
 										<input type="checkbox" class="common-checkbox" name="messengerboxthree" id="messengerboxthree"  value="1"/>
-										<span>2. <span class="gender"></span> was a </span>
+										<span>2. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerthree" name="messengerthree" class="browser-default">
@@ -711,7 +712,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="promotedboxthree" id="promotedboxthree"  value="1"/>
-						          		<span>3. <span class="gender"></span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
+						          		<span>3. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" id="promotedthree" name="promotedthree" class="inline-box" style="width: 300px;" required="">
@@ -731,7 +732,7 @@
 								<div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="attachedboxthree" id="attachedboxthree"  value="1"/>
-						          		<span>4. Attached is <span class="genderone"></span> Job Description (compulsory)</span>
+						          		<span>4. Attached is <span class="genderone"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'Her' : 'His'; } @endphp </span> Job Description (compulsory)</span>
 						            </label> 
 
 									<div class="input-field inline">
@@ -759,7 +760,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="transfertoplaceboxthree" id="transfertoplaceboxthree" value="1"/>
-						          		<span>5. <span class="gender"></span> Promoted and transfer to new place</span>
+						          		<span>5. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span> Promoted and transfer to new place</span>
 						            </label> 
 									<div class="input-field inline">
 										<input type="text" name="transfertoplacethree" id="transfertoplacethree" class="inline-box" style="width: 500px;" >
@@ -916,7 +917,7 @@
 						        <div class="col s12">
 									<label>
 										<input type="checkbox" class="common-checkbox" name="resignedonboxfour" id="resignedonboxfour"  value="1"/>
-						          		<span>2. <span class="gender"></span>  </span>
+						          		<span>2. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span>  </span>
 						            </label> 
 						            <div class="input-field inline">
 										<select id="resigntypefour" name="resigntypefour" class="browser-default">
@@ -940,7 +941,7 @@
 									
 										<label>
 											<input type="checkbox" class="common-checkbox" name="messengerboxfour" id="messengerboxfour"  value="1"/>
-											<span>3. <span class="gender"></span> was a </span>
+											<span>3. <span class="gender"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'She' : 'He'; } @endphp </span> was a </span>
 										</label> 
 										<div class="input-field inline">
 											<select id="messengerfour" name="messengerfour" class="browser-default">
@@ -963,7 +964,7 @@
 									
 									<label>
 									<input type="checkbox" class="common-checkbox" name="attachedboxfour" id="attachedboxfour"  value="1"/>
-									<span>4. Attached is <span class="genderone"></span> </span>
+									<span>4. Attached is <span class="genderone"> @php if($data['member_id']!=''){ echo $data['irc_data']->gender == 'Female' ? 'Her' : 'His'; } @endphp </span> </span>
 									</label> 
 									<div class="input-field inline">
 										<select id="attachfourtype" name="attachfourtype" class="browser-default">

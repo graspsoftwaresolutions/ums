@@ -75,7 +75,7 @@
                                                         <th>{{__('ICNO') }}</th>
                                                         <th>{{__('Bank Name') }}</th>
                                                         <th>{{__('Branch') }}</th>
-                                                        <!-- <th style="text-align:center;"> {{__('Action') }}</th> -->
+                                                        <th style="text-align:center;"> {{__('Action') }}</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -275,9 +275,9 @@ $(function() {
             {
                 "data": "branch_name"
             },
-            // {
-            //     "data": "options"
-            // }
+            {
+                "data": "options"
+            }
         ]
 
     });

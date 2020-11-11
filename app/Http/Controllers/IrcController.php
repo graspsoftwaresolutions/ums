@@ -27,13 +27,38 @@ class IrcController extends CommonController
         echo 'IRC:'.$irc;
 	}
 	
-	public function ircIndex()
+	public function ircIndex(Request $request)
     {
 		$get_roles = Auth::user()->roles;
 		$user_role = $get_roles[0]->slug;
 
 		if($user_role=='irc-confirmation' || $user_role=='irc-confirmation-officials'){
 			$data['reason_view'] = Reason::where('status','=','1')->get();
+			$encmemberid = $request->input('member');
+			if(isset($encmemberid)){
+				$member_id = Crypt::decrypt($encmemberid);
+				$data['member_id'] = $member_id;
+				$res = DB::table('membership as m')->select(DB::raw("if(count('m.new_ic') > 0  ,m.new_ic,m.old_ic) as nric"),'m.member_number','m.id as memberid','d.designation_name as membertype','p.person_title as persontitle','m.name as membername','cb.branch_name','c.company_name',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(dob, '%Y%m') )) DIV 12 AS age"),'r.race_name','cb.address_one','cb.phone','cb.mobile','cb.union_branch_id')
+							->leftjoin('designation as d','d.id','=','m.designation_id')
+							->leftjoin('persontitle as p','p.id','=','m.member_title_id')
+							->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+							->leftjoin('company as c','c.id','=','cb.company_id')
+							->leftjoin('race as r','r.id','=','m.race_id')
+							->where('m.id','=',$member_id)
+							->first();
+		
+				$irc_count = DB::table('irc_confirmation as irc')
+				->where('irc.resignedmemberno','=',$member_id)
+				->count();
+				if($irc_count==0){
+					$data['irc_data'] = $res;
+				}else{
+					return redirect(app()->getLocale().'/irc_list')->with('message', 'Irc Already exits');
+				}
+			}else{
+				$data['member_id'] = '';
+			}
+			//dd($data['member_id']);
 			return view('irc.irc')->with('data',$data);
 		}else{
 			return redirect('/');
@@ -453,7 +478,7 @@ class IrcController extends CommonController
 		
 		
 		$commonselect = DB::table('irc_confirmation as i')
-						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id','m.new_ic','m.old_ic','m.employee_id')
+						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id','m.new_ic','m.old_ic','m.employee_id','i.irc_status')
 						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
 						->leftjoin('company_branch as cb','m.branch_id','=','cb.id');
 		if($user_role=='irc-branch-committee' || $user_role=='irc-branch-committee-officials'){
@@ -593,7 +618,21 @@ class IrcController extends CommonController
                 $editurl =  route('edit.irc', [app()->getLocale(),$company_enc_id]) ;
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
 				if($irc->status_id!=4){
-					$nestedData['options'] = "<a style='float: left;' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$editurl."'><i class='material-icons'>edit</i></a>";
+					if($user_role=='irc-confirmation'){
+						if($irc->irc_status!=1){
+							$nestedData['options'] = "<a style='float: left;' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$editurl."'><i class='material-icons'>edit</i></a>";
+						}else{
+							$nestedData['options'] = "<a style='float: left;' disabled class='btn btn-sm waves-effect waves-light cyan modal-trigger' ><i class='material-icons'>edit</i></a>";
+						}
+					}
+					if($user_role=='irc-branch-committee' || $user_role=='irc-branch-committee-officials'){
+						if($irc->status!=1){
+							$nestedData['options'] = "<a style='float: left;' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$editurl."'><i class='material-icons'>edit</i></a>";
+						}else{
+							$nestedData['options'] = "<a style='float: left;' disabled class='btn btn-sm waves-effect waves-light cyan modal-trigger' ><i class='material-icons'>edit</i></a>";
+						}
+					}
+					
 				}else{
 					$nestedData['options'] = "";
 				}
@@ -1500,7 +1539,28 @@ class IrcController extends CommonController
 	                        ->orWhere('m.email', 'LIKE',"%{$search}%")
                    			 ->count();
         }
-        $data = $this->CommonAjaxReturnold($users, 0, 'master.destroy', 0);
+        $data = array();
+        if(!empty($users))
+        {
+            foreach ($users as $irc)
+            {
+				
+                $nestedData['member_number'] = $irc->member_number;
+                $nestedData['name'] = $irc->name;
+                $nestedData['icno'] = $irc->icno;
+                $nestedData['company_name'] = $irc->company_name;
+                $nestedData['branch_name'] = $irc->branch_name;
+
+                $member_enc_id = Crypt::encrypt($irc->id);
+                $baseurl = URL::to('/');
+				$membershiplink =  $baseurl.'/'.app()->getLocale().'/irc_irc?member='.$member_enc_id;                
+                
+				$nestedData['options'] = "<a style='float: left;' target='_blank' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$membershiplink."'>Create IRC</a>";
+
+				$data[] = $nestedData;
+			}
+        }
+        //$data = $this->CommonAjaxReturnold($users, 0, 'master.destroy', 0);
     
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
