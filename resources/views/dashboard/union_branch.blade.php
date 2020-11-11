@@ -48,7 +48,7 @@
 				   <h4 class="card-stats-number white-text">{{ $data['total_company_branch_count'] }}</h4>
 				</div>
 				<div class="card-action green">
-				   <div id="invoice-line" class="center-align"> {{__('Company Branches') }}</div>
+				   <div id="invoice-line" class="center-align"> {{__('Bank Branches') }}</div>
 				</div>
 			 </div>
 			</a>
