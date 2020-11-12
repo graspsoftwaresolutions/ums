@@ -2475,6 +2475,7 @@ class MembershipController extends Controller
                 $font_color = $member->font_color;
                 $nestedData['font_color'] = $font_color;
                 $nestedData['bg_color'] = $member->approval_status=='Rejected' ? '#e20f03' : '#fff';
+                $nestedData['text_color'] = $member->approval_status=='Rejected' ? '#fff' : '#000';
 
                 $nestedData['member_number'] = $member->approval_status=='Rejected' ? '<span style="background:#e20f03;color:#fff;padding:5px;">'.$member->member_number.'</span>' : $member->member_number ;
 

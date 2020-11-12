@@ -484,12 +484,13 @@ $(function () {
 	],
 	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 		
-		$('td', nRow).css('color', aData.bg_color );
+		$('td', nRow).css('background', aData.bg_color );
+		$('td', nRow).css('color', aData.text_color );
 	},
 	"columnDefs": [
             {
                 "render": function ( data, type, row ) {
-                	return '<span class="testspan" style="color:#000;">'+data+'</span>' ;
+                	return data ;
                     
                 },
                 "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
