@@ -1007,6 +1007,9 @@ class MemberController extends CommonController
 			
 
 			if($auto_id==''){
+				if($user_role=='staff-union-branch'){
+					$redirect_url = app()->getLocale().'/membership_list';
+				}
 				return redirect($redirect_url)->with('message','Member Account created successfully');
 				// $mail_data = array(
 				// 	'name' => $member_name,
@@ -1398,8 +1401,15 @@ class MemberController extends CommonController
 		// 	}
 
 		// }
+		$get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+		$user_id = Auth::user()->id; 
+		if($user_role=='staff-union-branch'){
+			$redirect_url = app()->getLocale().'/membership_list';
+		}else{
+			$redirect_url = app()->getLocale().'/membership';
+		}
 
-		$redirect_url = app()->getLocale().'/membership';
 		return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
 	}
 

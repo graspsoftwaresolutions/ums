@@ -606,6 +606,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('get-dojchanged-list','MembershipController@Dojchanged')->name('member.dojchanged');
 
+	Route::get('staff','MasterController@staffAccountList')->name('staff.account'); 
+	Route::post('staff_save','MasterController@Staffsave')->name('master.savestaff'); 
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

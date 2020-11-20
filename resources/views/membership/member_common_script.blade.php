@@ -179,6 +179,7 @@
 	$ajaxcompanyid = '';
 	$ajaxbranchid = '';
 	$ajaxunionbranchid = '';
+	$ajaxgroupid = '';
 	if(!empty(Auth::user())){
 		$userid = Auth::user()->id;
 		
@@ -186,7 +187,10 @@
 
 		}else if($user_role =='union-branch'){
 			$ajaxunionbranchid = CommonHelper::getUnionBranchID($userid);
-		}else if($user_role =='company'){
+		}else if($user_role =='staff-union-branch'){
+			$ajaxgroupid = CommonHelper::getUnionGroupID($userid);
+		}
+		else if($user_role =='company'){
 			$ajaxcompanyid = CommonHelper::getCompanyID($userid);
 		}else if($user_role =='company-branch'){
 			$ajaxbranchid = CommonHelper::getCompanyBranchID($userid);
@@ -557,10 +561,11 @@ $('#company').change(function(e, data){
    var CompanyID = $(this).val();
    var ajaxunionbranchid = '{{ $ajaxunionbranchid }}';
    var ajaxbranchid = '{{ $ajaxbranchid }}';
+   var ajaxgroupid = '{{ $ajaxgroupid }}';
    var additional_cond;
    if(CompanyID!='' && CompanyID!='undefined')
    {
-	 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid;
+	 additional_cond = '&unionbranch_id='+ajaxunionbranchid+'&branch_id='+ajaxbranchid+'&group_id='+ajaxgroupid;
 	 $.ajax({
 		type: "GET",
 		dataType: "json",

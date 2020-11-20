@@ -153,7 +153,9 @@ span.dtr-title::after {
 									@if($data['member_type'] ==1) 
 									<a class="col s12 m4 l3 btn waves-effect breadcrumbs-btn waves-light amber right" style="margin-bottom: 10px" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('Pending members list') }}</a>
 								@else
+									@if($user_role !='staff-union-branch')
 									<a class="col s12 m4 l3 btn waves-effect breadcrumbs-btn waves-light green darken-1 right " style="margin-bottom: 10px" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Approved members list') }}</a>
+									@endif
 								@endif
 								</div>
 							</div>	

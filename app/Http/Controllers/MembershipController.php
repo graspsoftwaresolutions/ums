@@ -85,7 +85,6 @@ class MembershipController extends Controller
         
     }
     
-    
     public function edit(Request $request, $lang,$id)
     {
 		$irc_status = 0;
@@ -159,7 +158,6 @@ class MembershipController extends Controller
 		$data = DB::table('membership')->where('id','=',$id)->update(['status'=>'0']);
 		return redirect('membership')->with('message','Member Deleted Succesfully');
     }
-    
 
     public function new_members(Request $request, $lang){
         $type = $request->input('type');
@@ -306,7 +304,6 @@ class MembershipController extends Controller
 		$state_id = $request->input('state_id');
 		$city_id = $request->input('city_id'); 
 		
-		
 		if($user_role=='union' || $user_role=='data-entry'){
             //DB::enableQueryLog();
 				
@@ -361,7 +358,6 @@ class MembershipController extends Controller
 			//$member_qry->dump()->get();			 
 			// $queries = DB::getQueryLog();
 			// dd($queries);         
-         
                         
 		}else if($user_role=='union-branch'){
            
@@ -740,8 +736,9 @@ class MembershipController extends Controller
                 $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
                 
-                if($user_role=='union-branch'){
+                if($user_role=='union-branch' || $user_role=='staff-union-branch' ){
                     $edit = route('union.editmembership', [app()->getLocale(),$enc_id]);
+                    //dd($edit);
                     $actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 }else{
                     $edit = route('master.editmembership', [app()->getLocale(),$enc_id]);
@@ -906,7 +903,6 @@ class MembershipController extends Controller
             return redirect(app()->getLocale().'/transfer_history')->with('error','Old branch and new branch should not same');
         }
     }
-
 
     public function memberTransferHistory(){
         return view('membership.member_transfer_history');
@@ -1186,11 +1182,8 @@ class MembershipController extends Controller
                 return redirect(app()->getLocale().'/transfer_history')->with('error','Old branch and new branch should not same');
             }
         }
-       
        //return $request->all();
-       // DB::enableQueryLog();
-        
-       
+       // DB::enableQueryLog();       
        
      }
 
@@ -1252,7 +1245,6 @@ class MembershipController extends Controller
 		 
 		 $resign_date = explode("/",$resign);
 		 $doj = explode("/",$doj_one);
-		 
 		 
 		 $resign_month = date('m', strtotime($resign_date[2]."-".$resign_date[1]."-".$resign_date[0]));
 		 $doj_month = date('m', strtotime($doj[2]."-".$doj[1]."-".$doj[0]));
@@ -1607,7 +1599,6 @@ class MembershipController extends Controller
                                 ->select('c.company_id')
                                 ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                                 ->where('m.id', '=', $memberid)->pluck('c.company_id')->first();
-
                    
                     $salary = $salary=='' ? 0 : $salary;
                     if($is_increment==1){
@@ -1662,9 +1653,7 @@ class MembershipController extends Controller
                                         ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$lastupdate)
                                         ->where('s.increment_type_id','=',1)
                                         ->get();
-
                    
-
                     $companyid = DB::table('membership as m')
                                         ->select('c.company_id')
                                         ->leftjoin('company_branch as c','c.id','=','m.branch_id')
@@ -1692,7 +1681,6 @@ class MembershipController extends Controller
                         $newsalary = $salary+$incvalue;
                     }
                     
-
                     $salcount = DB::table('salary_updations')->where('member_id','=',$memberid)
                                         ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'=',$form_date)
                                         ->where('increment_type_id','=',$typeidind)
@@ -1826,7 +1814,6 @@ class MembershipController extends Controller
             // }else{
                 $members = $members->where('m.city_id','=',$from_city_id);
             //}
-           
         }
 
         if($company_id!=''){
@@ -2084,7 +2071,6 @@ class MembershipController extends Controller
 			//$member_qry->dump()->get();			 
 			// $queries = DB::getQueryLog();
 			// dd($queries);         
-         
                         
 		}else if($user_role=='union-branch'){
            
@@ -2148,7 +2134,75 @@ class MembershipController extends Controller
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
 			}
-		}else if($user_role=='company'){
+		}else if($user_role=='staff-union-branch'){
+            $union_branch_ids = DB::table('union_group_branches as gb')->select('u.id')
+                    ->leftjoin('staff_union_account as ua', 'gb.union_group_id' ,'=','ua.union_group_id')
+                    ->leftjoin('union_branch as u', 'gb.union_branch_id' ,'=','u.id')
+                    ->where('ua.user_id',$user_id)
+                    ->pluck('u.id');
+           // dd($union_branch_ids);
+            //$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
+            $union_branch_id_val = '';
+            if(count($union_branch_ids)>0){
+                $union_branch_ids_val = $union_branch_ids;
+                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
+                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color','m.approval_status')
+                ->join('membership as m','c.id','=','m.branch_id')
+                ->leftjoin('company as com','com.id','=','c.company_id')
+                ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
+                ->leftjoin('status as s','s.id','=','m.status_id')
+                ->leftjoin('designation as d','m.designation_id','=','d.id')
+                ->leftjoin('country as con','con.id','=','m.country_id')
+                ->leftjoin('state as st','st.id','=','m.state_id')
+                ->leftjoin('city as cit','cit.id','=','m.city_id')
+                ->leftjoin('race as r','r.id','=','m.race_id')
+                ->orderBy('m.id','DESC')
+                ->whereIn('c.union_branch_id',$union_branch_ids_val)
+                ->where([
+                    ['m.is_request_approved','=',$approved_cond]
+                    ]);
+                    if($branch_id!=""){
+                        $member_qry = $member_qry->where('m.branch_id','=',$branch_id);
+                    }elseif($company_id!= ''){
+                         $member_qry = $member_qry->where('c.company_id','=',$company_id);
+                    }
+                    elseif($unionbranch_id!= ''){
+                        $member_qry = $member_qry->where('c.union_branch_id','=',$unionbranch_id);
+                    }
+                   if($gender!="")
+                   {
+                        $member_qry = $member_qry->where('m.gender','=',$gender);
+                    }
+                   if($race_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.race_id','=',$race_id);
+                   }
+                   if($status_id!=0 && $status_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.status_id','=',$status_id);
+                   }
+                   if($country_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.country_id','=',$country_id);
+                   }
+                   if($state_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.state_id','=',$state_id);
+                   }
+                   if($city_id != "")
+                   {
+                       $member_qry = $member_qry->where('m.city_id','=',$city_id);
+                   }
+                   if($pending_type != "")
+                    {
+                        $member_qry = $member_qry->where('m.approval_status','=',$pending_type);
+                    }
+                if($member_status!='all'){
+                    $member_qry = $member_qry->where('m.status_id','=',$member_status);
+                }
+            }
+        }
+        else if($user_role=='company'){
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
@@ -2272,7 +2326,6 @@ class MembershipController extends Controller
 		$totalData = 0;
 		if($member_qry!=""){
             $totalData = $member_qry->count();
-           
 		}
 								
         $totalFiltered = $totalData; 
@@ -2303,6 +2356,9 @@ class MembershipController extends Controller
                     ['c.union_branch_id','=',$union_branch_id_val]
                     ]);
 				}
+                if($user_role=='staff-union-branch'){
+                    $compQuery =  $compQuery->whereIn('c.union_branch_id',$union_branch_ids_val);
+                }
 				if($user_role=='company'){
 					$compQuery =  $compQuery->where([
                     ['c.company_id','=',$companyid]
@@ -2313,6 +2369,7 @@ class MembershipController extends Controller
                     ['m.branch_id','=',$branchid]
                     ]);
                 }
+                
                 if($branch_id!=""){
                     $compQuery = $compQuery->where('m.branch_id','=',$branch_id);
                 }elseif($company_id!= ''){
@@ -2395,6 +2452,9 @@ class MembershipController extends Controller
 								['c.union_branch_id','=',$union_branch_id]
 								]);
 							}
+                            if($user_role=='staff-union-branch'){
+                                $compQuery =  $compQuery->whereIn('c.union_branch_id',$union_branch_ids_val);
+                            }
 							if($user_role=='company'){
 								$compQuery =  $compQuery->where([
 								['c.company_id','=',$companyid]
@@ -2452,7 +2512,6 @@ class MembershipController extends Controller
             foreach ($memberslist as $member)
             {
                 
-                
                 $designation = $member->designation_name[0];
                 $nestedData['designation_id'] = $designation;
                 $gender = $member->gender[0];
@@ -2488,7 +2547,7 @@ class MembershipController extends Controller
                 $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
 
-                if($user_role=='union-branch'){
+                if($user_role=='union-branch' || $user_role=='staff-union-branch'){
                     $edit = route('union.editmembership', [app()->getLocale(),$enc_id]);
                     $actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 }else{
@@ -2544,7 +2603,6 @@ class MembershipController extends Controller
                 if($user_role=='union'){
                     $actions .= "<a style='margin-left: 10px;' title='Card print'  class='btn-sm waves-effect waves-light blue' target='_blank' href='$member_card_link'><i class='material-icons' >card_membership</i></a>";
                 }
-                
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
                 $nestedData['options'] = $actions;
@@ -2564,7 +2622,6 @@ class MembershipController extends Controller
 
     public function editMember(Request $request, $lang,$id)
     {
-		
         $id = Crypt::decrypt($id);
         //print_r($id) ;
          DB::connection()->enableQueryLog();
@@ -2646,8 +2703,17 @@ class MembershipController extends Controller
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id; 
 
+        $union_branch_id = '';
+        $union_branch_ids = [];
+
         if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id')->first();
+        }else if($user_role=='staff-union-branch'){
+            $union_branch_ids = DB::table('union_group_branches as gb')->select('u.id')
+                    ->leftjoin('staff_union_account as ua', 'gb.union_group_id' ,'=','ua.union_group_id')
+                    ->leftjoin('union_branch as u', 'gb.union_branch_id' ,'=','u.id')
+                    ->where('ua.user_id',$user_id)
+                    ->pluck('u.id');
         }else{
             $union_branch_id = '';
         }
@@ -2667,6 +2733,10 @@ class MembershipController extends Controller
                             });
         if($union_branch_id!=''){
            $suggestions =  $suggestions->where('cb.union_branch_id', '=',$union_branch_id);
+        }else{
+            if(count($union_branch_ids)>0){
+                $suggestions =  $suggestions->whereIn('cb.union_branch_id',$union_branch_ids);
+            }
         }
 
         $res['suggestions'] = $suggestions->where('m.status_id', '!=',4)->limit(25)
@@ -2755,7 +2825,6 @@ class MembershipController extends Controller
         $state_id = $request->input('state_id');
         $city_id = $request->input('city_id'); 
         
-        
         if($user_role=='union' || $user_role=='data-entry'){
             //DB::enableQueryLog();
                 
@@ -2811,8 +2880,7 @@ class MembershipController extends Controller
             }
             //$member_qry->dump()->get();            
             // $queries = DB::getQueryLog();
-            // dd($queries);         
-         
+            // dd($queries);                 
                         
         }else if($user_role=='union-branch'){
            
@@ -3155,8 +3223,6 @@ class MembershipController extends Controller
             ->get()->toArray();
 
              $totalFiltered = $compQuery->count();
-
-           
           
     }
     $data = array();
@@ -3190,7 +3256,6 @@ class MembershipController extends Controller
                 
                 $enc_id = Crypt::encrypt($member->id);
                 $delete = "";
-                               
                 
                 $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
@@ -3204,7 +3269,6 @@ class MembershipController extends Controller
                 }
                 
                 $baseurl = URL::to('/');
-               
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
                 $nestedData['options'] = $actions;
@@ -3582,7 +3646,6 @@ class MembershipController extends Controller
                         ->pluck('ms.LASTPAYMENTDATE')
                         ->first();
                     }
-                
                     
                     $monthend_datas = [
                                 'TOTALMONTHSDUE' => $new_TOTALMONTHSDUE,
@@ -3610,7 +3673,6 @@ class MembershipController extends Controller
                 }
 
                 $payment_data = [
-                     
                         'last_paid_date' => $last_paid_date,
                         'totpaid_months' => $last_TOTALMONTHSPAID,
                         'totcontribution_months' => $last_TOTALMONTHSCONTRIBUTION,

@@ -228,7 +228,7 @@ class CommonHelper
 		return $results = Company::where('id',$companyid)->get();
      }
      
-     public static function getCompanyBranchList($companyid,$branchid=false,$unionbranchid=false){
+     public static function getCompanyBranchList($companyid,$branchid=false,$unionbranchid=false,$groupid=false){
 		//$rawQuery = "SELECT c.id, c.company_name from company_branch as b left join company as c on b.company_id=c.id where b.union_branch_id=$union_branch_id ";
 		//DB::select( DB::raw('set sql_mode='''));
         $companyBranch = CompanyBranch::where('company_id',$companyid);
@@ -237,6 +237,10 @@ class CommonHelper
         }
         if($unionbranchid!=false && $unionbranchid!=''){
             $companyBranch->where('union_branch_id',$unionbranchid);
+        }
+        if($groupid!=false && $groupid!=''){
+            $union_branch_ids = DB::table('union_group_branches')->where('union_group_id',$groupid)->pluck('union_branch_id');
+            $companyBranch->whereIn('union_branch_id',$union_branch_ids);
         }
         $companyBranch->where('status',1);
                               
@@ -3684,6 +3688,26 @@ class CommonHelper
         return $count;
     }
 
+     public static function getStaffUnionRejectedCount($userid){
+         $union_branch_ids = DB::table('union_group_branches as gb')->select('u.id')
+                    ->leftjoin('staff_union_account as ua', 'gb.union_group_id' ,'=','ua.union_group_id')
+                    ->leftjoin('union_branch as u', 'gb.union_branch_id' ,'=','u.id')
+                    ->where('ua.user_id',$userid)
+                    ->pluck('u.id');
+       // $union_branch_id = UnionBranch::where('user_id',$userid)->pluck('id')->first();
+        $count = 0;
+        if(count($union_branch_ids)>0){
+            $count = DB::table('membership as m')
+            ->select('m.member_number','m.name','m.new_ic','m.old_ic','m.employee_id','com.short_code as companycode','cb.branch_name','m.gender','m.doj','s.status_name')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->leftjoin('union_branch as u','u.id','=','cb.union_branch_id')
+            ->whereIn('u.id',$union_branch_ids)
+            ->where('m.approval_status','=','Rejected')
+            ->count();
+        }
+        return $count;
+    }
+
     public static function getNewDesignationList(){
         $des_data = DB::table('designation_new')->where('status', 1)->get();
         
@@ -4678,5 +4702,33 @@ class CommonHelper
                                          'ms.TOTALSUBCRP_AMOUNT as SUBSCRIPTION_AMOUNT','ms.TOTALBF_AMOUNT as BF_AMOUNT','ms.TOTALINSURANCE_AMOUNT as INSURANCE_AMOUNT','ms.TOTAL_MONTHS','ms.LASTPAYMENTDATE','ms.TOTALMONTHSPAID',DB::raw('IFNULL(ms.TOTALMONTHSDUE,0) as TOTALMONTHSDUE'),'ms.ACCSUBSCRIPTION','ms.ACCBF','ms.ACCINSURANCE','ms.arrear_status','ms.SUBSCRIPTIONDUE','ms.ENTRYMODE','ms.advance_amt','ms.advance_balamt','ms.advance_totalmonths')
         ->where('ms.MEMBER_CODE', '=' ,$memberid)->where('ms.StatusMonth','<',$date)
         ->get();
+    }
+
+    public static function getStaffUnionBranches($userid){
+        return $results = DB::table('union_group_branches as gb')->select('u.union_branch')
+                    ->leftjoin('staff_union_account as ua', 'gb.union_group_id' ,'=','ua.union_group_id')
+                    ->leftjoin('union_branch as u', 'gb.union_branch_id' ,'=','u.id')
+                    ->where('ua.user_id',$userid)
+                    ->get();
+    }
+
+    public static function getStaffUnionCompanyList($userid){
+        $union_branch_ids = DB::table('union_group_branches as gb')->select('u.id')
+                    ->leftjoin('staff_union_account as ua', 'gb.union_group_id' ,'=','ua.union_group_id')
+                    ->leftjoin('union_branch as u', 'gb.union_branch_id' ,'=','u.id')
+                    ->where('ua.user_id',$userid)
+                    ->pluck('u.id');
+        //DB::select( DB::raw('set sql_mode='''));
+        return $results = DB::table('company_branch as b')
+                            ->selectRaw('c.id, c.company_name')
+                            ->join('company as c','c.id','=','b.company_id')
+                            ->whereIn('b.union_branch_id',$union_branch_ids)
+                            ->groupBy('c.id')
+                            ->get();
+     }
+
+    public static function getUnionGroupID($user_id){
+         $union_group_id = DB::table('staff_union_account')->where('user_id',$user_id)->pluck('union_group_id')->first();
+         return $union_group_id;
     }
 }

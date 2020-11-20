@@ -672,8 +672,9 @@ class CommonController extends Controller
         $companyid = $request->company_id;
         $unionbranch_id = $request->unionbranch_id;
         $branch_id = $request->branch_id;
+        $group_id = $request->group_id;
 
-        $res = CommonHelper::getCompanyBranchList($companyid, $branch_id, $unionbranch_id);
+        $res = CommonHelper::getCompanyBranchList($companyid, $branch_id, $unionbranch_id, $group_id);
       
         return response()->json($res);
     }

@@ -111,7 +111,34 @@ class HomeController extends Controller
 			}
             $data['total_member_count'] = $member_count;
             $data['total_company_branch_count'] = $company_branch_count;
-        }else if($user_role=='company'){
+        }else if($user_role=='staff-union-branch'){
+
+            $union_group_id = DB::table('staff_union_account')->where('user_id',$user_id)->pluck('union_group_id')->first();
+            
+			$member_count = 0;
+			if($union_group_id!=0){
+				$union_branch_ids = DB::table('union_group_branches')->where('union_group_id',$union_group_id)->pluck('union_branch_id');
+
+				$results = DB::table('membership as m')->select(DB::raw('count(*) as count'))
+					->leftjoin('company_branch as cb', 'm.branch_id' ,'=','cb.id')
+                    ->whereIn('cb.union_branch_id',$union_branch_ids)
+                    ->first();
+                // dd($results);
+				
+				//$rawQuery = "SELECT count(*) as count from company_branch as c inner join membership as m on c.id=m.branch_id where c.union_branch_id=$union_branch_id";
+				//$results = DB::select( DB::raw($rawQuery));
+				if(!empty($results)){
+					$member_count = $results->count;
+				}
+				$company_branch_count = CompanyBranch::whereIn('union_branch_id',$union_branch_ids)->count();
+			}else{
+				$member_count = 0;
+				$company_branch_count = 0;
+			}
+            $data['total_member_count'] = $member_count;
+            $data['total_company_branch_count'] = $company_branch_count;
+        }
+        else if($user_role=='company'){
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			$company_branch_count = 0;
 			$member_count = 0;

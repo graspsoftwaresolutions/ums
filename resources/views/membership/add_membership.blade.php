@@ -95,6 +95,11 @@
 															
 															$member_status = 1;
 														} 
+														else if($user_role =='staff-union-branch'){
+															$companylist = CommonHelper::getStaffUnionCompanyList($userid);
+															
+															$member_status = 1;
+														} 
 														else if($user_role =='company'){
 															$branchid = CommonHelper::getCompanyBranchID($userid);
 															$companyid = CommonHelper::getCompanyID($userid);

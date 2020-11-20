@@ -43,10 +43,15 @@ class RoleTableSeeder extends Seeder
 	 //    $member_role->name = 'Member';
 	 //    $member_role->save();
 
-	    $official_role = new Role();
-	    $official_role->slug = 'officials';
-	    $official_role->name = 'Officials';
-	    $official_role->save();
+	    // $official_role = new Role();
+	    // $official_role->slug = 'officials';
+	    // $official_role->name = 'Officials';
+	    // $official_role->save();
+
+	   	$staff_union_role = new Role();
+	    $staff_union_role->slug = 'staff-union-branch';
+	    $staff_union_role->name = 'Staff Union Branch';
+	    $staff_union_role->save();
 		
 		
 

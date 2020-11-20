@@ -49,6 +49,22 @@
 								<div class="input-field col s12 " style="padding:0px;margin:0px 30px;">
 									EMAIL : {{ Auth::user()->email }}
 								</div>
+								@php
+						            $get_roles = Auth::user()->roles;
+						            $user_role = $get_roles[0]->slug;
+						            $user_id = Auth::user()->id;
+						            $unionbranches = CommonHelper::getStaffUnionBranches($user_id);
+						        @endphp
+						        @if($user_role=='staff-union-branch')
+						        
+								<div class="input-field col s12 " style="padding:0px;margin:0px 30px;">
+									BRANCHES : 
+									@foreach($unionbranches as $branch)
+									{{ $branch->union_branch }}, 
+									@endforeach
+								</div>
+								
+								@endif
 							</div>
 							<div class="input-field col s12{{ $errors->has('current-password') ? ' has-error' : '' }}">
 								

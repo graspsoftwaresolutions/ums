@@ -1448,4 +1448,65 @@ public function companyDestroy($lang,$id)
         $newcode = str_pad($count,4,"0",STR_PAD_LEFT);
         return $newcode;
     }
+
+    public function staffAccountList(Request $request){
+        $data['staff_account'] = DB::table('staff_union_account as sa')->select('sa.user_id','sa.union_group_id','u.name','u.email','g.group_name')
+                                    ->leftjoin('users as u','sa.user_id','=','u.id')
+                                    ->leftjoin('union_groups as g','sa.union_group_id','=','g.id')->get();
+        $data['union_groups'] = DB::table('union_groups as g')->get();
+        return view('master.staff_account.list')->with('data',$data);
+    }
+
+     public function Staffsave(Request $request) {
+        
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'group_id' => 'required',
+                ], [
+            'name.required' => 'Please enter User name',
+        ]);
+
+        $data = $request->all();
+     
+        //dd($roles);
+
+        $defdaultLang = app()->getLocale();
+
+        if (!empty($request->id)) {
+            $data_exists = $this->mailExists($request->input('email'), $request->id);
+        } else {
+            $data_exists = $this->mailExists($request->input('email'));
+        }
+
+        if ($data_exists > 0) {
+            return redirect($defdaultLang . '/staff')->with('error', 'User Email Already Exists');
+        } else if (empty($request->id)) {
+            if (($request->password == $request->confirm_password)) {
+                $data['password'] = bcrypt($request->password);
+                $newuser['email'] = $request->email;
+                $newuser['name'] = $request->name;
+                $newuser['password'] = bcrypt($request->password);
+               // dd($request->password);
+                //return $data;
+                $saveUser = $this->User->saveUserdata($newuser);
+            }
+            $userid = $saveUser->id;
+
+            DB::table('users_roles')->insert(
+                    ['user_id' => $userid, 'role_id' => 12]
+                );
+
+            DB::table('staff_union_account')->insert(
+                    ['user_id' => $userid, 'union_group_id' => $request->input('group_id')]
+                );
+
+            if ($saveUser == true) {
+                return redirect($defdaultLang . '/staff')->with('message', 'User Added Succesfully');
+            } else {
+                return redirect($defdaultLang . '/staff')->with('error', 'passwords are mismatch');
+            }
+        } 
+    }
 }

@@ -379,6 +379,9 @@
                                                     $m_companyid = CommonHelper::getcompanyidbyBranchid($values->branch_id);
                                                     $check_union = $auth_user->hasRole('union'); 
                                                     $check_unionbranch = $auth_user->hasRole('union-branch'); 
+                                                    if($auth_user->hasRole('staff-union-branch')==1){
+                                                        $check_unionbranch = 1; 
+                                                    }
                                                     $check_entry = $auth_user->hasRole('data-entry'); 
                                                     $showfee = 0;
                                                     if($check_union || $check_entry){ 

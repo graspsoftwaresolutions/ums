@@ -57,6 +57,9 @@
 				@role('irc-branch-committee-officials')
 					@include('dashboard.irc_branch_commitee')
 				@endrole
+				@role('staff-union-branch')
+					@include('dashboard.staff_union_branch')
+				@endrole
 				@include('layouts.right-sidebar')
 			 <!-- END: Page Main-->
 			</div>
