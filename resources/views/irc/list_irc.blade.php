@@ -50,10 +50,10 @@
 							<div class="container">
 								<div class="row">
 									<div class="col s10 m6 l6">
-										<h5 class="breadcrumbs-title mt-0 mb-0"> @if($data['irc_status']=="0"){{ 'IRC Pending List' }}  @else {{ 'IRC Confirmation List' }} @endif</h5>
+										<h5 class="breadcrumbs-title mt-0 mb-0"> @if($data['irc_status']=="0"){{ 'IRC Pending List' }} @elseif($data['irc_status']=="1") IRC Confirmed List @else {{ 'IRC List' }} @endif</h5>
 										<ol class="breadcrumbs mb-0">
 										<li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
-											<li class="breadcrumb-item active"><a href="#">@if($data['irc_status']=="0"){{ 'IRC Pending List' }}  @else {{ 'IRC Confirmation List' }} @endif</a>
+											<li class="breadcrumb-item active"><a href="#">@if($data['irc_status']=="0"){{ 'IRC Pending List' }} @elseif($data['irc_status']=="1") IRC Confirmed List @else {{ 'IRC List' }} @endif</a>
 											</li>
 											
 										</ol>
@@ -65,7 +65,7 @@
 									@endphp
 									<div class="col s2 m6 l6 ">
 										@if($user_role=='irc-confirmation' )
-											<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc', 	app()->getLocale())  }}">{{__('New Confirmation') }}</a>
+											<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('irc.irc', 	app()->getLocale())  }}">{{__('New IRC') }}</a>
 										@endif
 										
 									</div>

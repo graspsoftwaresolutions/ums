@@ -261,11 +261,21 @@ class HomeController extends Controller
 
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
 
+			$totalDataqry = DB::table('membership as m')
+					 ->leftjoin('company_branch as cb', 'm.branch_id', '=', 'cb.id')
+					 ->leftjoin('irc_confirmation as irc', 'm.id', '=', 'irc.resignedmemberno');
+			
+			$totalDataqry = $totalDataqry->whereIn('cb.union_branch_id',$unionbranchids);
+			
+			$totalWaited = $totalDataqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
+					 ->count();
+
 			
 			$data['total_irc_count'] = $irc_count;
 			$data['total_ircpending_count'] = $total_ircpending_count;
 			$data['total_ircapproval_count'] = $total_ircapp_count;
 			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
+			$data['total_ircwaited_count'] = $totalWaited;
 		}else if($user_role=='irc-confirmation-officials'){
 
 			$total_ircpending_qry = DB::table('irc_confirmation as i')

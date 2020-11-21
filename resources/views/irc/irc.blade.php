@@ -70,7 +70,7 @@
 		<div class="card">
 		
 		
-			<h5 class="padding-left-10"> Resignation Member <a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a></h5>
+			<h5 class="padding-left-10"> Resignation Member <a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC List') }}</a></h5>
 			<div id="memberdetailssection" class="row">
 				 <div class="input-field col s4">
 					<label for="member_number"
@@ -184,7 +184,7 @@
 	  <div class="container">
 	 
 		 <div class="card">
-		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
+		 <h5 class="padding-left-10">IRC BRANCH COMMITEE OF BENEVOLENT FUND APPLICATION</h5>
 		 	@php
 		 		$userid = Auth::user()->id;
 		 		$confirmdata = CommonHelper::getconfirmtionmember($userid);  
@@ -1195,7 +1195,7 @@
 					</div>
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation' || $user_role =='irc-confirmation-officials') echo 'branch'; @endphp">
-			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
+			  <h5 class="padding-left-10">IRC SECRETARY VERIFICATION</h5>
 			  <div class="row padding-left-20">
 					<div class="col s12 m12" style="line-height: 5px;">
 						<label>
@@ -1206,7 +1206,7 @@
 						<div class="input-field inline">	
 							<input type="text" id="committiename" name="committiename" placeholder="" value="" class="inline-box" style="width: 280px;">	
 						</div>
-						Branch Committee of NUBE
+						Secretary of NUBE
 						<div class="input-field inline">	
 							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="" class="inline-box" style="width: 280px;">	
 						</div>
@@ -1270,7 +1270,7 @@
 								<p >
 									<label>
 									
-									<span>Branch Commitee [Name in full]</span>
+									<span>Secretary [Name in full]</span>
 									</label> 
 								</p>	
 							</div>
@@ -1309,6 +1309,16 @@
 						  <input id="submitted_at" name="submitted_at" data-reflectage="dob" required="" class="datepicker-custom"  type="text">
 						  <label for="icon_prefix" class="force-active">File Submitted</label>
 						</div> 
+						<div class="col s12 m4">
+                            <div class=" ">
+                             	
+                             	<br>
+                                <input type="file" name="formupload" id="formupload" class="" accept="" style="width: 500px;">
+                            </div>
+                            <div class="file-path-wrapper hide">
+                                <input class="file-path validate" type="text">
+                            </div>
+						</div>
 					<div class="input-field col s12 m2">
 						<p>
 						<input type="submit" class="btn" id="save" name="save" value="Submit" >

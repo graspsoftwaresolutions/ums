@@ -260,6 +260,7 @@ $(function() {
                 }
            },
         },
+        
         "columns": [{
                 "data": "name"
             },
@@ -274,6 +275,24 @@ $(function() {
             },
             {
                 "data": "options"
+            }
+        ],
+        
+        columnDefs : [
+            {   targets : [3],
+                render : function (data, type, row) {
+                    if(data == 'irc-confirmation')
+                    {
+                        data ='IRC Branch Committee';
+                    }else if(data == 'irc-confirmation-officials'){
+                        data ='IRC Branch Committee Officials';
+                    }else if(data == 'irc-branch-committee'){
+                        data ='IRC Secretary';
+                    }else{
+                        data ='IRC Secretary Officials';
+                    }
+                    return data;
+                }
             }
         ]
 
@@ -312,9 +331,24 @@ function showeditForm(userid) {
             $('#updateid').attr('data-autoid', result.id);
             $('#name').val(result.name);
             $('#email').val(result.email);
-            $('#irc_type').val(result.irc_type);
+            if(result.irc_type == 'irc-confirmation')
+            {
+                datatrc ='IRC Branch Committee';
+            }else if(result.irc_type == 'irc-confirmation-officials'){
+                datatrc ='IRC Branch Committee Officials';
+            }else if(result.irc_type == 'irc-branch-committee'){
+                datatrc ='IRC Secretary';
+            }else{
+                datatrc ='IRC Secretary Officials';
+            }
+            $('#irc_type').val(datatrc);
             if(result.irc_type=='irc-confirmation'){
-                $('#membername').val(result.membership.member_number);
+                if(result.membership!=null){
+                    $('#membername').val(result.membership.member_number);
+                }else{
+                    $('#membername').val('');
+                }
+                
                 $('#unionbrancharea').addClass('hide');
                 $('#memberarea').removeClass('hide');
             }else if(result.irc_type=='irc-branch-committee'){

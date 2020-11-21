@@ -4731,4 +4731,45 @@ class CommonHelper
          $union_group_id = DB::table('staff_union_account')->where('user_id',$user_id)->pluck('union_group_id')->first();
          return $union_group_id;
     }
+
+    public static function getGroupnameByuserid($user_id){
+        $unionbranchname = DB::table('irc_account as i')->select('ub.union_branch')
+                    ->leftjoin('membership as m', 'i.MemberCode' ,'=','m.id')
+                    ->leftjoin('company_branch as cb', 'm.branch_id' ,'=','cb.id')
+                    ->leftjoin('union_branch as ub', 'cb.union_branch_id' ,'=','ub.id')
+                    ->where('i.user_id','=',$user_id)
+                    ->pluck('ub.union_branch')
+                    ->first();
+        if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
+            $groupname = 'SMJ';  
+        }else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
+            $groupname = 'PKP';   
+        }else if($unionbranchname=='IPOH'){
+            $groupname = 'PERAK';  
+        }else if($unionbranchname=='KELANTAN'){
+            $groupname = 'KELANTAN TERENGGANU';  
+        }else{
+            $groupname = 'KLSP';  
+        }
+        return $groupname;
+    }
+
+    public static function getGroupnameByBranchuserid($user_id){
+         $unionbranchid = DB::table('irc_account as i')->select('i.union_branch_id')
+                        ->where('i.user_id','=',$user_id)
+                        ->pluck('i.union_branch_id')
+                        ->first();
+        if($unionbranchid==1){
+            $unionbranch = 'SMJ';
+        }else if($unionbranchid==2){
+            $unionbranch = 'PKP';
+        }else if($unionbranchid==3){
+            $unionbranch = 'PERAK';
+        }else if($unionbranchid==4){
+            $unionbranch = 'KELANTAN TERENGGANU';
+        }else{
+            $unionbranch = 'KLSP';
+        }
+        return $unionbranch;
+    }
 }

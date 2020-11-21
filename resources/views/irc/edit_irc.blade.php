@@ -76,7 +76,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 			$dataresigneddata = $data['resignedmember']; 
         @endphp
 		<h5 class="padding-left-10"> Resignation Member 
-			<a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC Confirmation List') }}</a>
+			<a class="btn waves-effect waves-light right" href="{{ route('irc.irc_list',app()->getLocale())  }}">{{__('IRC List') }}</a>
 		</h5>
 			<div class="row" id="resignation_area"> 
             <input type="hidden" name="ircid" id="ircid" value="{{$dataresigneddata->ircid}}">
@@ -197,7 +197,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	  <div class="container"> 
 	 
 		 <div class="card @php if($user_role =='irc-branch-committee' || $user_role =='irc-branch-committee-officials') echo 'branch'; @endphp">
-		 <h5 class="padding-left-10">IRC CONFIRMATION OF BENEVOLENT FUND APPLICATION</h5>
+		 <h5 class="padding-left-10">IRC BRANCH COMMITEE OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 			  	@if($user_role !='irc-confirmation-officials')
 				<div class="input-field col s6">
@@ -1364,7 +1364,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 			  </div>
 			  <div class="card branchconfirmarea @php if($user_role =='irc-confirmation' || $user_role =='irc-confirmation-officials') echo 'branch'; @endphp">
-			  <h5 class="padding-left-10">BRANCH COMMITEE VERIFICATION</h5>
+			  <h5 class="padding-left-10">IRC SECRETARY VERIFICATION</h5>
 
 				@php
 					$userid = Auth::user()->id;
@@ -1417,7 +1417,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						<div class="input-field inline">	
 							<input type="text" id="committiename" name="committiename" value="{{$committiename}}" placeholder="" class="inline-box" style="width: 280px;" >	
 						</div>
-						Branch Committee of NUBE
+						Secretary of NUBE
 						<div class="input-field inline">	
 							<input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="{{$committieverifyname}}" class="inline-box" style="width: 280px;">	
 						</div>
@@ -1492,7 +1492,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 								<p >
 									<label>
 									
-									<span>Branch Commitee [Name in full]</span>
+									<span>Secretary [Name in full]</span>
 									</label> 
 								</p>	
 							</div>
@@ -1587,6 +1587,23 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							  <input id="submitted_at" name="submitted_at" data-reflectage="dob" value="{{$dataresigneddata->submitted_at}}" class="datepicker"  type="text">
 							  <label for="icon_prefix">File Submitted</label>
 							</div> 
+							<div class="col s12 m4">
+	                            <div class=" ">
+	                             	
+	                             	<br>
+	                                <input type="file" name="formupload" id="formupload" class="" accept="" style="width: 500px;">
+	                            </div>
+	                            <div class="file-path-wrapper hide">
+	                                <input class="file-path validate" type="text">
+	                            </div>
+							</div>
+							<div class="input-field col s12 m2">
+	                            <p>
+								@if($irc_details->attachment_fullform!="")
+								<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_fullform) }}" class="btn blue download-link" style="" target="_blank">VIEW ATTACHMENT</a>
+								@endif
+								</p>
+							</div>
 						<div class="input-field col s12 m2">
 							<p>
 							<input type="submit" class="btn" id="save" name="save" value="Submit" >

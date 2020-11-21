@@ -55,6 +55,20 @@
             <ul class="dropdown-content" id="profile-dropdown">
               @if($checkofficial==true)
                   <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($get_roles[1]->slug)) }}</a></li>
+              @elseif($user_role=='irc-confirmation')
+                @php
+                  $groupname = CommonHelper::getGroupnameByuserid($user_id);
+                @endphp
+                 <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __('IRC BRANCH COMMITEE') }} [{{ $groupname }}]</a></li>
+              @elseif($user_role=='irc-confirmation-officials')
+                 <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __('IRC BRANCH COMMITEE OFFICIALS') }}</a></li>
+              @elseif($user_role=='irc-branch-committee')
+                @php
+                  $groupname = CommonHelper::getGroupnameByBranchuserid($user_id);
+                @endphp
+                 <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __('IRC SECRETARY') }} [{{ $groupname }}]</a></li>
+              @elseif($user_role=='irc-branch-committee-officials')
+                 <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __('IRC SECRETARY OFFICIALS') }}</a></li>
               @else
                   <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }}</a></li>
               @endif

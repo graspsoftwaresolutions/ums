@@ -107,7 +107,7 @@ class IrcController extends CommonController
 		$member_user->roles()->attach($user_role);
 		if($member_user){
 			DB::table('irc_account')->insert(
-				['MemberCode' => $member_code,'union_branch_id' => $union_branch_id, 'user_id' => $member_user->id,'account_type' => $account_type, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d')]
+				['MemberCode' => $member_code,'union_branch_id' => $union_branch_id, 'user_id' => $member_user->id,'account_type' => $account_type, 'created_by' => Auth::user()->id, 'created_at' => date('Y-m-d'), 'status' => 1]
 			);
 			return redirect( app()->getLocale().'/list_irc_account')->with('message','User account added successfully'); 
 		}else{
@@ -126,6 +126,7 @@ class IrcController extends CommonController
 
 		$totalData = DB::table('irc_account as i')
 					 ->leftjoin('users as u', 'i.user_id', '=', 'u.id')
+					 ->where('i.status', '=', 1)
 					 ->count();
 
         $totalFiltered = $totalData;
@@ -142,12 +143,14 @@ class IrcController extends CommonController
 				$users =  DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 							->leftjoin('users as u', 'i.user_id', '=', 'u.id')
 							->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
+							->where('i.status', '=', 1)
 							->orderBy($order,$dir)
 							->get()->toArray();
             }else{
 				$users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 						->leftjoin('users as u', 'i.user_id', '=', 'u.id')
 						->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
+						->where('i.status', '=', 1)
 						->offset($start)
 						->limit($limit)
 						->orderBy($order,$dir)
@@ -161,6 +164,7 @@ class IrcController extends CommonController
             $users = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 						->leftjoin('users as u', 'i.user_id', '=', 'u.id')
 						->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
+						->where('i.status', '=', 1)
 						->where('u.id','LIKE',"%{$search}%")
                         ->orWhere('u.name', 'LIKE',"%{$search}%")
                         ->orWhere('u.email', 'LIKE',"%{$search}%")
@@ -171,6 +175,7 @@ class IrcController extends CommonController
 					->leftjoin('users as u', 'i.user_id', '=', 'u.id')
 					->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
 					->where('u.id','LIKE',"%{$search}%")
+					->where('i.status', '=', 1)
 					->orWhere('u.name', 'LIKE',"%{$search}%")
 					->orWhere('u.email', 'LIKE',"%{$search}%")
                         ->offset($start)
@@ -181,6 +186,7 @@ class IrcController extends CommonController
         $totalFiltered = DB::table('irc_account as i')->select('u.id','u.name','u.email','i.account_type','m.member_number as MemberCode')
 							->leftjoin('users as u', 'i.user_id', '=', 'u.id')
 							->leftjoin('membership as m', 'm.id', '=', 'i.MemberCode')
+							->where('i.status', '=', 1)
 							->where('u.id','LIKE',"%{$search}%")
 							->orWhere('u.name', 'LIKE',"%{$search}%")
 							->orWhere('u.email', 'LIKE',"%{$search}%")
@@ -1036,6 +1042,16 @@ class IrcController extends CommonController
 				
 			}
 		}
+
+
+		if(Input::hasFile('formupload')){
+			$filenameWithExt = $request->file('formupload')->getClientOriginalExtension();
+			$inputfilenames = $data['resignedmemberno'].'_'.strtotime(date('Ymdhis')).'.'.$filenameWithExt;
+			$file = $request->file('formupload')->storeAs('irc', $inputfilenames ,'local');
+			$insertdata['attachment_fullform'] = $inputfilenames;
+			
+		}
+		
 		
 
 		

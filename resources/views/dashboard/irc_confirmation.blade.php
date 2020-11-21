@@ -49,7 +49,7 @@
 		<div class="col s12 m6 l3">
 			<div class="card animate fadeLeft">
 				<div class="card-content cyan white-text">
-				   <p class="card-stats-title"><i class="material-icons"></i> {{__('Pending Branch Committie') }}</p>
+				   <p class="card-stats-title"><i class="material-icons"></i> {{__('Pending Secretary') }}</p>
 				   <h4 class="card-stats-number white-text">{{ $data['total_ircapproval_count'] }}</h4>
 				</div>
 				<div class="card-action cyan darken-1">
@@ -61,7 +61,7 @@
 		<div class="col s12 m6 l3">
 			<div class="card animate fadeRight">
 				<div class="card-content green lighten-1 white-text">
-				   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Confirm IRC') }}</p>
+				   <p class="card-stats-title"><i class="material-icons"></i>{{__('No of Confirmed IRC') }}</p>
 				   <h4 class="card-stats-number white-text">{{ $data['total_ircconfirm_count'] }}</h4>
 				</div>
 				<div class="card-action green">
@@ -70,11 +70,11 @@
 			</div>
 		</div>
 		<div class="col s12 m6 l3">
-        <a style="color:white" href="{{url(app()->getLocale().'/membership')}}">
+        <a style="color:white" href="{{url(app()->getLocale().'/irc_waiters')}}">
          <div class="card animate fadeLeft">
             <div class="card-content red accent-2 white-text">
-               <p class="card-stats-title"><i class="material-icons"></i>{{__('Waiting for IRC Confirmations') }}</p>
-               <h4 class="card-stats-number white-text">0</h4>
+               <p class="card-stats-title"><i class="material-icons"></i>{{__('Waiting for IRC Branch Committee') }}</p>
+               <h4 class="card-stats-number white-text">{{ $data['total_ircwaited_count'] }}</h4>
               
             </div>
             <div class="card-action red">
