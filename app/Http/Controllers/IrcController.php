@@ -91,7 +91,6 @@ class IrcController extends CommonController
 			return redirect( app()->getLocale().'/add_irc_account')->with('error','Please select Branch'); 
 		}
 		
-		
 		$user_role = Role::where('slug', $account_type)->first();
 		$request->validate([
             'name' => 'required',
@@ -235,7 +234,6 @@ class IrcController extends CommonController
 			->pluck('union_branch')->first();  
 	
 			//return $unionbranchname;
-	
 	
 		$union_no = $unionbranchid;
 		if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
@@ -482,7 +480,6 @@ class IrcController extends CommonController
 			}
 		}
 		
-		
 		$commonselect = DB::table('irc_confirmation as i')
 						->select(DB::raw('if(i.status=1,"Confirm","pending") as status_name'),'i.status','m.member_number as resignedmemberno','m.name as resignedmembername','i.resignedmembericno','i.resignedmemberbankname','i.resignedmemberbranchname','i.submitted_at as submitted_at','i.submitted_at as received','i.id','m.status_id as status_id','m.new_ic','m.old_ic','m.employee_id','i.irc_status')
 						->leftjoin('membership as m', 'i.resignedmemberno', '=', 'm.id')
@@ -622,9 +619,10 @@ class IrcController extends CommonController
                 $nestedData['received'] = $irc->received=='0000-00-00' ? '' : $irc->received;
                 $company_enc_id = Crypt::encrypt($irc->id);
                 $editurl =  route('edit.irc', [app()->getLocale(),$company_enc_id]) ;
+                $nestedData['options'] = "";
 				//$editurl = URL::to('/')."/en/sub-company-members/".$company_enc_id;
 				if($irc->status_id!=4){
-					if($user_role=='irc-confirmation'){
+					if($user_role=='irc-confirmation' || $user_role=='irc-confirmation-officials'){
 						if($irc->irc_status!=1){
 							$nestedData['options'] = "<a style='float: left;' class='btn btn-sm waves-effect waves-light cyan modal-trigger' href='".$editurl."'><i class='material-icons'>edit</i></a>";
 						}else{
@@ -891,7 +889,6 @@ class IrcController extends CommonController
 
 			$samebranchtype = $request->input('samebranchtype');
 
-
 			$insertdata['promotedboxthree'] = isset($promotedboxthree) ? 1 : 0;
 			$insertdata['promotedto'] = $promotedthree;
 			$insertdata['transfertoplaceboxthree'] = isset($transfertoplaceboxthree) ? 1 : 0;
@@ -937,7 +934,6 @@ class IrcController extends CommonController
 			if(isset($attachedboxfour)){
 				$attachedbox = 1;
 			}
-
 
 			$person_namefour = $request->input('person_namefour');
 			$gradewef = $request->input('gradeweffour');
@@ -1043,7 +1039,6 @@ class IrcController extends CommonController
 			}
 		}
 
-
 		if(Input::hasFile('formupload')){
 			$filenameWithExt = $request->file('formupload')->getClientOriginalExtension();
 			$inputfilenames = $data['resignedmemberno'].'_'.strtotime(date('Ymdhis')).'.'.$filenameWithExt;
@@ -1051,9 +1046,6 @@ class IrcController extends CommonController
 			$insertdata['attachment_fullform'] = $inputfilenames;
 			
 		}
-		
-		
-
 		
 		$submitted_at = $request->input('submitted_at');
 		$created_at = date('Y-m-d h:i:s');
@@ -1224,9 +1216,7 @@ class IrcController extends CommonController
 			$unionbranchname = DB::table('union_branch as ub')
 			->where('ub.id','=',$unionbranchid)
 			->pluck('union_branch')->first();  
-	
 			//return $unionbranchname;
-	
 	
 			$union_no = $unionbranchid;
 			if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
@@ -1270,7 +1260,6 @@ class IrcController extends CommonController
 								->where('ub.is_head','=',1)
 								//->dump()
 								->count();
-			
 	
 			$searchkey = $request->input('searchkey');
 			$search = $request->input('query');
@@ -1370,7 +1359,6 @@ class IrcController extends CommonController
 		$member_id = $request->member_id;
 		
 		//DB::connection()->enableQueryLog();
-		
 		
 		$res = DB::table('membership as m')->select(DB::raw("if(count('m.new_ic') > 0  ,m.new_ic,m.old_ic) as nric"),'m.member_number','m.id as memberid','d.designation_name as membertype','p.person_title as persontitle','m.name as membername','cb.branch_name','c.company_name',DB::raw("DATE_FORMAT(m.dob,'%d/%b/%Y') as dob"),'m.gender',DB::raw("DATE_FORMAT(m.doj,'%d/%b/%Y') as doj"),DB::raw("(PERIOD_DIFF( DATE_FORMAT(CURDATE(), '%Y%m') , DATE_FORMAT(dob, '%Y%m') )) DIV 12 AS age"),'r.race_name','cb.address_one','cb.phone','cb.mobile','cb.union_branch_id')
 							->leftjoin('designation as d','d.id','=','m.designation_id')

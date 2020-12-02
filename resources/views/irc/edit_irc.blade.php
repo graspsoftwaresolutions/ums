@@ -1364,7 +1364,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 			  </div>
 			  <div class="card branchconfirmarea @php if($user_role =='irc-confirmation' || $user_role =='irc-confirmation-officials') echo 'branch'; @endphp">
-			  <h5 class="padding-left-10">IRC SECRETARY VERIFICATION</h5>
+			  <h5 class="padding-left-10">BRANCH SECRETARY VERIFICATION</h5>
 
 				@php
 					$userid = Auth::user()->id;

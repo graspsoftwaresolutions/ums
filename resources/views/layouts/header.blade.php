@@ -72,7 +72,6 @@
               @else
                   <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }}</a></li>
               @endif
-             
           
               <li><a class="grey-text text-darken-1" href="{{ route('changepassword',app()->getLocale()) }}"><i class="material-icons">person_outline</i> {{__('Change Password') }}</a></li>
               <!-- <li><a class="grey-text text-darken-1" href="app-chat.html"><i class="material-icons">chat_bubble_outline</i> Chat</a></li>

@@ -1195,7 +1195,7 @@
 					</div>
 			  </div>
 			  <div class="card @php if($user_role =='irc-confirmation' || $user_role =='irc-confirmation-officials') echo 'branch'; @endphp">
-			  <h5 class="padding-left-10">IRC SECRETARY VERIFICATION</h5>
+			  <h5 class="padding-left-10">BRANCH SECRETARY VERIFICATION</h5>
 			  <div class="row padding-left-20">
 					<div class="col s12 m12" style="line-height: 5px;">
 						<label>

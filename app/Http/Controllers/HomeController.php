@@ -30,7 +30,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-		
         $this->middleware('auth');
         ini_set('memory_limit', '-1');
     }
@@ -78,7 +77,6 @@ class HomeController extends Controller
 
             $member_count = $total_approved_members_count + $total_pending_members_count;
             $data['total_member_count'] = $member_count;
-
           
            $status_active_members = Membership::where([ ['status_id',1],['status','=','1'] ])->count();
            $data['totla_active_member_count'] = $status_active_members;
@@ -171,7 +169,6 @@ class HomeController extends Controller
 			$unionbranchid = DB::table('membership as m')
 				->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 				->where('m.id','=',$memberid)->pluck('cb.union_branch_id')->first();
-
 
 			$union_no = $unionbranchid;
 
@@ -269,7 +266,6 @@ class HomeController extends Controller
 			
 			$totalWaited = $totalDataqry->where('m.send_irc_request','=',1)->whereNull('irc.resignedmemberno')
 					 ->count();
-
 			
 			$data['total_irc_count'] = $irc_count;
 			$data['total_ircpending_count'] = $total_ircpending_count;
@@ -296,7 +292,6 @@ class HomeController extends Controller
 			//$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
 			
 			$total_ircconfirm_count = $total_ircconfirm_qry->count();
-
 			
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
@@ -310,12 +305,12 @@ class HomeController extends Controller
 			$total_ircapp_count = $total_ircapp_qry->count();
 
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
-
 			
 			$data['total_irc_count'] = $irc_count;
 			$data['total_ircpending_count'] = $total_ircpending_count;
 			$data['total_ircapproval_count'] = $total_ircapp_count;
 			$data['total_ircconfirm_count'] = $total_ircconfirm_count;
+			$data['total_ircwaited_count'] = 0;
 		}else if($user_role=='irc-branch-committee'){
 			$unionbranchid = DB::table('irc_account as irc')->where('user_id','=',$user_id)
 			->pluck('union_branch_id')->first();  
@@ -395,7 +390,6 @@ class HomeController extends Controller
 
 			$total_ircapp_count = $total_ircapp_qry->count();
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
-
 			
 			$data['total_irc_count'] = $irc_count;
 			$data['total_ircpending_count'] = $total_ircpending_count;

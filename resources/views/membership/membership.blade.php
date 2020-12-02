@@ -268,7 +268,6 @@ span.dtr-title::after {
 											<select name="city_id" id="city_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select City') }}</option>
 												
-												
 											</select>
 											<div class="input-field">
 												<div class="errorTxt23"></div>
@@ -318,7 +317,6 @@ span.dtr-title::after {
 												@endif
 												<!-- <th>{{__('Union Branch Name') }}</th> -->
 												<th width="3%">{{__('Status') }}</th>
-												
 											</tr>
 										</thead>
 										
@@ -362,7 +360,6 @@ $('#clear').click(function(){
 });	
 
 $("#membership_sidebar_a_id").addClass('active');
-
 
 $(function () {
 	$.ajaxSetup({
@@ -428,7 +425,6 @@ $(function () {
 		  var country_id = $('#country_id').val();
 		  var state_id = $('#state_id').val();
 		  var city_id = $('#city_id').val();
-		  
 		  //console.log(datefilter);
 		 
 		  data.unionbranch_id = unionbranch_id;
@@ -469,7 +465,6 @@ $(function () {
 		{"data": "mobile"},
 		{"data": "race_id"},
 		{"data": "status"}
-		
 	],
 	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 		
@@ -570,7 +565,6 @@ $(function () {
 		  var country_id = $('#country_id').val();
 		  var state_id = $('#state_id').val();
 		  var city_id = $('#city_id').val();
-		  
 		  //console.log(datefilter);
 		 
 		  data.unionbranch_id = unionbranch_id;
@@ -664,7 +658,6 @@ $('#unionbranch_id').change(function(){
 				   // var select = $("#state");
 				   // select.material_select('destroy');
 					//select.empty();
-					
 				});
 			   // $('#state').material_select();
 			}else{

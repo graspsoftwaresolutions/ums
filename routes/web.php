@@ -465,6 +465,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('sub-bulkarrearupdate/{parameter}','SubscriptionController@ViewBulkArrear')->name('subs.arrearbulkview');
 
 	Route::post('update_subs_bulk_rows','SubscriptionController@saveArrearBulkRows')->name('subscription.upbulkarrearrows');
+	Route::post('save_subs_bulk_rows','SubscriptionController@UpdateArrearBulkRows')->name('save.upbulkarrearrows');
 
 	Route::get('editbulkarrearrecords/{parameter}','SubscriptionController@arrearRecordBulkEdit')->name('subscription.editbulkarrearrecords');
 	Route::get('editadvance/{parameter}','SubscriptionController@advanceEdit')->name('subscription.editadvance');

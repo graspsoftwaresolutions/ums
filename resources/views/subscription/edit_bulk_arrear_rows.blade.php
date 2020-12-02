@@ -86,7 +86,7 @@
       <div class="card">
           <div class="card-title">
 			<h5 class="padding-left-10">Bulk Arrear Entry Details 
-          <a style="margin-left: 10px;" onclick="AddNewHistory()" class="btn waves-effect waves-light blue right hide">{{__('Add Additional Row') }}</a> &nbsp; &nbsp; 
+          <a style="margin-left: 10px;" onclick="AddNewHistory()" class="btn waves-effect waves-light blue right ">{{__('Add Additional Row') }}</a> &nbsp; &nbsp; 
         <a class="btn waves-effect waves-light right" href="{{ route('subscription.arrearentry',app()->getLocale())  }}">{{__('Back') }}</a></h5>
       </div>
 			<div class="row">
@@ -157,7 +157,7 @@
 		</div>
 		</div>
     <div class="container">
-        <form class="formValidate" id="addarrear_formValidate" method="post" action="{{ route('subscription.upbulkarrearrows',app()->getLocale()) }}">
+        <form class="formValidate" id="addarrear_formValidate" method="post" action="{{ route('save.upbulkarrearrows',app()->getLocale()) }}">
          @csrf
          <input type="hidden" name="arrear_id" id="arrear_id" value="{{$edit_data->arrearid}}">
          <input type="hidden" name="member_id" id="member_id" value="{{$edit_data->memberid}}">
@@ -246,7 +246,7 @@
                </div>
                <div class="col m6">
                 <p>
-                  <input type="submit" class="btn center hide" id="save" name="save" value="Submit" >
+                  <input type="submit" class="btn center " id="save" name="save" value="Submit" >
                 </P>
                </div>
             </div>
@@ -393,8 +393,8 @@ $("#addarrear_formValidate").on("submit", function(evt) {
 });
 function AddNewHistory(){
   var totalno = parseInt($("#totalno").val());
-  var history = '<tr><td> <input type="text" name="month_auto_id[]" id="month_auto_id_'+totalno+'" class="hide" value=""/><input type="text" name="from_entry_date[]" readonly id="from_entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"></td>';
-   history += '<td><input type="text" readonly name="to_entry_date[]" id="to_entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"></td>';
+  var history = '<tr><td> <input type="text" name="month_auto_id[]" id="month_auto_id_'+totalno+'" class="hide" value=""/><input type="text" name="from_entry_date[]" readonly="readonly" id="from_entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"></td>';
+   history += '<td><input type="text" readonly="readonly" name="to_entry_date[]" id="to_entry_date_'+totalno+'" value="" class="datepicker-custom entry_date valid" aria-invalid="false"></td>';
   history += '<td><input type="text" name="subscription_amount[]" id="subscription_amount_'+totalno+'" value="" class="subscription_amount allow_decimal"></td>';
   history += '<td><input type="text" name="bf_amount[]" id="bf_amount_6" value="" class="bf_amount allow_decimal valid" aria-invalid="false"></td>';
   history += '<td><input type="text" name="insurance_amount[]" id="insurance_amount_'+totalno+'" value="" class="insurance_amount allow_decimal"></td></tr>'
