@@ -2190,9 +2190,9 @@
 													$chequedate = $resignedrow->chequedate != '0000-00-00 00:00:00' ? date('d/m/Y',strtotime($resignedrow->chequedate)) : ''; 
 													$totamount = $resignedrow->amount; 
 												} 
-												if($monthly_bf==0){
+												//if($monthly_bf==0){
 													$monthly_bf = 3;
-												}
+												//}
 												
 												
 											@endphp
