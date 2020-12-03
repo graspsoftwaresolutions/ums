@@ -4740,11 +4740,12 @@ class CommonHelper
                     ->where('i.user_id','=',$user_id)
                     ->pluck('ub.union_branch')
                     ->first();
+					//dd( $unionbranchname);
         if($unionbranchname=='SEREMBAN' || $unionbranchname=='JB'){
             $groupname = 'SMJ';  
         }else if($unionbranchname=='PENANG' || $unionbranchname=='KEDAH'){
             $groupname = 'PKP';   
-        }else if($unionbranchname=='IPOH'){
+        }else if($unionbranchname=='IPOH' || $unionbranchname=='PERAK'){
             $groupname = 'PERAK';  
         }else if($unionbranchname=='KELANTAN'){
             $groupname = 'KELANTAN TERENGGANU';  
