@@ -320,7 +320,7 @@
 						          		<span>1. BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="person_nameone" style="width: 500px;" name="person_nameone" class="inline-box" readonly>
+										<input type="text" id="person_nameone" style="width: 500px;" name="person_nameone" value="{{ $data['member_id']!='' ? $data['irc_data']->membername : '' }}" class="inline-box" readonly>
 										
 									</div>
 						        </div>
@@ -681,7 +681,7 @@
 						          		<span>1. BF Applicant’s Name:</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="person_namethree" name="person_namethree" class="inline-box" style="width: 560px;" readonly>
+										<input type="text" id="person_namethree" name="person_namethree" value="{{ $data['member_id']!='' ? $data['irc_data']->membername : '' }}" class="inline-box" style="width: 560px;" readonly>
 										
 									</div>
 						        </div>
@@ -910,7 +910,7 @@
 						          		<span>1. BF Applicant’s Name is</span>
 						            </label> 
 									<div class="input-field inline">
-										<input type="text" id="person_namefour" class="inline-box" style="width: 560px;" name="person_namefour" readonly>
+										<input type="text" id="person_namefour" class="inline-box" style="width: 560px;" name="person_namefour" value="{{ $data['member_id']!='' ? $data['irc_data']->membername : '' }}" readonly>
 										
 									</div>
 						        </div>
