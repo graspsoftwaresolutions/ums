@@ -7347,13 +7347,13 @@ li.home:before
 ------------------------------------------*/
 .avatar-status
 {
-    line-height: 50px;
+    line-height: 54px;
 
     position: relative;
 
     display: inline-block;
 
-    width: 28px;
+    width: 26px;
 
     vertical-align: bottom;
     white-space: nowrap;
