@@ -934,7 +934,7 @@
                                                   
                                                     <div class="col s12 m12 branchconfirmarea">
                                                         </br>
-                                                        <h6>BRANCH COMMITEE VERIFICATION</h6>
+                                                        <h6>BRANCH SECRETARY VERIFICATION</h6>
                                                          <div class="row padding-left-20">
                                                             <div class="col s12 m12" style="line-height: 5px;">
                                                                 <label>
@@ -945,7 +945,7 @@
                                                                 <div class="input-field inline">    
                                                                     <input type="text" id="committiename" name="committiename" value="{{$irc_details->committiename}}" placeholder="" > 
                                                                 </div>
-                                                                Branch Committee of NUBE
+                                                                Secretary of NUBE
                                                                 <div class="input-field inline">    
                                                                     <input type="text" id="committieverifyname" name="committieverifyname" placeholder="" value="{{$irc_details->committieverifyname}}">    
                                                                 </div>
@@ -993,7 +993,7 @@
                                                                         <br>
                                                                         <p >
                                                                         
-                                                                        <span>   Branch Commitee [Name in full]</span>
+                                                                        <span>   Secretary [Name in full]</span>
                                                                           
                                                                         </p >
                                                                      </div>
