@@ -297,11 +297,22 @@
                                                                         <input type="checkbox" class="common-checkbox" name="attachedboxone" @if($irc_details->attachedbox ==1) checked @endif id="attachedboxone"  value="1"/>
                                                                         <span>Attached is <span class="genderone">{{$genderlableone}}</span> RETIREMENT Letter (compulsory)</span>
                                                                     </label> 
+                                                                     <div class="input-field inline">
+                                                                         <div class="row">
+                                                                            <div class="col s12 m12">
+                                                                               
+                                                                                @if($irc_details->attachment_file!="")
+                                                                                <a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
+                                                                                @endif
+                                                                            </div>
+                                                                         </div>
+                                                                     </div>
                                                                     <div class="input-field inline hide">
                                                                         <input type="text" id="attachedone" name="attachedone" value="{{$irc_details->attached_desc}}" class="inline-box" style="width: 500px;" >
                                                                         
                                                                     </div>
                                                                 </div>
+                                                                
                                                                 
                                                             </div>  
                                                             <div class="row padding-left-20">
@@ -594,6 +605,16 @@
                                                                         <input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxthree" id="attachedboxthree"  value="1"/>
                                                                         <span>Attached is <span class="genderone">{{$genderlableone}}</span> Job Description (compulsory)</span>
                                                                     </label> 
+                                                                    <div class="input-field inline">
+                                                                         <div class="row">
+                                                                            <div class="col s12 m12">
+                                                                               
+                                                                                @if($irc_details->attachment_file!="")
+                                                                                <a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
+                                                                                @endif
+                                                                            </div>
+                                                                         </div>
+                                                                     </div>
                                                                     <div class="input-field inline hide">
                                                                         <input type="text" name="attachedthree" value="{{$irc_details->attached_desc}}" id="attachedthree" class="inline-box" style="width: 500px;" >
                                                                         
@@ -755,7 +776,16 @@
                                                                     <input type="checkbox" class="common-checkbox" @if($irc_details->attachedbox ==1) checked @endif name="attachedboxfour" id="attachedboxfour"  value="1"/>
                                                                     <span>Attached is <span class="genderone">{{$genderlableone}}</span> {{$irc_details->attachfourtype}} Letter (compulsory)</span>
                                                                     </label> 
-                                                                        
+                                                                       <div class="input-field inline">
+                                                                         <div class="row">
+                                                                            <div class="col s12 m12">
+                                                                               
+                                                                                @if($irc_details->attachment_file!="")
+                                                                                <a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
+                                                                                @endif
+                                                                            </div>
+                                                                         </div>
+                                                                     </div> 
                                                                     <div class="input-field inline hide">
                                                                          <input type="text" id="attachedfour" value="{{$irc_details->attached_desc}}" name="attachedfour" class="">
                                                                     </div>
@@ -992,6 +1022,22 @@
                                                                             (Date)
                                                                     </div>
                                                                 </div>  
+                                                            </div>
+                                                            <div class="row padding-1">
+                                                                <br>
+                                                                 <br>
+                                                                <div class="input-field col s12 m4">
+                                                                  <i class="material-icons prefix">date_range</i>
+                                                                  <input id="submitted_at" name="submitted_at" data-reflectage="dob" value="{{$irc_details->submitted_at}}" class="datepicker"  type="text">
+                                                                  <label for="icon_prefix">&nbsp</label>
+                                                                </div>
+                                                                <div class="input-field col s12 m2">
+                                                                     
+                                                                    @if($irc_details->attachment_fullform!="")
+                                                                    <a href="{{ asset('storage/app/irc/'.$irc_details->attachment_fullform) }}" class="btn blue download-link" style="pointer-events: visible;margin-top: 5px;" target="_blank">VIEW ATTACHMENT</a>
+                                                                    @endif
+                                                                    
+                                                                </div>
                                                             </div>
                                                           
                                                         </div>

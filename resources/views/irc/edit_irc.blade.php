@@ -429,7 +429,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<div class="col s12 m4">
 												<br>
 												@if($irc_details->attachment_file!="")
-												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" style="" target="_blank">VIEW ATTACHMENT</a>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
 												@endif
 											</div>
 											<div class="col s12 m6 hide">
@@ -807,7 +807,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<div class="col s12 m4">
 												<br>
 												@if($irc_details->attachment_file!="")
-												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" style="pointer-events: visible;" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a>
 												@endif
 											</div>
 											<div class="col s12 m6 hide">
@@ -1060,7 +1060,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 											<div class="col s12 m4">
 												<br>
 												@if($irc_details->attachment_file!="")
-												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a>
+												<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_file) }}" style="pointer-events: visible;" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a>
 												@endif
 											</div>
 											<div class="col s12 m6 hide">
@@ -1600,7 +1600,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<div class="input-field col s12 m2">
 	                            <p>
 								@if($irc_details->attachment_fullform!="")
-								<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_fullform) }}" class="btn blue download-link" style="" target="_blank">VIEW ATTACHMENT</a>
+								<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_fullform) }}" class="btn blue download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
 								@endif
 								</p>
 							</div>
