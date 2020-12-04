@@ -252,7 +252,7 @@ class IrcController extends CommonController
 			->pluck('ub.id')->toArray();  
 		}else if($unionbranchname=='IPOH' || $unionbranchname=='PERAK'){
 			$unionbranchids = DB::table('union_branch as ub')
-			->where('ub.union_branch','=','IPOH')
+			->where('ub.union_branch','=','PERAK')
 			->pluck('ub.id')->toArray();  
 		}else if($unionbranchname=='KELANTAN'){
 			$unionbranchids = DB::table('union_branch as ub')
@@ -417,7 +417,7 @@ class IrcController extends CommonController
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='IPOH' || $unionbranchname=='PERAK'){
 				$unionbranchids = DB::table('union_branch as ub')
-				->where('ub.union_branch','=','IPOH')
+				->where('ub.union_branch','=','PERAK')
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='KELANTAN'){
 				$unionbranchids = DB::table('union_branch as ub')
@@ -1235,7 +1235,7 @@ class IrcController extends CommonController
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='IPOH' || $unionbranchname=='PERAK'){
 				$unionbranchids = DB::table('union_branch as ub')
-				->where('ub.union_branch','=','IPOH')
+				->where('ub.union_branch','=','PERAK')
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='KELANTAN'){
 				$unionbranchids = DB::table('union_branch as ub')
@@ -1432,7 +1432,7 @@ class IrcController extends CommonController
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='IPOH' || $unionbranchname=='PERAK'){
 				$unionbranchids = DB::table('union_branch as ub')
-				->where('ub.union_branch','=','IPOH')
+				->where('ub.union_branch','=','PERAK')
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='KELANTAN'){
 				$unionbranchids = DB::table('union_branch as ub')

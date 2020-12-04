@@ -190,9 +190,9 @@ class HomeController extends Controller
 						->orWhere('ub.union_branch', '=',"KEDAH");
 				})
 				->pluck('ub.id')->toArray();  
-			}else if($unionbranchname=='IPOH'){
+			}else if($unionbranchname=='IPOH'|| $unionbranchname=='PERAK'){
 				$unionbranchids = DB::table('union_branch as ub')
-				->where('ub.union_branch','=','IPOH')
+				->where('ub.union_branch','=','PERAK')
 				->pluck('ub.id')->toArray();  
 			}else if($unionbranchname=='KELANTAN'){
 				$unionbranchids = DB::table('union_branch as ub')
