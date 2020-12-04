@@ -4120,7 +4120,7 @@ class CommonHelper
             ->pluck('ub.id')->toArray();  
         }else if($unionbranchid==3){
             $unionbranchids = DB::table('union_branch as ub')
-            ->where('ub.union_branch','=','IPOH')
+            ->where('ub.union_branch','=','PERAK')
             ->pluck('ub.id')->toArray();  
         }else if($unionbranchid==4){
             $unionbranchids = DB::table('union_branch as ub')
@@ -4176,7 +4176,7 @@ class CommonHelper
             ->pluck('ub.id')->toArray();  
         }else if($unionbranchid==3){
             $unionbranchids = DB::table('union_branch as ub')
-            ->where('ub.union_branch','=','IPOH')
+            ->where('ub.union_branch','=','PERAK')
             ->pluck('ub.id')->toArray();  
         }else if($unionbranchid==4){
             $unionbranchids = DB::table('union_branch as ub')
