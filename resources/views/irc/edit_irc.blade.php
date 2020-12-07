@@ -193,6 +193,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 			</div>
 		</div>
 	</div>
+	@php
+		$irc_details = $data['irc_details'];
+	@endphp
 	<div class=" col s12 ">
 	  <div class="container"> 
 	 
@@ -200,7 +203,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 		 <h5 class="padding-left-10">IRC BRANCH COMMITEE OF BENEVOLENT FUND APPLICATION</h5>
 			  <div class="row">
 			  	@if($user_role !='irc-confirmation-officials')
-				<div class="input-field col s6">
+			  	@if($dataresigneddata->ircposition != 'Officials')
+			  	<div class="input-field col s12 m8">
+				  <input id="irc_user_name" name="irc_user_name" class="" @if($user_role =='irc-confirmation') required="" @endif value="{{$irc_details->irc_user_name}}" type="text">
+				  <label for="" class="force-active">IRC Branch Committee Username</label>
+				</div>  
+				@endif
+				<div class="input-field col s6 hide">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership No') }}*</label>
                         @php $id = $dataresigneddata->ircmembershipno;
@@ -214,7 +223,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 				@else
 				<input type="hidden" name="ircmembershipno" id="irc_member_code" value="" >
 				@endif
-				<div class="input-field col s6">
+				<div class="input-field col s6 @if($dataresigneddata->ircposition != 'Officials') hide @endif">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
 					<input id="irc_name"  readonly name="ircname" value="{{$dataresigneddata->ircname}}"  class="common-input"
@@ -222,11 +231,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s6">
+				<div class="input-field col s8">
 					<div class="col s12 m3">
 					 <p>{{__('IRC Position') }}*</p>
 					</div>
-					<div class="col s12 m3">
+					<div class="col s12 m2">
 						<p>
 							<label>
 							<input class="validate" required="true" readonly  aria-required="true" id="ircposition" name="ircposition" type="radio" value="Chairman" {{ $dataresigneddata->ircposition == 'Chairman' ? 'checked' : '' }}>
@@ -234,7 +243,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							</label> 
 						</p>						
 					</div>
-					<div class="col s12 m3">
+					<div class="col s12 m2">
 						<p>
 							<label>
 							<input class="validate"  readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" value="Secretary" {{ $dataresigneddata->ircposition == 'Secretary' ? 'checked' : '' }}>
@@ -251,10 +260,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 						</p>
 					</div>
 
-					<div class="col s12 m3">
-						&nbsp;
-					</div>
-					<div class="col s12 m3">
+					<div class="col s12 m2">
 						<p>
 							<label>
 							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $dataresigneddata->ircposition == 'Officials' ? 'checked' : '' }} value="Officials">
@@ -264,7 +270,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 					
 				</div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
 					<input id="irc_bank" readonly value="{{$dataresigneddata->ircbank}}"  name="ircbank" class="common-input"
@@ -272,14 +278,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="bank_address"
 						class="common-label force-active">{{__('Bank Branch Address') }}</label>
 					<input id="bank_address" readonly  name="ircbankaddress" value="{{ isset($dataresigneddata->ircbankaddress) ? $dataresigneddata->ircbankaddress : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
 					<input id="irctelephoneno" readonly name="irctelephoneno"  value="{{ isset($dataresigneddata->irctelephoneno) ? $dataresigneddata->irctelephoneno : '' }}" class="common-input"
@@ -287,14 +293,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="ircmobileno"
 						class="common-label force-active">{{__('Mobile') }}</label>
 					<input id="ircmobileno" readonly name="ircmobileno" value="{{ isset($dataresigneddata->ircmobileno) ? $dataresigneddata->ircmobileno : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 					<div class="errorTxt1"></div>
 				</div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="ircfaxno"
 						class="common-label force-active">{{__('Fax') }}</label>
 					<input id="ircfaxno" name="ircfaxno" value="{{ isset($dataresigneddata->ircfaxno) ? $dataresigneddata->ircfaxno : '' }}" class="common-input"
@@ -1603,15 +1609,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							@endif
 							</p>
 						</div>
-						
-					</div>
-					<div class="row">
-						<div class="input-field col s12 m8">
-						  <i class="material-icons prefix">person_outline</i>
-						  <input id="irc_user_name" name="irc_user_name" class=""  value="{{$irc_details->irc_user_name}}" type="text">
-						  <label for="" class="force-active">IRC Branch Committee Username</label>
-						</div>  
-						
 						<div class="input-field col s12 m2">
 							<p>
 							<input type="submit" class="btn" id="save" name="save" value="Submit" >
@@ -1622,6 +1619,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<input type="button" class="btn" id="cancel" name="cancel" value="Cancel" >
 							</P>
 						</div>
+					</div>
+					<div class="row">
+						
+						
+						
 					</div>
 
 				</div>

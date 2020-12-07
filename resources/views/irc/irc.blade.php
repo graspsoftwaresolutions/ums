@@ -192,7 +192,14 @@
 		 	@endphp
 			  <div class="row">
 			  	@if($user_role !='irc-confirmation-officials')
-				<div class="input-field col s6">
+			  
+				<div class="input-field col s12 m12">
+				  
+				  <input id="irc_user_name" required="" placeholder="" name="irc_user_name" class=""  type="text">
+				  <label for="" class="">IRC Branch Committee Username</label>
+				</div> 
+					
+				<div class="input-field col s6 hide">
 					<label for="irc_member_no"
 						class="common-label force-active">{{__('Membership Number or Name or NRIC') }}*</label>
 					<input id="irc_member_no" name="ircmember" class="common-input"
@@ -203,7 +210,7 @@
 				@else
 				<input type="hidden" name="ircmembershipno" id="irc_member_code" value="" >
 				@endif
-				<div class="input-field col s6">
+				<div class="input-field col s6 @if($user_role !='irc-confirmation-officials') hide @endif">
 					<label for="irc_name"
 						class="common-label force-active">{{__('IRC Name in Full') }}*</label>
 					<input id="irc_name" @if($user_role !='irc-confirmation-officials') readonly value="{{ !empty($confirmdata) ? $confirmdata->membername : '' }}" @else value="{{ Auth::user()->name }}"  @endif name="ircname" class="common-input"
@@ -211,11 +218,11 @@
 					<div class="errorTxt9"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s6">
-					<div class="col s12 m3">
+				<div class="input-field col s8">
+					<div class="col s12 m2">
 					 <p>{{__('IRC Position') }}*</p>
 					</div>
-					<div class="col s12 m3">
+					<div class="col s12 m2">
 						<p>
 							<label>
 							<input class="validate" required="" readonly aria-required="true" id="ircposition" name="ircposition" type="radio" value="Chairman">
@@ -223,7 +230,7 @@
 							</label> 
 						</p>						
 					</div>
-					<div class="col s12 m3">
+					<div class="col s12 m2">
 						<p>
 							<label>
 							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" value="Secretary">
@@ -240,10 +247,8 @@
 						</p>
 					</div>
 					@if($user_role =='irc-confirmation-officials')
-					<div class="col s12 m3">
-						&nbsp;
-					</div>
-					<div class="col s12 m3">
+					
+					<div class="col s12 m2">
 						<p>
 							<label>
 							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" checked="" value="Officials">
@@ -254,33 +259,33 @@
 					@endif
 					<div class="errorTxt10"></div>
 				</div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="irc_bank"
 						class="common-label force-active">{{__('Bank') }}*</label>
 					<input id="irc_bank" readonly  name="ircbank" class="common-input"
 						type="text" value="{{ !empty($confirmdata) ? $confirmdata->bankname : '' }}" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="bank_address"
 						class="common-label force-active">{{__('Bank Branch Address') }}</label>
 					<input id="bank_address" readonly  value="{{ !empty($confirmdata) ? $confirmdata->address_one : '' }}" name="ircbankaddress" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="irctelephoneno"
 						class="common-label force-active">{{__('Office Number') }}</label>
 					<input id="irctelephoneno" readonly name="irctelephoneno" value="{{ !empty($confirmdata) ? $confirmdata->phone : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="ircmobileno"
 						class="common-label force-active">{{__('Mobile') }}</label>
 					<input id="ircmobileno" readonly  name="ircmobileno" value="{{ !empty($confirmdata) ? $confirmdata->mobile : '' }}" class="common-input"
 						type="text" data-error=".errorTxt1">
 				</div>
-				<div class="input-field col s6">
+				<div class="input-field col s6 hide">
 					<label for="ircfaxno"
 						class="common-label force-active">{{__('Fax') }}</label>
 					<input id="ircfaxno"  name="ircfaxno" class="common-input"
@@ -1319,16 +1324,6 @@
                                 <input class="file-path validate" type="text">
                             </div>
 						</div>
-						
-					</div>
-					<div class="row">
-						
-						<div class="input-field col s12 m8">
-						  <i class="material-icons prefix">person_outline</i>
-						  <input id="irc_user_name" name="irc_user_name" class=""  type="text">
-						  <label for="" class="force-active">IRC Branch Committee Username</label>
-						</div> 
-						
 						<div class="input-field col s12 m2">
 							<p>
 							<input type="submit" class="btn" id="save" name="save" value="Submit" />
@@ -1340,6 +1335,7 @@
 							</P>
 						</div>
 					</div>
+					
 			   </div>
 		 </div>
 		
@@ -1482,42 +1478,42 @@ $('.datepicker').datepicker({
 	format: 'dd/mm/yyyy'
 });
 //IRC Member Details 
-$("#irc_member_no").devbridgeAutocomplete({
-	//lookup: countries,
-	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
-	type:'GET',
-	params: { 
-		union_branch_id:  function(){ return $("#union_branch_id").val();  },
-	},
-	//callback just to show it's working
-	onSelect: function (suggestion) {
-			$("#irc_member_no").val(suggestion.member_number);	
-			$.ajax({
-				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
-                type: "GET",
-				dataType: "json",
-				success: function(res) {
-					$('#irc_name').val(res.membername);
-					$('#irc_bank').val(res.bankname);
-					$('#irc_member_code').val(res.mid);
-					$('#bank_address').val(res.address_one);
-					$('#irctelephoneno').val(res.phone);
-					$('#ircmobileno').val(res.mobile);
-				}
-			});
+// $("#irc_member_no").devbridgeAutocomplete({
+// 	//lookup: countries,
+// 	serviceUrl: "{{ URL::to('/get-ircmember-list') }}?searchkey="+ $("#irc_member_no").val(),
+// 	type:'GET',
+// 	params: { 
+// 		union_branch_id:  function(){ return $("#union_branch_id").val();  },
+// 	},
+// 	//callback just to show it's working
+// 	onSelect: function (suggestion) {
+// 			$("#irc_member_no").val(suggestion.member_number);	
+// 			$.ajax({
+// 				url: "{{ URL::to('/get-ircmember-list-values') }}?member_id="+ $("#irc_member_no").val(),
+//                 type: "GET",
+// 				dataType: "json",
+// 				success: function(res) {
+// 					$('#irc_name').val(res.membername);
+// 					$('#irc_bank').val(res.bankname);
+// 					$('#irc_member_code').val(res.mid);
+// 					$('#bank_address').val(res.address_one);
+// 					$('#irctelephoneno').val(res.phone);
+// 					$('#ircmobileno').val(res.mobile);
+// 				}
+// 			});
 
-	},
-	showNoSuggestionNotice: true,
-	noSuggestionNotice: 'Sorry, no matching results',
-	onSearchComplete: function (query, suggestions) {
-		if(!suggestions.length){
-			//$("#irc_member_no").val('');
-		}
-	}
-});
-$(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
-	$("#irc_member_no").val('');
-});
+// 	},
+// 	showNoSuggestionNotice: true,
+// 	noSuggestionNotice: 'Sorry, no matching results',
+// 	onSearchComplete: function (query, suggestions) {
+// 		if(!suggestions.length){
+// 			//$("#irc_member_no").val('');
+// 		}
+// 	}
+// });
+// $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
+// 	$("#irc_member_no").val('');
+// });
 $(document).on('submit','form#irc_formValidate',function(){
     $("#save").prop('disabled',true);
     loader.showLoader();
