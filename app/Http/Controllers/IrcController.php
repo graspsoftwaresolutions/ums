@@ -1028,6 +1028,8 @@ class IrcController extends CommonController
 		$insertdata['attachedbox'] = $attachedbox;
 		$insertdata['attached_desc'] = $attached;
 		$insertdata['irc_status'] = $ircstatus;
+		
+		$insertdata['irc_user_name'] = $request->input('irc_user_name');
 
 		if($attachment_file!=''){
 			if(Input::hasFile($attachment_file)){

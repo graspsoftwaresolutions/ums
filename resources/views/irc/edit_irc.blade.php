@@ -1579,31 +1579,39 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					</div>
 				</div> -->
 			  </div>
-			  <div class="col s12 m12">
-						<div class="row">
-							
-							<div class="input-field col s12 m4">
-							  <i class="material-icons prefix">date_range</i>
-							  <input id="submitted_at" name="submitted_at" data-reflectage="dob" value="{{$dataresigneddata->submitted_at}}" class="datepicker"  type="text">
-							  <label for="icon_prefix">File Submitted</label>
-							</div> 
-							<div class="col s12 m4">
-	                            <div class=" ">
-	                             	
-	                             	<br>
-	                                <input type="file" name="formupload" id="formupload" class="" accept="" style="width: 500px;">
-	                            </div>
-	                            <div class="file-path-wrapper hide">
-	                                <input class="file-path validate" type="text">
-	                            </div>
+			    <div class="col s12 m12">
+					<div class="row">
+						<div class="input-field col s12 m4">
+							<i class="material-icons prefix">date_range</i>
+							<input id="submitted_at" name="submitted_at" data-reflectage="dob" value="{{$dataresigneddata->submitted_at}}" class="datepicker"  type="text">
+							<label for="icon_prefix">File Submitted</label>
+						</div> 
+						<div class="col s12 m4">
+							<div class=" ">
+								
+								<br>
+								<input type="file" name="formupload" id="formupload" class="" accept="" style="width: 500px;">
 							</div>
-							<div class="input-field col s12 m2">
-	                            <p>
-								@if($irc_details->attachment_fullform!="")
-								<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_fullform) }}" class="btn blue download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
-								@endif
-								</p>
+							<div class="file-path-wrapper hide">
+								<input class="file-path validate" type="text">
 							</div>
+						</div>
+						<div class="input-field col s12 m2">
+							<p>
+							@if($irc_details->attachment_fullform!="")
+							<a href="{{ asset('storage/app/irc/'.$irc_details->attachment_fullform) }}" class="btn blue download-link" style="pointer-events: visible;" target="_blank">VIEW ATTACHMENT</a>
+							@endif
+							</p>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="input-field col s12 m8">
+						  <i class="material-icons prefix">person_outline</i>
+						  <input id="irc_user_name" name="irc_user_name" class=""  value="{{$irc_details->irc_user_name}}" type="text">
+						  <label for="" class="force-active">IRC Branch Committee Username</label>
+						</div>  
+						
 						<div class="input-field col s12 m2">
 							<p>
 							<input type="submit" class="btn" id="save" name="save" value="Submit" >
@@ -1614,8 +1622,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<input type="button" class="btn" id="cancel" name="cancel" value="Cancel" >
 							</P>
 						</div>
-						</div>
 					</div>
+
+				</div>
 				
 		 </div>
 		 

@@ -1319,16 +1319,26 @@
                                 <input class="file-path validate" type="text">
                             </div>
 						</div>
-					<div class="input-field col s12 m2">
-						<p>
-						<input type="submit" class="btn" id="save" name="save" value="Submit" >
-						</P>
-					</div>	
-					<div class="input-field col s12 m2">
-						<p>
-						<input type="button" class="btn" id="clear" name="clear" onClick="refreshPage()" value="Clear" >
-						</P>
+						
 					</div>
+					<div class="row">
+						
+						<div class="input-field col s12 m8">
+						  <i class="material-icons prefix">person_outline</i>
+						  <input id="irc_user_name" name="irc_user_name" class=""  type="text">
+						  <label for="" class="force-active">IRC Branch Committee Username</label>
+						</div> 
+						
+						<div class="input-field col s12 m2">
+							<p>
+							<input type="submit" class="btn" id="save" name="save" value="Submit" />
+							</P>
+						</div>	
+						<div class="input-field col s12 m2">
+							<p>
+							<input type="button" class="btn" id="clear" name="clear" onClick="refreshPage()" value="Clear" >
+							</P>
+						</div>
 					</div>
 			   </div>
 		 </div>
