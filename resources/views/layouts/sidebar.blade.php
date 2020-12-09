@@ -68,6 +68,10 @@
            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membershipnew',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>
           @endif
+           @if($user_role=='irc-branch-committee')
+           <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
+            </li>
+          @endif
           @if($user_role=='union' || $user_role=='union-branch')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>

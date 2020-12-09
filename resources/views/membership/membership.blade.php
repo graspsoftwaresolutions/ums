@@ -73,6 +73,47 @@ span.dtr-title::after {
 			<div class="row">
 				<div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
 					<!-- Search for small screen-->
+					@php 
+						$auth_user = Auth::user();
+						$member_number_readonly = 'readonly';
+						$member_number_hide = 'hide';
+						$companylist = $data['company_view'];
+						$branchlist = [];
+						$companyid = '';
+						$branchid = '';
+						if(!empty($auth_user)){
+							$userid = Auth::user()->id;
+							$get_roles = Auth::user()->roles;
+							$user_role = $get_roles[0]->slug;
+							
+							$companylist = [];
+							
+							if($user_role =='union' || $user_role =='data-entry'){
+								$member_number_readonly = '';
+								$member_number_hide = '';
+								$companylist = $data['company_view'];
+							}
+							else if($user_role =='union-branch'){
+								$unionbranchid = CommonHelper::getUnionBranchID($userid);
+								$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
+								
+							} 
+							else if($user_role =='company'){
+								$branchid = CommonHelper::getCompanyBranchID($userid);
+								$companyid = CommonHelper::getCompanyID($userid);
+								$companylist = CommonHelper::getCompanyList($companyid);
+								$branchlist = CommonHelper::getCompanyBranchList($companyid);
+								//print_r($branchlist);die;
+							}
+							else if($user_role =='company-branch'){
+								$branchid = CommonHelper::getCompanyBranchID($userid);
+								$companyid = CommonHelper::getCompanyID($userid);
+								$companylist = CommonHelper::getCompanyList($companyid);
+								$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
+							}  
+						}
+						
+					@endphp
 					<div class="container">
 						<div class="row">
 							<div class="col s10 m6 l6">
@@ -85,51 +126,12 @@ span.dtr-title::after {
 								</ol>
 							</div>
 							<div class="col s2 m6 l6 ">
+								@if($user_role!='irc-branch-committee')
 								<a class="btn waves-effect waves-light breadcrumbs-btn right" href="{{ route('master.addmembership', app()->getLocale())  }}">{{__('New Registration') }}</a>
-								
+								@endif
 							</div>
 						</div>
-						@php 
-							$auth_user = Auth::user();
-							$member_number_readonly = 'readonly';
-							$member_number_hide = 'hide';
-							$companylist = $data['company_view'];
-							$branchlist = [];
-							$companyid = '';
-							$branchid = '';
-							if(!empty($auth_user)){
-								$userid = Auth::user()->id;
-								$get_roles = Auth::user()->roles;
-								$user_role = $get_roles[0]->slug;
-								
-								$companylist = [];
-								
-								if($user_role =='union' || $user_role =='data-entry'){
-									$member_number_readonly = '';
-									$member_number_hide = '';
-									$companylist = $data['company_view'];
-								}
-								else if($user_role =='union-branch'){
-									$unionbranchid = CommonHelper::getUnionBranchID($userid);
-									$companylist = CommonHelper::getUnionCompanyList($unionbranchid);
-									
-								} 
-								else if($user_role =='company'){
-									$branchid = CommonHelper::getCompanyBranchID($userid);
-									$companyid = CommonHelper::getCompanyID($userid);
-									$companylist = CommonHelper::getCompanyList($companyid);
-									$branchlist = CommonHelper::getCompanyBranchList($companyid);
-									//print_r($branchlist);die;
-								}
-								else if($user_role =='company-branch'){
-									$branchid = CommonHelper::getCompanyBranchID($userid);
-									$companyid = CommonHelper::getCompanyID($userid);
-									$companylist = CommonHelper::getCompanyList($companyid);
-									$branchlist = CommonHelper::getCompanyBranchList($companyid,$branchid);
-								}  
-							}
-							
-						@endphp
+						
 					</div>
 				</div> 
 				<div class="col s12">
@@ -148,6 +150,7 @@ span.dtr-title::after {
 								<div >
 									<input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn col s12 m4 l3" value="Advanced search">
 								</div> 
+								@if($user_role!='irc-branch-committee')
 								<div>
 									@if($data['member_type'] ==1) 
 									<a class="col s12 m4 l3 btn waves-effect breadcrumbs-btn waves-light amber right" style="margin-bottom: 10px" href="{{ route('master.membershipnew', app()->getLocale() )}}">{{__('Pending members list') }}</a>
@@ -155,6 +158,7 @@ span.dtr-title::after {
 									<a class="col s12 m4 l3 btn waves-effect breadcrumbs-btn waves-light green darken-1 right " style="margin-bottom: 10px" href="{{ route('master.membership', app()->getLocale()) }}">{{__('Approved members list') }}</a>
 								@endif
 								</div>
+								@endif
 							</div>	
 							<div class="row">
 							<div class="card advancedsearch" style="dispaly:none;">
@@ -175,7 +179,7 @@ span.dtr-title::after {
 												<div class="errorTxt22"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+										<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role=='irc-branch-committee') hide @endif">
 											<label>{{__('Company Name') }}</label>
 											<input type="hidden" name="companyid" id="companyid">
 										
@@ -191,7 +195,7 @@ span.dtr-title::after {
 											</div>
 										</div>
 										
-										<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+										<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role=='irc-branch-committee') hide @endif">
 											<label>{{__('Company Branch Name') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
