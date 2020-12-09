@@ -178,7 +178,7 @@ span.dtr-title::after {
 												<div class="errorTxt22"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+										<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='staff-union-branch') hide @endif">
 											<label>{{__('Company Name') }}</label>
 											<input type="hidden" name="companyid" id="companyid">
 										
@@ -194,7 +194,7 @@ span.dtr-title::after {
 											</div>
 										</div>
 										
-										<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+										<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='staff-union-branch') hide @endif">
 											<label>{{__('Company Branch Name') }}</label>
 											<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select Branch') }}</option>
@@ -385,7 +385,7 @@ $(function () {
  var dataTable = $('#page-length-option').DataTable({
 	"responsive": true,
 	"order": [[ 0, "desc" ]],
-	//"searching": false,
+	"searching": true,
 	"lengthMenu": [
 		[10, 25, 50, 100, 3000],
 		[10, 25, 50, 100, 'All']

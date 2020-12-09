@@ -10,7 +10,7 @@
               <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="">
             </div>
             <ul class="navbar-list right">
-              <li class=""><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"></a></li>
+              <li class="hide"><a class="waves-effect waves-block waves-light translation-button" href="javascript:void(0);" data-target="translation-dropdown"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"></a></li>
               <!-- <li class="hide-on-med-and-down"><a class="waves-effect waves-block waves-light toggle-fullscreen" href="javascript:void(0);"><i class="material-icons">settings_overscan</i></a></li> -->
               <li class="hide-on-large-only"><a class="waves-effect waves-block waves-light search-button" href="javascript:void(0);"><i class="material-icons">search</i></a></li>
               <!-- <li><a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);" data-target="notifications-dropdown"><i class="material-icons">notifications_none<small class="notification-badge">5</small></i></a></li> -->
@@ -18,7 +18,7 @@
               <li class=""><a class="waves-effect waves-block waves-light sidenav-trigger" href="#" data-target="slide-out-right"><i class="material-icons">format_indent_increase</i></a></li>
             </ul>
             <!-- translation-button-->
-            <ul class="dropdown-content" id="translation-dropdown">
+            <ul class="dropdown-content hide" id="translation-dropdown">
 				
               <li><a class="grey-text text-darken-1" href="{{ route('home','en') }}"><img src="{{ asset('public/assets/images/en_icon.png') }}" alt="English"> English</a></li>
               <li><a class="grey-text text-darken-1" href="{{ route('home','my') }}"><img src="{{ asset('public/assets/images/my_icon.png') }}" alt="Malay"> Malay</a></li>
@@ -72,6 +72,11 @@
                  <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __('IRC SECRETARY') }} [{{ $groupname }}]</a></li>
               @elseif($user_role=='irc-branch-committee-officials')
                  <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __('IRC SECRETARY OFFICIALS') }}</a></li>
+              @elseif($user_role=='staff-union-branch')
+                @php
+                  $groupname = CommonHelper::getGroupnameBystaffuserid($user_id);
+                @endphp
+                 <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }} [{{ $groupname }}]</a></li>
               @else
                   <li class="center-align"><a class="grey-text text-darken-1 center-align" ><i class="material-icons"></i> {{ __(ucfirst($user_role)) }}</a></li>
               @endif

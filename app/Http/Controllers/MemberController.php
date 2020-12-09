@@ -222,6 +222,7 @@ class MemberController extends CommonController
 						$member['status_id'] = NUll;
 					}
 					
+					$member['created_by'] = Auth::user()->id;
 					// if($user_role == 'union'){
 					// 	$member['status_id'] = 2;
 					// }else{
@@ -244,6 +245,7 @@ class MemberController extends CommonController
 				$approval_reason = $request->input('approval_reason');
 				$member['approval_status'] = $approval_status;
 				$member['approval_reason'] = $approval_reason;
+				$member['updated_by'] = Auth::user()->id;
 
 				if(!empty(Auth::user())){
 					$user_id = Auth::user()->id;
@@ -1004,12 +1006,12 @@ class MemberController extends CommonController
 					DB::table('membership')->where('id', $member_id)->update(['status_id' => $m_status]);
 				}
 			}
-			
+			if($user_role=='staff-union-branch'){
+				$redirect_url = app()->getLocale().'/membership_list';
+			}
 
 			if($auto_id==''){
-				if($user_role=='staff-union-branch'){
-					$redirect_url = app()->getLocale().'/membership_list';
-				}
+				
 				return redirect($redirect_url)->with('message','Member Account created successfully');
 				// $mail_data = array(
 				// 	'name' => $member_name,

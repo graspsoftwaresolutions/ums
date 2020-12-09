@@ -40,7 +40,7 @@
    <div class="row">
    		 <div class="col s12 m6 l1">
    		 </div>
-		<div class="col s12 m6 l2">
+		<div class="col s12 m6 l2 hide">
 			<a style="color:white" >
 			 <div class="card animate fadeRight">
 				<div class="card-content green lighten-1 white-text">
@@ -53,7 +53,7 @@
 			 </div>
 			</a>
 		</div>
-		<div class="col s12 m6 l2">
+		<div class="col s12 m6 l2 hide">
 			<a style="color:white">
 			 <div class="card animate fadeLeft">
 				<div class="card-content red accent-2 white-text">
@@ -68,7 +68,7 @@
 			</a>
 		</div>
 		<div class="dash-tab-clearfix"/>
-	      <div class="col s12 m6 l2">
+	      <div class="col s12 m6 l3">
 	      	<a style="color:white" href="{{ url(app()->getLocale().'/membership_list?type=1') }}"> 
 	         <div class="card animate fadeRight">
 	            <div class="card-content orange lighten-1 white-text">
@@ -82,7 +82,7 @@
 	        </a>
 	      </div>
 	     
-	      <div class="col s12 m6 l2">
+	      <div class="col s12 m6 l3">
 	      	<a style="color:white" href="{{ route('master.addmembership', app()->getLocale())  }}">
          <div class="card animate fadeRight">
             <div class="card-content pink lighten-1 white-text">
@@ -96,7 +96,7 @@
          </a>
 	        
 	      </div>
-	       <div class="col s12 m6 l2">
+	       <div class="col s12 m6 l3">
         <a style="color:white" href="{{ route('resignation.add', app()->getLocale())  }}">
 	         <div class="card animate fadeRight" style="">
 	            <div class="card-content blue lighten-1 white-text">

@@ -1079,7 +1079,7 @@
                                                     </div>
                                                     <div class="input-field col s12 m6">
                                                         <label for="member_number" class="force-active">Member Number *</label>
-                                                        <input id="member_number" name="member_number" value="{{$values->member_number}}" readonly type="text" data-error=".errorTxt29">
+                                                        <input id="member_number" name="member_number" value="{{$values->member_number!=0 ? $values->member_number : ''}}" readonly type="text" data-error=".errorTxt29">
                                                         <div class="errorTxt29"></div>
                                                     </div>
                                                     <div class="input-field col s12 m6">
@@ -2133,7 +2133,12 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                @php if($values->is_request_approved==0 && ($check_union==1 || $check_unionbranch==1)){ @endphp
+                                                @php  
+                                                   if($auth_user->hasRole('staff-union-branch')==1){
+                                                        $check_unionbranch = 1; 
+                                                    }
+
+                                                if($values->is_request_approved==0 && ($check_union==1 || $check_unionbranch==1)){ @endphp
                                                     <br>
                                                     <div class="col s12 m10 ">
                                                         <div class="row">
@@ -2155,6 +2160,13 @@
                                                                 </div>
                                                                
                                                             </div>
+                                                            @else
+                                                              <select name="approval_status" id="approval_status" onclick="return EnableReason(this.value)" class="error browser-default hide">
+                                                                        <option value="0">Select Status</option>
+                                                                        <option selected="" {{ $values->approval_status == 'Pending' ? 'selected' : '' }}> Pending</option>
+                                                                        <option {{ $values->approval_status == 'Approved' ? 'selected' : '' }}>Approved</option>
+                                                                        <option {{ $values->approval_status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                                                                    </select>
                                                             @endif
                                                             @if($check_unionbranch==1)
                                                                 <div class="col s12 m2">
@@ -2165,7 +2177,7 @@
                                                             @endif
                                                             <div id="app_reason" class="col s12 m7 @if($values->approval_status != 'Rejected') hide @endif">
                                                                 <div class="">
-                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" width="1200px;" class="validate" style="">(Remarks)
+                                                                    <input name="approval_reason" placeholder="Reason" id="approval_reason" type="text" value="{{ $values->approval_reason }}" @if($check_union!=1) readonly="" @endif width="1200px;" class="validate" style="">(Remarks)
                                                                 </div>
                                                                
                                                             </div>
@@ -2515,9 +2527,9 @@
             member_title: {
                 required: true,
             },
-            member_number: {
-                required: true,
-            },
+            // member_number: {
+            //     required: true,
+            // },
             name: {
                 required: true,
                 minlength: 3,

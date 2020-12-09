@@ -3702,6 +3702,7 @@ class CommonHelper
             ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
             ->leftjoin('union_branch as u','u.id','=','cb.union_branch_id')
             ->whereIn('u.id',$union_branch_ids)
+            ->where('m.created_by',$userid)
             ->where('m.approval_status','=','Rejected')
             ->count();
         }
@@ -4759,6 +4760,25 @@ class CommonHelper
          $unionbranchid = DB::table('irc_account as i')->select('i.union_branch_id')
                         ->where('i.user_id','=',$user_id)
                         ->pluck('i.union_branch_id')
+                        ->first();
+        if($unionbranchid==1){
+            $unionbranch = 'SMJ';
+        }else if($unionbranchid==2){
+            $unionbranch = 'PKP';
+        }else if($unionbranchid==3){
+            $unionbranch = 'PERAK';
+        }else if($unionbranchid==4){
+            $unionbranch = 'KELANTAN TERENGGANU';
+        }else{
+            $unionbranch = 'KLSP';
+        }
+        return $unionbranch;
+    }
+
+    public static function getGroupnameBystaffuserid($user_id){
+         $unionbranchid = DB::table('staff_union_account as i')->select('i.union_group_id')
+                        ->where('i.user_id','=',$user_id)
+                        ->pluck('i.union_group_id')
                         ->first();
         if($unionbranchid==1){
             $unionbranch = 'SMJ';

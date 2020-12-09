@@ -2158,6 +2158,7 @@ class MembershipController extends Controller
                 ->leftjoin('race as r','r.id','=','m.race_id')
                 ->orderBy('m.id','DESC')
                 ->whereIn('c.union_branch_id',$union_branch_ids_val)
+                ->where('m.created_by',$user_id)
                 ->where([
                     ['m.is_request_approved','=',$approved_cond]
                     ]);
@@ -2357,7 +2358,7 @@ class MembershipController extends Controller
                     ]);
 				}
                 if($user_role=='staff-union-branch'){
-                    $compQuery =  $compQuery->whereIn('c.union_branch_id',$union_branch_ids_val);
+                    $compQuery =  $compQuery->whereIn('c.union_branch_id',$union_branch_ids_val)->where('m.created_by',$user_id);
                 }
 				if($user_role=='company'){
 					$compQuery =  $compQuery->where([
@@ -2433,6 +2434,7 @@ class MembershipController extends Controller
         else {
            // DB::enableQueryLog();
             $search = $request->input('search.value'); 
+           // dd($search);
         
 			$compQuery = DB::table('company_branch as c')
 							->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color','m.approval_status')
@@ -2453,7 +2455,7 @@ class MembershipController extends Controller
 								]);
 							}
                             if($user_role=='staff-union-branch'){
-                                $compQuery =  $compQuery->whereIn('c.union_branch_id',$union_branch_ids_val);
+                                $compQuery =  $compQuery->whereIn('c.union_branch_id',$union_branch_ids_val)->where('m.created_by',$user_id);
                             }
 							if($user_role=='company'){
 								$compQuery =  $compQuery->where([
@@ -2467,10 +2469,10 @@ class MembershipController extends Controller
 							}
                             $compQuery =  $compQuery->where(function($query) use ($search){
                                 $query->orWhere('com.company_name', 'LIKE',"%{$search}%")
-                                ->orWhere('m.member_number', '=',"{$search}")
+                               // ->orWhere('m.member_number', '=',"{$search}")
                                 ->orWhere('d.designation_name', 'LIKE',"%{$search}%")
                                 ->orWhere('m.gender', 'LIKE',"%{$search}%")
-                                ->orWhere('m.doj', 'LIKE',"%{$search}%")
+                               // ->orWhere('m.doj', 'LIKE',"%{$search}%")
                                 ->orWhere('m.name', 'LIKE',"%{$search}%")
                                 ->orWhere(DB::raw("TRIM(LEADING '0' FROM m.old_ic)"), 'LIKE',"{$search}")
                                 ->orWhere(DB::raw("TRIM(LEADING '0' FROM m.new_ic)"), 'LIKE',"{$search}")
@@ -2493,6 +2495,7 @@ class MembershipController extends Controller
                                 //->orWhere('c.branch_name', 'LIKE',"%{$search}%")
                                 //->orWhere('s.status_name', 'LIKE',"%{$search}%");
                             });
+                           // dd($compQuery->dump()->get());
 			if( $limit != -1){
 				$compQuery = $compQuery->offset($start)
 				->limit($limit);
@@ -2547,7 +2550,7 @@ class MembershipController extends Controller
                 $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
 
-                if($user_role=='union-branch' || $user_role=='staff-union-branch'){
+                if($user_role=='union-branch'){
                     $edit = route('union.editmembership', [app()->getLocale(),$enc_id]);
                     $actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
                 }else{
