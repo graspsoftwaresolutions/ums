@@ -2221,14 +2221,18 @@
                                                 $monthly_bf = 0; 
                                                 $totalmonthsmay = 0;
                                                 $benifit_year = 0;
+                                                $totalmonthsmayone = 0;
 
                                                 $maymonthendrow = CommonHelper::getlastMonthEndByMemberMay($values->mid);
                                                // dd($maymonthendrow);
                                                 if(!empty($maymonthendrow)){ 
-                                                    $totalmonthsmay = $maymonthendrow->TOTALMONTHSPAID; 
-                                                    $benifit_year = (int) ($totalmonthsmay/12);
+                                                    $totalmonthsmayone = $maymonthendrow->TOTALMONTHSPAID; 
+                                                   // $benifit_yearone = (int) ($totalmonthsmayone/12);
                                                 }
 
+                                                $total_ins_count = CommonHelper::getTotalInsCount($values->mid);
+
+                                                $total_ins_count = $total_ins_count=='' ? 0 : $total_ins_count;
 
 												if(!empty($lastmonthendrow)){ 
 													$lastpaid = date('M/Y',strtotime($lastmonthendrow->LASTPAYMENTDATE)); 
@@ -2265,7 +2269,14 @@
 												//if($monthly_bf==0){
 													$monthly_bf = 3;
 												//}
+
+                                                $totalmonthspaidone = $totalmonthspaid=='' ? 0 : $totalmonthspaid;
+                                                $totalmonthsmay = $totalmonthspaidone - $total_ins_count;
 												
+                                                if($totalmonthsmay<=0){
+                                                    $totalmonthsmay = $totalmonthsmayone;
+                                                }
+                                                $benifit_year = $totalmonthsmay<=0 ? 0 : (int) ($totalmonthsmay/12);
 												
 											@endphp
                                         <fieldset>
