@@ -1045,7 +1045,7 @@
             },
             salary: {
 				required: true,
-				digits: true,
+				number: true,
             },
             branch: {
                 required: true,
