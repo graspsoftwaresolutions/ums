@@ -811,7 +811,7 @@ class MembershipController extends Controller
                 $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
                 
-                if($user_role=='union-branch' || $user_role=='staff-union-branch' ){
+                if($user_role=='union-branch' || $user_role=='staff-union-branch' || $user_role=='irc-branch-committee'){
                     $edit = route('union.editmembership', [app()->getLocale(),$enc_id]);
                     //dd($edit);
                     $actions ="<a style='' id='$edit' onClick='showeditForm();' title='Edit' class='btn-sm waves-effect waves-light cyan modal-trigger' href='$edit'><i class='material-icons'>edit</i></a>";
@@ -824,9 +824,9 @@ class MembershipController extends Controller
                     $actions .="<a style='margin-left: 10px;' title='View' class='btn-sm waves-effect waves-light purple modal-trigger' href='$view'><i class='material-icons'>remove_red_eye</i></a>";
                 }
 
-                if($user_role=='irc-branch-committee'){
-                    $actions ="<a style='margin-left: 10px;' disabled title='View' class='btn-sm waves-effect waves-light modal-trigger' ><i class='material-icons'>remove_red_eye</i></a>";
-                }
+                // if($user_role=='irc-branch-committee'){
+                //     $actions ="<a style='margin-left: 10px;' disabled title='View' class='btn-sm waves-effect waves-light modal-trigger' ><i class='material-icons'>remove_red_eye</i></a>";
+                // }
                 
                // $actions ="<a style='float: left;' id='$edit' onClick='showeditForm();' title='Edit' class='modal-trigger' href='$edit'><i class='material-icons' style='color:#2196f3'>edit</i></a>";
 

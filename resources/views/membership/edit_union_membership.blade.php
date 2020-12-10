@@ -137,14 +137,14 @@
                                                             </div>
                                                             <div class="col s12 m4">
                                                                 <label>
-                                                                    <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="Female" {{ $values->gender == 'Female' ? 'checked' : '' }}>
+                                                                    <input class="validate"  aria-required="true" id="gender" name="gender" type="radio" value="Female" {{ $values->gender == 'Female' ? 'checked' : '' }}>
                                                                     <span>Female</span>
                                                                 </label>
                                                             </div>
                                                             <div class="col s12 m4">
                                                                 <p>
                                                                     <label>
-                                                                        <input class="validate" required="" aria-required="true" id="gender" name="gender" type="radio" value="Male" {{ $values->gender == 'Male' ? 'checked' : '' }}>
+                                                                        <input class="validate" aria-required="true" id="gender" name="gender" type="radio" value="Male" {{ $values->gender == 'Male' ? 'checked' : '' }}>
                                                                         <span>Male</span>
                                                                     </label>
                                                                 </p>
@@ -156,7 +156,7 @@
                                                     
                                                     <div class="input-field col s12 m6 hide">
                                                         <label for="mobile" class="force-active">Mobile Number *</label>
-                                                        <input id="mobile" name="mobile" value="{{$values->mobile}}" required type="text" data-error=".errorTxt24">
+                                                        <input id="mobile" name="mobile" value="{{$values->mobile}}" type="text" data-error=".errorTxt24">
                                                         <div class="errorTxt24"></div>
                                                     </div>
                                                     <div class="input-field col s12 m6 hide">
@@ -299,13 +299,13 @@
                                                     
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_one" class="force-active">Address Line 1*</label>
-                                                        <input id="address_one" name="address_one" required type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
+                                                        <input id="address_one" name="address_one" type="text" value="{{$values->address_one}}" data-error=".errorTxt8">
                                                         <div class="errorTxt8"></div>
                                                     </div>
                                                     
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="address_two" class="force-active">Address Line 2*</label>
-                                                        <input id="address_two" name="address_two" required type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
+                                                        <input id="address_two" name="address_two" type="text" value="{{$values->address_two}}" data-error=".errorTxt9">
                                                         <div class="errorTxt9"></div>
                                                     </div>
                                                     
@@ -342,7 +342,7 @@
 	                                                    	<div class="input-field col s12 m3">
 		                                                        <label for="basicsalary" class="force-active">Basic Salary</label>
 		                                                        <input id="basicsalary" name="basicsalary" value="{{$basicsalary=='' ? $values->salary : $basicsalary}}" readonly="" type="text" data-error=".errorTxt11">
-                                                                <input id="salary" name="salary" class="hide" value="{{$values->salary}}" required type="text" data-error=".errorTxt11">
+                                                                <input id="salary" name="salary" class="hide" value="{{$values->salary}}" type="text" data-error=".errorTxt11">
 		                                                        <div class="errorTxt11"></div>
 		                                                    </div>
 		                                                    <div class="input-field col s12 m3 ">
@@ -701,7 +701,7 @@
 											</div>
 										</div>
                                         <div class="actions clearfix right">
-                                            <button type="submit" name="finish" class="mb-6 btn waves-effect waves-light purple lightrn-1" id="finish">finish</button>
+                                            <button type="submit" name="finish" class="mb-6 btn waves-light purple lightrn-1" id="finish">finish</button>
                                             
                                         </div>
                                     </form>
