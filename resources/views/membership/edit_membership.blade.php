@@ -149,7 +149,7 @@
                                                         <input id="irc_user_name" name="irc_user_name" class="common-input" value="{{ $ircusername }}" type="text">
                                                     </div>
                                                     @endif
-                                                    <div class="input-field col s8">
+                                                    <div class="input-field col s12">
                                                         <div class="col s12 m3">
                                                             <p>{{__('IRC Position') }}</p>
                                                         </div>
@@ -188,6 +188,14 @@
                                                             </p>
                                                         </div>
                                                         @endif
+                                                        <div class="col s12 m1">
+                                                            <p>
+                                                                <label>
+                                                                <input class="validate" readonly aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $irc_data->ircposition == 'Staff' ? 'checked' : '' }} value="Staff">
+                                                                <span>{{__('Staff') }}</span>
+                                                                </label>
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                     <div class="input-field col s6 hide">
                                                         <label for="irc_bank" class="common-label force-active">{{__('Bank') }}*</label>

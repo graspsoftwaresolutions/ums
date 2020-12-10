@@ -231,8 +231,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					<div class="errorTxt1"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s8">
-					<div class="col s12 m3">
+				<div class="input-field col s12">
+					<div class="col s12 m2">
 					 <p>{{__('IRC Position') }}*</p>
 					</div>
 					<div class="col s12 m2">
@@ -265,6 +265,14 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							<label>
 							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $dataresigneddata->ircposition == 'Officials' ? 'checked' : '' }} value="Officials">
 							<span>{{__('Officials') }}</span>
+							</label>
+						</p>
+					</div>
+					<div class="col s12 m1">
+						<p>
+							<label>
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" {{ $dataresigneddata->ircposition == 'Staff' ? 'checked' : '' }} value="Staff">
+							<span>{{__('Staff') }}</span>
 							</label>
 						</p>
 					</div>

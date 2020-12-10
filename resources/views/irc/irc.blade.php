@@ -218,7 +218,7 @@
 					<div class="errorTxt9"></div>
 				</div>
 				<div class="clearfix" style="clear:both"></div>
-				<div class="input-field col s8">
+				<div class="input-field col s12">
 					<div class="col s12 m2">
 					 <p>{{__('IRC Position') }}*</p>
 					</div>
@@ -257,6 +257,14 @@
 						</p>
 					</div>
 					@endif
+					<div class="col s12 m1">
+						<p>
+							<label>
+							<input class="validate" readonly required="" aria-required="true" id="ircposition" name="ircposition" type="radio" value="Staff">
+							<span>{{__('Staff') }}</span>
+							</label>
+						</p>
+					</div>
 					<div class="errorTxt10"></div>
 				</div>
 				<div class="input-field col s6 hide">
