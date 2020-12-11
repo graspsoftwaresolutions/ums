@@ -59,7 +59,7 @@
 											<div class="card-header">
 												<h4 class="card-title">{{__('New Membership') }}
 													@if($data['user_type']!=1)
-													<a class="btn waves-effect waves-light right" href="{{ route('login', app()->getLocale())  }}">{{__('Login') }}</a>
+													<a class="btn waves-light right" href="{{ route('login', app()->getLocale())  }}">{{__('Login') }}</a>
 													@endif
 												</h4>
 												
@@ -621,7 +621,7 @@
 																				</div>
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m12">
-																					<button class="btn waves-effect waves-light right submit" id="add_nominee" type="button" name="add_nominee">Add Nominee
+																					<button class="btn waves-light right submit" id="add_nominee" type="button" name="add_nominee">Add Nominee
 																					</button>
 																				</div>
 																			</div>
@@ -800,7 +800,7 @@
 																				</div>
 																				<div class="clearfix"> </div>
 																				<div class="col s12 m12">
-																					<button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
+																					<button class="btn waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
 																					</button>
 																				</div>
 																			</div>

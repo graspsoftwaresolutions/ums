@@ -28,8 +28,8 @@
 	</div>
 	<div class="modal-footer">
 		<div class="col s12 m12">
-			<button class="btn waves-effect waves-light purple right submit" id="update_fee" type="submit" name="update_fee">Update Fee</button>
-			<a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
+			<button class="btn waves-light purple right submit" id="update_fee" type="submit" name="update_fee">Update Fee</button>
+			<a href="#!" class="modal-action modal-close waves-green btn left ">Close</a> 
 		</div>
 	</div>
 	</form>

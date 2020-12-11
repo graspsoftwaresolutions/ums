@@ -1426,7 +1426,7 @@
                                                                   <p>WARNING : Updated member details are waiting for approval</p>
                                                                 </div>
                                                                 <button type="button" class="" data-dismiss="" aria-label="Close">
-                                                                  <a class="btn waves-effect waves-light right" style="margin-top: -3px;" target="_blank" href="{{ route('approve.editmembership', [app()->getLocale(),Crypt::encrypt($values->mid)]) }}">{{__('Updated Details') }}</a>
+                                                                  <a class="btn waves-light right" style="margin-top: -3px;" target="_blank" href="{{ route('approve.editmembership', [app()->getLocale(),Crypt::encrypt($values->mid)]) }}">{{__('Updated Details') }}</a>
                                                                 </button>
                                                             </div>
                                                             
@@ -1676,7 +1676,7 @@
                                                                 </div>
                                                                 <div class="clearfix"> </div>
                                                                 <div class="col s12 m12">
-                                                                    <button class="btn waves-effect waves-light right submit" id="add_nominee" type="button" name="add_nominee">Add Nominee
+                                                                    <button class="btn waves-light right submit" id="add_nominee" type="button" name="add_nominee">Add Nominee
                                                                         <i class="material-icons right">send</i>
                                                                     </button>
                                                                 </div>
@@ -1752,8 +1752,8 @@
                                                                                     <input type="text" name="nominee_phone_value[]" id="nominee_phone_value_{{ $sl }}" value="{{$value->phone}}">
                                                                                 </td>
                                                                                 <td>
-                                                                                    <a class="btn-floating waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
-                                                                                    <a class="btn-floating waves-effect waves-light amber darken-4 delete_nominee_db" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
+                                                                                    <a class="btn-floating waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
+                                                                                    <a class="btn-floating waves-light amber darken-4 delete_nominee_db" data-id="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
                                                                                 </td>
                                                                             </tr>
                                                                             @php {{ $sl++; }} @endphp @endforeach
@@ -1916,7 +1916,7 @@
                                                                 <div class="col s12 m12">
 
                                                                   
-                                                                    <button class="btn waves-effect waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
+                                                                    <button class="btn waves-light right submit" id="add_fee" type="button" name="add_fee_row">Add Fee
                                                                         <i class="material-icons right">send</i>
                                                                     </button>
                                                                    
@@ -1962,8 +1962,8 @@
 
                                                                                 <td>
                                                                                     @if($user_role!='member')
-                                                                                    <a class="btn-floating waves-effect waves-light cyan edit_fee_row hide" href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
-                                                                                    <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
+                                                                                    <a class="btn-floating waves-light cyan edit_fee_row hide" href="#modal_fee" data-id="{{$sl}}"><i class="material-icons left">edit</i></a>
+                                                                                    <a class="btn-floating waves-light amber darken-4 delete_fee_db" data-id="{{$sl}}" data-autoid="{{$value->id}}" onclick="if (confirm('Are you sure you want to delete?')) return true; else return false;"><i class="material-icons left">delete</i></a>
                                                                                     @endif
                                                                                 </td>
 
@@ -2426,10 +2426,10 @@
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="col s12 m12 center">
                                                         @if(empty($resignedrow))
-                                                        <button id="submitResignation" class="waves-effect waves-dark btn btn-primary form-save-btn right" type="button">{{'Resign'}}</button>
+                                                        <button id="submitResignation" class=" waves-dark btn btn-primary form-save-btn right" type="button">{{'Resign'}}</button>
                                                         @endif 
 														@if(!empty($resignedrow))
-                                                        <a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-effect waves-light pink m2 mdl-button">View resign Details</a>
+                                                        <a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-light pink m2 mdl-button">View resign Details</a>
 														<div class="col m2 hide">
 															<h5 style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">Member already resigned</h5>
 														</div>
