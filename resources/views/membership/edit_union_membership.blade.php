@@ -523,14 +523,14 @@
                                                         @if($ircstatus->status==0 && $ircstatus->irc_status==1)
                                                          <p style="margin-top:10px;">
                                                             <span style="color: rgba(255, 255, 255, 0.901961);" class="orange padding-1 medium-small">
-                                                                IRC confirmation has been Confirmed, waiting for branch committee verification
+                                                                IRC branch committee has been Confirmed, waiting for branch secretary verification
                                                             </span>
                                                          </p>
                                                          @endif
                                                          @if($ircstatus->status==1)
                                                          <p style="margin-top:10px;">
                                                             <span style="color: rgba(255, 255, 255, 0.901961);" class="green padding-1 medium-small">
-                                                                IRC Branch Committee Verified, waiting for approval of resignation from HQ 
+                                                                IRC Branch Secretary Verified, waiting for approval of resignation from HQ 
                                                             </span>
                                                         </p>
                                                         @endif
