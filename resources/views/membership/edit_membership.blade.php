@@ -2642,7 +2642,7 @@
             },
             salary: {
                 required: true,
-                digits: true,
+                number: true,
             },
             levy_amount: {
                 digits: true,
