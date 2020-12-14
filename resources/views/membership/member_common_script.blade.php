@@ -170,8 +170,8 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn waves-effect waves-light purple right submit" id="update_nominee" type="submit" name="update_nominee">Update Nominee<i class="material-icons right">send</i></button>
-		<a href="#!" class="modal-action modal-close waves-effect waves-green btn left ">Close</a> 
+		<button class="btn waves-light purple right submit" id="update_nominee" type="submit" name="update_nominee">Update Nominee<i class="material-icons right">send</i></button>
+		<a href="#!" class="modal-action modal-close waves-green btn left ">Close</a> 
 	</div>
 	</form>
 </div>
@@ -614,7 +614,7 @@ $('#add_fee').click(function(){
 		var new_row = '<tr>';
 		new_row += '<td><span id="fee_name_label_'+fee_row_id+'">'+new_fee_name+'</span><input type="text" class="hide" name="fee_auto_id[]" id="fee_auto_id_'+fee_row_id+'"></input><input type="text" name="fee_name_id[]" class="hide" id="fee_name_id_'+fee_row_id+'" value="'+new_fee_id+'"></input></td>';
 		new_row += '<td><span id="fee_amount_label_'+fee_row_id+'">'+fee_amount+'</span><input type="text" name="fee_name_amount[]" class="hide" id="fee_name_amount_'+fee_row_id+'" value="'+fee_amount+'"></input></td>';
-		new_row += '<td><a class="btn-floating waves-effect waves-light edit_fee_row " href="#modal_fee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
+		new_row += '<td><a class="btn-floating waves-light edit_fee_row " href="#modal_fee" data-id="'+fee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-light amber darken-4 delete_fee" data-id="'+fee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
 		new_row += '</tr>';
 		$("#fee_amount").val('');
 		$("#new_fee_id").val('').trigger("change");
@@ -858,7 +858,7 @@ $('#nominee_state_id').change(function(){
 		new_row += '<td class="hide"><span id="nominee_postalcode_label_'+nominee_row_id+'">'+nominee_postal_code+'</span><input type="text" name="nominee_postalcode_value[]" id="nominee_postalcode_value_'+nominee_row_id+'" value="'+nominee_postal_code+'"></input></td>';
 		new_row += '<td class="hide"><span id="nominee_mobile_label_'+nominee_row_id+'">'+nominee_mobile+'</span><input type="text" name="nominee_mobile_value[]" id="nominee_mobile_value_'+nominee_row_id+'" value="'+nominee_mobile+'"></input></td>';
 		new_row += '<td class="hide"><span id="nominee_phone_label_'+nominee_row_id+'">'+nominee_phone+'</span><input type="text" name="nominee_phone_value[]" id="nominee_phone_value_'+nominee_row_id+'" value="'+nominee_phone+'"></input></td>';
-		new_row += '<td><a class="btn-floating waves-effect waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+nominee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-effect waves-light amber darken-4 delete_nominee" data-id="'+nominee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
+		new_row += '<td><a class="btn-floating waves-light cyan edit_nominee_row " href="#modal_nominee" data-id="'+nominee_row_id+'"><i class="material-icons left">edit</i></a> <a class="btn-floating waves-light amber darken-4 delete_nominee" data-id="'+nominee_row_id+'" ><i class="material-icons left">delete</i></a></td>';
 		new_row += '</tr>';
 		//$('#test2').find('input:text').val('');    
 		$('#nominee_add_section').find('input:text').val('');  
