@@ -1315,13 +1315,11 @@
 		                                                    </div>
 		                                                    <div class="input-field col s12 m3 ">
 		                                                        <label for="cursalary" class="force-active">Current Salary</label>
-		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary==0 ? '' : $values->current_salary}}" type="text" data-error=".errorTxt11">
-		                                                        <div class="errorTxt11"></div>
+		                                                        <input id="cursalary" name="cursalary" readonly="" value="{{$values->current_salary==0 ? '' : $values->current_salary}}" type="text" >
 		                                                    </div>
                                                             <div class="input-field col s12 m6 ">
                                                                 <label for="lastupdate" class="force-active">Updated at</label>
-                                                                <input id="lastupdate" name="lastupdate" readonly="" value="{{ $values->last_update!='' ? date('d-m-Y  h:i:s',strtotime($values->last_update)) : '' }}" type="text" data-error=".errorTxt11">
-                                                                <div class="errorTxt11"></div>
+                                                                <input id="lastupdate" name="lastupdate" readonly="" value="{{ $values->last_update!='' ? date('d-m-Y  h:i:s',strtotime($values->last_update)) : '' }}" type="text" >
                                                             </div>
 	                                                    </div>
                                                     </div>
@@ -2728,7 +2726,7 @@
             },
             salary: {
                 required: "Please Enter salary",
-				digits: "{{__("Please Enter numbers only") }}",
+				number: "{{__("Please Enter numbers only") }}",
             },
             levy_amount: {
                 digits: "{{__("Please Enter numbers only") }}",
