@@ -244,7 +244,7 @@
                                                
                                                 <div class="col m1 s12 " style="padding-top:5px;">
                                                     </br>
-                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 
                                                 </div>
 
@@ -256,7 +256,7 @@
                                                 </div>
                                                 <div class="col s4 ">
 
-                                                    <button id="submit-download" class="waves-effect waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
+                                                    <button id="submit-download" class="waves-light cyan btn btn-primary form-download-btn hide" type="button">{{__('Download Sample') }}</button>
 
                                                 </div>
                                             </div>

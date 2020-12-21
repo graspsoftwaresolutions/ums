@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="col s2 m6 l6 ">
                                     
-                                    <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
+                                    <a class="btn waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
                                 </div>
                             </div>
                             @include('includes.messages')
@@ -225,7 +225,7 @@
                                         <div class="row">
                                             <div class="input-field col s12">
                                               
-                                                <button id="submit-upload" style="margin-right: 10px;" class="mb-3 btn waves-effect waves-light purple lightrn-1 form-download-btn right" type="button">{{__('Submit') }}</button>
+                                                <button id="submit-upload" style="margin-right: 10px;" class="mb-3 waves-light purple lightrn-1 form-download-btn right" type="button">{{__('Submit') }}</button>
                                             </div>
                                         </div>
 
@@ -297,7 +297,7 @@
                                                 </div>
                                                 <div class="col m3 s12 " style="padding-top:5px;">
                                                     </br>
-                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
 
                                                 </div>
 

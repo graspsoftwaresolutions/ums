@@ -189,7 +189,7 @@
 					All Members List
 				@endif
 				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn " value="Advanced search">
-				<a class="btn waves-effect waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
+				<a class="btn waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
 				</h4> 
 				@php
 					$userid = Auth::user()->id;
@@ -271,7 +271,7 @@
 							</div>
 						</div>
 						<div class="input-field col s12 right-align">
-							<input type="button" class="btn waves-effect waves-light amber darken-4" style="width:130px;color:#fff !important;" id="clear" name="clear" value="{{__('clear')}}">
+							<input type="button" class="btn waves-light amber darken-4" style="width:130px;color:#fff !important;" id="clear" name="clear" value="{{__('clear')}}">
 							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
 						</div>
 					</div>
@@ -307,7 +307,7 @@
 					
 					@endif
 					<input type="hidden" name="approval_status_ref" id="approval_status_ref" value="{{ $approval_status }}" />
-					<button name="submitAll" id="submitAll" onclick="return SubmitAllVerication();" class="btn waves-effect">Approve All</button>
+					<button name="submitAll" id="submitAll" onclick="return SubmitAllVerication();" class="btn">Approve All</button>
 
 				@endif
 				<input type="text" name="memberoffset" id="memberoffset" class="hide" value="{{$data['data_limit']}}"></input>
@@ -355,10 +355,10 @@
 								<td id="approve_status_{{ $member->sub_member_id }}"><span class="badge {{$approval_status==1 ? 'green' : 'red'}}">{{ $approval_status==1 ? 'Approved' : 'Pending' }}</span></td>
 								<td>
 								@if($member->member_number!='')
-								<a class="btn btn-sm waves-effect " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
-								<a class="btn btn-sm waves-effect amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
+								<a class="btn btn-sm " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
+								<a class="btn btn-sm amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->memberid)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
 								@endif
-								<a class="btn btn-sm waves-effect gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
+								<a class="btn btn-sm gradient-45deg-green-teal " onClick="return showApproval({{ $member->sub_member_id }})"  title="Approval" type="button" name="action"><i class="material-icons">check</i></a></td>
 								
 							</tr> 
 							@php
@@ -503,7 +503,7 @@
 								
 								<input type="text" name="registered_bank_id" class="hide" id="registered_bank_id" value="" />
 								<input type="text" name="uploaded_bank_id" class="hide" id="uploaded_bank_id" value="" />
-								<a title='Member Transfer' id="memebr_tansfer_link" class='btn-sm-popup waves-effect waves-light yellow darken-3' href=''>Member Transfer</a>
+								<a title='Member Transfer' id="memebr_tansfer_link" class='btn-sm-popup waves-light yellow darken-3' href=''>Member Transfer</a>
 							</td>
 							<td><span id="bank_approved_by" class="bold"></span></td>
 						</tr>
@@ -590,8 +590,8 @@
 				</table>
 		</div>
 		<div class="modal-footer">
-		  <button type="button" class="modal-action modal-close btn waves-effect red accent-2 left">Close</button>
-		  <button type="submit" class="btn waves-effect waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
+		  <button type="button" class="modal-action modal-close btn red accent-2 left">Close</button>
+		  <button type="submit" class="btn waves-light submitApproval" onClick="return ConfirmSubmit()">Submit</button>
 		</div>
 		 </form>
 	  </div>
@@ -931,10 +931,10 @@ $(document).on('submit','form#filtersubmit',function(event){
 							var actions ='';
 							var member_no = parseInt(entry.member_number);
 							if(!isNaN(member_no)){
-								actions += '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-								actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+								actions += '<a class="btn btn-sm " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+								actions += ' <a class="btn btn-sm amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
 							}
-							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							actions += ' <a class="btn btn-sm gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
 							totalhistory+=1;
@@ -991,10 +991,10 @@ $(window).scroll(function() {
 							var actions='';
 							var member_no = parseInt(entry.member_number);
 							if(!isNaN(member_no)){
-								actions += '<a class="btn btn-sm waves-effect " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
-								actions += ' <a class="btn btn-sm waves-effect amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
+								actions += '<a class="btn btn-sm " href="'+baselink+'membership-edit/'+entry.enc_member+'" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>';
+								actions += ' <a class="btn btn-sm amber darken-4" href="'+baselink+'member-history/'+entry.enc_member+'" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>';
 							}
-							actions += ' <a class="btn btn-sm waves-effect gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
+							actions += ' <a class="btn btn-sm gradient-45deg-green-teal " onclick="return showApproval('+entry.sub_member_id+')" title="Approval" type="button" name="action"><i class="material-icons">check</i></a>';
 							table_row += "<td>"+actions+"</td></tr>";
 							$('#page-length-option tbody').append(table_row);
 							totalhistory+=1;
