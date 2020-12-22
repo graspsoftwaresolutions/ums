@@ -120,7 +120,7 @@ text{
 <!--card stats end-->
  <!-- Current balance & total transactions cards-->
 <div class="row mt-4">
-   <div class="col s12 m4 l4">
+   <div class="col s12 m4 l3">
       <!-- Current Balance -->
 		<div id="ct9-chart" class="ct-chart card hide">
 		  <div class="card-content">
@@ -133,8 +133,8 @@ text{
       <div class="card animate fadeLeft">
          <div class="card-content">
             <h4 class="card-title mb-0">{{__('Total Members') }}<i class="material-icons float-right hide">more_vert</i></h4>
-			</br>
-			</br>
+			    </br>
+			     </br>
             <div class="current-balance-container">
 				
                <div id="current-balance-donut-chart" class="current-balance-shadow"></div>
@@ -144,7 +144,24 @@ text{
          </div>
       </div>
    </div>
-   <div class="col s12 m8 l8 animate fadeRight" style="padding:0;margin:0;">
+   <div class="col s12 m4 l3">
+      <!-- Current Balance -->
+		
+      <div class="card animate fadeLeft">
+         <div class="card-content">
+            <h4 class="card-title mb-0">{{__('Resignation Members') }}<i class="material-icons float-right hide">more_vert</i></h4>
+			    </br>
+			     </br>
+            <div class="current-balance-container">
+				
+               <div id="resigned-members-donut-chart" class="current-balance-shadow"></div>
+            </div>
+            <h5 class="center-align">{{ $data['totla_resigned_member_count'] }}</h5>
+            <p class="medium-small center-align">{{__('Resigned Members') }}</p>
+         </div>
+      </div>
+   </div>
+   <div class="col s12 m8 l6 animate fadeRight" style="padding:0;margin:0;">
 		<div id="container" style="min-width: 310px; height: 350px; margin: 12px 0 auto"></div>
    </div>
    @php
@@ -184,13 +201,40 @@ text{
 					Chartist.plugins.fillDonut({
 						items: [
 							{
-								content: '<p class="small">{{__("Pending") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_pending_members_count']}}+'</h5>'
+								content: '<a href="'+base_url+'/en/membership_list"><p class="small">{{__("Pending") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_pending_members_count']}}+'</h5></a>'
 							}
 						]
 					})
 				]
 			}
 		)
+   })(window, document, jQuery);
+
+   (function (window, document, $) {
+    // Donut chart
+    // -----------
+    var CurrentBalanceDonutChart = new Chartist.Pie(
+      "#resigned-members-donut-chart",
+      {
+        labels: [1, 2],
+        series: [{ meta: "Resigned members", value: {{ $data['totla_resigned_member_count'] }} }, { meta: "Pending", value: {{ $data['total_resignpending_members_count'] }} }]
+      },
+      {
+        donut: true,
+        donutWidth: 8,
+        showLabel: false,
+        plugins: [
+          Chartist.plugins.tooltip({ class: "current-balance-tooltip", appendToBody: true }),
+          Chartist.plugins.fillDonut({
+            items: [
+              {
+                content: '<a href="'+base_url+'/en/resignation_list"><p class="small">{{__("Pending") }}</p><h5 class="mt-0 mb-0 center-align">'+{{$data['total_resignpending_members_count']}}+'</h5></a>'
+              }
+            ]
+          })
+        ]
+      }
+    )
    })(window, document, jQuery);
    //Sampel Line Chart Three
     // Options

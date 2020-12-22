@@ -89,6 +89,13 @@ class HomeController extends Controller
 
            $status_resigned_members = Membership::where([ ['status_id',4],['status','=','1'] ])->count();
            $data['totla_resigned_member_count'] = $status_resigned_members;
+
+           $total_resignpending_members_count = DB::table('irc_confirmation as i')
+           										->leftjoin('membership as m','i.resignedmemberno','=','m.id')
+           										->where('i.status','=',1)
+           										->where('m.status_id','!=',4)
+           										->count();
+           $data['total_resignpending_members_count'] = $total_resignpending_members_count;
           
 
         }else if($user_role=='union-branch'){

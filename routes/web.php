@@ -609,6 +609,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('staff','MasterController@staffAccountList')->name('staff.account'); 
 	Route::post('staff_save','MasterController@Staffsave')->name('master.savestaff'); 
+	Route::get('resignation_list','MembershipController@resignationMembers')->name('pending.resignation');
+	Route::post('ajax_resignation_list','MembershipController@AjaxResignationList')->name('ajaxpending.resignation');
 
 });
 /* Master */
@@ -699,3 +701,4 @@ Route::get('user-list', 'HomeController@userList')->name('user-list');
 // Export User Table Data In Excel With Set Header
 Route::get('user-export/{parameter}', 'HomeController@exportUserData')->name('user-export');
 Route::get('change-memberstatus','HomeController@UpdateMemberStatus');
+
