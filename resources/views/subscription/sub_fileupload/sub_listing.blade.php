@@ -297,7 +297,7 @@
                                                 </div>
                                                 <div class="col m3 s12 " style="padding-top:5px;">
                                                     </br>
-                                                    <button id="submit-upload" class="mb-6 btn waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
 
                                                 </div>
 
