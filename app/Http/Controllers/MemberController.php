@@ -413,6 +413,13 @@ class MemberController extends CommonController
 				}
 			}else{
 				$up_id = DB::table('membership')->where('id','=',$auto_id)->update($member);
+				if($user_role=='staff-union-branch'){
+					$user_dataone = [
+						'approval_status' => 'Pending',
+						'approval_reason' => '',
+					];
+					DB::table('membership')->where('id', $auto_id)->update($user_dataone);
+				}
 				$member_id = $auto_id;
 			}
 			
