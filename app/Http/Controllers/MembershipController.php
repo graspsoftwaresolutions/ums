@@ -770,9 +770,7 @@ class MembershipController extends Controller
 			->orderBy($order,$dir)
 			->get()->toArray();
 
-             $totalFiltered = $compQuery->count();
-
-           
+             $totalFiltered = $compQuery->count();           
           
     }
 	$data = array();
@@ -805,8 +803,7 @@ class MembershipController extends Controller
                 $nestedData['font_color'] = $font_color;
                 
                 $enc_id = Crypt::encrypt($member->id);
-                $delete = "";
-                               
+                $delete = "";                              
                 
                 $view = route('master.viewmembership', [app()->getLocale(),$enc_id]);
                 $histry = route('member.history', [app()->getLocale(),$enc_id]);
@@ -836,7 +833,6 @@ class MembershipController extends Controller
 									
 				$ircstatus = CommonHelper::get_irc_confirmation_status($member->id);
 				$irc_env = CommonHelper::getIRCVariable();
-              
                            
                 if(count($history_list)!=0)
                 {
@@ -871,8 +867,7 @@ class MembershipController extends Controller
                 }
                 if($user_role=='union'){
                     $actions .= "<a style='margin-left: 10px;' title='Card print'  class='btn-sm waves-effect waves-light blue' target='_blank' href='$member_card_link'><i class='material-icons' >card_membership</i></a>";
-                }
-                
+                }                
                
                 //$data = $this->CommonAjaxReturn($city, 0, 'master.citydestroy', 0);
                 $nestedData['options'] = $actions;
@@ -1112,7 +1107,6 @@ class MembershipController extends Controller
         }
         else {
 			$search = $request->input('search.value'); 
-		  
 				
 			$historylist =  $commonselectqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
 									->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
@@ -2088,7 +2082,6 @@ class MembershipController extends Controller
         $city_id = $request->input('city_id'); 
         $pending_type = trim($request->input('pending_type')); 
         //return $pending_type;
-		
 		
 		if($user_role=='union' || $user_role=='data-entry'){
             //DB::enableQueryLog();

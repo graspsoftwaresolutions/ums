@@ -96,7 +96,6 @@ class HomeController extends Controller
            										->where('m.status_id','!=',4)
            										->count();
            $data['total_resignpending_members_count'] = $total_resignpending_members_count;
-          
 
         }else if($user_role=='union-branch'){
             $union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
@@ -247,7 +246,6 @@ class HomeController extends Controller
 			// 	$total_ircconfirm_qry = $total_ircconfirm_qry->where('cb.union_branch_id','=',$unionbranchid);
 			// }
 			$total_ircconfirm_count = $total_ircconfirm_qry->count();
-
 			
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
@@ -383,7 +381,6 @@ class HomeController extends Controller
 				$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
 			//}
 			$total_ircconfirm_count = $total_ircconfirm_qry->count();
-
 			
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
@@ -468,7 +465,6 @@ class HomeController extends Controller
 				//$total_ircconfirm_qry = $total_ircconfirm_qry->whereIn('cb.union_branch_id',$unionbranchids);
 			//}
 			$total_ircconfirm_count = $total_ircconfirm_qry->count();
-
 			
 			$total_ircapp_qry = DB::table('irc_confirmation as i')
 									->leftjoin('membership as m','m.id','=','i.resignedmemberno') 
@@ -482,7 +478,6 @@ class HomeController extends Controller
 
 			$total_ircapp_count = $total_ircapp_qry->count();
 			$irc_count = $total_ircpending_count+$total_ircconfirm_count+$total_ircapp_count;
-
 			
 			$data['total_irc_count'] = $irc_count;
 			$data['total_ircpending_count'] = $total_ircpending_count;
