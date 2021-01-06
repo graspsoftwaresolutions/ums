@@ -170,14 +170,19 @@
 				<div class="col s12">
 					<ul class="tabs">
 						<li class="tab col m3"><a class="active" id="report1" href="#member_report">Member Report</a></li>
-						<li class="tab col m3"><a href="#union_member_report" id="report2">Union Branch Report</a></li>
+						<li class="tab col m3 hide"><a href="#union_member_report" id="report2">Union Branch Report</a></li>
 					</ul>
 				</div>
 				<div id="member_report" class="col s12">
 					<iframe src="{{ route('reports.membersnewactive',[app()->getLocale(), $data['status_id']])  }}" id="myframe" height="400px" width="100%"></iframe>
 				</div>
-				<div id="union_member_report" class="col s12">
-					<iframe src="{{ route('union.membersnewactive',[app()->getLocale(), $data['status_id']]) }}" id="myunionframe" height="400px" width="100%"></iframe>
+				@php
+					$hideuniontab = 1;
+				@endphp
+				<div id="union_member_report" class="col s12 hide">
+					@if($hideuniontab==0)
+					<!--iframe src="{{ route('union.membersnewactive',[app()->getLocale(), $data['status_id']]) }}" id="myunionframe" height="400px" width="100%"></iframe-->
+					@endif
 				</div>
 				
 			</div>
