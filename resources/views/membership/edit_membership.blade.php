@@ -608,7 +608,7 @@
                                                                         <span><span class="gender">{{$genderlable}}</span> was <span style="text-decoration: underline;">PROMOTED</span> to</span>
                                                                     </label> 
                                                                     <div class="input-field inline">
-                                                                        <input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) required @endif class="inline-box" style="width: 300px;" >
+                                                                        <input type="text" id="promotedthree" name="promotedthree" value="{{$irc_details->promotedto}}" @if($section_type_val == 3) @endif class="inline-box" style="width: 300px;" >
                                                                         
                                                                     </div>
                                                                     grade w.e.f.
