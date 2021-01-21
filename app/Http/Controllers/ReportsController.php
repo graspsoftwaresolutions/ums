@@ -1055,6 +1055,7 @@ class ReportsController extends Controller
                         $members = $members->where(DB::raw('m.`branch_id`'),'=',$branch_id);
                         $data['branch_id'] = $branch_id;
                     }
+                    $members = $members->where(DB::raw('m.`is_request_approved`'),'=',1);
                     $members = $members->orderBy('m.member_number','asc');
                     $members = $members->get();
         $data['member_view'] = $members;
@@ -1136,6 +1137,7 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
               }
+              $members = $members->where(DB::raw('m.`is_request_approved`'),'=',1);
               $members = $members->orderBy('m.member_number','asc');
           $members = $members->get();
         $data['member_view'] = $members;
@@ -1224,6 +1226,7 @@ class ReportsController extends Controller
                     $members = $members->where('m.member_number','>=',$from_member_no);
                     $members = $members->where('m.member_number','<=',$to_member_no);
               }
+              $members = $members->where(DB::raw('m.`is_request_approved`'),'=',1);
               $members = $members->orderBy('m.member_number','asc');
           $members = $members->get();
         $data['member_view'] = $members;
