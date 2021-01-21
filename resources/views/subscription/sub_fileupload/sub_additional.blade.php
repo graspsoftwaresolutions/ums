@@ -157,7 +157,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col s10 m6 l6">
-                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription List') }}</h5>
+                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription Additional') }}</h5>
                                     <ol class="breadcrumbs mb-0">
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
@@ -168,7 +168,7 @@
                                 </div>
                                 <div class="col s2 m6 l6 ">
                                     
-                                    <a class="btn waves-light cyan breadcrumbs-btn right " href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
+                                    <a class="btn waves-light cyan breadcrumbs-btn right hide" href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
                                 </div>
                             </div>
                             @include('includes.messages')
@@ -234,21 +234,21 @@
                                                     <div class="errorTxt6"></div>
                                                 </div>
 
-                                                <div class="input-field col s12 m2" id="memberarea">
+                                                <div class="input-field col s12 m4" id="memberarea">
                                                     <label for="member_search" class="force-active">{{__('Member Name')}}</label>
                                                     <input id="member_search" type="text" autocomplete="off" class="validate " data-error=".errorTxt16" value="" name="member_search">
                                                     <input id="member_code" type="text" autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
                                                     <div class="errorTxt16"></div>
                                                 </div>
 
-                                                <div class="input-field col s2">
+                                                <div class="input-field col s1">
                                                     <label for="sub_member_amount">Amount</label>
                                                     <input  placeholder="Amount" name="sub_member_amount" data-error=".errorTxt17" id="sub_member_amount" type="text" class="validate allow_decimal">
                                                     <div class="errorTxt17"></div>
                                                 </div>
                                                
                                                
-                                                <div class="col m3 s12 " style="padding-top:5px;">
+                                                <div class="col m1 s12 " style="padding-top:5px;">
                                                     </br>
                                                     <button id="submit-upload" class="mb-6 btn waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
 
