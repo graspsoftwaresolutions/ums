@@ -57,8 +57,6 @@ use App\Imports\SubsheetImport;
 
 use App\Exports\DiscrepancyExport;
 
-
-
 class SubscriptionController extends CommonController
 {
 	protected $limit;
@@ -169,8 +167,6 @@ class SubscriptionController extends CommonController
                         return  redirect('en/subscription')->with('error', 'Wrong excel sheet');
                     }
 
-
-
                     //$data = Excel::toArray(new SubscriptionImport, $file);
                     Excel::import(new SubscriptionImport($request->all()), $file);
                     //return back()->with('message', 'File Uploaded Successfully');
@@ -243,7 +239,6 @@ class SubscriptionController extends CommonController
                     $members_amount = CommonHelper::statusMembersNotDojCompanyAmount($value->id, $user_role, $user_id,$company_auto_id,$full_date);
                     //print_r($company_auto_id);
                 }
-				
                 
                 $status_data['count'][$value->id] = $members_count;
                 $status_data['amount'][$value->id] = number_format($members_amount,2,".",",");
@@ -370,8 +365,6 @@ class SubscriptionController extends CommonController
 				$nric = $subscription->NRIC;
 				$approval_status=0;
 				$memberdata = [];
-
-
 			   
 			    $subscription_new_qry =  DB::table('membership as m')->where(DB::raw("TRIM(LEADING '0' FROM m.new_ic)"), '=',ltrim($nric, '0'))->where('m.doj','<=',$cur_date_end)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 				
@@ -491,7 +484,6 @@ class SubscriptionController extends CommonController
 						//$subMemberMatch_one->save();
 						$insert_month_end = 0;
                     }
-					
                                        
                     if(strtoupper(trim($memberdata[0]->name)) != strtoupper($subscription->Name)){
 						$subMemberMatch_two = MonthlySubMemberMatch::where('match_id','=',3)->where('mon_sub_member_id','=',$subscription->id)->first();
@@ -514,7 +506,6 @@ class SubscriptionController extends CommonController
 						//$subMemberMatch_two->save();
 						$insert_month_end = 0;
                     }
-					
 					
 					$last_month = date('Y-m-01',strtotime($cur_date.' -1 Month'));
 
@@ -743,10 +734,8 @@ class SubscriptionController extends CommonController
     {
         $id = Crypt::decrypt($id);
       //return  $font_color = $fontcolor;
-        
        //  $year =2019;
        // $month =8;
-
        // return $id;
        
        $data['member_subscription_details'] = DB::table('mon_sub_member as sm')->select('m.id as memberid','m.doj as doj','m.name as membername','m.id as MemberCode','sm.Amount','status.status_name','s.Date','status.font_color','m.member_number')
@@ -768,7 +757,6 @@ class SubscriptionController extends CommonController
                                             ->where('m.id','=',$id)
                                             //->groupBY('s.id')
                                             ->get(); 
-                                            
            
         return view('subscription.sub_member')->with('data',$data);
           
@@ -801,7 +789,6 @@ class SubscriptionController extends CommonController
             $fmmm_date = explode("/",$to_date);
             $todate = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $to = date('Y-m-d', strtotime($todate));
-
             
             DB::enableQueryLog();
             $data['member_subscription_list'] = DB::table('mon_sub_member as sm')->select('sm.Amount as Amount','s.Date as Date','status.status_name as status_name','m.member_number')
@@ -892,7 +879,6 @@ class SubscriptionController extends CommonController
                                            ->where('msc.id','=',$company_auto_id)
                                            ->where('msm.update_status','=','0')
                                            ->get();
-
         
         return view('subscription.pending_members')->with('data', $data);
     }
@@ -1048,7 +1034,6 @@ class SubscriptionController extends CommonController
                     ->first();
                    // dd($ad_mont_record);
             if($ad_mont_record!=null){
-
 
             if($ad_mont_record->ENTRYMODE=='AD' && $ad_mont_record->TOTAL_MONTHS==1){
                 $totalamt = number_format($ad_mont_record->TOTALSUBCRP_AMOUNT+$ad_mont_record->TOTALBF_AMOUNT+$ad_mont_record->TOTALINSURANCE_AMOUNT,2);
@@ -1599,7 +1584,6 @@ class SubscriptionController extends CommonController
         //return $paycount;
 
         return redirect($lang.'/sub-arrearentry')->with('message','Arrear Entry Updated Successfully!!');
-
        
     }
     public function arrearentrydestroy($lang,$id)
@@ -2620,7 +2604,6 @@ class SubscriptionController extends CommonController
                 }
             }
             //dd('hi');
-            
 
             if($history_update_from!=""){
                 $is_old_record = DB::table($this->membermonthendstatus_table." as ms")
@@ -2880,7 +2863,6 @@ class SubscriptionController extends CommonController
             $to_entry_date = $request->input('to_entry_date')[$i];
             $from_entry_month = date('Y-m-d',strtotime($from_entry_date));
             $to_entry_month = date('Y-m-d',strtotime($to_entry_date));
-
           
             if((($subs_amount!='' && $subs_amount!=0) || ($bf_amount!='' && $bf_amount!=0) || ($insurance_amount!='' && $insurance_amount!=0)) && $from_entry_month!='' && $to_entry_month!=''){
 
@@ -3339,7 +3321,6 @@ class SubscriptionController extends CommonController
         // }else{
         //     return 'Invalid access';
         // }
-
        
     }
 
@@ -3870,7 +3851,6 @@ class SubscriptionController extends CommonController
                         for($i=0; $i<count($memberids);$i++){
                             $memberid = $request->input('memberids_'.$refid)[$i];
                             $subsamt = $request->input('thissubs_'.$memberid);
-                           
 
                             if($subsamt!='*'){
                                 $subssal = $subsamt*100;
@@ -3880,7 +3860,6 @@ class SubscriptionController extends CommonController
                                 ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
                                 ->orderBy('s.date','desc')
                                 ->pluck(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d") as date'))->first();
-                                
 
                                 $lastsalary = DB::table('salary_updations as s')->where('s.member_id','=',$memberid)
                                                     ->where(DB::raw('DATE_FORMAT(s.date, "%Y-%m-%d")'),'<',$form_date)
@@ -4192,7 +4171,6 @@ class SubscriptionController extends CommonController
              return redirect(URL::to('/'.app()->getLocale().'/sub-company-summary/'.$enc_id))->with('error', 'Failed to delete');
         }
     }
-
      
     public function AddAdvance()
     {

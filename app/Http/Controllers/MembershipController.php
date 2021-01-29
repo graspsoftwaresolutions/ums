@@ -36,7 +36,8 @@ use App\Model\MonSubCompanyAttach;
 use App\Model\MonthlySubMemberMatch;
 use Log;
 use Illuminate\Support\Facades\Input;
-
+use Illuminate\Support\Facades\Validator;
+use App\Imports\SubsheetImport;
 
 class MembershipController extends Controller
 {
@@ -4343,6 +4344,185 @@ class MembershipController extends Controller
             );
 
         echo json_encode($json_data); 
+    }
+
+    public function TdfUpload(){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $data = [];
+        
+        return view('membership.tdf_fileupload')->with('data', $data);
+    }
+
+    public function LatestTdfUpdate($lang, Request $request){
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', '8000');
+         $rules = array(
+                    'file' => 'required|mimes:xls,xlsx',
+                );
+        $validator = Validator::make(Input::all(), $rules);
+        if($validator->fails())
+        {
+            //return 1;
+            return back()->withErrors($validator);
+        }
+        else
+        {
+        
+            if(Input::hasFile('file')){
+                $data['entry_date'] = $request->entry_date;
+                $entry_date = $request->entry_date;
+
+                $datearr = explode("/",$entry_date);  
+                $monthname = $datearr[0];
+                $year = $datearr[1];
+                $full_date = date('Ymdhis',strtotime('01-'.$monthname.'-'.$year));
+
+                $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
+                $form_datefull = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year)).' '.date('h:i:s');
+                $others = '';
+                
+
+                $file_name = 'salary_'.$full_date;
+               // $data['sub_company'] = $request->sub_company;
+            
+                $file = $request->file('file')->storeAs('tdf', $file_name.'.xlsx'  ,'local');
+
+                 $subsdata = (new SubsheetImport)->toArray('storage/app/tdf/'.$file_name.'.xlsx');
+                 $firstrow = $subsdata[0][2];
+                // dd($subsdata[0]);
+                 //dd($firstrow);
+                
+                if($firstrow[0]!='SNO' || $firstrow[1]!='MEMBERID' || $firstrow[2]!='NAME' || $firstrow[3]!='IC NO' || $firstrow[4]!='AMOUNT' || $firstrow[5]!='CHEQUE NO' || $firstrow[6]!='PAID DATE'){
+                    return  redirect('en/tdf_upload')->with('error', 'Wrong excel sheet');
+                }
+
+                $subscription_qry = DB::table('tdf_date')->where('Date','=',$form_date);
+                $subscription_count = $subscription_qry->count();
+                if($subscription_count>0){
+                    $subscription_month = $subscription_qry->get();
+                    $date_auto_id = $subscription_month[0]->id;
+                }else{
+                    $subscription_month = [];
+                    $subscription_month['Date'] = $form_date;
+                    $subscription_month['created_by'] = Auth::user()->id;
+                    $subscription_month['created_on'] = date('Y-m-d');
+                    
+                    $date_auto_id = DB::table('tdf_date')->insertGetId($subscription_month);
+                }
+
+                $firstsheet = $subsdata[0];
+                $bulkedata = [];
+                for ($i=3; $i < count($firstsheet); $i++) { 
+                    if($firstsheet[$i][1]!=''){
+                        $memberno = $firstsheet[$i][1];
+                        //dd($memberno);
+                        $membername = $firstsheet[$i][2];
+                        $memberic = $firstsheet[$i][3];
+                        $amount = $firstsheet[$i][4];
+                        $chequeno = $firstsheet[$i][5];
+                        $paiddate = $firstsheet[$i][6];
+
+                        $paydate = '';
+
+                        if($paiddate!=''){
+                          $UNIX_DATE = ($paiddate - 25569) * 86400;
+                          $paydate = gmdate("Y-m-d", $UNIX_DATE);
+                        }
+
+                        $insertdata = [];
+                        $insertdata['member_number'] = $memberno;
+                        $insertdata['paid_date'] = $paydate;
+                        $insertdata['tdf_date_id'] = $date_auto_id;
+                        $insertdata['name'] = $membername;
+                        $insertdata['amount'] = $amount;
+                        $insertdata['icno'] = $memberic;
+                        $insertdata['cheque_no'] = $chequeno;
+                        $insertdata['status'] = 0;
+                        $insertdata['created_by'] = Auth::user()->id;
+                        $insertdata['created_at'] = date('Y-m-d h:i:s');
+
+                        $bulkedata[] = $insertdata;
+
+                    }
+                }
+                $savesal = DB::table('tdf_updation_temp')->insert($bulkedata);
+                //dd($bulkedata);
+                return redirect($lang.'/latesttdf_process?date='.strtotime($form_datefull))->with('message','Tdf file uploaded successfully');
+
+            }else{
+                return redirect($lang.'/tdf_upload')->with('message','please select file');
+            }
+            
+        }
+    }
+
+    public function LatestTDFProcess(Request $request,$lang){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        $data = [];
+        
+        $date = $request->input('date');
+        $updatedate = date('Y-m-01',$date);
+
+        $memberrowcount = DB::table('tdf_updation_temp as tt')
+                            ->leftjoin('tdf_date as d','tt.tdf_date_id','=','d.id')
+                            ->where('d.Date','=',$updatedate)->where('status','=',0)->count();
+
+        $data['row_count'] = $memberrowcount;
+        $data['month_year'] = $updatedate;
+        $data['monthstring'] = $date;
+
+        if($data['row_count']==0){
+            return redirect($lang.'/tdf_upload')->with('message','Finished scanning');
+        }
+
+        return view('membership.scan-tdf')->with('data',$data);
+    }
+
+    public function scanTDF(Request $request,$lang){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+
+        $limit = $request->input('limit');
+
+        $tdf_data = DB::table('tdf_updation_temp')->where('status','=',0)->limit($limit)->get();
+        foreach($tdf_data as $tdf){
+            $tdfid = $tdf->id;
+            $tdf_date_id = $tdf->tdf_date_id;
+            $paid_date = $tdf->paid_date;
+            $member_number = $tdf->member_number;
+            $name = $tdf->name;
+            $icno = $tdf->icno;
+            $amount = $tdf->amount;
+            $cheque_no = $tdf->cheque_no;
+            $status = $tdf->status;
+
+            $updatedata = array('tdf_amount' => $amount ,'tdf' => "Yes" ,'tdf_paid_date' => $paid_date ,'tdf_cheque_no' => $cheque_no);
+
+            $affected = DB::table('membership')
+                ->where('member_number', $member_number)
+                ->update($updatedata);  
+                 //print_r($member_number);
+                 //print_r($updatedata);
+                 //dd($affected);
+            if($affected==1){
+                $tdfaffects = DB::table('tdf_updation_temp')
+                ->where('id', $tdfid)
+                ->update(array('status' => 1)); 
+              //  dd($tdfaffects);
+
+            }else{
+                $return_data = ['status' => 0 ,'message' => 'Invalid data'];
+            }
+
+        }
+        $return_data = ['status' => 1 ,'message' => 'tdf updated successfully, Redirecting to upload page...',
+                    'redirect_url' =>  URL::to('en/tdf_upload')];
+        echo json_encode($return_data);
     }
 }
 

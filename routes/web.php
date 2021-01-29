@@ -447,7 +447,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('statement-report','ReportsController@StatementReport')->name('reports.statement');
 	Route::get('member_statement','ReportsController@MemberStatementReport')->name('statement.member');
 
-
 	Route::get('refresh-csrf', function(){
 	    return csrf_token();
 	});
@@ -491,7 +490,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('new-member-history/{parameter}','MonthEndController@memberallHistory')->name('monthend.addhistory');
 	Route::post('add_new_rows/{parameter}','MonthEndController@saveMonthendRows')->name('monthend.updatehistoryrows');
 
-
 	Route::get('transfers_report','ReportsController@MemberTransferReport')->name('reports.transfers');
 	Route::get('iframe_transfers_report','ReportsController@TransferReport')->name('iframe.transfers');
 	Route::get('get-transfers-filter-report','ReportsController@TransferFilterReport')->name('more.transfers');
@@ -518,7 +516,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('irc_users_detail','IrcController@userDetail');
 
-
 	Route::get('salary_upload','MembershipController@SalaryUpload')->name('salary.upload');
 	Route::get('salary_list','MembershipController@Salarylists')->name('salary.list');
 	Route::get('get_bankmembers','MembershipController@getBankMembersList')->name('bank.members');
@@ -529,7 +526,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('latestsalary_process','SubscriptionAjaxController@LatestSubsSalaryProcess')->name('latestprocess.salary');
 	Route::get('salary-download','SubscriptionController@downloadSalaryFile')->name('salary.download');
-
 
 	Route::get('get_memberssalaries','MembershipController@getBankMembersSalaries')->name('bank.salaries');
 	Route::get('get-salary-list-inc','MembershipController@getMembersIncrements')->name('salary.increments');
@@ -612,6 +608,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('resignation_list','MembershipController@resignationMembers')->name('pending.resignation');
 	Route::post('ajax_resignation_list','MembershipController@AjaxResignationList')->name('ajaxpending.resignation');
 
+	Route::get('tdf_upload','MembershipController@TdfUpload')->name('upload.tdf');
+	Route::post('tdf_update','MembershipController@LatestTdfUpdate')->name('tdf.update');
+	Route::get('latesttdf_process','MembershipController@LatestTDFProcess')->name('latestprocess.tdf');
+
+	Route::get('tdf-scanning','MembershipController@scanTDF')->name('tdf.scan');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
@@ -677,7 +679,6 @@ Route::get('/clear-cache', function() {
 
 Route::get('addpayments','MemberController@AddPaymentEntry');
 
-
 Route::get('get-ircbranch-member-list','IrcController@getUnionAutomemberslist');
 
 Route::get('register-one','MemberController@NewRegisterDesign');
@@ -685,7 +686,6 @@ Route::get('register-one','MemberController@NewRegisterDesign');
 Route::get('takaful-excel-export','ReportsController@exportTakafulExcel')->name('takaful.excelexport');
 
 Route::get('get-member-irclist-values','IrcController@getMembersListValues');
-
 
 Route::get('update_password','MemberController@UpdateMemberPassword');
 

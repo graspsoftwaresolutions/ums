@@ -111,38 +111,6 @@
         height: 2.5rem;
         margin-top: 10px;
     }
-    #main.main-full {
-        height: 750px;
-        overflow: auto;
-    }
-    
-    .footer {
-       position: fixed;
-       margin-top:50px;
-       left: 0;
-       bottom: 0;
-       width: 100%;
-       height:auto;
-       background-color: red;
-       color: white;
-       text-align: center;
-       z-index:999;
-    } 
-    .sidenav-main{
-        z-index:9999;
-    }
-
-</style>
-<style type="text/css">
-    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
-    .autocomplete-suggestion { padding: 8px 5px; white-space: nowrap; overflow: hidden; }
-    .autocomplete-selected { background: #F0F0F0; }
-    .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-    .autocomplete-group { padding: 8px 5px; }
-    .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
-    #transfer_member{
-        color:#fff;
-    }
 </style>
 @endsection @section('main-content')
 <div class="row">
@@ -157,18 +125,18 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col s10 m6 l6">
-                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Subscription Additional') }}</h5>
+                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Upload TDF') }}</h5>
                                     <ol class="breadcrumbs mb-0">
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('Subscription') }}
+                                            <li class="breadcrumb-item active">{{__('Upload TDF') }}
                                             </li>
                                         </ol>
                                 </div>
                                 <div class="col s2 m6 l6 ">
                                     
-                                    <a class="btn waves-light cyan breadcrumbs-btn right hide" href="{{ route('subscription.download', app()->getLocale())  }}">{{__('Download Sample')}}</a>
+                                    <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ asset('storage/app/subscription/tdf.xlsx') }}">{{__('Download Sample')}}</a>
                                 </div>
                             </div>
                             @include('includes.messages')
@@ -188,68 +156,38 @@
                  $companylist = CommonHelper::getHeadCompanyListAll(); 
                 } else if($user_role =='union-branch'){ $unionbranchid = CommonHelper::getUnionBranchID($userid); $companylist = CommonHelper::getUnionCompanyList($unionbranchid); } else if($user_role =='company'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } else if($user_role =='company-branch'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } $company_count = count($companylist); }
                 @endphp 
-                @if($user_role=='union')
-                <!--Basic Form-->
+              
+					@if($user_role!='company')
+                    <div class="card">
+                        
 
-                <!-- jQuery Plugin Initialization -->
-                <div class="row">
-                	<br>
-					<div class="col s4 hide">
-					
-						<div class="card" style="padding:10px;">
-							<header class="kanban-board-header blue" style="padding:10px;color: #fff;"><div class="kanban-title-board line-ellipsis" contenteditable="true">Members</div><div class="dropdown"><a class="dropdown-trigger" href="#" data-target="1"> </a></div></header>
-							<main class="kanban-drag">
-
-								<br>
-									Subscription Additional entry
-								<br>
-								<br>
-							</main>
-						</div>
-					</div>
-                    <div class="col s12">
-                        <div id="basic-form" class="card card card-default scrollspy">
-                            <div class="card-content">
-
-                                <div class="row">
+                        <div class="card-content">
+                            <div class="row">
                                 <div class="col s12 m12">
 
                                     <div class="row">
-                                        <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/subscribe_entry') }}" enctype="multipart/form-data">
+                                        <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/tdf_update') }}" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
 
-                                                <div class="input-field col m2 s12">
-                                                    <label for="doe">{{__('Subscription Month') }}*</label>
+                                                <div class="input-field col m3 s12">
+                                                    <label for="doe">{{__('Upload Month') }}*</label>
                                                     <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
                                                 </div>
-                                                <div class="col m3 s12">
-                                                    <label for="sub_company">{{__('Company') }}*</label>
-                                                    <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
-                                                        <option value="" selected>{{__('Choose Company') }}</option>
-                                                        @foreach($companylist as $value)
-                                                        <option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="errorTxt6"></div>
+                                                
+                                                <div id="file-upload-div" class="input-field  file-field col m2 s12">
+                                                    <div class="btn ">
+                                                        <span>File</span>
+                                                        <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
+                                                    </div>
+                                                    <div class="file-path-wrapper ">
+                                                        <input class="file-path validate" type="text">
+                                                    </div>
                                                 </div>
-
-                                                <div class="input-field col s12 m4" id="memberarea">
-                                                    <label for="member_search" class="force-active">{{__('Member Name')}}</label>
-                                                    <input id="member_search" type="text" autocomplete="off" class="validate " data-error=".errorTxt16" value="" name="member_search">
-                                                    <input id="member_code" type="text" autocomplete="off" class="validate hide" name="member_code" data-error=".errorTxt6" value="" readonly >
-                                                    <div class="errorTxt16"></div>
-                                                </div>
-
-                                                <div class="input-field col s1">
-                                                    <label for="sub_member_amount">Amount</label>
-                                                    <input  placeholder="Amount" name="sub_member_amount" data-error=".errorTxt17" id="sub_member_amount" type="text" class="validate allow_decimal">
-                                                    <div class="errorTxt17"></div>
-                                                </div>
-                                               
-                                                <div class="col m1 s12 " style="padding-top:5px;">
+                                                
+                                                <div class="col m3 s12 " style="padding-top:5px;">
                                                     </br>
-                                                    <button id="submit-upload" class="mb-6 btn waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-effect purple lightrn-1 " type="submit">{{__('Submit') }}</button>
 
                                                 </div>
 
@@ -261,21 +199,13 @@
                                 </div>
 
                             </div>
-
-                            </div>
                         </div>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
                     </div>
-                    @endif
-					
+					@endif
                 </div>
             </div>
         </div>
-       
+        
     </div>
 
     @endsection @section('footerSection')
@@ -292,33 +222,12 @@
     <script src="{{ asset('public/assets/js/jquery-ui-month.min.js')}}"></script>
     <script src="{{ asset('public/js/MonthPicker.min.js')}}"></script>
     <script src="{{ asset('public/js/sweetalert.min.js')}}"></script>
-    <script src="{{ asset('public/assets/js/jquery.autocomplete.min.js') }}" type="text/javascript"></script>
 
     <script>
+        $("#tdfmembership_sidebar_a_id").addClass('active');
         $(document).ready(function() {
             // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
             $('.modal').modal();
-        });
-
-        $("#member_search").devbridgeAutocomplete({
-            //lookup: countries,
-            serviceUrl: "{{ URL::to('/get-ircauto-member-list') }}?serachkey="+ $("#member_search").val(),
-            type:'GET',
-            //callback just to show it's working
-            onSelect: function (suggestion) {
-                 $("#member_search").val(suggestion.value);
-                 $("#member_code").val(suggestion.number);
-            },
-            showNoSuggestionNotice: true,
-            noSuggestionNotice: 'Sorry, no matching results',
-            onSearchComplete: function (query, suggestions) {
-                if(!suggestions.length){
-                    $("#member_code").val('');
-                }
-            }
-        });
-        $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
-            $("#member_search").val('');
         });
 
         $(document).ready(function() {
@@ -340,15 +249,12 @@
                 entry_date: {
                     required: true,
                 },
-                sub_company: {
-                    required: true,
-                },
-                 member_search:{
+                // sub_company: {
+                //     required: true,
+                // },
+                /* file:{
                 	required: true,
-                },   
-                sub_member_amount:{
-                    required: true,
-                }, 
+                }, */
             },
             //For custom messages
             messages: {
@@ -356,16 +262,13 @@
                     required: "Please choose date",
 
                 },
-                sub_company: {
-                    required: "Please choose Bank",
+                // sub_company: {
+                //     required: "Please choose Bank",
 
-                },
-                 member_search:{
-                	required: 'Please choose member',
-                },  
-                sub_member_amount:{
-                    required: 'Please enter Amount',
-                }, 
+                // },
+                /* file:{
+                	required: 'required',
+                }, */
             },
             errorElement: 'div',
             errorPlacement: function(error, element) {
@@ -378,27 +281,45 @@
             }
         });
 
-        $(document).on('click', '#submit-upload', function() {
-            $('#subscribe_formValidate').trigger('submit');
-
-        });
-
-       
         $(document).on('change', '#entry_date,#sub_company', function() {
-            //getDataStatus();
+            
         });
 
-        $("#subscriptions_sidebars_id").addClass('active');
-        $("#subadd_sidebar_li_id").addClass('active');
-        $("#subadd_sidebar_a_id").addClass('active');
+        $(document).on('submit', 'form#subscribe_formValidate', function() {
+             return true;
+        });
 
-        $(document).on('input', '.allow_decimal', function(){
-           var self = $(this);
-           self.val(self.val().replace(/[^0-9\.]/g, ''));
-           if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
-           {
-             evt.preventDefault();
-           }
-         });
+        $(document).on('click', '#submit-download', function() {
+            //alert('hi');
+            $('#subscribe_formValidate').trigger('submit');
+        });
+     
+        $("#subscriptions_sidebars_id").addClass('active');
+        $("#subupsalary_sidebar_li_id").addClass('active');
+        $("#subupsalary_sidebar_a_id").addClass('active');
+
+        $(document).on('click', '#file', function() {
+           
+
+        });
+
+        function printDiv() {
+
+            var divToPrint = document.getElementById('DivIdToPrint');
+            console.log(divToPrint.innerHTML);
+
+            var newWin = window.open('', 'Print-Window');
+
+            newWin.document.open();
+
+            newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+
+            newWin.document.close();
+
+            setTimeout(function() {
+                newWin.close();
+            }, 10);
+
+        }
     </script>
     @endsection
