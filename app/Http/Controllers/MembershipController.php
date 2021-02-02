@@ -4373,6 +4373,7 @@ class MembershipController extends Controller
             if(Input::hasFile('file')){
                 $data['entry_date'] = $request->entry_date;
                 $entry_date = $request->entry_date;
+                $sub_company = $request->input('sub_company');
 
                 $datearr = explode("/",$entry_date);  
                 $monthname = $datearr[0];
@@ -4398,7 +4399,7 @@ class MembershipController extends Controller
                     return  redirect('en/tdf_upload')->with('error', 'Wrong excel sheet');
                 }
 
-                $subscription_qry = DB::table('tdf_date')->where('Date','=',$form_date);
+                $subscription_qry = DB::table('tdf_date')->where('Date','=',$form_date)->where('company_id','=',$sub_company);
                 $subscription_count = $subscription_qry->count();
                 if($subscription_count>0){
                     $subscription_month = $subscription_qry->get();
@@ -4406,6 +4407,7 @@ class MembershipController extends Controller
                 }else{
                     $subscription_month = [];
                     $subscription_month['Date'] = $form_date;
+                    $subscription_month['company_id'] = $sub_company;
                     $subscription_month['created_by'] = Auth::user()->id;
                     $subscription_month['created_on'] = date('Y-m-d');
                     
@@ -4510,9 +4512,17 @@ class MembershipController extends Controller
                  //print_r($updatedata);
                  //dd($affected);
             if($affected==1){
+                $memberdata = DB::table('membership')
+                ->where('member_number', $member_number)
+                //->pluck('id','status_id');
+                ->first(); 
+                $memberid = $memberdata->id;
+                $statusid = $memberdata->status_id;
+                //dd($memberdata);
+
                 $tdfaffects = DB::table('tdf_updation_temp')
                 ->where('id', $tdfid)
-                ->update(array('status' => 1)); 
+                ->update(array('status' => 1, 'member_id' => $memberid, 'status_id' => $statusid)); 
               //  dd($tdfaffects);
 
             }else{

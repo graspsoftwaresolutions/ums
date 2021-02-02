@@ -174,7 +174,18 @@
                                                     <label for="doe">{{__('Upload Month') }}*</label>
                                                     <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
                                                 </div>
-                                                
+
+                                                <div class="col s4">
+                                                    <label for="sub_company">{{__('Company') }}*</label>
+                                                    <select name="sub_company" id="sub_company" required="" class="error browser-default selectpicker" data-error=".errorTxt6">
+                                                        <option value="" selected>{{__('Choose Company') }}</option>
+                                                        @foreach($companylist as $value)
+                                                        <option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="errorTxt6"></div>
+                                                </div>
+
                                                 <div id="file-upload-div" class="input-field  file-field col m2 s12">
                                                     <div class="btn ">
                                                         <span>File</span>
@@ -294,9 +305,9 @@
             $('#subscribe_formValidate').trigger('submit');
         });
      
-        $("#subscriptions_sidebars_id").addClass('active');
-        $("#subupsalary_sidebar_li_id").addClass('active');
-        $("#subupsalary_sidebar_a_id").addClass('active');
+        // $("#subscriptions_sidebars_id").addClass('active');
+        // $("#subupsalary_sidebar_li_id").addClass('active');
+        // $("#subupsalary_sidebar_a_id").addClass('active');
 
         $(document).on('click', '#file', function() {
            

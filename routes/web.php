@@ -46,7 +46,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/member-register', 'MemberController@register')->name('member.register');
-	
 
 	//Race Details 
 	Route::get('race','MasterController@raceList')->name('master.race'); 
@@ -221,7 +220,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ajax_pending_member_list','SubscriptionAjaxController@ajax_pending_member_list');
 	Route::post('ajax_subcompany_list','SubscriptionAjaxController@ajax_sub_company_list');
 	Route::get('get-datewise-status','SubscriptionAjaxController@getDatewiseMember')->name('subscription.datewisemember');
-
 	
 	Route::get('subscription.sub_payment','SubscriptionController@subPayment')->name('subscription.sub_payment');
 	Route::get('subscription_paymenthistory','SubscriptionController@subPaymentHistory')->name('subscription.sub_paymenthistory');
@@ -304,7 +302,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('halfshare_unionreport','ReportsController@halfshareUnionReport')->name('union.halfshare'); 
 	Route::get('newhalfshare_unionreport','ReportsController@newhalfshareUnionReport')->name('union.halfsharenew');
 
-
 	Route::get('get-new-halfsharefilter-report','ReportsController@newHalfshareReportfilter')->name('reports.newhalfsharefilter');
 	Route::post('filter_halfshare_report','ReportsController@filterHalfShareReport')->name('reports.filterhalfshare');
 
@@ -338,7 +335,6 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-new-moremembers-report','ReportsController@membersReportLoadMore')->name('reports.moremembers');
 	
 	Route::get('get-subscription-more','SubscriptionAjaxController@getMoreSubscription')->name('subscription.more');
-	
 
 	Route::get('get-members-history','SubscriptionAjaxController@membershistoryMore')->name('subscription.history');
 	
@@ -614,6 +610,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('tdf-scanning','MembershipController@scanTDF')->name('tdf.scan');
 
+	Route::get('tdf-report','ReportsController@TDFReport')->name('reports.tdf');
+
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
@@ -693,7 +691,6 @@ Route::get('get-all-member-list','MembershipController@getAllmemberslist');
 Route::get('get-branch-count','MasterController@getTotalBranchCount');
 
 Route::get('/test-irc', 'IrcController@TestIRC');
-
 
 // Display All User In Table
 Route::get('user-list', 'HomeController@userList')->name('user-list');
