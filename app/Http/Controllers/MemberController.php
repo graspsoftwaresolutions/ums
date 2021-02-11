@@ -128,7 +128,7 @@ class MemberController extends CommonController
 		$member_email = $request->input('email');
 
 		
-
+		$current_new_icno = '';
 		$number_count = 0;
         if($member_name!=""){
 			
@@ -239,6 +239,8 @@ class MemberController extends CommonController
 				
 				
 			}else{
+				$current_new_icno = DB::table('membership')->where('id', $auto_id)->pluck('new_ic')->first();
+
 				$member_email = $request->input('email');
 				$member_number = $request->input('member_number');
 				$approval_status = $request->input('approval_status');
@@ -1035,7 +1037,14 @@ class MemberController extends CommonController
 				// 	return redirect($redirect_url)->with('message','Member Account created successfully, password sent to mail');
 				// }
 			}else{
-				 return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
+				if($current_new_icno != $member['new_ic']){
+					$userid = DB::table('membership')->where('id', $auto_id)->pluck('user_id')->first();
+					$encpasswordnew = bcrypt($member['new_ic']);
+					$password_data = [ 'password' => $encpasswordnew ];
+					//dd($password_data);
+					DB::table('users')->where('id', $userid)->update($password_data);
+				}
+				return redirect($redirect_url)->with('message','Member Details Updated Succesfully');
 			}
         }else{
 			Artisan::call('cache:clear');

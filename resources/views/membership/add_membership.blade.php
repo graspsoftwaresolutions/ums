@@ -1174,6 +1174,14 @@
 			}
 		},
 	});
+	$(document).on('input', '#new_ic', function(){
+	   var self = $(this);
+	   self.val(self.val().replace(/[^a-zA-Z0-9\.]/g, ''));
+	   if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+	   {
+	     evt.preventDefault();
+	   }
+	 });
 	$("#old_mumber_number").devbridgeAutocomplete({
         //lookup: countries,
         serviceUrl: "{{ URL::to('/get-oldmember-list') }}?serachkey="+ $("#old_mumber_number").val(),

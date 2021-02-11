@@ -2771,6 +2771,14 @@
         },
     });
     @endif
+    $(document).on('input', '#new_ic', function(){
+       var self = $(this);
+       self.val(self.val().replace(/[^a-zA-Z0-9\.]/g, ''));
+       if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 
+       {
+         evt.preventDefault();
+       }
+     });
     $('#bf_contribution,#benefit_amount,#insurance_amount').keyup(function() {
         var bf_contribution = $('#bf_contribution').val();
         var insurance_amount = $('#insurance_amount').val();
