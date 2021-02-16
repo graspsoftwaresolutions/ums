@@ -140,6 +140,7 @@
           </div>
         </li>
         @endif
+		
         <!--
 		@php
 			$form_type_list = CommonHelper::getFormTypes(1);
@@ -167,6 +168,14 @@
     @endif
 		@endforeach
    -->
+		<li id="ecopark_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">photo_filter</i><span class="menu-title" data-i18n="">Eco Park</span></a>
+			<div class="collapsible-body">
+				<ul class="collapsible collapsible-sub" data-collapsible="accordion">
+					<li id="ecopark_sidebar_li_id" class=""><a id="ecopark_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Upload File</span></a>
+					</li>
+				</ul>
+			</div>
+		</li>
       @if($user_role=='union')
         <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
       @endif
@@ -184,7 +193,6 @@
       @else
        <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
       @endif
-		
 		  <li class="bold"><a id="pendirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=0"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Pending List') }}</span></a>
          <li class="bold"><a id="conirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=1"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Confirmed List') }}</span></a>
 		  @endif
@@ -218,6 +226,7 @@
             @endphp
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
               <li id="member_status0_sidebar_li_id" class=""><a id="member_status0_sidebar_a_id" class="collapsible-body" href="{{ route('reports.newmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a></li>
+              <li id="newmember_sidebar_li_id" class="hide"><a id="newmember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.unionnewmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members[Union]') }}</span></a></li>
               <li id="members_report_sidebar_li_id" class="hide"><a id="members_report_sidebar_a_id" class="collapsible-body" href="{{ route('reports.newmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members Report') }}</span></a></li>
               @foreach ($status_list as $status)
               @if($status->id!=4)

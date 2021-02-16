@@ -612,6 +612,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('tdf-report','ReportsController@TDFReport')->name('reports.tdf');
 
+	Route::get('newmemberunion_report','ReportsController@newMemberUnionReport')->name('reports.unionnewmembers');
+	
+	/* Eco Park */
+	Route::get('ecopark/fileupload','EcoParkController@FileUpload')->name('ecopark.fileupload');
+	Route::post('ecopark_update','EcoParkController@EcoParkUpdate')->name('ecopark.update');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

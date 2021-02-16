@@ -22,7 +22,7 @@ $(function() {
      format: "dd/mmm/yyyy"
   });
 
-  var slider = document.getElementById("test-slider");
+  /* var slider = document.getElementById("test-slider");
   noUiSlider.create(slider, {
      start: [20, 80],
      connect: true,
@@ -35,7 +35,7 @@ $(function() {
      format: wNumb({
         decimals: 0
      })
-  });
+  }); */
   $("input.autocomplete").autocomplete({
      data: {
         Apple: null,
