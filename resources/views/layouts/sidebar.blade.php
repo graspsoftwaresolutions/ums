@@ -173,6 +173,8 @@
 				<ul class="collapsible collapsible-sub" data-collapsible="accordion">
 					<li id="ecopark_sidebar_li_id" class=""><a id="ecopark_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Upload File</span></a>
 					</li>
+          <li id="ecoparklist_sidebar_li_id" class=""><a id="ecoparklist_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Eco Park List</span></a>
+          </li>
 				</ul>
 			</div>
 		</li>

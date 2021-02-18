@@ -4793,4 +4793,220 @@ class CommonHelper
         }
         return $unionbranch;
     }
+
+    public static function statusEcoParkMembersCount($status_id, $monthyear=false){
+        if($monthyear==false){
+            $monthyear=date('Y-m-01');
+        }
+       
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE e.status_id = "'.$status_id.'" AND `t`.`Date`="'.$monthyear.'"'));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+    public static function statusEcoParkMembersAmount($status_id, $monthyear=false){
+        if($monthyear==false){
+            $monthyear=date('Y-m-01');
+        }
+       
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE e.status_id = "'.$status_id.'" AND `t`.`Date`="'.$monthyear.'"'));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
+    public static function EcoParkLowPaymentMembersCount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        if($typeid==1){
+            $cond .= " and e.payment_fee<1550";
+        }else if($typeid==2){
+            $cond .= " and e.payment_fee<2050";
+        }else if($typeid==3){
+            $cond .= " and e.payment_fee<2550";
+        }else{
+            $cond .= " and e.payment_fee<5050";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and e.payment_fee>0 and t.type="'.$typeid.'"'.$cond));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+    public static function EcoParkLowPaymentMembersAmount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        if($typeid==1){
+            $cond .= " and e.payment_fee<1550";
+        }else if($typeid==2){
+            $cond .= " and e.payment_fee<2050";
+        }else if($typeid==3){
+            $cond .= " and e.payment_fee<2550";
+        }else{
+            $cond .= " and e.payment_fee<5050";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and e.payment_fee>0 and t.type="'.$typeid.'"'.$cond));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
+    public static function EcoParkZeroPaymentMembersCount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        if($typeid==1){
+            $cond .= " and e.payment_fee=0";
+        }else if($typeid==2){
+            $cond .= " and e.payment_fee=0";
+        }else if($typeid==3){
+            $cond .= " and e.payment_fee=0";
+        }else{
+            $cond .= " and e.payment_fee=0";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and t.type="'.$typeid.'"'.$cond));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+    public static function EcoParkZeroPaymentMembersAmount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        if($typeid==1){
+            $cond .= " and e.payment_fee=0";
+        }else if($typeid==2){
+            $cond .= " and e.payment_fee=0";
+        }else if($typeid==3){
+            $cond .= " and e.payment_fee=0";
+        }else{
+            $cond .= " and e.payment_fee=0";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and t.type="'.$typeid.'"'.$cond));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
+    public static function EcoParkFullPaymentMembersCount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        if($typeid==1){
+            $cond .= " and e.payment_fee>=1550 and e.payment_fee<=2049";
+        }else if($typeid==2){
+            $cond .= " and e.payment_fee>=2050 and e.payment_fee<=2549";
+        }else if($typeid==3){
+            $cond .= " and e.payment_fee>=2550 and e.payment_fee<=5049";
+        }else{
+            $cond .= " and e.payment_fee>=5050";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and t.type="'.$typeid.'"'.$cond));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+
+    public static function EcoParkFullPaymentMembersAmount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        if($typeid==1){
+            $cond .= " and e.payment_fee>=1550 and e.payment_fee<=2049";
+        }else if($typeid==2){
+            $cond .= " and e.payment_fee>=2050 and e.payment_fee<=2549";
+        }else if($typeid==3){
+            $cond .= " and e.payment_fee>=2550 and e.payment_fee<=5049";
+        }else{
+            $cond .= " and e.payment_fee>=5050";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and t.type="'.$typeid.'"'.$cond));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
+
+    public static function EcoParkBatchMembersCount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and t.type="'.$typeid.'"'.$cond));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+
+    public static function EcoParkBatchMembersAmount($monthyear,$typeid,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and t.type="'.$typeid.'"'.$cond));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
+
+    public static function EcoParkCardStatusMembersCount($monthyear,$cardtype,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and e.card_status="'.$cardtype.'"'.$cond));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+
+    public static function EcoParkCardStatusMembersAmount($monthyear,$cardtype,$membertype){
+        $cond = '';
+        if($membertype==0){
+            $cond .= " and (e.member_id='' OR e.member_id is null)";
+        }else{
+            $cond .= " and e.member_id is not null";
+        }
+
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and e.card_status="'.$cardtype.'"'.$cond));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
 }

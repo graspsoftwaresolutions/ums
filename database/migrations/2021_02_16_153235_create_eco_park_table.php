@@ -13,7 +13,7 @@ class CreateEcoParkTable extends Migration
      */
     public function up()
     {
-        Schema::table('eco_park', function (Blueprint $table) {
+        Schema::create('eco_park', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('eco_park_type_id')->nullable();
 			$table->unsignedBigInteger('member_id')->nullable();
@@ -52,8 +52,6 @@ class CreateEcoParkTable extends Migration
      */
     public function down()
     {
-        Schema::table('eco_park', function (Blueprint $table) {
-            //
-        });
+       
     }
 }

@@ -159,7 +159,6 @@
               
 					@if($user_role!='company')
                     <div class="card">
-                        
 
                         <div class="card-content">
                             <div class="row">
