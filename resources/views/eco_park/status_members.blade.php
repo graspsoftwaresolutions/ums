@@ -205,6 +205,7 @@
 							<th width="10%">{{__('NRIC-New')}}</th>
 							<th width="7%">{{__('Amount')}}</th>
 							<th width="10%">{{__('Member Status')}}</th>
+							<th width="10%">{{__('Card Status')}}</th>
 							<th width="15%">{{__('Action')}}</th>
 						</tr> 
 					</thead>
@@ -225,7 +226,7 @@
 								<td>{{ $member->nric_new }}</td>
 								<td>{{ $member->payment_fee }}</td>
 								<td id="member_status_">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
-								
+								<td>{{ $member->card_status }}</td>
 								<td>
 								@if($member->member_number!='')
 								<a class="btn btn-sm " href="{{ route('master.viewmembership', [app()->getLocale(), Crypt::encrypt($member->member_id)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">remove_red_eye</i></a>
@@ -269,9 +270,9 @@
 @endsection
 @section('footerSecondSection')
 <script>
-$("#subscriptions_sidebars_id").addClass('active');
-$("#subscription_sidebar_li_id").addClass('active');
-$("#subscription_sidebar_a_id").addClass('active');
+$("#ecopark_sidebars_id").addClass('active');
+$("#ecopark_sidebar_li_id").addClass('active');
+$("#ecopark_sidebar_a_id").addClass('active');
 $(document).on('click','#clear',function(event){
 	$('#member_search').val("");
 	$('#member_auto_id').val("");

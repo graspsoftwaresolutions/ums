@@ -528,9 +528,10 @@ class EcoParkController extends Controller
         if($status!='all'){
           $columns[$sl++] = 'e.status_id';
         }
+        $columns[$sl++] = 'e.card_status';
         $columns[$sl++] = 'e.id';
 
-        $commonqry = DB::table('eco_park as e')->select('e.id as eid','t.Date','t.type','e.member_id', 'e.full_name','e.privilege_card_no','e.nric_new','e.nric_old','e.member_number','e.bank','e.original_fee','s.status_name as status_name','e.status_id','s.font_color','e.payment_fee','e.date_joined')
+        $commonqry = DB::table('eco_park as e')->select('e.id as eid','t.Date','t.type','e.member_id', 'e.full_name','e.privilege_card_no','e.nric_new','e.nric_old','e.member_number','e.bank','e.original_fee','s.status_name as status_name','e.status_id','s.font_color','e.payment_fee','e.date_joined','e.card_status')
        
         ->leftjoin('eco_park_type as t','e.eco_park_type_id','=','t.id')
         ->leftjoin('status as s','e.status_id','=','s.id')
@@ -593,6 +594,7 @@ class EcoParkController extends Controller
                                     ->orWhere('e.member_number', 'LIKE',"%{$search}%")
                                     ->orWhere('e.nric_new', 'LIKE',"%{$search}%")
                                     ->orWhere('e.payment_fee', 'LIKE',"%{$search}%")
+                                    ->orWhere('e.card_status', 'LIKE',"%{$search}%")
                                     ->orWhere('s.status_name', 'LIKE',"%{$search}%");
                                 })  
                                ->count();
@@ -618,6 +620,7 @@ class EcoParkController extends Controller
                 $nestedData['member_number'] = $resultdata->member_number;
                 $nestedData['nric_new'] = $resultdata->nric_new;
                 $nestedData['payment_fee'] = $resultdata->payment_fee;
+                $nestedData['card_status'] = $resultdata->card_status;
                 $font_color = $resultdata->font_color;
                 $nestedData['font_color'] = $font_color;
 
