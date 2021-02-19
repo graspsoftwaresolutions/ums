@@ -178,6 +178,10 @@ class EcoParkController extends Controller
         $user_id = Auth::user()->id;
         $data = [];
 
+        $nrd = DB::delete('DELETE c1 FROM eco_park c1 INNER JOIN eco_park c2 WHERE c1.id > c2.id AND c1.member_number = c2.member_number AND c1.privilege_card_no = c2.privilege_card_no AND c1.full_name = c2.full_name;');
+
+        //$nrd = DB::delete('DELETE c1 FROM eco_park c1 INNER JOIN eco_park c2 WHERE c1.id > c2.id AND c1.privilege_card_no = c2.privilege_card_no AND c1.full_name = c2.full_name;');
+
         $encauto_id = $request->input('auto_id');
 
         $auto_id = Crypt::decrypt($encauto_id);
@@ -200,8 +204,10 @@ class EcoParkController extends Controller
             $parktypename = 'Batch 1 Non Member';
         }else if($parktype==3){
             $parktypename = 'Batch 2 Member';
-        }else{
+        }else if($parktype==3){
             $parktypename = 'Batch 2 Non Member';
+        }else{
+            $parktypename = 'Others';
         }
 
         $data['row_count'] = $memberrowcount;
@@ -323,6 +329,8 @@ class EcoParkController extends Controller
             $parkdateenc = $request->input('date');
             $parkdate = date('Y-m-01',$parkdateenc);
         }
+
+        $parkdate = '2021-01-01';
         
         $data['parkdate'] = $parkdate;
 
@@ -355,12 +363,15 @@ class EcoParkController extends Controller
         $user_id = Auth::user()->id;
         
         $member_status = $request->input('member_status');
-        $summary_status = $request->input('summary_status');
+        $batch_type = $request->input('batch_type');
+        $member_type = $request->input('member_type');
+        $payment_type = $request->input('payment_type');
+        $card_status = $request->input('card_status');
         $date = $request->input('date');
       
        
         $defaultdate = date('Y-m-01',$date);
-        $data['data_limit'] = 100;
+        $data['data_limit'] = 2000;
         $filter_date = date('Y-m-01',$date);
         
         $data['member_status'] = Status::where('status',1)->get();
@@ -372,6 +383,8 @@ class EcoParkController extends Controller
 
             if($member_status!="all"){
                  $cond =' and e.status_id='.$member_status;
+            }else{
+                $cond =' and e.status_id>=1';
             }
            
             $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
@@ -379,7 +392,122 @@ class EcoParkController extends Controller
             $data['member'] = $members_data;
             $data['status_type'] = 1;
             $data['status'] = $member_status;
-        }        
+            $data['batch_type'] = '';
+            $data['member_type'] = '';
+            $data['payment_type'] = '';
+            $data['card_status'] = '';
+            $data['title_name'] = $member_status!="all" ? CommonHelper::get_member_status_name($member_status).' Members' : 'All Members';
+        }
+
+        if($batch_type!="" && $member_type!=''){
+            //$cond ='';
+
+            $cond =' and t.type='.$batch_type;
+
+
+            if($member_type==0){
+                $cond .= " and (e.member_id='' OR e.member_id is null)";
+            }else{
+                $cond .= " and e.member_id is not null";
+            }
+           
+            $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
+
+            $data['member'] = $members_data;
+            $data['status_type'] = 2;
+            $data['status'] = '';
+            $data['batch_type'] = $batch_type;
+            $data['member_type'] = $member_type;
+            $data['payment_type'] = '';
+            $data['card_status'] = '';
+
+            if($batch_type==1){
+                $parktypename = 'Batch 1 Member';
+            }else if($batch_type==2){
+                $parktypename = 'Batch 1 Non Member';
+            }else if($batch_type==3){
+                $parktypename = 'Batch 2 Member';
+            }else if($batch_type==3){
+                $parktypename = 'Batch 2 Non Member';
+            }else{
+                $parktypename = 'Others';
+            }
+
+            if($member_type==1){
+                $membertypename = 'Members';
+            }else{
+                $membertypename = 'Non Members';
+            }
+
+            $data['title_name'] = $parktypename.'('.$membertypename.')';
+        }   
+
+        if($payment_type!=''){
+           $cond = '';
+           $payment_typename = '';
+           if($payment_type=='low'){
+                $cond .= " and e.payment_fee<1550 and e.payment_fee!=0";
+                $payment_typename = 'Low Payment';
+           }else if($payment_type=='zero'){
+                $cond .= " and e.payment_fee=0";
+                $payment_typename = 'Zero Payment';
+           }else{
+                $payment_typename = 'Full Payment';
+           }
+
+            if($member_type==0){
+                $cond .= " and (e.member_id='' OR e.member_id is null)";
+            }else{
+                $cond .= " and e.member_id is not null";
+            }
+
+            $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
+
+            $data['member'] = $members_data;
+            $data['status_type'] = 3;
+            $data['status'] = '';
+            $data['batch_type'] = '';
+            $data['member_type'] = $member_type;
+            $data['payment_type'] = $payment_type;
+            $data['card_status'] = '';
+
+            if($member_type==1){
+                $membertypename = 'Members';
+            }else{
+                $membertypename = 'Non Members';
+            }
+
+            $data['title_name'] = $payment_typename.'('.$membertypename.')';
+
+        }       
+        if($card_status==1){
+            $cond = " and e.card_status='PC SEND OUT'";
+
+            if($member_type==0){
+                $cond .= " and (e.member_id='' OR e.member_id is null)";
+            }else{
+                $cond .= " and e.member_id is not null";
+            }
+
+            if($member_type==1){
+                $membertypename = 'Paid Members have received card';
+            }else{
+                $membertypename = 'Paid Non Members have received card';
+            }
+
+            $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
+
+            $data['member'] = $members_data;
+            $data['status_type'] = 4;
+            $data['status'] = '';
+            $data['batch_type'] = '';
+            $data['member_type'] = $member_type;
+            $data['payment_type'] = '';
+            $data['card_status'] = 1;
+
+            $data['title_name'] = $membertypename;
+
+        }  
         
         return view('eco_park.status_members')->with('data',$data);
     }

@@ -169,9 +169,9 @@
                                             @csrf
                                             <div class="row">
 
-                                                <div class="input-field col m3 s12">
+                                                <div class="input-field col m3 s12 hide">
                                                     <label for="doe">{{__('Upload Month') }}*</label>
-                                                    <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
+                                                    <input type="text" name="entry_date" id="entry_date" value="{{ 'Jan/2021' }}" class="datepicker-custom" />
                                                 </div>
 
                                                 <div class="col s4">
@@ -179,6 +179,7 @@
                                                     <select name="batch_type" id="batch_type" required="" class="error browser-default selectpicker" data-error=".errorTxt6">
                                                         <option value="" selected>{{__('Choose Type') }}</option>
                                                     
+                                                        <option data-type="Others" value="5">Others</option>
                                                         <option data-type="Batch 1 Member" value="1">Batch 1 Member</option>
                                                         <option data-type="Batch 1 Non Member" value="2">Batch 1 Non Member</option>
                                                         <option data-type="Batch 2 Member" value="3">Batch 2 Member</option>

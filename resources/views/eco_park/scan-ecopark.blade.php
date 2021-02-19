@@ -80,7 +80,7 @@
 									
 									</br>
 									</br>
-									<p class="card-title">Month :  {{ $data['month_year'] }}</p>
+									<p class="card-title hide">Month :  {{ $data['month_year'] }}</p>
 									</br>
 									
 									<div class="row">
@@ -99,7 +99,7 @@
 										      
 										    </div>
 										</div>
-										<div class="col s6 hide">
+										<div class="col s6 ">
 											<table width="100%">
 												<thead>
 													<tr>
@@ -109,7 +109,7 @@
 												</thead>
 												<tbody>
 													@php
-														$callcount = ceil($data['row_count']/10);
+														$callcount = ceil($data['row_count']/20);
 														//dd($callcount);
 														$lastrow=0;
 														$limit=$callcount;
@@ -133,7 +133,7 @@
 												</tbody>
 											</table>
 										</div>
-										<div class="col s6 hide">
+										<div class="col s6 ">
 											@if($data['row_count']>0)
 											<table width="100%">
 												<thead>
@@ -156,7 +156,7 @@
 											</table>
 											@endif
 											<input type="text" class="hide" name="number_of_calls" id="number_of_calls" value="{{ $count }}">
-											<input type="text" class="hide" name="percent_per_call" id="percent_per_call" value="{{ $count>0 ? 10 : 1 }}">
+											<input type="text" class="hide" name="percent_per_call" id="percent_per_call" value="{{ $count>0 ? 5 : 1 }}">
 										</div>
 									</div>
 									

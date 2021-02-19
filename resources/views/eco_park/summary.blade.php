@@ -166,7 +166,7 @@
 
                                                 <div class="input-field col m3 s12">
                                                     <label for="doe">{{__('Upload Month') }}*</label>
-                                                    <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y',strtotime($data['parkdate'])) }}" class="datepicker-custom" />
+                                                    <input type="text" name="entry_date" readonly="" id="entry_date" value="{{ date('M/Y',strtotime($data['parkdate'])) }}" class="" />
                                                 </div>
 
                                                 <div class="col s4 hide">
@@ -213,7 +213,7 @@
                             <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
                                 <h4 class="card-title mb-0">Member Status 
                                         <!-- <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm" style="background:#ccc;" onClick="return printDiv()"> <i class="material-icons">print</i></a> -->
-                                        <span class="right datamonth">[{{ date('M/Y',strtotime($data['parkdate'])) }}]</span>
+                                        <span class="right datamonth hide">[{{ date('M/Y',strtotime($data['parkdate'])) }}]</span>
                                     </h4>
                             </div>
                             <table class="subscription-table responsive-table highlight">
@@ -237,7 +237,7 @@
                                             $member_status_count = CommonHelper::statusEcoParkMembersCount($status->id,$data['parkdate']); 
                                             $member_status_amount = CommonHelper::statusEcoParkMembersAmount($status->id,$data['parkdate']); 
 
-                                            $member_sub_link = URL::to(app()->getLocale().'/ecopark-status?member_status='.$status->id.'&date='.strtotime($data['parkdate'])); 
+                                            $member_sub_link = URL::to(app()->getLocale().'/ecopark-status?member_status='.$status->id.'&date='.strtotime($data['parkdate']).'&batch_type=&member_type='); 
                                         @endphp
                                     <tr class="monthly-sub-status " id="monthly_member_status_{{ $status->id }}" data-href="{{ $member_sub_link }}" style="cursor:pointer;color:{{ $status->font_color }};">
                                         <td>{{ $slno }}</td>
@@ -254,7 +254,7 @@
                                  
                                 </tbody>
                                 <tfoot>
-                                    <tr class="monthly-sub-status" id="monthly_member_status_all" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=all&date='.strtotime($data['parkdate'])) }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
+                                    <tr class="monthly-sub-status" id="monthly_member_status_all" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=all&date='.strtotime($data['parkdate']).'&batch_type=&member_type=') }}" style="cursor:pointer;background: #dbdbf7;font-weight:bold;">
                                         <td colspan="2">Total</td>
                                         <td id="member_status_count_total">{{ $total_members_count }}</td>
                                         <td id="member_status_amount_total">{{ number_format($total_members_amount,2,".",",") }}</td>
@@ -269,7 +269,7 @@
                         <div class="card subscriber-list-card animate fadeRight">
                             <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
                                 <h4 class="card-title mb-0">Overall Summary
-                                        <span class="right datamonth">[{{ date('M/Y',strtotime($data['parkdate'])) }}]</span>
+                                        <span class="right datamonth hide">[{{ date('M/Y',strtotime($data['parkdate'])) }}]</span>
                                     </h4>
                             </div>
                             <table class="subscription-table responsive-table highlight">
@@ -295,7 +295,7 @@
                                         $fullpay_nonmembers_count = 0;
                                         $fullpay_members_amount = 0;
                                         $fullpay_nonmembers_amount = 0;
-                                        for($i=1;$i<=4;$i++){
+                                        for($i=1;$i<=5;$i++){
                                             $lowpay_members_count += CommonHelper::EcoParkLowPaymentMembersCount($data['parkdate'],$i,1); 
                                             $lowpay_nonmembers_count += CommonHelper::EcoParkLowPaymentMembersCount($data['parkdate'],$i,0);
 
@@ -305,84 +305,86 @@
                                             $zeropay_members_count += CommonHelper::EcoParkZeroPaymentMembersCount($data['parkdate'],$i,1); 
                                             $zeropay_nonmembers_count += CommonHelper::EcoParkZeroPaymentMembersCount($data['parkdate'],$i,0);
 
-                                            $fullpay_members_count += CommonHelper::EcoParkFullPaymentMembersCount($data['parkdate'],$i,1); 
-                                            $fullpay_nonmembers_count += CommonHelper::EcoParkFullPaymentMembersCount($data['parkdate'],$i,0);
+                                            if($i<5){
+                                                $fullpay_members_count += CommonHelper::EcoParkFullPaymentMembersCount($data['parkdate'],$i,1); 
+                                                $fullpay_nonmembers_count += CommonHelper::EcoParkFullPaymentMembersCount($data['parkdate'],$i,0);
 
-                                            $fullpay_members_amount += CommonHelper::EcoParkFullPaymentMembersAmount($data['parkdate'],$i,1); 
-                                            $fullpay_nonmembers_amount += CommonHelper::EcoParkFullPaymentMembersAmount($data['parkdate'],$i,0);
+                                                $fullpay_members_amount += CommonHelper::EcoParkFullPaymentMembersAmount($data['parkdate'],$i,1); 
+                                                $fullpay_nonmembers_amount += CommonHelper::EcoParkFullPaymentMembersAmount($data['parkdate'],$i,0);
+                                            }
 
                                         }
 
-                                        $card_status_members_count = CommonHelper::EcoParkCardStatusMembersCount($data['parkdate'],'PC INHAND',1); 
-                                        $card_status_nonmembers_count = CommonHelper::EcoParkCardStatusMembersCount($data['parkdate'],'PC INHAND',0);
+                                        $card_status_members_count = CommonHelper::EcoParkCardStatusMembersCount($data['parkdate'],'PC SEND OUT',1); 
+                                        $card_status_nonmembers_count = CommonHelper::EcoParkCardStatusMembersCount($data['parkdate'],'PC SEND OUT',0);
 
-                                        $card_status_members_amount = CommonHelper::EcoParkCardStatusMembersAmount($data['parkdate'],'PC INHAND',1); 
-                                        $card_status_nonmembers_amount = CommonHelper::EcoParkCardStatusMembersAmount($data['parkdate'],'PC INHAND',0);
+                                        $card_status_members_amount = CommonHelper::EcoParkCardStatusMembersAmount($data['parkdate'],'PC SEND OUT',1); 
+                                        $card_status_nonmembers_amount = CommonHelper::EcoParkCardStatusMembersAmount($data['parkdate'],'PC SEND OUT',0);
                                          
 
                                         //$member_status_amount = CommonHelper::statusEcoParkMembersAmount($status->id,$data['parkdate']); 
                                     @endphp
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark/members?&date='.strtotime($data['parkdate'])) }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Total Uploaded Members(Members & Non Members)</td>
                                         <td id="approval_status_count_1">{{ $data['members_sum']->count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($data['members_sum']->amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=1&payment_type=low') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Low Payment Members</td>
                                         <td id="approval_status_count_1">{{ $lowpay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($lowpay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=low') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Low Payment Non Members</td>
                                         <td id="approval_status_count_1">{{ $lowpay_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($lowpay_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=1&payment_type=zero') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Zero Payment Members</td>
                                         <td id="approval_status_count_1">{{ $zeropay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($zeropay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=zero') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Zero Payment Non Members</td>
                                         <td id="approval_status_count_1">{{ $zeropay_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($zeropay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-statusa " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>New Members</td>
                                         <td id="approval_status_count_1">0</td>
                                         <td id="approval_pending_amount_1">0</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-statusa " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Full Payment Members</td>
                                         <td id="approval_status_count_1">{{ $fullpay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($fullpay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                     <tr class="monthly-approval-statusa " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Full Payment Non Members</td>
                                         <td id="approval_status_count_1">{{ $fullpay_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($fullpay_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=1&payment_type=&card_status=1') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Paid Members have received card</td>
                                         <td id="approval_status_count_1">{{ $card_status_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($card_status_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=&card_status=1') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Paid Non Members have received card</td>
                                         <td id="approval_status_count_1">{{ $card_status_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($card_status_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
-                                    @for($j=1;$j<=4;$j++)
+                                    @for($j=1;$j<=5;$j++)
                                     @php
                                         $batch_members_count = CommonHelper::EcoParkBatchMembersCount($data['parkdate'],$j,1); 
                                         $batch_nonmembers_count = CommonHelper::EcoParkBatchMembersCount($data['parkdate'],$j,0);
@@ -390,31 +392,34 @@
                                         $batch_members_amount = CommonHelper::EcoParkBatchMembersAmount($data['parkdate'],$j,1); 
                                         $batch_nonmembers_amount = CommonHelper::EcoParkBatchMembersAmount($data['parkdate'],$j,0);
                                         if($j==1){
-                                            $batch_head = '1 Members';
+                                            $batch_head = 'Batch 1 Members';
                                         }else if($j==2){
-                                            $batch_head = '1 Non Members';
+                                            $batch_head = 'Batch 1 Non Members';
                                         }else if($j==3){
-                                            $batch_head = '2 Members';
+                                            $batch_head = 'Batch 2 Members';
+                                        }else if($j==4){
+                                            $batch_head = 'Batch 2 Non Members';
                                         }else{
-                                            $batch_head = '2 Non Members';
+                                            $batch_head = 'Others';
                                         }
                                     @endphp
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
-                                        <td colspan="4">Batch {{$batch_head}}</td>
+                                    <tr class=" " id="monthly_approval_status_1" data-href="" style="cursor:pointer;">
+                                        <td colspan="4">{{$batch_head}}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type='.$j.'&member_type=1') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Members</td>
                                         <td id="approval_status_count_1">{{ $batch_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($batch_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type='.$j.'&member_type=0') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Non Members</td>
                                         <td id="approval_status_count_1">{{ $batch_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($batch_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
                                     @endfor
+
 
                                 </tbody>
                                
@@ -541,7 +546,7 @@
             }, 10);
 
         }
-        $(".monthly-sub-status").click(function() {
+        $(".monthly-sub-status,.monthly-approval-status").click(function() {
             //console.log($(this).data("href"));
             if ($(this).attr("data-href") != "") {
                 window.open($(this).attr("data-href"), '_blank');

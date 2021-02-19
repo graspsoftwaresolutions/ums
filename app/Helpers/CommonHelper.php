@@ -4828,8 +4828,10 @@ class CommonHelper
             $cond .= " and e.payment_fee<2050";
         }else if($typeid==3){
             $cond .= " and e.payment_fee<2550";
+        }else if($typeid==4){
+           $cond .= " and e.payment_fee<5050";
         }else{
-            $cond .= " and e.payment_fee<5050";
+            $cond .= " and e.payment_fee<1550";
         }
 
         $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and e.payment_fee>0 and t.type="'.$typeid.'"'.$cond));
@@ -4851,8 +4853,10 @@ class CommonHelper
             $cond .= " and e.payment_fee<2050";
         }else if($typeid==3){
             $cond .= " and e.payment_fee<2550";
-        }else{
+        }else if($typeid==4){
             $cond .= " and e.payment_fee<5050";
+        }else{
+            $cond .= " and e.payment_fee<1550";
         }
 
         $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE t.Date="'.$monthyear.'" and e.payment_fee>0 and t.type="'.$typeid.'"'.$cond));
@@ -4873,6 +4877,8 @@ class CommonHelper
         }else if($typeid==2){
             $cond .= " and e.payment_fee=0";
         }else if($typeid==3){
+            $cond .= " and e.payment_fee=0";
+        }else if($typeid==4){
             $cond .= " and e.payment_fee=0";
         }else{
             $cond .= " and e.payment_fee=0";
@@ -4896,6 +4902,8 @@ class CommonHelper
         }else if($typeid==2){
             $cond .= " and e.payment_fee=0";
         }else if($typeid==3){
+            $cond .= " and e.payment_fee=0";
+        }else if($typeid==4){
             $cond .= " and e.payment_fee=0";
         }else{
             $cond .= " and e.payment_fee=0";
@@ -5030,4 +5038,5 @@ class CommonHelper
        
         return $members_amount;
     }
+    
 }

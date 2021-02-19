@@ -137,14 +137,12 @@
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<h4 class="card-title">
+				<h4 class="card-title ">
 				
-				@if($data['status']!='all')
-					{{ CommonHelper::get_member_status_name($data['status']) }} Members List
-				@else
-					All Members List
-				@endif
-				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn " value="Advanced search">
+				
+				{{ $data['title_name'] }} List
+				
+				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn hide" value="Advanced search">
 				<a class="btn waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
 				</h4> 
 				@php
@@ -155,7 +153,7 @@
 				@endphp
 				</h4> 
 				
-				<form method="post" id="filtersubmit" action="">
+				<form method="post" id="filtersubmit" class="hide" action="">
 					@csrf  
 					<div id="advancedsearch" class="row" style="display:none">    
 						<div class="col m3 s12 m_date_row">
@@ -230,7 +228,7 @@
 								
 								<td>
 								@if($member->member_number!='')
-								<a class="btn btn-sm " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($member->member_id)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
+								<a class="btn btn-sm " href="{{ route('master.viewmembership', [app()->getLocale(), Crypt::encrypt($member->member_id)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">remove_red_eye</i></a>
 								<a class="btn btn-sm amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->member_id)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
 								@endif
 								</td>
