@@ -68,8 +68,8 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                 @foreach($data['parkdates'] as $parkdate)
                                                  <tr>
                                                    <td>{{ date('M/Y',strtotime($parkdate)) }}</td>
-                                                   <td>0</td>
-                                                   <td>0</td>
+                                                   <td>{{ CommonHelper::EcoParkMembersCount($parkdate) }}</td>
+                                                   <td>{{ number_format(CommonHelper::EcoParkMembersAmount($parkdate),2,".",",") }}</td>
                                                    <td>
                                                     <a class="mb6 btn btn-sm waves-light purple lightrn-1" href="{{ route('ecopark.summary', [app()->getLocale()]) }}?date={{ strtotime($parkdate) }}">Summary</a>
                                                      <a class="mb6 btn btn-sm waves-light orange lightrn-1" href="{{ route('ecopark.members', [app()->getLocale()]) }}?date={{ strtotime($parkdate) }}">View Members</a>

@@ -625,6 +625,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ecopark/summary','EcoParkController@EcoParkSummary')->name('ecopark.filter');
 
 	Route::get('ecopark-status','EcoParkController@statusCountView')->name('ecopark.status');
+	Route::post('ajax_ecoparkmember_list','EcoParkController@ajax_ecoparkmember_list');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

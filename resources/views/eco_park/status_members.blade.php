@@ -177,7 +177,7 @@
 						
 						<div class="input-field col s12 right-align">
 							<input type="button" class="btn waves-light amber darken-4" style="width:130px;color:#fff !important;" id="clear" name="clear" value="{{__('clear')}}">
-							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
+							<input type="submit" class="btn hide" id="search" name="search" value="{{__('Search')}}">
 						</div>
 					</div>
 				</form>  
@@ -204,7 +204,7 @@
 							<th width="10%">{{__('Member Name')}}</th>
 							<th width="9%">{{__('Member Id')}}</th>
 							
-							<th width="10%">{{__('NRIC')}}</th>
+							<th width="10%">{{__('NRIC-New')}}</th>
 							<th width="7%">{{__('Amount')}}</th>
 							<th width="10%">{{__('Member Status')}}</th>
 							<th width="15%">{{__('Action')}}</th>
@@ -217,7 +217,7 @@
 						@endphp
 						@foreach($data['member'] as  $key => $member)
 							@php
-								
+
 							@endphp
 							<tr style="overflow-x:auto;">
 								<td>{{$slno}}</td>
@@ -226,7 +226,7 @@
 								
 								<td>{{ $member->nric_new }}</td>
 								<td>{{ $member->payment_fee }}</td>
-								<td id="member_status_">{{ $member->status_id }}</td>
+								<td id="member_status_">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
 								
 								<td>
 								@if($member->member_number!='')

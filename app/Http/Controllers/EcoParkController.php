@@ -384,4 +384,157 @@ class EcoParkController extends Controller
         return view('eco_park.status_members')->with('data',$data);
     }
 
+    public function ajax_ecoparkmember_list(Request $request){
+        
+        $status = $request->status;
+        $month = $request->month;
+
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        
+        $sl=0;
+        $columns[$sl++] = 'e.full_name';
+        $columns[$sl++] = 'e.member_number';
+        $columns[$sl++] = 'e.nric_new';
+        $columns[$sl++] = 'e.payment_fee';
+        if($status!='all'){
+          $columns[$sl++] = 'e.status_id';
+        }
+        $columns[$sl++] = 'e.id';
+
+        $commonqry = DB::table('eco_park as e')->select('e.id as eid','t.Date','t.type','e.member_id', 'e.full_name','e.privilege_card_no','e.nric_new','e.nric_old','e.member_number','e.bank','e.original_fee','s.status_name as status_name','e.status_id','s.font_color','e.payment_fee','e.date_joined')
+       
+        ->leftjoin('eco_park_type as t','e.eco_park_type_id','=','t.id')
+        ->leftjoin('status as s','e.status_id','=','s.id')
+        ->leftjoin('membership as m','m.id','=','e.member_id');
+        //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+
+        //$commonqry->dump()->get();
+
+        // $queries = DB::getQueryLog();
+        // dd($queries);
+
+        if($status!='all'){
+            $commonqry = $commonqry->where('e.status_id','=',$status); 
+        }
+        $commonqry = $commonqry->where('t.Date','=',$month);
+        
+        //$commonqry->dump()->get();
+        $totalData = $commonqry->count();
+        
+        $totalFiltered = $totalData; 
+        
+       $limit = $request->input('length');
+       $start = $request->input('start');
+          //var_dump($start);
+          //exit;
+        $order = $columns[$request->input('order.0.column')];
+     
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            $sub_mem = $commonqry;
+            if( $limit != -1){
+                $sub_mem = $sub_mem->offset($start)
+                            ->limit($limit);
+            }
+            $sub_mem = $sub_mem->orderBy($order,$dir)
+            ->get()->toArray();
+        }
+        else {
+            $search = $request->input('search.value'); 
+            
+            $sub_mem = $commonqry->where(function($query) use ($search){
+                            $query->orWhere('e.full_name', 'LIKE',"%{$search}%")
+                            ->orWhere('e.member_number', 'LIKE',"%{$search}%")
+                            ->orWhere('e.nric_new', 'LIKE',"%{$search}%")
+                            ->orWhere('e.payment_fee', 'LIKE',"%{$search}%")
+                            ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                        });  
+          
+            if( $limit != -1){
+               $sub_mem = $sub_mem->offset($start)
+                        ->limit($limit);
+            }
+            $sub_mem = $sub_mem->orderBy($order,$dir)
+                      ->get()->toArray();
+            
+            
+            $totalFiltered =  $commonqry->where(function($query) use ($search){
+                                     $query->orWhere('e.full_name', 'LIKE',"%{$search}%")
+                                    ->orWhere('e.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('e.nric_new', 'LIKE',"%{$search}%")
+                                    ->orWhere('e.payment_fee', 'LIKE',"%{$search}%")
+                                    ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                                })  
+                               ->count();
+        }
+    //     var_dump($sub_mem);
+    //    exit;
+        $result = $sub_mem;
+
+        $data = array();
+        if(!empty($result))
+        {
+            foreach ($result as $resultdata)
+            {
+                $autoid = $resultdata->eid;
+                // foreach($resultdata as $newkey => $newvalue){
+                //     if($newkey=='id'){
+                //         $autoid = $newvalue;
+                //     }else{
+                //         $nestedData[$newkey] = $newvalue;
+                //     }
+                // }
+                $nestedData['name'] = $resultdata->full_name;
+                $nestedData['member_number'] = $resultdata->member_number;
+                $nestedData['nric_new'] = $resultdata->nric_new;
+                $nestedData['payment_fee'] = $resultdata->payment_fee;
+                $font_color = $resultdata->font_color;
+                $nestedData['font_color'] = $font_color;
+
+                if($status=='all'){
+                    $nestedData['status_id'] = $resultdata->status_id;
+                    $nestedData['status_name'] = $resultdata->status_name;
+                    $nestedData['font_color'] = $font_color;
+                }
+
+                $memberid = $resultdata->member_id;
+                $font_color = $resultdata->font_color;
+                
+                $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
+               
+                
+                $actions ='';
+                $baseurl = URL::to('/');
+                
+                $histry = $memberid!='' ? route('member.history', [app()->getLocale(),$enc_id]) : '#';
+                $member_delete_link = $baseurl.'/'.app()->getLocale().'/subscription_delete?sub_id='.$autoid;
+                
+                $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Eco Park'  class='' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
+                //$actions .="<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='$member_delete_link'><i class='material-icons' style='color:red'>delete</i></a>";
+                
+                if($memberid!=''){
+                    
+                    $actions .="<a style='float: left; margin-left: 10px;' title='History' target='_blank' class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
+                    
+                }  
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
+        
+        //$data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+      
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+
 }

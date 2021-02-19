@@ -40,7 +40,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
     @php
       $encparkid = Crypt::encrypt($data['parkautoid']);
     @endphp
-     <a id="submit-download" href="{{ route('latestprocess.ecopark', [app()->getLocale()])  }}?auto_id={{$encparkid}}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">{{__('Update details')}}</a>
+     <a id="submit-download" href="{{ route('latestprocess.ecopark', [app()->getLocale()])  }}?auto_id={{$encparkid}}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">{{ 'Update details' }}</a>
   </div>
 </div>
 </div>
@@ -60,8 +60,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                           <table id="page-length-option" class="display">
                                               <thead>
                                                   <tr>
-                                                     
-                                                     
+                                                      <th width="10%">{{__('Member Name')}}</th>
+                                                      <th width="9%">{{__('Member Id')}}</th>
+                                                      
+                                                      <th width="10%">{{__('NRIC-New')}}</th>
+                                                      <th width="7%">{{__('Amount')}}</th>
+                                                      <th width="10%">{{__('Member Status')}}</th>
+                                                      <th width="15%">{{__('Action')}}</th>
                                                   </tr>
                                               </thead>
                                               <tbody>
@@ -118,8 +123,70 @@ $("#ecoparklist_sidebar_a_id").addClass('active');
 //Data table Ajax call
 //Data table Ajax call
 $(function() {
-    $('#page-length-option').DataTable({});
-      
+    var dataTable =   $('#page-length-option').DataTable({
+        "responsive": true,
+        "lengthMenu": [
+          [10, 25, 50, 100],
+          [10, 25, 50, 100]
+        ],
+        
+        /* "lengthMenu": [
+          [10, 25, 50, -1],
+          [10, 25, 50, "All"]
+        ], */
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+          "url": "{{ url(app()->getLocale().'/ajax_ecoparkmember_list') }}?status=all"+"&month={{$data['parkdate']}}",
+          "dataType": "json",
+          "type": "POST",
+          headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+          'data': function(data){
+             var race_id = $('#race_id').val();
+             var memberid      = $('#memberid').val();
+             var designation_id = $('#designation_id').val();
+             
+            
+             data.race_id = race_id;
+             data.memberid = memberid;
+             data.designation_id = designation_id;
+            //console.log(data);
+            data._token = "{{csrf_token()}}";
+          },
+          "error": function (jqXHR, textStatus, errorThrown) {
+                  if(jqXHR.status==419){
+                    alert('Your session has expired, please login again');
+                    window.location.href = base_url;
+                  }
+             },
+        },
+        "columns": [{
+            "data": "name"
+          },
+          {
+            "data": "member_number"
+          },
+          {
+            "data": "nric_new"
+          },
+          {
+            "data": "payment_fee"
+          },
+          
+          {
+            "data": "status_name"
+          },
+          {
+            "data": "options"
+          }
+        ],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td', nRow).css('color', aData.font_color );
+          }
+      });
+            
 });
 
 

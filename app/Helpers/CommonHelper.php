@@ -5009,4 +5009,25 @@ class CommonHelper
        
         return $members_amount;
     }
+
+    public static function EcoParkMembersCount($monthyear=false){
+        if($monthyear==false){
+            $monthyear=date('Y-m-01');
+        }
+       
+        $members_qry = DB::select(DB::raw('SELECT COUNT(e.id) AS count FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$monthyear.'"'));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+    public static function EcoParkMembersAmount($monthyear=false){
+        if($monthyear==false){
+            $monthyear=date('Y-m-01');
+        }
+       
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(e.payment_fee),0) as amount FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$monthyear.'"'));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
 }
