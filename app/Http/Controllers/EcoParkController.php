@@ -452,6 +452,7 @@ class EcoParkController extends Controller
                 $cond .= " and e.payment_fee=0";
                 $payment_typename = 'Zero Payment';
            }else{
+                $cond .= " and t.type<5";
                 $payment_typename = 'Full Payment';
            }
 

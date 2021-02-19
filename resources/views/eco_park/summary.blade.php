@@ -360,13 +360,13 @@
                                         <td id="approval_status_count_1">0</td>
                                         <td id="approval_pending_amount_1">0</td>
                                     </tr>
-                                    <tr class="monthly-approval-statusa " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=1&payment_type=full') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Full Payment Members</td>
                                         <td id="approval_status_count_1">{{ $fullpay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($fullpay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                     <tr class="monthly-approval-statusa " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
+                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=full') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Full Payment Non Members</td>
                                         <td id="approval_status_count_1">{{ $fullpay_nonmembers_count }}</td>
