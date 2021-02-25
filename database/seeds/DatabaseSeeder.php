@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(UnionGroupsTableSeeder::class);
         //$this->call(IncrementTypesTableDataSeeder::class);
         //$this->call(DesignationNewSeeder::class);
-        $this->call(UnionGroupBranchTableSeeder::class);
+        //$this->call(UnionGroupBranchTableSeeder::class);
+        $this->call(CardStatusTableDataSeeder::class);
     }
 }

@@ -625,7 +625,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ecopark/summary','EcoParkController@EcoParkSummary')->name('ecopark.filter');
 
 	Route::get('ecopark-status','EcoParkController@statusCountView')->name('ecopark.status');
+	Route::post('ecopark-status','EcoParkController@statusCountView');
 	Route::post('ajax_ecoparkmember_list','EcoParkController@ajax_ecoparkmember_list');
+
+	Route::get('ecopark/report','EcoParkController@EcoParkReport')->name('ecopark.report');
+	Route::get('iframe_eco_park','EcoParkController@IframeEcoParkReport')->name('reports.ecopark');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

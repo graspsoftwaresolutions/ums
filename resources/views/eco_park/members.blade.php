@@ -65,6 +65,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       
                                                       <th width="10%">{{__('NRIC-New')}}</th>
                                                       <th width="7%">{{__('Amount')}}</th>
+                                                      <th width="10%">{{__('Batch')}}</th>
                                                       <th width="10%">{{__('Member Status')}}</th>
                                                       <th width="10%">{{__('Card Status')}}</th>
                                                       <th width="15%">{{__('Action')}}</th>
@@ -175,7 +176,9 @@ $(function() {
           {
             "data": "payment_fee"
           },
-          
+          {
+            "data": "batch_type"
+          },
           {
             "data": "status_name"
           },

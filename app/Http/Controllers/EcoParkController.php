@@ -368,13 +368,18 @@ class EcoParkController extends Controller
         $payment_type = $request->input('payment_type');
         $card_status = $request->input('card_status');
         $date = $request->input('date');
-      
-       
-        $defaultdate = date('Y-m-01',$date);
-        $data['data_limit'] = 2000;
-        $filter_date = date('Y-m-01',$date);
-        
+        //dd($batch_type);
         $data['member_status'] = Status::where('status',1)->get();
+
+        if($member_status=='' && $batch_type=='' && $member_type=='' && $payment_type=='' && $card_status=='' && $date==''){
+            $member_status='all';
+            $date= strtotime('2021-01-01');
+        }
+
+        $data['str_date'] = $date;
+        $defaultdate = date('Y-m-01',$date);
+        $data['data_limit'] = 7000;
+        $filter_date = date('Y-m-01',$date);
       
         //dd($company_str_List); 
         $data['filter_date'] = strtotime(date('Y-m-01',strtotime($defaultdate)));
@@ -382,9 +387,13 @@ class EcoParkController extends Controller
             $cond ='';
 
             if($member_status!="all"){
-                 $cond =' and e.status_id='.$member_status;
+                 $cond .=' and e.status_id='.$member_status;
             }else{
-                $cond =' and e.status_id>=1';
+                $cond .=' and e.status_id>=1';
+            }
+
+            if($batch_type>=1 && $batch_type<=5){
+                $cond .=' and t.type='.$batch_type;
             }
            
             $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
@@ -392,7 +401,7 @@ class EcoParkController extends Controller
             $data['member'] = $members_data;
             $data['status_type'] = 1;
             $data['status'] = $member_status;
-            $data['batch_type'] = '';
+            $data['batch_type'] = $batch_type;
             $data['member_type'] = '';
             $data['payment_type'] = '';
             $data['card_status'] = '';
@@ -526,6 +535,7 @@ class EcoParkController extends Controller
         $columns[$sl++] = 'e.member_number';
         $columns[$sl++] = 'e.nric_new';
         $columns[$sl++] = 'e.payment_fee';
+        $columns[$sl++] = 't.type';
         if($status!='all'){
           $columns[$sl++] = 'e.status_id';
         }
@@ -625,6 +635,20 @@ class EcoParkController extends Controller
                 $font_color = $resultdata->font_color;
                 $nestedData['font_color'] = $font_color;
 
+                if($resultdata->type==1){
+                    $batch_head = 'Batch 1 Members';
+                }else if($resultdata->type==2){
+                    $batch_head = 'Batch 1 Non Members';
+                }else if($resultdata->type==3){
+                    $batch_head = 'Batch 2 Members';
+                }else if($resultdata->type==4){
+                    $batch_head = 'Batch 2 Non Members';
+                }else{
+                    $batch_head = 'Others';
+                }
+
+                $nestedData['batch_type'] = $batch_head;
+
                 if($status=='all'){
                     $nestedData['status_id'] = $resultdata->status_id;
                     $nestedData['status_name'] = $resultdata->status_name;
@@ -667,6 +691,83 @@ class EcoParkController extends Controller
             );
 
         echo json_encode($json_data); 
+    }
+
+    public function EcoParkReport(Request $request,$lang){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        
+        $member_type = $request->input('member_type');
+        $card_status = $request->input('card_status');
+        $defaultdate = '2021-01-01';
+        //$date = $request->input('date');
+
+        $data['cardstatus'] = DB::table('eco_park_card_status')->get();
+       
+        $data['member_status'] = '';
+        $data['member_type'] = '';
+        $data['card_status'] = '';
+        $data['member'] = [];
+      
+        if($member_type!=""){
+            $cond ='';
+
+            if($member_status!="all"){
+                 $cond =' and e.status_id='.$member_status;
+            }else{
+                $cond =' and e.status_id>=1';
+            }
+           
+            $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
+
+            $data['member'] = $members_data;
+           
+        }
+        
+        return view('eco_park.card_report')->with('data',$data);
+    }
+
+    public function IframeEcoParkReport(Request $request,$lang){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        
+        $member_type = $request->input('member_type');
+        $card_status = $request->input('card_type');
+        $defaultdate = '2021-01-01';
+
+        $cond = '';
+        if($member_type!='' || $card_status!=''){
+            if($member_type!=''){
+                if($member_type==1){
+                     $cond .= " and e.member_id is not null";
+                }else if($member_type==2){
+                    $cond .= " and (e.member_id='' OR e.member_id is null)";
+                }else{
+                    $cond .= " and ((e.nric_new='' OR e.nric_new is null) AND (e.member_number='' OR e.member_number is null OR e.member_number=0))";
+                }
+            }
+
+            if($card_status!=''){
+                $cond .= " and e.card_status = '$card_status'";
+            }
+           
+           // dd($cond);
+            $members_data = DB::select(DB::raw('SELECT e.*,t.type,t.Date FROM `eco_park` AS `e` LEFT JOIN `eco_park_type` AS `t` ON `t`.`id` = `e`.`eco_park_type_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' Order By e.full_name asc' ));
+
+
+            $members = $members_data;
+        }else{
+            $members = [];
+        }
+
+        $data['member_view'] = $members;
+        $data['member_type'] = $member_type;
+        $data['card_status'] = $card_status;
+
+        return view('eco_park.iframe_card_report')->with('data',$data);
+
     }
 
 }

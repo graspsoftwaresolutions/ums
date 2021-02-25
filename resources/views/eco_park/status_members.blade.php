@@ -143,7 +143,7 @@
 				{{ $data['title_name'] }} List
 				
 				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn hide" value="Advanced search">
-				<a class="btn waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
+				<a class="btn waves-light right " href="{{ route('ecopark.list', app()->getLocale())  }}">{{__('Back')}}</a>
 				</h4> 
 				@php
 					$userid = Auth::user()->id;
@@ -153,29 +153,34 @@
 				@endphp
 				</h4> 
 				
-				<form method="post" id="filtersubmit" class="hide" action="">
+				<form method="post" id="filtersubmit" class="" action="{{ url(app()->getLocale().'/ecopark-status') }}">
 					@csrf  
-					<div id="advancedsearch" class="row" style="display:none">    
-						<div class="col m3 s12 m_date_row">
+					<div id="advancedsearch" class="row" style="">    
+						<div class="col m3 s12 m_date_row hide">
 							<label for="search_date">{{__('Date')}}</label>
-							<input id="search_date" type="text" class="validate" value="{{ date('M/Y',$data['filter_date']) }}" readonly name="search_date">
-							<input id="filter_date" type="text" class="validate hide" value="{{ $data['filter_date'] }}" readonly name="filter_date">
-							<input id="status_type" type="text" class="validate hide" value="{{ $data['status_type'] }}" readonly name="status_type">
+							<input id="search_date" type="text" class="validate hide" value="{{ date('M/Y',$data['filter_date']) }}" readonly name="search_date">
+							<input id="filter_date" type="text" class="validate" value="{{ $data['str_date'] }}" readonly name="date">
+							<input id="member_status" type="text" class="validate" value="{{ $data['status'] }}" readonly name="member_status">
+							
+							<input id="member_type" type="text" class="validate" value="{{ $data['member_type'] }}" readonly name="member_type">
+							<input id="payment_type" type="text" class="validate" value="{{ $data['payment_type'] }}" readonly name="payment_type">
 						</div>
-						<div class="col m3 s12 member_status_row">
-							<label for="member_status">{{__('Member Status') }}</label>
-							<select name="member_status" id="member_status" class="error browser-default" data-error=".errorTxt6" >
-								<option value="all">{{__('All') }}</option>
-								@foreach($data['member_status'] as  $key => $stat)
-									<option @if($member_status==$stat->id) selected @endif value="{{ $stat->id }}">{{ $stat->status_name }}</option>
-								@endforeach
+						<div class="col m3 s12 member_status_row @if($data['status']=='') hide @endif">
+							<label for="batch_type">{{__('Batch Type') }}</label>
+							<select name="batch_type" id="batch_type" class="error browser-default" data-error=".errorTxt6" >
+								<option value="">{{__('All') }}</option>
+								<option data-type="Others" @if($data['batch_type']==5) selected @endif value="5">Others</option>
+                                <option data-type="Batch 1 Member" @if($data['batch_type']==1) selected @endif value="1">Batch 1 Member</option>
+                                <option data-type="Batch 1 Non Member" @if($data['batch_type']==2) selected @endif value="2">Batch 1 Non Member</option>
+                                <option data-type="Batch 2 Member" @if($data['batch_type']==3) selected @endif value="3">Batch 2 Member</option>
+                                <option data-type="Batch 2 Non Member" @if($data['batch_type']==4) selected @endif value="4">Batch 2 Non Member</option>
 								
 							</select>
 						</div>
 						
-						<div class="input-field col s12 right-align">
+						<div class="input-field col s12 right-align @if($data['status']=='') hide @endif">
 							<input type="button" class="btn waves-light amber darken-4" style="width:130px;color:#fff !important;" id="clear" name="clear" value="{{__('clear')}}">
-							<input type="submit" class="btn hide" id="search" name="search" value="{{__('Search')}}">
+							<input type="submit" class="btn" id="search" name="search" value="{{__('Search')}}">
 						</div>
 					</div>
 				</form>  
@@ -204,6 +209,7 @@
 							
 							<th width="10%">{{__('NRIC-New')}}</th>
 							<th width="7%">{{__('Amount')}}</th>
+							<th width="7%">{{__('Batch Type')}}</th>
 							<th width="10%">{{__('Member Status')}}</th>
 							<th width="10%">{{__('Card Status')}}</th>
 							<th width="15%">{{__('Action')}}</th>
@@ -216,7 +222,17 @@
 						@endphp
 						@foreach($data['member'] as  $key => $member)
 							@php
-
+								if($member->type==1){
+								    $batch_head = 'Batch 1 Members';
+								}else if($member->type==2){
+								    $batch_head = 'Batch 1 Non Members';
+								}else if($member->type==3){
+								    $batch_head = 'Batch 2 Members';
+								}else if($member->type==4){
+								    $batch_head = 'Batch 2 Non Members';
+								}else{
+								    $batch_head = 'Others';
+								}
 							@endphp
 							<tr style="overflow-x:auto;">
 								<td>{{$slno}}</td>
@@ -225,6 +241,7 @@
 								
 								<td>{{ $member->nric_new }}</td>
 								<td>{{ $member->payment_fee }}</td>
+								<td>{{ $batch_head }}</td>
 								<td id="member_status_">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
 								<td>{{ $member->card_status }}</td>
 								<td>
