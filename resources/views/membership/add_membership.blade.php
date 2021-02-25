@@ -1174,7 +1174,7 @@
 			}
 		},
 	});
-	$(document).on('input', '#new_ic', function(){
+	$(document).on('input', '#new_ic', function(evt){
 	   var self = $(this);
 	   self.val(self.val().replace(/[^a-zA-Z0-9\.]/g, ''));
 	   if ((evt.which != 46 || self.val().indexOf('.') != -1) && (evt.which < 48 || evt.which > 57)) 

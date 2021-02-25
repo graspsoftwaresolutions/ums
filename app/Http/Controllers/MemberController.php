@@ -1215,7 +1215,8 @@ class MemberController extends CommonController
         {
             $usernewic_exists = Membership::where([
                 ['new_ic','=',$new_ic],
-                ['id','!=',$db_autoid]
+                ['id','!=',$db_autoid],
+               
                 ])->count(); 
         }
         else
@@ -1224,6 +1225,7 @@ class MemberController extends CommonController
 				$usernewic_exists = Membership::where([
 					['new_ic','=',$new_ic],
 					['id','!=',$old_db_autoid],
+					['status_id','<',3],
 					])->count();
 			}else{
 				$usernewic_exists = Membership::where('new_ic','=',$new_ic)->count(); 
