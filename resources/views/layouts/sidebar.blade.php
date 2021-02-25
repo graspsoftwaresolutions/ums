@@ -90,11 +90,11 @@
             
           @endif
            @if($user_role=='data-entry')
-            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a></li>
           @endif
 		     @if($user_role=='member')
-            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('member.membership.profile',app()->getLocale()) }}"><i class="material-icons">account_box</i><span class="menu-title" data-i18n="">{{ __('Profile') }}</span></a>
-            <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan hide" href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a>
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('member.membership.profile',app()->getLocale()) }}"><i class="material-icons">account_box</i><span class="menu-title" data-i18n="">{{ __('Profile') }}</span></a></li>
+            <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan hide" href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a></li>
           @endif
         @endif
         @if($user_role=='union' || $user_role=='company' || $user_role=='company-branch' || $user_role == 'member')
@@ -181,24 +181,24 @@
 			</div>
 		</li>
       @if($user_role=='union')
-        <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a>
+        <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a></li>
       @endif
       @if($user_role=='union')
         @if (env('IRC')!='' || env('IRC')!=0)
-        <li class="bold"><a id="irc_account_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.list',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('IRC Account') }}</span></a>
+        <li class="bold"><a id="irc_account_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.list',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('IRC Account') }}</span></a></li>
         @endif
       @endif
       @if($user_role=='irc-confirmation')
-       <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_waiters',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('Waited IRC List') }}</span></a>
+       <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_waiters',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('Waited IRC List') }}</span></a></li>
       @endif
       @if($user_role=='irc-confirmation' || $user_role=='irc-branch-committee' || $user_role=='irc-confirmation-officials' || $user_role=='irc-branch-committee-officials')
       @if($user_role=='irc-confirmation' || $user_role=='irc-confirmation-officials')
-		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a>
+		  <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC') }}</span></a></li>
       @else
-       <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a>
+       <li class="bold"><a id="irc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC List') }}</span></a></li>
       @endif
-		  <li class="bold"><a id="pendirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=0"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Pending List') }}</span></a>
-         <li class="bold"><a id="conirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=1"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Confirmed List') }}</span></a>
+		  <li class="bold"><a id="pendirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=0"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Pending List') }}</span></a></li>
+         <li class="bold"><a id="conirc_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('irc.irc_list',app()->getLocale()) }}?status=1"><i class="material-icons">confirmation_number</i><span class="menu-title" data-i18n="">{{ __('IRC Confirmed List') }}</span></a></li>
 		  @endif
 		@if($user_role=='union')
        <li id="data_cleaning_sidebars_id" class="bold"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)"><i class="material-icons">clear</i><span class="menu-title" data-i18n="Dashboard">Data Cleaning</span></a>
