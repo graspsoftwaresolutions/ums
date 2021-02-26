@@ -24,7 +24,7 @@
 				
 				<td colspan="9" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">CARD STATUS REPORT</span>
+					<span style="margin-top:0;">ECO PARK REPORT</span>
 				</td>
 				
 			</tr>

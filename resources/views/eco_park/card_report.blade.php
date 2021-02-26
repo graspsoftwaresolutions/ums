@@ -53,7 +53,7 @@
 					<div id="hidesearch" class="row">
 					<div class="row">                          
 						 <div class="col s4">
-                            <label for="card_type">{{__('Card Type') }}*</label>
+                            <label for="card_type">{{__('Card Type') }}</label>
                             <select name="card_type" id="card_type" class="error browser-default selectpicker" data-error=".errorTxt5">
                                 <option value="" selected>{{__('Choose Type') }}</option>
                               
@@ -65,7 +65,7 @@
                             <div class="errorTxt5"></div>
                         </div>
                         <div class="col s4">
-                            <label for="member_type">{{__('Member Type') }}*</label>
+                            <label for="member_type">{{__('Member Type') }}</label>
                             <select name="member_type" id="member_type" class="error browser-default selectpicker" data-error=".errorTxt6">
                                 <option value="" selected>{{__('Choose Type') }}</option>
                               	<option value="1">Members Matched</option>
@@ -77,7 +77,7 @@
                             <div class="errorTxt6"></div>
                         </div>
                         <div class="col s4">
-                            <label for="amount_type">{{__('Amount') }}*</label>
+                            <label for="amount_type">{{__('Amount') }}</label>
                             <select name="amount_type" id="amount_type" class="error browser-default selectpicker" data-error=".errorTxt7">
                                 <option value="" selected>{{__('Choose Amount') }}</option>
                               	<option value="1">1550 - 2049</option>
@@ -95,7 +95,7 @@
                          <br>
                           <div class="clearfix"/>
                         <div class="col s4">
-                            <label for="batch_type">{{__('Batch Type') }}*</label>
+                            <label for="batch_type">{{__('Batch Type') }}</label>
                             <select name="batch_type" id="batch_type" class="error browser-default selectpicker" data-error=".errorTxt8">
                                 <option value="" selected>{{__('Choose Type') }}</option>
                               	<option data-type="Others" value="5">Others</option>
@@ -111,7 +111,7 @@
                        
 
                         <div class="col s4">
-                            <label for="member_status">{{__('Member Status') }}*</label>
+                            <label for="member_status">{{__('Member Status') }}</label>
                             <select name="member_status" id="member_status" class="error browser-default selectpicker" data-error=".errorTxt7">
                                 <option value="" selected>{{__('Choose Status') }}</option>
                               	@foreach($data['member_status'] as  $key => $stat)
