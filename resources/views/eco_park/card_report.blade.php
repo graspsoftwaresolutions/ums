@@ -136,17 +136,16 @@
 				</form>  
 			</div>
 		</div>
-		<div class="row">
-		<div class="col s12">
-			<iframe src="{{ route('reports.ecopark',[app()->getLocale()])  }}" id="myframe" height="400px" width="100%"></iframe>
-			
 		
-		</div>
-		</div>
-		</br>
-		</br>
 	</div>
 </div> 
+<div class="row">
+	<div class="col s12">
+		<iframe src="{{ route('reports.ecopark',[app()->getLocale()])  }}" id="myframe" height="400px" width="100%"></iframe>
+		
+	
+	</div>
+</div>
 @php	
 	
 @endphp

@@ -168,6 +168,7 @@
     @endif
 		@endforeach
    -->
+   @if($user_role=='union')
 		<li id="ecopark_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">photo_filter</i><span class="menu-title" data-i18n="">Eco Park</span></a>
 			<div class="collapsible-body">
 				<ul class="collapsible collapsible-sub" data-collapsible="accordion">
@@ -180,6 +181,7 @@
 				</ul>
 			</div>
 		</li>
+    @endif
       @if($user_role=='union')
         <li class="bold"><a id="member_transfer_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('transfer.history',app()->getLocale()) }}"><i class="material-icons">transfer_within_a_station</i><span class="menu-title" data-i18n="">{{ __('Member Transfer History') }}</span></a></li>
       @endif
