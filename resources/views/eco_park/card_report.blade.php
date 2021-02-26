@@ -76,7 +76,53 @@
                             </select>
                             <div class="errorTxt6"></div>
                         </div>
-						<div class="clearfix"/>
+                        <div class="col s4">
+                            <label for="amount_type">{{__('Amount') }}*</label>
+                            <select name="amount_type" id="amount_type" class="error browser-default selectpicker" data-error=".errorTxt7">
+                                <option value="" selected>{{__('Choose Amount') }}</option>
+                              	<option value="1">1550 - 2049</option>
+                              	<option value="2">2050 - 2549</option>
+                              	<option value="3">2550 - 5049</option>
+                              	<option value="4">5050 and above</option>
+                              	<option value="5">Low Payment</option>
+                              	<option value="6">Zero Payment</option>
+								
+                              
+                            </select>
+                            <div class="errorTxt7"></div>
+                        </div>
+                        <div class="clearfix"/>
+                         <br>
+                          <div class="clearfix"/>
+                        <div class="col s4">
+                            <label for="batch_type">{{__('Batch Type') }}*</label>
+                            <select name="batch_type" id="batch_type" class="error browser-default selectpicker" data-error=".errorTxt8">
+                                <option value="" selected>{{__('Choose Type') }}</option>
+                              	<option data-type="Others" value="5">Others</option>
+                                <option data-type="Batch 1 Member" value="1">Batch 1 Member</option>
+                                <option data-type="Batch 1 Non Member" value="2">Batch 1 Non Member</option>
+                                <option data-type="Batch 2 Member" value="3">Batch 2 Member</option>
+                                <option data-type="Batch 2 Non Member" value="4">Batch 2 Non Member</option>
+								
+                              
+                            </select>
+                            <div class="errorTxt8"></div>
+                        </div>
+                       
+
+                        <div class="col s4">
+                            <label for="member_status">{{__('Member Status') }}*</label>
+                            <select name="member_status" id="member_status" class="error browser-default selectpicker" data-error=".errorTxt7">
+                                <option value="" selected>{{__('Choose Status') }}</option>
+                              	@foreach($data['member_status'] as  $key => $stat)
+									<option value="{{ $stat->id }}">{{ $stat->status_name }}</option>
+								@endforeach
+								
+                              
+                            </select>
+                            <div class="errorTxt7"></div>
+                        </div>
+						
 						<div class="row">
 							<div class="input-field col s6 right">
 								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
@@ -183,8 +229,11 @@ $("#ecoparkreport_sidebar_a_id").addClass('active');
 		event.preventDefault();
 		var card_type = $("#card_type").val();
 		var member_type = $("#member_type").val();
-		if(card_type!="" || member_type!=""){
-			var searchfilters = '&card_type='+card_type+'&member_type='+member_type;
+		var amount_type = $("#amount_type").val();
+		var batch_type = $("#batch_type").val();
+		var member_status = $("#member_status").val();
+		if(card_type!="" || member_type!="" || amount_type!="" || batch_type!="" || member_status!=""){
+			var searchfilters = '&card_type='+card_type+'&member_type='+member_type+'&amount_type='+amount_type+'&batch_type='+batch_type+'&member_status='+member_status;
 			
 			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/iframe_eco_park') }}?offset=0"+searchfilters,);

@@ -22,7 +22,7 @@
 			</tr> -->
 			<tr class="">
 				
-				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
+				<td colspan="9" style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">CARD STATUS REPORT</span>
 				</td>
@@ -37,6 +37,7 @@
                 <th style="border : 1px solid #988989;">{{__('NRIC-NEW')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK')}}</th>
                 <th style="border : 1px solid #988989;">{{__('AMOUNT')}}</th>
+                <th style="border : 1px solid #988989;">{{__('BATCH TYPE')}}</th>
               
                 <th style="border : 1px solid #988989;">{{__('MEMBER STATUS')}}</th>
                 <th style="border : 1px solid #988989;">{{__('CARD STATUS')}}</th>
@@ -49,7 +50,17 @@
 			@endphp
             @foreach($data['member_view'] as $member)
             	@php
-				
+					if($member->type==1){
+					    $batch_head = 'Batch 1 Members';
+					}else if($member->type==2){
+					    $batch_head = 'Batch 1 Non Members';
+					}else if($member->type==3){
+					    $batch_head = 'Batch 2 Members';
+					}else if($member->type==4){
+					    $batch_head = 'Batch 2 Non Members';
+					}else{
+					    $batch_head = 'Others';
+					}
 				@endphp
                 <tr>
 					<td style="border : 1px solid #988989;">{{ $sno }}</td>
@@ -58,6 +69,7 @@
                     <td style="border : 1px solid #988989;">{{ $member->nric_new }}</td>
                     <td style="border : 1px solid #988989;"> {{ $member->bank }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->payment_fee }}</td>
+                    <td style="border : 1px solid #988989;">{{ $batch_head }}</td>
                     
                     
                     <td style="border : 1px solid #988989;">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
