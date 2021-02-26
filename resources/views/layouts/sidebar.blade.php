@@ -175,7 +175,7 @@
 					</li>
           <li id="ecoparklist_sidebar_li_id" class=""><a id="ecoparklist_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Eco Park List</span></a>
           </li>
-          <li id="ecoparkreport_sidebar_li_id" class=""><a id="ecoparkreport_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.report',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Privilege card Report</span></a>
+          <li id="ecoparkreport_sidebar_li_id" class=""><a id="ecoparkreport_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.report',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Eco Park Report</span></a>
           </li>
 				</ul>
 			</div>
