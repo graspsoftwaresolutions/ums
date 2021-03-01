@@ -37,7 +37,7 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				
-				{{__('Eco Park Report')}} 
+				{{__('Privilege Card Report')}} 
 				
 				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
@@ -71,7 +71,6 @@
                               	<option value="1">Members Matched</option>
                               	<option value="2">Members Not Matched</option>
                               	<option value="3">Members with No IC / No Member number</option>
-								
                               
                             </select>
                             <div class="errorTxt6"></div>
@@ -86,7 +85,6 @@
                               	<option value="4">5050 and above</option>
                               	<option value="5">Low Payment</option>
                               	<option value="6">Zero Payment</option>
-								
                               
                             </select>
                             <div class="errorTxt7"></div>
@@ -103,7 +101,6 @@
                                 <option data-type="Batch 1 Non Member" value="2">Batch 1 Non Member</option>
                                 <option data-type="Batch 2 Member" value="3">Batch 2 Member</option>
                                 <option data-type="Batch 2 Non Member" value="4">Batch 2 Non Member</option>
-								
                               
                             </select>
                             <div class="errorTxt8"></div>
@@ -117,7 +114,6 @@
                               	@foreach($data['member_status'] as  $key => $stat)
 									<option value="{{ $stat->id }}">{{ $stat->status_name }}</option>
 								@endforeach
-								
                               
                             </select>
                             <div class="errorTxt7"></div>
@@ -142,7 +138,6 @@
 <div class="row">
 	<div class="col s12">
 		<iframe src="{{ route('reports.ecopark',[app()->getLocale()])  }}" id="myframe" height="400px" width="100%"></iframe>
-		
 	
 	</div>
 </div>
@@ -184,33 +179,11 @@ $("#ecoparkreport_sidebar_a_id").addClass('active');
 	
 		$('#filtersubmit').validate({
 			rules: {
-				/* month_year: {
-					  required: true,
-				  },
-				  company_id: {
-					  required: true,
-				  },
-				  branch_id: {
-					required: true,
-				  },
-				  member_search: {
-					required: true,
-				  }, */
+				
 			},
 			//For custom messages
 			messages: {
-				/* month_year: {
-					  required: '{{__("Please Select Month And Year") }}',
-				 }, */
-				/*   company_id: {
-					  required: '{{__("Please Select Company ID") }}',
-				  },
-				  branch_id: {
-					required: '{{__("Please Select Branch ID") }}',
-				  },
-				  member_search: {
-					required: '{{__("Please Enter Member") }}',
-				  }, */
+				
 			},
 			errorElement: 'div',
 			errorPlacement: function(error, element) {
@@ -234,9 +207,7 @@ $("#ecoparkreport_sidebar_a_id").addClass('active');
 		if(card_type!="" || member_type!="" || amount_type!="" || batch_type!="" || member_status!=""){
 			var searchfilters = '&card_type='+card_type+'&member_type='+member_type+'&amount_type='+amount_type+'&batch_type='+batch_type+'&member_status='+member_status;
 			
-			
 			$("#myframe").attr("src", "{{ url(app()->getLocale().'/iframe_eco_park') }}?offset=0"+searchfilters,);
-
 			
 			$("#search").attr('disabled',false);
 		}else{

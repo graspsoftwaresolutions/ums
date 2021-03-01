@@ -148,7 +148,6 @@
 				<label for="edit_nominee_address_two">Address Line 2*</label>  
 			</div>
 			
-			
 			<div class="clearfix"> </div>
 			<div class="input-field col s12 m4">
 			   
@@ -208,8 +207,6 @@
 			$('#old_member_id').val('');
 		}
 	});
-
-	
 	
 	function SubmitMemberForm(){
 		 $('#member_formValidate').trigger('submit');
@@ -600,7 +597,6 @@ $('#add_fee').click(function(){
 	var selected = $("#new_fee_id").find('option:selected');
 	var new_fee_name = selected.data('feename'); 
 	var fee_amount =   $("#fee_amount").val();
-	
 
 	$.ajaxSetup({
 		headers: {
@@ -953,8 +949,6 @@ $('#edit_nominee_state_id').change(function(e, data){
 		$("#edit_nominee_city_id").empty();
 	}      
 });
-
-
 
 $(document.body).on('click', '.edit_nominee_row' ,function(){
 	var nominee_id = $(this).data('id');

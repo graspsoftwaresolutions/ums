@@ -29786,3 +29786,769 @@
 [2019-10-31 09:07:55] local.INFO: member#:51627to month: 2019-09-01From month2019-09-01  
 [2019-10-31 09:07:55] local.INFO: member#:51627doj: 2007-04-20From month2019-09-01  
 [2019-10-31 09:07:55] local.INFO: member#:51627month diff: 0  
+[2021-02-26 09:02:58] local.INFO: status updates started for company id: 507  
+[2021-02-26 09:02:58] local.INFO: code-6463  
+[2021-02-26 09:02:58] local.INFO: member#:6463to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6463doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6463month diff: 1  
+[2021-02-26 09:02:58] local.INFO: code-6485  
+[2021-02-26 09:02:58] local.INFO: member#:6485to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6485doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6485month diff: 1  
+[2021-02-26 09:02:58] local.INFO: code-7208  
+[2021-02-26 09:02:58] local.INFO: member#:7208to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:7208doj: 2002-03-31From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:7208month diff: 1  
+[2021-02-26 09:02:58] local.INFO: code-6086  
+[2021-02-26 09:02:58] local.INFO: member#:6086to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6086doj: 1998-01-31From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6086month diff: 1  
+[2021-02-26 09:02:58] local.INFO: code-6472  
+[2021-02-26 09:02:58] local.INFO: member#:6472to month: 2019-12-01From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6472doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:02:58] local.INFO: member#:6472month diff: 13  
+[2021-02-26 09:02:58] local.INFO: status changed for memberid: 6472&status=3&fromstatus=2  
+[2021-02-26 09:03:03] local.INFO: code-48098  
+[2021-02-26 09:03:03] local.INFO: member#:48098to month: 2020-09-01From month2021-01-01  
+[2021-02-26 09:03:03] local.INFO: member#:48098doj: 2006-02-13From month2021-01-01  
+[2021-02-26 09:03:03] local.INFO: member#:48098month diff: 4  
+[2021-02-26 09:03:03] local.INFO: status changed for memberid: 48098&status=2&fromstatus=1  
+[2021-02-26 09:03:08] local.INFO: code-63341  
+[2021-02-26 09:03:08] local.INFO: member#:63341to month: 2020-08-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:63341doj: 2020-08-13From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:63341month diff: 5  
+[2021-02-26 09:03:08] local.INFO: status changed for memberid: 63341&status=2&fromstatus=2  
+[2021-02-26 09:03:08] local.INFO: code-41466  
+[2021-02-26 09:03:08] local.INFO: member#:41466to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:41466doj: 2003-05-30From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:41466month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-37355  
+[2021-02-26 09:03:08] local.INFO: member#:37355to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:37355doj: 1998-05-31From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:37355month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-50494  
+[2021-02-26 09:03:08] local.INFO: member#:50494to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:50494doj: 2006-11-02From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:50494month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-50495  
+[2021-02-26 09:03:08] local.INFO: member#:50495to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:50495doj: 2006-11-02From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:50495month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-37900  
+[2021-02-26 09:03:08] local.INFO: member#:37900to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:37900doj: 1998-12-31From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:37900month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-46711  
+[2021-02-26 09:03:08] local.INFO: member#:46711to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:46711doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:46711month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-55239  
+[2021-02-26 09:03:08] local.INFO: member#:55239to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:55239doj: 2009-05-07From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:55239month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-60868  
+[2021-02-26 09:03:08] local.INFO: member#:60868to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:60868doj: 2014-05-20From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:60868month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-14921  
+[2021-02-26 09:03:08] local.INFO: member#:14921to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:14921doj: 1997-12-31From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:14921month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-14991  
+[2021-02-26 09:03:08] local.INFO: member#:14991to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:14991doj: 1998-05-31From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:14991month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-15073  
+[2021-02-26 09:03:08] local.INFO: member#:15073to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:15073doj: 1998-11-30From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:15073month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-15133  
+[2021-02-26 09:03:08] local.INFO: member#:15133to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:15133doj: 2000-03-30From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:15133month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-15139  
+[2021-02-26 09:03:08] local.INFO: member#:15139to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:15139doj: 2000-05-31From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:15139month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-16704  
+[2021-02-26 09:03:08] local.INFO: member#:16704to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:16704doj: 1995-01-24From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:16704month diff: 1  
+[2021-02-26 09:03:08] local.INFO: code-18220  
+[2021-02-26 09:03:08] local.INFO: member#:18220to month: 2019-12-01From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:18220doj: 1999-07-30From month2021-01-01  
+[2021-02-26 09:03:08] local.INFO: member#:18220month diff: 13  
+[2021-02-26 09:03:08] local.INFO: status changed for memberid: 18220&status=3&fromstatus=2  
+[2021-02-26 09:03:13] local.INFO: code-4515  
+[2021-02-26 09:03:13] local.INFO: member#:4515to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:4515doj: 1994-01-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:4515month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6548  
+[2021-02-26 09:03:13] local.INFO: member#:6548to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6548doj: 1999-08-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6548month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-33515  
+[2021-02-26 09:03:13] local.INFO: member#:33515to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:33515doj: 1997-02-20From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:33515month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-34324  
+[2021-02-26 09:03:13] local.INFO: member#:34324to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:34324doj: 1997-04-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:34324month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-34326  
+[2021-02-26 09:03:13] local.INFO: member#:34326to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:34326doj: 1997-04-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:34326month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-34328  
+[2021-02-26 09:03:13] local.INFO: member#:34328to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:34328doj: 1997-04-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:34328month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-37895  
+[2021-02-26 09:03:13] local.INFO: member#:37895to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:37895doj: 1998-12-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:37895month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-37901  
+[2021-02-26 09:03:13] local.INFO: member#:37901to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:37901doj: 1998-12-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:37901month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-50010  
+[2021-02-26 09:03:13] local.INFO: member#:50010to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:50010doj: 2006-07-12From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:50010month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-51379  
+[2021-02-26 09:03:13] local.INFO: member#:51379to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:51379doj: 2007-04-13From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:51379month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-59271  
+[2021-02-26 09:03:13] local.INFO: member#:59271to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:59271doj: 2012-07-19From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:59271month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-27214  
+[2021-02-26 09:03:13] local.INFO: member#:27214to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:27214doj: 1993-10-20From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:27214month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-50616  
+[2021-02-26 09:03:13] local.INFO: member#:50616to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:50616doj: 2006-11-17From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:50616month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-35239  
+[2021-02-26 09:03:13] local.INFO: member#:35239to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:35239doj: 1997-09-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:35239month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6442  
+[2021-02-26 09:03:13] local.INFO: member#:6442to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6442doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6442month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-36811  
+[2021-02-26 09:03:13] local.INFO: member#:36811to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:36811doj: 1998-03-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:36811month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-17604  
+[2021-02-26 09:03:13] local.INFO: member#:17604to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:17604doj: 1997-10-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:17604month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-17861  
+[2021-02-26 09:03:13] local.INFO: member#:17861to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:17861doj: 1998-01-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:17861month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-18676  
+[2021-02-26 09:03:13] local.INFO: member#:18676to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:18676doj: 2002-06-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:18676month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-19101  
+[2021-02-26 09:03:13] local.INFO: member#:19101to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:19101doj: 2005-09-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:19101month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-17047  
+[2021-02-26 09:03:13] local.INFO: member#:17047to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:17047doj: 1996-03-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:17047month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-18228  
+[2021-02-26 09:03:13] local.INFO: member#:18228to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:18228doj: 1999-07-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:18228month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-44559  
+[2021-02-26 09:03:13] local.INFO: member#:44559to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:44559doj: 1998-02-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:44559month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-44952  
+[2021-02-26 09:03:13] local.INFO: member#:44952to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:44952doj: 1999-10-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:44952month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-44965  
+[2021-02-26 09:03:13] local.INFO: member#:44965to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:44965doj: 2000-02-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:44965month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-45183  
+[2021-02-26 09:03:13] local.INFO: member#:45183to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:45183doj: 2003-05-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:45183month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-53338  
+[2021-02-26 09:03:13] local.INFO: member#:53338to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:53338doj: 2007-11-16From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:53338month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-1384  
+[2021-02-26 09:03:13] local.INFO: member#:1384to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:1384doj: 1994-03-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:1384month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-2821  
+[2021-02-26 09:03:13] local.INFO: member#:2821to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:2821doj: 2000-11-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:2821month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6013  
+[2021-02-26 09:03:13] local.INFO: member#:6013to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6013doj: 1997-12-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6013month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6145  
+[2021-02-26 09:03:13] local.INFO: member#:6145to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6145doj: 1998-02-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6145month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6288  
+[2021-02-26 09:03:13] local.INFO: member#:6288to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6288doj: 1998-04-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6288month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6450  
+[2021-02-26 09:03:13] local.INFO: member#:6450to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6450doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6450month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-4705  
+[2021-02-26 09:03:13] local.INFO: member#:4705to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:4705doj: 1994-09-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:4705month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-6511  
+[2021-02-26 09:03:13] local.INFO: member#:6511to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6511doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:6511month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-7864  
+[2021-02-26 09:03:13] local.INFO: member#:7864to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:7864doj: 1990-05-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:7864month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-57377  
+[2021-02-26 09:03:13] local.INFO: member#:57377to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:57377doj: 2010-12-17From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:57377month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-54381  
+[2021-02-26 09:03:13] local.INFO: member#:54381to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:54381doj: 2008-07-14From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:54381month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-57654  
+[2021-02-26 09:03:13] local.INFO: member#:57654to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:57654doj: 2011-03-17From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:57654month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-20372  
+[2021-02-26 09:03:13] local.INFO: member#:20372to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:20372doj: 1978-11-28From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:20372month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-59935  
+[2021-02-26 09:03:13] local.INFO: member#:59935to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:59935doj: 2013-04-03From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:59935month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-61497  
+[2021-02-26 09:03:13] local.INFO: member#:61497to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:61497doj: 2015-09-15From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:61497month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-20724  
+[2021-02-26 09:03:13] local.INFO: member#:20724to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:20724doj: 1980-12-30From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:20724month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-21957  
+[2021-02-26 09:03:13] local.INFO: member#:21957to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:21957doj: 1984-12-31From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:21957month diff: 1  
+[2021-02-26 09:03:13] local.INFO: code-22249  
+[2021-02-26 09:03:13] local.INFO: member#:22249to month: 2020-02-01From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:22249doj: 1985-06-25From month2021-01-01  
+[2021-02-26 09:03:13] local.INFO: member#:22249month diff: 11  
+[2021-02-26 09:03:13] local.INFO: status changed for memberid: 22249&status=2&fromstatus=2  
+[2021-02-26 09:03:17] local.INFO: code-22895  
+[2021-02-26 09:03:17] local.INFO: member#:22895to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:22895doj: 1986-10-31From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:22895month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-24525  
+[2021-02-26 09:03:17] local.INFO: member#:24525to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:24525doj: 1991-08-31From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:24525month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-24558  
+[2021-02-26 09:03:17] local.INFO: member#:24558to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:24558doj: 1991-08-31From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:24558month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-26739  
+[2021-02-26 09:03:17] local.INFO: member#:26739to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:26739doj: 1993-05-31From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:26739month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-27440  
+[2021-02-26 09:03:17] local.INFO: member#:27440to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:27440doj: 1993-12-31From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:27440month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-28040  
+[2021-02-26 09:03:17] local.INFO: member#:28040to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:28040doj: 1994-05-27From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:28040month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-28585  
+[2021-02-26 09:03:17] local.INFO: member#:28585to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:28585doj: 1994-09-23From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:28585month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-29633  
+[2021-02-26 09:03:17] local.INFO: member#:29633to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:29633doj: 1995-04-21From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:29633month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-30267  
+[2021-02-26 09:03:17] local.INFO: member#:30267to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:30267doj: 1995-09-30From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:30267month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-31122  
+[2021-02-26 09:03:17] local.INFO: member#:31122to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:31122doj: 1996-04-30From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:31122month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-32283  
+[2021-02-26 09:03:17] local.INFO: member#:32283to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:32283doj: 1996-10-30From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:32283month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-32498  
+[2021-02-26 09:03:17] local.INFO: member#:32498to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:32498doj: 1996-11-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:32498month diff: 1  
+[2021-02-26 09:03:17] local.INFO: code-33258  
+[2021-02-26 09:03:17] local.INFO: member#:33258to month: 2020-03-01From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:33258doj: 1997-02-06From month2021-01-01  
+[2021-02-26 09:03:17] local.INFO: member#:33258month diff: 10  
+[2021-02-26 09:03:17] local.INFO: status changed for memberid: 33258&status=2&fromstatus=2  
+[2021-02-26 09:03:19] local.INFO: code-34869  
+[2021-02-26 09:03:19] local.INFO: member#:34869to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:34869doj: 1997-07-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:34869month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-34873  
+[2021-02-26 09:03:19] local.INFO: member#:34873to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:34873doj: 1997-07-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:34873month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-34939  
+[2021-02-26 09:03:19] local.INFO: member#:34939to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:34939doj: 1997-07-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:34939month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36054  
+[2021-02-26 09:03:19] local.INFO: member#:36054to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36054doj: 1997-12-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36054month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36298  
+[2021-02-26 09:03:19] local.INFO: member#:36298to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36298doj: 1998-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36298month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36526  
+[2021-02-26 09:03:19] local.INFO: member#:36526to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36526doj: 1998-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36526month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36527  
+[2021-02-26 09:03:19] local.INFO: member#:36527to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36527doj: 1998-01-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36527month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36528  
+[2021-02-26 09:03:19] local.INFO: member#:36528to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36528doj: 1998-01-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36528month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36529  
+[2021-02-26 09:03:19] local.INFO: member#:36529to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36529doj: 1998-01-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36529month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36530  
+[2021-02-26 09:03:19] local.INFO: member#:36530to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36530doj: 1998-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36530month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36537  
+[2021-02-26 09:03:19] local.INFO: member#:36537to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36537doj: 1998-01-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36537month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36544  
+[2021-02-26 09:03:19] local.INFO: member#:36544to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36544doj: 1998-01-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36544month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36545  
+[2021-02-26 09:03:19] local.INFO: member#:36545to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36545doj: 2006-01-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36545month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36554  
+[2021-02-26 09:03:19] local.INFO: member#:36554to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36554doj: 1998-01-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36554month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36557  
+[2021-02-26 09:03:19] local.INFO: member#:36557to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36557doj: 1998-01-28From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36557month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36768  
+[2021-02-26 09:03:19] local.INFO: member#:36768to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36768doj: 1998-02-28From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36768month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-36959  
+[2021-02-26 09:03:19] local.INFO: member#:36959to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36959doj: 1998-03-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:36959month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-37048  
+[2021-02-26 09:03:19] local.INFO: member#:37048to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37048doj: 1998-03-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37048month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-37165  
+[2021-02-26 09:03:19] local.INFO: member#:37165to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37165doj: 1998-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37165month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-37485  
+[2021-02-26 09:03:19] local.INFO: member#:37485to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37485doj: 1998-05-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37485month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-37700  
+[2021-02-26 09:03:19] local.INFO: member#:37700to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37700doj: 1998-07-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37700month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-37762  
+[2021-02-26 09:03:19] local.INFO: member#:37762to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37762doj: 1998-08-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:37762month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-38224  
+[2021-02-26 09:03:19] local.INFO: member#:38224to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38224doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38224month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-38310  
+[2021-02-26 09:03:19] local.INFO: member#:38310to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38310doj: 1999-08-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38310month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-38488  
+[2021-02-26 09:03:19] local.INFO: member#:38488to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38488doj: 1999-12-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38488month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-38935  
+[2021-02-26 09:03:19] local.INFO: member#:38935to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38935doj: 2000-09-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:38935month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40058  
+[2021-02-26 09:03:19] local.INFO: member#:40058to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40058doj: 2001-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40058month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40068  
+[2021-02-26 09:03:19] local.INFO: member#:40068to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40068doj: 2001-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40068month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40082  
+[2021-02-26 09:03:19] local.INFO: member#:40082to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40082doj: 2001-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40082month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40206  
+[2021-02-26 09:03:19] local.INFO: member#:40206to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40206doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40206month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40222  
+[2021-02-26 09:03:19] local.INFO: member#:40222to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40222doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40222month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40225  
+[2021-02-26 09:03:19] local.INFO: member#:40225to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40225doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40225month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40227  
+[2021-02-26 09:03:19] local.INFO: member#:40227to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40227doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40227month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40229  
+[2021-02-26 09:03:19] local.INFO: member#:40229to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40229doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40229month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40230  
+[2021-02-26 09:03:19] local.INFO: member#:40230to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40230doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40230month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40231  
+[2021-02-26 09:03:19] local.INFO: member#:40231to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40231doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40231month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40234  
+[2021-02-26 09:03:19] local.INFO: member#:40234to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40234doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40234month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40237  
+[2021-02-26 09:03:19] local.INFO: member#:40237to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40237doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40237month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40240  
+[2021-02-26 09:03:19] local.INFO: member#:40240to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40240doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40240month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40652  
+[2021-02-26 09:03:19] local.INFO: member#:40652to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40652doj: 2002-05-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40652month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40714  
+[2021-02-26 09:03:19] local.INFO: member#:40714to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40714doj: 2002-05-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40714month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-40994  
+[2021-02-26 09:03:19] local.INFO: member#:40994to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40994doj: 2002-09-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:40994month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-41494  
+[2021-02-26 09:03:19] local.INFO: member#:41494to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:41494doj: 2003-06-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:41494month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-41502  
+[2021-02-26 09:03:19] local.INFO: member#:41502to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:41502doj: 2003-07-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:41502month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-41505  
+[2021-02-26 09:03:19] local.INFO: member#:41505to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:41505doj: 2003-07-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:41505month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-45695  
+[2021-02-26 09:03:19] local.INFO: member#:45695to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:45695doj: 2005-11-30From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:45695month diff: 1  
+[2021-02-26 09:03:19] local.INFO: code-46682  
+[2021-02-26 09:03:19] local.INFO: member#:46682to month: 2020-03-01From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:46682doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:19] local.INFO: member#:46682month diff: 10  
+[2021-02-26 09:03:19] local.INFO: status changed for memberid: 46682&status=2&fromstatus=2  
+[2021-02-26 09:03:21] local.INFO: code-46683  
+[2021-02-26 09:03:21] local.INFO: member#:46683to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46683doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46683month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-46702  
+[2021-02-26 09:03:21] local.INFO: member#:46702to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46702doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46702month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-46718  
+[2021-02-26 09:03:21] local.INFO: member#:46718to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46718doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46718month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-46723  
+[2021-02-26 09:03:21] local.INFO: member#:46723to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46723doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46723month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-46726  
+[2021-02-26 09:03:21] local.INFO: member#:46726to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46726doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:46726month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-47241  
+[2021-02-26 09:03:21] local.INFO: member#:47241to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47241doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47241month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-47348  
+[2021-02-26 09:03:21] local.INFO: member#:47348to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47348doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47348month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-47360  
+[2021-02-26 09:03:21] local.INFO: member#:47360to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47360doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47360month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-47362  
+[2021-02-26 09:03:21] local.INFO: member#:47362to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47362doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:47362month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-48097  
+[2021-02-26 09:03:21] local.INFO: member#:48097to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:48097doj: 2006-02-13From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:48097month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-49120  
+[2021-02-26 09:03:21] local.INFO: member#:49120to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49120doj: 2006-05-02From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49120month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-49315  
+[2021-02-26 09:03:21] local.INFO: member#:49315to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49315doj: 2006-05-04From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49315month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-49318  
+[2021-02-26 09:03:21] local.INFO: member#:49318to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49318doj: 2006-05-04From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49318month diff: 1  
+[2021-02-26 09:03:21] local.INFO: code-49321  
+[2021-02-26 09:03:21] local.INFO: member#:49321to month: 2020-02-01From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49321doj: 2006-05-04From month2021-01-01  
+[2021-02-26 09:03:21] local.INFO: member#:49321month diff: 11  
+[2021-02-26 09:03:21] local.INFO: status changed for memberid: 49321&status=2&fromstatus=2  
+[2021-02-26 09:03:22] local.INFO: code-49323  
+[2021-02-26 09:03:22] local.INFO: member#:49323to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49323doj: 2006-05-04From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49323month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-49355  
+[2021-02-26 09:03:22] local.INFO: member#:49355to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49355doj: 2006-05-04From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49355month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-49407  
+[2021-02-26 09:03:22] local.INFO: member#:49407to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49407doj: 2006-05-04From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49407month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-49743  
+[2021-02-26 09:03:22] local.INFO: member#:49743to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49743doj: 2006-06-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:49743month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-50180  
+[2021-02-26 09:03:22] local.INFO: member#:50180to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50180doj: 2006-08-16From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50180month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-50236  
+[2021-02-26 09:03:22] local.INFO: member#:50236to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50236doj: 2006-09-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50236month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-50237  
+[2021-02-26 09:03:22] local.INFO: member#:50237to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50237doj: 2006-09-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50237month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-50289  
+[2021-02-26 09:03:22] local.INFO: member#:50289to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50289doj: 2006-09-04From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50289month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-50389  
+[2021-02-26 09:03:22] local.INFO: member#:50389to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50389doj: 2006-10-02From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50389month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-50391  
+[2021-02-26 09:03:22] local.INFO: member#:50391to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50391doj: 2006-10-02From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:50391month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-51816  
+[2021-02-26 09:03:22] local.INFO: member#:51816to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:51816doj: 2007-06-14From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:51816month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-52188  
+[2021-02-26 09:03:22] local.INFO: member#:52188to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52188doj: 2007-08-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52188month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-52608  
+[2021-02-26 09:03:22] local.INFO: member#:52608to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52608doj: 2007-10-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52608month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-52710  
+[2021-02-26 09:03:22] local.INFO: member#:52710to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52710doj: 2007-10-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52710month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-52889  
+[2021-02-26 09:03:22] local.INFO: member#:52889to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52889doj: 2007-10-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52889month diff: 1  
+[2021-02-26 09:03:22] local.INFO: code-52890  
+[2021-02-26 09:03:22] local.INFO: member#:52890to month: 2020-03-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52890doj: 2007-10-01From month2021-01-01  
+[2021-02-26 09:03:22] local.INFO: member#:52890month diff: 10  
+[2021-02-26 09:03:22] local.INFO: status changed for memberid: 52890&status=2&fromstatus=2  
+[2021-02-26 09:03:25] local.INFO: code-53409  
+[2021-02-26 09:03:25] local.INFO: member#:53409to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53409doj: 2007-12-03From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53409month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-53558  
+[2021-02-26 09:03:25] local.INFO: member#:53558to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53558doj: 2007-12-19From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53558month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-53824  
+[2021-02-26 09:03:25] local.INFO: member#:53824to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53824doj: 2008-03-05From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53824month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-53895  
+[2021-02-26 09:03:25] local.INFO: member#:53895to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53895doj: 2008-03-11From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:53895month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-55614  
+[2021-02-26 09:03:25] local.INFO: member#:55614to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:55614doj: 2009-08-11From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:55614month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-55615  
+[2021-02-26 09:03:25] local.INFO: member#:55615to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:55615doj: 2009-08-11From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:55615month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-57254  
+[2021-02-26 09:03:25] local.INFO: member#:57254to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57254doj: 2010-11-26From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57254month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-57407  
+[2021-02-26 09:03:25] local.INFO: member#:57407to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57407doj: 2011-01-04From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57407month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-57661  
+[2021-02-26 09:03:25] local.INFO: member#:57661to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57661doj: 2011-03-18From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57661month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-58213  
+[2021-02-26 09:03:25] local.INFO: member#:58213to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:58213doj: 2011-08-09From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:58213month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-60759  
+[2021-02-26 09:03:25] local.INFO: member#:60759to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:60759doj: 2014-04-08From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:60759month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-62081  
+[2021-02-26 09:03:25] local.INFO: member#:62081to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:62081doj: 2017-12-12From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:62081month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-63241  
+[2021-02-26 09:03:25] local.INFO: member#:63241to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:63241doj: 2019-11-20From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:63241month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-63276  
+[2021-02-26 09:03:25] local.INFO: member#:63276to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:63276doj: 2019-12-12From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:63276month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-36936  
+[2021-02-26 09:03:25] local.INFO: member#:36936to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:36936doj: 1998-03-31From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:36936month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-46719  
+[2021-02-26 09:03:25] local.INFO: member#:46719to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:46719doj: 2006-01-31From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:46719month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-57245  
+[2021-02-26 09:03:25] local.INFO: member#:57245to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57245doj: 2010-11-25From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57245month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-18210  
+[2021-02-26 09:03:25] local.INFO: member#:18210to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:18210doj: 1999-07-31From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:18210month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-50039  
+[2021-02-26 09:03:25] local.INFO: member#:50039to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:50039doj: 2006-07-14From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:50039month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-55589  
+[2021-02-26 09:03:25] local.INFO: member#:55589to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:55589doj: 2009-07-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:55589month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-40218  
+[2021-02-26 09:03:25] local.INFO: member#:40218to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:40218doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:40218month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-5290  
+[2021-02-26 09:03:25] local.INFO: member#:5290to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:5290doj: 1996-02-29From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:5290month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-48685  
+[2021-02-26 09:03:25] local.INFO: member#:48685to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:48685doj: 2006-04-30From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:48685month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-57376  
+[2021-02-26 09:03:25] local.INFO: member#:57376to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57376doj: 2010-12-17From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57376month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-57919  
+[2021-02-26 09:03:25] local.INFO: member#:57919to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57919doj: 2011-05-25From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:57919month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-54491  
+[2021-02-26 09:03:25] local.INFO: member#:54491to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:54491doj: 2008-09-08From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:54491month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-40219  
+[2021-02-26 09:03:25] local.INFO: member#:40219to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:40219doj: 2002-04-30From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:40219month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-18224  
+[2021-02-26 09:03:25] local.INFO: member#:18224to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:18224doj: 1999-07-31From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:18224month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-56133  
+[2021-02-26 09:03:25] local.INFO: member#:56133to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:56133doj: 2010-01-31From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:56133month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-58059  
+[2021-02-26 09:03:25] local.INFO: member#:58059to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:58059doj: 2011-06-24From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:58059month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-6480  
+[2021-02-26 09:03:25] local.INFO: member#:6480to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:6480doj: 1999-06-30From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:6480month diff: 1  
+[2021-02-26 09:03:25] local.INFO: code-25077  
+[2021-02-26 09:03:25] local.INFO: member#:25077to month: 2020-12-01From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:25077doj: 1991-12-31From month2021-01-01  
+[2021-02-26 09:03:25] local.INFO: member#:25077month diff: 1  

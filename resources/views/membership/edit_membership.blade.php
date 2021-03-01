@@ -301,7 +301,6 @@
                                                                 
                                                             </div>  
 
-
                                                             <div class="row padding-left-20">
                                                                 <div class="col s12 m12 ">
                                                                     <p>
@@ -334,7 +333,6 @@
                                                                         
                                                                     </div>
                                                                 </div>
-                                                                
                                                                 
                                                             </div>  
                                                             <div class="row padding-left-20">
@@ -460,7 +458,6 @@
                                                             
                                                             </div>  
 
-
                                                             <div class="row padding-left-20">
                                                                 <div class="col s12 m1 ">
                                                                     <p>
@@ -571,7 +568,6 @@
                                                                 </div>
                                                                 
                                                             </div>  
-                                                        
                                                             
                                                         </div>
                                                         <div id="promoted_section" class="reasonsections  @if($section_type_val != 3) hide @endif "> 
@@ -619,7 +615,6 @@
                                                                 </div>
                                                                 
                                                             </div>  
-
                                                         
                                                             <div class="row padding-left-20">
                                                                 <div class="col s12">
@@ -747,7 +742,6 @@
                                                                 </div>
                                                                 
                                                             </div>
-
                                                                 
                                                         </div>
                                                         <div id="resign_section" class="reasonsections  @if($section_type_val != 4) hide @endif "> 
@@ -775,7 +769,6 @@
                                                                 </div>
                                                                 
                                                             </div>  
-                                                            
 
                                                             <div class="row padding-left-20">
                                                                 <div class="col s12 m12 ">
@@ -788,8 +781,6 @@
                                                                 </div>
                                                             
                                                             </div>  
-                                                                
-
                                                         
                                                             <div class="row padding-left-20">
                                                                 <div class="col s12 m12 ">
@@ -914,7 +905,6 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                                 
                                                             <div class="row padding-left-20">
                                                                 <div class="col s12 m12 ">
@@ -994,7 +984,6 @@
                                                                         <input type="text" name="committieremark" id="committieremark" value="{{$irc_details->committieremark}}" style="width: 650px;">
                                                                     </div>
                                                                     <span>(Remark)</span>
-                                                                    
                                                                 
                                                             </div>
                                                             <div class="col s12 m12" style="margin-left: 25px;">
@@ -1216,8 +1205,6 @@
                                                             <div class="errorTxt3"></div>
                                                         </div>
                                                     </div>
-                                                    
-                                                  
                                                    
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>Country Name*</label>
@@ -1323,8 +1310,6 @@
                                                             </div>
 	                                                    </div>
                                                     </div>
-                                                    
-                                                    
                                                     
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="old_ic" class="force-active">Old IC Number</label>
@@ -2132,7 +2117,6 @@
                                                                 <div class="col s8 m8">
 																	&nbsp;
 																</div>
-																
 																
                                                             </div>
 															

@@ -85,8 +85,6 @@
              <li class="bold"><a id="sal_updatelist_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.list',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation List') }}</span></a>
             </li>
             @endif
-
-             
             
           @endif
            @if($user_role=='data-entry')
@@ -169,14 +167,14 @@
 		@endforeach
    -->
    @if($user_role=='union')
-		<li id="ecopark_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">photo_filter</i><span class="menu-title" data-i18n="">Eco Park</span></a>
+		<li id="ecopark_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">photo_filter</i><span class="menu-title" data-i18n="">Privilege Card</span></a>
 			<div class="collapsible-body">
 				<ul class="collapsible collapsible-sub" data-collapsible="accordion">
 					<li id="ecopark_sidebar_li_id" class=""><a id="ecopark_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.fileupload',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Upload File</span></a>
 					</li>
-          <li id="ecoparklist_sidebar_li_id" class=""><a id="ecoparklist_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Eco Park List</span></a>
+          <li id="ecoparklist_sidebar_li_id" class=""><a id="ecoparklist_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Privilege Card List</span></a>
           </li>
-          <li id="ecoparkreport_sidebar_li_id" class=""><a id="ecoparkreport_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.report',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Eco Park Report</span></a>
+          <li id="ecoparkreport_sidebar_li_id" class=""><a id="ecoparkreport_sidebar_a_id" class="collapsible-body " href="{{ route('ecopark.report',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Privilege Card Report</span></a>
           </li>
 				</ul>
 			</div>

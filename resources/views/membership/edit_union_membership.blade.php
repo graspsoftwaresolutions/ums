@@ -249,8 +249,6 @@
                                                             <div class="errorTxt3"></div>
                                                         </div>
                                                     </div>
-                                                    
-                                                  
                                                    
                                                     <div class="col s12 m6 hide">
                                                         <label>Country Name*</label>
@@ -358,8 +356,6 @@
 	                                                    </div>
                                                     </div>
                                                     
-                                                    
-                                                    
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="old_ic" class="force-active">Old IC Number</label>
                                                         <input id="old_ic" name="old_ic" value="{{$values->old_ic}}" type="text" data-error=".errorTxt12">
@@ -371,7 +367,6 @@
                                                         <input id="new_ic" name="new_ic" type="text" value="{{$values->new_ic}}" data-error=".errorTxt13">
                                                         <div class="errorTxt13"></div>
                                                     </div>
-                                                
 
                                                     @php 
 
@@ -423,7 +418,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
                                                     
                                                     <div class=" col s12 m6 {{ $branch_hide }}">
                                                         <label>Branch Name*</label>
@@ -539,7 +533,6 @@
                                                     </div>
                                                     @endif
                                                     @php } @endphp
-
                                                     
                                                     <div class="clearfix" style="clear:both"></div>
                                                     <div class="row">
@@ -730,8 +723,6 @@
 <script src="{{ asset('public/assets/js/datepicker.js') }}"></script>
 @endsection @section('footerSecondSection')
 <script>
-   
-
     
     $(document).ready(function() {
         $(".selectpicker-new").select2();

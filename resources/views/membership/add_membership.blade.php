@@ -207,7 +207,6 @@
 																</div>
 																<div class="clearfix" ></div>
 																
-																
 																<div class="col s12 m6">
 																	<div class="input-field col s12 m3">
 																		<p>
@@ -263,8 +262,6 @@
 																		<div class="errorTxt9"></div>
 																	</div>
 																</div>
-																
-																
 																
 																<div class="col s12 m6">
 																	<label>{{__('Country Name') }}*</label>
@@ -344,7 +341,6 @@
 																		</div>
 																	</div>
 																</div>
-
 																
 																<div class="input-field col s12 m6">
 																	<input type="text" class="datepicker" id="doj" value="{{ old('doj') }}" name="doj" data-error=".errorTxt18">
@@ -412,7 +408,6 @@
 																	<label for="levy_amount" class="force-active">{{__('Levy Amount') }} </label>
 																	
 																</div>
-																
 
 																<div class="col s12 m6">
 																	<label>{{__('TDF') }}</label>

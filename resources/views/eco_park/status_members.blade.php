@@ -117,8 +117,6 @@
 		background-color: #ddd !important;
 	}
 	
-	
-	
 	input:disabled{
 		background-color: #ddd !important;
 	}
@@ -245,7 +243,7 @@
 								<td id="member_status_">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
 								<td>{{ $member->card_status }}</td>
 								<td>
-								@if($member->member_number!='')
+								@if($member->member_id!='' && $member->member_id!=0 )
 								<a class="btn btn-sm " href="{{ route('master.viewmembership', [app()->getLocale(), Crypt::encrypt($member->member_id)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">remove_red_eye</i></a>
 								<a class="btn btn-sm amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($member->member_id)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
 								@endif
@@ -367,8 +365,6 @@ $(document).ready(function(){
 		  }
 		}
   });
- 
-
 
 $(window).scroll(function() {   
    var lastoffset = $("#memberoffset").val();
@@ -423,13 +419,9 @@ $(window).scroll(function() {
 				}
 			}
 		});
-		
 			
    }
 });
-
-
-
 
 </script>
 @endsection

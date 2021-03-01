@@ -18,8 +18,6 @@
 			margin:0;		
 		}	
 		
-		
-		
 		/* Create two equal columns that floats next to each other */
 		.column-left {
 		  float: left;

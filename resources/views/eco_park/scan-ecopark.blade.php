@@ -40,12 +40,12 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Eco Park') }}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Privilege Card') }}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('Eco Park') }}
+                                            <li class="breadcrumb-item active">{{__('Privilege Card') }}
                                             </li>
 
                                         </ol>
@@ -59,7 +59,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('Eco Park') }}</h4>
+                                    <h4 class="card-title">{{__('Privilege Card') }}</h4>
                                     @include('includes.messages')
                                     <div id="updatedalert" class="card-alert-nonclose card gradient-45deg-green-teal hide">
 						                <div class="card-content white-text">

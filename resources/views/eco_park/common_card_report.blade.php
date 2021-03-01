@@ -24,11 +24,10 @@
 				
 				<td colspan="9" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">ECO PARK REPORT</span>
+					<span style="margin-top:0;">PRIVILEGE CARD REPORT</span>
 				</td>
 				
 			</tr>
-			
 			
 			<tr class="">
 				<th style="border : 1px solid #988989;" align="center">SNO</th>
@@ -70,7 +69,6 @@
                     <td style="border : 1px solid #988989;"> {{ $member->bank }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->payment_fee }}</td>
                     <td style="border : 1px solid #988989;">{{ $batch_head }}</td>
-                    
                     
                     <td style="border : 1px solid #988989;">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->card_status }}</td>

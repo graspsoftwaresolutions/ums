@@ -456,6 +456,5 @@ function showeditForm(memberid){
 	 });
 }
 
-
 </script>
 @endsection

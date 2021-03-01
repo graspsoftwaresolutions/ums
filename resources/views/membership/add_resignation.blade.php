@@ -97,7 +97,6 @@
 									
                                     <form class="formValidate" id="wizard2" method="post" enctype="multipart/form-data" action="{{ url(app()->getLocale().'/resignation_save') }}">
                                         @csrf 
-										
                                         
                                             </br>
                                             <div class="col-sm-8 col-sm-offset-1" >
@@ -152,7 +151,6 @@
                                                     
                                                 </div>
                                             </div>
-                                        
                                        
                                         <div class="actions clearfix right">
                                             <button type="submit" name="finish" class="mb-6 btn waves-effect waves-light purple lightrn-1" id="finish">Send Irc Confirmation</button>
@@ -217,7 +215,6 @@
     $(document.body).on('click', '.autocomplete-no-suggestion' ,function(){
         $("#member_search").val('');
     });
-
     
 </script>
 @endsection

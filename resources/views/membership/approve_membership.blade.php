@@ -262,8 +262,6 @@
                                                             <div class="errorTxt3"></div>
                                                         </div>
                                                     </div>
-                                                    
-                                                  
                                                    
                                                     <div class="col s12 m6 {{ $hidemember }}">
                                                         <label>Country Name*</label>
@@ -370,8 +368,6 @@
                                                             </div>
 	                                                    </div>
                                                     </div>
-                                                    
-                                                    
                                                     
                                                     <div class="input-field col s12 m6 {{ $hidemember }}">
                                                         <label for="old_ic" class="force-active">Old IC Number</label>
@@ -917,7 +913,6 @@
                                                         </div>
                                                     </li>
                                                     
-                                                    
                                                 </ul>
                                                
                                                     <br>
@@ -942,7 +937,6 @@
                                                                 </div>
                                                                
                                                             </div>
-                                                           
                                                            
                                                         </div>
                                                         @endif

@@ -29,9 +29,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
       <li class="breadcrumb-item"><a
               href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>
       <ol class="breadcrumbs mb-0">
-          <li class="breadcrumb-item"><a href="">{{__('Eco Park') }}</a>
+          <li class="breadcrumb-item"><a href="">{{__('Privilege Card') }}</a>
           </li>
-          <li class="breadcrumb-item active">{{__('Eco Park Members List') }}
+          <li class="breadcrumb-item active">{{__('Privilege Card Members List') }}
           </li>
           </li>
       </ol>
@@ -53,7 +53,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       <div class="col s12">
                           <div class="card">
                               <div class="card-content">
-                                  <h4 class="card-title">{{__('Eco Park Members List') }}</h4>
+                                  <h4 class="card-title">{{__('Privilege Card Members List') }}</h4>
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">
@@ -195,7 +195,6 @@ $(function() {
       });
             
 });
-
 
 </script>
 @endsection
