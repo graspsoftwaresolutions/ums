@@ -637,6 +637,43 @@ class MemberController extends CommonController
 					}
 					
 				}
+
+				$update_resign = $request->input('update_resign');
+
+				if($resign_date!="" && $last_paid!="" && $resign_reason!="" && $update_resign==1){
+					$check_resign_exists = Resignation::where('member_code','=',$member_id)->count();
+					if($check_resign_exists>0){
+						$resign = Resignation::where('member_code','=',$member_id)->first();
+
+						$resign->resignation_date = CommonHelper::ConvertdatetoDBFormat($resign_date);
+						$resign->resignstatus_code = $statuscode;
+						$resign->relation_code = $resign_claimer;
+						$resign->reason_code = $resign_reason;
+						$resign->claimer_name = $request->input('claimer_name');
+						$resign->months_contributed = $request->input('contributed_months');
+						$resign->service_year = $request->input('service_year');
+						$resign->accbf = $request->input('bf_contribution');
+						$resign->accbenefit = $request->input('benefit_amount');
+						$resign->benefit_year = $request->input('benefit_year');
+						$resign->months_contributed_till_may = $request->input('may_contributed_months');
+						$resign->amount = $request->input('total_amount');
+						$resign->totalarrears = $request->input('totalarrears');
+						$resign->paymode = $request->input('pay_mode');
+						$resign->chequeno = $request->input('reference_number');
+						$resign->unioncontribution = $request->input('union_contribution');
+						$resign->insuranceamount = $request->input('insurance_amount');
+						$resign->chequedate = CommonHelper::ConvertdatetoDBFormat($request->input('cheque_date'));
+						$resign->voucher_date = CommonHelper::ConvertdatetoDBFormat($request->input('payment_confirmation'));
+						$resign->icno = $member['new_ic'];
+						$resign->icno_old = $member['old_ic'];
+						$resign->entry_date = date('Y-m-d');
+						$resign->created_at = date('Y-m-d');
+						$resign->save();
+					}
+					
+				}
+
+				
 			}
 			Artisan::call('cache:clear');
 

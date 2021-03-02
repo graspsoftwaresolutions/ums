@@ -2412,6 +2412,15 @@
                                                         @endif 
 														@if(!empty($resignedrow))
                                                         <a target="_blank" href="{{ route('resign.status', [app()->getLocale(),Crypt::encrypt($values->mid)])  }}" class="btn waves-light pink m2 mdl-button">View resign Details</a>
+                                                         <div class="col s12 m3 ">
+                                                            <label>
+                                                                <input type="checkbox" id="update_resign" data-error=".errorTxt130" name="update_resign" value='1' /> &nbsp; <span>Update Resign Details</span>
+                                                            </label>
+                                                            <div class="input-field">
+                                                                <div class="errorTxt130"></div>
+                                                            </div>
+                                                            
+                                                        </div>
 														<div class="col m2 hide">
 															<h5 style="color: rgba(255, 255, 255, 0.901961);" class="gradient-45deg-indigo-light-blue padding-2 medium-small">Member already resigned</h5>
 														</div>
