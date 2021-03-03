@@ -19,3 +19,4 @@ use Illuminate\Http\Request;
 
 
 Route::post('store_previlege_users', 'ApiController@storePrevilegeCard');
+Route::post('validate_previlege_users', 'ApiController@validatePrevilegeCard');
