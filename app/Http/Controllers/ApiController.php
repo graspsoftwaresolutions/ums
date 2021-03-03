@@ -38,48 +38,55 @@ class ApiController extends Controller
             $ecoparkdata = DB::table('eco_park')->select('id','member_id')->where(DB::raw("replace(nric_new, '-', '')"),"=", $newicno)->orWhere('privilege_card_no', $previlegecardno)->first();
            // dd(2);
             //Log::channel('apilog')->info($ecoparkdata->id);
-    		$data = [
-					'full_name' => $membername,
-					'nric_new' => $newicno,
-					'privilege_card_no' => $previlegecardno,
-					'member_number' => $memberno,
+            $userexistcount = DB::table('privilege_card_users')->where(DB::raw("replace(nric_new, '-', '')"),"=", $newicno)->orWhere('privilege_card_no', $previlegecardno)->count();
+
+            if($userexistcount==0){
+                $data = [
+                    'full_name' => $membername,
+                    'nric_new' => $newicno,
+                    'privilege_card_no' => $previlegecardno,
+                    'member_number' => $memberno,
                     'member_id' => $ecoparkdata->member_id,
                     'ecopark_id' => $ecoparkdata->id,
                     'status' => 0,
                     'created_at' => date('Y-m-d h:i:s'),
-				];
-								
-			$pcuserid = DB::table('privilege_card_users')->insertGetId($data);
+                ];
+                                    
+                $pcuserid = DB::table('privilege_card_users')->insertGetId($data);
 
-	    	if($request->hasfile('attachment'))
+                if($request->hasfile('attachment'))
 
-	        {
-	         	$sno =1;
+                {
+                    $sno =1;
 
-	            foreach($request->file('attachment') as $file)
+                    foreach($request->file('attachment') as $file)
 
-	            {
-	            	$filenameWithExt = $file->getClientOriginalExtension();
+                    {
+                        $filenameWithExt = $file->getClientOriginalExtension();
 
-	            	$inputfilenames = $pcuserid.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
-	               
+                        $inputfilenames = $pcuserid.'_'.strtotime(date('Ymdhis')).'_'.$sno.'.'.$filenameWithExt;
+                       
 
-	                $file = $file->storeAs('privilege_card', $inputfilenames ,'local');
+                        $file = $file->storeAs('privilege_card', $inputfilenames ,'local');
 
-	                $filedata = [
-						'pc_user_id' => $pcuserid,
-						'file_name' => $inputfilenames,
-                        'created_at' => date('Y-m-d h:i:s'),
-					];
-					//dd($data);
-					//dd($data);
-					DB::table('privilege_card_files')->insert($filedata);
-	               
-	                $sno++;
-	            }
+                        $filedata = [
+                            'pc_user_id' => $pcuserid,
+                            'file_name' => $inputfilenames,
+                            'created_at' => date('Y-m-d h:i:s'),
+                        ];
+                        //dd($data);
+                        //dd($data);
+                        DB::table('privilege_card_files')->insert($filedata);
+                       
+                        $sno++;
+                    }
 
-	        }
-	         $return_data= 1;
+                }
+                $return_data= 1;
+            }else{
+                 $return_data= 2;
+            }
+
     	}else{
     		 $return_data= 0;
     		//return redirect('http://192.168.1.11/');
