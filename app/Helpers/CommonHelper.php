@@ -5038,5 +5038,10 @@ class CommonHelper
        
         return $members_amount;
     }
+
+    public static function getEcoParkPendingMemberCount($parkid){
+        $count = DB::table('eco_park')->where('status',0)->count();
+        return $count;
+    }
     
 }

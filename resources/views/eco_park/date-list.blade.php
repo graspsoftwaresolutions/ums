@@ -50,7 +50,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       <div class="col s12">
                           <div class="card">
                               <div class="card-content">
-                                  <h4 class="card-title">{{__('Privilege Card List') }}</h4>
+                                  <h4 class="card-title">{{__('Eco Park List') }}</h4>
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">

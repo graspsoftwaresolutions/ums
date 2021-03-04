@@ -37,7 +37,7 @@
 			<div class="card-content">
 				<h4 class="card-title">
 				
-				{{__('Privilege Card Report')}} 
+				{{__('Eco Park Report')}} 
 				
 				<a href="#" class="export-button btn btn-sm-one" onClick="$('#hidesearch').toggle();" style="background:#ff26ff;"><i class="material-icons">indeterminate_check_box</i></a>
 				</h4> 
@@ -79,11 +79,15 @@
                             <label for="amount_type">{{__('Amount') }}</label>
                             <select name="amount_type" id="amount_type" class="error browser-default selectpicker" data-error=".errorTxt7">
                                 <option value="" selected>{{__('Choose Amount') }}</option>
+                              	<option value="7">1550</option>
                               	<option value="1">1550 - 2049</option>
+                              	<option value="8">2050</option>
                               	<option value="2">2050 - 2549</option>
+                              	<option value="9">2550</option>
                               	<option value="3">2550 - 5049</option>
+                              	<option value="10">5050</option>
                               	<option value="4">5050 and above</option>
-                              	<option value="5">Low Payment</option>
+                              	<option value="5">Less Payment</option>
                               	<option value="6">Zero Payment</option>
                               
                             </select>
@@ -98,9 +102,9 @@
                                 <option value="" selected>{{__('Choose Type') }}</option>
                               	<option data-type="Others" value="5">Others</option>
                                 <option data-type="Batch 1 Member" value="1">Batch 1 Member</option>
-                                <option data-type="Batch 1 Non Member" value="2">Batch 1 Non Member</option>
+                                <option data-type="Batch 1 Non Member" value="2">Batch 1 Not Matched Members</option>
                                 <option data-type="Batch 2 Member" value="3">Batch 2 Member</option>
-                                <option data-type="Batch 2 Non Member" value="4">Batch 2 Non Member</option>
+                                <option data-type="Batch 2 Non Member" value="4">Batch 2 Not Matched Members</option>
                               
                             </select>
                             <div class="errorTxt8"></div>

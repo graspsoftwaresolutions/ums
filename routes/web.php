@@ -628,6 +628,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('ecopark-status','EcoParkController@statusCountView');
 	Route::post('ajax_ecoparkmember_list','EcoParkController@ajax_ecoparkmember_list');
 
+	Route::get('privilegecard/list','EcoParkController@PrivilegeCardUsersList')->name('privilegecard.users');
+	Route::post('ajax_privilege_card_users_list','EcoParkController@ajax_privilege_card_users_list');
+
 	Route::get('ecopark/report','EcoParkController@EcoParkReport')->name('ecopark.report');
 	Route::get('iframe_eco_park','EcoParkController@IframeEcoParkReport')->name('reports.ecopark');
 });

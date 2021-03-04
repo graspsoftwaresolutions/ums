@@ -169,9 +169,9 @@
 								<option value="">{{__('All') }}</option>
 								<option data-type="Others" @if($data['batch_type']==5) selected @endif value="5">Others</option>
                                 <option data-type="Batch 1 Member" @if($data['batch_type']==1) selected @endif value="1">Batch 1 Member</option>
-                                <option data-type="Batch 1 Non Member" @if($data['batch_type']==2) selected @endif value="2">Batch 1 Non Member</option>
+                                <option data-type="Batch 1 Non Member" @if($data['batch_type']==2) selected @endif value="2">Batch 1 Not Matched Members</option>
                                 <option data-type="Batch 2 Member" @if($data['batch_type']==3) selected @endif value="3">Batch 2 Member</option>
-                                <option data-type="Batch 2 Non Member" @if($data['batch_type']==4) selected @endif value="4">Batch 2 Non Member</option>
+                                <option data-type="Batch 2 Non Member" @if($data['batch_type']==4) selected @endif value="4">Batch 2 Not Matched Members</option>
 								
 							</select>
 						</div>
@@ -223,11 +223,11 @@
 								if($member->type==1){
 								    $batch_head = 'Batch 1 Members';
 								}else if($member->type==2){
-								    $batch_head = 'Batch 1 Non Members';
+								    $batch_head = 'Batch 1 Not Matched Members';
 								}else if($member->type==3){
 								    $batch_head = 'Batch 2 Members';
 								}else if($member->type==4){
-								    $batch_head = 'Batch 2 Non Members';
+								    $batch_head = 'Batch 2 Not Matched Members';
 								}else{
 								    $batch_head = 'Others';
 								}

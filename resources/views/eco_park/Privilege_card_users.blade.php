@@ -31,20 +31,13 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
       <ol class="breadcrumbs mb-0">
           <li class="breadcrumb-item"><a href="">{{__('Eco Park') }}</a>
           </li>
-          <li class="breadcrumb-item active">{{__('Eco Park Members List') }}
+          <li class="breadcrumb-item active">{{__('Privilege Card List') }}
           </li>
           </li>
       </ol>
   </div>
   <div class="col s2 m6 l6">
-    @php
-      $encparkid = Crypt::encrypt($data['parkautoid']);
-      $pendingcount = CommonHelper::getEcoParkPendingMemberCount($encparkid);
-    @endphp
-    <a class="btn waves-light purple lightrn-1 breadcrumbs-btn right" style="margin-left: 10px;" href="{{ route('ecopark.summary', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">Summary</a>
-    @if($pendingcount>0)
-      <a id="submit-download" href="{{ route('latestprocess.ecopark', [app()->getLocale()])  }}?auto_id={{$encparkid}}" class="waves-effect waves-light cyan btn btn-primary form-download-btn right" type="button">{{ 'Update details' }}</a>
-    @endif
+   
   </div>
 </div>
 </div>
@@ -57,7 +50,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       <div class="col s12">
                           <div class="card">
                               <div class="card-content">
-                                  <h4 class="card-title">{{__('Eco Park Members List') }}</h4>
+                                  <h4 class="card-title">{{__('Privilege Card List') }}</h4>
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">
@@ -68,8 +61,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th width="9%">{{__('Member Id')}}</th>
                                                       
                                                       <th width="10%">{{__('NRIC-New')}}</th>
-                                                      <th width="7%">{{__('Amount')}}</th>
-                                                      <th width="10%">{{__('Batch')}}</th>
+                                                      <th width="7%">{{__('Privilege Card No')}}</th>
                                                       <th width="10%">{{__('Member Status')}}</th>
                                                       <th width="10%">{{__('Card Status')}}</th>
                                                       <th width="15%">{{__('Action')}}</th>
@@ -123,8 +115,8 @@ type="text/javascript"></script>
 
 <script>
 $("#ecopark_sidebars_id").addClass('active');
-$("#ecoparklist_sidebar_li_id").addClass('active');
-$("#ecoparklist_sidebar_a_id").addClass('active');
+$("#privilegecard_sidebar_li_id").addClass('active');
+$("#privilegecard_sidebar_a_id").addClass('active');
 
 //Data table Ajax call
 //Data table Ajax call
@@ -143,21 +135,16 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-          "url": "{{ url(app()->getLocale().'/ajax_ecoparkmember_list') }}?status=all"+"&month={{$data['parkdate']}}",
+          "url": "{{ url(app()->getLocale().'/ajax_privilege_card_users_list') }}?status=all",
           "dataType": "json",
           "type": "POST",
           headers: {
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               },
           'data': function(data){
-             var race_id = $('#race_id').val();
              var memberid      = $('#memberid').val();
-             var designation_id = $('#designation_id').val();
              
             
-             data.race_id = race_id;
-             data.memberid = memberid;
-             data.designation_id = designation_id;
             //console.log(data);
             data._token = "{{csrf_token()}}";
           },
@@ -178,10 +165,7 @@ $(function() {
             "data": "nric_new"
           },
           {
-            "data": "payment_fee"
-          },
-          {
-            "data": "batch_type"
+            "data": "privilege_card_no"
           },
           {
             "data": "status_name"
@@ -194,7 +178,7 @@ $(function() {
           }
         ],
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $('td', nRow).css('color', aData.font_color );
+           // $('td', nRow).css('color', aData.font_color );
           }
       });
             

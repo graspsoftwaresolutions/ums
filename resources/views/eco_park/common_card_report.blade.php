@@ -24,7 +24,7 @@
 				
 				<td colspan="9" style="text-align:center;padding:10px;font-weight: bold;">
 				
-					<span style="margin-top:0;">PRIVILEGE CARD REPORT</span>
+					<span style="margin-top:0;">ECO PARK REPORT</span>
 				</td>
 				
 			</tr>
@@ -36,7 +36,7 @@
                 <th style="border : 1px solid #988989;">{{__('NRIC-NEW')}}</th>
                 <th style="border : 1px solid #988989;">{{__('BANK')}}</th>
                 <th style="border : 1px solid #988989;">{{__('AMOUNT')}}</th>
-                <th style="border : 1px solid #988989;">{{__('BATCH TYPE')}}</th>
+                <th style="border : 1px solid #988989;">{{__('TYPE')}}</th>
               
                 <th style="border : 1px solid #988989;">{{__('MEMBER STATUS')}}</th>
                 <th style="border : 1px solid #988989;">{{__('CARD STATUS')}}</th>
@@ -68,7 +68,7 @@
                     <td style="border : 1px solid #988989;">{{ $member->nric_new }}</td>
                     <td style="border : 1px solid #988989;"> {{ $member->bank }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->payment_fee }}</td>
-                    <td style="border : 1px solid #988989;">{{ $batch_head }}</td>
+                    <td style="border : 1px solid #988989;">{{ $member->status_id=='' ? 'Not Matched' : 'Matched' }}</td>
                     
                     <td style="border : 1px solid #988989;">{{ CommonHelper::get_member_status_name($member->status_id) }}</td>
                     <td style="border : 1px solid #988989;">{{ $member->card_status }}</td>

@@ -125,11 +125,11 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col s10 m6 l6">
-                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Privilege Card Summary') }}</h5>
+                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Eco Park Summary') }}</h5>
                                     
                                 </div>
                                 <div class="col s2 m6 l6 ">
-                                 
+                                 <a class="mb6 btn btn-sm waves-light orange lightrn-1 right" href="{{ route('ecopark.members', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">View Members</a>
                                 </div>
                             </div>
                             @include('includes.messages')
@@ -324,19 +324,19 @@
                                     @endphp
                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark/members?&date='.strtotime($data['parkdate'])) }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Total Uploaded Members(Members & Non Members)</td>
+                                        <td>Total Uploaded Members(Members & Not Matched Members)</td>
                                         <td id="approval_status_count_1">{{ $data['members_sum']->count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($data['members_sum']->amount,2,".",",") }}</td>
                                     </tr>
                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=1&payment_type=low') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Low Payment Members</td>
+                                        <td>Less Payment Members</td>
                                         <td id="approval_status_count_1">{{ $lowpay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($lowpay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=low') }}" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=low') }}" style="cursor:pointer;background: #f9f2f2;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Low Payment Non Members</td>
+                                        <td>Less Payment Not Matched Members</td>
                                         <td id="approval_status_count_1">{{ $lowpay_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($lowpay_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
@@ -346,27 +346,22 @@
                                         <td id="approval_status_count_1">{{ $zeropay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($zeropay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=zero') }}" style="cursor:pointer;">
+                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=zero') }}" style="cursor:pointer;background: #f9f2f2;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Zero Payment Non Members</td>
+                                        <td>Zero Payment Not Matched Members</td>
                                         <td id="approval_status_count_1">{{ $zeropay_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($zeropay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-statusa " id="monthly_approval_status_1" data-href="http://localhost/ums/index.php/en/subscription-status?approval_status=1&amp;date=1580495400" style="cursor:pointer;">
-                                        <td>{{ $summary_slno++ }}</td>
-                                        <td>New Members</td>
-                                        <td id="approval_status_count_1">0</td>
-                                        <td id="approval_pending_amount_1">0</td>
-                                    </tr>
+                                    
                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=1&payment_type=full') }}" style="cursor:pointer;">
                                         <td>{{ $summary_slno++ }}</td>
                                         <td>Full Payment Members</td>
                                         <td id="approval_status_count_1">{{ $fullpay_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($fullpay_members_amount,2,".",",") }}</td>
                                     </tr>
-                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=full') }}" style="cursor:pointer;">
+                                     <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=full') }}" style="cursor:pointer;background: #f9f2f2;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Full Payment Non Members</td>
+                                        <td>Full Payment Not Matched Members</td>
                                         <td id="approval_status_count_1">{{ $fullpay_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($fullpay_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
@@ -376,9 +371,9 @@
                                         <td id="approval_status_count_1">{{ $card_status_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($card_status_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=&card_status=1') }}" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type=&member_type=0&payment_type=&card_status=1') }}" style="cursor:pointer;background: #f9f2f2;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Paid Non Members have received card</td>
+                                        <td>Paid Not Matched Members have received card</td>
                                         <td id="approval_status_count_1">{{ $card_status_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($card_status_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
@@ -410,9 +405,9 @@
                                         <td id="approval_status_count_1">{{ $batch_members_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($batch_members_amount,2,".",",") }}</td>
                                     </tr>
-                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type='.$j.'&member_type=0') }}" style="cursor:pointer;">
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/ecopark-status?member_status=&date='.strtotime($data['parkdate']).'&batch_type='.$j.'&member_type=0') }}" style="cursor:pointer;background: #f9f2f2;">
                                         <td>{{ $summary_slno++ }}</td>
-                                        <td>Non Members</td>
+                                        <td>Not Matched Members</td>
                                         <td id="approval_status_count_1">{{ $batch_nonmembers_count }}</td>
                                         <td id="approval_pending_amount_1">{{ number_format($batch_nonmembers_amount,2,".",",") }}</td>
                                     </tr>
