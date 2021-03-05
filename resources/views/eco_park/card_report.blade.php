@@ -101,10 +101,10 @@
                             <select name="batch_type" id="batch_type" class="error browser-default selectpicker" data-error=".errorTxt8">
                                 <option value="" selected>{{__('Choose Type') }}</option>
                               	<option data-type="Others" value="5">Others</option>
-                                <option data-type="Batch 1 Member" value="1">Batch 1 Member</option>
-                                <option data-type="Batch 1 Non Member" value="2">Batch 1 Not Matched Members</option>
-                                <option data-type="Batch 2 Member" value="3">Batch 2 Member</option>
-                                <option data-type="Batch 2 Non Member" value="4">Batch 2 Not Matched Members</option>
+                                <option data-type="Batch 1 Member" value="1">Batch 1 Members</option>
+                                <option data-type="Batch 1 Non Member" value="2">Batch 1 Non Members</option>
+                                <option data-type="Batch 2 Member" value="3">Batch 2 Members</option>
+                                <option data-type="Batch 2 Non Member" value="4">Batch 2 Non Members</option>
                               
                             </select>
                             <div class="errorTxt8"></div>

@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="col s2 m3 ">
                                     <br>
-                                    <a class="btn waves-light purple lightrn-1 breadcrumbs-btn right" href="{{ route('ecopark.summary', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">Summary</a>
+                                    <a class="btn waves-light btn-sm purple lightrn-1 breadcrumbs-btn right" href="{{ route('ecopark.summary', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">Summary</a>
                                      <a class="mb6 btn btn-sm waves-light orange lightrn-1" href="{{ route('ecopark.members', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">View Members</a>
                                 </div>
                                  <div class="col s2 m3 ">
@@ -185,10 +185,10 @@
                                                         <option value="" selected>{{__('Choose Type') }}</option>
                                                     
                                                         <option data-type="Others" value="5">Others</option>
-                                                        <option data-type="Batch 1 Member" value="1">Batch 1 Member</option>
-                                                        <option data-type="Batch 1 Non Member" value="2">Batch 1 Not Matched Members</option>
-                                                        <option data-type="Batch 2 Member" value="3">Batch 2 Member</option>
-                                                        <option data-type="Batch 2 Non Member" value="4">Batch 2 Not Matched Members</option>
+                                                        <option data-type="Batch 1 Member" value="1">Batch 1 Members</option>
+                                                        <option data-type="Batch 1 Non Member" value="2">Batch 1 Non Members</option>
+                                                        <option data-type="Batch 2 Member" value="3">Batch 2 Members</option>
+                                                        <option data-type="Batch 2 Non Member" value="4">Batch 2 Non Members</option>
                                                       
                                                     </select>
                                                     <div class="errorTxt6"></div>
