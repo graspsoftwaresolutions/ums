@@ -18,6 +18,12 @@ class ApiController extends Controller
     	$hyphennewicno = $request->input('newicno');
     	$memberno = $request->input('memberno');
     	$previlegecardno = $request->input('previlegecardno');
+        $home_address = $request->input('home_address');
+        $home_tel_no = $request->input('home_tel_no');
+        $office_address = $request->input('office_address');
+        $office_tel_no = $request->input('office_tel_no');
+        $handphone_no = $request->input('handphone_no');
+        $email_id = $request->input('email_id');
 
         $newicno = str_replace("-", "", $hyphennewicno);
 
@@ -48,6 +54,12 @@ class ApiController extends Controller
                     'member_number' => $memberno,
                     'member_id' => $ecoparkdata->member_id,
                     'ecopark_id' => $ecoparkdata->id,
+                    'home_address' => $home_address,
+                    'home_tel_no' => $home_tel_no,
+                    'office_address' => $office_address,
+                    'office_tel_no' => $office_tel_no,
+                    'handphone_no' => $handphone_no,
+                    'email_id' => $email_id,
                     'status' => 0,
                     'created_at' => date('Y-m-d h:i:s'),
                 ];
