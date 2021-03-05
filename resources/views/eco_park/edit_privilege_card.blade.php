@@ -206,7 +206,7 @@
                                                     </div>
 
                                                     <div id="reject_datesection" class="input-field col s12 m3  @if($values->status == 0) hide @endif">
-                                                        <input type="text" value="{{ date('d/m/Y',strtotime($values->approval_reject_date)) }}" style="margin-top: 5px;" class="datepicker" id="approval_reject_date" placeholder="" name="approval_reject_date">
+                                                        <input type="text" value="{{ $values->approval_reject_date=='' ? '' : date('d/m/Y',strtotime($values->approval_reject_date)) }}" style="margin-top: 5px;" class="datepicker" id="approval_reject_date" placeholder="" name="approval_reject_date">
                                                         <label for="approval_reject_date" class="">Date</label>
                                                         <div class=""></div>
                                                     </div>
