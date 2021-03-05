@@ -1509,4 +1509,110 @@ public function companyDestroy($lang,$id)
             }
         } 
     }
+
+     public function PCstatusList()
+    {
+        $data['card_status'] = DB::table('privilege_card_status as pc')->where('status','=',1)->get();
+        return view('master.pc_status.pc_status_list')->with('data',$data);
+    } 
+
+    public function checkPCStatusExists($status_name,$status_id=false)
+     {   
+         if(!empty($status_id))
+          { 
+                 $status_exists = DB::table('privilege_card_status')->where([
+                  ['status_name','=',$status_name],
+                  ['id','!=',$status_id],
+                  ['status','=','1']
+                  ])->count();
+          }
+          else
+          {   
+            $status_exists = DB::table('privilege_card_status')->where([
+                ['status_name','=',$status_name],
+                ['status','=','1'],
+                ])->count(); 
+          } 
+          if($status_exists > 0)
+          {
+              return "false";
+          }
+          else{
+              return "true";
+          }
+    }
+
+    //Status Save and Update
+    public function PCStatusSave(Request $request)
+    {   
+        $request->validate([
+            'status_name'=>'required',
+            'font_color'=>'required',
+        ],
+        [
+            'status_name.required'=>'please enter Status name',
+            'font_color.required'=>'please enter Font Color',
+        ]);
+        $data = $request->all();   
+        $defdaultLang = app()->getLocale();
+
+        $status_name = $request->input('status_name');
+
+
+        
+        if(!empty($request->id)){
+            $data_exists = $this->checkPCStatusExists($request->input('status_name'),$request->id);
+        }else{       
+            $data_exists = $this->checkPCStatusExists($request->input('status_name'));
+            $data_exists = DB::table('privilege_card_status')->where([
+                ['status_name','=',$request->input('status_name')],['status','=','1']
+            ])->count();
+        }
+
+        if($data_exists>0)
+        {
+            return  redirect($defdaultLang.'/privilegecard_status')->with('error','Status Name Already Exists'); 
+        }
+        else{
+            if (empty($data['id'])) {
+
+                $saveStatus = DB::table('privilege_card_status')->insert([
+                    'status_name' => $status_name,
+                    'font_color' => $request->input('font_color'),
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'status' => 1,
+                ]);
+            } else {
+                
+                $saveStatus = DB::table('privilege_card_status')->where('id', $request->id)->update([
+                    'status_name' => $status_name,
+                    'font_color' => $request->input('font_color'),
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'status' => 1,
+                ]);
+            }
+
+           
+            if($saveStatus == true)
+            {
+                if(!empty($request->id))
+                {
+                   return  redirect($defdaultLang.'/privilegecard_status')->with('message','PC Status Updated Succesfully');
+                }
+                else{
+                    return  redirect($defdaultLang.'/privilegecard_status')->with('message','PC Status Added Succesfully');
+                }
+            }
+        }
+    }
+
+    public function PCstatusDestroy($lang,$id)
+    {
+       $saveStatus = DB::table('privilege_card_status')->where('id', $id)->update([
+                    'status' => 0,
+                ]);
+       
+        $defdaultLang = app()->getLocale();
+        return redirect($defdaultLang.'/privilegecard_status')->with('privilegecard_status','PC Status Details Deleted Successfully!!');
+    }
 }

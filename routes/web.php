@@ -633,6 +633,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('ecopark/report','EcoParkController@EcoParkReport')->name('ecopark.report');
 	Route::get('iframe_eco_park','EcoParkController@IframeEcoParkReport')->name('reports.ecopark');
+
+	Route::get('privilegecard_status','MasterController@PCstatusList')->name('privilegecard.status');
+	Route::post('pcstatus_nameexists','AjaxController@checkPCStatusNameExists'); 
+	Route::post('PCsaveStatus','MasterController@PCStatusSave')->name('pc.saveStatus'); 
+	Route::delete('pcstatus-delete/{id}','MasterController@PCstatusDestroy')->name('pc.statusdestroy');
+	Route::get('pcstatus_details','CommonController@PCstatusDetail'); 
+	Route::get('privilegecard-edit/{parameter}','EcoParkController@EditPrivilegeCard')->name('privilegecard.edit');
+
+	Route::post('pc_user_save','EcoParkController@PCUserSave')->name('pc.updateuser');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

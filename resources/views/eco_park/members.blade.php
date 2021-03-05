@@ -68,6 +68,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th width="9%">{{__('Member Id')}}</th>
                                                       
                                                       <th width="10%">{{__('NRIC-New')}}</th>
+                                                      <th width="10%">{{__('PC No')}}</th>
                                                       <th width="7%">{{__('Amount')}}</th>
                                                       <th width="10%">{{__('Batch')}}</th>
                                                       <th width="10%">{{__('Member Status')}}</th>
@@ -150,14 +151,10 @@ $(function() {
                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               },
           'data': function(data){
-             var race_id = $('#race_id').val();
-             var memberid      = $('#memberid').val();
-             var designation_id = $('#designation_id').val();
-             
             
-             data.race_id = race_id;
+             var memberid      = $('#memberid').val();
+            
              data.memberid = memberid;
-             data.designation_id = designation_id;
             //console.log(data);
             data._token = "{{csrf_token()}}";
           },
@@ -178,6 +175,9 @@ $(function() {
             "data": "nric_new"
           },
           {
+            "data": "privilege_card_no"
+          },
+          {
             "data": "payment_fee"
           },
           {
@@ -194,7 +194,7 @@ $(function() {
           }
         ],
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $('td', nRow).css('color', aData.font_color );
+            //$('td', nRow).css('color', aData.font_color );
           }
       });
             

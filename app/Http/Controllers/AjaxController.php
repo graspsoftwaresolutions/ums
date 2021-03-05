@@ -1617,4 +1617,36 @@ class AjaxController extends CommonController
 		}
 		//return Response::json($return_status);
     }
+
+    //Status Details Start  
+    public function checkPCStatusNameExists(Request $request)
+    {
+        $status_name =  $request->input('status_name');
+        $status_id = $request->input('status_id');   
+        
+        if(!empty($status_id))
+        { 
+             $status_exists = DB::table('privilege_card_status')->where([
+              ['status_name','=',$status_name],
+              ['id','!=',$status_id],
+              ['status','=','1']
+              ])->count();
+        }
+        else
+        {   
+        $status_exists = DB::table('privilege_card_status')->where([
+            ['status_name','=',$status_name],
+            ['status','=','1'],
+            ])->count(); 
+        } 
+        
+        if($status_exists > 0)
+        {
+          return "false";
+        }
+        else{
+          return "true";
+        }
+
+    }
 }

@@ -63,7 +63,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th width="10%">{{__('NRIC-New')}}</th>
                                                       <th width="7%">{{__('Privilege Card No')}}</th>
                                                       <th width="10%">{{__('Member Status')}}</th>
-                                                      <th width="10%">{{__('Card Status')}}</th>
+                                                      <th width="10%">{{__('EP Card Status')}}</th>
+                                                      <th width="10%">{{__('NPC Status')}}</th>
+                                                      <th width="10%">{{__('Approval Status')}}</th>
                                                       <th width="15%">{{__('Action')}}</th>
                                                   </tr>
                                               </thead>
@@ -174,11 +176,20 @@ $(function() {
             "data": "card_status"
           },
           {
+            "data": "pc_status_name"
+          },
+          {
+            "data": "approval_status"
+          },
+          {
             "data": "options"
           }
         ],
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-           // $('td', nRow).css('color', aData.font_color );
+          //  $('td', nRow).css('color', aData.pc_font_color );
+            $('td', nRow).eq(6).css('background-color', aData.pc_font_color);
+            $('td', nRow).eq(6).css('color', '#fff');
+             
           }
       });
             

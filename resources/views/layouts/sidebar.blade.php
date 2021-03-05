@@ -33,6 +33,7 @@
               <li id="city_0sidebar_li_id" class=""><a id="city_0sidebar_a_id" class="collapsible-body" href="{{route('master.citytemp',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('City Details[0 Members]') }}</span></a></li>
              
               <li id="status_sidebar_li_id" class=""><a id="status_sidebar_a_id" class="collapsible-body" href="{{ route('master.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Status Details')}}</span></a></li>
+              <li id="pcstatus_sidebar_li_id" class=""><a id="pcstatus_sidebar_a_id" class="collapsible-body" href="{{ route('privilegecard.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('PC Status Details')}}</span></a></li>
               @endif
               <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{route('master.company',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Company Details') }}</span></a></li>
               @if($user_role=='union')

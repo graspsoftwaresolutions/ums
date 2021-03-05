@@ -802,4 +802,14 @@ class CommonController extends Controller
                 ->get();
         return response()->json($res);
     }
+
+    public function PCstatusDetail(Request $request)
+    {
+        $id = $request->id;
+        $data = DB::table('privilege_card_status')->where([
+            ['id','=',$id]
+            ])->first(); 
+        
+        return json_encode($data);
+    } 
 }

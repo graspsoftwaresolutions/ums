@@ -632,6 +632,7 @@ class EcoParkController extends Controller
                 $nestedData['nric_new'] = $resultdata->nric_new;
                 $nestedData['payment_fee'] = $resultdata->payment_fee;
                 $nestedData['card_status'] = $resultdata->card_status;
+                $nestedData['privilege_card_no'] = $resultdata->privilege_card_no;
                 $font_color = $resultdata->font_color;
                 $nestedData['font_color'] = $font_color;
 
@@ -818,12 +819,15 @@ class EcoParkController extends Controller
           $columns[$sl++] = 'e.status_id';
         }
         $columns[$sl++] = 'e.card_status';
+        $columns[$sl++] = 'p.pc_status_id';
+        $columns[$sl++] = 'p.status';
         $columns[$sl++] = 'p.id';
 
-        $commonqry = DB::table('privilege_card_users as p')->select('p.id as pid','e.member_id', 'p.full_name','p.privilege_card_no','p.nric_new','e.nric_old','p.member_number','s.status_name as status_name','e.status_id','s.font_color','e.date_joined','e.card_status')
+        $commonqry = DB::table('privilege_card_users as p')->select('p.id as pid','e.member_id', 'p.full_name','p.privilege_card_no','p.nric_new','e.nric_old','p.member_number','s.status_name as status_name','e.status_id','s.font_color','e.date_joined','e.card_status','ps.status_name as pc_status_name','p.status as approval_status','ps.font_color as pc_font_color')
        
         ->leftjoin('eco_park as e','p.ecopark_id','=','e.id')
         ->leftjoin('status as s','e.status_id','=','s.id')
+        ->leftjoin('privilege_card_status as ps','p.pc_status_id','=','ps.id')
         ->leftjoin('membership as m','m.id','=','e.member_id');
         //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
 
@@ -867,7 +871,8 @@ class EcoParkController extends Controller
                             ->orWhere('p.nric_new', 'LIKE',"%{$search}%")
                             ->orWhere('p.privilege_card_no', 'LIKE',"%{$search}%")
                             ->orWhere('e.card_status', 'LIKE',"%{$search}%")
-                            ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                            ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                            ->orWhere('ps.status_name', 'LIKE',"%{$search}%");
                         });  
           
             if( $limit != -1){
@@ -884,7 +889,8 @@ class EcoParkController extends Controller
                                     ->orWhere('p.nric_new', 'LIKE',"%{$search}%")
                                     ->orWhere('p.privilege_card_no', 'LIKE',"%{$search}%")
                                     ->orWhere('e.card_status', 'LIKE',"%{$search}%")
-                                    ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                                    ->orWhere('s.status_name', 'LIKE',"%{$search}%")
+                                    ->orWhere('ps.status_name', 'LIKE',"%{$search}%");
                                 })  
                                ->count();
         }
@@ -919,6 +925,18 @@ class EcoParkController extends Controller
                     $nestedData['font_color'] = $font_color;
                 }
 
+                if($resultdata->approval_status==0){
+                    $approval_status = 'Pending';
+                }else if($resultdata->approval_status==1){
+                    $approval_status = 'Approved';
+                }else{
+                    $approval_status = 'Rejected';
+                }
+
+                $nestedData['pc_status_name'] = $resultdata->pc_status_name;
+                $nestedData['approval_status'] = $approval_status;
+                $nestedData['pc_font_color'] = $resultdata->pc_font_color;
+
                 $memberid = $resultdata->member_id;
                 $font_color = $resultdata->font_color;
                 
@@ -931,9 +949,9 @@ class EcoParkController extends Controller
                 
                // $histry = $memberid!='' ? route('member.history', [app()->getLocale(),$enc_id]) : '#';
                // $member_delete_link = $baseurl.'/'.app()->getLocale().'/subscription_delete?sub_id='.$autoid;
-                //$editlink = route('privilegecard.edit', [app()->getLocale(),$enc_autoid]);
+                $editlink = route('privilegecard.edit', [app()->getLocale(),$enc_autoid]);
                 
-                $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Eco Park'  class='' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
+                $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Privilege Card' href='$editlink' class='' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
                 //$actions .="<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='$member_delete_link'><i class='material-icons' style='color:red'>delete</i></a>";
                 
                 $nestedData['options'] = $actions;
@@ -952,6 +970,54 @@ class EcoParkController extends Controller
             );
 
         echo json_encode($json_data); 
+    }
+
+    public function EditPrivilegeCard(Request $request,$lang,$encautoid){
+        $autoid = Crypt::decrypt($encautoid);
+        $data['card_view'] = DB::table('privilege_card_users as p')->select('p.id as pid','e.member_id', 'p.full_name','p.privilege_card_no','p.nric_new','e.nric_old','p.member_number','s.status_name as status_name','e.status_id','s.font_color','e.date_joined','e.card_status','ps.status_name as pc_status_name','e.address','p.status','p.approval_reject_reason','p.pc_status_id')
+            ->leftjoin('eco_park as e','p.ecopark_id','=','e.id')
+            ->leftjoin('status as s','e.status_id','=','s.id')
+            ->leftjoin('privilege_card_status as ps','p.pc_status_id','=','ps.id')
+            ->leftjoin('membership as m','m.id','=','e.member_id')
+            ->where('p.id','=',$autoid)->first();
+
+        $data['card_files'] = DB::table('privilege_card_files as pf')->where('pf.pc_user_id','=',$autoid)->get();
+        $data['card_status_list'] = DB::table('privilege_card_status as ps')->where('ps.status','=',1)->get();
+
+         return view('eco_park.edit_privilege_card')->with('data',$data); 
+    }
+
+    public function PCUserSave(Request $request,$lang){
+        $auto_id = $request->input('auto_id');
+
+        $datereject = '';
+        if($request->input('approval_reject_date')!=''){
+            $fmmm_date = explode("/",$request->input('approval_reject_date'));                                       
+            $dateform = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
+            $datereject = date('Y-m-d', strtotime($dateform));
+        }
+
+        $status = $request->input('status');
+        $approval_reject_reason = $request->input('approval_reject_reason');
+        $pc_status_id = $request->input('pc_status_id');
+        $approval_reject_by = $request->input('approval_reject_by');
+
+        $updata = [
+            'status' => $status,
+            'pc_status_id' => $pc_status_id,
+            'approval_reject_date' => $datereject,
+            'approval_reject_by' => $approval_reject_by,
+            'approval_reject_reason' => $approval_reject_reason,
+            'updated_by' => $approval_reject_by,
+            'updated_at' => date('Y-m-d h:i:s'),
+        ];
+
+        $mont_up = DB::table('privilege_card_users')->where('id', '=', $auto_id)->update($updata);
+
+        $redirect_url = app()->getLocale().'/privilegecard/list';
+
+        return redirect($redirect_url)->with('message','Privilege card details updated');
+        
     }
 
 }
