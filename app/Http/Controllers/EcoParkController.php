@@ -974,7 +974,7 @@ class EcoParkController extends Controller
 
     public function EditPrivilegeCard(Request $request,$lang,$encautoid){
         $autoid = Crypt::decrypt($encautoid);
-        $data['card_view'] = DB::table('privilege_card_users as p')->select('p.id as pid','e.member_id', 'p.full_name','p.privilege_card_no','p.nric_new','e.nric_old','p.member_number','s.status_name as status_name','e.status_id','s.font_color','e.date_joined','e.card_status','ps.status_name as pc_status_name','e.address','p.status','p.approval_reject_reason','p.pc_status_id')
+        $data['card_view'] = DB::table('privilege_card_users as p')->select('p.id as pid','e.member_id', 'p.full_name','p.privilege_card_no','p.nric_new','e.nric_old','p.member_number','s.status_name as status_name','e.status_id','s.font_color','e.date_joined','e.card_status','ps.status_name as pc_status_name','p.home_address as address','p.status','p.approval_reject_reason','p.pc_status_id','p.home_tel_no','p.office_address','p.office_tel_no','p.handphone_no','p.email_id','p.approval_reject_date')
             ->leftjoin('eco_park as e','p.ecopark_id','=','e.id')
             ->leftjoin('status as s','e.status_id','=','s.id')
             ->leftjoin('privilege_card_status as ps','p.pc_status_id','=','ps.id')
@@ -992,15 +992,24 @@ class EcoParkController extends Controller
 
         $datereject = '';
         if($request->input('approval_reject_date')!=''){
+            print_r($request->input('approval_reject_date'));
             $fmmm_date = explode("/",$request->input('approval_reject_date'));                                       
             $dateform = $fmmm_date[2]."-".$fmmm_date[1]."-".$fmmm_date[0];
             $datereject = date('Y-m-d', strtotime($dateform));
+             //dd($datereject);
         }
 
         $status = $request->input('status');
         $approval_reject_reason = $request->input('approval_reject_reason');
         $pc_status_id = $request->input('pc_status_id');
         $approval_reject_by = $request->input('approval_reject_by');
+        $home_address = $request->input('address');
+        $home_tel_no = $request->input('home_tel_no');
+        $handphone_no = $request->input('handphone_no');
+        $office_address = $request->input('office_address');
+        $office_tel_no = $request->input('office_tel_no');
+        $email_id = $request->input('email_id');
+        $full_name = $request->input('full_name');
 
         $updata = [
             'status' => $status,
@@ -1008,6 +1017,13 @@ class EcoParkController extends Controller
             'approval_reject_date' => $datereject,
             'approval_reject_by' => $approval_reject_by,
             'approval_reject_reason' => $approval_reject_reason,
+            'home_address' => $home_address,
+            'home_tel_no' => $home_tel_no,
+            'handphone_no' => $handphone_no,
+            'office_address' => $office_address,
+            'office_tel_no' => $office_tel_no,
+            'email_id' => $email_id,
+            'full_name' => $full_name,
             'updated_by' => $approval_reject_by,
             'updated_at' => date('Y-m-d h:i:s'),
         ];

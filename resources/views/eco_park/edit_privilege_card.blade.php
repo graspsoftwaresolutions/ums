@@ -71,12 +71,12 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                 <div class="input-field col s12 m6 ">
+                                                <!--  <div class="input-field col s12 m6 ">
                                                     <input type="text" class="" id="date_joined" readonly="" value="{{ $values->date_joined }}" name="date_joined">
                                                    
                                                     <label for="date_joined" class="force-active">Date Joined</label>
                                                     
-                                                </div>
+                                                </div> -->
                                                
                                                 <div class="input-field col s12 m6">
                                                     <label for="privilege_card_no" class="force-active">Privilege Card Number *</label>
@@ -84,26 +84,62 @@
                                                     <div class="errorTxt31"></div>
                                                        
                                                 </div>
+                                                 <div class="col s12 m6">
+                                                    <div class="row">
+                                                        <div class="input-field col s12 m6">
+                                                            <label for="nric_ic" class="force-active">New IC Number*</label>
+                                                            <input id="nric_ic" name="nric_ic" type="text" value="{{$values->nric_new}}" readonly="" data-error=".errorTxt13">
+                                                            <div class="errorTxt13"></div>
+                                                        </div>
+                                                        <div class="input-field col s12 m6">
+                                                            <label for="nric_old" class="force-active">NRIC OLD*</label>
+                                                            <input id="nric_old" name="nric_old" value="{{ $values->nric_old }}" readonly="" type="text" data-error=".errorTxt32">
+                                                            <div class="errorTxt32"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                 <div class="input-field col s12 m12 ">
+                                                    <input type="text" class="" id="address" value="{{ $values->address }}" name="address">
+                                                   
+                                                    <label for="address" class="force-active">Home Address</label>
+                                                    
+                                                </div>
                                             </div>
                                              <div class="row">
-                                                 <div class="input-field col s12 m6">
-                                                    <label for="nric_ic" class="force-active">New IC Number*</label>
-                                                    <input id="nric_ic" name="nric_ic" type="text" value="{{$values->nric_new}}" readonly="" data-error=".errorTxt13">
-                                                    <div class="errorTxt13"></div>
+                                                <div class="input-field col s12 m6">
+                                                    <label for="home_tel_no" class="force-active">Home Telephone</label>
+                                                    <input id="home_tel_no" name="home_tel_no" value="{{$values->home_tel_no}}" type="text" data-error=".errorTxt39">
+                                                    <div class="errorTxt39"></div>
                                                 </div>
                                                 <div class="input-field col s12 m6">
-                                                    <label for="nric_old" class="force-active">NRIC OLD*</label>
-                                                    <input id="nric_old" name="nric_old" value="{{ $values->nric_old }}" readonly="" type="text" data-error=".errorTxt32">
-                                                    <div class="errorTxt32"></div>
+                                                    <label for="handphone_no" class="force-active">Handphone Number</label>
+                                                    <input id="handphone_no" name="handphone_no" value="{{ $values->handphone_no }}" type="text" data-error=".errorTxt40">
+                                                    <div class="errorTxt40"></div>
                                                        
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                             <div class="row">
                                                  <div class="input-field col s12 m12 ">
-                                                    <input type="text" class="" id="address" readonly="" value="{{ $values->address }}" name="address">
+                                                    <input type="text" class="" id="office_address" value="{{ $values->office_address }}" name="office_address">
                                                    
-                                                    <label for="address" class="force-active">Address</label>
+                                                    <label for="office_address" class="force-active">Office Address</label>
                                                     
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="input-field col s12 m6">
+                                                    <label for="office_tel_no" class="force-active">Office Telephone</label>
+                                                    <input id="office_tel_no" name="office_tel_no" value="{{$values->office_tel_no}}" type="text" data-error=".errorTxt39">
+                                                    <div class="errorTxt39"></div>
+                                                </div>
+                                                <div class="input-field col s12 m6">
+                                                    <label for="email_id" class="force-active">Email address</label>
+                                                    <input id="email_id" name="email_id" value="{{ $values->email_id }}" type="text" data-error=".errorTxt40">
+                                                    <div class="errorTxt40"></div>
+                                                       
                                                 </div>
                                             </div>
                                              <div class="row">
@@ -170,7 +206,7 @@
                                                     </div>
 
                                                     <div id="reject_datesection" class="input-field col s12 m3  @if($values->status == 0) hide @endif">
-                                                        <input type="text" value="{{ date('d/m/Y') }}" style="margin-top: 5px;" class="datepicker" id="approval_reject_date" placeholder="" name="approval_reject_date">
+                                                        <input type="text" value="{{ date('d/m/Y',strtotime($values->approval_reject_date)) }}" style="margin-top: 5px;" class="datepicker" id="approval_reject_date" placeholder="" name="approval_reject_date">
                                                         <label for="approval_reject_date" class="">Date</label>
                                                         <div class=""></div>
                                                     </div>
