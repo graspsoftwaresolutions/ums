@@ -267,16 +267,40 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
-											<label>{{__('City') }}</label>
-											<select name="city_id" id="city_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
-												<option value="">{{__('Select City') }}</option>
-												
-											</select>
-											<div class="input-field">
-												<div class="errorTxt23"></div>
+											<div class="col s12 m6 l3 @if($user_role =='union-branch') hide @endif">
+												<label>{{__('City') }}</label>
+												<select name="city_id" id="city_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
+													<option value="">{{__('Select City') }}</option>
+													
+												</select>
+												<div class="input-field">
+													<div class="errorTxt23"></div>
+												</div>
 											</div>
-										</div>
+											<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
+												<label>{{__('Grade') }}</label>
+												<select name="designation_id" id="designation_id" class="error browser-default selectpicker"  data-error=".errorTxt9" style="line-height: 0.8;">
+													<option value="" >{{__('Select') }}</option>
+													@foreach($data['designation'] as $key=>$value)
+													<option value="{{$value->id}}">{{$value->designation_name}}</option>
+													@endforeach
+												</select>
+												<div class="input-field">
+													<div class="errorTxt9"></div>
+												</div>
+											</div>
+											<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
+												<label>{{__('Designation') }}</label>
+												<select name="designation_new_id" id="designation_new_id" class="error browser-default selectpicker"  data-error=".errorTxt10" style="line-height: 0.8;">
+													<option value="" >{{__('Select') }}</option>
+													@foreach($data['designation_new'] as $key=>$value)
+													<option value="{{$value->id}}">{{$value->designation_name}}</option>
+													@endforeach
+												</select>
+												<div class="input-field">
+													<div class="errorTxt10"></div>
+												</div>
+											</div>
 										</div>
 										<div class="row">
 											<div class="input-field col s6 right">
@@ -429,6 +453,8 @@ $(function () {
 		  var country_id = $('#country_id').val();
 		  var state_id = $('#state_id').val();
 		  var city_id = $('#city_id').val();
+		  var designation_id = $('#designation_id').val();
+		  var designation_new_id = $('#designation_new_id').val();
 		  //console.log(datefilter);
 		 
 		  data.unionbranch_id = unionbranch_id;
@@ -440,6 +466,8 @@ $(function () {
 		  data.country_id = country_id;
 		  data.state_id = state_id;
 		  data.city_id = city_id;
+		  data.designation_id = designation_id;
+		  data.designation_new_id = designation_new_id;
 		  data._token = "{{csrf_token()}}";
 	   },
 	   "error": function (jqXHR, textStatus, errorThrown) {
@@ -569,6 +597,8 @@ $(function () {
 		  var country_id = $('#country_id').val();
 		  var state_id = $('#state_id').val();
 		  var city_id = $('#city_id').val();
+		  var designation_id = $('#designation_id').val();
+		  var designation_new_id = $('#designation_new_id').val();
 		  //console.log(datefilter);
 		 
 		  data.unionbranch_id = unionbranch_id;
@@ -580,6 +610,8 @@ $(function () {
 		  data.country_id = country_id;
 		  data.state_id = state_id;
 		  data.city_id = city_id;
+		  data.designation_id = designation_id;
+		  data.designation_new_id = designation_new_id;
 		  data._token = "{{csrf_token()}}";
 	   },
 	   "error": function (jqXHR, textStatus, errorThrown) {

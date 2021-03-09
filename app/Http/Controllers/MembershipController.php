@@ -60,6 +60,8 @@ class MembershipController extends Controller
         $data['state_view'] = DB::table('state')->where('status','=','1')->get();
         $data['city_view'] = DB::table('city')->where('status','=','1')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['designation_new'] = DB::table('designation_new')->where('status','=','1')->get();
+        $data['designation'] = DB::table('designation')->where('status','=','1')->get();
         $data['member_status'] = 'all';
         if(!empty($request->all())){
             $data['member_status'] = $request->input('status');
@@ -304,6 +306,8 @@ class MembershipController extends Controller
 		$country_id = $request->input('country_id'); 
 		$state_id = $request->input('state_id');
 		$city_id = $request->input('city_id'); 
+        $designation_id = $request->input('designation_id'); 
+        $designation_new_id = $request->input('designation_new_id'); 
 		
 		if($user_role=='union' || $user_role=='data-entry'){
             //DB::enableQueryLog();
@@ -352,6 +356,15 @@ class MembershipController extends Controller
 			 {
 				 $member_qry = $member_qry->where('c.city_id','=',$city_id);
 			 }
+
+            if($designation_id != "")
+             {
+                 $member_qry = $member_qry->where('m.designation_id','=',$designation_id);
+             }
+             if($designation_new_id != "")
+             {
+                 $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
+             }
 			  
 			if($member_status !='all'){
 				$member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -414,6 +427,14 @@ class MembershipController extends Controller
                    {
                        $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
+                    if($designation_id != "")
+                     {
+                         $member_qry = $member_qry->where('m.designation_id','=',$designation_id);
+                     }
+                     if($designation_new_id != "")
+                     {
+                         $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
+                     }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -483,6 +504,14 @@ class MembershipController extends Controller
                    {
                        $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
+                    if($designation_id != "")
+                 {
+                     $member_qry = $member_qry->where('m.designation_id','=',$designation_id);
+                 }
+                 if($designation_new_id != "")
+                 {
+                     $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
+                 }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -539,6 +568,14 @@ class MembershipController extends Controller
                    {
                        $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
+                    if($designation_id != "")
+                     {
+                         $member_qry = $member_qry->where('m.designation_id','=',$designation_id);
+                     }
+                     if($designation_new_id != "")
+                     {
+                         $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
+                     }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -595,6 +632,14 @@ class MembershipController extends Controller
                    {
                        $member_qry = $member_qry->where('c.city_id','=',$city_id);
                    }
+                    if($designation_id != "")
+                     {
+                         $member_qry = $member_qry->where('m.designation_id','=',$designation_id);
+                     }
+                     if($designation_new_id != "")
+                     {
+                         $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
+                     }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -680,6 +725,15 @@ class MembershipController extends Controller
                {
                    $compQuery = $compQuery->where('c.city_id','=',$city_id);
                }
+
+                if($designation_id != "")
+                {
+                    $compQuery = $compQuery->where('m.designation_id','=',$designation_id);
+                }
+                if($designation_new_id != "")
+                {
+                    $compQuery = $compQuery->where('m.designation_new_id','=',$designation_new_id);
+                }
                 
               if($member_status !='all'){
                   $compQuery = $compQuery->where('m.status_id','=',$member_status);
