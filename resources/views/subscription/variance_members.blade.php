@@ -32,6 +32,14 @@
         border: none !important;
         border-top: 1px solid lightgrey !important;
     }
+    .btn-sm{
+		padding: 2.5px 8px;
+		font-size: 8px;
+		line-height: 1.5;
+		border-radius: 3px;
+		color: #fff;
+		margin-right:5px;
+	}
    /* .btn-sm{
         padding: 0px 7px;
         font-size: 8px;
@@ -155,14 +163,14 @@
                                     <tr>
 										<th width="5%">{{__('S.No') }}</th>
                                         <th width="25%">{{__('Member Name') }}</th>
-                                        <th width="10%">{{__('Member Number') }}</th>
+                                        <th width="10%">{{__('M/NO') }}</th>
                                         <th width="15%">{{__('Bank') }}</th>
                                         <th width="15%">{{__('Bank Branch') }}</th>
                                         <th width="10%">{{__('Joining') }}</th>
                                         <th>{{ date('M Y',strtotime($data['date'].' -1 Month')) }}</th>
                                         <th>{{ date('M Y',strtotime($data['date'])) }}</th>
-										
-                                        <th class="hide"> {{__('Action') }}</th>
+										<th width="10%">{{__('Status') }}</th>
+                                        <th width="10%" class=""> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -182,8 +190,11 @@
 											<td>{{ $company->doj }}</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
 											<td>0</td>
-											
-											<td class="hide"></td>
+											<td>{{  $data['status_list'][$company->STATUS_CODE] }}</td>
+											<td class="">
+												<a class="btn btn-sm " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($company->member_id)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
+												<a class="btn btn-sm amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($company->member_id)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
+											</td>
 										</tr>
 										@php
 											$slno++;
@@ -199,8 +210,11 @@
 											<td>{{ $company->doj }}</td>
 											<td>0</td>
 											<td>{{ number_format($company->SUBSCRIPTION_AMOUNT,2,".",",") }}</td>
-											
-											<td></td>
+											<td>{{ $data['status_list'][$company->STATUS_CODE] }}</td>
+											<td>
+												<a class="btn btn-sm " href="{{ route('master.editmembership', [app()->getLocale(), Crypt::encrypt($company->member_id)]) }}" target="_blank" title="Member details" type="button" name="action"><i class="material-icons">account_circle</i></a>
+												<a class="btn btn-sm amber darken-4" href="{{ route('member.history', [app()->getLocale(),Crypt::encrypt($company->member_id)]) }}" target="_blank" title="Member History" type="button" name="action"><i class="material-icons">history</i></a>
+											</td>
 										</tr>
 										@php
 											$slno++;

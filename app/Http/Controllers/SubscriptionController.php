@@ -3248,6 +3248,13 @@ class SubscriptionController extends CommonController
         $data['union_branchid'] = $request->input('union_branchid');
         $data['company_id'] = $request->input('company_id');
         $data['branch_id'] = $request->input('branch_id');
+        $statuslist = DB::table('status')->where('status',1)->get();
+        $statusArr = [];
+        foreach ($statuslist as $key => $value) {
+            $statusArr[$value->id] = $value->status_name;
+        }
+        $data['status_list'] = $statusArr;
+
         return view('subscription.variance_members')->with('data',$data);
     }
 
