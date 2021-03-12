@@ -119,5 +119,8 @@
 	    max-width: 100%;
 	    height: auto;
 	}
+	.sidenav-main{
+		z-index: 99999;
+	}
 	  
 </style>

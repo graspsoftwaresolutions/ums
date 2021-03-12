@@ -1170,6 +1170,9 @@ class AjaxController extends CommonController
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id;
 
+        $runion_branch_id = $request->input('unionbranch_id');
+        $rcompany_id = $request->input('company_id');
+
         if($user_role=='union'){
 			$company_ids = DB::table('company as c')
 							->pluck('c.id');
@@ -1204,17 +1207,24 @@ class AjaxController extends CommonController
         $columns = array( 
             0 => 'company_id', 
             1 => 'branch_name',
-            2 => 'email',
-            3 => 'state_id',
-            4 => 'city_id',
-            5 => 'is_head',
-            6 => 'id'
+            2 => 'u.union_branch',
+            3 => 'email',
+            4 => 'state_id',
+            5 => 'city_id',
+            6 => 'is_head',
+            7 => 'id'
         );
 
        
         $totalData = DB::table('company_branch as b')->where('b.status','=','1');
         if($user_role!='union'){
             $totalData = $totalData->whereIn('b.company_id', $company_ids);
+        }
+        if($runion_branch_id!=''){
+            $totalData = $totalData->where('b.union_branch_id', $runion_branch_id);
+        }
+        if($rcompany_id!=''){
+            $totalData = $totalData->where('b.company_id', $rcompany_id);
         }
         $totalData = $totalData->count();                 
         $totalFiltered = $totalData; 
@@ -1227,23 +1237,32 @@ class AjaxController extends CommonController
         if(empty($request->input('search.value')))
         {
             $companybranchs = DB::table('company_branch as b')
-            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'))
+            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'),'u.union_branch')
             ->leftjoin('company as c','c.id','=','b.company_id')
+            ->leftjoin('union_branch as u','u.id','=','b.union_branch_id')
             ->where('b.status','=','1');
             if($limit != -1){
                 $companybranchs = $companybranchs->offset($start)->limit($limit);
             }
             if($user_role!='union'){
                 $companybranchs = $companybranchs->whereIn('b.company_id', $company_ids);
+            } 
+            if($runion_branch_id!=''){
+                $companybranchs = $companybranchs->where('b.union_branch_id', $runion_branch_id);
             }
-            $companybranchs = $companybranchs->orderBy('b.state_id','asc')->get()->toArray();
+            if($rcompany_id!=''){
+                $companybranchs = $companybranchs->where('b.company_id', $rcompany_id);
+            }
+            $companybranchs = $companybranchs->orderBy($order,$dir)->get()->toArray();
+           // $companybranchs = $companybranchs->orderBy('b.state_id','asc')->get()->toArray();
 
         }
         else {
             $search = $request->input('search.value'); 
             $companybranchs = DB::table('company_branch as b')
-            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'))
+            ->select('b.id','c.company_name','b.branch_name','b.email','b.is_head',DB::raw('if(c.head_of_company=0,CONCAT(c.company_name,"(",1,")"),c.company_name) as head_of_company'),'u.union_branch')
             ->leftjoin('company as c','c.id','=','b.company_id')
+            ->leftjoin('union_branch as u','u.id','=','b.union_branch_id')
             ->leftjoin('state as st','st.id','=','b.state_id')
             ->leftjoin('city as cit','cit.id','=','b.city_id')
             ->where('b.status','=','1');
@@ -1252,6 +1271,12 @@ class AjaxController extends CommonController
             }
             if($user_role!='union'){
                 $companybranchs = $companybranchs->whereIn('b.company_id', $company_ids);
+            }
+            if($runion_branch_id!=''){
+                $companybranchs = $companybranchs->where('b.union_branch_id', $runion_branch_id);
+            }
+            if($rcompany_id!=''){
+                $companybranchs = $companybranchs->where('b.company_id', $rcompany_id);
             }
             $companybranchs = $companybranchs->where(function($query) use ($search){
                 $query->orWhere('b.id','LIKE',"%{$search}%")

@@ -231,7 +231,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col m1 s12 ">
+                                                <div class="col m2 s12 ">
                                                     <label for="types">{{__('Increment Types') }}</label>
                                                     <select name="types" id="types" class="browser-default valid" aria-invalid="false">
                                                         <option {{ $data['types']=='' ? 'selected' : ''}} value="">Select</option>
@@ -242,7 +242,7 @@
                                                     </select>
                                                 </div>
                                                
-                                                <div class="col m1 s12 " style="padding-top:5px;">
+                                                <div class="col m2 s12 " style="padding-top:5px;">
                                                     </br>
                                                     <button id="submit-upload" class="mb-6 btn waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 

@@ -54,7 +54,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">
-                                          <table id="page-length-option" class="display">
+                                          <table id="page-length-option" width="100%" class="display">
                                               <thead>
                                                   <tr>
                                                       <th>{{__('MonthYear') }}</th>

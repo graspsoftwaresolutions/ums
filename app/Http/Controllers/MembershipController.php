@@ -1034,35 +1034,45 @@ class MembershipController extends Controller
     }
 
     public function memberTransferHistory(){
-        return view('membership.member_transfer_history');
+        $data['from_date'] = date('M/Y',strtotime(date('Y-m-01')." -1 month"));
+        $data['to_date'] = date('M/Y');
+
+        return view('membership.member_transfer_history')->with('data',$data); ;
     }
 	
 	public function ajax_transfer_list(Request $request){
 		$get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
+
+       // dd($request->all());
         
-        $datefilter = $request->input('datefilter');
+        $fromdatefilter = $request->input('fromdatefilter');
+        $todatefilter = $request->input('todatefilter');
         $memberid = $request->input('memberid');
-        $dateformat = '';  
-        $yearformat = '';  
+        $fromdateformat = '';  
+        $todateformat = '';  
         $monthformat = '';  
 		 
-        if(preg_match("^[a-z]{3}/[0-9]{4}^", $datefilter)==true || preg_match("^[A-Z]{3}/[0-9]{4}^", strtoupper($datefilter))==true ){
-            $fm_date = explode("/",$datefilter);
-            $dateformat = date('Y-m',strtotime('01-'.$fm_date[0].'-'.$fm_date[1]));
+        if(preg_match("^[a-z]{3}/[0-9]{4}^", $fromdatefilter)==true || preg_match("^[A-Z]{3}/[0-9]{4}^", strtoupper($fromdatefilter))==true ){
+            $fm_date = explode("/",$fromdatefilter);
+            $fromdateformat = date('Y-m-01',strtotime('01-'.$fm_date[0].'-'.$fm_date[1]));
         }
-        if(preg_match("^[a-z]{3}^", $datefilter)==true || preg_match("^[A-Z]{3}^", $datefilter)==true ){
-            $fm_date = explode("/",$datefilter);
-            $monthformat = date('m',strtotime('01-'.$fm_date[0].'-2019'));
-        }	
-        if(preg_match("^[0-9]{4}^", $datefilter)==true){
-            $fm_date = explode("/",$datefilter);
-            $yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
+        if(preg_match("^[a-z]{3}/[0-9]{4}^", $todatefilter)==true || preg_match("^[A-Z]{3}/[0-9]{4}^", strtoupper($todatefilter))==true ){
+            $to_date = explode("/",$todatefilter);
+            $todateformat = date('Y-m-t',strtotime('01-'.$to_date[0].'-'.$to_date[1]));
         }
+        // if(preg_match("^[a-z]{3}^", $datefilter)==true || preg_match("^[A-Z]{3}^", $datefilter)==true ){
+        //     $fm_date = explode("/",$datefilter);
+        //     $monthformat = date('m',strtotime('01-'.$fm_date[0].'-2019'));
+        // }	
+        // if(preg_match("^[0-9]{4}^", $datefilter)==true){
+        //     $fm_date = explode("/",$datefilter);
+        //     $yearformat = date('Y',strtotime('01-08-'.$fm_date[0]));
+        // }
         $sl=0;
 		 $columns = array( 
-            $sl++ => 'h.MemberCode', 
+            $sl++ => 'm.name', 
             $sl++ => 'm.member_number', 
             $sl++ => 'h.old_branch_id',
             $sl++ => 'h.new_branch_id',
@@ -1072,8 +1082,8 @@ class MembershipController extends Controller
 		$commonselect = DB::table('member_transfer_history as h')->select('m.name','h.old_branch_id','h.new_branch_id','h.transfer_date','h.id','h.MemberCode','m.member_number');
 		$commoncount = DB::table('member_transfer_history as h');
 		if($user_role=='union'){
-			$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
-			$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}");
+			$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}") ;
+			$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}");
 		}else if($user_role=='union-branch'){
 			$union_branch_id = UnionBranch::where('user_id',$user_id)->pluck('id');
             $union_branch_id_val = '';
@@ -1081,13 +1091,15 @@ class MembershipController extends Controller
 				$union_branch_id_val = $union_branch_id[0];
 				$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')
 									->join('company_branch as c','c.id','=','m.branch_id')
-									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")
+                                    ->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}")
 									->where([
 										['c.union_branch_id','=',$union_branch_id_val]
 										]);
 				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')
 									->join('company_branch as c','c.id','=','m.branch_id')
-									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")
+                                    ->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}")
 									->where([
 										['c.union_branch_id','=',$union_branch_id_val]
 										]);
@@ -1099,13 +1111,15 @@ class MembershipController extends Controller
 				$companyid = $company_id[0];
 				$commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')
 									->join('company_branch as c','c.id','=','m.branch_id')
-									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")
+                                    ->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}")
 									->where([
 										['c.company_id','=',$companyid]
 										]);
 				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')
 									->join('company_branch as c','c.id','=','m.branch_id')
-									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")
+                                    ->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}")
 									->where([
 										['c.company_id','=',$companyid]
 										]);
@@ -1116,13 +1130,15 @@ class MembershipController extends Controller
 				$branchid = $branch_id[0];
                 $commonselectqry = $commonselect->leftjoin('membership as m','m.id','=','h.MemberCode')
 									->join('company_branch as c','c.id','=','m.branch_id')
-									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")
+                                    ->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}")
 									->where([
 										['m.branch_id','=',$branchid]
 										]);
 				$commoncountqry = $commoncount->leftjoin('membership as m','m.id','=','h.MemberCode')
 									->join('company_branch as c','c.id','=','m.branch_id')
-									->where(DB::raw('DATE_FORMAT(h.`transfer_date`,"%Y-%m")'), '=',"{$dateformat}")
+									->where(DB::raw('h.`transfer_date`'), '>=',"{$fromdateformat}")
+                                    ->where(DB::raw('h.`transfer_date`'), '<=',"{$todateformat}")
 									->where([
 										['m.branch_id','=',$branchid]
 										]);
@@ -1165,8 +1181,7 @@ class MembershipController extends Controller
 				
 			$historylist =  $commonselectqry->leftjoin('company_branch as cb','cb.id','=','h.old_branch_id')
 									->leftjoin('company_branch as cbone','cbone.id','=','h.new_branch_id');
-								   
-                                //->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
+								 
                                 $historylist = $commonselectqry;
 								if($memberid!=""){
                                     $historylist = $historylist->where('m.id','=',$memberid);
@@ -1184,7 +1199,6 @@ class MembershipController extends Controller
                                 if($memberid!=""){
                                     $historycount = $historycount->where('m.id','=',$memberid);
                                 }
-								//->orWhere(DB::raw('year(s.Date)'), '=',"%{$yearformat}%")
 							   
 								$totalFiltered = $historycount->count();
         }

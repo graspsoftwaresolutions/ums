@@ -13,7 +13,7 @@
 @endif
     <aside class="sidenav-main nav-collapsible sidenav-light sidenav-active-square nav-collapsed">
       <div class="brand-sidebar">
-        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="#"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo"><span class="logo-text hide-on-med-and-down">Membership</span></a><a class="navbar-toggler" href="#"><i class="material-icons hide">radio_button_checked</i></a></h1>
+        <h1 class="logo-wrapper"><a class="brand-logo darken-1" href="#"><img src="{{ asset('public/assets/images/logo/'.$logo) }}" alt="Membership logo"><span class="logo-text hide-on-med-and-down">Membership @if(env('APP_DEBUG')===true) Demo @endif </span></a><a class="navbar-toggler" href="#"><i class="material-icons hide">radio_button_checked</i></a></h1>
       </div>
       <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out" data-menu="menu-navigation" data-collapsible="menu-accordion">
 		<li class="navigation bold hide" style="font:size:8px;"> <center>{{ Auth::user()->name }} </center>
@@ -25,7 +25,7 @@
           <div class="collapsible-body">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
               @if($user_role=='union')
-              <li id="country_sidebar_li_id" class=""><a id="country_sidebar_a_id" class="collapsible-body " href="{{ route('master.country',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Country Details') }}</span></a></li>
+              <li id="country_sidebar_li_id" class=""><a id="country_sidebar_a_id" class="collapsible-body hide" href="{{ route('master.country',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Country Details') }}</span></a></li>
               <li id="state_sidebar_li_id" class=""><a id="state_sidebar_a_id" class="collapsible-body" href="{{route('master.state',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('State Details') }}</span></a></li>
 
               <li id="city_sidebar_li_id" class=""><a id="city_sidebar_a_id" class="collapsible-body" href="{{route('master.city',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('City Details') }}</span></a></li>
@@ -33,7 +33,7 @@
               <li id="city_0sidebar_li_id" class=""><a id="city_0sidebar_a_id" class="collapsible-body" href="{{route('master.citytemp',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('City Details[0 Members]') }}</span></a></li>
              
               <li id="status_sidebar_li_id" class=""><a id="status_sidebar_a_id" class="collapsible-body" href="{{ route('master.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Status Details')}}</span></a></li>
-              <li id="pcstatus_sidebar_li_id" class=""><a id="pcstatus_sidebar_a_id" class="collapsible-body" href="{{ route('privilegecard.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('PC Status Details')}}</span></a></li>
+              <li id="pcstatus_sidebar_li_id" class=""><a id="pcstatus_sidebar_a_id" class="collapsible-body" href="{{ route('privilegecard.status',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Privilege Card Status')}}</span></a></li>
               @endif
               <li id="company_sidebar_li_id" class=""><a id="company_sidebar_a_id" class="collapsible-body" href="{{route('master.company',app()->getLocale())}}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Company Details') }}</span></a></li>
               @if($user_role=='union')
@@ -69,6 +69,8 @@
            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membershipnew',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>
           @endif
+          
+          @endif
            @if($user_role=='irc-branch-committee')
            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>
@@ -77,10 +79,16 @@
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a>
             </li>
             @if($user_role=='union')
-            <li class="bold"><a id="vmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('verify.membership',app()->getLocale()) }}"><i class="material-icons">face</i><span class="menu-title" data-i18n="">{{ __('Verify Member Details') }}</span></a>
-            </li>
-            <li class="bold"><a id="dojmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('verify.doj',app()->getLocale()) }}"><i class="material-icons">date_range</i><span class="menu-title" data-i18n="">{{ __('Verify DOJ') }}</span></a>
-            </li>
+           <li id="other_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">extension  </i><span class="menu-title" data-i18n="">{{ __('Other Links') }}</span></a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+                    <li id="vmembership_sidebar_li_id" class=""><a id="vmembership_sidebar_a_id" class="collapsible-body" href="{{ route('verify.membership',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Verify Member Details') }}</span></a></li>
+                    <li id="dojmembership_sidebar_li_id" class=""><a id="dojmembership_sidebar_a_id" class="collapsible-body" href="{{ route('verify.doj',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Verify DOJ') }}</span></a></li>
+                </ul>
+            </div>
+          </li>
+            @if($user_role=='union')
+           
             <li class="bold"><a id="tdfmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('upload.tdf',app()->getLocale()) }}"><i class="material-icons">file_upload</i><span class="menu-title" data-i18n="">{{ __('TDF Upload') }}</span></a>
             </li>
              <li class="bold"><a id="sal_updatelist_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.list',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation List') }}</span></a>

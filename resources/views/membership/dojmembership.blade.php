@@ -235,7 +235,9 @@ $('#clear').click(function(){
 	$(".selectpicker").val('').trigger("change"); 
 });	
 
-$("#vmembership_sidebar_a_id").addClass('active');
+$("#other_sidebars_id").addClass('active');
+$("#dojmembership_sidebar_li_id").addClass('active');
+$("#dojmembership_sidebar_a_id").addClass('active');
 
 
 $(function () {

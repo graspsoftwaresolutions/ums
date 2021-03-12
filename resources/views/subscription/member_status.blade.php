@@ -185,10 +185,14 @@
 					{{ CommonHelper::get_member_match_name($data['status']) }}'s List
 				@elseif($data['status_type']==3)
 					SUNDRY CREDITORS List
+				@elseif($data['status_type']==5)
+					Additional Members List [{{ date('M/Y',$data['filter_date']) }}]
 				@else
 					All Members List
 				@endif
+				@if($data['status_type']!=5)
 				&nbsp; <input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn " value="Advanced search">
+				@endif
 				<a class="btn waves-light right " href="{{ route('subscription.sub_fileupload', app()->getLocale())  }}">{{__('Back')}}</a>
 				</h4> 
 				@php
@@ -953,6 +957,7 @@ $(document).on('submit','form#filtersubmit',function(event){
 	}
 	//$("#submit-download").prop('disabled',true);
 });
+@if($data['status_type']!=5)
 $(window).scroll(function() {   
    var lastoffset = $("#memberoffset").val();
    var limit = "{{$data['data_limit']}}";
@@ -1010,6 +1015,7 @@ $(window).scroll(function() {
 			
    }
 });
+@endif
 function ConfirmSubmit(){
 	if (confirm("{{ __('Are you sure you want to update?') }}")) {
         return true;

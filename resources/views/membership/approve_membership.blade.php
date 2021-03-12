@@ -1567,7 +1567,9 @@
 </script>
 @include('membership.member_common_script') 
 <script>
-$("#vmembership_sidebar_a_id").addClass('active');
 $("#membership_sidebar_a_id").removeClass('active');
+$("#other_sidebars_id").addClass('active');
+$("#vmembership_list_sidebar_li_id").addClass('active');
+$("#vmembership_sidebar_a_id").addClass('active');
 </script>
 @endsection

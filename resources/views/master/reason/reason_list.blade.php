@@ -52,9 +52,9 @@
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Reason List') }}</h4>
                                     @include('includes.messages')
-                                    <div class="row">
+                                    <div class="">
                                         <div class="col s12">
-                                            <table id="page-length-option" class="display">
+                                            <table id="page-length-option" width="100%" class="display">
                                                 <thead>
                                                     <tr>
                                                         <th>{{__('Reason Name') }}</th>

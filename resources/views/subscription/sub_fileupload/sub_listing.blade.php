@@ -342,7 +342,7 @@
                     <div class="col s12 m6">
                         <div id="DivIdToPrint" class="card subscriber-list-card animate fadeRight">
                             <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
-                                <h4 class="card-title mb-0">{{__('Member Status') }} 
+                                <h4 class="card-title mb-0">{{__('Member Status') }} [With Additional Members]
 								<!-- <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm" style="background:#ccc;" onClick="return printDiv()"> <i class="material-icons">print</i></a> -->
 								<span class="right datamonth">[{{ date('M/Y') }}]</span>
 							</h4>
@@ -390,6 +390,48 @@
                                 </tfoot>
                             </table>
                         </div>
+                        @if($user_role=='union')
+                        <div id="DivIdToPrint" class="card subscriber-list-card animate fadeRight">
+                            <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
+                                <h4 class="card-title mb-0">{{__('Others') }} 
+                                <!-- <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm" style="background:#ccc;" onClick="return printDiv()"> <i class="material-icons">print</i></a> -->
+                                <span class="right datamonth">[{{ date('M/Y') }}]</span>
+                            </h4>
+                            </div>
+                            <table class="subscription-table responsive-table highlight">
+                                <thead>
+                                    <tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
+                                        <th>Sl No</th>
+                                        <th>Description</th>
+                                        <th>Count</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                @php
+                                    $member_additional_count = CommonHelper::additionalSubsMembersNotDojCount(strtotime('now')); 
+                                    $member_additional_amount = CommonHelper::additionalMembersNotDojAmount(strtotime('now')); 
+
+                                    $member_arrear_count = CommonHelper::arrearMembersCount(strtotime('now')); 
+                                    $member_arrear_amount = CommonHelper::arrearMembersAmount(strtotime('now')); 
+                                @endphp
+                                <tbody>
+                                   <tr class="monthly-other-status" id="monthly_other_status" data-href="{{ URL::to(app()->getLocale().'/subscription-status?member_status=all&additional=1&date='.strtotime('now')) }}" style="cursor:pointer;">
+                                        <td>1</td>
+                                        <td>Additional Members</td>
+                                        <td id="member_additional_count">{{ $member_additional_count }}</td>
+                                        <td id="member_additional_amount">{{ number_format($member_additional_amount,2,".",",") }}</td>
+                                   </tr>
+                                    <tr class="monthly-arrear-status" id="monthly_arrear_status" data-href="{{ URL::to(app()->getLocale().'/sub-arrearentry') }}" style="cursor:pointer;">
+                                        <td>2</td>
+                                        <td>Arrear Members</td>
+                                        <td id="member_arrear_count">{{ $member_arrear_count }}</td>
+                                        <td id="member_arrear_amount">{{ number_format($member_arrear_amount,2,".",",") }}</td>
+                                   </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                        @endif
                         <br> @if($user_role=='company')
                         <div class="row">
                             <form class="formValidate" id="struckoffform" method="post" action="{{ url(app()->getLocale().'/invalidsubs') }}" target="_blank" enctype="multipart/form-data">
@@ -704,6 +746,8 @@
                             $("#monthly_company_sub_status_0").attr('data-href', baselink + "subscription-status?member_status=0&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
                             $("#monthly_company_sub_status_all").attr('data-href', baselink + "subscription-status?member_status=all&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
                             $("#monthly_company_approval_status_all").attr('data-href', baselink + "subscription-status?approval_status=all&date=" + result.month_year_number + "&company_id=" + result.company_auto_id);
+                            $("#monthly_other_status").attr('data-href', baselink + "subscription-status?member_status=all&additional=1&date=" + result.month_year_number );
+
                             $("#company_member_status_count_sundry").html(result.sundry_count);
                             $("#company_member_status_amount_sundry").html(result.sundry_amount);
                             $("#company_member_status_count_total").html(result.total_members_count);
@@ -718,6 +762,7 @@
                             $(".clear-approval").html(0);
                             $(".monthly-company-approval-status").attr('data-href', '');
                             $(".monthly-company-sub-status").attr('data-href', '');
+                            $("#monthly_other_status").attr('data-href', '');
                             $("#company_member_status_count_total").html(0);
                             $("#company_member_status_amount_total").html(0);
                             //$("#bankname-listing").addClass('hide');
@@ -729,6 +774,7 @@
                 $(".clear-approval").html(0);
                 $(".monthly-company-approval-status").attr('data-href', '');
                 $(".monthly-company-sub-status").attr('data-href', '');
+                $("#monthly_other_status").attr('data-href', '');
                 //$("#bankname-listing").addClass('hide');
             }
             if (entry_date != "") {
@@ -779,6 +825,14 @@
                             $("#approval_status_count_total").html(result.total_match_members_count);
                             $("#approval_approved_count_total").html(result.total_match_approval_members_count);
                             $("#approval_pending_count_total").html(result.total_match_pending_members_count);
+
+                            $("#member_additional_count").html(result.member_additional_count);
+                            $("#member_additional_amount").html(result.member_additional_amount);
+
+                            $("#member_arrear_count").html(result.member_arrear_count);
+                            $("#member_arrear_amount").html(result.member_arrear_amount);
+
+                            $("#monthly_other_status").attr('data-href', baselink + "subscription-status?member_status=all&additional=1&date=" + result.month_year_number );
                             //$("#member_status_count_1").html(5555);
                         } else {
 
@@ -836,6 +890,12 @@
             }
         });
         $(".monthly-company-approval-status").click(function() {
+            if ($(this).attr("data-href") != "") {
+                window.open($(this).attr("data-href"), '_blank');
+                //win = window.location.replace($(this).attr("data-href"));
+            }
+        });
+        $(".monthly-other-status,.monthly-arrear-status").click(function() {
             if ($(this).attr("data-href") != "") {
                 window.open($(this).attr("data-href"), '_blank');
                 //win = window.location.replace($(this).attr("data-href"));

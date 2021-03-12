@@ -13,6 +13,11 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 @endsection
 @section('main-content')
+@php 
+	$userid = Auth::user()->id;
+	$get_roles = Auth::user()->roles;
+	$user_role = $get_roles[0]->slug;
+@endphp
 <div id="">
 	<div class="row">
 		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
@@ -46,6 +51,57 @@
 							<div class="card">
 								<div class="card-content">
 									<h4 class="card-title">{{__('Company Branch List') }}</h4>
+									<div class="row">
+										<input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn col s12 m4 l3" value="Advanced search">
+									</div> 
+									<div class="card advancedsearch" style="display:none;">
+										<div class="col s12">
+											<form method="post" id="advancedsearchform">
+												@csrf 
+												<div class="row">
+													
+													<div class="col s12 m6 l4 @if($user_role !='union') hide @endif">
+														<label>{{__('Union Branch Name') }}</label>
+														<select name="unionbranch_id" id="unionbranch_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
+															<option value="">{{__('Select Union') }}</option>
+															@foreach($data['unionbranch_view'] as $value)
+			                                                <option value="{{$value->id}}">
+			                                                    {{$value->union_branch}}</option>
+			                                                @endforeach
+														</select>
+														<div class="input-field">
+															<div class="errorTxt22"></div>
+														</div>
+													</div>
+													<div class="col s12 m6 l4 @if($user_role =='company-branch' || $user_role=='irc-branch-committee') hide @endif">
+														<label>{{__('Company Name') }}</label>
+														<input type="hidden" name="companyid" id="companyid">
+													
+															<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22">
+																<option value=""> Select Company</option>
+																@foreach($data['company_view'] as $key=>$value)
+			                                                    <option value="{{$value->id}}">{{$value->company_name}}</option>
+			                                              		@endforeach
+															</select>
+														<div class="input-field">
+															<div class="errorTxt22"></div>
+														</div>
+													</div>
+													<div class="col s12 m6 l3">
+														
+													</div>
+												</div> 
+												<div class="row">
+													<div class="input-field col s6 hide right">
+														<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
+													</div>
+													<div class="input-field col s6 right-align">
+														<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
 									@include('includes.messages')
 									<div class="row">
 										<div class="col s12">
@@ -54,6 +110,7 @@
 													<tr>
 														<th>{{__('Company Name') }}(is_head)</th>
 														<th>{{__('Branch Name') }}</th>
+														<th>{{__('UBranch') }}</th>
 														<th>{{__('Email') }}</th>
 														<th>{{__('State') }}</th>
 														<th>{{__('City') }}</th>
@@ -98,7 +155,7 @@
 </script>
 <script>
 	$(function () {
-		$('#page-length-option').DataTable({
+		var dataTable = $('#page-length-option').DataTable({
 			"responsive": true,
 			dom: 'lBfrtip', 
 			"lengthMenu": [
@@ -110,7 +167,7 @@
 				   extend: 'pdf',
 				   footer: true,
 				   exportOptions: {
-						columns: [0,1,2,3,4,5]
+						columns: [0,1,2,3,4,5,6]
 					},
 					title : 'Bank Branch List',
 					titleAttr: 'pdf',
@@ -120,7 +177,7 @@
 				   extend: 'excel',
 				   footer: false,
 				   exportOptions: {
-						columns: [0,1,2,3,4,5]
+						columns: [0,1,2,3,4,5,6]
 					},
 					title : 'Bank Branch List',
 					text:      '<i class="fa fa-file-excel-o"></i>',
@@ -130,7 +187,7 @@
 				   extend: 'print',
 				   footer: false,
 				   exportOptions: {
-						columns: [0,1,2,3,4,5]
+						columns: [0,1,2,3,4,5,6]
 					},
 					title : 'Bank Branch List',
 					text:   '<i class="fa fa-files-o"></i>',
@@ -143,7 +200,16 @@
 				"url": "{{ url(app()->getLocale().'/ajax-company-branchlist') }}",
 				"dataType": "json",
 				"type": "POST",
-				"data": {_token: "{{csrf_token()}}"},
+				'data': function(data){
+					  var unionbranch_id = $('#unionbranch_id').val();
+					  var company_id = $('#company_id').val();
+					  //console.log(datefilter);
+					  // Append to data
+					  //data.search['value'] = datefilter;
+					  data.unionbranch_id = unionbranch_id;
+					  data.company_id = company_id;
+					  data._token = "{{csrf_token()}}";
+			   },
 				"error": function (jqXHR, textStatus, errorThrown) {
 		            if(jqXHR.status==419){
 		            	alert('Your session has expired, please login again');
@@ -154,6 +220,7 @@
 			"columns": [
 				{"data": "head_of_company"},
 				{"data": "branch_name"},
+				{"data": "union_branch"},
 				{"data": "email"},
 				{"data": "statename"},
 				{"data": "cityname"},
@@ -163,7 +230,14 @@
 			]
 
 		});
+
+		$(document).on('submit','form#advancedsearchform',function(event){
+			event.preventDefault();
+			dataTable.draw();
+	
+		});
 	});
+
 	function ConfirmDeletion() {
 		if (confirm("{{ __('Are you sure you want to delete?') }}")) {
 			return true;
@@ -171,5 +245,8 @@
 			return false;
 		}
 	}
+	$('#advancedsearchs').click(function(){
+		$('.advancedsearch').toggle();
+	});
 </script>
 @endsection

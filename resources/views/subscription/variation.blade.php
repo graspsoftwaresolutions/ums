@@ -226,7 +226,7 @@
 			<div class="container">
 				<div class="card">
 					<div class="card-content">
-						<h4 class="card-title">Subscription variation
+						<h4 class="card-title">Subscription variation [With New Members]
 						<div class="right">
 							<a class="btn waves-light cyan  " target="_blank" href="{{ URL::to(app()->getLocale().'/subscription-variation?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('Print')}}</a>
 							<a class="btn waves-light " target="_blank" style="background:#ff0000;" href="{{ URL::to(app()->getLocale().'/subscription-variation-pdf?date='.strtotime($data['month_year_full']).'&groupby='.$data['groupby'].'&display_subs='.$data['DisplaySubscription'].'&print=1&variation='.$data['variationtype'].'&inctype='.$data['types'].'&sub_company='.$data['sub_company'].'&unionbranch_id='.$data['unionbranch_id']) }}" >{{__('PDF')}}</a>

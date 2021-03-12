@@ -5043,5 +5043,47 @@ class CommonHelper
         $count = DB::table('eco_park')->where('status',0)->count();
         return $count;
     }
+
+    public static function additionalSubsMembersNotDojCount($strtime){
+
+        $monthyear=date('Y-m-01',$strtime);
+    
+        $members_qry = DB::select(DB::raw('select count(m.id) as count from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.additional_member=1 AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$monthyear.'"'));
+        $members_count = $members_qry[0]->count;
+        
+        return $members_count;
+    }
+
+    public static function additionalMembersNotDojAmount($strtime){
+
+        $monthyear=date('Y-m-01',$strtime);
+    
+        $members_qry = DB::select(DB::raw('select ifnull(sum(m.Amount),0) as amount from `mon_sub_member` as `m` left join `mon_sub_company` as `sc` on `sc`.`id` = `m`.`MonthlySubscriptionCompanyId` left join `mon_sub` as `sm` on `sm`.`id` = `sc`.`MonthlySubscriptionId` LEFT JOIN `membership` AS `member` ON `member`.`id` = `m`.`MemberCode` where m.additional_member=1 AND `sm`.`Date` <> DATE_FORMAT(member.doj, "%Y-%m-01") AND `sm`.`Date`="'.$monthyear.'"'));
+        $members_amount = $members_qry[0]->amount;
+        
+        return $members_amount;
+    }
+
+    public static function arrearMembersCount($strtime){
+        //$strtime = strtotime('2021-12-01');
+        $frommonthyear=date('Y-m-01',$strtime);
+        $tomonthyear=date('Y-m-t',$strtime);
+
+        $data =  DB::table('arrear_entry as ar')->select(DB::raw('count(*) as count'))
+        ->where('ar.arrear_date','>=',$frommonthyear)
+        ->where('ar.arrear_date','<=',$tomonthyear)->first();
+        return $data->count;
+    }
+
+    public static function arrearMembersAmount($strtime){
+        //$strtime = strtotime('2021-12-01');
+        $frommonthyear=date('Y-m-01',$strtime);
+        $tomonthyear=date('Y-m-t',$strtime);
+
+        $data =  DB::table('arrear_entry as ar')->select(DB::raw('sum(arrear_amount) as amount'))
+        ->where('ar.arrear_date','>=',$frommonthyear)
+        ->where('ar.arrear_date','<=',$tomonthyear)->first();
+        return $data->amount=='' ? 0 : $data->amount;
+    }
     
 }

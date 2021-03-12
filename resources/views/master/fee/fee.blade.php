@@ -74,9 +74,9 @@
                                 <div class="card-content">
                                     <h4 class="card-title">{{__('Fee List') }}</h4>
                                     @include('includes.messages')
-                                    <div class="row">
-                                        <div class="col s12">
-                                            <table id="page-length-option" class="display">
+                                    <div class="">
+                                        <div class="">
+                                            <table id="page-length-option" width="100%" class="display">
                                                 <thead>
                                                     <tr>
                                                         <th>{{__('Fee Name') }}</th>

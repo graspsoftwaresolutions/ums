@@ -1252,7 +1252,9 @@ public function companyDestroy($lang,$id)
 }
      
     public function CompanyBranchList(){
-        return view('master.companybranch.branch');
+        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        return view('master.companybranch.branch')->with('data',$data);
     }
     public function addCompanyBranch(){
         $data['company_view'] = DB::table('company')->where('status','=','1')->get();

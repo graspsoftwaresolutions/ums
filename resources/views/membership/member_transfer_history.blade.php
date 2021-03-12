@@ -87,6 +87,12 @@
 		text-decoration: none;
 		outline: none;
 	}
+	@page  { 
+		margin: 3px 12px 7px 12px !important; 
+		.nametableclass {
+			width: 20px !important;
+		}
+	}
 </style>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
@@ -145,8 +151,15 @@
 												@csrf 
 												<div class="row">
 													<div class="col s12 m6 l3">
-														<label>{{__('Month/Year') }}</label>
-														<input type="text" id="5" id="transferdate" class="transferdate datepicker-custom" autocomplete="off" required value="{{date('M/Y')}}" data-error=".errorTxt23" />
+														<label>{{__('From Month/Year') }}</label>
+														<input type="text" id="fromtransferdate" class="transferdate datepicker-custom" autocomplete="off" required value="{{ $data['from_date'] }}" data-error=".errorTxt23" />
+														<div class="input-field">
+															<div class="errorTxt23"></div>
+														</div>
+													</div>
+													<div class="col s12 m6 l3">
+														<label>{{__('To Month/Year') }}</label>
+														<input type="text" id="totransferdate" class="transferdate datepicker-custom" autocomplete="off" required value="{{ $data['to_date'] }}" data-error=".errorTxt23" />
 														<div class="input-field">
 															<div class="errorTxt23"></div>
 														</div>
@@ -233,6 +246,7 @@
 	
     var dataTable =  $('#page-length-option').DataTable({
 			"responsive": true,
+			"order": [[ 4, "desc" ]],
 			dom: 'lBfrtip', 
 			
         buttons: [
@@ -281,12 +295,14 @@
 				"dataType": "json",
 				"type": "POST",
 				'data': function(data){
-				  var datefilter = $('.transferdate').val();
+				  var fromdatefilter = $('#fromtransferdate').val();
+				  var todatefilter = $('#totransferdate').val();
 				  var member_auto_id = $('#member_auto_id').val();
 				  //console.log(datefilter);
 				  // Append to data
 				  //data.search['value'] = datefilter;
-				  data.datefilter = datefilter;
+				  data.fromdatefilter = fromdatefilter;
+				  data.todatefilter = todatefilter;
 				  data.memberid = member_auto_id;
 				  data._token = "{{csrf_token()}}";
 			   },
@@ -319,6 +335,7 @@
 		$(document).on('submit','form#advancedsearchform',function(event){
 			event.preventDefault();
 			dataTable.draw();
+			
 			//loader.showLoader();
 		});
 		 
@@ -335,10 +352,10 @@ $('#advancedsearchs').click(function(){
 	$('.advancedsearch').toggle();
 });
 $('#clear').click(function(){
-	$('.transferdate').val("");
+	//$('.transferdate').val("");
 	$('#member_search').val("");
 	$('#member_auto_id').val("");
-	$(".selectpicker").val('').trigger("change"); 
+	//$(".selectpicker").val('').trigger("change"); 
 });
 $(document).ready(function(){
 		 $('.datepicker-custom').MonthPicker({ 

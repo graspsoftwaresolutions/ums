@@ -350,6 +350,8 @@ $('#clear').click(function(){
 	$(".selectpicker").val('').trigger("change"); 
 });	
 
+$("#other_sidebars_id").addClass('active');
+$("#vmembership_list_sidebar_li_id").addClass('active');
 $("#vmembership_sidebar_a_id").addClass('active');
 
 
