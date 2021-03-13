@@ -57,7 +57,7 @@ class MembershipController extends Controller
         $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['state_view'] = DB::table('state')->where('status','=','1')->get();
+        $data['state_view'] = DB::table('state')->where('status','=','1')->where('country_id','=','130')->get();
         $data['city_view'] = DB::table('city')->where('status','=','1')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['designation_new'] = DB::table('designation_new')->where('status','=','1')->get();
@@ -282,6 +282,7 @@ class MembershipController extends Controller
 		$columns[$sl++] = 'm.email';
         
         $columns[$sl++] = 'm.race_id';
+        $columns[$sl++] = 'm.salary';
 		//if($type==1){
 			$columns[$sl++] = 'm.status_id';
 		//}
@@ -308,11 +309,12 @@ class MembershipController extends Controller
 		$city_id = $request->input('city_id'); 
         $designation_id = $request->input('designation_id'); 
         $designation_new_id = $request->input('designation_new_id'); 
+        $salary_filter = $request->input('salary_filter'); 
 		
 		if($user_role=='union' || $user_role=='data-entry'){
             //DB::enableQueryLog();
 				
-			$member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color','con.country_name')
+			$member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'m.member_number','m.id as id','m.name','m.gender','m.designation_id','m.email','m.branch_id','m.status_id','m.doj','c.branch_name','c.id as companybranchid','com.id as companyid','com.company_name' ,'d.designation_name','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.status_name','s.font_color','con.country_name','m.salary','m.current_salary')
 						 ->leftjoin('designation as d','m.designation_id','=','d.id')
 						 ->leftjoin('company_branch as c','m.branch_id','=','c.id')
 						 ->leftjoin('company as com','com.id','=','c.company_id')
@@ -365,6 +367,12 @@ class MembershipController extends Controller
              {
                  $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
              }
+
+             if($salary_filter != "")
+             {
+                 $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
+                 $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+             }
 			  
 			if($member_status !='all'){
 				$member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -379,9 +387,9 @@ class MembershipController extends Controller
             $union_branch_id_val = '';
 			if(count($union_branch_id)>0){
                 $union_branch_id_val = $union_branch_id[0];
-                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
-                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
-                ->join('membership as m','c.id','=','m.branch_id')
+                $member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
+                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color','m.salary','m.current_salary')
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
@@ -435,6 +443,11 @@ class MembershipController extends Controller
                      {
                          $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
                      }
+                     if($salary_filter != "")
+                     {
+                         $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
+                         $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                     }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -456,9 +469,9 @@ class MembershipController extends Controller
             $union_branch_id_val = '';
             if(count($union_branch_ids)>0){
                 $union_branch_ids_val = $union_branch_ids;
-                 $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
-                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color')
-                ->join('membership as m','c.id','=','m.branch_id')
+                 $member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id',
+                'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code as raceshortcode','s.font_color','m.salary','m.current_salary')
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
@@ -512,6 +525,11 @@ class MembershipController extends Controller
                  {
                      $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
                  }
+                 if($salary_filter != "")
+                 {
+                     $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
+                     $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                 }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -520,9 +538,9 @@ class MembershipController extends Controller
 			$company_id = CompanyBranch::where('user_id',$user_id)->pluck('company_id');
 			if(count($company_id)>0){
 				$companyid = $company_id[0];
-                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name as raceshortcode','s.font_color')
-                ->join('membership as m','c.id','=','m.branch_id')
+                $member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name as raceshortcode','s.font_color','m.salary','m.current_salary')
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
@@ -576,6 +594,11 @@ class MembershipController extends Controller
                      {
                          $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
                      }
+                     if($salary_filter != "")
+                     {
+                         $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
+                         $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                     }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -584,9 +607,9 @@ class MembershipController extends Controller
 			$branch_id = CompanyBranch::where('user_id',$user_id)->pluck('id');
 			if(count($branch_id)>0){
 				$branchid = $branch_id[0];
-                $member_qry = DB::table('company_branch as c')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
-                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code')
-                ->join('membership as m','c.id','=','m.branch_id')
+                $member_qry = DB::table('membership as m')->select(DB::raw("IFNULL(m.levy, '---') AS levy"),'c.id as cid','m.name','m.email','m.id','m.mobile','m.status_id as status_id','m.branch_id as branch_id',
+                              'm.member_number','m.designation_id','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','m.state_id','m.city_id','m.race_id','m.mobile',DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),'com.short_code','r.race_name','r.short_code','m.salary','m.current_salary')
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('union_branch as ub','c.union_branch_id','=','ub.id')
@@ -640,6 +663,11 @@ class MembershipController extends Controller
                      {
                          $member_qry = $member_qry->where('m.designation_new_id','=',$designation_new_id);
                      }
+                     if($salary_filter != "")
+                     {
+                         $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
+                         $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                     }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
                 }
@@ -661,9 +689,10 @@ class MembershipController extends Controller
         if(empty($request->input('search.value')))
         {
             //DB::enableQueryLog();
-				$compQuery = DB::table('company_branch as c')
-				->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color')
-                ->join('membership as m','c.id','=','m.branch_id')
+				$compQuery = DB::table('membership as m')
+				->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color','m.salary','m.current_salary')
+               
+                ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                 ->leftjoin('designation as d','m.designation_id','=','d.id')
                 ->leftjoin('company as com','com.id','=','c.company_id')
                 ->leftjoin('status as s','s.id','=','m.status_id')
@@ -734,6 +763,11 @@ class MembershipController extends Controller
                 {
                     $compQuery = $compQuery->where('m.designation_new_id','=',$designation_new_id);
                 }
+                if($salary_filter != "")
+                 {
+                     $compQuery = $compQuery->where('m.current_salary','>',$salary_filter);
+                     $compQuery = $compQuery->orWhere('m.salary','>',$salary_filter);
+                 }
                 
               if($member_status !='all'){
                   $compQuery = $compQuery->where('m.status_id','=',$member_status);
@@ -758,9 +792,9 @@ class MembershipController extends Controller
            // DB::enableQueryLog();
             $search = $request->input('search.value'); 
         
-			$compQuery = DB::table('company_branch as c')
-							->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color')
-                            ->join('membership as m','c.id','=','m.branch_id')
+			$compQuery = DB::table('membership as m')
+							->select(DB::raw("IFNULL(m.levy, '---') AS levy"),DB::raw("IFNULL(c.branch_name, '---') AS branch_name"),DB::raw("IFNULL(d.designation_name, '---') AS designation_name"),'c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id','s.status_name as status_name','m.member_number','m.designation_id',DB::raw("IFNULL(m.gender, '---') AS gender"),DB::raw("IFNULL(com.company_name, '---') AS company_name"),DB::raw("IFNULL(m.doj, '---') AS doj"),DB::raw("IFNULL(m.old_ic, '---') AS old_ic"),DB::raw("IFNULL(m.new_ic, '---') AS new_ic"),DB::raw("IFNULL(st.state_name, '---') AS state_name"),'cit.id as cityid',DB::raw("IFNULL(cit.city_name, '---') AS city_name"),'st.id as stateid','m.state_id','m.city_id','m.race_id',DB::raw("IFNULL(m.levy_amount, '---') AS levy_amount"),DB::raw("IFNULL(m.tdf, '---') AS tdf"),DB::raw("IFNULL(m.tdf_amount, '---') AS tdf_amount"),DB::raw("IFNULL(com.short_code, '---') AS short_code"),DB::raw("IFNULL(m.mobile, '---') AS mobile"),DB::raw("IFNULL(r.race_name, '---') AS race_name"),DB::raw("IFNULL(r.short_code, '---') AS raceshortcode"),'s.status_name','s.font_color','m.salary','m.current_salary')
+                            ->leftjoin('company_branch as c','c.id','=','m.branch_id')
                             ->leftjoin('designation as d','m.designation_id','=','d.id')
                             ->leftjoin('company as com','com.id','=','c.company_id')
                             ->leftjoin('status as s','s.id','=','m.status_id')
@@ -789,6 +823,55 @@ class MembershipController extends Controller
 								['m.branch_id','=',$branchid]
 								]);
 							}
+
+                            if($branch_id!=""){
+                                $compQuery = $compQuery->where('m.branch_id','=',$branch_id);
+                            }elseif($company_id!= ''){
+                                 $compQuery = $compQuery->where('c.company_id','=',$company_id);
+                            }
+                            if($unionbranch_id!= ''){
+                                $compQuery = $compQuery->where('c.union_branch_id','=',$unionbranch_id);
+                            }
+                            // $compQuery->dump()->get();
+                            if($gender!="")
+                            {
+                                $compQuery = $compQuery->where('m.gender','=',$gender);
+                            }
+                            if($race_id != "")
+                            {
+                               $compQuery = $compQuery->where('m.race_id','=',$race_id);
+                            }
+                            if($status_id!=0 && $status_id != "")
+                            {
+                               $compQuery = $compQuery->where('m.status_id','=',$status_id);
+                            }
+                            if($country_id != "")
+                            {
+                               $compQuery = $compQuery->where('c.country_id','=',$country_id);
+                            }
+                            if($state_id != "")
+                            {
+                               $compQuery = $compQuery->where('c.state_id','=',$state_id);
+                            }
+                            if($city_id != "")
+                            {
+                               $compQuery = $compQuery->where('c.city_id','=',$city_id);
+                            }
+
+                            if($designation_id != "")
+                            {
+                                $compQuery = $compQuery->where('m.designation_id','=',$designation_id);
+                            }
+                            if($designation_new_id != "")
+                            {
+                                $compQuery = $compQuery->where('m.designation_new_id','=',$designation_new_id);
+                            }
+                            if($salary_filter != "")
+                             {
+                                 $compQuery = $compQuery->where('m.current_salary','>',$salary_filter);
+                                 $compQuery = $compQuery->orWhere('m.salary','>',$salary_filter);
+                             }
+
                             $compQuery =  $compQuery->where(function($query) use ($search){
                                 $query->orWhere('com.company_name', 'LIKE',"%{$search}%")
                                 ->orWhere('m.member_number', '=',"{$search}")
@@ -854,6 +937,7 @@ class MembershipController extends Controller
                 $nestedData['mobile'] = $member->mobile;
                 $nestedData['race_id'] = $member->raceshortcode;
                 $nestedData['status'] = $member->status_name;
+                $nestedData['salary'] = $member->current_salary==0 ? $member->salary : $member->current_salary;
                 $font_color = $member->font_color;
                 $nestedData['font_color'] = $font_color;
                 

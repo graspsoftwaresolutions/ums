@@ -249,7 +249,7 @@ span.dtr-title::after {
 												<option value="">{{__('Select Country') }}</option>
 												
 												@foreach($data['country_view'] as $value)
-                                                <option value="{{$value->id}}" >
+                                                <option selected="" value="{{$value->id}}" >
                                                     {{$value->country_name}}</option>
                                                 @endforeach
 											</select>
@@ -261,7 +261,10 @@ span.dtr-title::after {
 											<label>{{__('State') }}</label>
 											<select name="state_id" id="state_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 												<option value="">{{__('Select State') }}</option>
-												
+												@foreach($data['state_view'] as $state)
+                                                <option value="{{$state->id}}" >
+                                                    {{$state->state_name}}</option>
+                                                @endforeach
 											</select>
 											<div class="input-field">
 												<div class="errorTxt23"></div>
@@ -299,6 +302,17 @@ span.dtr-title::after {
 												</select>
 												<div class="input-field">
 													<div class="errorTxt10"></div>
+												</div>
+											</div>
+											<div class="col s12 m6 l3 @if($user_role !='union') hide @endif">
+												<label>{{__('Salary') }}</label>
+												<select name="salary_filter" id="salary_filter" class="error browser-default selectpicker"  data-error=".errorTxt11" style="line-height: 0.8;">
+													<option value="" >{{__('Select') }}</option>
+													<option value="5661" >Above RM 5661</option>
+													
+												</select>
+												<div class="input-field">
+													<div class="errorTxt11"></div>
 												</div>
 											</div>
 										</div>
@@ -342,6 +356,7 @@ span.dtr-title::after {
 												<th width="5%">{{__('NRIC New') }}</th>
 												<th width="5%">{{__('Mobile') }}</th>
 												<th width="5%">{{__('Race Short Code') }}</th>
+												<th width="5%">{{__('Salary') }}</th>
 												@endif
 												<!-- <th>{{__('Union Branch Name') }}</th> -->
 												<th width="3%">{{__('Status') }}</th>
@@ -410,7 +425,7 @@ $(function () {
 			   extend: 'pdf',
 			   footer: true,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
 				},
                 title : 'Members List', 
                 text: '<i class="fa fa-file-pdf-o"></i>',
@@ -420,7 +435,7 @@ $(function () {
 			   extend: 'excel',
 			   footer: false,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
 				},
 				title : 'Members List',
                 text:    '<i class="fa fa-file-excel-o"></i>',
@@ -430,7 +445,7 @@ $(function () {
 			   extend: 'print',
 			   footer: false,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
 				},
 				title : 'Members List',
                 text:   '<i class="fa fa-files-o"></i>',
@@ -455,6 +470,7 @@ $(function () {
 		  var city_id = $('#city_id').val();
 		  var designation_id = $('#designation_id').val();
 		  var designation_new_id = $('#designation_new_id').val();
+		  var salary_filter = $('#salary_filter').val();
 		  //console.log(datefilter);
 		 
 		  data.unionbranch_id = unionbranch_id;
@@ -468,6 +484,7 @@ $(function () {
 		  data.city_id = city_id;
 		  data.designation_id = designation_id;
 		  data.designation_new_id = designation_new_id;
+		  data.salary_filter = salary_filter;
 		  data._token = "{{csrf_token()}}";
 	   },
 	   "error": function (jqXHR, textStatus, errorThrown) {
@@ -496,6 +513,7 @@ $(function () {
 		{"data": "new_ic"},
 		{"data": "mobile"},
 		{"data": "race_id"},
+		{"data": "salary"},
 		{"data": "status"}
 	],
 	"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
@@ -507,7 +525,7 @@ $(function () {
                 "render": function ( data, type, row ) {
                     return '<span class="testspan" style="color:'+row.font_color+'">'+data+'</span>' ;
                 },
-                "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+                "targets": [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
             },
             { "visible": true,  "targets": '_all' }
         ],

@@ -1203,16 +1203,16 @@ class AjaxController extends CommonController
 		}else{
 			$company_ids = [];
         }
-
+        $msl=0;
         $columns = array( 
-            0 => 'company_id', 
-            1 => 'branch_name',
-            2 => 'u.union_branch',
-            3 => 'email',
-            4 => 'state_id',
-            5 => 'city_id',
-            6 => 'is_head',
-            7 => 'id'
+            $msl++ => 'b.company_id', 
+            $msl++ => 'b.branch_name',
+            $msl++ => 'b.email',
+            $msl++ => 'b.state_id',
+            $msl++ => 'b.city_id',
+            $msl++ => 'b.is_head',
+            $msl++ => 'u.union_branch',
+            $msl++ => 'b.id'
         );
 
        
