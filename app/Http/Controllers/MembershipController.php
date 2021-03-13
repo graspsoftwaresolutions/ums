@@ -370,8 +370,10 @@ class MembershipController extends Controller
 
              if($salary_filter != "")
              {
-                 $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
-                 $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                $member_qry =  $member_qry->where(function($query) use ($salary_filter){
+                                    $query->where('m.current_salary','>',$salary_filter)
+                                    ->orWhere('m.salary','>',$salary_filter);
+                                  });
              }
 			  
 			if($member_status !='all'){
@@ -445,8 +447,10 @@ class MembershipController extends Controller
                      }
                      if($salary_filter != "")
                      {
-                         $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
-                         $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                         $member_qry =  $member_qry->where(function($query) use ($salary_filter){
+                                $query->where('m.current_salary','>',$salary_filter)
+                                ->orWhere('m.salary','>',$salary_filter);
+                              });
                      }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -527,8 +531,10 @@ class MembershipController extends Controller
                  }
                  if($salary_filter != "")
                  {
-                     $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
-                     $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                     $member_qry =  $member_qry->where(function($query) use ($salary_filter){
+                                    $query->where('m.current_salary','>',$salary_filter)
+                                    ->orWhere('m.salary','>',$salary_filter);
+                                  });
                  }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -596,8 +602,10 @@ class MembershipController extends Controller
                      }
                      if($salary_filter != "")
                      {
-                         $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
-                         $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                         $member_qry =  $member_qry->where(function($query) use ($salary_filter){
+                                    $query->where('m.current_salary','>',$salary_filter)
+                                    ->orWhere('m.salary','>',$salary_filter);
+                                  });
                      }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -665,8 +673,10 @@ class MembershipController extends Controller
                      }
                      if($salary_filter != "")
                      {
-                         $member_qry = $member_qry->where('m.current_salary','>',$salary_filter);
-                         $member_qry = $member_qry->orWhere('m.salary','>',$salary_filter);
+                         $member_qry =  $member_qry->where(function($query) use ($salary_filter){
+                                    $query->where('m.current_salary','>',$salary_filter)
+                                    ->orWhere('m.salary','>',$salary_filter);
+                                  });
                      }
                 if($member_status!='all'){
                     $member_qry = $member_qry->where('m.status_id','=',$member_status);
@@ -765,8 +775,10 @@ class MembershipController extends Controller
                 }
                 if($salary_filter != "")
                  {
-                     $compQuery = $compQuery->where('m.current_salary','>',$salary_filter);
-                     $compQuery = $compQuery->orWhere('m.salary','>',$salary_filter);
+                    $compQuery =  $compQuery->where(function($query) use ($salary_filter){
+                                    $query->where('m.current_salary','>',$salary_filter)
+                                    ->orWhere('m.salary','>',$salary_filter);
+                                  });
                  }
                 
               if($member_status !='all'){
@@ -868,8 +880,10 @@ class MembershipController extends Controller
                             }
                             if($salary_filter != "")
                              {
-                                 $compQuery = $compQuery->where('m.current_salary','>',$salary_filter);
-                                 $compQuery = $compQuery->orWhere('m.salary','>',$salary_filter);
+                                 $compQuery =  $compQuery->where(function($query) use ($salary_filter){
+                                    $query->where('m.current_salary','>',$salary_filter)
+                                    ->orWhere('m.salary','>',$salary_filter);
+                                  });
                              }
 
                             $compQuery =  $compQuery->where(function($query) use ($search){
