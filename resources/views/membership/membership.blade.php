@@ -184,7 +184,7 @@ span.dtr-title::after {
 											<input type="hidden" name="companyid" id="companyid">
 										
 												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22">
-												<option value=""> Select Company</option>
+												<option value=""> Select Bank</option>
 												@foreach($companylist as $key=>$value)
                                                         <option value="{{$value->id}}"
                                                             >{{$value->company_name}}</option>
