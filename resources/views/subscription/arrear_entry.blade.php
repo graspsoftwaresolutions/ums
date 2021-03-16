@@ -97,7 +97,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th>{{__('Branch') }}</th>
                                                       <th>{{__('arrear_date') }}</th>
                                                       <th>{{__('Arrear Amount') }}</th>
-                                                      <th>{{__('No of Months') }}</th>
+                                                     <!--  <th>{{__('No of Months') }}</th> -->
                                                       <th>{{__('Status') }}</th>
                                                       <th style="text-align:center;"> {{__('Action') }}</th>
                                                   </tr>
@@ -168,7 +168,7 @@ $(function () {
            extend: 'pdf',
            footer: true,
            exportOptions: {
-            columns: [0,1]
+            columns: [0,1,2,3,4,5,6,7]
           },
                   title : 'Arrear List',
                   text: '<i class="fa fa-file-pdf-o"></i>',
@@ -178,7 +178,7 @@ $(function () {
                  extend: 'excel',
            footer: false,
            exportOptions: {
-            columns: [0,1]
+            columns: [0,1,2,3,4,5,6,7]
           },
                   title : 'Arrear List',
                   text:    '<i class="fa fa-file-excel-o"></i>',
@@ -188,7 +188,7 @@ $(function () {
                  extend: 'print', 
            footer: false,
            exportOptions: {
-            columns: [0,1]
+            columns: [0,1,2,3,4,5,6,7]
           },
                   title : 'Arrear List',
                   text:   '<i class="fa fa-files-o"></i>',
@@ -215,7 +215,7 @@ $(function () {
                 {"data": "branch_id"},
                 {"data": "arrear_date"},
 				{"data": "arrear_amount"},
-                {"data": "no_of_months"},
+                // {"data": "no_of_months"},
 				{"data": "status_id"},
                 {"data": "options"}
 			],
