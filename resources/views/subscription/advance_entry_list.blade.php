@@ -230,7 +230,7 @@ $(function () {
            extend: 'pdf',
            footer: true,
            exportOptions: {
-            columns: [0,1]
+            columns: [0,1,2,3,4,5,6,7,8,9]
           },
                   title : 'Advance List',
                   text: '<i class="fa fa-file-pdf-o"></i>',
@@ -240,7 +240,7 @@ $(function () {
                  extend: 'excel',
            footer: false,
            exportOptions: {
-            columns: [0,1]
+            columns: [0,1,2,3,4,5,6,7,8,9]
           },
                   title : 'Advance List',
                   text:    '<i class="fa fa-file-excel-o"></i>',
@@ -250,7 +250,7 @@ $(function () {
                  extend: 'print', 
            footer: false,
            exportOptions: {
-            columns: [0,1]
+            columns: [0,1,2,3,4,5,6,7,8,9]
           },
                   title : 'Advance List',
                   text:   '<i class="fa fa-files-o"></i>',

@@ -59,6 +59,9 @@ span.dtr-title::after {
 	white-space: unset !important;
 	vertical-align: top;
 }
+@media print{
+	min-height: auto;
+}
 
 </style>
 @endsection
@@ -429,7 +432,11 @@ $(function () {
 				},
                 title : 'Members List', 
                 text: '<i class="fa fa-file-pdf-o"></i>',
-                titleAttr: 'pdf'
+                titleAttr: 'pdf',
+                customize : function(doc) {doc.pageMargins = [7, 7, 7,7 ]; },
+                orientation: 'landscape',
+				pageSize: 'LEGAL'
+                
 		   },
 		   {
 			   extend: 'excel',
@@ -443,13 +450,50 @@ $(function () {
 		   },
 			{
 			   extend: 'print',
+			   orientation: 'landscape',
 			   footer: false,
 			   exportOptions: {
-					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+					columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 				},
 				title : 'Members List',
                 text:   '<i class="fa fa-files-o"></i>',
-                titleAttr: 'print'
+                titleAttr: 'print',
+                pageSize: 'LEGAL',
+                 customize: function(win)
+		            {
+		 
+		                var last = null;
+		                var current = null;
+		                var bod = [];
+		 
+		                var css = '@page { size: landscape; font-size:10px; padding:10px; margin: 5px;}',
+		                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+		                    style = win.document.createElement('style');
+		 
+		                style.type = 'text/css';
+		                style.media = 'print';
+		 
+		                if (style.styleSheet)
+		                {
+		                  style.styleSheet.cssText = css;
+		                } 
+		                else
+		                {
+		                  style.appendChild(win.document.createTextNode(css));
+		                }
+		 
+		                head.appendChild(style);
+
+		                $(win.document.body).css( 'font-size', '9pt' );
+		                $(win.document.body).css( 'margin', '10pt' );
+		                $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                        $(win.document.body).find('h1').css('font-size', '16pt');
+                        $(win.document.body).find('h1').css('padding', '3pt');
+                        $(win.document.body).find('h1').css('margin', '4pt');
+		         }
+
 		   }  
 		],
 	"processing": true,
