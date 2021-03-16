@@ -1514,7 +1514,7 @@
                                                                 @foreach($getfiles as $file)
                                                                 <tr id="del_{{ $file->id }}">
                                                                     <td>{{$file->title}}</td>
-                                                                    <td>{{$file->file_name}} &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
+                                                                    <td style="pointer-events: visible;">{{$file->file_name}} &nbsp;&nbsp; <a href="{{ asset('storage/app/member/'.$file->file_name) }}" class="btn btn-sm download-link" target="_blank">VIEW ATTACHMENT</a></td>
                                                                    
                                                                     <td>
                                                                         <a href="#" onclick="return DeleteImage('{{ $file->id }}')">
