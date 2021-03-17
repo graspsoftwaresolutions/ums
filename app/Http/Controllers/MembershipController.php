@@ -3652,13 +3652,17 @@ class MembershipController extends Controller
             $upstatus = DB::table('membership')->where('id', '=', $member_autoid)->where('temp_doj', '=', $todoj)->update($up_data);
 
             $monthendcount = DB::table('membermonthendstatus')->where('StatusMonth','<',$todoj_month)->where('MEMBER_CODE','=',$member_autoid)->delete();
+            $monthendcount = DB::table('membermonthendstatus')->where('StatusMonth','>',$todoj_month)->where('MEMBER_CODE','=',$member_autoid)->delete();
             $subsmemberids = DB::table('mon_sub_member as sm')
                             ->leftjoin('mon_sub_company as sc','sc.id','=','sm.MonthlySubscriptionCompanyId')
                             ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
                             ->where('ms.Date','<',$todoj_month)->where('MemberCode','=',$member_autoid)->pluck('sm.id');
-
-            $subsdel = DB::table('mon_sub_member_match as sm')->whereIn('mon_sub_member_id',$subsmemberids)->delete();
-            $subsdel = DB::table('mon_sub_member as sm')->whereIn('id',$subsmemberids)->delete();
+           // dd($subsmemberids);
+            if(!empty($subsmemberids)){
+                $subsdel = DB::table('mon_sub_member_match as sm')->whereIn('mon_sub_member_id',$subsmemberids)->delete();
+                $subsdel = DB::table('mon_sub_member as sm')->whereIn('id',$subsmemberids)->delete();
+            }
+           
 
             $feedata = DB::table('member_fee as mf')
                             ->select('f.fee_shortcode','mf.fee_amount as fee_amount')
