@@ -63,6 +63,7 @@
             $user_id = Auth::user()->id;
             $get_roles = Auth::user()->roles;
             $user_role = $get_roles[0]->slug;
+           
           @endphp
           <?php //print_r($user_role);die; ?>
           @if($user_role=='staff-union-branch')
@@ -96,14 +97,16 @@
             @endif
             
           @endif
-           @if($user_role=='data-entry')
-            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a></li>
-          @endif
+           
 		     @if($user_role=='member')
             <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('member.membership.profile',app()->getLocale()) }}"><i class="material-icons">account_box</i><span class="menu-title" data-i18n="">{{ __('Profile') }}</span></a></li>
             <li class="bold"><a id="history_sidebar_a_id" class="waves-effect waves-cyan hide" href="{{ url('maintenance') }}"><i class="material-icons">change_history</i><span class="menu-title" data-i18n="">{{ __('History') }}</span></a></li>
           @endif
         @endif
+        @if($user_role=='data-entry')
+          
+            <li class="bold"><a id="membership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('master.membership',app()->getLocale()) }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="">{{ __('Member Query') }}</span></a></li>
+          @endif
         @if($user_role=='union' || $user_role=='company' || $user_role=='company-branch' || $user_role == 'member')
          <li id="subscriptions_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">subscriptions</i><span class="menu-title" data-i18n="">{{ __('Subscription') }}</span></a>
           <div class="collapsible-body">
