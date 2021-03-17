@@ -3657,10 +3657,11 @@ class MembershipController extends Controller
                             ->leftjoin('mon_sub_company as sc','sc.id','=','sm.MonthlySubscriptionCompanyId')
                             ->leftjoin('mon_sub as ms','ms.id','=','sc.MonthlySubscriptionId')
                             ->where('ms.Date','<',$todoj_month)->where('MemberCode','=',$member_autoid)->pluck('sm.id');
-           // dd($subsmemberids);
+           
             if(!empty($subsmemberids)){
-                $subsdel = DB::table('mon_sub_member_match as sm')->whereIn('mon_sub_member_id',$subsmemberids)->delete();
-                $subsdel = DB::table('mon_sub_member as sm')->whereIn('id',$subsmemberids)->delete();
+                // dd($subsmemberids);
+                $subsdel = DB::table('mon_sub_member_match')->whereIn('mon_sub_member_id',$subsmemberids)->delete();
+                $subsdel = DB::table('mon_sub_member')->whereIn('id',$subsmemberids)->delete();
             }
            
 
