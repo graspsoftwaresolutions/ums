@@ -341,22 +341,24 @@ span.dtr-title::after {
 												<th width="@if($user_role !='union-branch') 20% @else 5% @endif" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
 												<th width="5%">{{__('Mem/ID') }}</th>
 												<th width="5%">{{__('Mem/Name') }}</th>
+												<th width="5%">{{__('NRIC Old') }}</th>
+												<th width="5%">{{__('NRIC New') }}</th>
 												@if($user_role !='union-branch')
 												<th width="5%">{{__('Type')}} </th>
 												<th width="5%">{{__('M/F')}}</th>
 												@endif
-												<th width="5%">{{__('Bank Code') }}</th>
+												<th width="5%">{{__('B/Code') }}</th>
 												<th width="7%">{{__('Branch Name') }}</th>
 												@if($user_role !='union-branch')
-												<th width="5%">{{__('Levy') }}</th>
-												<th width="5%">{{__('Levy Amount') }}</th>
+												<th width="5%">{{__('DOJ')}}</th>
 												<th width="10%">{{__('TDF') }}</th>
 												<th width="5%">{{__('TDF Amount') }}</th>
-												<th width="5%">{{__('DOJ')}}</th>
+												<th width="5%">{{__('Levy') }}</th>
+												<th width="5%">{{__('Levy Amount') }}</th>
+												
 												<th width="5%">{{__('City') }}</th>
 												<th width="5%">{{__('State') }}</th>
-												<th width="5%">{{__('NRIC Old') }}</th>
-												<th width="5%">{{__('NRIC New') }}</th>
+												
 												<th width="5%">{{__('Mobile') }}</th>
 												<th width="5%">{{__('Race Short Code') }}</th>
 												<th width="5%">{{__('Salary') }}</th>
@@ -542,19 +544,22 @@ $(function () {
 		{"data": "options"},
 		{"data" : "member_number"},
 		{"data": "name"},
+		{"data": "old_ic"},
+		{"data": "new_ic"},
 		{"data" : "designation_id"},
 		{"data" : "gender"},
 		{"data" : "short_code"},
 		{"data": "branch_name"},
-		{"data": "levy"},
-		{"data": "levy_amount"},	
+		{"data": "doj"},
 		{"data": "tdf"},
 		{"data": "tdf_amount"},
-		{"data": "doj"},
+		{"data": "levy"},
+		{"data": "levy_amount"},	
+		
+		
 		{"data": "city_id"},
 		{"data": "state_id"},
-		{"data": "old_ic"},
-		{"data": "new_ic"},
+		
 		{"data": "mobile"},
 		{"data": "race_id"},
 		{"data": "salary"},
