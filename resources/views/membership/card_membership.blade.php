@@ -194,6 +194,9 @@
         padding-top: 0.1cm !important;	 
 		xborder:2px solid red; 
     	}
+		.un_klb{
+			margin-top:-5px !important;
+		}
     @media print {
         html, body {
             width: 88mm;
@@ -216,7 +219,8 @@
 		xborder:2px solid red; 
     	}
 		.un_kel{			
-			margin-top:0.01mm !important;
+			margin-top:-4px !important;
+			xborder:1px solid red;
 		}
 		#labelstart{
 			margin-top:29px;
@@ -239,8 +243,8 @@
 		}
 		.un_kelname{
 			margin-top:50px !important;
-			margin-left:115px !important;
-			font-size:17px !important;
+			margin-left:95px !important;
+			font-size:14px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 			letter-spacing:0mm !important;
@@ -254,8 +258,8 @@
 			
 		}
 		.un_kelbank{
-			margin-left:115px !important;
-			font-size:17px !important;
+			margin-left:95px !important;
+			font-size:14px !important;
 			width:300px !important;
 			xborder:1px solid red;
 			overflow-wrap: break-word !important;
@@ -265,9 +269,9 @@
 			font-weight: bold !important;	
 		}
 		.un_keladdr{
-			margin-left:205px !important;
-			margin-top:30px !important;
-			font-size:17px !important;
+			margin-left:160px !important;
+			margin-top:25px !important;
+			font-size:14px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
 			white-space: nowrap !important; 
@@ -275,34 +279,72 @@
 			word-wrap: break-word !important;
 			hyphens: auto !important;
 			word-spacing: -1mm !important;
+			xborder:2px solid red;
 		}
 		.un_kelbot{
 			font-size:16px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
-			margin-left:300px !important;
-			margin-top:100px !important;
+			margin-left:270px !important;
+			margin-top:94px !important;
+		}
+		.un_kelbot01{
+			font-size:14px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:240px !important;
+			margin-top:79px !important;
 		}
 		.un_kelbot1{
 			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
-			margin-left:300px !important;
-			margin-top:125px !important;
+			margin-left:270px !important;
+			margin-top:116px !important;
 		}
+		
 		.un_kelbot2{
 			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
-			margin-left:300px !important;
-			margin-top:150px !important;
+			margin-left:280px !important;
+			margin-top:137px !important;
+		}
+		.un_kelbot11{
+			width:140px !important;
+			xborder:1px solid red !important;
+			font-size:14px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:240px !important;
+			margin-top:100px !important;
+		}
+		.un_kelbot21{
+			font-size:14px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:240px !important;
+			margin-top:119px !important;
 		}
 		.un_kelbot3{
 			font-size:17px !important;
 			font-family: "Courier New" !important;
 			font-weight: bold !important;	
-			margin-left:300px !important;
-			margin-top:178px !important;
+			margin-left:270px !important;
+			margin-top:161px !important;
+		}
+		.un_kelbot31{
+			font-size:14px !important;
+			font-family: "Courier New" !important;
+			font-weight: bold !important;	
+			margin-left:240px !important;
+			margin-top:139px !important;
+		}
+		.addrtwo{
+			margin-left:-25px !important;
+		}
+		.addrthree{
+			margin-left:-25px !important;
 		}
         #labelbank{
 			margin-top:3px;
@@ -434,6 +476,18 @@
 		.alt{
 			border-top:2px solid white !important;
 		}
+		.un_klb{
+			margin-top:66px !important;
+		}
+		.un_klb1{
+			margin-top:84px !important;
+		}
+		.un_klb2{
+			margin-top:101px !important;
+		}
+		.un_klb3{
+			margin-top:119px !important;
+		}
 		
     }
   </style>
@@ -445,54 +499,76 @@
 	<div class="book">
 	@php
 	$i=0;
+	//var_dump(count($data['member_view']));
+	$kelct = count($data['member_view']);
 	@endphp
 		@foreach($data['member_view'] as $member)
-		<div class="page">
+		<div  class="page">
 			@php 
 			if($member->unbid=='6'){ 
 			@endphp
-				<p style="xborder:1px solid red; margin-top:-10px !important;"></p>
+				<p style="xborder:1px solid red; margin-top:-12px !important;"></p>
+			@php
+			} 
+			if(($member->unbid!='6') && ($member->unbid!='5')){ 
+			@endphp
+				<p style="xborder:1px solid red; margin-top:9px !important;"></p>
 			@php
 			} 
 			@endphp
 		   <div class="subpage @php if($member->unbid=='5'){ echo 'un_kel'; } @endphp" style="margin-top:5px 1important;">
 			<span class="@php if($i>0){ echo 'alt'; } @endphp  @php if($member->unbid=='5'){ echo 'un_kelname'; } @endphp" id="labelname">
 		   @php
+		   if($member->unbid=='5'){
+		   if($i>0){ 
+			  // echo 'alt';
+			}
+		   }
 		   	$str = $member->name;
-			echo wordwrap($str,50,"<p style='display:none !important;'>\n");
+			echo wordwrap($str,35,"<p style='display:none !important;'>\n");
 		    @endphp
 		   <label style="display:none;"> </p></label>
 		    </span>
-            <span class="@php if($member->unbid=='5'){ echo 'un_kelbank'; } @endphp" id="labelbank">
+            <span style="xmargin-top:-1px !important" class="@php if($member->unbid=='5'){ echo 'un_kelbank'; } @endphp" id="labelbank">
 			@php
 		   	$strbank = $member->company_name;
 			echo wordwrap($strbank,40,"<p style='display:none !important;'>\n");
 		   	@endphp
 		  <label style="display:none;"> </p></label></span>
 			
-			<span  class="@php if($member->unbid=='5'){ echo 'un_keladdr'; } @endphp" id="labeladdr">			
+			<span style="margin-top:21px !important" class="@php if($member->unbid=='5'){ echo 'un_keladdr'; } @endphp" id="labeladdr">			
 			@php
 		   	$stradd1 =  $member->address_one;
 			echo wordwrap($stradd1,30,"<p style='display:none !important;'>\n");
 		   	@endphp
 		  <label style="display:none;"> </p></label>
+		  <span class="addrtwo">
 			</br>
 			@php
 		   	$stradd2 =  $member->address_two;
 			echo wordwrap($stradd2,40,"<p style='display:none !important;'>\n");
 		   	@endphp
+			</span>
 		  <label style="display:none;"> </p></label>
+		  <span class="addrthree">
 			</br>		
 			@php
 			echo $member->city_name." ". $member->postal_code;
 			@endphp
-			
+			</span>
 			</span>
 			</br>
-			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot'; } @endphp" id="labelbankcode">{{ $member->companycode }}</span>
-			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot1'; } @endphp" id="labelicno">{{ $member->ic }}</span>
-			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot2'; } @endphp" id="labeldoj">{{ date('d/M/Y',strtotime($member->doj)) }}</span>
-			<span class="@php if($member->unbid=='5'){ echo 'un_kelbot3'; } @endphp" id="labelmemno">{{ $member->member_number }}</span><br>
+			@php
+			if(($member->unbid!='6') && ($member->unbid!='5')){ 
+			@endphp
+			<p style="margin-top:-20px;"></p>
+			@php
+			}
+			@endphp
+			<span class="@php if($member->unbid=='5'){ if($kelct==1) {  echo 'un_kelbot01'; } else{ echo 'un_kelbot';} } if($member->unbid=='6'){ echo 'un_klb'; } @endphp" id="labelbankcode">{{ $member->companycode }}</span>
+			<span class="@php if($member->unbid=='5'){ if($kelct==1) { echo 'un_kelbot11'; } else{ echo 'un_kelbot1'; }  } if($member->unbid=='6'){ echo 'un_klb1'; } @endphp" id="labelicno">{{ $member->ic }}</span>
+			<span class="@php if($member->unbid=='5'){ if($kelct==1) { echo 'un_kelbot21'; } else{ echo 'un_kelbot2'; } } if($member->unbid=='6'){ echo 'un_klb2'; } @endphp" id="labeldoj">{{ date('d/M/Y',strtotime($member->doj)) }}</span>
+			<span class="@php if($member->unbid=='5'){ if($kelct==1) { echo 'un_kelbot31'; } else{ echo 'un_kelbot3'; } } if($member->unbid=='6'){ echo 'un_klb3'; } @endphp" id="labelmemno">{{ $member->member_number }}</span><br>
 			</div>    
 		</div>
 		@php
