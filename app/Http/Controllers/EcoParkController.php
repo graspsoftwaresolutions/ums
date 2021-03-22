@@ -946,12 +946,21 @@ class EcoParkController extends Controller
                 
                 $actions ='';
                 $baseurl = URL::to('/');
+
+                $member_card_link = $baseurl.'/'.app()->getLocale().'/get-privilegecard-print?privilegecard_id='.$autoid ;
+                
+                // if($memberid!='' && $memberid!=null){
+                //     //dd($memberid);
+                //     $member_card_link .= $baseurl.'/'.app()->getLocale().'/get-privilegecard-print?member_no='.$memberid ;
+                // }
                 
                // $histry = $memberid!='' ? route('member.history', [app()->getLocale(),$enc_id]) : '#';
                // $member_delete_link = $baseurl.'/'.app()->getLocale().'/subscription_delete?sub_id='.$autoid;
                 $editlink = route('privilegecard.edit', [app()->getLocale(),$enc_autoid]);
                 
                 $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Privilege Card' href='$editlink' class='' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
+
+                 $actions .= "<a style='margin-left: 10px;' title='Card print'  class='' target='_blank' href='$member_card_link'><i class='material-icons' >print</i></a>";
                 //$actions .="<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='$member_delete_link'><i class='material-icons' style='color:red'>delete</i></a>";
                 
                 $nestedData['options'] = $actions;
@@ -1034,6 +1043,15 @@ class EcoParkController extends Controller
 
         return redirect($redirect_url)->with('message','Privilege card details updated');
         
+    }
+
+    public function PrivilegeCardPrint(Request $request,$lang){
+        $privilegecard_id = $request->input('privilegecard_id');
+
+        $data['card_data'] = DB::table('privilege_card_users')->where('id','=',$privilegecard_id)->first();
+
+        return view('eco_park.card_membership')->with('data',$data);  
+
     }
 
 }

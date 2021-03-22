@@ -29,7 +29,7 @@
 <div id="card-stats">
    <div class="row">
       <div class="col s12 m6 l3">
-      	<a style="color:white" href="{{url(app()->getLocale().'/membership')}}">
+      	<a style="color:white" href="#">
          <div class="card animate fadeLeft">
             <div class="card-content red accent-2 white-text">
                <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
