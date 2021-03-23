@@ -2725,7 +2725,7 @@ body
     left: 0;
 
     width: 100%;
-    height: 185px;
+    height: 0px;
 
     -webkit-transition: .3s ease all;
        -moz-transition: .3s ease all;
@@ -9164,7 +9164,7 @@ nav.display-none.search-sm .nav-wrapper form .input-field input.search-box-sm:no
 ------------------------------------------*/
 #breadcrumbs-wrapper
 {
-    padding: 20px 0;
+    padding: 5px 0;
 
     background: transparent;
 }
@@ -9260,7 +9260,7 @@ nav.display-none.search-sm .nav-wrapper form .input-field input.search-box-sm:no
 #breadcrumbs-wrapper.breadcrumbs-dark .breadcrumbs-title,
 #breadcrumbs-wrapper.breadcrumbs-dark a
 {
-    color: rgba(255, 255, 255, .85);
+        color: rgb(34 120 73);
 }
 #breadcrumbs-wrapper.breadcrumbs-inline .breadcrumbs-title,
 #breadcrumbs-wrapper.breadcrumbs-inline .breadcrumbs

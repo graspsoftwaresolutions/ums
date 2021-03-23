@@ -40,10 +40,10 @@ span.dtr-title::after {
 #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:first-child {
     padding-top: 8px;
     padding-bottom: 8px;
-    padding-left: 26px;
-    padding-right: 16px;
+    padding-left: 40px !important;
+    padding-right: 10px !important;
     font-size: 12px;
-    white-space: nowrap;
+    white-space: nowrap !important;
     text-transform: Uppercase;
     border: none !important;
 }
@@ -55,14 +55,49 @@ span.dtr-title::after {
 	color: #fff;
 }
 #page-length-option td:not(:first-child) {
-	word-break: break-word !important;
-	white-space: unset !important;
-	vertical-align: top;
+	/*word-break: break-word !important;
+	white-space: unset !important;*/
+	vertical-align: middle;
 }
 @media print{
 	min-height: auto;
 }
 
+
+
+
+
+
+
+#main .section-data-tables .dataTables_wrapper table.dataTable th, #main .section-data-tables .dataTables_wrapper table.dataTable td {
+    padding: 8px 3px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+    min-width: 15px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable th {
+    font-size: 13px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td {
+    padding: 8px 8px;
+    font-size: 12px;
+    white-space: nowrap !important;
+    text-transform: Uppercase;
+    border: none !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+    background: #e2e1e1 !important;
+    border-right: 1px solid #f6f2f2 !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody tr td:before, #main .section-data-tables .dataTables_wrapper table.dataTable tbody tr th:before {
+    font-size: 1.2rem !important;
+    line-height: 17px !important;
+    top: 13px !important;
+    left: 5px !important;
+    width: 17px !important;
+    height: 16px !important;
+    text-indent: 0;
+}
 </style>
 @endsection
 @section('main-content')
@@ -338,21 +373,21 @@ span.dtr-title::after {
 									<table id="page-length-option" class="display" width="100%">
 										<thead>
 											<tr>
-												<th width="@if($user_role !='union-branch') 20% @else 5% @endif" style="text-align:center;white-space: nowrap !important;">{{__('Action') }}</th>
-												<th width="5%">{{__('Mem/ID') }}</th>
-												<th width="5%">{{__('Mem/Name') }}</th>
-												<th width="5%">{{__('NRIC Old') }}</th>
-												<th width="5%">{{__('NRIC New') }}</th>
+												<th width="@if($user_role !='union-branch') 15% @else 5% @endif" style="text-align:center;white-space: nowrap !important; width:210px !important;">{{__('Action') }}</th>
+												<th width="4%">{{__('Mem/ID') }}</th>
+												<th width="16%">{{__('Mem/Name') }}</th>
+												<th width="4%">{{__('NRIC Old') }}</th>
+												<th width="4%">{{__('NRIC New') }}</th>
 												@if($user_role !='union-branch')
-												<th width="5%">{{__('Type')}} </th>
-												<th width="5%">{{__('M/F')}}</th>
+												<th width="3%">{{__('Type')}} </th>
+												<th width="2%">{{__('M/F')}}</th>
 												@endif
 												<th width="5%">{{__('B/Code') }}</th>
-												<th width="7%">{{__('Branch Name') }}</th>
+												<th width="10%">{{__('Branch Name') }}</th>
 												@if($user_role !='union-branch')
-												<th width="5%">{{__('DOJ')}}</th>
-												<th width="10%">{{__('TDF') }}</th>
-												<th width="5%">{{__('TDF Amount') }}</th>
+												<th width="7%">{{__('DOJ')}}</th>
+												<th width="4%">{{__('TDF') }}</th>
+												<th width="5%">{{__('TDF Amt') }}</th>
 												<th width="5%">{{__('Levy') }}</th>
 												<th width="5%">{{__('Levy Amount') }}</th>
 												
