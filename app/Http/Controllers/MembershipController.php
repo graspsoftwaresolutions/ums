@@ -1644,6 +1644,7 @@ class MembershipController extends Controller
                   $members = $members->where('m.member_number','>=',$from_member_no);
                   $members = $members->where('m.member_number','<=',$to_member_no);
             }
+            $members = $members->where(DB::raw('m.`is_request_approved`'),'=',1);
             $members = $members->orderBy('m.member_number','asc');
         $members = $members->get();
         $data['member_view'] = $members;
@@ -1701,6 +1702,7 @@ class MembershipController extends Controller
                   $members = $members->where('m.member_number','>=',$from_member_no);
                   $members = $members->where('m.member_number','<=',$to_member_no);
             }
+            $members = $members->where(DB::raw('m.`is_request_approved`'),'=',1);
             $members = $members->orderBy('m.member_number','asc');
         $members = $members->get();
         $data['member_view'] = $members;
@@ -2202,6 +2204,7 @@ class MembershipController extends Controller
     public function AjaxPendingmembersList(Request $request,$lang, $type){
        
         $member_status = $request->input('status');
+        $member_status = 'all';
         $sl=0;
         $columns[$sl++] = 'm.id';
         $columns[$sl++] = 'm.member_number';
@@ -2668,6 +2671,7 @@ class MembershipController extends Controller
             $memberslist = $compQuery->orderBy($order,$dir)
             //->dump()
             ->get()->toArray(); 
+          //  dd($memberslist );
             
         }
         else {
