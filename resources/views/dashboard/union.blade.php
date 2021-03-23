@@ -31,11 +31,38 @@ text{
 	display:none;
 }
 
+
+
+
+
+
+
+
+#card-stats {
+    padding-top: 1px !important;
+}
+.card {
+    overflow: hidden;
+    margin: 3px 0 3px 0 !important;
+}
+#main .content-wrapper-before {
+    height: 0px;
+}
+footer.page-footer {
+    padding-top: 1px;
+    bottom: 0px;
+    width: 100%;
+}
+.page-footer .footer-copyright {
+    min-height:20px !important;
+    padding: 7px 0;
+}
 </style>
 @endsection
 <!-- card stats start -->
 <div id="card-stats">
-   <div class="row">
+   <div class="row mt-1">
+       <div style="">
       <div class="col s12 m6 l3">
         <a style="color:white" href="{{route('master.unionbranch', app()->getLocale())}}">
          <div class="card animate fadeLeft">
@@ -95,6 +122,7 @@ text{
          </div>
          </a>
       </div>
+      </div>
        <div class="dash-tab-clearfix"/>
       
     <div class="dash-tab-clearfix"/>
@@ -119,8 +147,8 @@ text{
 </div>
 <!--card stats end-->
  <!-- Current balance & total transactions cards-->
-<div class="row mt-4">
-   <div class="col s12 m4 l3">
+<div class="row mt-1" style="background:#f9f9f9; padding:10px 10px 0;">
+   <div class="col s12 m6 l3">
       <!-- Current Balance -->
 		<div id="ct9-chart" class="ct-chart card hide">
 		  <div class="card-content">
@@ -133,7 +161,7 @@ text{
       <div class="card animate fadeLeft">
          <div class="card-content">
             <h4 class="card-title mb-0">{{__('Total Members') }}<i class="material-icons float-right hide">more_vert</i></h4>
-			    </br>
+			    
 			     </br>
             <div class="current-balance-container">
 				
@@ -144,13 +172,13 @@ text{
          </div>
       </div>
    </div>
-   <div class="col s12 m4 l3">
+   <div class="col s12 m6 l3">
       <!-- Current Balance -->
 		
       <div class="card animate fadeLeft">
          <div class="card-content">
             <h4 class="card-title mb-0">{{__('Resignation Members') }}<i class="material-icons float-right hide">more_vert</i></h4>
-			    </br>
+			   
 			     </br>
             <div class="current-balance-container">
 				
@@ -161,8 +189,8 @@ text{
          </div>
       </div>
    </div>
-   <div class="col s12 m8 l6 animate fadeRight" style="padding:0;margin:0;">
-		<div id="container" style="min-width: 310px; height: 350px; margin: 12px 0 auto"></div>
+   <div class="col s12 m12 l6 animate fadeRight" style="padding:0px 15px;margin:0;">
+		<div id="container" style="min-width: 100%; height: 340px; margin: 0px 0 auto"></div>
    </div>
    @php
    $data_status = CommonHelper::getStatus();
@@ -174,7 +202,7 @@ text{
 
 <script>
 	var data = {
-	  series: [97, 3]
+	  series: [9, 3]
 	};
 
 	var sum = function (a, b) { return a + b };
