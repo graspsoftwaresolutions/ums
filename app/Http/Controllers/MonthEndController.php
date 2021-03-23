@@ -1233,5 +1233,16 @@ class MonthEndController extends Controller
 
     }
 
+    public function ListNegativeDue(Request $request){
+      
+        $data['due_month'] = 0;
+        $data['status'] = DB::table('status')->where('status','=',1)->get();
+        //dd($data['status'][3]);
+        
+        $data['members_list'] = DB::table('membermonthendstatus as ms')->select('StatusMonth','MEMBER_CODE','SUBSCRIPTION_AMOUNT','BF_AMOUNT','INSURANCE_AMOUNT','TOTAL_MONTHS','TOTALMONTHSDUE','TOTALMONTHSPAID')->where('ms.StatusMonth','=','2019-12-01')->where('ms.TOTALMONTHSDUE','<','0')->orderBY('ms.arrear_status','desc')->get();
+
+        return view('subscription.negative_history_list')->with('data',$data);  
+    }
+
 
 }

@@ -111,6 +111,11 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 					         <ul class="collapsible collapsible-accordion">
 					            @foreach($data['current_member_years'] as $year)
 					            @php
+					            	$advancecount = '';
+					            	if($year->years >= 2020){
+					            		$advancecount = CommonHelper::getAdvanceMonthendHistory($data['member_id']);
+						            }
+					            	
 					            	$memberhistory = CommonHelper::getMonthendHistory($data['member_id'],$year->years);
 					            	$slno=1;
 					            @endphp
@@ -131,6 +136,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<th>{{__('Advance') }}<br>{{ '(Tot.Mon.Paid)' }}</th>
 													<th>{{__('Tot.Mon.Paid')}}</th>
 													<th>{{__('Tot.Mon.Due')}}</th>
+													<th>{{__('Adv.Due')}}</th>
 													<th>{{__('Total')}}</th>
 													<th>{{__('AccSubs')}}</th>
 													<th>{{__('AccBF')}}</th>
@@ -151,6 +157,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<td>{{ $history->advance_balamt }} @if($history->ENTRYMODE=='AD' && $history->TOTAL_MONTHS==1)({{ $history->advance_totalmonths }}) @endif</td>
 													<td>{{ $history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->TOTALMONTHSDUE }}</td>
+													<td>{{ $advancecount }}</td>
 													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->ACCSUBSCRIPTION }}</td>
 													<td>{{ $history->ACCBF }}</td>
@@ -164,7 +171,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												@endforeach
 												@if(count($memberhistory)==0)
 													<tr>
-														<td colspan="13">NO DATA AVAILABLE</td>
+														<td colspan="15">NO DATA AVAILABLE</td>
 													</tr> 
 												@endif
 											</tbody>
@@ -188,6 +195,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<th>{{__('Advance')}}<br>{{ '(Tot.Mon.Paid)' }}</th>
 													<th>{{__('Tot.Mon.Paid')}}</th>
 													<th>{{__('Tot.Mon.Due')}}</th>
+													<th>{{__('Adv.Due')}}</th>
 													<th>{{__('Total')}}</th>
 													<th>{{__('AccSubs')}}</th>
 													<th>{{__('AccBF')}}</th>
@@ -208,6 +216,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 													<td>{{ $history->advance_balamt }} @if($history->ENTRYMODE=='AD' && $history->TOTAL_MONTHS==1)({{ $history->advance_totalmonths }}) @endif</td>
 													<td>{{ $history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->TOTALMONTHSDUE }}</td>
+													<td>{{ $advancecount }}</td>
 													<td>{{ $history->TOTALMONTHSDUE+$history->TOTALMONTHSPAID }}</td>
 													<td>{{ $history->ACCSUBSCRIPTION }}</td>
 													<td>{{ $history->ACCBF }}</td>
@@ -221,7 +230,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 												@endforeach
 												@if(count($memberhistory)==0)
 													<tr>
-														<td colspan="13">NO DATA AVAILABLE</td>
+														<td colspan="15">NO DATA AVAILABLE</td>
 													</tr> 
 												@endif
 											</tbody>
@@ -284,7 +293,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 									@endforeach
 									@if(count($data['current_member_history'])==0)
 										<tr>
-											<td colspan="13">NO DATA AVAILABLE</td>
+											<td colspan="14">NO DATA AVAILABLE</td>
 										</tr> 
 									@endif
 								</tbody>

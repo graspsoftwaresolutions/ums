@@ -3737,9 +3737,14 @@ class CommonHelper
                                          ->leftjoin('status as s','s.id','=','ms.STATUS_CODE')
                                          ->where('ms.MEMBER_CODE','=',$memberid)
                                          ->where(DB::raw('YEAR(ms.StatusMonth)'),'=',$year)
+                                         ->where(function ($query) {
+                                                $query->where('ms.ENTRYMODE','!=','ADC')
+                                                      ->orWhereNull('ms.ENTRYMODE');
+                                            })
+                                        // ->where('ms.ENTRYMODE','!=','ADC')
                                          ->OrderBy('ms.StatusMonth','asc')
                                          ->OrderBy('ms.arrear_status','asc')
-                                        // ->dump()
+                                         //->dump()
                                          ->get();
     }
     public static function getCountryState($countryid){
@@ -5084,6 +5089,27 @@ class CommonHelper
         ->where('ar.arrear_date','>=',$frommonthyear)
         ->where('ar.arrear_date','<=',$tomonthyear)->first();
         return $data->amount=='' ? 0 : $data->amount;
+    }
+
+    public static function getAllMemberDetails($memberid){
+        $member = DB::table('membership as m')
+            ->select('m.member_number','m.name','m.new_ic','m.old_ic','m.employee_id','com.short_code as companycode','cb.branch_name','m.gender','m.doj','com.company_name','m.status_id','m.id')
+            ->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+            ->leftjoin('company as com','com.id','=','cb.company_id')
+           // ->leftjoin('status as s','s.id','=','m.status_id')
+            ->where('m.id','=',$memberid)
+            ->first();
+           // dd($memberid);
+        return $member;
+    }
+
+    public static function getAdvanceMonthendHistory($memberid){
+        return DB::table('membermonthendstatus as ms')->select('ms.TOTAL_MONTHS')
+                                         ->where('ms.MEMBER_CODE','=',$memberid)
+                                         ->where('ms.StatusMonth','=','2019-12-01')
+                                         ->where('ms.ENTRYMODE','=','ADC')
+                                         ->pluck('ms.TOTAL_MONTHS')
+                                         ->first();
     }
     
 }

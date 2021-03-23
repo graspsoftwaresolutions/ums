@@ -644,6 +644,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('pc_user_save','EcoParkController@PCUserSave')->name('pc.updateuser');
 
 	Route::get('get-privilegecard-print','EcoParkController@PrivilegeCardPrint')->name('reports.privilegecardprint');
+
+	Route::get('due-negativelist','MonthEndController@ListNegativeDue')->name('due.negativelist');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
