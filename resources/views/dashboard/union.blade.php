@@ -57,6 +57,17 @@ footer.page-footer {
     min-height:20px !important;
     padding: 7px 0;
 }
+.current-balance-container {
+    /*border: 1px solid #CCC;*/
+}
+#resigned-members-donut-chart {
+    height: 170px;
+    webkit-filter: drop-shadow(0px 10px 4px rgba(133, 3, 168, .2));
+    filter: drop-shadow(0px 10px 4px rgba(133, 3, 168, .2));
+}
+.card .card-title {
+    font-size: 17px;
+}
 </style>
 @endsection
 <!-- card stats start -->
@@ -196,6 +207,7 @@ footer.page-footer {
    $data_status = CommonHelper::getStatus();
    @endphp
 </div>
+
 @section('footerSecondSection')
 <script src="{{ asset('public/assets/js/highchartjs/highcharts.js') }}" type="text/javascript"></script>
 

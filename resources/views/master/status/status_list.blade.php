@@ -16,8 +16,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <style type="text/css">
     #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:last-child {
-        padding-top: 8px;
-        padding-bottom: 8px;
+        /*padding-top: 8px;
+        padding-bottom: 8px;*/
         padding-left: 26px;
         padding-right: 16px;
         font-size: 12px;
@@ -36,7 +36,7 @@
     #page-length-option td:not(:last-child) {
         word-break: break-word !important;
         white-space: unset !important;
-        vertical-align: top;
+        /*vertical-align: top;*/
     }
 
 </style>
@@ -75,7 +75,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('Status List') }}</h4>
+                                    <!--<h4 class="card-title">{{__('Status List') }}</h4>-->
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">

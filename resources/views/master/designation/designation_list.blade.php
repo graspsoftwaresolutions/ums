@@ -16,7 +16,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <style>
-	#main.main-full {
+	/*#main.main-full {
 		height: 750px;
 		overflow: auto;
 	}
@@ -35,7 +35,7 @@
 	} 
 	.sidenav-main{
 		z-index:9999;
-	}
+	}*/
 </style>
 @endsection
 @section('main-content')
@@ -72,7 +72,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('Designation List') }}</h4>
+                                   <!-- <h4 class="card-title">{{__('Designation List') }}</h4>-->
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">

@@ -4236,7 +4236,7 @@ li.home:before
 ------------------------------------------*/
 .section
 {
-    padding: .5rem 0;
+    padding: 0rem 0;
 }
 
 .row
@@ -7347,13 +7347,13 @@ li.home:before
 ------------------------------------------*/
 .avatar-status
 {
-    line-height: 54px;
+    line-height: 45px;
 
     position: relative;
 
     display: inline-block;
 
-    width: 26px;
+    width: 35px;
 
     vertical-align: bottom;
     white-space: nowrap;
@@ -7389,10 +7389,6 @@ li.home:before
     width: 100%;
     max-width: 100%;
     height: auto;
-
-    border: 0 none;
-    border-radius: 1000px;
-    background: #e6e6e6;
 }
 
 .avatar-online i
@@ -7588,7 +7584,7 @@ span.badge.pill
 .material-icons
 {
     font-family: 'Material Icons';
-    font-size: 24px;
+    font-size: 22px;
     font-weight: normal;
     font-style: normal;
     line-height: 1;
@@ -9170,7 +9166,8 @@ nav.display-none.search-sm .nav-wrapper form .input-field input.search-box-sm:no
 }
 #breadcrumbs-wrapper .breadcrumbs-btn
 {
-    top: 24px;
+    top: 0px;
+    color: #FFF !important;
 }
 #breadcrumbs-wrapper h5.breadcrumbs-header
 {
@@ -9181,7 +9178,7 @@ nav.display-none.search-sm .nav-wrapper form .input-field input.search-box-sm:no
 }
 #breadcrumbs-wrapper .breadcrumbs
 {
-    margin: 15px 0;
+    margin: 3px 0;
     padding: 0;
 
     list-style: none;
@@ -9189,6 +9186,7 @@ nav.display-none.search-sm .nav-wrapper form .input-field input.search-box-sm:no
 #breadcrumbs-wrapper .breadcrumbs > li
 {
     display: inline-block;
+    font-size: 12px;
 }
 #breadcrumbs-wrapper .breadcrumbs > li + li::before
 {
@@ -9260,7 +9258,7 @@ nav.display-none.search-sm .nav-wrapper form .input-field input.search-box-sm:no
 #breadcrumbs-wrapper.breadcrumbs-dark .breadcrumbs-title,
 #breadcrumbs-wrapper.breadcrumbs-dark a
 {
-        color: rgb(34 120 73);
+        color: rgb(58 59 160);
 }
 #breadcrumbs-wrapper.breadcrumbs-inline .breadcrumbs-title,
 #breadcrumbs-wrapper.breadcrumbs-inline .breadcrumbs
@@ -9380,7 +9378,7 @@ Cards
 {
     overflow: hidden;
 
-    margin: 1rem 0 1rem 0;
+    margin: 0.1rem 0 1rem 0;
 }
 .card .card-title
 {
@@ -11210,3 +11208,22 @@ tr.group:hover
 
     margin: 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+.page-footer .footer-copyright {
+    min-height: 20px !important;
+    padding: 7px 0 !important;
+}
+/*.card .card-content {
+    padding: 10px 25px 0px !important;
+    border-radius: 0 0 2px 2px;
+}*/

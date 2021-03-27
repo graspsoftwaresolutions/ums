@@ -19,10 +19,6 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <style type="text/css">
     #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:last-child {
-        padding-top: 8px;
-        padding-bottom: 8px;
-        padding-left: 26px;
-        padding-right: 16px;
         font-size: 12px;
         white-space: nowrap;
         text-transform: Uppercase;
@@ -53,8 +49,9 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <div class="container">
 <div class="row">
   <div class="col s10 m6 l6">
-      <li class="breadcrumb-item"><a
-              href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>
+      <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Dashboard')}}</h5>
+      <!--<li class="breadcrumb-item"><a
+              href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a></li>-->
       <ol class="breadcrumbs mb-0">
           <li class="breadcrumb-item"><a href="">{{__('Company') }}</a>
           </li>
@@ -78,7 +75,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       <div class="col s12">
                           <div class="card">
                               <div class="card-content">
-                                  <h4 class="card-title">{{__('Company List') }}</h4>
+                                  <!--<h4 class="card-title">{{__('Company List') }}</h4>-->
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">

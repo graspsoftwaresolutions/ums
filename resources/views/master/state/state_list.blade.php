@@ -14,6 +14,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
+
 @endsection
 @section('main-content')
 <div id="">
@@ -49,7 +50,7 @@
                         <div class="col s12">
                         <div class="card">
                             <div class="card-content">
-                            <h4 class="card-title">{{__('State List')}}</h4>
+                            <!--<h4 class="card-title">{{__('State List')}}</h4>-->
                             @include('includes.messages')
                             <div class="row">
                                 <div class="col s12 responsive-table">

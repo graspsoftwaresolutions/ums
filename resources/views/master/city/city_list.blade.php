@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div class="col s10 m6 l6">
                                         <h5 class="breadcrumbs-title mt-0 mb-0">{{__('City List') }}</h5>
-                                        <ol class="breadcrumbs mb-0">
+                                        
                                             <ol class="breadcrumbs mb-0">
                                                 <li class="breadcrumb-item"><a
                                                         href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
@@ -49,7 +49,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('City List') }}</h4>
+                                    <!--<h4 class="card-title">{{__('City List') }}</h4>-->
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">

@@ -11,6 +11,39 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
+<style>
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td {
+    padding: 3px 5px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody tr td:before, #main .section-data-tables .dataTables_wrapper table.dataTable tbody tr th:before {
+    top: 7px !important;
+    left: -10px !important;
+}
+
+
+
+
+
+#main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+    padding: 0px 4px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable th, #main .section-data-tables .dataTables_wrapper table.dataTable td {
+    padding: 8px 3px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+    min-width: 15px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable th {
+    font-size: 13px !important;
+}
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td {
+    padding: 8px 8px;
+    font-size: 11px;
+    white-space: nowrap !important;
+    text-transform: Uppercase;
+    border: none !important;
+}
+</style>
 @endsection
 @section('main-content')
 @php 
@@ -50,7 +83,7 @@
 						<div class="col s12">
 							<div class="card">
 								<div class="card-content">
-									<h4 class="card-title">{{__('Company Branch List') }}</h4>
+									<!--<h4 class="card-title">{{__('Company Branch List') }}</h4>-->
 									<div class="row">
 										<input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn col s12 m4 l3" value="Advanced search">
 									</div> 
@@ -108,15 +141,15 @@
 											<table id="page-length-option" class="display" width="100%">
 												<thead>
 													<tr>
-														<th>{{__('Company Name') }}(is_head)</th>
-														<th>{{__('Branch Name') }}</th>
-														<th>{{__('Email') }}</th>
-														<th>{{__('State') }}</th>
-														<th>{{__('City') }}</th>
+														<th width="27%">{{__('Company Name') }}(is_head)</th>
+														<th width="25%">{{__('Branch Name') }}</th>
+														<th width="5%">{{__('Email') }}</th>
+														<th width="10%">{{__('State') }}</th>
+														<th width="16%">{{__('City') }}</th>
 														<!-- <th>{{__('Empty State') }}</th> -->
-														<th>{{__('Head') }}</th>
-														<th>{{__('UBranch') }}</th>
-														<th style="text-align:center;">{{__('Action') }}</th>
+														<th width="5%">{{__('Head') }}</th>
+														<th width="5%">{{__('UBranch') }}</th>
+														<th width="8%" style="text-align:center;">{{__('Action') }}</th>
 													</tr>
 												</thead>
 											</table>

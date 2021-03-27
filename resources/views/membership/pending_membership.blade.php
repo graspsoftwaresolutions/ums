@@ -60,6 +60,20 @@ span.dtr-title::after {
 	vertical-align: top;
 }
 
+
+
+
+
+
+
+
+#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td {
+    padding: 8px 8px;
+    font-size: 12px;
+    white-space: nowrap !important;
+    text-transform: Uppercase;
+    border: none !important;
+}
 </style>
 @endsection
 @section('main-content')
