@@ -62,14 +62,14 @@
 						<!-- Search for small screen-->
 						<div class="container">
 							<div class="row">
-								<div class="col s10 m6 l6">
-									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Negative Due List') }}[Dec/2019]</h5>
+								<div class="col s10 m6 l6" style="color: #fff !important;">
+									<h5 class="breadcrumbs-title mt-0 mb-0" style="color: #fff !important;">{{__('Advance Due List') }}[Dec/2019]</h5>
 									<ol class="breadcrumbs mb-0">
-										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item"><a
-													href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
+										<ol class="breadcrumbs mb-0" style="color: #fff !important;">
+											<li class="breadcrumb-item" style="color: #fff !important;"><a
+													href="{{ route('home', app()->getLocale())  }}"  style="color: #fff !important;" >{{__('Dashboard') }}</a>
 											</li>
-											<li class="breadcrumb-item active">{{__('Negative Due List') }}
+											<li class="breadcrumb-item active">{{__('Advance Due List') }}
 											</li>
 									</ol>
 								</div>
@@ -136,7 +136,7 @@
             <div class="card">
                 <div class="card-content">
 
-                    <h4 class="card-title">{{__('Nagative Due List') }}[Dec/2019]
+                    <h4 class="card-title">{{__('Advance Due List') }}[Dec/2019]
                 	</h4>
                     @include('includes.messages')
                     <div class="row">
@@ -152,6 +152,7 @@
                                     	<th width="20%">{{__('Bank Branch') }}</th>
                                         <th width="10%">{{__('DOJ') }}</th>
                                         <th width="5%">{{__('Status') }}</th>
+                                        <th width="5%">{{__('Dues') }}</th>
 
                                         <th> {{__('Action') }}</th>
                                     </tr>
@@ -162,9 +163,9 @@
 										$statuslist = $data['status'];
 
 									@endphp
-                                	@foreach($data['members_list'] as $members)
+                                	@foreach($data['members_list'] as $membersdata)
                                 		@php
-	                                		$members = CommonHelper::getAllMemberDetails($members->MEMBER_CODE);
+	                                		$members = CommonHelper::getAllMemberDetails($membersdata->MEMBER_CODE);
                                 		@endphp
                                 		
                                 		<tr>
@@ -176,6 +177,7 @@
                                 			<td>{{ $members->branch_name }}</td>
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ $statuslist[$members->status_id-1]->status_name }}</td>
+                                			<td>{{ $membersdata->TOTALMONTHSDUE }}</td>
                                 			<td>
                                 				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
                                 				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
