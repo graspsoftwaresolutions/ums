@@ -4860,5 +4860,151 @@ class ReportsController extends Controller
         return view('reports.iframe_monthly_statistics')->with('data',$data);   
     }
 
+    public function newMemberUnionReport(Request $request)
+    {
+        $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
+        $data['uniongroup_view'] = DB::table('union_groups')->get();
+       
+        $data['member_view'] = [];
+        return view('reports.new_member_resign_report')->with('data',$data);  
+    }
+
+     public function newMembersResignReport(Request $request){
+      
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        // /$user_id = Auth::user()->id; 
+
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $type = $request->input('type');
+        $uniongroup_id = $request->input('uniongroup_id');
+        $unionbranch_id = $request->input('unionbranch_id');
+
+        $fromdate = date('Y-m-01');
+        $todate = date('Y-m-t');
+
+        if($from_date!="" && $to_date!=""){
+             $fromdate = CommonHelper::ConvertdatetoDBFormat($from_date);
+             $todate = CommonHelper::ConvertdatetoDBFormat($to_date);
+        }
+
+        $data['from_date'] = $fromdate;
+        $data['to_date'] = $todate;
+        $data['type'] = $type;
+        $data['uniongroup_id'] = $uniongroup_id;
+        $data['unionbranch_id'] = $unionbranch_id;
+
+        $userid = '';
+
+        if($unionbranch_id!=''){
+           $userid = DB::table('union_branch as ub')
+                        ->select('ub.user_id')
+                        ->where('ub.id','=',$unionbranch_id)
+                        ->pluck('ub.user_id')
+                        ->first();
+        }
+
+        $userids = [];
+
+        
+
+        $members = [];
+
+        if($type==1){
+            if($uniongroup_id!=''){
+                $userids = DB::table('staff_union_account as sa')
+                            ->select('sa.user_id')
+                            ->where('sa.union_group_id','=',$uniongroup_id)
+                            ->pluck('sa.user_id');
+            }
+            $members = DB::table('membership as m')->select('c.id as cid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
+                ,'m.gender'
+                ,'com.company_name'
+                ,'m.doj'
+                ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'m.employee_id'
+                ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
+                ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','m.salary','s.status_name','m.created_by')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                    ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
+
+            if($fromdate!="" && $todate!=""){
+                  $members = $members->where(DB::raw('date(m.`doj`)'),'>=',$fromdate);
+                  $members = $members->where(DB::raw('date(m.`doj`)'),'<=',$todate);
+            }
+
+            if($unionbranch_id!=''){
+                $members = $members->where('m.created_by',$userid);
+            }
+
+            if($uniongroup_id!='' && count($userids)>0){
+                $members = $members->whereIn('m.created_by',$userids);
+            }
+        
+            $members = $members->orderBy('m.member_number','asc');
+            $members = $members->get();
+             
+        }else{
+            if($uniongroup_id!=''){
+                $unionBranchids = DB::table('union_group_branches as b')
+                                    ->select('b.union_branch_id')
+                                    ->leftjoin('union_groups as ug','ug.id','=','b.union_branch_id')
+                                    ->where('b.id','=',$uniongroup_id)
+                                    ->pluck('b.union_branch_id');
+
+                // $userids = DB::table('irc_account as ia')
+                //             ->select('ia.user_id')
+                //             ->leftjoin('membership as m','m.id','=','ia.MemberCode')
+                //             ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                //             ->where('ia.account_type','=','irc-confirmation')
+                //             ->whereIn('c.union_branch_id',$unionBranchids)
+                //             ->pluck('ia.user_id');
+            }
+
+            $members = DB::table('irc_confirmation as i')->select('i.id as ircid','m.name', 'm.member_number',DB::raw('SUBSTRING(`d`.`designation_name`,1,1) AS designation_name')
+                ,'m.gender'
+                ,'com.company_name'
+                ,'m.doj'
+                ,DB::raw('IF(`m`.`new_ic`="",`m`.`old_ic`,`m`.`new_ic`) as ic'),'m.employee_id'
+                ,DB::raw('IF(`m`.`levy`="Not Applicable","N/A",`m`.`levy`) as levy'),'m.levy_amount','m.tdf','m.tdf_amount'
+                ,DB::raw('CONCAT( `com`.`short_code`, "/",  `c`.`branch_shortcode` ) AS companycode'),'c.branch_name as branch_name','mp.last_paid_date','m.salary','s.status_name','m.created_by','r.resignation_date','i.irc_user_name')
+                    ->leftjoin('membership as m','m.id','=','i.resignedmemberno')
+                    ->leftjoin('resignation as r','m.id','=','r.member_code')
+                    ->leftjoin('company_branch as c','c.id','=','m.branch_id')
+                     ->leftjoin('company as com','com.id','=','c.company_id')
+                    ->leftjoin('status as s','s.id','=','m.status_id')
+                    ->leftjoin('designation as d','m.designation_id','=','d.id')
+                    ->leftjoin('member_payments as mp','m.id','=','mp.member_id');
+
+            if($fromdate!="" && $todate!=""){
+                  $members = $members->where(DB::raw('date(i.`submitted_at`)'),'>=',$fromdate);
+                  $members = $members->where(DB::raw('date(i.`submitted_at`)'),'<=',$todate);
+            }
+
+            // if($unionbranch_id!=''){
+            //     $members = $members->where('m.created_by',$userid);
+            // }
+
+            if($uniongroup_id!='' && count($unionBranchids)>0){
+                $members = $members->whereIn('c.union_branch_id',$unionBranchids);
+               // $members = $members->whereIn('m.created_by',$userids);
+            }
+        
+            $members = $members->orderBy('m.member_number','asc');
+            $members = $members->get();
+        }
+        
+        
+        //dd($members);
+        $data['member_view'] = $members;
+      
+        $data['unionbranch_name'] = '';
+        
+        return view('reports.iframe_new_member_resign')->with('data',$data);  
+    }
+
 }
 

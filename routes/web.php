@@ -646,6 +646,8 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('get-privilegecard-print','EcoParkController@PrivilegeCardPrint')->name('reports.privilegecardprint');
 
 	Route::get('due-negativelist','MonthEndController@ListNegativeDue')->name('due.negativelist');
+
+	Route::get('newmembers_resignreport','ReportsController@newMembersResignReport')->name('resign.membersnew');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');

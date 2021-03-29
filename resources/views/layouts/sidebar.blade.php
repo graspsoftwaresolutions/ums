@@ -225,7 +225,7 @@
             </li>
             <li id="due_sidebar_li_id" class=""><a id="due_sidebar_a_id" class="collapsible-body " href="{{ route('due.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Due Members') }}</span></a>
             </li>
-            <li id="due_sidebar_li_id" class=""><a id="due_sidebar_a_id" class="collapsible-body " href="{{ route('due.negativelist',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Negative Due[Dec 2019]') }}</span></a>
+            <li id="due_sidebar_li_id" class=""><a id="due_sidebar_a_id" class="collapsible-body " href="{{ route('due.negativelist',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Advance Due List') }}</span></a>
             </li>
             <li id="members_list_sidebar_li_id" class=""><a id="members_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.membership',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members List') }}[history]</span></a>
             </li>
@@ -247,7 +247,7 @@
           <ul class="collapsible collapsible-sub" data-collapsible="accordion">
             <li id="member_status0_sidebar_li_id" class=""><a id="member_status0_sidebar_a_id" class="collapsible-body" href="{{ route('reports.newmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members') }}</span></a>
             </li>
-            <li id="newmember_sidebar_li_id" class="hide"><a id="newmember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.unionnewmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members[Union]') }}</span></a>
+            <li id="newmember_sidebar_li_id" class=""><a id="newmember_sidebar_a_id" class="collapsible-body" href="{{ route('reports.unionnewmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('New Members[Union]') }}</span></a>
             </li>
             <li id="members_report_sidebar_li_id" class="hide"><a id="members_report_sidebar_a_id" class="collapsible-body" href="{{ route('reports.newmembers',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Members Report') }}</span></a>
             </li>
