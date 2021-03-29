@@ -153,18 +153,22 @@ class AjaxController extends CommonController
         if( $limit == -1){
 			$state = DB::table('country')->select('state.id','country.country_name','state.state_name','state.country_id','state.status')
 					->join('state','country.id','=','state.country_id')
-					->where('state.id','LIKE',"%{$search}%")
-                    ->orWhere('country.country_name', 'LIKE',"%{$search}%")
-                    ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+					
+                    ->where(function($query) use ($search){
+                            $query->Where('country.country_name', 'LIKE',"%{$search}%")
+                                ->orWhere('state.state_name', 'LIKE',"%{$search}%");
+                        })
                     ->where('state.status','=','1')
                     ->orderBy($order,$dir)
                     ->get()->toArray();
         }else{
             $state 	=  DB::table('country')->select('state.id','country.country_name','state.state_name','state.country_id','state.status')
 						->join('state','country.id','=','state.country_id')
-						->where('state.id','LIKE',"%{$search}%")
-                        ->orWhere('country.country_name', 'LIKE',"%{$search}%")
-                        ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+						
+                        ->where(function($query) use ($search){
+                            $query->Where('country.country_name', 'LIKE',"%{$search}%")
+                                ->orWhere('state.state_name', 'LIKE',"%{$search}%");
+                        })
                         ->offset($start)
                         ->limit($limit)
                         ->where('state.status','=','1')
@@ -235,10 +239,12 @@ class AjaxController extends CommonController
 			$city = DB::table('country')->select('city.id','city.city_name',DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'state.country_id','city.status','city.city_name')
 					->join('state','country.id','=','state.country_id')
 					->join('city','city.state_id','=','state.id')
-					->where('city.id','LIKE',"%{$search}%")
-                    ->orWhere('country.country_name', 'LIKE',"%{$search}%")
-                    ->orWhere('state.state_name', 'LIKE',"%{$search}%")
-                    ->orWhere('city.city_name', 'LIKE',"%{$search}%")
+					//->where('city.id','LIKE',"%{$search}%")
+                    ->where(function($query) use ($search){
+                            $query->orWhere('country.country_name', 'LIKE',"%{$search}%")
+                                ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+                                ->orWhere('city.city_name', 'LIKE',"%{$search}%");
+                        })
                     ->where('city.status','=','1')
                     ->orderBy($order,$dir)
                     ->get()->toArray();
@@ -246,10 +252,12 @@ class AjaxController extends CommonController
             $city = DB::table('country')->select('city.id','city.city_name',DB::raw('CONCAT(state.state_name, " - ",country.country_name) as state_name'),'state.country_id','city.status','city.city_name')
 						->join('state','country.id','=','state.country_id')
 						->join('city','city.state_id','=','state.id')
-						->where('city.id','LIKE',"%{$search}%")
-						->orWhere('country.country_name', 'LIKE',"%{$search}%")
-						->orWhere('state.state_name', 'LIKE',"%{$search}%")
-						->orWhere('city.city_name', 'LIKE',"%{$search}%")
+						//->where('city.id','LIKE',"%{$search}%")
+						->where(function($query) use ($search){
+                            $query->orWhere('country.country_name', 'LIKE',"%{$search}%")
+                                ->orWhere('state.state_name', 'LIKE',"%{$search}%")
+                                ->orWhere('city.city_name', 'LIKE',"%{$search}%");
+                        })
                         ->offset($start)
                         ->limit($limit)
                         ->where('city.status','=','1')

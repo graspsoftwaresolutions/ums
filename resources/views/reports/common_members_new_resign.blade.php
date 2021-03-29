@@ -9,7 +9,7 @@
 				<td colspan="2" rowspan="2" style="text-align:right">
 					<img src="{{ asset('public/assets/images/logo/'.$logo) }}" height="50" />
 				</td>
-				<td colspan="8" style="text-align:center;padding:10px;vertical-align:top;">
+				<td @if($data['type']==1) colspan="8" @else colspan="6" @endif style="text-align:center;padding:10px;vertical-align:top;">
 					<span style="text-align:center;font-weight: bold;font-size:18px;vertical-align:top;">NATIONAL UNION OF BANK EMPLOYEES,PENINSULAR MALAYSIA</span>
 					
 				</td>
@@ -27,7 +27,7 @@
 						$jtypename = '';
 					}
 				@endphp
-				<td colspan="8" style="text-align:center;padding:10px;font-weight: bold;">
+				<td @if($data['type']==1) colspan="8" @else colspan="6" @endif style="text-align:center;padding:10px;font-weight: bold;">
 				
 					<span style="margin-top:0;">{{$jtypename}} REPORT</span>
 				</td>
@@ -39,7 +39,7 @@
 					To Branch Hons. Secretary
 					
 				</td>
-				<td colspan="8" align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
+				<td @if($data['type']==1) colspan="8" @else colspan="6" @endif align="center" style="text-align:center;vertical-align:top;border-bottom: 1px solid #988989 !important;">
 					{{ date('d M Y',strtotime($data['from_date'])) }} - {{ date('d M Y',strtotime($data['to_date'])) }}
 				</td>
 				<td colspan="3" style="border-bottom: 1px solid #988989 !important;">	
@@ -119,7 +119,7 @@
 			<!-- //@if(!empty($data['member_view']))
 			//@endif -->
 			<tr>
-				<td colspan="13" style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
+				<td @if($data['type']==1) colspan="13" @else colspan="11" @endif style="font-weight:bold;">Total Member's Count : {{ $sno-1 }}</td>
 			</tr> 
 		</tbody>
 		

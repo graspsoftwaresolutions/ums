@@ -4880,6 +4880,7 @@ class ReportsController extends Controller
         $type = $request->input('type');
         $uniongroup_id = $request->input('uniongroup_id');
         $unionbranch_id = $request->input('unionbranch_id');
+        $status = $request->input('status');
 
         $fromdate = date('Y-m-01');
         $todate = date('Y-m-t');
@@ -4894,6 +4895,7 @@ class ReportsController extends Controller
         $data['type'] = $type;
         $data['uniongroup_id'] = $uniongroup_id;
         $data['unionbranch_id'] = $unionbranch_id;
+        $data['status'] = $status;
 
         $userid = '';
 
@@ -4943,6 +4945,20 @@ class ReportsController extends Controller
             if($uniongroup_id!='' && count($userids)>0){
                 $members = $members->whereIn('m.created_by',$userids);
             }
+
+            if($status!=''){
+                if($status==1){
+                    $members = $members->where(function($query) use ($status){
+                                    $query->Where('m.is_request_approved','=',0)
+                                        ->orWhereNull('m.is_request_approved');
+                                });
+                    //$members = $members->where(DB::raw('m.`is_request_approved`'),'=',0);
+
+                }else{
+                     $members = $members->where(DB::raw('m.`is_request_approved`'),'=',1);
+                }
+                //$members = $members->where('m.created_by',$status);
+            }
         
             $members = $members->orderBy('m.member_number','asc');
             $members = $members->get();
@@ -4991,6 +5007,17 @@ class ReportsController extends Controller
             if($uniongroup_id!='' && count($unionBranchids)>0){
                 $members = $members->whereIn('c.union_branch_id',$unionBranchids);
                // $members = $members->whereIn('m.created_by',$userids);
+            }
+
+            if($status!=''){
+                if($status==1){
+                    $members = $members->WhereNull('r.id');
+                    //$members = $members->where(DB::raw('m.`is_request_approved`'),'=',0);
+
+                }else{
+                    $members = $members->WhereNotNull('r.id');
+                }
+                //$members = $members->where('m.created_by',$status);
             }
         
             $members = $members->orderBy('m.member_number','asc');

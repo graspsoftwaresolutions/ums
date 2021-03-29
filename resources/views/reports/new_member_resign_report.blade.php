@@ -95,9 +95,21 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>   
+
 						  
 						<div class="clearfix"/>
-						
+						<div class="col s12 m6 l3 ">
+							<label>{{__('Status') }}</label>
+							<select name="status" id="status" class="error browser-default selectpicker" data-error=".errorTxt23" >
+								<option value="">{{__('Select Status') }}</option>
+								<option value="1">{{__('Pending') }}</option>
+								<option value="2">{{__('Approved') }}</option>
+							</select>
+							<div class="input-field">
+								<div class="errorTxt23"></div>
+							</div>
+						</div>   
+						<div class="clearfix"/>
 						<div class="row">
 							<div class="input-field col s6 right">
 								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
@@ -122,7 +134,7 @@
 				</ul>
 			</div>
 			@php
-				$additional = 'from_date='.date('01/m/Y').'&to_date='.date('t/m/Y').'&type=1&uniongroup_id=&unionbranch_id=';
+				$additional = 'from_date='.date('01/m/Y').'&to_date='.date('t/m/Y').'&type=1&uniongroup_id=&unionbranch_id=&status=';
 			@endphp
 			<div id="new_member_report" class="col s12">
 				<iframe src="{{ route('resign.membersnew',[app()->getLocale()]) }}?{{ $additional }}" id="myframe" height="400px" width="100%"></iframe>
@@ -215,9 +227,10 @@ $("#member_status0_sidebar_a_id").addClass('active');
 		var type = $("#type").val();
 		var uniongroup_id = $("#uniongroup_id").val();
 		var unionbranch_id = $("#unionbranch_id").val();
+		var status = $("#status").val();
 		//$('#page-length-option tbody').empty();
 		if(from_date!="" && to_date!=""){
-			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&type='+type+'&uniongroup_id='+uniongroup_id+'&unionbranch_id='+unionbranch_id;
+			var searchfilters = '&from_date='+from_date+'&to_date='+to_date+'&type='+type+'&uniongroup_id='+uniongroup_id+'&unionbranch_id='+unionbranch_id+'&status='+status;
 			$("#myframe").contents().find("html").css('opacity',0);
 		
 			//loader.showLoader();
