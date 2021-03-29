@@ -70,7 +70,7 @@ span.dtr-title::after {
 
 
 #main .section-data-tables .dataTables_wrapper table.dataTable th, #main .section-data-tables .dataTables_wrapper table.dataTable td {
-    padding: 8px 3px !important;
+    padding: 5px 3px !important;
 }
 #main .section-data-tables .dataTables_wrapper table.dataTable thead th {
     min-width: 15px !important;
@@ -86,7 +86,7 @@ span.dtr-title::after {
     border: none !important;
 }
 #main .section-data-tables .dataTables_wrapper table.dataTable thead th {
-    background: #e2e1e1 !important;
+    background: #5131a0  !important;
     border-right: 1px solid #f6f2f2 !important;
 }
 #main .section-data-tables .dataTables_wrapper table.dataTable tbody tr td:before, #main .section-data-tables .dataTables_wrapper table.dataTable tbody tr th:before {
@@ -97,6 +97,9 @@ span.dtr-title::after {
     width: 17px !important;
     height: 16px !important;
     text-indent: 0;
+}
+.material-icons {
+    font-size: 20px !important;
 }
 </style>
 @endsection
@@ -174,7 +177,7 @@ span.dtr-title::after {
 				</div> 
 				<div class="col s12">
 					<div class="card">
-						<div class="card-content">
+						<div class="card-content" style="padding:5px;">
 							<div class="row">
 								<div class="col s12 m4 l3">
 								<h4 class="card-title">
@@ -199,7 +202,7 @@ span.dtr-title::after {
 								@endif
 							</div>	
 							<div class="row">
-							<div class="card advancedsearch" style="dispaly:none;">
+							<div class="advancedsearch" style="dispaly:none;">
 								<div class="col s12">
 									<form method="post" id="advancedsearch">
 									@csrf  

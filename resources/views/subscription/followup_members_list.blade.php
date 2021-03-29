@@ -54,7 +54,7 @@
 @endsection
 @section('main-content')
 <div class="row">
-	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 	<div class="col s12">
 		<div class="container">
 			<div class="section section-data-tables">
@@ -156,12 +156,12 @@
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/followup-list') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
-											<div class="input-field col m3 s12">
+											<div class="input-field col m2 s12">
 												<label for="doe">{{__('Last subscription month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y',strtotime($data['subs_month'])) }}" class="datepicker-custom" />
 											</div>
 
-											<div class="col s12 m6 l3 ">
+											<div class="col s12 m2 l3 ">
 												<label>{{__('Company Name') }}</label>
 												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 													<option value="">{{__('Select Company') }}</option>
@@ -175,7 +175,7 @@
 											</div>
 											
 											
-											<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+											<div class="col s12 m2 l3 @if($user_role =='company-branch') hide @endif">
 												<label>{{__('Company Branch Name') }}</label>
 												<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 													<option value="">{{__('Select Branch') }}</option>
@@ -190,7 +190,7 @@
 						
 											
 
-											<div class="col s12 m6 l3">
+											<div class="col s12 m2">
 												<label>{{__('Type') }}</label>
 												<select name="followup_type" id="followup_type" class="error browser-default selectpicker" required="" data-error=".errorTxt24" >
 													<option value="">{{__('Select Type') }}</option>

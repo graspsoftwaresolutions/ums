@@ -12,7 +12,7 @@
 @section('main-content')
 <div id="">
     <div class="row">
-        <div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+        <!--<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
         <div class="col s12">
             <div class="container">
                 <div class="section section-data-tables">

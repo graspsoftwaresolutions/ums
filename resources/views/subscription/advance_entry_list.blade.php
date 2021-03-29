@@ -24,25 +24,54 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link href="{{ asset('public/css/MonthPicker.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
 	#main.main-full {
-		height: 750px;
-		overflow: auto;
+		/*height: 750px;
+		overflow: auto;*/
 	}
 	
 	.footer {
-	   //position: fixed;
-	   margin-top:50px;
+	   position: inherit !important;
 	   left: 0;
 	   bottom: 0;
 	   width: 100%;
 	   height:auto;
 	   background-color: red;
 	   color: white;
-	   text-align: center;
 	   z-index:999;
 	} 
 	.sidenav-main{
 		z-index:9999;
 	}
+	
+	
+	
+	
+	
+	#main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td {
+        padding: 3px 5px !important;
+    }
+    #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td {
+        padding: 8px 8px;
+        font-size: 12px;
+        white-space: nowrap !important;
+        text-transform: Uppercase;
+        border: none !important;
+    }
+    #main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+        padding: 0px 5px !important;
+    }
+    #main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+        background: #5131a0  !important;
+        border-right: 1px solid #f6f2f2 !important;
+    }
+    #main .section-data-tables .dataTables_wrapper table.dataTable th {
+    font-size: 14px !important;
+    }
+    .material-icons {
+        font-size: 18px !important;
+    }
+    #main .section-data-tables .dataTables_wrapper table.dataTable thead th {
+        min-width: 10px !important;
+    }
 </style>
 @endsection
 @section('main-content')
@@ -83,25 +112,25 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                       <div class="col s12">
                           <div class="card">
                               <div class="card-content">
-                                  <h4 class="card-title">{{__('Advance List') }}</h4>
+                                  <!--<h4 class="card-title">{{__('Advance List') }}</h4>-->
                                   @include('includes.messages')
                                   <div class="row">
                                       <div class="col s12">
                                           <table id="page-length-option" class="display">
                                               <thead>
                                                   <tr>
-                                                      <th>{{__('MemberID') }}</th>
-                                                      <th>{{__('MemberName') }}</th>
-                                                      <th>{{__('Company') }}</th>
-                                                      <th>{{__('Branch') }}</th>
-                                                      <th>{{__('Advance_date') }}</th>
+                                                      <th width="5%">{{__('Mem/ID') }}</th>
+                                                      <th width="13%">{{__('MemberName') }}</th>
+                                                      <th width="20%">{{__('Company') }}</th>
+                                                      <th width="14%">{{__('Branch') }}</th>
+                                                      <th width="10%">{{__('Advance_date') }}</th>
                                                       <!-- <th>{{__('To_date') }}</th> -->
-                                                      <th>{{__('Amount') }}</th>
-                                                      <th>{{__('No of Months') }}</th>
-                                                      <th>{{__('Paid Amount') }}</th>
-                                                      <th>{{__('Balance Amount') }}</th>
-                                                      <th>{{__('Status') }}</th>
-                                                      <th style="text-align:center;"> {{__('Action') }}</th>
+                                                      <th width="1%">{{__('Amt') }}</th>
+                                                      <th width="5%">{{__('Months') }}</th>
+                                                      <th width="5%">{{__('Paid Amt') }}</th>
+                                                      <th width="4%">{{__('Bal/Amt') }}</th>
+                                                      <th width="5%">{{__('Status') }}</th>
+                                                      <th width="10%"> {{__('Action') }}</th>
                                                   </tr>
                                               </thead>
                                           </table>

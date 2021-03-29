@@ -45,11 +45,18 @@
 		cursor:pointer;
 		background: #dbdbf7;font-weight:bold;
 	}
+	
+	
+	
+	
+	td, th {
+	    padding: 8px 15px !important;
+    }
 </style>
 @endsection
 @section('main-content')
 <div class="row">
-	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 	<div class="col s12">
 		<div class="container">
 			<div class="section section-data-tables">
@@ -111,21 +118,19 @@
 										@csrf
 										<div class="row">
 											
-											<div class="col m2 s12">
+											<div class="col m4 s12">
 												<label for="doe">{{__('Group By') }}*</label>
 												<p>
 													<label>
 														<input name="groupby" type="radio" onclick="return ViewLists(1)" value="1" {{ $data['groupby']==1 ? 'checked' : ''}} />
 														<span>{{__('Union Branch') }} </span>
 													</label>
-												</p>
-												<p>
+											
 													<label>
 														<input name="groupby" type="radio" value="2" onclick="return ViewLists(2)" {{ $data['groupby']==2 ? 'checked' : ''}} />
 														<span>Bank </span>
 													</label>
-												</p>
-												<p>
+												
 													<label>
 														<input name="groupby" type="radio" value="3" onclick="return ViewLists(2)" {{ $data['groupby']==3 ? 'checked' : ''}} />
 														<span>Bank Branch</span>
@@ -154,11 +159,11 @@
 	                                            </div>
                                                 <div class="errorTxt6"></div>
                                             </div>
-											<div class="input-field col m2 s12">
+											<div class="input-field col m3 s12">
 												<label for="doe">{{__('Subscription Month') }}*</label>
 												<input type="text" name="entry_date" id="entry_date" value="{{ $data['month_year'] }}" class="datepicker-custom" />
 											</div>
-											<div class="col m2 s12 hide">
+											<div class="col m3 s12 hide">
 												<label for="doe">&nbsp;</label>
 												<p>
 													<label>
@@ -167,7 +172,7 @@
 													</label>
 												</p>
 											</div>
-											<div class="col m2 s12 hide">
+											<div class="col m3 s12 hide">
 												
 												<label for="doe">{{__('Variation') }}</label>
 												<p>
