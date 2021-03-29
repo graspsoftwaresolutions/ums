@@ -52,7 +52,7 @@
 @endsection
 @section('main-content')
 <div class="row">
-	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 	<div class="col s12">
 		<div class="container">
 			<div class="section section-data-tables">
@@ -62,12 +62,12 @@
 						<!-- Search for small screen-->
 						<div class="container">
 							<div class="row">
-								<div class="col s10 m6 l6" style="color: #fff !important;">
-									<h5 class="breadcrumbs-title mt-0 mb-0" style="color: #fff !important;">{{__('Advance Due List') }}[Dec/2019]</h5>
+								<div class="col s10 m6 l6">
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('Advance Due List') }}[Dec/2019]</h5>
 									<ol class="breadcrumbs mb-0">
-										<ol class="breadcrumbs mb-0" style="color: #fff !important;">
-											<li class="breadcrumb-item" style="color: #fff !important;"><a
-													href="{{ route('home', app()->getLocale())  }}"  style="color: #fff !important;" >{{__('Dashboard') }}</a>
+										<ol class="breadcrumbs mb-0">
+											<li class="breadcrumb-item"><a
+													href="{{ route('home', app()->getLocale())  }}" >{{__('Dashboard') }}</a>
 											</li>
 											<li class="breadcrumb-item active">{{__('Advance Due List') }}
 											</li>

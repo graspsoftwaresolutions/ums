@@ -130,7 +130,7 @@
 </style>
 @endsection @section('main-content')
 <div class="row">
-    <div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+    <!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
     <div id="filterarea" class="col s12">
         <div class="container">
             <div class="section section-data-tables">

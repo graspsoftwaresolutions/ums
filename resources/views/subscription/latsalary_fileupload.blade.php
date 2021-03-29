@@ -170,12 +170,12 @@
                                             @csrf
                                             <div class="row">
 
-                                                <div class="input-field col m3 s12">
+                                                <div class="input-field col m2 s12">
                                                     <label for="doe">{{__('Subscription Month') }}*</label>
                                                     <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
                                                 </div>
                                                 
-                                                <div class="col m2 s12 ">
+                                                <div class="col m3 s12 ">
                                                     <label for="types">{{__('Increment Types') }}</label>
                                                     <select name="types" id="types" class="browser-default valid" aria-invalid="false">
                                                         <option value="">Select</option>
@@ -186,7 +186,7 @@
                                                     </select>
                                                 </div>
 
-                                                <div id="file-upload-div" class="input-field  file-field col m2 s12">
+                                                <div id="file-upload-div" class="input-field  file-field col m5 s12">
                                                     <div class="btn ">
                                                         <span>File</span>
                                                         <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
@@ -196,7 +196,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col m3 s12 " style="padding-top:5px;">
+                                                <div class="col m2 s12 " style="padding-top:5px;">
                                                     </br>
                                                     <button id="submit-upload" class="mb-6 btn waves-effect purple lightrn-1 " type="submit">{{__('Submit') }}</button>
 

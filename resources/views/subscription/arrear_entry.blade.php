@@ -69,7 +69,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 @section('main-content')
 
 <div class="row">
-<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+<!--<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 <div class="breadcrumbs-dark" id="breadcrumbs-wrapper">
 <!-- Search for small screen-->
 <div class="container">

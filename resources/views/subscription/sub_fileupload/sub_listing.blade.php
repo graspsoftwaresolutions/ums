@@ -111,6 +111,12 @@
         height: 2.5rem;
         margin-top: 10px;
     }
+    .tabs {
+        background-color: transparent !important;
+    }
+    td, th {
+        padding: 7px 15px;
+   }
 </style>
 @endsection @section('main-content')
 <div class="row">
@@ -210,7 +216,7 @@
                                     </div>
                                     <div class="row">
                                        
-                                        <div id="file-upload-div" class="input-field  file-field col m12 s12">
+                                        <div id="file-upload-div" class="input-field  file-field col m1 s12">
                                             <div class="btn ">
                                                 <span>File</span>
                                                 <input type="file" name="file" id="file" class="form-control btn" accept=".xls,.xlsx">
@@ -265,7 +271,7 @@
                                             @csrf
                                             <div class="row">
 
-                                                <div class="input-field col m3 s12">
+                                                <div class="input-field col m2 s12">
                                                     <label for="doe">{{__('Subscription Month') }}*</label>
                                                     <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" />
                                                 </div>
@@ -286,7 +292,7 @@
                                                         <option value="1" selected>{{__('Upload File') }}</option>
                                                     </select>
                                                 </div>
-                                                <div id="file-upload-div" class="input-field  file-field col m2 s12">
+                                                <div id="file-upload-div" class="input-field  file-field col m4">
                                                     <div class="btn ">
                                                         <span>File</span>
                                                         <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
@@ -295,7 +301,7 @@
                                                         <input class="file-path validate" type="text">
                                                     </div>
                                                 </div>
-                                                <div class="col m3 s12 " style="padding-top:5px;">
+                                                <div class="col m1 s12 " style="padding-top:5px;">
                                                     </br>
                                                     <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">{{__('Submit') }}</button>
 

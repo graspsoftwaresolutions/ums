@@ -130,7 +130,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                                                       <th width="5%">{{__('Paid Amt') }}</th>
                                                       <th width="4%">{{__('Bal/Amt') }}</th>
                                                       <th width="5%">{{__('Status') }}</th>
-                                                      <th width="10%"> {{__('Action') }}</th>
+                                                      <th width="15%"> {{__('Action') }}</th>
                                                   </tr>
                                               </thead>
                                           </table>

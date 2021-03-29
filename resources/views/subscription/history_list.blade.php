@@ -52,7 +52,7 @@
 @endsection
 @section('main-content')
 <div class="row">
-	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 	<div class="col s12">
 		<div class="container">
 			<div class="section section-data-tables">
@@ -153,7 +153,7 @@
 									<form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/history-list') }}" enctype="multipart/form-data">
 										@csrf
 										<div class="row">
-											<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
+											<div class="col s12 m3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
 												<label>{{__('Company Name') }}</label>
 												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 													<option value="">{{__('Select Company') }}</option>
@@ -167,7 +167,7 @@
 											</div>
 											
 											
-											<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+											<div class="col s12 m3 @if($user_role =='company-branch') hide @endif">
 												<label>{{__('Company Branch Name') }}</label>
 												<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 													<option value="">{{__('Select Branch') }}</option>
@@ -180,17 +180,17 @@
 												</div>
 											</div>
 
-											<div class="col s12 m6 l2">
+											<div class="col s12 m2">
 												<label for="from_date">{{__('From Date')}}</label>
 												<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['from_date']))}}" name="from_date">
 											</div>
 
-											<div class="col s12 m6 l2">
+											<div class="col s12 m2">
 												<label for="to_date">{{__('To Date')}}</label>
 												<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('d-m-Y',strtotime($data['to_date']))}}" name="to_date">
 											</div>
 
-											<div class="col s12 m6 l2">
+											<div class="col s12 m2">
 												<label>{{__('Due Month') }}</label>
 												<select name="due_month" id="due_month" class="error browser-default selectpicker" data-error=".errorTxt24" >
 													<option value="">{{__('Select Month') }}</option>
@@ -202,7 +202,7 @@
 												</select>
 											</div>
 											
-											<div class="col m12 s12 " style="padding-top:5px;">
+											<div class="col m2 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect pull-right waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												

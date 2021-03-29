@@ -25,7 +25,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 @section('main-content')
 
 <div class="row">
-	<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<!--<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 	<div class="col s12">
 		<div class="container">
 			<!-- BEGIN: Page Main-->
@@ -59,7 +59,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 							$member = $data['member_details'];
 						@endphp
 						<div class="card-content">
-							<h4 class="card-title">{{__('Member Details')}}  </h4> 
+							<!--<h4 class="card-title">{{__('Member Details')}}  </h4> -->
 							<table width="100%" class="memberinfotable" style="font-weight: bold; font-size: 16px">
 								<tr>
 									<td width="25%">{{__('Member Name ')}}</td>

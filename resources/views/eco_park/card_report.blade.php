@@ -123,14 +123,14 @@
                             <div class="errorTxt7"></div>
                         </div>
 						
-						<div class="row">
-							<div class="input-field col s6 right">
-								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
+						
+							<div class="col s2 right">
+								<br><input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
 							</div>
-							<div class="input-field col s6 right-align">
-								<input type="submit" id="search"  class="btn" name="search" value="{{__('Search')}}">
+							<div class="col s2 right-align">
+								<br><input type="submit" id="search"  class="btn" name="search" value="{{__('Search')}}">
 							</div>
-						</div>
+						
 					</div>
 					</div>
 				</form>  

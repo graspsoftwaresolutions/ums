@@ -114,7 +114,7 @@
 </style>
 @endsection @section('main-content')
 <div class="row">
-    <div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+    <!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
     <div id="filterarea" class="col s12">
         <div class="container">
             <div class="section section-data-tables">
@@ -134,12 +134,12 @@
                                             </li>
                                         </ol>
                                 </div>
-                                <div class="col s2 m3 ">
+                                <div class="col s2 m5 ">
                                     <br>
                                     <a class="btn waves-light btn-sm purple lightrn-1 breadcrumbs-btn right" href="{{ route('ecopark.summary', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">Summary</a>
                                      <a class="mb6 btn btn-sm waves-light orange lightrn-1" href="{{ route('ecopark.members', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">View Members</a>
                                 </div>
-                                 <div class="col s2 m3 ">
+                                 <div class="col s2 m1 ">
                                    
                                     <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ asset('storage/app/ecopark/ecopark.xlsx') }}">{{__('Download Sample')}}</a>
                                 </div>
@@ -194,7 +194,7 @@
                                                     <div class="errorTxt6"></div>
                                                 </div>
 
-                                                <div id="file-upload-div" class="input-field  file-field col m2 s12">
+                                                <div id="file-upload-div" class="input-field  file-field col m6 s12">
                                                     <div class="btn ">
                                                         <span>File</span>
                                                         <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
@@ -204,7 +204,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col m3 s12 " style="padding-top:5px;">
+                                                <div class="col m1 s12 " style="padding-top:5px;">
                                                     </br>
                                                     <button id="submit-upload" class="mb-6 btn waves-effect purple lightrn-1 " type="submit">{{__('Submit') }}</button>
 
