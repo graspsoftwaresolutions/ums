@@ -4709,6 +4709,76 @@ class MembershipController extends Controller
                     'redirect_url' =>  URL::to('en/tdf_upload')];
         echo json_encode($return_data);
     }
+
+    public function ListStateCities(Request $request,$lang)
+    {
+        $data = [];
+        $data['state_view'] = DB::table('state as s')->where('status','=',1)->where('country_id','=',130)->get();
+        return view('membership.statebulk_clear')->with('data',$data); 
+    }
+
+    public function getStateCitiesList(Request $request,$lang){
+        //$from_city_id = $request->input('from_city_id');
+        $from_state_id = $request->input('from_state_id');
+
+        $members = DB::table('membership as m')->select('city.city_name','city.id as cityid',DB::raw('count(*) as count'))
+                            ->leftjoin('company_branch as cb','m.branch_id','=','cb.id')
+                            ->leftjoin('company as c','cb.company_id','=','c.id')
+                            ->leftjoin('city as city','m.city_id','=','city.id');
+
+        if($from_state_id!=''){
+           $members = $members->where('m.state_id','=',$from_state_id);
+        }
+
+        $data['cities'] = $members->where('m.status','=','1')->groupBy('m.city_id')
+        ->limit(1000)->get();
+       // dd($data['cities']);
+        $data['status'] = 1;
+        
+        return $data;
+    }
+
+
+    public function UpdateStateCityBulk(Request $request, $lang){
+       // return $request->all();
+        $from_state_id = $request->input('from_state_id');
+        $to_state_id = $request->input('to_state_id');
+        if($from_state_id!=$to_state_id){
+            $cityids = $request->input('cityids');
+            //return $memberids;
+            if(isset($cityids)){
+                $citycount = count($cityids);
+                foreach ($cityids as $key => $cityid) {
+                   $cityname = DB::table('city as c')->where('c.id','=',$cityid)->pluck('c.city_name')->first();
+
+                   $cityname = preg_replace('/\s+/', ' ',$cityname);
+                  
+                   $tocityid = DB::table('city as c')->where(DB::raw('TRIM(c.city_name)'),'=',trim($cityname))->where('c.state_id','=',$to_state_id)->pluck('c.id')->first();
+                   if($tocityid==null){
+                       $tocityid = DB::table('city')->insertGetId(
+                            array('state_id' => $to_state_id, 'city_name' => $cityname, 'country_id' => 130, 'created_by' => Auth::user()->id , 'created_at' => date('Y-m-d h:i:s') )
+                        );
+                   }
+                    
+                    $data = DB::table('membership')->where('city_id','=',$cityid)->update(['state_id' => $to_state_id, 'city_id' => $tocityid]);
+                    $data = DB::table('member_nominees')->where('city_id','=',$cityid)->update(['state_id' => $to_state_id, 'city_id' => $tocityid]);
+                    $data = DB::table('member_guardian')->where('city_id','=',$cityid)->update(['state_id' => $to_state_id, 'city_id' => $tocityid]);
+                    $data = DB::table('company_branch')->where('city_id','=',$cityid)->update(['state_id' => $to_state_id, 'city_id' => $tocityid]);
+                    $data = DB::table('union_branch')->where('city_id','=',$cityid)->update(['state_id' => $to_state_id, 'city_id' => $tocityid]);
+                   // dd($cityname);
+                }
+               
+                // for($i=0;$i<$mcount;$i++){
+                //     $memberid = $memberids[$i];
+                    
+                // }
+                return redirect($lang.'/clean-statebulk')->with('message','State,city updated successfully!!');
+            }
+        }else{
+            return redirect($lang.'/clean-statebulk')->with('error','Please select correct to city!!');
+        }
+       
+    }
 }
 
 

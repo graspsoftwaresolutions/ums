@@ -537,6 +537,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::post('clean-state','MembershipController@UpdateStateCity')->name('state.cleaning');
 	Route::get('get_statemembers','MembershipController@getStateMembersList')->name('state.members');
 
+	Route::get('clean-statebulk','MembershipController@ListStateCities')->name('cleaning.statebulk');
+	Route::get('get_statecities','MembershipController@getStateCitiesList')->name('state.cities');
+	Route::post('clean-statebulk','MembershipController@UpdateStateCityBulk')->name('statebulk.cleaning');
+
 	Route::get('clean-membershiplist','MembershipController@ListMembers')->name('clean.membership');
 	Route::post('ajax_cleanmember_list','MonthEndController@ajax_cleanmember_list')->name('ajax.listcleanmembership');
 

@@ -126,9 +126,7 @@
 							 </div>
 						@endif
 					</div>
-					<div class="card-content">
-						
-					</div>
+
 				</div>
 			</div>
 		</div>
@@ -263,19 +261,19 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-file-pdf-o"></i>',
 						   footer: true,
 						   exportOptions: {
-								columns: [0,1,2,3,4,5,6]
+								columns: [0,1,2,3,4,5,6,7]
 			                },
 			                titleAttr: 'pdf',
-							title : 'Unpaid List'
+							title : 'Advance Due List'
 					   },
 					   {
 			               extend: 'excel',
 			               text:      '<i class="fa fa-file-excel-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4,5,6]
+								columns: [0,1,2,3,4,5,6,7]
 							},
-			                title : 'Unpaid List',
+			                title : 'Advance Due List',
 			                titleAttr: 'excel',
 					   },
 						{
@@ -283,9 +281,9 @@ $(document).ready(function() {
 			               text:      '<i class="fa fa-files-o"></i>',
 						   footer: false,
 						   exportOptions: {
-								columns: [0,1,2,3,4,5,6]
+								columns: [0,1,2,3,4,5,6,7]
 							},
-			                title : 'Unpaid List',
+			                title : 'Advance Due List',
 			                titleAttr: 'print',
 					   }  
 					],

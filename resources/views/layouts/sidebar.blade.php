@@ -233,6 +233,8 @@
             </li>
             <li id="stateclear_list_sidebar_li_id" class=""><a id="stateclear_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.state',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Clear State') }}</span></a>
             </li>
+            <li id="stateclearbulk_list_sidebar_li_id" class=""><a id="stateclearbulk_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.statebulk',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Clear State Bulk') }}</span></a>
+            </li>
             <li id="salaryclear_list_sidebar_li_id" class=""><a id="salaryclear_list_sidebar_a_id" class="collapsible-body " href="{{ route('cleaning.salary',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>{{ __('Clear Salary') }}</span></a>
             </li>
           </ul>
