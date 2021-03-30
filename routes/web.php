@@ -118,6 +118,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('city','MasterController@cityList')->name('master.city');
 	Route::get('cityclear','MasterController@EmptycityList')->name('master.citytemp');
 	Route::get('stateclear','MasterController@EmptystateList')->name('master.statetemp');
+	Route::delete('state-deleteone/{id}','MasterController@statedestroyEmpty')->name('master.statedestroy');
 
 	Route::post('ajax_city_list','AjaxController@ajax_city_list');
 	Route::post('city_save','MasterController@citySave')->name('master.savecity');

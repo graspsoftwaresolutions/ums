@@ -29,12 +29,12 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col s10 m6 l6">
-                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('State List')}}</h5>
+                                        <h5 class="breadcrumbs-title mt-0 mb-0">{{__('State List[Not Used]')}}</h5>
                                         <ol class="breadcrumbs mb-0">
                                             <li class="breadcrumb-item"><a
                                                     href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard')}}</a>
                                             </li>
-                                            <li class="breadcrumb-item active">{{__('State')}}
+                                            <li class="breadcrumb-item active">{{__('State[Not Used]')}}
                                             </li>
                                         </ol>
                                     </div>
@@ -49,7 +49,7 @@
                         <div class="col s12">
                         <div class="card">
                             <div class="card-content">
-                            <h4 class="card-title">{{__('State List')}}</h4>
+                            <h4 class="card-title">{{__('State List[Not Used]')}}</h4>
                             @include('includes.messages')
                             <div class="row">
                                 <div class="col s12 responsive-table">
@@ -77,7 +77,11 @@
                                             <td>{{$countryname}}</td>
                                             <td>{{$state->state_name}}</td>
                                             <td>
-                                                
+                                               <a><form style="display:inline-block;" action="{{ url(app()->getLocale()) }}/state-deleteone/{{$state->id}}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="" style="background:none;border:none;" onclick="return ConfirmDeletion()"><i class="material-icons" style="color:red;">delete</i></button> </form>
+                                                </a>  
                                             </td>
                                         </tr>
                                         @endif
@@ -191,8 +195,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 <script>
 $("#masters_sidebars_id").addClass('active');
-$("#state_sidebar_li_id").addClass('active');
-$("#state_sidebar_a_id").addClass('active');
+$("#state_0sidebar_li_id").addClass('active');
+$("#state_0sidebar_a_id").addClass('active');
 
 $(function() {
     $('#page-length-option').DataTable({

@@ -193,6 +193,27 @@ class MasterController extends CommonController {
         }
         return redirect($defdaultLang.'/state')->with('message','State Details Deleted Successfully!!');
 	}
+
+    public function statedestroyEmpty($lang,$id)
+    {
+        $State = new state();
+        //$State = state::find($id);
+        $state_membership =  DB::table('membership as m')->where('m.state_id','=',$id)->count();
+        $state_member_gua =  DB::table('member_guardian as mg')->where('mg.state_id','=',$id)->count();
+        $state_member_nomi =  DB::table('member_nominees as mn')->where('mn.state_id','=',$id)->count();
+        $state_company_bran =  DB::table('company_branch as cb')->where('cb.state_id','=',$id)->count();
+        $state_union_bran =  DB::table('union_branch as ub')->where('ub.state_id','=',$id)->count();
+
+        $defdaultLang = app()->getLocale();
+        if($state_membership > 0 || $state_member_gua > 0 || $state_member_nomi > 0  || $state_company_bran > 0 ||  $state_union_bran > 0)
+        {
+            return redirect($defdaultLang.'/stateclear')->with('error','You cannot delete the state');
+        }
+        else{
+            $State->where('id','=',$id)->update(['status'=>'0']);
+        }
+        return redirect($defdaultLang.'/stateclear')->with('message','State Details Deleted Successfully!!');
+    }
 	
 		
 	// City List
