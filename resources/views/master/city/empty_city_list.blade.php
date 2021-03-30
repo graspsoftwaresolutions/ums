@@ -133,8 +133,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 <script>
 $("#masters_sidebars_id").addClass('active');
-$("#city_sidebar_li_id").addClass('active');
-$("#city_sidebar_a_id").addClass('active');
+$("#city_0sidebar_li_id").addClass('active');
+$("#city_0sidebar_a_id").addClass('active');
 
 $(function() {
     $('select[name=country_id]').change(function() {
