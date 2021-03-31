@@ -1192,7 +1192,7 @@ class MemberController extends CommonController
                     $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
                     //$company_id = $data['member_view'][0]->company_id;
                     $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-                    $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
+                    $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
                     $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
                     $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
                     $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();

@@ -71,6 +71,10 @@
 						                </button>
 						            </div>
 
+						            @php
+						            	$month_year = $data['month_year'];
+						            @endphp
+
                                     <div id="" class="">
 										@if (session()->has('success'))
 										{{__('File Submitted successfully') }}
@@ -80,7 +84,7 @@
 									
 									</br>
 									</br>
-									<p class="card-title">Month :  {{ $data['month_year'] }}</p>
+									<p class="card-title">Year :  {{ date('Y',strtotime($data['month_year'])) }}</p>
 									</br>
 									
 									<div class="row">
@@ -176,7 +180,10 @@
 @section('footerSection')
 
 <script>
-	$("#tdfmembership_sidebar_a_id").addClass('active');
+	$("#tdf_sidebars_id").addClass('active');
+    $("#tdfupload_sidebar_li_id").addClass('active');
+    $("#tdfupload_sidebar_a_id").addClass('active');
+        
 	$(document).ready(function() {
 		$("#scanning-details").removeClass('hide');
 		var row_count = {{ $data['row_count'] }};
@@ -194,8 +201,10 @@
 	
 	function ScanMembership(start){
 		var lastrow ={{$lastrow}};
+		var tdfid = {{ $data['tdfid'] }};
+		var limit = {{ $limit }};
 		
-		var url = "{{ url(app()->getLocale().'/tdf-scanning') }}" + '?start='+start;
+		var url = "{{ url(app()->getLocale().'/tdf-scanning') }}" + '?start='+start+'&tdfid='+tdfid+ '&limit='+limit;
 			$.ajax({
 				url: url,
 				type: "GET",

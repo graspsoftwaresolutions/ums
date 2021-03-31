@@ -114,7 +114,7 @@
 </style>
 @endsection @section('main-content')
 <div class="row">
-    <!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
+    <div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
     <div id="filterarea" class="col s12">
         <div class="container">
             <div class="section section-data-tables">
@@ -125,18 +125,11 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col s10 m6 l6">
-                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('Upload TDF') }}</h5>
-                                    <ol class="breadcrumbs mb-0">
-                                        <ol class="breadcrumbs mb-0">
-                                            <li class="breadcrumb-item"><a href="{{ route('home', app()->getLocale())  }}">{{__('Dashboard') }}</a>
-                                            </li>
-                                            <li class="breadcrumb-item active">{{__('Upload TDF') }}
-                                            </li>
-                                        </ol>
+                                    <h5 class="breadcrumbs-title mt-0 mb-0">{{__('TDF Summary') }}</h5>
+                                    
                                 </div>
                                 <div class="col s2 m6 l6 ">
-                                    
-                                    <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ asset('storage/app/subscription/tdf.xlsx') }}">{{__('Download Sample')}}</a>
+                                 <a class="mb6 btn btn-sm waves-light orange lightrn-1 right" href="{{ route('tdf.members', [app()->getLocale()]) }}?date={{ strtotime($data['tdfdate']) }}">View Members</a>
                                 </div>
                             </div>
                             @include('includes.messages')
@@ -152,61 +145,39 @@
         <div class="col s12">
             <div class="container">
                 @php 
-                 $auth_user = Auth::user(); $companylist = []; $companyid = ''; if(!empty($auth_user)){ $userid = Auth::user()->id; $get_roles = Auth::user()->roles; $user_role = $get_roles[0]->slug; if($user_role =='union'){ 
-                 $companylist = CommonHelper::getHeadCompanyListAll(); 
-                } else if($user_role =='union-branch'){ $unionbranchid = CommonHelper::getUnionBranchID($userid); $companylist = CommonHelper::getUnionCompanyList($unionbranchid); } else if($user_role =='company'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } else if($user_role =='company-branch'){ $companyid = CommonHelper::getCompanyID($userid); $companylist = CommonHelper::getCompanyList($companyid); } $company_count = count($companylist); }
+                    $userid = Auth::user()->id; 
+                    $get_roles = Auth::user()->roles; 
+                    $user_role = $get_roles[0]->slug; 
+                    $year = date('Y',strtotime($data['tdfdate']));
+                    //dd($year);
                 @endphp 
               
 					@if($user_role!='company')
                     <div class="card">
-                        
 
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s12 m12">
 
                                     <div class="row">
-                                        <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/tdf_update') }}" enctype="multipart/form-data">
+                                        <form class="formValidate" id="subscribe_formValidate" method="post" action="{{ url(app()->getLocale().'/tdf/summary') }}" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
 
-                                                <div class="col m2 s12">
-                                                    <label for="doe">{{__('Upload Year') }}*</label>
-                                                    <select name="upload_year" id="upload_year" required="" class="error browser-default selectpicker" data-error=".errorTxt7">
+                                                <div class="col m3 s12">
+                                                   <label for="upload_year">{{__('Upload Year') }}*</label>
+                                                   <select name="upload_year" id="upload_year" required="" class="error browser-default selectpicker" data-error=".errorTxt7">
                                                         <option value="">{{__('Choose Year') }}</option>
                                                         @for($y=2008;$y<=2016;$y++)
-                                                        <option value="{{ $y }}" @if($y==2016) selected="" @endif >{{ $y }}</option>
+                                                        <option value="{{ $y }}" @if($y==$year) selected="" @endif >{{ $y }}</option>
                                                         @endfor
                                                         
                                                     </select>
-                                                    <div class="errorTxt7"></div>
-                                                    <!-- <input type="text" name="entry_date" id="entry_date" value="{{ date('M/Y') }}" class="datepicker-custom" /> -->
                                                 </div>
 
-                                                <div class="col s4">
-                                                    <label for="sub_company">{{__('Company') }}</label>
-                                                    <select name="sub_company" id="sub_company" class="error browser-default selectpicker" data-error=".errorTxt6">
-                                                        <option value="" selected>{{__('Choose Company') }}</option>
-                                                        @foreach($companylist as $value)
-                                                        <option data-companyname="{{$value->company_name}}" value="{{$value->id}}">{{$value->company_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="errorTxt6"></div>
-                                                </div>
-
-                                                <div id="file-upload-div" class="input-field  file-field col m3 s12">
-                                                    <div class="btn ">
-                                                        <span>File</span>
-                                                        <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
-                                                    </div>
-                                                    <div class="file-path-wrapper ">
-                                                        <input class="file-path validate" type="text">
-                                                    </div>
-                                                </div>
-                                                
                                                 <div class="col m3 s12 " style="padding-top:5px;">
                                                     </br>
-                                                    <button id="submit-upload" class="mb-6 btn purple lightrn-1 " type="submit">{{__('Submit') }}</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-effect purple lightrn-1 " type="submit">{{__('Submit') }}</button>
 
                                                 </div>
 
@@ -224,7 +195,67 @@
                 </div>
             </div>
         </div>
-        
+        <div class="row">
+            <div id="monthly_status" class="col s12 active">
+                <div class="">
+                    <br> <a id="printbutton" href="#" style="margin-left: 50px;" class="export-button btn btn-sm right" onclick="window.print()"> Print</a>
+                    <div class="clearfix"></div>
+                  
+                    <!--Approval Status-->
+                    <div class="col s12 m12">
+                        <div class="card subscriber-list-card animate fadeRight">
+                            <div class="card-content" style="border-bottom: #2d22d6 solid 1px;">
+                                <h4 class="card-title mb-0">Overall Summary
+                                        <span class="right datamonth hide">[{{ date('M/Y',strtotime($data['tdfdate'])) }}]</span>
+                                    </h4>
+                            </div>
+                            <table class="subscription-table responsive-table highlight">
+                                <thead>
+                                    <tr style="background: linear-gradient(45deg,#8e24aa,#ff6e40)!important;color:#fff;">
+                                        <th>Sl No</th>
+                                        <th>Description</th>
+                                        <th>Count</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $summary_slno = 1;
+                                      
+                                        $matched_members_count = CommonHelper::TDFMatchedMembersData($data['tdfdate'],1,1); 
+                                        $matched_members_amount = CommonHelper::TDFMatchedMembersData($data['tdfdate'],1,2); 
+
+                                        $notmatched_members_count = CommonHelper::TDFMatchedMembersData($data['tdfdate'],0,1); 
+                                        $notmatched_members_amount = CommonHelper::TDFMatchedMembersData($data['tdfdate'],0,2); 
+                                      
+                                    @endphp
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/tdf/members?&date='.strtotime($data['tdfdate'])) }}" style="cursor:pointer;">
+                                        <td>{{ $summary_slno++ }}</td>
+                                        <td>Total Uploaded Members(Members & Not Matched Members)</td>
+                                        <td id="approval_status_count_1">{{ $data['members_sum']->count }}</td>
+                                        <td id="approval_pending_amount_1">{{ number_format($data['members_sum']->amount,2,".",",") }}</td>
+                                    </tr>
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/tdf-status?member_status=&date='.strtotime($data['tdfdate']).'&member_type=1') }}" style="cursor:pointer;">
+                                        <td>{{ $summary_slno++ }}</td>
+                                        <td>Matched Members</td>
+                                        <td id="approval_status_count_1">{{ $matched_members_count }}</td>
+                                        <td id="approval_pending_amount_1">{{ number_format($matched_members_amount,2,".",",") }}</td>
+                                    </tr>
+                                    <tr class="monthly-approval-status " id="monthly_approval_status_1" data-href="{{ URL::to(app()->getLocale().'/tdf-status?member_status=&date='.strtotime($data['tdfdate']).'&member_type=0') }}" style="cursor:pointer;background: #f9f2f2;">
+                                        <td>{{ $summary_slno++ }}</td>
+                                        <td>Not Matched Members</td>
+                                        <td id="approval_status_count_1">{{ $notmatched_members_count }}</td>
+                                        <td id="approval_pending_amount_1">{{ number_format($notmatched_members_amount,2,".",",") }}</td>
+                                    </tr>
+                                  
+                                </tbody>
+                               
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     @endsection @section('footerSection')
@@ -246,7 +277,6 @@
         $("#tdf_sidebars_id").addClass('active');
         $("#tdfupload_sidebar_li_id").addClass('active');
         $("#tdfupload_sidebar_a_id").addClass('active');
-        
         $(document).ready(function() {
             // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
             $('.modal').modal();
@@ -268,29 +298,29 @@
 
         $("#subscribe_formValidate").validate({
             rules: {
-                upload_year: {
+                entry_date: {
                     required: true,
                 },
                 // sub_company: {
                 //     required: true,
                 // },
-                /* file:{
+                file:{
                 	required: true,
-                }, */
+                },
             },
             //For custom messages
             messages: {
-                upload_year: {
-                    required: "Please choose year",
+                entry_date: {
+                    required: "Please choose date",
 
                 },
                 // sub_company: {
                 //     required: "Please choose Bank",
 
                 // },
-                /* file:{
+                file:{
                 	required: 'required',
-                }, */
+                },
             },
             errorElement: 'div',
             errorPlacement: function(error, element) {
@@ -321,7 +351,6 @@
         // $("#subupsalary_sidebar_a_id").addClass('active');
 
         $(document).on('click', '#file', function() {
-           
 
         });
 
@@ -343,5 +372,12 @@
             }, 10);
 
         }
+        $(".monthly-sub-status,.monthly-approval-status").click(function() {
+            //console.log($(this).data("href"));
+            if ($(this).attr("data-href") != "") {
+                window.open($(this).attr("data-href"), '_blank');
+                //win = window.location.replace($(this).attr("data-href"));
+            }
+        });
     </script>
     @endsection

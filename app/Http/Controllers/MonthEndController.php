@@ -166,7 +166,7 @@ class MonthEndController extends Controller
         $data['due_month'] = 0;
         $data['company_id'] = '';
         $data['branch_id'] = '';
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         
         $data['members_list'] = DB::table('membership as m')->select('id','name','doj','status_id','branch_id','member_number')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
         return view('subscription.history_list')->with('data',$data);  
@@ -202,7 +202,7 @@ class MonthEndController extends Controller
         $data['due_month'] = $due_month;
         $data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         if($branch_id!=''){
             $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id');
@@ -441,7 +441,7 @@ class MonthEndController extends Controller
         $data['company_id'] = '';
         $data['branch_id'] = '';
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['members_list'] = [];
         return view('subscription.due_members_list')->with('data',$data);  
     }
@@ -458,7 +458,7 @@ class MonthEndController extends Controller
         $branch_id = $request->input('branch_id');
        // date('Y-m-d',strtotime($to_date));
         //$data['from_date'] = date('Y-m-d',strtotime($from_date));
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         //$data['to_date'] = date('Y-m-d',strtotime($to_date)); 
         $data['status_id'] = $status_id;
         $data['company_id'] = $company_id;
@@ -764,7 +764,7 @@ class MonthEndController extends Controller
         $data['subs_month'] = date('Y-m-01');
         $data['branch_id'] = '';
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['members_list'] = [];
         $data['followup_type'] = '';
         return view('subscription.followup_members_list')->with('data',$data);  
@@ -787,7 +787,7 @@ class MonthEndController extends Controller
         $branch_id = $request->input('branch_id');
        // date('Y-m-d',strtotime($to_date));
         //$data['from_date'] = date('Y-m-d',strtotime($from_date));
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         //$data['to_date'] = date('Y-m-d',strtotime($to_date)); 
         //$data['status_id'] = $status_id;
         $data['company_id'] = $company_id;
@@ -988,7 +988,7 @@ class MonthEndController extends Controller
         $data['due_month'] = 0;
         $data['company_id'] = '';
         $data['branch_id'] = '';
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         
         $data['members_list'] = DB::table('membership as m')->select('id','name','doj','status_id','branch_id','member_number')->where('m.doj','>=','2019-01-01')->orderBY('m.doj','asc')->get();
         return view('subscription.doj_before_list')->with('data',$data);  
@@ -1007,7 +1007,7 @@ class MonthEndController extends Controller
         //$data['due_month'] = $due_month;
         $data['company_id'] = $company_id;
         $data['branch_id'] = $branch_id;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         if($branch_id!=''){
             $member_qry = DB::table('membership as m')->select('m.id','m.name','m.member_number','m.doj','m.status_id','m.branch_id');

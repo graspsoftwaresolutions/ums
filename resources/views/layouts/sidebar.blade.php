@@ -99,7 +99,16 @@
           </ul>
         </div>
       </li>
-      <li class="bold"><a id="tdfmembership_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('upload.tdf',app()->getLocale()) }}"><i class="material-icons">file_upload</i><span class="menu-title" data-i18n="">{{ __('TDF Upload') }}</span></a>
+     
+      <li id="tdf_sidebars_id" class="bold "><a class="collapsible-header waves-effect waves-cyan" href="#"><i class="material-icons">file_upload</i><span class="menu-title" data-i18n="">TDF</span></a>
+        <div class="collapsible-body">
+          <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+            <li id="tdfupload_sidebar_li_id" class=""><a id="tdfupload_sidebar_a_id" class="collapsible-body " href="{{ route('upload.tdf',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>Upload File</span></a>
+            </li>
+            <li id="tdflist_sidebar_li_id" class=""><a id="tdflist_sidebar_a_id" class="collapsible-body " href="{{ route('tdf.list',app()->getLocale()) }}" data-i18n=""><i class="material-icons">radio_button_unchecked</i><span>TDF List</span></a>
+            </li>
+          </ul>
+        </div>
       </li>
       <li class="bold"><a id="sal_updatelist_sidebar_a_id" class="waves-effect waves-cyan " href="{{ route('salary.list',app()->getLocale()) }}"><i class="material-icons">system_update_alt</i><span class="menu-title" data-i18n="">{{ __('Salary Updation List') }}</span></a>
       </li>
