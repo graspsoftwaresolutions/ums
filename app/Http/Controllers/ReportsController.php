@@ -50,7 +50,7 @@ class ReportsController extends Controller
         //$request->session()->forget('unionmembers-new-result');
         $data['data_limit']=$this->limit;
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $entry_fee = DB::table('fee')->where('fee_shortcode','=','EF')->pluck('fee_amount')->first();
         $ins_fee = DB::table('fee')->where('fee_shortcode','=','INS')->pluck('fee_amount')->first();
         $entry_fee = $entry_fee=='' ? 0 : $entry_fee;
@@ -77,7 +77,7 @@ class ReportsController extends Controller
     {
         $data['data_limit']=$this->limit;
         $data['status_id']=$status_id;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
                
         // $members = DB::table('company_branch as c')->select('s.status_name','c.id as cid','m.name','m.email','m.id as id','m.status_id as status_id','m.branch_id as branch_id', 'm.member_number','m.designation_id','d.id as designationid','d.designation_name','m.gender','com.company_name','m.doj','m.old_ic','m.new_ic','m.mobile','st.state_name','cit.id as cityid','cit.city_name','st.id as stateid','m.state_id','m.city_id','m.race_id','m.levy','m.levy_amount','m.tdf','m.tdf_amount','com.short_code as companycode','r.race_name','r.short_code as raceshortcode','s.font_color','c.branch_name as branch_name')
@@ -106,7 +106,7 @@ class ReportsController extends Controller
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['company_id'] = '';
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
@@ -376,7 +376,7 @@ class ReportsController extends Controller
     public function resignMemberReport()
     {
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['reasondata'] = Reason::where('status','=',1)->get();
         
@@ -401,7 +401,7 @@ class ReportsController extends Controller
     public function resignNewMemberReport()
     {
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id; 
@@ -630,7 +630,7 @@ class ReportsController extends Controller
 
     public function resignUnionMemberReport($lang,Request $request){
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
         $user_id = Auth::user()->id; 
@@ -896,7 +896,7 @@ class ReportsController extends Controller
     public function takafulReport()
     {
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
        
         $members = DB::table($this->membermonthendstatus_table.' as ms')
@@ -1020,7 +1020,7 @@ class ReportsController extends Controller
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['company_id'] = '';
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
@@ -1154,7 +1154,7 @@ class ReportsController extends Controller
         $data['from_member_no']=$from_member_no;
         $data['to_member_no']=$to_member_no;
         $data['offset']=$offset;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         //Session::put('members-new-result', $data);
         //$request->session()->push('members-new-result', $data);
@@ -1243,7 +1243,7 @@ class ReportsController extends Controller
         $data['from_member_no']=$from_member_no;
         $data['to_member_no']=$to_member_no;
         $data['offset']=$offset;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         $dataarr = ['data' => $data ];
 
@@ -1310,7 +1310,7 @@ class ReportsController extends Controller
     public function activeStatisticsReport(Request $request, $lang)
     {      
 		$data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get(); 
 
 		$monthno = date('m');
 		$yearno = date('Y');
@@ -1493,7 +1493,7 @@ class ReportsController extends Controller
 	{
         //dd('hi');
 		$data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
        
         // $members = DB::table($this->membermonthendstatus_table.' as ms')
@@ -1573,7 +1573,7 @@ class ReportsController extends Controller
 	public function VariationReport(Request $request, $lang)
     {
 		$data['data_limit']=$this->limit;
-		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_list'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
@@ -1584,7 +1584,7 @@ class ReportsController extends Controller
     {
         $data['data_limit']=$this->limit;
         $last_month = date("Y-m-01", strtotime("first day of previous month"));
-        $data['company_list'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_list'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
@@ -1646,7 +1646,7 @@ class ReportsController extends Controller
     public function SubscriptionReport(Request $request, $lang)
     {
 		$data['data_limit']=$this->limit;
-		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_list'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
@@ -1656,7 +1656,7 @@ class ReportsController extends Controller
     public function newSubscriptionReport(Request $request)
     {
         $data['data_limit']=$this->limit;
-		$data['company_list'] = DB::table('company')->where('status','=','1')->get();
+		$data['company_list'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		$data['company_view'] = DB::table('mon_sub_company as mc')->select('c.id as cid','mc.id as id','c.company_name as company_name')
                                 ->leftjoin('mon_sub as ms','mc.MonthlySubscriptionId','=','ms.id')
                                 ->leftjoin('company as c','mc.CompanyCode','=','c.id')
@@ -2035,7 +2035,7 @@ class ReportsController extends Controller
     public function newTakaulReport()
     {
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
        
         $members = CacheMonthEnd::getMonthEndByDate(date('Y-m-01'));
         // $members = DB::table($this->membermonthendstatus_table.' as ms')
@@ -2104,7 +2104,7 @@ class ReportsController extends Controller
         $data['data_limit']='';
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']='';
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		//dd($members);
         return view('reports.iframe_takaful')->with('data',$data);  
     }
@@ -2153,7 +2153,7 @@ class ReportsController extends Controller
         $data['data_limit']='';
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['offset']='';
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         $dataarr = ['data' => $data ];
 
@@ -2219,7 +2219,7 @@ class ReportsController extends Controller
     }
 
     public function PremiumTakaulReport($lang,Request $request){
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
        
         $members = CacheMonthEnd::getPremiumMonthEndByDate(date('Y-m-01'));
         
@@ -2309,7 +2309,7 @@ class ReportsController extends Controller
         //$data['data_limit']=$this->limit;
         $data['data_limit']='';
         $data['offset']='';
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		//dd($members);
         return view('reports.iframe_takaful_premium')->with('data',$data);  
     }
@@ -2391,7 +2391,7 @@ class ReportsController extends Controller
         //$data['data_limit']=$this->limit;
         $data['data_limit']='';
         $data['offset']='';
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         $dataarr = ['data' => $data ];
 
@@ -2400,7 +2400,7 @@ class ReportsController extends Controller
     }
 
     public function SummaryTakaulReport($lang,Request $request){
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $head_company_view = DB::table('company')->select('company_name','id','short_code as companycode')->where('status','=','1')
                                             ->where(function ($query) {
                                                 $query->where('head_of_company', '=', '')
@@ -2500,7 +2500,7 @@ class ReportsController extends Controller
         $data['month_year_read']=$month_year_read;
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['month_year_full']=date('Y-m-01',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		//dd($members);
         return view('reports.iframe_takaful_summary')->with('data',$data);  
     }
@@ -2559,7 +2559,7 @@ class ReportsController extends Controller
         $data['month_year_read']=$month_year_read;
 		$data['total_ins']=$this->bf_amount+$this->ins_amount;
         $data['month_year_full']=$fulldate;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 
         $dataarr = ['data' => $data ];
 
@@ -2704,7 +2704,7 @@ class ReportsController extends Controller
     {
         $data = [];
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        $data['company_list'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_list'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         return view('reports.due')->with('data',$data);  
     }
     public function IframeDueReport(){
@@ -2816,7 +2816,7 @@ class ReportsController extends Controller
 
     public function AdviceReport(Request $request, $lang){
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['member_view'] = [];
         return view('reports.branch_advice')->with('data',$data);  
@@ -2828,7 +2828,7 @@ class ReportsController extends Controller
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['company_id'] = '';
         $data['unionbranch_id'] = '';
         $data['branch_id'] = '';
@@ -3411,7 +3411,7 @@ class ReportsController extends Controller
 
     public function BranchStatusReport(Request $request, $lang){
         $data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         return view('reports.branch_status')->with('data',$data);  
@@ -3611,7 +3611,7 @@ class ReportsController extends Controller
         $get_roles = Auth::user()->roles;
         $user_role = $get_roles[0]->slug;
 		$user_id = Auth::user()->id; 
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['company_id'] = '';
         $union_branch_id = '';
         $data['branch_id'] = '';
@@ -4035,7 +4035,7 @@ class ReportsController extends Controller
 
     public function MemberTransferReport(Request $request, $lang){
         //return 1;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         return view('reports.member_transfers')->with('data',$data);  
@@ -4119,7 +4119,7 @@ class ReportsController extends Controller
 
     public function DesignationReport(Request $request, $lang){
         //$data['data_limit']=$this->limit;
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
         $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
 
@@ -4231,7 +4231,7 @@ class ReportsController extends Controller
     public function AdvanceReport(){
         $data = [];
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         return view('reports.advance')->with('data',$data);  
     }
 
@@ -4319,7 +4319,7 @@ class ReportsController extends Controller
     public function PgmMemberReport(Request $request, $lang)
     {
        
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         $data['member_view'] = [];
@@ -4330,7 +4330,7 @@ class ReportsController extends Controller
      public function PgmAllMemberReport(Request $request, $lang)
     {
        
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         $data['member_view'] = [];
@@ -4524,7 +4524,7 @@ class ReportsController extends Controller
 
     public function SummaryReport($lang,Request $request){
         $data['month_year'] = date('Y-m-01');
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         return view('reports.monthly_summary')->with('data',$data);
@@ -4620,7 +4620,7 @@ class ReportsController extends Controller
     public function YearlyMemberReport($lang,Request $request){
         $data['from_year'] = date('Y')-3;
         $data['to_year'] = date('Y');
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
 
         return view('reports.yearly_summary')->with('data',$data);
@@ -4781,7 +4781,7 @@ class ReportsController extends Controller
     public function MonthlyStatisticsReport(Request $request, $lang)
     {      
         $data['unionbranch_view'] = DB::table('union_branch')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get(); 
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get(); 
 
         $monthno = date('m');
         $yearno = date('Y');

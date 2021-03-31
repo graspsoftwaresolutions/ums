@@ -3579,7 +3579,7 @@ class CommonHelper
         return $results = DB::table('union_branch')->where('status','=','1')->orderBy('union_branch','asc')->get();
     }
     public static function getHeadCompanyListAll(){
-        return $results = Company::where('status',1)->where('head_of_company','=','0')->get();
+        return $results = Company::where('status',1)->where('head_of_company','=','0')->orderBy('company_name','asc')->get();
     }
 
     public static function get_mismatchstatus_data($submemberid){
@@ -5111,5 +5111,52 @@ class CommonHelper
                                          ->pluck('ms.TOTAL_MONTHS')
                                          ->first();
     }
+
+    public static function TDFMembersCount($monthyear=false){
+        if($monthyear==false){
+            $monthyear=date('Y-m-01');
+        }
+       
+        $members_qry = DB::select(DB::raw('SELECT COUNT(t.id) AS count FROM `tdf_updation_temp` AS `t` LEFT JOIN `tdf_date` AS `td` ON `td`.`id` = `t`.`tdf_date_id` WHERE `td`.`Date`="'.$monthyear.'"'));
+        $members_count = $members_qry[0]->count;
+       
+        return $members_count;
+    }
+
+     public static function TDFMembersAmount($monthyear=false){
+        if($monthyear==false){
+            $monthyear=date('Y-m-01');
+        }
+       
+        $members_qry = DB::select(DB::raw('SELECT ifnull(sum(t.amount),0) as amount FROM `tdf_updation_temp` AS `t` LEFT JOIN `tdf_date` AS `td` ON `td`.`id` = `t`.`tdf_date_id` WHERE `td`.`Date`="'.$monthyear.'"'));
+        $members_amount = $members_qry[0]->amount;
+       
+        return $members_amount;
+    }
+
+    public static function getTDFPendingMemberCount($tdfid){
+        $count = DB::table('tdf_updation_temp')->where('status',0)->where('tdf_date_id',$tdfid)->count();
+        return $count;
+    }
+
+    public static function TDFMatchedMembersData($monthyear, $matchtype,$resulttype){
+
+        $cond = '';
+        if($matchtype==0){
+            $cond .= " (t.member_id='' OR t.member_id is null)";
+        }else{
+            $cond .= " t.member_id is not null";
+        }
+      
+        $members_qry = DB::select(DB::raw('SELECT COUNT(t.id) AS count,ifnull(sum(t.amount),0) as amount FROM `tdf_updation_temp` AS `t` LEFT JOIN `tdf_date` AS `td` ON `td`.`id` = `t`.`tdf_date_id` WHERE '.$cond.' AND `td`.`Date`="'.$monthyear.'"'));
+        if($resulttype==1){
+            $members_data = $members_qry[0]->count;
+        }else{
+             $members_data = $members_qry[0]->amount;
+        }
+       
+        return $members_data;
+    }
+ 
     
 }

@@ -53,7 +53,7 @@ class MembershipController extends Controller
     public function index(Request $request)
     {
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -75,7 +75,7 @@ class MembershipController extends Controller
     {
          $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
          $data['title_view'] = DB::table('persontitle')->where('status','=','1')->get();
-         $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+         $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
          $data['designation_view'] = DB::table('designation')->where('status','=','1')->get();
          $data['race_view'] = DB::table('race')->where('status','=','1')->get();
          $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -130,7 +130,7 @@ class MembershipController extends Controller
         $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -165,7 +165,7 @@ class MembershipController extends Controller
     public function new_members(Request $request, $lang){
         $type = $request->input('type');
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -1060,7 +1060,7 @@ class MembershipController extends Controller
         }
       
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
 		return view('membership.member_transfer')->with('data',$data); 
     }
     
@@ -1368,7 +1368,7 @@ class MembershipController extends Controller
         }
       
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $to_branch_info = CompanyBranch::find($data['to_branch_id']);
         $tobranchdata = [];
         if(!empty($to_branch_info)){
@@ -1743,7 +1743,7 @@ class MembershipController extends Controller
         $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -2898,7 +2898,7 @@ class MembershipController extends Controller
         $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -3012,7 +3012,7 @@ class MembershipController extends Controller
 
         $data['member_type'] = 1;
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -3566,7 +3566,7 @@ class MembershipController extends Controller
         $company_id = CommonHelper::get_branch_company_id($data['member_view'][0]->branch_id);
         //$company_id = $data['member_view'][0]->company_id;
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->select('id','company_name')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['state_view'] = DB::table('state')->select('id','state_name')->where('status','=','1')->where('country_id','=',$country_id)->get();
         $data['city_view'] = DB::table('city')->select('id','city_name')->where('status','=','1')->where('state_id','=',$state_id)->get();
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
@@ -3960,7 +3960,7 @@ class MembershipController extends Controller
     public function resignationMembers(Request $request)
     {
         $data['country_view'] = DB::table('country')->select('id','country_name')->where('status','=','1')->get();
-        $data['company_view'] = DB::table('company')->where('status','=','1')->get();
+        $data['company_view'] = DB::table('company')->where('status','=','1')->orderBy('company_name', 'ASC')->get();
         $data['companybranch_view'] = DB::table('company_branch')->where('status','=','1')->get();
         $data['race_view'] = DB::table('race')->where('status','=','1')->get();
         $data['status_view'] = DB::table('status')->where('status','=','1')->get();
@@ -4546,17 +4546,16 @@ class MembershipController extends Controller
         {
         
             if(Input::hasFile('file')){
-                $data['entry_date'] = $request->entry_date;
-                $entry_date = $request->entry_date;
+                $data['entry_year'] = $request->upload_year;
+                $upload_year = $request->upload_year;
                 $sub_company = $request->input('sub_company');
 
-                $datearr = explode("/",$entry_date);  
-                $monthname = $datearr[0];
-                $year = $datearr[1];
-                $full_date = date('Ymdhis',strtotime('01-'.$monthname.'-'.$year));
+                $monthname = '01';
+              
+                $full_date = date('Ymdhis',strtotime('01-'.$monthname.'-'.$upload_year));
 
-                $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year));
-                $form_datefull = date('Y-m-d',strtotime('01-'.$monthname.'-'.$year)).' '.date('h:i:s');
+                $form_date = date('Y-m-d',strtotime('01-'.$monthname.'-'.$upload_year));
+                $form_datefull = date('Y-m-d',strtotime('01-'.$monthname.'-'.$upload_year)).' '.date('h:i:s');
                 $others = '';
                 
 
@@ -4642,14 +4641,19 @@ class MembershipController extends Controller
         $data = [];
         
         $date = $request->input('date');
-        $updatedate = date('Y-m-01',$date);
+        $updatedate = date('Y-01-01',$date);
 
         $memberrowcount = DB::table('tdf_updation_temp as tt')
                             ->leftjoin('tdf_date as d','tt.tdf_date_id','=','d.id')
                             ->where('d.Date','=',$updatedate)->where('status','=',0)->count();
 
+        $tdfid = DB::table('tdf_date as d')
+                            ->where('d.Date','=',$updatedate)->pluck('d.id')->first();
+
+
         $data['row_count'] = $memberrowcount;
         $data['month_year'] = $updatedate;
+        $data['tdfid'] = $tdfid;
         $data['monthstring'] = $date;
 
         if($data['row_count']==0){
@@ -4665,9 +4669,12 @@ class MembershipController extends Controller
         $user_id = Auth::user()->id;
 
         $limit = $request->input('limit');
+        $tdfid = $request->input('tdfid');
 
-        $tdf_data = DB::table('tdf_updation_temp')->where('status','=',0)->limit($limit)->get();
+      // dd( $year);
+        $tdf_data = DB::table('tdf_updation_temp')->where('status','=',0)->where('tdf_date_id','=',$tdfid)->limit($limit)->get();
         foreach($tdf_data as $tdf){
+          
             $tdfid = $tdf->id;
             $tdf_date_id = $tdf->tdf_date_id;
             $paid_date = $tdf->paid_date;
@@ -4678,31 +4685,31 @@ class MembershipController extends Controller
             $cheque_no = $tdf->cheque_no;
             $status = $tdf->status;
 
-            $updatedata = array('tdf_amount' => $amount ,'tdf' => "Yes" ,'tdf_paid_date' => $paid_date ,'tdf_cheque_no' => $cheque_no);
+            $member_number_qry =  DB::table('membership as m')->where(DB::raw("member_number"), '=',$member_number)->whereNotNull('member_number')->where(DB::raw("member_number"), '!=',0)->OrderBy('m.doj','desc')->limit(1)->select('status_id','id','branch_id','name','designation_id')->get();
 
-            $affected = DB::table('membership')
-                ->where('member_number', $member_number)
-                ->update($updatedata);  
-                 //print_r($member_number);
-                 //print_r($updatedata);
-                 //dd($affected);
-            if($affected==1){
-                $memberdata = DB::table('membership')
-                ->where('member_number', $member_number)
-                //->pluck('id','status_id');
-                ->first(); 
-                $memberid = $memberdata->id;
-                $statusid = $memberdata->status_id;
+            if(count($member_number_qry) > 0){
+                $updatedata = array('tdf_amount' => $amount ,'tdf' => "Yes" ,'tdf_paid_date' => $paid_date ,'tdf_cheque_no' => $cheque_no);
+
+                $affected = DB::table('membership')
+                    ->where('member_number', $member_number)
+                    ->update($updatedata);  
+
+                $memberid =  $member_number_qry[0]->id;
+                $statusid =  $member_number_qry[0]->status_id;
                 //dd($memberdata);
 
                 $tdfaffects = DB::table('tdf_updation_temp')
                 ->where('id', $tdfid)
                 ->update(array('status' => 1, 'member_id' => $memberid, 'status_id' => $statusid)); 
-              //  dd($tdfaffects);
 
             }else{
-                $return_data = ['status' => 0 ,'message' => 'Invalid data'];
+                $tdfaffects = DB::table('tdf_updation_temp')
+                ->where('id', $tdfid)
+                ->update(array('status' => 1)); 
             }
+
+           
+            $return_data = ['status' => 0 ,'message' => 'Invalid data'];
 
         }
         $return_data = ['status' => 1 ,'message' => 'tdf updated successfully, Redirecting to upload page...',
@@ -4778,6 +4785,304 @@ class MembershipController extends Controller
             return redirect($lang.'/clean-statebulk')->with('error','Please select correct to city!!');
         }
        
+    }
+
+    public function TdfList(Request $request,$lang){
+        $data['tdfdates'] = DB::table('tdf_date')
+                            ->groupBy('Date')->pluck('Date');
+        return view('membership.tdfdate-list')->with('data',$data);
+        //dd($parkdates);
+    }
+
+    public function TDFMembers(Request $request,$lang){
+        $tdfdateenc = $request->input('date');
+        $tdfdate = date('Y-01-01',$tdfdateenc);
+        //dd($tdfdate);
+        $data['tdfdate'] = $tdfdate;
+        $data['tdfmembers'] = [];
+
+        $data['tdfautoid'] = DB::table('tdf_date')
+                            ->where('Date','=',$tdfdate)->pluck('id')->first();
+
+        return view('membership.tdf_members')->with('data',$data);
+       // dd($parkdate);
+    }
+
+
+    public function ajax_tdfmember_list(Request $request){
+        
+        $status = $request->status;
+        $month = $request->input('month');
+        //$month = '2020-01-01';
+
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        
+        $sl=0;
+        $columns[$sl++] = 't.name';
+        $columns[$sl++] = 't.member_number';
+        $columns[$sl++] = 't.icno';
+        $columns[$sl++] = 't.amount';
+        $columns[$sl++] = 't.paid_date';
+        $columns[$sl++] = 't.cheque_no';
+        if($status!='all'){
+          $columns[$sl++] = 't.status_id';
+        }
+        
+        $columns[$sl++] = 't.id';
+
+        $commonqry = DB::table('tdf_updation_temp as t')->select('t.id as tid','td.Date','t.member_id', 't.name','t.icno','t.member_number','t.amount','s.status_name as status_name','t.status_id','s.font_color','t.paid_date','t.cheque_no')
+       
+        ->leftjoin('tdf_date as td','t.tdf_date_id','=','td.id')
+        ->leftjoin('status as s','t.status_id','=','s.id')
+        ->leftjoin('membership as m','m.id','=','t.member_id')
+        ->where('td.Date','=',$month);
+        //->leftjoin('company_branch as cb','cb.id','=','m.branch_id')
+
+        //$commonqry->dump()->get();
+
+        // $queries = DB::getQueryLog();
+        // dd($queries);
+
+        if($status!='all'){
+            $commonqry = $commonqry->where('t.status_id','=',$status); 
+        }
+        //$commonqry = $commonqry->where('t.Date','=',$month);
+        
+        //$commonqry->dump()->get();
+        $totalData = $commonqry->count();
+        
+        $totalFiltered = $totalData; 
+        
+       $limit = $request->input('length');
+       $start = $request->input('start');
+          //var_dump($start);
+          //exit;
+        $order = $columns[$request->input('order.0.column')];
+     
+        $dir = $request->input('order.0.dir');
+        if(empty($request->input('search.value')))
+        {            
+            $sub_mem = $commonqry;
+            if( $limit != -1){
+                $sub_mem = $sub_mem->offset($start)
+                            ->limit($limit);
+            }
+            $sub_mem = $sub_mem->orderBy($order,$dir)
+            ->get()->toArray();
+        }
+        else {
+            $search = $request->input('search.value'); 
+            
+            $sub_mem = $commonqry->where(function($query) use ($search){
+                            $query->orWhere('t.name', 'LIKE',"%{$search}%")
+                            ->orWhere('t.member_number', 'LIKE',"%{$search}%")
+                            ->orWhere('t.icno', 'LIKE',"%{$search}%")
+                            ->orWhere('t.amount', 'LIKE',"%{$search}%")
+                            ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                        });  
+          
+            if( $limit != -1){
+               $sub_mem = $sub_mem->offset($start)
+                        ->limit($limit);
+            }
+            $sub_mem = $sub_mem->orderBy($order,$dir)
+                      ->get()->toArray();
+            
+            
+            $totalFiltered =  $commonqry->where(function($query) use ($search){
+                                     $query->orWhere('t.name', 'LIKE',"%{$search}%")
+                                    ->orWhere('t.member_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('t.icno', 'LIKE',"%{$search}%")
+                                    ->orWhere('t.amount', 'LIKE',"%{$search}%")
+                                    ->orWhere('s.status_name', 'LIKE',"%{$search}%");
+                                })  
+                               ->count();
+        }
+    //     var_dump($sub_mem);
+    //    exit;
+        $result = $sub_mem;
+
+        $data = array();
+        if(!empty($result))
+        {
+            foreach ($result as $resultdata)
+            {
+                $autoid = $resultdata->tid;
+                // foreach($resultdata as $newkey => $newvalue){
+                //     if($newkey=='id'){
+                //         $autoid = $newvalue;
+                //     }else{
+                //         $nestedData[$newkey] = $newvalue;
+                //     }
+                // }
+                $nestedData['name'] = $resultdata->name;
+                $nestedData['member_number'] = $resultdata->member_number;
+                $nestedData['nric_new'] = $resultdata->icno;
+                $nestedData['amount'] = $resultdata->amount;
+                $nestedData['paid_date'] = $resultdata->paid_date=='0000-00-00' ? '' : date('d-m-Y',strtotime($resultdata->paid_date));
+                $nestedData['cheque_no'] = $resultdata->cheque_no;
+                $font_color = $resultdata->font_color;
+                $nestedData['font_color'] = $font_color;
+                
+                if($status=='all'){
+                    $nestedData['status_id'] = $resultdata->status_id;
+                    $nestedData['status_name'] = $resultdata->status_name;
+                    $nestedData['font_color'] = $font_color;
+                }
+
+                $memberid = $resultdata->member_id;
+                $font_color = $resultdata->font_color;
+                
+                $enc_id = $memberid!='' ? Crypt::encrypt($memberid) : '';
+               
+                
+                $actions ='';
+                $baseurl = URL::to('/');
+                
+                $histry = $memberid!='' ? route('member.history', [app()->getLocale(),$enc_id]) : '#';
+                $member_delete_link = $baseurl.'/'.app()->getLocale().'/subscription_delete?sub_id='.$autoid;
+                
+                // $actions .="<a style='float: left; margin-left: 10px;cursor:pointer;' title='Edit Eco Park'  class='' ><i class='material-icons' style='color:#00bcd4'>edit</i></a>";
+                //$actions .="<a style='float: left; margin-left: 10px;' onclick='return ConfirmDeletion()' title='Delete Subscription'  class='' href='$member_delete_link'><i class='material-icons' style='color:red'>delete</i></a>";
+                
+                // if($memberid!=''){
+                    
+                //     $actions .="<a style='float: left; margin-left: 10px;' title='History' target='_blank' class='' href='$histry'><i class='material-icons' style='color:#ff6f00;'>history</i></a>";
+                    
+                // }  
+                $nestedData['options'] = $actions;
+                $data[] = $nestedData;
+
+            }
+        }
+        
+        //$data = $this->CommonAjaxReturn($sub_mem, 2, '',2); 
+      
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data); 
+    }
+
+    public function TDFSummary(Request $request,$lang){
+        
+        $upload_year = $request->input('upload_year');
+        if($upload_year!=''){
+            $monthname = '01';
+            $tdfdate = date('Y-01-01',strtotime('01-'.$monthname.'-'.$upload_year));
+        }else{
+            $dateval = $request->input('date');
+            if($dateval!=''){
+                $tdfdateenc = $dateval; 
+            }else{
+                $tdfdateenc = strtotime('2016-01-01');
+            }
+           
+            $tdfdate = date('Y-01-01',$tdfdateenc);
+        }
+
+       // $parkdate = '2021-01-01';
+        
+        $data['tdfdate'] = $tdfdate;
+
+        //dd($tdfdate);
+
+        //$status_all = Status::where('status',1)->get();
+        
+       // $data['member_status'] = $status_all;
+
+        $members_qry = DB::select(DB::raw('SELECT COUNT(t.id) AS count,ifnull(sum(t.amount),0) as amount FROM `tdf_updation_temp` AS `t` LEFT JOIN `tdf_date` AS `td` ON `td`.`id` = `t`.`tdf_date_id` WHERE td.Date="'.$tdfdate.'"'));
+       // dd( $members_qry);
+        $data['members_sum'] = $members_qry[0];
+
+        return view('membership.tdf_summary')->with('data',$data);
+        //dd($parkdates);
+    }
+
+     public function TdfStatusMembers($lang, Request $request){
+        $get_roles = Auth::user()->roles;
+        $user_role = $get_roles[0]->slug;
+        $user_id = Auth::user()->id;
+        
+        $member_status = $request->input('member_status');
+        $member_type = $request->input('member_type');
+        $date = $request->input('date');
+        //dd($batch_type);
+        //$data['member_status'] = Status::where('status',1)->get();
+
+        $data['str_date'] = $date;
+        $defaultdate = date('Y-01-01',$date);
+        $data['data_limit'] = 7000;
+        $filter_date = date('Y-01-01',$date);
+      
+        //dd($company_str_List); 
+        $data['filter_date'] = strtotime(date('Y-01-01',strtotime($defaultdate)));
+
+        if($member_type!=''){
+            $cond ='';
+
+            if($member_type==0){
+                $cond .= " and (tdf.member_id='' OR tdf.member_id is null)";
+            }else{
+                $cond .= " and tdf.member_id is not null";
+            }
+           
+            $members_data = DB::select(DB::raw('SELECT tdf.*,t.Date FROM `tdf_updation_temp` AS `tdf` LEFT JOIN `tdf_date` AS `t` ON `t`.`id` = `tdf`.`tdf_date_id` WHERE `t`.`Date`="'.$defaultdate.'" '.$cond.' LIMIT '.$data['data_limit']));
+
+            $data['member'] = $members_data;
+            $data['member_status'] = $member_status;
+            $data['status'] = $member_status;
+            $data['member_type'] = $member_type;
+
+            if($member_type==1){
+                $membertypename = 'Matched Members';
+            }else{
+                $membertypename = 'Not Matched Members';
+            }
+
+            $data['title_name'] = $membertypename;
+        }   
+        
+        return view('membership.tdf_status_members')->with('data',$data);
+    }
+
+     public function TDFMemberDetails(Request $request){
+        //dd($request->all());
+        $tdf_auto_id = $request->input('tdf_auto_id');
+        $up_member_data = DB::table('tdf_updation_temp')->where('id','=',$tdf_auto_id)->first();
+        $data['up_member_data'] = $up_member_data;
+        //$data['up_nric'] = $up_member_data->NRIC;
+        $data['status'] = 1;
+        $baseurl = URL::to('/');
+
+        echo json_encode($data);  
+    }
+
+    public function saveTDFMemberApproval($lang, Request $request){
+        //dd($request->all());
+        $tdf_auto_id = $request->input('tdf_auto_id');
+        $member_search_auto_id = $request->input('member_search_auto_id');
+        $tdf_data = DB::table('tdf_updation_temp')->where('id','=',$tdf_auto_id)->first();
+        $member_data = DB::table('membership')->select('member_number','id','status_id')->where('id','=',$member_search_auto_id)->first();
+
+        $tdfaffects = DB::table('tdf_updation_temp')
+            ->where('id', $tdf_auto_id)
+            ->update(array('status' => 1, 'member_id' => $member_search_auto_id, 'status_id' => $member_data->status_id, 'member_number' => $member_data->member_number)); 
+
+        $updatedata = array('tdf_amount' => $tdf_data->amount ,'tdf' => "Yes" ,'tdf_paid_date' => $tdf_data->paid_date ,'tdf_cheque_no' => $tdf_data->cheque_no);
+
+        $affected = DB::table('membership')
+            ->where('id', '=' , $member_search_auto_id)
+            ->update($updatedata);  
+        
+        $approval_masg = 'Updated Succesfully';
+        $return_data = ['status' => 1, 'message' => $approval_masg, 'tdf_auto_id' => $tdf_auto_id, 'member_number' => $member_data->member_number, 'member_status' => $member_data->status_id];
+        echo json_encode($return_data);
     }
 }
 

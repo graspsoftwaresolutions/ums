@@ -653,6 +653,19 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('due-negativelist','MonthEndController@ListNegativeDue')->name('due.negativelist');
 
 	Route::get('newmembers_resignreport','ReportsController@newMembersResignReport')->name('resign.membersnew');
+
+	Route::get('tdf/list','MembershipController@TdfList')->name('tdf.list');
+
+	Route::get('tdf/summary','MembershipController@TDFSummary')->name('tdf.summary');
+	Route::get('tdf/members','MembershipController@TDFMembers')->name('tdf.members');
+	Route::post('tdf/summary','MembershipController@TDFSummary')->name('tdf.filter');
+
+	Route::post('ajax_tdfmember_list','MembershipController@ajax_tdfmember_list');
+
+	Route::get('tdf-status','MembershipController@TdfStatusMembers')->name('tdf.status');
+	Route::get('tdf_member_info','MembershipController@TDFMemberDetails')->name('tdf.memberinfo');
+
+	Route::post('ajax_save_tdf_member','MembershipController@saveTDFMemberApproval')->name('approval.tdfsave');
 });
 /* Master */
 	Route::get('get-branch-list-register','CommonController@getConditionalBranchList');
