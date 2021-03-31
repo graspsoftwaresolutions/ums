@@ -284,7 +284,7 @@ class CommonHelper
     }
 
     public static function getCompanyListAll(){
-		return $results = Company::where('status',1)->get();
+		return $results = Company::where('status',1)->orderBy('company_name', 'ASC')->get();
     }
 
     public static function getComapnyName($companyid){
