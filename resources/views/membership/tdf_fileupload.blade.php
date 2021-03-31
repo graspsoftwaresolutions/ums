@@ -186,7 +186,7 @@
                                                     <div class="errorTxt6"></div>
                                                 </div>
 
-                                                <div id="file-upload-div" class="input-field  file-field col m2 s12">
+                                                <div id="file-upload-div" class="input-field  file-field col m3 s12">
                                                     <div class="btn ">
                                                         <span>File</span>
                                                         <input type="file" name="file" class="form-control btn" accept=".xls,.xlsx">
@@ -196,7 +196,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col m3 s12 " style="padding-top:5px;">
+                                                <div class="col m2 s12 " style="padding-top:5px;">
                                                     </br>
                                                     <button id="submit-upload" class="mb-6 btn waves-effect purple lightrn-1 " type="submit">{{__('Submit') }}</button>
 

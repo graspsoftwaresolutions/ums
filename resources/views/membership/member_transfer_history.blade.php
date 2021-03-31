@@ -93,6 +93,11 @@
 			width: 20px !important;
 		}
 	}
+	
+	
+	.btn {
+        padding: 0 10px !important;
+    }
 </style>
 <style type="text/css">
 	.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; cursor:pointer; }
@@ -109,7 +114,7 @@
 @section('main-content')
 <div id="">
 	<div class="row">
-		<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+		<!--<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 		<div class="col s12">
 			<div class="container">
 				<div class="section section-data-tables">
@@ -150,21 +155,21 @@
 											<form method="post" id="advancedsearchform">
 												@csrf 
 												<div class="row">
-													<div class="col s12 m6 l3">
+													<div class="col s12 m3">
 														<label>{{__('From Month/Year') }}</label>
 														<input type="text" id="fromtransferdate" class="transferdate datepicker-custom" autocomplete="off" required value="{{ $data['from_date'] }}" data-error=".errorTxt23" />
 														<div class="input-field">
 															<div class="errorTxt23"></div>
 														</div>
 													</div>
-													<div class="col s12 m6 l3">
+													<div class="col s12 m3">
 														<label>{{__('To Month/Year') }}</label>
 														<input type="text" id="totransferdate" class="transferdate datepicker-custom" autocomplete="off" required value="{{ $data['to_date'] }}" data-error=".errorTxt23" />
 														<div class="input-field">
 															<div class="errorTxt23"></div>
 														</div>
 													</div>
-													<div class="col s12 m6 l3">
+													<div class="col s12 m4">
 														<label for="member_auto_id">{{__('Member Number/Name')}}</label>
 														<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 														<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
@@ -172,18 +177,14 @@
 															<div class="errorTxt24"></div>
 														</div>
 													</div>
-													<div class="col s12 m6 l3">
-														
+													<div class="input-field col m1 s12 right">
+														<input type="button" class="btn" id="clear" name="clear" value="{{__('clear')}}">
 													</div>
-												</div> 
-												<div class="row">
-													<div class="input-field col s6 right">
-														<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
-													</div>
-													<div class="input-field col s6 right-align">
+													<div class="input-field col m1 s12 right-align">
 														<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
 													</div>
-												</div>
+												</div> 
+												
 											</form>
 										</div>
 									</div>

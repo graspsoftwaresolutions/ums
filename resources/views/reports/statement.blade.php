@@ -46,7 +46,7 @@
 					@csrf  
 					<div id="hidesearch" class="row">
 
-						<div class="col s12 m6 l4">
+						<div class="col s12 m4">
 							<label for="member_auto_id">{{__('Member Number')}}</label>
 							<input id="member_search" type="text" class="validate " name="member_search" data-error=".errorTxt24">
 							<input id="member_auto_id" type="text" class="hide" class="validate " name="member_auto_id">
@@ -54,27 +54,24 @@
 								<div class="errorTxt24"></div>
 							</div>
 						</div>                          
-						<div class="col s12 m6 l3 hide">
+						<div class="col s12 m3 hide">
 							<label for="from_date">{{__('From Date')}}</label>
 							<input id="from_date" type="text" class="validate datepicker-custom" value="" name="from_date">
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m3">
 							<label for="to_date">{{__('To Date')}}</label>
 							<input id="to_date" type="text" class="validate datepicker-custom" value="" name="to_date">
 						</div>
 						
-						
-						
-						
-						<div class="clearfix"/>
-						<div class="row">
-							<div class="input-field col s6 right">
+						<div class="input-field col s6 m2 right">
 								<input type="button" class="btn" style="width:130px" id="clear" name="clear" value="{{__('clear')}}">
 							</div>
-							<div class="input-field col s6 right-align">
+							<div class="input-field col m2 s6 right-align">
 								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
 							</div>
-						</div>
+						
+						
+						
 					</div>
 				</form>  
 			</div>

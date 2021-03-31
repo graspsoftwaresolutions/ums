@@ -47,6 +47,28 @@
     .btn, .btn-large, .btn-small {
 	    margin: 2px !important;
 	}
+	
+	
+	
+	
+	
+	
+	.btn {
+        line-height: 25px !important;
+    height: 25px !important;
+    padding: 0 10px !important;
+    font-size:12px !important;
+    z-index: 0;
+    }
+    #page-length-option td:not(:last-child) {
+        word-break: break-word !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        font-size: 12px !important;
+        padding: 1px 4px;
+    }
+	
+	
 </style>
 @endsection
 @section('main-content')
@@ -86,8 +108,8 @@
 	</div>
 	<div class="row">
 		<div class="col s12">
-			<div class="container">
-				<div class="card">
+			
+				<div class="card" style="margin: 0.1rem 0 1rem 0;">
 					<div class="card-title">
 						@php
 							//dd($success);
@@ -169,12 +191,12 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			
 		</div>
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Unpaid List') }}</h4>
+                    <!--<h4 class="card-title">{{__('Unpaid List') }}</h4>-->
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
@@ -184,11 +206,11 @@
                                         <th width="20%">{{__('Member Name') }}</th>
                                         <th width="5%">{{__('Number') }}</th>
                                         <th width="7%">{{__('DOJ') }}</th>
-                                        <th width="20%">{{__('Bank') }}</th>
-                                    	<th width="20%">{{__('Bank Branch') }}</th>
+                                        <th width="10%">{{__('Bank') }}</th>
+                                    	<th width="10%">{{__('Bank Branch') }}</th>
                                         <th width="5%">{{__('Status') }}</th>
 
-                                        <th> {{__('Action') }}</th>
+                                        <th width="20%"> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

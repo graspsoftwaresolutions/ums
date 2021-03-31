@@ -47,6 +47,27 @@
     .btn, .btn-large, .btn-small {
 	    margin: 2px !important;
 	}
+	
+	
+	
+	
+	
+	
+	.btn {
+        line-height: 25px !important;
+    height: 25px !important;
+    padding: 0 10px !important;
+    font-size:12px !important;
+    z-index: 0;
+    }
+    #page-length-option td:not(:last-child) {
+        word-break: break-word !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        font-size: 12px !important;
+        padding: 1px 4px;
+    }
+    
 </style>
 @endsection
 @section('main-content')
@@ -146,7 +167,7 @@
 											</div>
 											<div class="col m3 s12 " style="padding-top:5px;">
 												</br>
-												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
+												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" style="padding:10px;" type="submit">{{__('Submit') }}</button>
 												
 											</div>
 											
@@ -174,7 +195,7 @@
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Members List') }}</h4>
+                    <!--<h4 class="card-title">{{__('Members List') }}</h4>-->
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">

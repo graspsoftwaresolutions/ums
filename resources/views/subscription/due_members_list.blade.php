@@ -35,18 +35,22 @@
     .btn, .btn-large, .btn-small {
 	    margin: 2px !important;
 	}
-   /* .btn-sm{
-        padding: 0px 7px;
-        font-size: 8px;
-        line-height: 1.5;
-        border-radius: 3px;
-        color: #fff;
-    }*/
-   /* #page-length-option td:not(:last-child) {
+	
+	
+	
+	
+	
+	.btn {
+        padding: 0 10px !important;
+    }
+    #page-length-option td:not(:last-child) {
         word-break: break-word !important;
-        white-space: unset !important;
-        vertical-align: top;
-    }*/
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        font-size: 12px !important;
+        padding: 1px 4px;
+    }
+   
 
 </style>
 @endsection
@@ -87,8 +91,8 @@
 	</div>
 	<div class="row">
 		<div class="col s12">
-			<div class="container">
-				<div class="card">
+			
+				<div class="card"  style="margin: 0.1rem 0 1rem 0;">
 					<div class="card-title">
 						@php
 							//dd($success);
@@ -153,7 +157,7 @@
 										@csrf
 										<div class="row">
 
-											<div class="col s12 m6 l3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
+											<div class="col s12 m3 @if($user_role =='company-branch' || $user_role =='company') hide @endif">
 												<label>{{__('Company Name') }}</label>
 												<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 													<option value="">{{__('Select Company') }}</option>
@@ -167,7 +171,7 @@
 											</div>
 											
 											
-											<div class="col s12 m6 l3 @if($user_role =='company-branch') hide @endif">
+											<div class="col s12 m3 @if($user_role =='company-branch') hide @endif">
 												<label>{{__('Company Branch Name') }}</label>
 												<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 													<option value="">{{__('Select Branch') }}</option>
@@ -182,7 +186,7 @@
 						
 											
 
-											<div class="col s12 m6 l2">
+											<div class="col s12 m3">
 												<label>{{__('Status') }}</label>
 												<select name="status_id" id="status_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 													<option value="">{{__('Select Status') }}</option>
@@ -197,7 +201,7 @@
 												</div>
 											</div>
 
-											<div class="col s12 m6 l2">
+											<div class="col s12 m2">
 												<label>{{__('Due Months') }}</label>
 												<select name="due_months" id="due_months" class="error browser-default selectpicker" data-error=".errorTxt24" >
 													<option value="">{{__('Select Month') }}</option>
@@ -212,7 +216,7 @@
 												</div>
 											</div>
 											
-											<div class="col m2 s12 " style="padding-top:5px;">
+											<div class="col m1 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
@@ -237,12 +241,12 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			
 		</div>
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h4 class="card-title">{{__('Due List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id'])[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>
+                    <!--<h4 class="card-title">{{__('Due List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id'])[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>-->
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">

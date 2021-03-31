@@ -64,7 +64,7 @@
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('IRC Users List') }}</h4>
+                                    <!--<h4 class="card-title">{{__('IRC Users List') }}</h4>-->
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">

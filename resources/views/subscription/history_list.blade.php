@@ -1,18 +1,11 @@
 @extends('layouts.admin')
 @section('headSection')
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/flag-icon/css/flag-icon.min.css') }}">
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
-
-
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 @endsection
 @section('headSecondSection')
-
-
-<link rel="stylesheet" type="text/css"
-    href="{{ asset('public/assets/custom_respon.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/custom_respon.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
@@ -20,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/pages/data-tables.css') }}">
+
 <style type="text/css">
     #main .section-data-tables .dataTables_wrapper table.dataTable tbody th, #main .section-data-tables .dataTables_wrapper table.dataTable tbody td:last-child {
         padding-top: 8px;
@@ -47,7 +41,26 @@
     .btn, .btn-large, .btn-small {
 	    margin: 2px !important;
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    .btn {
+        padding: 0 10px !important;
+    }
+    #page-length-option td:not(:last-child) {
+        word-break: break-word !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        font-size: 12px !important;
+        padding: 1px 4px;
+    }
+    
 </style>
 @endsection
 @section('main-content')
@@ -119,8 +132,8 @@
 	@endphp
 	<div class="row">
 		<div class="col s12">
-			<div class="container">
-				<div class="card">
+			
+				<div class="card" style="margin: 0.1rem 0 1rem 0;">
 					<div class="card-title">
 						@php
 							//dd($success);
@@ -167,7 +180,7 @@
 											</div>
 											
 											
-											<div class="col s12 m3 @if($user_role =='company-branch') hide @endif">
+											<div class="col s12 m2 @if($user_role =='company-branch') hide @endif">
 												<label>{{__('Company Branch Name') }}</label>
 												<select name="branch_id" id="branch_id" class="error browser-default selectpicker" data-error=".errorTxt23" >
 													<option value="">{{__('Select Branch') }}</option>
@@ -202,7 +215,7 @@
 												</select>
 											</div>
 											
-											<div class="col m2 s12 " style="padding-top:5px;">
+											<div class="col m1 s12 " style="padding-top:5px;">
 												</br>
 												<button id="submit-upload" class="mb-6 btn waves-effect pull-right waves-light purple lightrn-1 form-download-btn" type="submit">{{__('Submit') }}</button>
 												
@@ -227,13 +240,13 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			
 		</div>
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
 
-                    <h4 class="card-title">{{__('Unpaid List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id']!='')[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>
+                    <!--<h4 class="card-title">{{__('Unpaid List') }}@if($data['company_id'])[ Bank: {{ CommonHelper::getCompanyName($data['company_id']) }} ]@endif @if($data['branch_id']!='')[Bank branch: {{ CommonHelper::getBranchName($data['branch_id']) }}]@endif</h4>-->
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
@@ -243,13 +256,13 @@
                                     	<th width="3%">{{__('S.No') }}</th>
                                     	
                                         <th width="15%">{{__('Member Name') }}</th>
-                                        <th width="10%">{{__('Member Number') }}</th>
+                                        <th width="8%">{{__('Mem/No') }}</th>
                                         <th width="20%">{{__('Bank') }}</th>
-                                    	<th width="20%">{{__('Bank Branch') }}</th>
+                                    	<th width="15%">{{__('Bank Branch') }}</th>
                                         <th width="10%">{{__('DOJ') }}</th>
-                                        <th width="5%">{{__('Status') }}</th>
+                                        <th width="7%">{{__('Status') }}</th>
 
-                                        <th> {{__('Action') }}</th>
+                                        <th width="15%"> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -285,8 +298,8 @@
                                 			<td>{{ date('d/M/Y',strtotime($members->doj)) }}</td>
                                 			<td>{{ CommonHelper::get_member_status_name($members->status_id) }}</td>
                                 			<td>
-                                				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
-                                				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
+                                				<a class='waves-effect waves-light btn btn-sm btn1' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
+                                				<a style='' title='History'  class='btn1 waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
                                 			</td>
                                 		</tr>
                                 		@php

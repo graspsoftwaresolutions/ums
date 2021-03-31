@@ -27,12 +27,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 	}
 	
 	.footer {
-	   position: inherit !important;
-	   left: 0;
-	   bottom: 0;
-	   width: 100%;
-	   height:auto;
-	   background-color: red;
+	  
 	   color: white;
 	   z-index:999;
 	} 

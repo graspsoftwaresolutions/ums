@@ -134,12 +134,14 @@
                                             </li>
                                         </ol>
                                 </div>
-                                <div class="col s2 m5 ">
-                                    <br>
+                                <div class="col s2 m2 ">
+                                    
                                     <a class="btn waves-light btn-sm purple lightrn-1 breadcrumbs-btn right" href="{{ route('ecopark.summary', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">Summary</a>
-                                     <a class="mb6 btn btn-sm waves-light orange lightrn-1" href="{{ route('ecopark.members', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">View Members</a>
+                               </div>
+                               <div class="col s2 m2 ">
+                                         <a class="mb6 btn btn-sm waves-light orange lightrn-1" href="{{ route('ecopark.members', [app()->getLocale()]) }}?date={{ strtotime('2020-01-01') }}">View Members</a>
                                 </div>
-                                 <div class="col s2 m1 ">
+                                 <div class="col s2 m2 ">
                                    
                                     <a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ asset('storage/app/ecopark/ecopark.xlsx') }}">{{__('Download Sample')}}</a>
                                 </div>

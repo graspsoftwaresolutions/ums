@@ -47,6 +47,22 @@
     .btn, .btn-large, .btn-small {
 	    margin: 2px !important;
 	}
+	
+	
+	
+	
+	
+	
+	.btn {
+        padding: 0 10px !important;
+    }
+    #page-length-option td:not(:last-child) {
+        word-break: break-word !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        font-size: 12px !important;
+        padding: 1px 4px;
+    }
 
 </style>
 @endsection
@@ -98,7 +114,7 @@
 
 	@endphp
 	<div class="row">
-		<div class="col s12">
+		<!--<div class="col s12">
 			<div class="container">
 				<div class="card">
 					<div class="card-title">
@@ -129,13 +145,12 @@
 
 				</div>
 			</div>
-		</div>
+		</div>-->
 		 <div class="col s12">
             <div class="card">
                 <div class="card-content">
 
-                    <h4 class="card-title">{{__('Advance Due List') }}[Dec/2019]
-                	</h4>
+                    <!--<h4 class="card-title">{{__('Advance Due List') }}[Dec/2019]</h4>-->
                     @include('includes.messages')
                     <div class="row">
                         <div class="col s12">
@@ -144,15 +159,15 @@
                                     <tr>
                                     	<th width="3%">{{__('S.No') }}</th>
                                     	
-                                        <th width="15%">{{__('Member Name') }}</th>
-                                        <th width="10%">{{__('M/No') }}</th>
-                                        <th width="20%">{{__('Bank') }}</th>
+                                        <th width="20%">{{__('Member Name') }}</th>
+                                        <th width="5%">{{__('M/No') }}</th>
+                                        <th width="18%">{{__('Bank') }}</th>
                                     	<th width="20%">{{__('Bank Branch') }}</th>
-                                        <th width="10%">{{__('DOJ') }}</th>
+                                        <th width="7%">{{__('DOJ') }}</th>
                                         <th width="5%">{{__('Status') }}</th>
                                         <th width="5%">{{__('Dues') }}</th>
 
-                                        <th> {{__('Action') }}</th>
+                                        <th width="15%"> {{__('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -177,8 +192,8 @@
                                 			<td>{{ $statuslist[$members->status_id-1]->status_name }}</td>
                                 			<td>{{ $membersdata->TOTALMONTHSDUE }}</td>
                                 			<td>
-                                				<a class='waves-effect waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
-                                				<a style='' title='History'  class='waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
+                                				<a class='waves-effect btn1 waves-light btn btn-sm' href='{{ route("monthend.viewlists", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>Update</a>
+                                				<a style='' title='History'  class='btn1 waves-effect waves-light blue btn btn-sm' href='{{ route("member.history", [app()->getLocale(),Crypt::encrypt($members->id)]) }}'>View</a>
                                 			</td>
                                 		</tr>
                                 		@php

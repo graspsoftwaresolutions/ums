@@ -60,6 +60,15 @@ span.dtr-title::after {
 	vertical-align: top;
 }
 
+
+
+input[type=search]:not(.browser-default) {
+    font-size: 1rem;
+    width: 80% !important;
+    height: 1rem !important;
+    margin: 0 0 8px 0;
+    padding: 0;
+}
 </style>
 @endsection
 @section('main-content')
@@ -95,11 +104,11 @@ span.dtr-title::after {
 					<div class="card">
 						<div class="card-content">
 							<div class="row">
-								<div class="col s12 m4 l3">
+								<!--<div class="col s12 m4 l3">
 									<h4 class="card-title">
 										
 										Doj Membership List &nbsp;</h4>
-									</div>
+									</div>-->
 								<div >
 									
 								</div> 

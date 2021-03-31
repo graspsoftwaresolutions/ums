@@ -51,7 +51,7 @@
 @endsection
 @section('main-content')
 <div class="row">
-	<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>
+	<!--<div style="height:150px !important" class="content-wrapper-before gradient-45deg-indigo-purple"></div>-->
 	<div class="col s12">
 		<div class="container">
 			<div class="section section-data-tables">
@@ -62,11 +62,11 @@
 						<div class="container">
 							<div class="row">
 								<div class="col s10 m6 l6">
-									<h5 class="breadcrumbs-title mt-0 mb-0" style="color: #fff;">{{__('State City List') }}</h5>
+									<h5 class="breadcrumbs-title mt-0 mb-0">{{__('State City List') }}</h5>
 									<ol class="breadcrumbs mb-0">
 										<ol class="breadcrumbs mb-0">
-											<li class="breadcrumb-item" style="color: #fff;"><a
-													href="{{ route('home', app()->getLocale())  }}" style="color: #fff;" >{{__('Dashboard') }}</a>
+											<li class="breadcrumb-item" ><a
+													href="{{ route('home', app()->getLocale())  }}" >{{__('Dashboard') }}</a>
 											</li>
 											<li class="breadcrumb-item active">{{__('State City Clear') }}
 											</li>

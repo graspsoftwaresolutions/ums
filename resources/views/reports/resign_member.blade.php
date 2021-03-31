@@ -162,15 +162,13 @@
 								<div class="errorTxt27"></div>
 							</div>
 						</div>
-							<div class="clearfix"/>
-						<div class="row">
-							<div class="input-field col s6 right">
-								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
+						<div class="input-field col s6 m1">
+								<br><input type="button" id="clear" class="btn" name="clear" value="{{__('Clear')}}">
 							</div>
-							<div class="input-field col s6 right-align">
-								<input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
+							<div class="input-field col s6 m1 right-align">
+								<br><input type="submit" id="search" class="btn" name="search" value="{{__('Search')}}">
 							</div>
-						</div>
+						
 					</div>
 					</div>
 				</form>  

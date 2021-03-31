@@ -135,11 +135,9 @@ span.dtr-title::after {
 					<div class="card">
 						<div class="card-content">
 							<div class="row">
-								<div class="col s12 m4 l3">
-								<h4 class="card-title">
-									
-									Verify Membership List &nbsp;</h4>
-								</div>
+									<!--<div class="col s12 m4 l3">
+							<h4 class="card-title">Verify Membership List &nbsp;</h4>
+								</div>-->
 								<div >
 									<input type="button" id="advancedsearchs" name="advancedsearch" style="margin-bottom: 10px" class="btn col s12 m4 l3" value="Advanced search">
 								</div> 
@@ -263,15 +261,14 @@ span.dtr-title::after {
 												<div class="errorTxt23"></div>
 											</div>
 										</div>
-										</div>
-										<div class="row">
-											<div class="input-field col s6 right">
+										<div class="input-field col m2">
 												<input type="submit" id="clear"  class="btn" name="clear" value="{{__('Clear')}}">
 											</div>
-											<div class="input-field col s6 right-align">
+											<div class="input-field col m2 right-align">
 												<input type="submit"  class="btn" name="search" value="{{__('Search')}}">
 											</div>
 										</div>
+
 									</div>
 									</form> 
 								</div>

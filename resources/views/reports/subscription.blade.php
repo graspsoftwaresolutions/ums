@@ -83,7 +83,7 @@
 							<label for="month_year">{{__('Month and Year')}}</label>
 							<input id="month_year" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="month_year">
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m4">
 							<label>{{__('Company Name') }}</label>
 							<select name="company_id" id="company_id" class="error browser-default selectpicker" data-error=".errorTxt22" >
 								<option value="">{{__('Select Company') }}</option>
@@ -95,15 +95,13 @@
 								<div class="errorTxt22"></div>
 							</div>
 						</div>
-						<div class="clearfix"></div>
-						<div class="row">
-							<div class="input-field col s6 right">
-								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
+						<div class="input-field col m1 s6">
+								<input type="button" id="clear"  class="btn" name="clear" value="{{__('Clear')}}">
 							</div>
-							<div class="input-field col s6 right-align">
+							<div class="input-field col m1 s6 right-align">
 								<input type="submit" id="search"  class="btn" name="search" value="{{__('Search')}}">
 							</div>
-						</div>
+						
 					</div>
 					</div>
 				</form>  

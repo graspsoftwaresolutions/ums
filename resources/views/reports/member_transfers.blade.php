@@ -75,23 +75,21 @@
 					@csrf  
 					<div id="hidesearch" class="row">
 					<div class="row">                          
-						<div class="col s12 m6 l3">
+						<div class="col s12 m3">
 							<label for="from_date">{{__('From Date')}}</label>
 							<input id="from_date" type="text" class="validate datepicker-custom" value="{{date('01/m/Y')}}" name="from_date">
 						</div>
-						<div class="col s12 m6 l3">
+						<div class="col s12 m3">
 							<label for="to_date">{{__('To Date')}}</label>
 							<input id="to_date" type="text" class="validate datepicker-custom" value="{{date('t/m/Y')}}" name="to_date">
 						</div>
-						<div class="clearfix"/>
-						<div class="row">
-							<div class="input-field col s6 right">
-								<input type="button" id="clear" style="width:130px"  class="btn" name="clear" value="{{__('Clear')}}">
+						<div class="input-field col s6 m1">
+								<input type="button" id="clear" class="btn" name="clear" value="{{__('Clear')}}">
 							</div>
-							<div class="input-field col s6 right-align">
+							<div class="input-field col s6 m1 right-align">
 								<input type="submit" id="search"  class="btn" name="search" value="{{__('Search')}}">
 							</div>
-						</div>
+						
 					</div>
 					</div>
 				</form>  

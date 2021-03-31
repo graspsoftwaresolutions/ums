@@ -16,6 +16,12 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/export-button.css') }}">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+<style>
+.blue {
+        padding: 0 10px !important;
+        z-index:0 !important;
+    }
+</style>
 @endsection
 @section('main-content')
 
@@ -49,7 +55,7 @@ href="{{ asset('public/assets/vendors/data-tables/extensions/responsive/css/resp
                         <div class="col s12">
                             <div class="card">
                                 <div class="card-content">
-                                    <h4 class="card-title">{{__('Company List') }}[Union]</h4>
+                                    <!--<h4 class="card-title">{{__('Company List') }}[Union]</h4>-->
                                     @include('includes.messages')
                                     <div class="row">
                                         <div class="col s12">
